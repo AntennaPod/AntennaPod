@@ -56,7 +56,6 @@ public class SleepTimerDialog extends DialogFragment {
     private LinearLayout timeDisplay;
     private TextView time;
     private Spinner sleepTimerType;
-    private boolean sleepTimerTypeInitialized = false;
     private CheckBox chAutoEnable;
     private ImageView changeTimesButton;
     private CheckBox cbVibrate;
@@ -114,18 +113,15 @@ public class SleepTimerDialog extends DialogFragment {
         // add "title" for all options
         spinnerContent.add(getString(R.string.time_minutes));
         spinnerContent.add(getString(R.string.sleep_timer_episodes_label));
-
-        sleepTimerType = content.findViewById(R.id.sleepTimerType);
-
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
-                getContext(),
-                android.R.layout.simple_spinner_item, spinnerContent);
-
+                getContext(), android.R.layout.simple_spinner_item, spinnerContent);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sleepTimerType = content.findViewById(R.id.sleepTimerType);
         sleepTimerType.setAdapter(spinnerAdapter);
         sleepTimerType.setSelection(SleepTimerPreferences.getSleepTimerType().index);
-
         sleepTimerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private boolean sleepTimerTypeInitialized = false;
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 SleepTimerPreferences.setSleepTimerType(SleepTimerType.fromIndex(position));
@@ -133,9 +129,8 @@ public class SleepTimerDialog extends DialogFragment {
                 // we need to differentiate these calls
                 if (sleepTimerTypeInitialized) {
                     chAutoEnable.setChecked(false);
-                } else {
-                    sleepTimerTypeInitialized = true;
                 }
+                sleepTimerTypeInitialized = true;
                 refreshUiState();
             }
 
@@ -161,8 +156,6 @@ public class SleepTimerDialog extends DialogFragment {
         extendSleepTenMinutesButton = content.findViewById(R.id.extendSleepTenMinutesButton);
         extendSleepTwentyMinutesButton = content.findViewById(R.id.extendSleepTwentyMinutesButton);
 
-        refreshUiState();
-
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.addTextChangedListener(new TextWatcher() {
             @Override
@@ -184,8 +177,8 @@ public class SleepTimerDialog extends DialogFragment {
             imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
         }, 100);
 
+        refreshUiState();
         chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
-
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
         refreshAutoEnableControls(SleepTimerPreferences.autoEnable());
@@ -197,7 +190,7 @@ public class SleepTimerDialog extends DialogFragment {
         chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked)
                 -> {
             boolean always = SleepTimerPreferences.autoEnableFrom() == SleepTimerPreferences.autoEnableTo();
-            if (isChecked && always) {
+            if (isChecked && always && SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
                 confirmAlwaysSleepTimerDialog();
             }
             refreshAutoEnableControls(isChecked);
@@ -224,7 +217,7 @@ public class SleepTimerDialog extends DialogFragment {
                 return;
             }
             try {
-                SleepTimerPreferences.setLastTimer(etxtTime.getText().toString());
+                SleepTimerPreferences.setLastTimer("" + getSelectedSleepTime());
                 if (controller != null) {
                     controller.setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 }
@@ -249,9 +242,7 @@ public class SleepTimerDialog extends DialogFragment {
                             refreshUiState();
                         })
                 .create();
-
         dialog.setOnCancelListener(dialogInterface -> chAutoEnable.setChecked(false));
-
         dialog.show();
         // mark the disable continuous playback option in red
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
@@ -264,14 +255,6 @@ public class SleepTimerDialog extends DialogFragment {
             throw new NumberFormatException("Timer must not be zero");
         }
         return time;
-    }
-
-    private long getSelectedSleepTimeWithDefault(long defaultValue) {
-        try {
-            return getSelectedSleepTime();
-        } catch (NumberFormatException nex) {
-            return defaultValue;
-        }
     }
 
     private void refreshAutoEnableControls(boolean enabled) {
@@ -305,7 +288,7 @@ public class SleepTimerDialog extends DialogFragment {
                 // for episode timers check if the queue length exceeds the number of sleep episodes we have
                 final int queueSize = DBReader.getRemainingQueueSize(
                         PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
-                final long episodes = getSelectedSleepTimeWithDefault(0);
+                final long episodes = getSelectedSleepTime();
                 if (episodes > queueSize) {
                     sleepTimerHintText.setText(getResources().getQuantityString(
                             R.plurals.episodes_sleep_timer_exceeds_queue,
@@ -319,7 +302,7 @@ public class SleepTimerDialog extends DialogFragment {
                 // for time sleep timers check if the selected value exceeds the remaining play time in the episode
                 final int remaining = controller != null ? controller.getDuration() - controller.getPosition() :
                         Integer.MAX_VALUE;
-                final long timer = TimeUnit.MINUTES.toMillis(getSelectedSleepTimeWithDefault(0));
+                final long timer = TimeUnit.MINUTES.toMillis(getSelectedSleepTime());
                 if ((timer > remaining) && !UserPreferences.isFollowQueue()) {
                     final int remainingMinutes = Math.toIntExact(TimeUnit.MILLISECONDS.toMinutes(remaining));
                     sleepTimerHintText
@@ -341,26 +324,32 @@ public class SleepTimerDialog extends DialogFragment {
         extendSleepTenMinutesButton.setEnabled(!noEpisodeSelection);
         extendSleepTwentyMinutesButton.setEnabled(!noEpisodeSelection);
 
-        if (SleepTimerType.fromIndex(sleepTimerType.getSelectedItemPosition()) == SleepTimerType.CLOCK) {
-            setupExtendButton(getString(R.string.extend_sleep_timer_label, EXTEND_FEW_MINUTES_DISPLAY_VALUE),
+        if (SleepTimerPreferences.getSleepTimerType() == SleepTimerType.CLOCK) {
+            setupExtendButton(extendSleepFiveMinutesButton,
+                    getString(R.string.extend_sleep_timer_label, EXTEND_FEW_MINUTES_DISPLAY_VALUE),
                     EXTEND_FEW_MINUTES);
-            setupExtendButton(getString(R.string.extend_sleep_timer_label, EXTEND_MID_MINUTES_DISPLAY_VALUE),
+            setupExtendButton(extendSleepTenMinutesButton,
+                    getString(R.string.extend_sleep_timer_label, EXTEND_MID_MINUTES_DISPLAY_VALUE),
                     EXTEND_MID_MINUTES);
-            setupExtendButton(getString(R.string.extend_sleep_timer_label, EXTEND_LOTS_MINUTES_DISPLAY_VALUE),
+            setupExtendButton(extendSleepTwentyMinutesButton,
+                    getString(R.string.extend_sleep_timer_label, EXTEND_LOTS_MINUTES_DISPLAY_VALUE),
                     EXTEND_LOTS_MINUTES);
         } else {
-            setupExtendButton("+" + getResources().getQuantityString(R.plurals.num_episodes,
+            setupExtendButton(extendSleepFiveMinutesButton,
+                    "+" + getResources().getQuantityString(R.plurals.num_episodes,
                     EXTEND_FEW_EPISODES, EXTEND_FEW_EPISODES), EXTEND_FEW_EPISODES);
-            setupExtendButton("+" + getResources().getQuantityString(R.plurals.num_episodes,
+            setupExtendButton(extendSleepTenMinutesButton,
+                    "+" + getResources().getQuantityString(R.plurals.num_episodes,
                     EXTEND_MID_EPISODES, EXTEND_MID_EPISODES), EXTEND_MID_EPISODES);
-            setupExtendButton("+" + getResources().getQuantityString(R.plurals.num_episodes,
+            setupExtendButton(extendSleepTwentyMinutesButton,
+                    "+" + getResources().getQuantityString(R.plurals.num_episodes,
                     EXTEND_LOTS_EPISODES, EXTEND_LOTS_EPISODES), EXTEND_LOTS_EPISODES);
         }
     }
 
-    void setupExtendButton(String text, int extendValue) {
-        extendSleepFiveMinutesButton.setText(text);
-        extendSleepFiveMinutesButton.setOnClickListener(v -> {
+    void setupExtendButton(TextView button, String text, int extendValue) {
+        button.setText(text);
+        button.setOnClickListener(v -> {
             if (controller != null) {
                 controller.extendSleepTimer(extendValue);
             }
@@ -375,7 +364,7 @@ public class SleepTimerDialog extends DialogFragment {
             boolean alwaysSelected = dialog.getFrom() == dialog.getTo();
             // disable the checkbox if they've selected always
             // only change the state if true, don't change it regardless of flag (although we could)
-            if (alwaysSelected) {
+            if (alwaysSelected && SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
                 confirmAlwaysSleepTimerDialog();
             } else if (!chAutoEnable.isChecked()) { // if it's not checked, then make sure it's checked in UI too
                 chAutoEnable.setChecked(true);

@@ -360,6 +360,7 @@ public class AudioPlayerFragment extends Fragment implements
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
+        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         @Nullable Playable media = controller.getMedia();
         if (media != null) {
             currentChapterIndex = Chapter.getAfterPosition(media.getChapters(), currentPosition);
@@ -373,16 +374,8 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPosition.setContentDescription(getString(R.string.position,
                 Converter.getDurationStringLocalized(getContext(), currentPosition)));
 
-        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
-
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
-
         if (showTimeLeft) {
-            int remainingSleepTime = Math.toIntExact(controller.getSleepTimerTimeLeft().getMillisValue());
-            if (remainingSleepTime > 0) {
-                remainingTime = Math.min(remainingSleepTime, remainingTime);
-            }
-
             txtvLength.setContentDescription(getString(R.string.remaining_time,
                     Converter.getDurationStringLocalized(getContext(), remainingTime)));
             txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));

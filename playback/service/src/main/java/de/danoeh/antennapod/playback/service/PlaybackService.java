@@ -1127,7 +1127,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (sleepTimer != null) {
             return sleepTimer.shouldContinueToNextEpisode();
         }
-
         return true; // always allow when no sleep timer is active
     }
 
