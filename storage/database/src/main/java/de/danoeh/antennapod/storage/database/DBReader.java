@@ -222,6 +222,27 @@ public final class DBReader {
     }
 
     /**
+     * Loads a list of the FeedItems in a queue. If the FeedItems of the queue are not used directly, consider using
+     * {@link #getQueueIDList()} instead.
+     *
+     * @return A list of FeedItems sorted by the same order as the queue.
+     */
+    @NonNull
+    public static List<FeedItem> df_getFeedItemsInQueue(final long queueId) {
+        Log.d(TAG, "getQueue() called");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (FeedItemCursor cursor = new FeedItemCursor(adapter.df_getFeedItemsInQueueCursor(queueId))) {
+            List<FeedItem> items = extractItemlistFromCursor(cursor);
+            loadAdditionalFeedItemListData(items);
+            return items;
+        } finally {
+            adapter.close();
+        }
+    }
+
+    /**
      * Loads a list of the existing Queues.
      *
      * @return A list of Queues sorted by their ids.

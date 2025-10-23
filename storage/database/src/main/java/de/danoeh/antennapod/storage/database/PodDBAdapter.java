@@ -922,6 +922,27 @@ public class PodDBAdapter {
         }
     }
 
+    public void df_setQueue(final long queueId, List<FeedItem> queue) {
+        ContentValues values = new ContentValues();
+        try {
+            db.beginTransactionNonExclusive();
+            db.delete(TABLE_NAME_QUEUE_ITEMS, KEY_QUEUE_ID + " = " + queueId, null);
+            for (int i = 0; i < queue.size(); i++) {
+                FeedItem item = queue.get(i);
+                values.put(KEY_QUEUE_ID, queueId);
+                values.put(KEY_FEEDITEM, item.getId());
+                values.put(KEY_FEED, item.getFeed().getId());
+                values.put(KEY_POSITION, i);
+                db.insertWithOnConflict(TABLE_NAME_QUEUE_ITEMS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public void df_removeQueue(long queueId) {
         try {
             db.beginTransactionNonExclusive();
@@ -1087,6 +1108,22 @@ public class PodDBAdapter {
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
                 +  JOIN_FEED_ITEM_AND_MEDIA
                 + " ORDER BY " + TABLE_NAME_QUEUE + "." + KEY_ID;
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * Returns a cursor which contains all feed items in the queue. The returned
+     * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
+     * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
+     */
+    public final Cursor df_getFeedItemsInQueueCursor(final long queueId) {
+        final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " = " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_FEEDITEM
+                +  JOIN_FEED_ITEM_AND_MEDIA
+                + " WHERE " + KEY_QUEUE_ID + " = " + queueId
+                + " ORDER BY " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_POSITION;
         return db.rawQuery(query, null);
     }
 

@@ -437,6 +437,62 @@ public class DBWriter {
     }
 
     /**
+     * Appends FeedItem objects to the end of a queue. The 'read'-attribute of all items will be set to true.
+     * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
+     *
+     * @param context  A context that is used for opening a database connection.
+     * @param items    FeedItem objects that should be added to the queue.
+     */
+    public static Future<?> df_addFeedItemToQueue(final Context context, final long queueId, final FeedItem... items) {
+        return runOnDbThread(() -> {
+            if (items.length < 1) {
+                return;
+            }
+
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.df_getFeedItemsInQueue(queueId);
+
+            LongList markAsUnplayedIds = new LongList();
+            List<QueueEvent> events = new ArrayList<>();
+            List<FeedItem> updatedItems = new ArrayList<>();
+            ItemEnqueuePositionCalculator positionCalculator =
+                    new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
+            Playable currentlyPlaying = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
+            for (FeedItem item : items) {
+                if (itemListContains(queue, item.getId())) {
+                    continue;
+                } else if (!item.hasMedia()) {
+                    continue;
+                }
+                queue.add(insertPosition, item);
+                events.add(QueueEvent.added(item, insertPosition));
+
+                item.addTag(FeedItem.TAG_QUEUE);
+                updatedItems.add(item);
+                if (item.isNew()) {
+                    markAsUnplayedIds.add(item.getId());
+                }
+                insertPosition++;
+            }
+            if (!updatedItems.isEmpty()) {
+                applySortOrder(queue, events);
+                adapter.df_setQueue(queueId, queue);
+                for (QueueEvent event : events) {
+                    EventBus.getDefault().post(event);
+                }
+                EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
+                if (markAsUnplayedIds.size() > 0) {
+                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
+                }
+            }
+            adapter.close();
+            AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+        });
+    }
+
+    /**
      * Sorts the queue depending on the configured sort order.
      * If the queue is not in keep sorted mode, nothing happens.
      *
