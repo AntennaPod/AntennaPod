@@ -414,6 +414,8 @@
     <string name="no_inbox_label">When new episodes arrive, they will be shown here. You can then decide if you are interested in them or not.</string>
     <string name="no_subscriptions_head_label">No subscriptions</string>
     <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
+    <string name="no_archive_head_label">Nothing archived</string>
+    <string name="no_archive_label">Long-press a subscription to archive it.</string>
 
     <!-- Preferences -->
     <string name="project_pref">Project</string>
