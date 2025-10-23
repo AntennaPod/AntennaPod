@@ -644,13 +644,9 @@
     <string name="set_sleeptimer_label">Set sleep timer</string>
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
     <string name="extend_sleep_timer_label">+%d min</string>
-    <plurals name="extend_sleep_timer_episodes_quantified">
-        <item quantity="one">%d episode</item>
-        <item quantity="other">%d episodes</item>
-    </plurals>
-    <string name="sleep_timer_without_continuous_playback_title">Disable continuous playback</string>
+    <string name="sleep_timer_episodes_label">episodes</string>
+    <string name="sleep_timer_without_continuous_playback">Disable continuous playback</string>
     <string name="sleep_timer_without_continuous_playback_message">Instead of automatically enabling the sleep timer with one episode, please instead disable \"continuous playback\" in the settings.</string>
-    <string name="sleep_timer_without_continuous_playback_disable_playback">Disable continuous playback</string>
     <string name="sleep_timer_always">Always</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
@@ -660,7 +656,7 @@
     </plurals>
     <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Continuous playback is disabled in the settings. Always stopping at the end of the episode.</string>
     <plurals name="episodes_sleep_timer_exceeds_queue">
-        <item quantity="zero">There are no (%1$d) episodes left in your queue</item>
+        <item quantity="zero">There are %1$d episodes left in your queue</item>
         <item quantity="one">There is only %1$d episode left in your queue</item>
         <item quantity="other">There are only %1$d episodes left in your queue</item>
     </plurals>

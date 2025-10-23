@@ -77,16 +77,6 @@ public class SleepTimerDialog extends DialogFragment {
     private static final int EXTEND_MID_EPISODES = 2;
     private static final int EXTEND_LOTS_EPISODES = 3;
 
-    static class SleepEntryConfig {
-        public final int displayValue;
-        public final int configuredValue;
-
-        public SleepEntryConfig(int displayValue, int configuredValue) {
-            this.displayValue = displayValue;
-            this.configuredValue = configuredValue;
-        }
-    }
-
     public SleepTimerDialog() {
     }
 
@@ -123,7 +113,7 @@ public class SleepTimerDialog extends DialogFragment {
         List<String> spinnerContent = new ArrayList<>();
         // add "title" for all options
         spinnerContent.add(getString(R.string.time_minutes));
-        spinnerContent.add(getString(R.string.episodes_label).toLowerCase(Locale.getDefault()));
+        spinnerContent.add(getString(R.string.sleep_timer_episodes_label));
 
         sleepTimerType = content.findViewById(R.id.sleepTimerType);
 
@@ -249,9 +239,9 @@ public class SleepTimerDialog extends DialogFragment {
 
     private void confirmAlwaysSleepTimerDialog() {
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.sleep_timer_without_continuous_playback_title)
+                .setTitle(R.string.sleep_timer_without_continuous_playback)
                 .setMessage(R.string.sleep_timer_without_continuous_playback_message)
-                .setNegativeButton(R.string.sleep_timer_without_continuous_playback_disable_playback,
+                .setNegativeButton(R.string.sleep_timer_without_continuous_playback,
                         (dialogInterface, i) -> {
                             // disable continuous playback and also disable the auto sleep timer
                             UserPreferences.setFollowQueue(false);
@@ -264,7 +254,7 @@ public class SleepTimerDialog extends DialogFragment {
 
         dialog.show();
         // mark the disable continuous playback option in red
-        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 .setTextColor(ThemeUtils.getColorFromAttr(requireContext(), R.attr.colorError));
     }
 
@@ -352,60 +342,29 @@ public class SleepTimerDialog extends DialogFragment {
         extendSleepTwentyMinutesButton.setEnabled(!noEpisodeSelection);
 
         if (SleepTimerType.fromIndex(sleepTimerType.getSelectedItemPosition()) == SleepTimerType.CLOCK) {
-            extendSleepFiveMinutesButton.setText(
-                    getString(R.string.extend_sleep_timer_label, EXTEND_FEW_MINUTES_DISPLAY_VALUE));
-            extendSleepFiveMinutesButton.setOnClickListener(v -> {
-                if (controller != null) {
-                    controller.extendSleepTimer(EXTEND_FEW_MINUTES);
-                }
-            });
-
-            extendSleepTenMinutesButton.setText(
-                    getString(R.string.extend_sleep_timer_label, EXTEND_MID_MINUTES_DISPLAY_VALUE));
-            extendSleepTenMinutesButton.setOnClickListener(v -> {
-                if (controller != null) {
-                    controller.extendSleepTimer(EXTEND_MID_MINUTES);
-                }
-            });
-
-            extendSleepTwentyMinutesButton.setText(
-                    getString(R.string.extend_sleep_timer_label, EXTEND_LOTS_MINUTES_DISPLAY_VALUE));
-            extendSleepTwentyMinutesButton.setOnClickListener(v -> {
-                if (controller != null) {
-                    controller.extendSleepTimer(EXTEND_LOTS_MINUTES);
-                }
-            });
+            setupExtendButton(getString(R.string.extend_sleep_timer_label, EXTEND_FEW_MINUTES_DISPLAY_VALUE),
+                    EXTEND_FEW_MINUTES);
+            setupExtendButton(getString(R.string.extend_sleep_timer_label, EXTEND_MID_MINUTES_DISPLAY_VALUE),
+                    EXTEND_MID_MINUTES);
+            setupExtendButton(getString(R.string.extend_sleep_timer_label, EXTEND_LOTS_MINUTES_DISPLAY_VALUE),
+                    EXTEND_LOTS_MINUTES);
         } else {
-            extendSleepFiveMinutesButton.setText(
-                    "+" + getResources().getQuantityString(
-                            R.plurals.extend_sleep_timer_episodes_quantified,
-                            EXTEND_FEW_EPISODES));
-            extendSleepFiveMinutesButton.setOnClickListener(v -> {
-                if (controller != null) {
-                    controller.extendSleepTimer(EXTEND_FEW_EPISODES);
-                }
-            });
-
-            extendSleepTenMinutesButton.setText(
-                    "+" + getResources().getQuantityString(
-                            R.plurals.extend_sleep_timer_episodes_quantified,
-                            EXTEND_MID_EPISODES));
-            extendSleepTenMinutesButton.setOnClickListener(v -> {
-                if (controller != null) {
-                    controller.extendSleepTimer(EXTEND_MID_EPISODES);
-                }
-            });
-
-            extendSleepTwentyMinutesButton.setText(
-                    "+" + getResources().getQuantityString(
-                            R.plurals.extend_sleep_timer_episodes_quantified,
-                            EXTEND_LOTS_EPISODES));
-            extendSleepTwentyMinutesButton.setOnClickListener(v -> {
-                if (controller != null) {
-                    controller.extendSleepTimer(EXTEND_LOTS_EPISODES);
-                }
-            });
+            setupExtendButton("+" + getResources().getQuantityString(R.plurals.num_episodes,
+                    EXTEND_FEW_EPISODES, EXTEND_FEW_EPISODES), EXTEND_FEW_EPISODES);
+            setupExtendButton("+" + getResources().getQuantityString(R.plurals.num_episodes,
+                    EXTEND_MID_EPISODES, EXTEND_MID_EPISODES), EXTEND_MID_EPISODES);
+            setupExtendButton("+" + getResources().getQuantityString(R.plurals.num_episodes,
+                    EXTEND_LOTS_EPISODES, EXTEND_LOTS_EPISODES), EXTEND_LOTS_EPISODES);
         }
+    }
+
+    void setupExtendButton(String text, int extendValue) {
+        extendSleepFiveMinutesButton.setText(text);
+        extendSleepFiveMinutesButton.setOnClickListener(v -> {
+            if (controller != null) {
+                controller.extendSleepTimer(extendValue);
+            }
+        });
     }
 
     private void showTimeRangeDialog(Context context, int from, int to) {
@@ -458,7 +417,7 @@ public class SleepTimerDialog extends DialogFragment {
         switch (SleepTimerPreferences.getSleepTimerType()) {
             case EPISODES -> time.setText(
                     getResources().getQuantityString(
-                            R.plurals.extend_sleep_timer_episodes_quantified,
+                            R.plurals.num_episodes,
                             (int) event.getDisplayTimeLeft(),
                             (int) event.getDisplayTimeLeft()));
             default -> time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
