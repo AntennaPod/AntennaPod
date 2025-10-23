@@ -25,10 +25,12 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.model.queue.Queue;
 import de.danoeh.antennapod.storage.database.mapper.ChapterCursor;
 import de.danoeh.antennapod.storage.database.mapper.DownloadResultCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemCursor;
+import de.danoeh.antennapod.storage.database.mapper.QueueCursor;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -217,6 +219,33 @@ public final class DBReader {
         } finally {
             adapter.close();
         }
+    }
+
+    /**
+     * Loads a list of the existing Queues.
+     *
+     * @return A list of Queues sorted by their ids.
+     */
+    @NonNull
+    public static List<Queue> df_getQueues() {
+        Log.d(TAG, "getQueues() called");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (QueueCursor cursor = new QueueCursor(adapter.df_getQueuesCursor())) {
+            return df_extractQueueListFromCursor(cursor);
+        } finally {
+            adapter.close();
+        }
+    }
+
+    @NonNull
+    private static List<Queue> df_extractQueueListFromCursor(QueueCursor cursor) {
+        List<Queue> result = new ArrayList<>(cursor.getCount());
+        while (cursor.moveToNext()) {
+            result.add(cursor.getQueue());
+        }
+        return result;
     }
 
     private static LongList getFavoriteIDList() {
