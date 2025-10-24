@@ -35,7 +35,8 @@
                     android:inputType="number"
                     android:maxLength="3" />
 
-                <TextView
+                <Spinner
+                    android:id="@+id/sleepTimerType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time_minutes"
@@ -43,6 +44,17 @@
                     android:layout_marginTop="8dp" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/sleepTimerHintText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                android:layout_weight="1"
+                android:selectAllOnFocus="true"
+                android:layout_margin="8dp"
+                android:ems="2"
+                android:text="@string/multiple_sleep_episodes_while_continuous_playback_disabled" />
 
             <Button
                 android:id="@+id/setSleeptimerButton"
@@ -162,6 +174,13 @@
                     app:srcCompat="@drawable/ic_settings" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/playbackPreferencesButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:text="@string/settings_label" />
 
         </LinearLayout>
 

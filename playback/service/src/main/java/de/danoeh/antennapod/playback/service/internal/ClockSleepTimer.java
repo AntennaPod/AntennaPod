@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import de.danoeh.antennapod.model.playback.TimerValue;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 
 public class ClockSleepTimer implements SleepTimer {
@@ -42,12 +43,13 @@ public class ClockSleepTimer implements SleepTimer {
         }
         timeLeft -= timeSinceLastTick;
 
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
+        final TimerValue left = getTimeLeft();
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left));
         if (timeLeft < NOTIFICATION_THRESHOLD) {
             notifyAboutExpiry();
         }
         if (timeLeft <= 0) {
-            Log.d(TAG, "Sleep timer expired");
+            Log.d(TAG, "Clock Sleep timer expired");
             stop();
         }
     }
@@ -95,11 +97,11 @@ public class ClockSleepTimer implements SleepTimer {
 
         // make sure we've registered for events first
         EventBus.getDefault().register(this);
-        final long left = getTimeLeft();
+        final TimerValue left = getTimeLeft();
         EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left));
 
         lastTick = System.currentTimeMillis();
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left));
 
         isRunning = true;
     }
@@ -121,8 +123,8 @@ public class ClockSleepTimer implements SleepTimer {
     }
 
     @Override
-    public long getTimeLeft() {
-        return timeLeft;
+    public TimerValue getTimeLeft() {
+        return new TimerValue(timeLeft, timeLeft);
     }
 
     @Override
@@ -133,5 +135,20 @@ public class ClockSleepTimer implements SleepTimer {
     @Override
     public void reset() {
         updateRemainingTime(initialWaitingTime);
+    }
+
+    @Override
+    public boolean isEndingThisEpisode(long episodeRemainingMillis) {
+        return episodeRemainingMillis >= getTimeLeft().getMillisValue();
+    }
+
+    @Override
+    public boolean shouldContinueToNextEpisode() {
+        return getTimeLeft().getMillisValue() > 0;
+    }
+
+    @Override
+    public void episodeFinishedPlayback() {
+        //no-op
     }
 }

@@ -15,13 +15,16 @@ public class SleepTimerPreferences {
     public static final String PREF_NAME = "SleepTimerDialog";
     private static final String PREF_VALUE = "LastValue";
 
+    private static final String PREF_TIMER_TYPE = "sleepTimerType";
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
     private static final String PREF_AUTO_ENABLE_FROM = "AutoEnableFrom";
     private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
 
-    private static final String DEFAULT_LAST_TIMER = "15";
+    public static final String DEFAULT_SLEEP_TIMER_MINUTES = "15";
+    public static final String DEFAULT_SLEEP_TIMER_EPISODES = "1";
+    private static final int DEFAULT_TIMER_TYPE = 0;
     private static final int DEFAULT_AUTO_ENABLE_FROM = 22;
     private static final int DEFAULT_AUTO_ENABLE_TO = 6;
 
@@ -42,12 +45,22 @@ public class SleepTimerPreferences {
     }
 
     public static String lastTimerValue() {
-        return prefs.getString(PREF_VALUE, DEFAULT_LAST_TIMER);
+        return prefs.getString(PREF_VALUE, DEFAULT_SLEEP_TIMER_MINUTES);
     }
 
-    public static long timerMillis() {
-        long value = Long.parseLong(lastTimerValue());
-        return TimeUnit.MINUTES.toMillis(value);
+    public static long timerMillisOrEpisodes() {
+        return switch (getSleepTimerType()) {
+            case CLOCK -> TimeUnit.MINUTES.toMillis(Long.parseLong(lastTimerValue()));
+            case EPISODES -> Long.parseLong(SleepTimerPreferences.lastTimerValue());
+        };
+    }
+
+    public static SleepTimerType getSleepTimerType() {
+        return SleepTimerType.fromIndex(prefs.getInt(PREF_TIMER_TYPE, DEFAULT_TIMER_TYPE));
+    }
+
+    public static void setSleepTimerType(SleepTimerType newType) {
+        prefs.edit().putInt(PREF_TIMER_TYPE, newType.index).apply();
     }
 
     public static void setVibrate(boolean vibrate) {
@@ -88,6 +101,16 @@ public class SleepTimerPreferences {
 
     public static int autoEnableTo() {
         return prefs.getInt(PREF_AUTO_ENABLE_TO, DEFAULT_AUTO_ENABLE_TO);
+    }
+
+    public static int autoEnableDuration() {
+        final int from = SleepTimerPreferences.autoEnableFrom();
+        final int to = SleepTimerPreferences.autoEnableTo();
+        if (from >= to) {
+            return 24 - (from - to);
+        } else {
+            return to - from;
+        }
     }
 
     public static boolean isInTimeRange(int from, int to, int current) {
