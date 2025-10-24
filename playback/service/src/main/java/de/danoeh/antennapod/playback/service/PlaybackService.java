@@ -1092,7 +1092,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         // continue playback if user has enabled continuous playback
         // OR they enabled an episode sleep timer and there are still episodes left to play
-        final boolean continuousPlayback = UserPreferences.isFollowQueue() || shouldContinueToNextEpisode();
+        final boolean continuousPlayback = UserPreferences.isFollowQueue() && shouldContinueToNextEpisode();
 
         if (!continuousPlayback) {
             Log.d(TAG, "getNextInQueue(), but follow queue is not enabled.");

@@ -175,6 +175,13 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/playbackPreferencesButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:text="@string/settings_label" />
+
         </LinearLayout>
 
     </LinearLayout>
