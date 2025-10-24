@@ -164,13 +164,6 @@
                 <data android:scheme="https"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.screen.preferences.BugReportActivity"
-            android:label="@string/bug_report_title">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity"/>
-        </activity>
 
         <activity
             android:name=".ui.screen.playback.video.VideoplayerActivity"

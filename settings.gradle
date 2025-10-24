@@ -18,6 +18,7 @@ dependencyResolutionManagement {
 }
 
 include ':app'
+include ':core'
 include ':event'
 include ':model'
 
