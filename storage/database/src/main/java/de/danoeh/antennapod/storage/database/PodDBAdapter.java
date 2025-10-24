@@ -1137,6 +1137,17 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    /**
+     * Returns a cursor which contains all existing queue items.
+     */
+    public final Cursor df_getAllQueueItemsCursor() {
+        final String query = "SELECT " + KEY_ID + ", " + KEY_QUEUE_ID + ", " + KEY_FEEDITEM + ", "
+                + KEY_FEED + ", " + KEY_POSITION
+                + " FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " ORDER BY " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_ID;
+        return db.rawQuery(query, null);
+    }
+
     public Cursor getQueueIDCursor() {
         return db.query(TABLE_NAME_QUEUE, new String[]{KEY_FEEDITEM}, null, null, null, null, KEY_ID + " ASC", null);
     }

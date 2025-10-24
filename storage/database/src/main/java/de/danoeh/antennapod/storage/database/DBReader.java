@@ -26,11 +26,13 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.queue.Queue;
+import de.danoeh.antennapod.model.queue.QueueItem;
 import de.danoeh.antennapod.storage.database.mapper.ChapterCursor;
 import de.danoeh.antennapod.storage.database.mapper.DownloadResultCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemCursor;
 import de.danoeh.antennapod.storage.database.mapper.QueueCursor;
+import de.danoeh.antennapod.storage.database.mapper.QueueItemCursor;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -107,14 +109,20 @@ public final class DBReader {
     }
 
     private static void loadTagsOfFeedItemList(List<FeedItem> items) {
+        //df
         LongList favoriteIds = getFavoriteIDList();
-        LongList queueIds = getQueueIDList();
+        List<QueueItem> queueItems = df_getAllQueueItems();
+        LongList queuedItemsIds = new LongList();
+        for (QueueItem queueItem : queueItems) {
+            queuedItemsIds.add(queueItem.getFeedItemId());
+        }
 
         for (FeedItem item : items) {
+
             if (favoriteIds.contains(item.getId())) {
                 item.addTag(FeedItem.TAG_FAVORITE);
             }
-            if (queueIds.contains(item.getId())) {
+            if (queuedItemsIds.contains(item.getId())) {
                 item.addTag(FeedItem.TAG_QUEUE);
             }
         }
@@ -240,6 +248,33 @@ public final class DBReader {
         } finally {
             adapter.close();
         }
+    }
+
+    /**
+     * Loads a list of all queued items.
+     *
+     * @return A list of QueueItems sorted by their id.
+     */
+    @NonNull
+    public static List<QueueItem> df_getAllQueueItems() {
+        Log.d(TAG, "df_getAllQueueItems() called");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (QueueItemCursor cursor = new QueueItemCursor(adapter.df_getAllQueueItemsCursor())) {
+            return df_extractQueueItemListFromCursor(cursor);
+        } finally {
+            adapter.close();
+        }
+    }
+
+    @NonNull
+    private static List<QueueItem> df_extractQueueItemListFromCursor(QueueItemCursor cursor) {
+        List<QueueItem> result = new ArrayList<>(cursor.getCount());
+        while (cursor.moveToNext()) {
+            result.add(cursor.getQueueItem());
+        }
+        return result;
     }
 
     /**
