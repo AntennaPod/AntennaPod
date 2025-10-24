@@ -1128,6 +1128,57 @@ public class PodDBAdapter {
     }
 
     /**
+     * Returns a cursor which contains FeedItem and QueueItem info for all items
+     * matching the given IN clause.
+     *
+     * @param inClause      A SQL IN clause, e.g., "(?,?,?)"
+     * @param selectionArgs An array of FeedItem IDs
+     */
+    public final Cursor df_getQueueItemsInfoCursor(String inClause, String[] selectionArgs) {
+        final String query = "SELECT "
+                + TABLE_NAME_QUEUE_ITEMS + "." + KEY_QUEUE_ID + ", "
+                + TABLE_NAME_QUEUE_ITEMS + "." + KEY_POSITION + ", "
+                + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", "
+                + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
+                + " ON " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_FEEDITEM + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+                + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + " "
+                + " WHERE " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_FEEDITEM + " IN (" + inClause + ")";
+        return db.rawQuery(query, selectionArgs);
+    }
+
+    /**
+     * Deletes rows from the QueueItems table based on a list of FeedItem IDs.
+     *
+     * @param inClause      A SQL IN clause, e.g., "(?,?,?)"
+     * @param selectionArgs An array of FeedItem IDs
+     */
+    public void df_removeQueueItemsByFeedItem(String inClause, String[] selectionArgs) {
+        String deleteSql = "DELETE FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " WHERE " + KEY_FEEDITEM + " IN (" + inClause + ")";
+        db.execSQL(deleteSql, selectionArgs);
+    }
+
+    /**
+     * Decrements the position of all items in a specific queue that are after a given position.
+     *
+     * @param queueId  The ID of the queue to update.
+     * @param position The position to check against (items with position > this value will be shifted).
+     */
+    public void df_shiftPositionInQueue(long queueId, int position) {
+        String updatePosSql = "UPDATE " + TABLE_NAME_QUEUE_ITEMS
+                + " SET " + KEY_POSITION + " = " + KEY_POSITION + " - 1 "
+                + "WHERE " + KEY_QUEUE_ID + " = ? "
+                + "AND " + KEY_POSITION + " > ?";
+        db.execSQL(updatePosSql, new String[]{
+                String.valueOf(queueId),
+                String.valueOf(position)
+        });
+    }
+
+    /**
      * Returns a cursor which contains all existing queues.
      */
     public final Cursor df_getQueuesCursor() {
