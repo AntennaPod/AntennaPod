@@ -6,6 +6,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import java.text.DateFormat;
 import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 /**
  * Publishers sometimes mess up their feed by adding episodes twice or by changing the ID of existing episodes.
@@ -45,7 +46,7 @@ public class FeedItemDuplicateGuesser {
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US); // MM/DD/YY
         String dateOriginal = dateFormat.format(item2.getPubDate());
         String dateNew = dateFormat.format(item1.getPubDate());
-        return StringUtils.equals(dateOriginal, dateNew); // Same date; time is ignored.
+        return Strings.CS.equals(dateOriginal, dateNew); // Same date; time is ignored.
     }
 
     private static boolean durationsLookSimilar(FeedMedia media1, FeedMedia media2) {
@@ -62,7 +63,7 @@ public class FeedItemDuplicateGuesser {
             mimeType1 = mimeType1.substring(0, mimeType1.indexOf("/"));
             mimeType2 = mimeType2.substring(0, mimeType2.indexOf("/"));
         }
-        return StringUtils.equals(mimeType1, mimeType2);
+        return Strings.CS.equals(mimeType1, mimeType2);
     }
 
     private static boolean titlesLookSimilar(FeedItem item1, FeedItem item2) {

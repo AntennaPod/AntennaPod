@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.parser.transcript;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.jsoup.internal.StringUtil;
 
 import java.util.Arrays;
@@ -81,7 +82,7 @@ public class SrtTranscriptParser {
                 speaker = parts[0];
                 speakers.add(speaker);
                 body = new StringBuilder(parts[1].strip());
-                if (StringUtils.isNotEmpty(prevSpeaker) && !StringUtils.equals(speaker, prevSpeaker)) {
+                if (StringUtils.isNotEmpty(prevSpeaker) && !Strings.CS.equals(speaker, prevSpeaker)) {
                     if (StringUtils.isNotEmpty(segmentBody)) {
                         transcript.addSegment(new TranscriptSegment(spanStartTimecode,
                                 spanEndTimecode, segmentBody, prevSpeaker));

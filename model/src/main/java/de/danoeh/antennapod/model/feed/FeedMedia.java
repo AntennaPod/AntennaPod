@@ -12,7 +12,7 @@ import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.io.File;
 import java.util.Date;
@@ -152,7 +152,7 @@ public class FeedMedia implements Playable {
      * @return true if attribute values are different, false otherwise
      */
     public boolean compareWithOther(FeedMedia other) {
-        if (!StringUtils.equals(downloadUrl, other.downloadUrl)) {
+        if (!Strings.CS.equals(downloadUrl, other.downloadUrl)) {
             return true;
         }
         if (other.mimeType != null) {
