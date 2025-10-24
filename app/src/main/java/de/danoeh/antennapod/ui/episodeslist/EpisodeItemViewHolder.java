@@ -129,8 +129,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
         if (coverHolder.getVisibility() == View.VISIBLE) {
             new CoverLoader()
-                    .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
-                    .withFallbackUri(item.getFeed().getImageUrl())
+                    .withItem(item)
                     .withPlaceholderView(placeholder)
                     .withCoverView(cover)
                     .load();

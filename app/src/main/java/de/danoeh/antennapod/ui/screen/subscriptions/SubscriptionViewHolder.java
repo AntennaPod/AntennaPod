@@ -61,11 +61,18 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         }
 
         CoverLoader coverLoader = new CoverLoader();
-        boolean textAndImageCombined = feed.isLocalFeed() && feed.getImageUrl() != null
-                && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
-        coverLoader.withUri(feed.getImageUrl());
-        errorIcon.setVisibility(feed.hasLastUpdateFailed() ? View.VISIBLE : View.GONE);
-
+        boolean textAndImageCombined;
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
+            textAndImageCombined = feed.isLocalFeed() && feed.getImageUrl() != null
+                    && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
+            coverLoader.withFeed(feed);
+            errorIcon.setVisibility(feed.hasLastUpdateFailed() ? View.VISIBLE : View.GONE);
+        } else {
+            textAndImageCombined = true;
+            coverLoader.withResource(R.drawable.ic_tag);
+            errorIcon.setVisibility(View.GONE);
+        }
         if (UserPreferences.shouldShowSubscriptionTitle() || columnCount == 1) {
             // No need for fallback title when already showing title
             fallbackTitle.setVisibility(View.GONE);
