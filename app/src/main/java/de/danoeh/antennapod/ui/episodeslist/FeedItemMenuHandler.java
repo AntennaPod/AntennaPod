@@ -235,7 +235,7 @@ public class FeedItemMenuHandler {
             QueuesDialogFragment dialog = QueuesDialogFragment.newInstance(listener);
             dialog.show(fragment.getParentFragmentManager(), QueuesDialogFragment.TAG);
         } else if (menuItemId == R.id.remove_from_queue_item) {
-            DBWriter.removeQueueItem(context, true, selectedItem);
+            DBWriter.df_removeQueueItem(context, true, selectedItem);
         } else if (menuItemId == R.id.add_to_favorites_item) {
             DBWriter.addFavoriteItem(selectedItem);
         } else if (menuItemId == R.id.remove_from_favorites_item) {
