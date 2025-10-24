@@ -28,6 +28,7 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
@@ -179,11 +180,16 @@ public class SubscriptionFragment extends Fragment
         floatingSelectMenu.inflate(R.menu.nav_feed_action_speeddial);
         if (stateToShow == Feed.STATE_ARCHIVED) {
             toolbar.setTitle(R.string.archive_feed_label_noun);
+            toolbar.getMenu().removeItem(R.id.subscriptions_filter);
+            toolbar.getMenu().removeItem(R.id.refresh_item);
+            toolbar.getMenu().removeItem(R.id.subscriptions_counter);
+            toolbar.getMenu().removeItem(R.id.show_archive);
             floatingSelectMenu.getMenu().removeItem(R.id.keep_updated);
             floatingSelectMenu.getMenu().removeItem(R.id.notify_new_episodes);
             floatingSelectMenu.getMenu().removeItem(R.id.autodownload);
             floatingSelectMenu.getMenu().removeItem(R.id.autoDeleteDownload);
             floatingSelectMenu.getMenu().removeItem(R.id.playback_speed);
+            subscriptionAddButton.setVisibility(View.GONE);
         }
         floatingSelectMenu.setOnMenuItemClickListener(menuItem -> {
             new FeedMultiSelectActionHandler(getActivity(), subscriptionAdapter.getSelectedItems())
@@ -312,8 +318,13 @@ public class SubscriptionFragment extends Fragment
     private void setupEmptyView() {
         emptyView = new EmptyViewHandler(getContext());
         emptyView.setIcon(R.drawable.ic_subscriptions);
-        emptyView.setTitle(R.string.no_subscriptions_head_label);
-        emptyView.setMessage(R.string.no_subscriptions_label);
+        if (stateToShow == Feed.STATE_ARCHIVED) {
+            emptyView.setTitle(R.string.no_archive_head_label);
+            emptyView.setMessage(R.string.no_archive_label);
+        } else {
+            emptyView.setTitle(R.string.no_subscriptions_head_label);
+            emptyView.setMessage(R.string.no_subscriptions_label);
+        }
         emptyView.attachToRecyclerView(subscriptionRecycler);
     }
 
@@ -349,11 +360,12 @@ public class SubscriptionFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
+        SubscriptionsFilter filter = stateToShow == Feed.STATE_SUBSCRIBED
+                ? UserPreferences.getSubscriptionsFilter() : new SubscriptionsFilter("");
         emptyView.hide();
         disposable = Observable.fromCallable(
                         () -> {
-                            NavDrawerData navDrawerData = DBReader.getNavDrawerData(
-                                    UserPreferences.getSubscriptionsFilter(),
+                            NavDrawerData navDrawerData = DBReader.getNavDrawerData(filter,
                                     UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting(),
                                     stateToShow);
                             List<NavDrawerData.TagItem> tags = DBReader.getAllTags(stateToShow);
