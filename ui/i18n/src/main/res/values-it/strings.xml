@@ -13,7 +13,7 @@
     <string name="downloads_label">Download</string>
     <string name="downloads_log_label">Registro dei download</string>
     <string name="subscriptions_label">Iscrizioni</string>
-    <string name="subscriptions_list_label">Lista iscrizioni</string>
+    <string name="subscriptions_list_label">Elenco iscrizioni</string>
     <string name="cancel_download_label">Annulla download</string>
     <string name="playback_history_label">Cronologia riproduzioni</string>
     <string name="years_statistics_label">Anni</string>
@@ -68,7 +68,7 @@
     <!--Bug report activity-->
   <string name="log_file_share_exception">Nessuna applicazione compatibile trovata</string>
     <string name="export_logs_menu_title">Esporta log dettagliato</string>
-    <string name="confirm_export_log_dialog_message">Il log dettagliato può contenere informazioni sensibili come il tuo elenco di iscrizioni</string>
+    <string name="confirm_export_log_dialog_message">I log dettagliati possono contenere informazioni sensibili, come il tuo elenco di iscrizioni</string>
     <!--Webview actions-->
   <string name="open_in_browser_label">Apri nel browser</string>
     <string name="copy_url_label">Copia URL</string>
@@ -160,8 +160,8 @@
     <string name="show_info_label">Mostra informazioni</string>
     <string name="show_feed_settings_label">Mostra impostazioni podcast</string>
     <string name="feed_settings_label">Impostazioni podcast</string>
-    <string name="rename_feed_label">Rinomina podcast</string>
-    <string name="remove_feed_label">Rimuovi podcast</string>
+    <string name="rename_feed_label">Rinomina</string>
+    <string name="remove_feed_label">Elimina</string>
     <string name="share_label">Condividi</string>
     <string name="share_file_label">Condividi il file</string>
     <string name="load_complete_feed">Aggiorna podcast completo</string>
@@ -759,12 +759,28 @@
     <string name="pref_nav_drawer_items_title">Personalizza navigazione</string>
     <string name="discover_more">Scopri di più »</string>
     <string name="section_shown">Mostrati</string>
-    <string name="mobile_download_notice">Download tramite connessione dati mobile per i prossimi %d minuti</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Download tramite connessione dati mobile per il prossimo %d minuto</item>
+        <item quantity="many">Download tramite connessione dati mobile per i prossimi %d di minuti</item>
+        <item quantity="other">Download tramite connessione dati mobile per i prossimi %d minuti</item>
+    </plurals>
     <string name="bottom_navigation">Navigazione inferiore</string>
     <string name="bottom_navigation_summary">Accedi alle schermate più importanti da qualsiasi luogo, con un solo tocco</string>
-    <string name="statistics_episodes_started">iniziati</string>
-    <string name="statistics_episodes_downloaded">scaricati</string>
-    <string name="statistics_episodes_total">totali</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">iniziato</item>
+        <item quantity="many">iniziati</item>
+        <item quantity="other">iniziati</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">scaricato</item>
+        <item quantity="many">scaricati</item>
+        <item quantity="other">scaricati</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">totale</item>
+        <item quantity="many">totali</item>
+        <item quantity="other">totali</item>
+    </plurals>
     <string name="statistics_episodes_space">spazio occupato</string>
     <string name="statistics_release_schedule">piano di rilascio</string>
     <string name="statistics_release_next">prossimo episodio (stima)</string>
@@ -904,4 +920,16 @@
     <string name="statistics_expected_next_episode_any_time">A breve</string>
     <string name="release_schedule_multiple_per_day">più volte al giorno</string>
     <string name="cover_as_background">Copertina come sfondo</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d iscrizione</item>
+        <item quantity="many">%d di iscrizioni</item>
+        <item quantity="other">%d iscrizioni</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Archivia</string>
+    <string name="archive_feed_label_noun">Archivio</string>
+    <string name="restore_archive_label">Ripristina</string>
+    <string name="remove_archive_feed_label">Elimina / Archivia</string>
+    <string name="feed_delete_explanation_delete">Eliminandola rimuoverai TUTTI gli episodi, compresi download, cronologia riproduzioni e statistiche.</string>
+    <string name="feed_delete_explanation_archive">Archiviandola la nasconderai dall\'elenco delle iscrizioni e impedirai che riceva aggiornamenti. Download, statistiche e stato di riproduzione saranno mantenuti.</string>
+    <string name="tag_untagged">Senza tag</string>
 </resources>

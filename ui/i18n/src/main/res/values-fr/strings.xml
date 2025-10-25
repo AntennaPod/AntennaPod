@@ -754,7 +754,7 @@
     <string name="statistics_release_schedule">rythme de sortie</string>
     <string name="home_no_recent_unplayed_episodes_text">Vous avez déjà lu tous les épisodes récents. Pas de quoi être surpris ;-)</string>
     <string name="home_continue_empty_text">Vous pouvez ajouter des épisodes en les téléchargeant ou avec un appui long sur eux pour choisir \"Ajouter à la liste de lecture\".</string>
-    <string name="home_new_empty_text">Les nouveaux épisodes seront affichés ici. Vous pourrez décider s\'ils vous intéressent.</string>
+    <string name="home_new_empty_text">Les nouveaux épisodes seront affichés ici et vous pourrez décider s\'ils vous intéressent ou pas.</string>
     <string name="home_downloads_empty_text">Vous pouvez télécharger les épisodes pour les écouter même sans connexion.</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Taille totale de %d épisode sur l\'appareil</item>
@@ -763,13 +763,29 @@
     </plurals>
     <string name="delete_downloads_played_confirmation">Merci de confirmer la suppression de tous les épisodes lus téléchargés.</string>
     <string name="null_value_podcast_error">Le lien entré n\'est pas une adresse valide de podcast. Merci de vérifier le lien et de réessayer, ou cherchez manuellement le podcast.</string>
-    <string name="mobile_download_notice">Téléchargement avec la connexion mobile pour les %d prochaines minutes</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Téléchargement avec la connexion mobile pour %d minute</item>
+        <item quantity="many">Téléchargement avec la connexion mobile pour les %d prochaines minutes</item>
+        <item quantity="other">Téléchargement avec la connexion mobile pour les %d prochaines minutes</item>
+    </plurals>
     <string name="bottom_navigation_summary">Accéder aux écrans les plus utiles de n\'importe où en un seul appui</string>
     <string name="sync_status_wait_for_downloads">En attente de la mise à jour des abonnements…</string>
-    <string name="statistics_episodes_downloaded">sur l\'appareil</string>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">sur l\'appareil</item>
+        <item quantity="many">sur l\'appareil</item>
+        <item quantity="other">sur l\'appareil</item>
+    </plurals>
     <string name="nextcloud_login_error_generic">Impossible de se connecter à votre Nextcloud.\n\n- Vérifiez votre connexion réseau.\n- Confirmez que vous utilisez la bonne adresse de serveur.\n- Assurez-vous que le plugin Gpodder Sync pour Nextcloud soit bien installé.</string>
-    <string name="statistics_episodes_started">lancés</string>
-    <string name="statistics_episodes_total">total</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">lancé</item>
+        <item quantity="many">lancés</item>
+        <item quantity="other">lancés</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">total</item>
+        <item quantity="many">total</item>
+        <item quantity="other">total</item>
+    </plurals>
     <string name="statistics_episodes_space">d\'espace occupé</string>
     <string name="statistics_release_next">prochain épisode (estimation)</string>
     <string name="discover_more">En découvrir plus »</string>
@@ -914,7 +930,9 @@
     <string name="archive_feed_label_noun">Archives</string>
     <string name="remove_archive_feed_label">Supprimer / Archiver</string>
     <string name="feed_delete_explanation_delete">Supprimer efface TOUS les épisodes téléchargés, l\'historique de lecture et les statistiques.</string>
-    <string name="feed_delete_explanation_archive">Archiver cache le podcast de la liste des abonnements et désactive les mises à jour. Les téléchargements, l\'historique de lecture et les statistiques restent conservés.</string>
+    <string name="feed_delete_explanation_archive">Archiver cache le podcast de la liste des abonnements et désactive les mises à jour. Les téléchargements, l\'historique de lecture et les statistiques restent disponibles.</string>
     <string name="tag_untagged">Sans tag</string>
     <string name="restore_archive_label">Désarchiver</string>
+    <string name="no_archive_head_label">Rien d\'archivé</string>
+    <string name="no_archive_label">Vous pouvez archiver des podcasts depuis l\'écran des abonnements.</string>
 </resources>

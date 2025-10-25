@@ -712,13 +712,9 @@
     <string name="section_shown">Megjelenítve</string>
     <string name="delete_downloads_played">Lejátszottak törlése</string>
     <string name="bottom_navigation">Alsó navigáció</string>
-    <string name="statistics_episodes_total">összesen</string>
-    <string name="statistics_episodes_started">elindítva</string>
-    <string name="statistics_episodes_downloaded">letöltve</string>
     <string name="multi_select_started_talkback">A többszörös kiválasztási műveletek lent jelennek meg</string>
     <string name="delete_downloads_played_confirmation">Erősítse meg, hogy törli az összes lejátszott letöltést.</string>
     <string name="no_transcript_label">Nincs leirat</string>
-    <string name="mobile_download_notice">Letöltés mobil-adatkapcsolaton keresztül a következő %d percben</string>
     <string name="theming">Téma</string>
     <string name="pref_auto_delete_playback_title">Törlés lejátszás után</string>
     <string name="pref_auto_delete_title">Automatikus törlés</string>

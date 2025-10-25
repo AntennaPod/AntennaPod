@@ -500,7 +500,6 @@
     <string name="automatic_database_export_label">Automatinis duomenų bazės eksportavimas</string>
     <string name="no_all_episodes_head_label">Nėra epizodų</string>
     <string name="home_continue_empty_text">Epizodus galite įtraukti juos atsisiųsdami arba ilgai paspausdami ir pasirinkdami „Įtraukti į eilę“.</string>
-    <string name="statistics_episodes_started">pradėjo</string>
     <string name="drawer_preferences">Šoninės panelės nustatymai</string>
     <string name="smart_shuffle">Išmanusis maišymas</string>
     <string name="add_to_favorite_label">Pridėti prie mėgstamiausių</string>
@@ -684,11 +683,8 @@
     <string name="section_shown">Parodyta</string>
     <string name="home_downloads_empty_text">Galite atsisiųsti bet kurį epizodą ir klausytis jo neprisijungę prie interneto.</string>
     <string name="delete_downloads_played">Ištrinti grojo</string>
-    <string name="mobile_download_notice">Atsisiųskite per mobiliojo ryšio duomenų ryšį kitas %d minutes</string>
     <string name="delete_downloads_played_confirmation">Patvirtinkite, kad norite ištrinti visus atsisiųstus failus, kurie buvo paleisti.</string>
     <string name="bottom_navigation">Apatinė navigacija</string>
-    <string name="statistics_episodes_total">iš viso</string>
-    <string name="statistics_episodes_downloaded">atsisiųsta</string>
     <string name="statistics_episodes_space">užimama vieta</string>
     <string name="episode_download_failed">Epizodo atsisiųsti nepavyko</string>
     <string name="go_to_position_label">Eikite į šią poziciją</string>

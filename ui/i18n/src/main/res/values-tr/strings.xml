@@ -741,7 +741,10 @@
         <item quantity="other">Cihazdaki %d bölümün toplam boyutu</item>
     </plurals>
     <string name="delete_downloads_played">Oynatılanı sil</string>
-    <string name="mobile_download_notice">Önümüzdeki %d dakika boyunca mobil veri bağlantısı üzerinden indiriliyor</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Sonraki %d dakika boyunca mobil veri bağlantısı üzerinden indirme yapılıyor</item>
+        <item quantity="other">Sonraki %d dakika boyunca mobil veri bağlantısı üzerinden indirme yapılıyor</item>
+    </plurals>
     <string name="bottom_navigation">Alt gezinme</string>
     <string name="delete_downloads_played_confirmation">Lütfen oynatılan tüm indirmeleri silmek istediğinizi onaylayın.</string>
     <string name="null_value_podcast_error">Dokunduğunuz bağlantı geçerli bir podcast URL\'si içermiyor. Lütfen bağlantıyı doğrulayın ve tekrar deneyin veya podcast\'i manuel olarak arayın.</string>

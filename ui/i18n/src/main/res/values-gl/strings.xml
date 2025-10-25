@@ -732,7 +732,6 @@
     <string name="add_shortcut">Engadir atallo</string>
     <string name="sync_status_wait_for_downloads">Agardando a que se actualicen as subscricións…</string>
     <string name="statistics_view_all">Todos os podcasts »</string>
-    <string name="statistics_episodes_started">iniciado</string>
     <string name="bottom_navigation_summary">Acceder ás pantallas máis importantes dende calquera lugar cun só toque</string>
     <string name="statistics_episodes_space">espazo ocupado</string>
     <string name="home_new_empty_text">Aquí aparecerán os episodios novos. Poderás decidir entón se son do teu interese.</string>
@@ -740,8 +739,6 @@
     <string name="section_shown">Mostrados</string>
     <string name="delete_downloads_played">Eliminar os escoitados</string>
     <string name="delete_downloads_played_confirmation">Confirma que queres eliminar todos as descargas escoitadas.</string>
-    <string name="statistics_episodes_total">total</string>
-    <string name="statistics_episodes_downloaded">descargado</string>
     <string name="statistics_release_next">próximo episodio (estimación)</string>
     <string name="statistics_years_barchart_description">Tempo de escoita por mes</string>
     <string name="statistics_release_schedule">calendario de lanzamento</string>
@@ -751,7 +748,6 @@
     </plurals>
     <string name="home_no_recent_unplayed_episodes_text">Xa escoitaches todos os episodios recentes. Nada por aquí para sorprenderte ;)</string>
     <string name="home_continue_empty_text">Podes engadir episodios descargándoos ou cunha pulsación longa sobre eles e elixir \"Engadir á cola\".</string>
-    <string name="mobile_download_notice">Descargar usando datos do móbil durante os próximos %d minutos</string>
     <string name="null_value_podcast_error">A ligazón indicada non contén un URL de podcast válido. Comproba a ligazón e volve a intentalo, ou busca o podcast de xeito manual.</string>
     <string name="bottom_navigation">Navegación inferior</string>
     <string name="pref_nav_drawer_items_title">Personalizar a navegación</string>

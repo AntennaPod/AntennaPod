@@ -743,13 +743,9 @@
     <string name="section_shown">Ammustrados</string>
     <string name="delete_downloads_played">Cantzella cussos riproduidos</string>
     <string name="delete_downloads_played_confirmation">Cunfirma chi boles cantzellare totu is iscarrigamentos riproduidos.</string>
-    <string name="mobile_download_notice">Iscarrighende cun connessione de datos mòbiles pro is %d minutos imbenientes</string>
     <string name="bottom_navigation">Navigatzione inferiore</string>
     <string name="bottom_navigation_summary">Funtzionalidade beta: atzede a is ischermos de prus importu dae onni logu, cun unu tocu isceti</string>
-    <string name="statistics_episodes_downloaded">iscarrigados</string>
     <string name="nextcloud_login_error_generic">Impossìbile atzèdere a su Nextcloud tuo.\n\n- Controlla sa connessione de rete.\n- Cunfirma chi ses impreende s\'indiritzu de su serbidore curretu.\n- Assegura·ti chi su cumplementu gpoddersync Nextcloud est installadu.</string>
-    <string name="statistics_episodes_started">cumintzados</string>
-    <string name="statistics_episodes_total">totales</string>
     <string name="statistics_release_schedule">programmatzione de is publicatziones</string>
     <string name="statistics_release_next">episòdiu imbeniente (istimadu)</string>
     <string name="statistics_episodes_space">ispàtziu ocupadu</string>

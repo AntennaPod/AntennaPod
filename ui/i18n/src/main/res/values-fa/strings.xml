@@ -713,9 +713,18 @@
     <string name="delete_downloads_played_confirmation">لطفاً تأیید کنید که می‌خواهید همهٔ بارگیری‌های پخش شده را پاک کنید.</string>
     <string name="home_no_recent_unplayed_episodes_text">همهٔ قسمت‌های اخیر را پخش کرده‌اید. چیزی برای شگفتی نیست ;)</string>
     <string name="bottom_navigation">پیمایش پایینی</string>
-    <string name="statistics_episodes_started">آغاز شده</string>
-    <string name="statistics_episodes_total">مجموع</string>
-    <string name="statistics_episodes_downloaded">بار گرفته</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">آغاز شده</item>
+        <item quantity="other">آغاز شده</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">در مجموع</item>
+        <item quantity="other">در مجموع</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">بار گرفته</item>
+        <item quantity="other">بار گرفته</item>
+    </plurals>
     <string name="statistics_episodes_space">فضای گرفته</string>
     <string name="statistics_release_schedule">زمان‌بندی انتشار</string>
     <string name="statistics_release_next">قسمت بعدی (تخمینی)</string>
@@ -749,7 +758,10 @@
     <string name="download_completed_talkback">تکمیل بارگیری %1$s</string>
     <string name="pref_episode_cache_summary">بارگیری خودکار در صورت رسیدن به این عدد به پایان می‌رسد</string>
     <string name="pref_auto_delete_sum">پاک‌کردن قسمت‌ها پس از پخش یا وقتی بارگیری خودکار نیاز به فضا دارد</string>
-    <string name="mobile_download_notice">بار گرفتن با دادهٔ همراه برای %d دقیقهٔ آینده</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">بار گرفتن با دادهٔ همراه برای %d دقیقهٔ آینده</item>
+        <item quantity="other">بار گرفتن با دادهٔ همراه برای %d دقیقهٔ آینده</item>
+    </plurals>
     <string name="choose_data_directory_message">لطفاً پوشه پایه داده‌تان را برگزینید. آنتناپاد زیرشاخه‌های مرتبط را خواهد ساخت.</string>
     <string name="home_continue_empty_text">می‌توانید با بارگیری قسمت‌ها یا نگه داشتن طولانی رویشان و گزینش «افزودن به صف» بیفزاییدشان.</string>
     <plurals name="total_size_downloaded_podcasts">

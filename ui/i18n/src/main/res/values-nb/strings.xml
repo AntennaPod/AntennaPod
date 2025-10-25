@@ -146,8 +146,8 @@
     <string name="show_info_label">Vis informasjon</string>
     <string name="show_feed_settings_label">Vis podkastinnstillinger</string>
     <string name="feed_settings_label">Podkastinnstillinger</string>
-    <string name="rename_feed_label">Gi nytt navn til podkast</string>
-    <string name="remove_feed_label">Fjern podkast</string>
+    <string name="rename_feed_label">Gi nytt navn</string>
+    <string name="remove_feed_label">Slett</string>
     <string name="share_label">Del</string>
     <string name="share_file_label">Del fil</string>
     <string name="load_complete_feed">Oppdater hele podkasten</string>
@@ -696,7 +696,10 @@
     </plurals>
     <string name="home_no_recent_unplayed_episodes_text">Du har allerede spilt av alle de nyeste episodene. Det er ingenting å bli overrasket med her ;)</string>
     <string name="home_new_empty_text">Nye episoder vil dukke opp her. Deretter kan velge om du er interessert i dem.</string>
-    <string name="statistics_episodes_downloaded">nedlastet</string>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">nedlastet</item>
+        <item quantity="other">nedlastede</item>
+    </plurals>
     <string name="subscription_display_list">Liste</string>
     <string name="sync_status_wait_for_downloads">Venter på at abonnementene oppdateres …</string>
     <plurals name="time_seconds_quantified">
@@ -748,11 +751,20 @@
     <string name="discover_more">Oppdag mer »</string>
     <string name="delete_downloads_played">Slett avspilte</string>
     <string name="delete_downloads_played_confirmation">Bekreft at du vil slette alle avspilte nedlastinger.</string>
-    <string name="mobile_download_notice">Nedlasting over mobildataforbindelsen i de neste %d minuttene</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Laster ned med mobildata i løpet av det neste minuttet</item>
+        <item quantity="other">Laster ned med mobildata i løpet av de neste %d minuttene</item>
+    </plurals>
     <string name="bottom_navigation">Nedre navigasjonslinje</string>
     <string name="bottom_navigation_summary">Få tilgang til viktige skjermbilder fra hvor som helst med et enkelt tapp</string>
-    <string name="statistics_episodes_started">startet</string>
-    <string name="statistics_episodes_total">totalt</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">påbegynt</item>
+        <item quantity="other">påbegynte</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">totalt</item>
+        <item quantity="other">totalt</item>
+    </plurals>
     <string name="statistics_episodes_space">plass brukt</string>
     <string name="statistics_release_schedule">utgivelsesplan</string>
     <string name="statistics_release_next">neste episode (omtrent)</string>
@@ -880,4 +892,15 @@
     <string name="statistics_expected_next_episode_any_time">Når som helst</string>
     <string name="release_schedule_multiple_per_day">flere ganger daglig</string>
     <string name="cover_as_background">Omslagsbilde som bakgrunn</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d abonnement</item>
+        <item quantity="other">%d abonnement</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arkiver</string>
+    <string name="archive_feed_label_noun">Arkiv</string>
+    <string name="restore_archive_label">Gjenopprett</string>
+    <string name="remove_archive_feed_label">Slett/arkiver</string>
+    <string name="feed_delete_explanation_delete">Sletting fjerner ALLE episodene, inkludert nedlastinger, avspillingshistorikk og statistikk.</string>
+    <string name="feed_delete_explanation_archive">Arkivering skjuler den fra abonnementslisten og ignorerer oppdateringer. Nedlastinger, statistikk og avspillingsstatus bevares.</string>
+    <string name="tag_untagged">Ikke merket</string>
 </resources>

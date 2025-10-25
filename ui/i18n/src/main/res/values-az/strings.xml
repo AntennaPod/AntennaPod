@@ -276,7 +276,6 @@
     <string name="confirm_mobile_download_dialog_message">Mobil bağlantı üzərindən yükləmə ayarlarda deaktiv edilib. Daha sonra Wi-Fi bağlantı olanda AntennaPod yükləməni avtomotik başlaya bilər.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">Sizin VPN proqramı özünün mobil bağlantı kimi qələmə verir (ölçülən bağlantı). Podkastların mobil bağlantı üzərindən yüklənməsi ayarlarda deaktiv edilib. Bu problemin həlli üçün VPN proqramının müəllifi ilə əlaqə qurun.</string>
     <string name="confirm_mobile_download_dialog_download_later">Daha sonra yüklə</string>
-    <string name="mobile_download_notice">Növbəti %d dəqiqə ərzində mobil bağlantı üzərində yüklə</string>
     <string name="confirm_mobile_streaming_notification_message">Mobil bağlantı üzərindən dinləmə ayarlarda deaktiv edilib. Yenə də dinləmək üçün toxunun.</string>
     <string name="confirm_mobile_streaming_notification_title">Mobil dinləməni təsdiqləyin</string>
     <string name="confirm_mobile_streaming_button_always">Həmişə</string>
