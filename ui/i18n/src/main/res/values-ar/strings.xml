@@ -782,7 +782,6 @@
     <string name="shortcut_subscription_label">اختصار الاشتراك</string>
     <string name="shortcut_select_subscription">اختر الاشتراك</string>
     <string name="add_shortcut">أضف اختصارا</string>
-    <string name="statistics_episodes_total">الإجمالي</string>
     <string name="home_continue_empty_text">يمكنك إضافة حلقات عن طريق تنزيلها أو الضغط مطولًا عليها واختيار ”أضف إلى الطابور“.</string>
     <string name="home_no_recent_unplayed_episodes_text">لقد استمعت بالفعل لجميع الحلقات الأخيرة. لا شيء يدعو للدهشة هنا ؛)</string>
     <string name="home_new_empty_text">ستظهر الحلقات الجديدة هنا. يمكنك بعد ذلك تحديد ما إذا كنت مهتمًا بها أم لا.</string>
@@ -795,10 +794,7 @@
     <string name="null_value_podcast_error">لا يحتوي الرابط المنقور على عنوان صحيح للمسموعيَّة. تأكد من الرابط وحاول مجددًا، أو ابحث عن المسموعيَّة يدويًّا.</string>
     <string name="home_downloads_empty_text">يمكنك تحميل أي حلقة لتستمع لها بدون اتصال.</string>
     <string name="delete_downloads_played_confirmation">أكد رغبتك في حذف جميع التنزيلات المشغَّلة.</string>
-    <string name="mobile_download_notice">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقيقة</string>
     <string name="bottom_navigation">التنقل السفلي</string>
-    <string name="statistics_episodes_started">بُدأت</string>
-    <string name="statistics_episodes_downloaded">نزِّلت</string>
     <string name="statistics_episodes_space">المساحة المستخدمة</string>
     <string name="statistics_years_barchart_description">مدة التشغيل في الشهر</string>
     <plurals name="total_size_downloaded_podcasts">

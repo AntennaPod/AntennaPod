@@ -866,4 +866,6 @@
     <string name="tag_untagged">无标签</string>
     <string name="feed_delete_explanation_delete">删除操作将移除其所有单集，包括下载内容、播放记录和统计数据。</string>
     <string name="feed_delete_explanation_archive">归档操作会将其从订阅列表中隐藏并避免获取更新。下载内容、统计数据和播放状态将保留。</string>
+    <string name="no_archive_head_label">无归档内容</string>
+    <string name="no_archive_label">您可以从主订阅屏幕归档播客。</string>
 </resources>

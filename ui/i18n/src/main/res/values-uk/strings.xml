@@ -768,11 +768,8 @@
     <string name="home_continue_empty_text">Ви можете додати випуски, завантаживши їх або довго натиснувши на них і вибравши «Додати в чергу».</string>
     <string name="section_shown">Показані</string>
     <string name="delete_downloads_played_confirmation">Будь ласка, підтвердіть, що ви хочете видалити всі відтворені завантаження.</string>
-    <string name="mobile_download_notice">Завантаження через мобільне з\'єднання протягом наступних %d хвилин</string>
     <string name="bottom_navigation">Навігація внизу екрана</string>
     <string name="nextcloud_login_error_generic">Не вдається увійти до вашого Nextcloud.\n\n- Перевірте мережеве з’єднання.\n- Підтвердіть, що ви використовуєте правильну адресу сервера.\n- Переконайтеся, що встановлено плагін Gpodder Sync Nextcloud.</string>
-    <string name="statistics_episodes_started">початі</string>
-    <string name="statistics_episodes_total">загалом</string>
     <string name="statistics_episodes_space">використано місця</string>
     <string name="statistics_release_schedule">графік випусків</string>
     <string name="statistics_release_next">наступний випуск (орієнтовно)</string>
@@ -785,7 +782,6 @@
         <item quantity="other">Загальний розмір %d випусків на пристрої</item>
     </plurals>
     <string name="bottom_navigation_summary">Отримуйте доступ до найважливіших екранів звідусіль одним дотиком</string>
-    <string name="statistics_episodes_downloaded">завантажено</string>
     <string name="episode_download_failed">Не вдалося завантажити випуск</string>
     <string name="pref_automatic_download_global_description">Автоматично завантажувати епізоди з папки \"Вхідні\". Можна змінити для кожного подкасту окремо.</string>
     <string name="pref_automatic_download_queue_title">Завантаження в черзі</string>

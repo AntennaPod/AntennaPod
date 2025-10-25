@@ -734,15 +734,12 @@
     <string name="sync_status_wait_for_downloads">Venter på opdatering af abonnementer…</string>
     <string name="home_continue_empty_text">Du kan tilføje afsnit ved at overføre dem eller trykke længe på dem og vælge \"Tilføj til kø\".</string>
     <string name="nextcloud_login_error_generic">Kan ikke logge ind på din Nextcloud.\n\n- Tjek din netværksforbindelse.\n- Bekræft, at du bruger den rigtige serveradresse.\n- Sørg for, at Gpodder Sync Nextcloud-udvidelsen er installeret.</string>
-    <string name="statistics_episodes_downloaded">overført</string>
     <string name="discover_more">Opdag mere »</string>
     <string name="bottom_navigation_summary">Få adgang til de vigtigste skærme fra alle steder med et enkelt tryk</string>
     <string name="delete_downloads_played">Slet afspillede</string>
     <string name="pref_nav_drawer_items_sum">Skift hvilke elementer, der vises i navigationsskuffen eller bundnavigationen</string>
     <string name="home_downloads_empty_text">Du kan overføre ethvert afsnit for at lytte til det offline.</string>
-    <string name="mobile_download_notice">Overfører via mobildataforbindelse i de næste %d minutter</string>
     <string name="bottom_navigation">Bundnavigation</string>
-    <string name="statistics_episodes_started">påbegyndt</string>
     <string name="statistics_episodes_space">plads brugt</string>
     <string name="statistics_release_schedule">udgivelsesplan</string>
     <string name="statistics_years_barchart_description">Spilletid pr. måned</string>
@@ -755,7 +752,6 @@
     <string name="null_value_podcast_error">Det link, du trykkede på, indeholder ikke en gyldig podcast-URL. Bekræft venligst linket, og prøv igen, eller søg efter podcasten manuelt.</string>
     <string name="delete_downloads_played_confirmation">Bekræft, at du vil slette alle afspillede downloads.</string>
     <string name="pref_nav_drawer_items_title">Tilpas navigation</string>
-    <string name="statistics_episodes_total">total</string>
     <string name="statistics_release_next">næste afsnit (estimat)</string>
     <string name="statistics_view_all">Alle podcasts »</string>
     <string name="episode_download_failed">Overførsel af afsnit mislykkedes</string>

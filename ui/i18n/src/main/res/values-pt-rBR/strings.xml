@@ -320,7 +320,7 @@
     <string name="interruptions">Interrupções</string>
     <string name="playback_control">Controle de reprodução</string>
     <string name="reassign_hardware_buttons">Reatribuir botões físicos</string>
-    <string name="preference_search_hint">Procurar…</string>
+    <string name="preference_search_hint">Pesquisar…</string>
     <string name="preference_search_no_results">Nenhum resultado</string>
     <string name="preference_search_clear_history">Limpar histórico</string>
     <string name="pref_episode_cleanup_title">Excluir antes de baixar automaticamente</string>
@@ -461,7 +461,7 @@
     <!--About screen-->
   <string name="about_pref">Sobre</string>
     <string name="antennapod_version">Versão do AntennaPod</string>
-    <string name="contributors">Contribuidores</string>
+    <string name="contributors">Colaboradores</string>
     <string name="contributors_summary">Todos podem ajudar a tornar o AntennaPod melhor - com código, traduções ou ajudando os usuários em nosso fórum</string>
     <string name="developers">Desenvolvedores</string>
     <string name="translators">Tradutores</string>
@@ -660,7 +660,7 @@
     <string name="release_schedule_saturday">Sáb</string>
     <string name="release_schedule_sunday">Dom</string>
     <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Procurar podcast…</string>
+  <string name="search_podcast_hint">Pesquisar podcast…</string>
     <string name="search_itunes_label">Pesquisar no Apple Podcasts</string>
     <string name="search_podcastindex_label">Pesquisar no Podcast Index</string>
     <string name="search_fyyd_label">Pesquisar no fyyd</string>
@@ -760,14 +760,30 @@
     <string name="bottom_navigation">Navegação inferior</string>
     <string name="bottom_navigation_summary">Acesse as telas mais importantes a partir de qualquer lugar com apenas um toque</string>
     <string name="nextcloud_login_error_generic">Não foi possível fazer login no seu Nextcloud.\n\n- Verifique sua conexão de rede.\n- Confirme que esteja usando o endereço correto do servidor.\n- Certifique-se de que o plugin Gpodder Sync esteja instalado no Nextcloud.</string>
-    <string name="statistics_episodes_total">total</string>
-    <string name="statistics_episodes_started">iniciados</string>
-    <string name="statistics_episodes_downloaded">baixados</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">total</item>
+        <item quantity="many">totais</item>
+        <item quantity="other">totais</item>
+    </plurals>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">iniciado</item>
+        <item quantity="many">iniciados</item>
+        <item quantity="other">iniciados</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">baixado</item>
+        <item quantity="many">baixados</item>
+        <item quantity="other">baixados</item>
+    </plurals>
     <string name="statistics_years_barchart_description">Tempo reproduzido por mês</string>
     <string name="home_new_empty_text">Novos episódios aparecerão aqui. Você poderá então decidir se são do seu interesse.</string>
-    <string name="null_value_podcast_error">O link que você tocou não contém uma URL de podcast válida. Verifique o link e tente novamente ou procure o podcast manualmente.</string>
+    <string name="null_value_podcast_error">O link que você tocou não contém um URL de podcast válida. Verifique o link e tente novamente ou procure o podcast manualmente.</string>
     <string name="pref_nav_drawer_items_sum">Altere quais itens aparecem no menu de navegação ou na navegação inferior</string>
-    <string name="mobile_download_notice">Baixando por meio de conexão móvel de dados pelos próximos %d minutos</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Baixando via dados móveis pelo próximo %d minuto</item>
+        <item quantity="many">Baixando via dados móveis pelos próximos %d minutos</item>
+        <item quantity="other">Baixando via dados móveis pelos próximos %d minutos</item>
+    </plurals>
     <string name="episode_download_failed">Erro ao baixar o episódio</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Tamanho total de %d episódio no dispositivo</item>
@@ -917,4 +933,6 @@
     <string name="feed_delete_explanation_archive">Arquivar ocultará da lista de inscrições e impedirá que receba atualizações. Downloads, estatísticas and estado de reprodução serão mantidos.</string>
     <string name="remove_archive_feed_label">Excluir / arquivo</string>
     <string name="tag_untagged">Sem etiquetas</string>
+    <string name="no_archive_head_label">Nada arquivado</string>
+    <string name="no_archive_label">Você pode arquivar podcasts a partir da tela principal de inscrições.</string>
 </resources>

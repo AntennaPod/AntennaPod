@@ -760,15 +760,11 @@
     <string name="home_downloads_empty_text">Możesz pobrać dowolny odcinek, aby słuchać go bez dostępu do internetu.</string>
     <string name="delete_downloads_played">Usuń odtworzone</string>
     <string name="delete_downloads_played_confirmation">Potwierdź proszę, że chcesz usunąć wszystkie odtworzone pobrane odcinki.</string>
-    <string name="mobile_download_notice">Pobieranie przez dane mobilne przez następne %d minut(y)</string>
     <string name="section_shown">Pokazane</string>
     <string name="bottom_navigation">Dolny pasek nawigacji</string>
-    <string name="statistics_episodes_total">łącznie</string>
     <string name="statistics_episodes_space">zajęta pamięć</string>
     <string name="statistics_release_schedule">termin publikowania</string>
     <string name="statistics_years_barchart_description">Miesięczny czas odtwarzania</string>
-    <string name="statistics_episodes_started">zaczęty(ch)</string>
-    <string name="statistics_episodes_downloaded">pobrany(ch)</string>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d dzień po zakończeniu</item>
         <item quantity="few">%d dni po zakończeniu</item>
@@ -873,18 +869,6 @@
     </plurals>
     <string name="removed_from_inbox_message">Usunięto ze skrzynki odbiorczej</string>
     <string name="mark_as_played_label">Oznacz jako odtworzone</string>
-    <plurals name="marked_as_played_message">
-        <item quantity="one">Oznaczono jako odtworzone</item>
-        <item quantity="few"/>
-        <item quantity="many"/>
-        <item quantity="other"/>
-    </plurals>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Oznaczono jako nieodtworzone</item>
-        <item quantity="few"/>
-        <item quantity="many"/>
-        <item quantity="other"/>
-    </plurals>
     <string name="play_this_to_seek_position_message">Aby przewinąć do konkretnej pozycji, musisz odtworzyć odcinek</string>
     <string name="mark_as_unplayed_label">Oznacz jako nieodtworzone</string>
     <plurals name="added_to_queue_message">

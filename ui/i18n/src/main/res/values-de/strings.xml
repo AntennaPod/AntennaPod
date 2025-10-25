@@ -443,7 +443,7 @@
     <string name="new_episode_notification_enabled">Benachrichtigung aktiviert</string>
     <string name="new_episode_notification_disabled">Benachrichtigung deaktiviert</string>
     <string name="pref_feed_settings_dialog_msg">Diese Einstellung wird pro Podcast festgelegt. Du kannst sie ändern, indem du die Podcast-Seite öffnest.</string>
-    <string name="pref_contribute">Mitwirken</string>
+    <string name="pref_contribute">Mitmachen</string>
     <string name="pref_show_subscription_title">Titel anzeigen</string>
     <string name="pref_new_episodes_action_title">Aktion für neue Episoden</string>
     <string name="pref_new_episodes_action_sum">Aktion, die ausgeführt wird, wenn neue Episoden erscheinen</string>
@@ -456,7 +456,7 @@
     <string name="developers">Entwickler</string>
     <string name="translators">Übersetzer</string>
     <string name="special_thanks">Besonderen Dank</string>
-    <string name="privacy_policy">Datenschutzrichtlinie</string>
+    <string name="privacy_policy">Datenschutzerklärung</string>
     <string name="licenses">Lizenzen</string>
     <string name="licenses_summary">AntennaPod verwendet nützliche andere Software</string>
     <!--Search-->
@@ -542,19 +542,19 @@
   <string name="synchronization_choose_title">Anbieter für Synchronisierung auswählen</string>
     <string name="synchronization_summary_unchoosen">Du kannst zwischen mehreren Anbietern wählen, um deine Abonnement- und Episodenzustände zu synchronisieren</string>
     <string name="dialog_choose_sync_service_title">Anbieter für Synchronisierung auswählen</string>
-    <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Podcast-Synchronisationsdienst, den du auf deinem eigenen Server installieren kannst. Gpodder.net ist unabhängig vom AntennaPod-Projekt.</string>
+    <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Podcast-Synchronisierungsdienst, den du auf deinem eigenen Server installieren kannst. Gpodder.net ist unabhängig vom AntennaPod-Projekt.</string>
     <string name="synchronization_summary_nextcloud">Gpodder Sync ist eine quelloffene Nextcloud-Anwendung, die du einfach auf deinem eigenen Server installieren kannst. Gpodder Sync ist unabhängig vom AntennaPod-Projekt.</string>
-    <string name="synchronization_host_explanation">Du kannst deinen eigenen Server zur Synchronisation auswählen. Wenn du deinen bevorzugten Synchronisationsserver gefunden hast, gib bitte hier seine Adresse ein.</string>
-    <string name="synchronization_host_label">Server-Adresse</string>
+    <string name="synchronization_host_explanation">Du kannst deinen eigenen Server für die Synchronisierung auswählen. Wenn du deinen bevorzugten Synchronisierungsserver gefunden hast, gib bitte hier seine Adresse ein.</string>
+    <string name="synchronization_host_label">Serveradresse</string>
     <string name="proceed_to_login_butLabel">Weiter zur Anmeldung</string>
     <string name="synchronization_nextcloud_authenticate_browser">Gewähre den Zugriff über den geöffneten Webbrowser und kehre zu AntennaPod zurück.</string>
     <string name="gpodnetauth_login_butLabel">Anmelden</string>
-    <string name="synchronization_credentials_explanation">Bitte gib die Anmeldeinformationen deines Kontos auf dem Synchronisationsserver an.</string>
+    <string name="synchronization_credentials_explanation">Bitte gib die Anmeldedaten deines Kontos auf dem Synchronisierungsserver an.</string>
     <string name="gpodnetauth_encryption_warning">Passwort und Daten sind nicht verschlüsselt!</string>
     <string name="username_label">Benutzername</string>
     <string name="password_label">Passwort</string>
     <string name="synchronization_login_butLabel">Anmelden</string>
-    <string name="synchronization_selectDevice_explanation">Bitte wähle das Gerät aus, das du auf dem Synchronisationsserver erstellt hast, oder erstelle ein neues.</string>
+    <string name="synchronization_selectDevice_explanation">Bitte wähle das Gerät aus, das du auf dem Synchronisierungsserver erstellt hast, oder erstelle ein neues.</string>
     <string name="gpodnetauth_device_name">Gerätename</string>
     <string name="gpodnetauth_device_name_default">AntennaPod auf %1$s</string>
     <string name="gpodnetauth_existing_devices">Bestehende Geräte</string>
@@ -739,13 +739,25 @@
     <string name="home_new_empty_text">Neue Episoden werden hier angezeigt. Du kannst dann entscheiden, ob sie für dich interessant sind.</string>
     <string name="delete_downloads_played_confirmation">Bitte bestätige, dass du alle abgespielten Downloads löschen möchtest.</string>
     <string name="delete_downloads_played">Abgespielte löschen</string>
-    <string name="mobile_download_notice">Herunterladen über mobile Datenverbindung für die nächsten %d Minuten</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Herunterladen über mobile Datenverbindung für die nächste %d Minute</item>
+        <item quantity="other">Herunterladen über mobile Datenverbindung für die nächsten %d Minuten</item>
+    </plurals>
     <string name="bottom_navigation_summary">Zugriff auf die wichtigsten Bildschirme von überall aus, mit einem einzigen Fingertipp</string>
     <string name="bottom_navigation">Untere Navigation</string>
-    <string name="statistics_episodes_started">begonnen</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">begonnen</item>
+        <item quantity="other">begonnen</item>
+    </plurals>
     <string name="nextcloud_login_error_generic">Anmeldung bei Nextcloud fehlgeschlagen.\n\n- Überprüfe die Netzwerkverbindung.\n- Stelle sicher, dass du die richtige Serveradresse verwendest.\n- Stelle sicher, dass das Gpodder-Sync-Nextcloud-Plugin installiert ist.</string>
-    <string name="statistics_episodes_total">gesamt</string>
-    <string name="statistics_episodes_downloaded">heruntergeladen</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">gesamt</item>
+        <item quantity="other">gesamt</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">heruntergeladen</item>
+        <item quantity="other">heruntergeladen</item>
+    </plurals>
     <string name="statistics_release_next">nächste Episode (geschätzt)</string>
     <string name="statistics_release_schedule">Veröffentlichungsrhythmus</string>
     <string name="statistics_episodes_space">belegter Platz</string>
@@ -891,4 +903,6 @@
     <string name="feed_delete_explanation_delete">Durch das Löschen werden ALLE Episoden einschließlich Downloads, Wiedergabeverlauf und Statistiken entfernt.</string>
     <string name="feed_delete_explanation_archive">Durch das Archivieren wird es aus der Abonnementliste ausgeblendet und erhält keine Aktualisierungen mehr. Downloads, Statistiken und der Abspielstatus bleiben erhalten.</string>
     <string name="tag_untagged">Ohne Tags</string>
+    <string name="no_archive_head_label">Nichts archiviert</string>
+    <string name="no_archive_label">Du kannst Podcasts über den Hauptbildschirm für Abonnements archivieren.</string>
 </resources>

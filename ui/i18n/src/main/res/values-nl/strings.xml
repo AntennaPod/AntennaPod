@@ -718,8 +718,6 @@
     <string name="section_shown">Getoond</string>
     <string name="delete_downloads_played">Afgespeelde bestanden verwijderen</string>
     <string name="bottom_navigation_summary">Navigeer naar de belangrijkste schermen waar je ook bent, met één tik</string>
-    <string name="statistics_episodes_started">gestart</string>
-    <string name="statistics_episodes_total">totaal</string>
     <string name="statistics_release_schedule">Uitgaveschema</string>
     <string name="statistics_years_barchart_description">Afspeeltijd per maand</string>
     <plurals name="time_hours_quantified">
@@ -738,7 +736,6 @@
     <string name="delete_downloads_played_confirmation">Bevestig dat je alle afgespeelde downloads wilt verwijderen.</string>
     <string name="no_transcript_label">Geen transcript</string>
     <string name="null_value_podcast_error">De link die je aantikte bevat geen geldige podcast URL. Controleer de link en probeer het nogmaals, of zoek handmatig naar de podcast.</string>
-    <string name="mobile_download_notice">De komende %d minuten word er over mobiele data gedownload</string>
     <string name="clear_queue_confirmation_msg">Bevestig dat je ALLE afleveringen uit de wachtrij wilt verwijderen.</string>
     <string name="pref_episode_cleanup_title">Verwijder vóór automatische download</string>
     <string name="pref_auto_delete_playback_title">Verwijder na afspelen</string>
@@ -754,7 +751,6 @@
     <string name="rating_volunteers_label">AntennaPod wordt door vrijwilligers ontwikkeld, in hun vrije tijd. Deel je waardering van hun werk door een mooie beoordeling achter te laten.</string>
     <string name="state_deleted_not_subscribed">Je bent nog niet geabonneerd op deze podcast. Abonneer je gratis om er makkelijker toegang toe te krijgen en afspeelgeschiedenis bij te houden.</string>
     <string name="download_started_talkback">Download gestart voor %1$s</string>
-    <string name="statistics_episodes_downloaded">gedownload</string>
     <string name="statistics_episodes_space">ingenomen opslagruimte</string>
     <string name="edit_url_confirmation_msg">Het RSS adres veranderen maakt vaak de afspeelstatus en afleveringslijst van de podcast kapot. We raden dit af en bieden GEEN ondersteuning als er iets mis gaat. Dit kan niet ongedaan gemaakt worden. Het kapotte abonnement kan NIET gerepareerd worden door het oude adres weer terug te zetten. We raden aan om een eerst back-up te maken voordat je verder gaat.</string>
     <string name="multi_select_started_talkback">Meervoudige selectie acties onderaan getoond</string>

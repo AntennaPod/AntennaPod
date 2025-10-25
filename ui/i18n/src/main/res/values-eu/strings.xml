@@ -712,8 +712,6 @@
     <string name="section_shown">Erakutsita</string>
     <string name="delete_downloads_played_confirmation">Mesedez, berretsi erreproduzitutako deskarga guztiak ezabatu nahi dituzula.</string>
     <string name="bottom_navigation">Nabigatzeko botoia</string>
-    <string name="statistics_episodes_started">abiatuta</string>
-    <string name="statistics_episodes_total">guztira</string>
     <string name="statistics_release_schedule">kaleratzeen egutegia</string>
     <string name="statistics_years_barchart_description">Erreprodukzio denbora hilean</string>
     <plurals name="episode_cleanup_hours_after_listening">
@@ -731,7 +729,6 @@
     <string name="home_no_recent_unplayed_episodes_text">Azken saio guztiak entzun dituzu. Ez da harritzeko ezer ;)</string>
     <string name="home_continue_empty_text">Atalak gehi ditzakezu deskargatuz edo haien gainean luze sakatuz eta \"Gehitu ilaran\" hautatuz.</string>
     <string name="null_value_podcast_error">Sakatu duzun estekak ez du baliozko podcast URLrik. Egiaztatu esteka eta saiatu berriro, edo bilatu podcasta eskuz.</string>
-    <string name="mobile_download_notice">Mugikorraren datu-konexioari esker deskargatzen hurrengo %d minutuetan</string>
     <string name="pref_auto_delete_sum">Ezabatu atalak erreproduzitu ondoren edo deskarga automatikoak lekua behar duenean</string>
     <string name="pref_episode_cache_title">Atal muga</string>
     <string name="bottom_navigation_summary">Atzitu pantaila garrantzitsuenetara edonondik, ukitu bakarrean</string>
@@ -755,7 +752,6 @@
     <string name="preview_episodes">Atalen aurreikustaldiak</string>
     <string name="download_started_talkback">Deskarga hasi da %1$s-entzat</string>
     <string name="download_completed_talkback">Deskarga osatu da %1$s-entzat</string>
-    <string name="statistics_episodes_downloaded">deskargatuta</string>
     <string name="statistics_release_next">hurrengo atala (aurreikuspena)</string>
     <string name="edit_url_confirmation_msg">RSS helbidea aldatzeak erraz hautsi ditzake podcastaren erreprodukzio-egoera eta pasarte-zerrendak. EZ dugu aldatzea gomendatzen eta EZ dugu laguntza emango zerbait gaizki gertatzen bada. Hau ezin da desegin. Hautsitako harpidetza EZIN DA konpondu helbidea berriro aldatuz. Jarraitu aurretik, babeskopia sortzea gomendatzen dugu.</string>
     <string name="sync_status_wait_for_downloads">Harpidetzak freskatzeko zain…</string>

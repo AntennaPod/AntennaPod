@@ -740,21 +740,17 @@
     <string name="delete_downloads_played">Ta bort spelade</string>
     <string name="delete_downloads_played_confirmation">Vänligen bekräfta att du vill ta bort alla spelade nedladdningar.</string>
     <string name="bottom_navigation">Bottennavigering</string>
-    <string name="statistics_episodes_started">påbörjad</string>
-    <string name="statistics_episodes_downloaded">nedladdade</string>
     <string name="statistics_episodes_space">upptaget utrymme</string>
     <string name="statistics_release_next">nästa avsnitt (uppskattning)</string>
     <string name="section_shown">Visade</string>
     <string name="home_no_recent_unplayed_episodes_text">Du har redan spelat alla senaste avsnitt. Inget att bli förvånad över här ;)</string>
     <string name="home_continue_empty_text">Du kan lägga till avsnitt genom att ladda ner dem eller trycka länge på dem och välja \"Lägg till i kö\".</string>
     <string name="home_downloads_empty_text">Du kan ladda ner vilket avsnitt som helst för att lyssna på det offline.</string>
-    <string name="mobile_download_notice">Laddar ner via mobildataanslutning under de kommande %d minuterna</string>
     <string name="pref_nav_drawer_items_title">Anpassa navigering</string>
     <string name="pref_nav_drawer_items_sum">Ändra vilka objekt som visas i navigeringslådan eller nedersta navigeringen</string>
     <string name="sync_status_wait_for_downloads">Väntar på uppdatering av prenumerationer…</string>
     <string name="statistics_years_barchart_description">Spelad tid per månad</string>
     <string name="nextcloud_login_error_generic">Kan inte logga in på din Nextcloud.\n\nKontrollera nätverksanslutningen.\nBekräfta att du använder rätt serveradress.\nSe till att insticksprogrammet gpoddersync Nextcloud är installerat.</string>
-    <string name="statistics_episodes_total">total</string>
     <string name="statistics_release_schedule">släppschema</string>
     <string name="statistics_view_all">Alla poddar »</string>
     <string name="discover_more">Upptäck mer »</string>
@@ -845,10 +841,6 @@
     <plurals name="marked_as_played_message">
         <item quantity="one">Markera som spelad</item>
         <item quantity="other">Markera som spelade</item>
-    </plurals>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Markera som ospelad</item>
-        <item quantity="other"/>
     </plurals>
     <string name="mark_as_played_label">Markera som spelad</string>
     <string name="feed_new_episodes_action_summary_autodownload">Automatisk nedladdning aktiverad. Avsnitt läggs till i inkorgen och flyttas sedan till kön när de har laddats ned.</string>

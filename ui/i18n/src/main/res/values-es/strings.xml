@@ -160,8 +160,8 @@
     <string name="show_info_label">Mostrar información</string>
     <string name="show_feed_settings_label">Mostrar configuración del podcast</string>
     <string name="feed_settings_label">Configuración del podcast</string>
-    <string name="rename_feed_label">Cambiar el nombre del podcast</string>
-    <string name="remove_feed_label">Eliminar el podcast</string>
+    <string name="rename_feed_label">Renombrar</string>
+    <string name="remove_feed_label">Eliminar</string>
     <string name="share_label">Compartir</string>
     <string name="share_file_label">Compartir el archivo</string>
     <string name="load_complete_feed">Actualizar el podcast completo</string>
@@ -759,14 +759,30 @@
     <string name="home_downloads_empty_text">Puedes descargar cualquier episodio para escucharlo sin conexión.</string>
     <string name="section_shown">Visible</string>
     <string name="bottom_navigation">Navegación inferior</string>
-    <string name="statistics_episodes_started">iniciado</string>
-    <string name="statistics_episodes_total">total</string>
-    <string name="statistics_episodes_downloaded">descargado</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">iniciado</item>
+        <item quantity="many">iniciados</item>
+        <item quantity="other">iniciados</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">total</item>
+        <item quantity="many">total</item>
+        <item quantity="other">total</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">descargado</item>
+        <item quantity="many">descargados</item>
+        <item quantity="other">descargados</item>
+    </plurals>
     <string name="statistics_release_next">próximo episodio (estimado)</string>
     <string name="statistics_years_barchart_description">Tiempo reproducido por mes</string>
     <string name="home_continue_empty_text">Puedes añadir episodios descargándolos o con una pulsación larga y seleccionando \"Añadir a la cola\".</string>
     <string name="delete_downloads_played_confirmation">Por favor, confirma que quieres eliminar todas las descargas reproducidas.</string>
-    <string name="mobile_download_notice">Descargando a través de conexión de datos móviles durante los próximos %d minutos</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Descargando a través de conexión de datos móviles durante el próximo %d minuto</item>
+        <item quantity="many">Descargando a través de conexión de datos móviles durante los próximos %d minutos</item>
+        <item quantity="other">Descargando a través de conexión de datos móviles durante los próximos %d minutos</item>
+    </plurals>
     <string name="null_value_podcast_error">El enlace que seleccionaste no contiene una URL de podcast válida. Verifica el enlace e inténtalo otra vez o busca el podcast manualmente.</string>
     <string name="bottom_navigation_summary">Accede a las pantallas más importantes desde cualquier lugar, con un solo toque</string>
     <string name="pref_nav_drawer_items_title">Personalizar la navegación</string>
@@ -904,4 +920,16 @@
     <string name="statistics_expected_next_episode_any_time">En cualquier momento</string>
     <string name="release_schedule_multiple_per_day">varias veces al día</string>
     <string name="cover_as_background">Portada como fondo</string>
+    <string name="archive_feed_label_noun">Archivo</string>
+    <string name="restore_archive_label">Restaurar</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d suscripción</item>
+        <item quantity="many">%d suscripciones</item>
+        <item quantity="other">%d suscripciones</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Archivar</string>
+    <string name="remove_archive_feed_label">Borrar / archivar</string>
+    <string name="feed_delete_explanation_delete">La eliminación borrara TODOS sus episodios, incluyendo las descargas, el historial de reproducción y las estadísticas.</string>
+    <string name="feed_delete_explanation_archive">El archivado lo ocultará de la lista de suscripciones e impedirá que obtenga actualizaciones. Las descargas, las estadísticas y el estado de reproducción se conservan.</string>
+    <string name="tag_untagged">Sin etiquetar</string>
 </resources>

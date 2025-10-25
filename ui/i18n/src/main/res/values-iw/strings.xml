@@ -744,14 +744,22 @@
     <string name="shortcut_select_subscription">בחירת מינוי</string>
     <string name="add_shortcut">הוספת קיצור דרך</string>
     <string name="statistics_view_all">כל ההסכתים »</string>
-    <string name="statistics_episodes_started">החל</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">החל</item>
+        <item quantity="two">החלו</item>
+        <item quantity="other">החלו</item>
+    </plurals>
     <string name="delete_downloads_played">מחיקת אלו שהושמעו</string>
     <string name="pref_nav_drawer_items_title">ניווט מותאם אישית</string>
     <string name="home_new_empty_text">פרקים חדשים יופיעו כאן. אפשר להחליט האם הם מעניינים אותך.</string>
     <string name="home_downloads_empty_text">אפשר להוריד כל פרק שהוא כדי להאזין לו ללא חיבור לאינטרנט.</string>
     <string name="section_shown">מוצג</string>
     <string name="delete_downloads_played_confirmation">נא לאשר את מחיקת על ההורדות שהושמעו.</string>
-    <string name="mobile_download_notice">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך %d הדקות הקרובות</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך הדקה הקרובה</item>
+        <item quantity="two">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך שתי הדקות הקרובות</item>
+        <item quantity="other">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך %d הדקות הקרובות</item>
+    </plurals>
     <string name="statistics_release_schedule">לו״ז הוצאה לאור</string>
     <string name="nextcloud_login_error_generic">לא ניתן להיכנס ל־Nextcloud שלך.\n\n- נא לבדוק שהחיבור שלך לרשת תקין.\n- לוודא שזאת כתובת השרת הנכונה.\n- לבדוק שתוסף Nextcloud בשם Gpodder Sync מותקן.</string>
     <string name="statistics_release_next">הפרק הבא (הערכה)</string>
@@ -766,11 +774,19 @@
     <string name="null_value_podcast_error">הקישור בו נגעת לא מכיל כתובת הסכת תקנית. נא לוודא שהקישור תקין ולנסות שוב או לחפש את ההסכת ידנית.</string>
     <string name="bottom_navigation">ניווט תחתון</string>
     <string name="bottom_navigation_summary">גישה למסכים החשובים ביותר מכל מקום, בנגיעה אחת</string>
-    <string name="statistics_episodes_total">סך הכול</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">סך הכול</item>
+        <item quantity="two">סך הכול</item>
+        <item quantity="other">סך הכול</item>
+    </plurals>
     <string name="statistics_episodes_space">מקום תפוס</string>
     <string name="pref_nav_drawer_items_sum">נא לבחור אילו פריטים מופיעים במגירת הניווט או בניווט התחתון</string>
     <string name="sync_status_wait_for_downloads">בהמתנה לרענון המינויים…</string>
-    <string name="statistics_episodes_downloaded">ירדו</string>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">ירד</item>
+        <item quantity="two">ירדו</item>
+        <item quantity="other">ירדו</item>
+    </plurals>
     <string name="discover_more">להיחשף לעוד »</string>
     <string name="episode_download_failed">הורדת פרק נכשלה</string>
     <string name="add_feed_label_short">הוספה</string>
@@ -915,4 +931,5 @@
     </plurals>
     <string name="feed_delete_explanation_delete">מחיקה תסיר את ﬤﬥ הפרקים כולל ההורדות, היסטוריית הנגינה והסטטיסטיקה.</string>
     <string name="tag_untagged">ללא תיוג</string>
+    <string name="feed_delete_explanation_archive">העברה לארכיון תסתיר מרשימת המינויים ותפסיק את קבלת העדכונים. הורדות, סטטיסטיקות ומצב הנגינה יישמרו.</string>
 </resources>
