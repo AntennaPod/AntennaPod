@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -30,6 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.model.queue.Queue;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -39,6 +42,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -101,6 +105,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     private SwipeActions swipeActions;
     private SharedPreferences prefs;
 
+    private QueuesViewModel viewModel;
+    private final MutableLiveData<Queue> currentQueue = new MutableLiveData<>();
+    private long currentQueueId = -1;
+
     private FloatingSelectMenu floatingSelectMenu;
     private ProgressBar progressBar;
 
@@ -108,12 +116,13 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        viewModel = new ViewModelProvider(requireActivity()).get(QueuesViewModel.class);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        loadItems();
+        viewModel.loadQueues();
         EventBus.getDefault().register(this);
     }
 
@@ -291,7 +300,20 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             toggleQueueLock();
             return true;
         } else if (itemId == R.id.queues_dialog) {
-            new QueuesDialogFragment().show(getParentFragmentManager(), "QueuesDialog");
+            QueuesDialogFragment dialog = QueuesDialogFragment.newInstance(
+                    new QueuesDialogRecyclerAdapter.OnQueueActionsListener() {
+                        @Override
+                        public void onQueueClicked(Queue queue) {
+                            currentQueue.setValue(queue);
+                        }
+
+                        @Override
+                        public void onQueueDeleteClicked(Queue queue) {
+                            viewModel.removeQueue(requireContext().getApplicationContext(), queue.getId());
+                        }
+                    }
+            );
+            dialog.show(getParentFragmentManager(), "QueuesDialog");
             return true;
         } else if (itemId == R.id.queue_sort) {
             new QueueSortDialog().show(getChildFragmentManager().beginTransaction(), "SortDialog");
@@ -492,6 +514,61 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        viewModel.getQueues().observe(getViewLifecycleOwner(), queues -> {
+            if (queues == null || queues.isEmpty()) {
+                this.queue = new ArrayList<>();
+                recyclerAdapter.updateItems(this.queue);
+                toolbar.setTitle(R.string.queue_label);
+                return;
+            }
+
+            Queue queueToDisplay = currentQueue.getValue();
+            boolean currentIsValid = false;
+
+            if (queueToDisplay != null) {
+                for (Queue q : queues) {
+                    if (q.getId() == queueToDisplay.getId()) {
+                        currentIsValid = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!currentIsValid) {
+                queueToDisplay = null;
+                for (Queue q : queues) {
+                    if (q.getId() == 0) {
+                        queueToDisplay = q;
+                        break;
+                    }
+                }
+                if (queueToDisplay == null) {
+                    queueToDisplay = queues.get(0);
+                }
+            }
+
+            currentQueue.setValue(queueToDisplay);
+        });
+
+        currentQueue.observe(getViewLifecycleOwner(), queue -> {
+            if (queue == null) {
+                return;
+            }
+
+            long newQueueId = queue.getId();
+            if (currentQueueId != newQueueId) {
+                Log.d(TAG, "Queue selection changed. Loading queue: " + queue.getName() + " (ID: " + newQueueId + ")");
+                currentQueueId = newQueueId;
+                toolbar.setTitle(queue.getName());
+                loadItems();
+            }
+        });
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
         super.onSaveInstanceState(outState);
@@ -525,7 +602,12 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     private void loadItems() {
-        Log.d(TAG, "loadItems()");
+        Log.d(TAG, "loadItems() called for queue ID: " + currentQueueId);
+        if (currentQueueId == -1) {
+            Log.d(TAG, "loadItems() ignored, currentQueueId is not set.");
+            return;
+        }
+
         if (disposable != null) {
             disposable.dispose();
         }
@@ -534,7 +616,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
         disposable = Observable.fromCallable(() -> {
             boolean displayGoToInboxButton = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0;
-            return new Pair<>(DBReader.getQueue(), displayGoToInboxButton);
+            List<FeedItem> items = DBReader.df_getFeedItemsInQueue(currentQueueId);
+            return new Pair<>(items, displayGoToInboxButton);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

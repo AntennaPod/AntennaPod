@@ -51,6 +51,7 @@ public class QueuesDialogFragment extends DialogFragment {
         recyclerAdapter.setOnQueueActionsListener(new QueuesDialogRecyclerAdapter.OnQueueActionsListener() {
             @Override
             public void onQueueClicked(Queue queue) {
+
                 if (listener != null) {
                     listener.onQueueClicked(queue);
                 }
