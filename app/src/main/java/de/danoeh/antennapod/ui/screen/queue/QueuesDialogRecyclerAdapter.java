@@ -68,6 +68,12 @@ public class QueuesDialogRecyclerAdapter extends ListAdapter<Queue, QueuesDialog
                 listener.onQueueDeleteClicked(queue);
             }
         });
+
+        if (queue.getId() == 1) {
+            holder.deleteQueue.setVisibility(View.INVISIBLE);
+        } else {
+            holder.deleteQueue.setVisibility(View.VISIBLE);
+        }
     }
 
     public static class QueuesViewHolder extends RecyclerView.ViewHolder {
