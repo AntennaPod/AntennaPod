@@ -10,6 +10,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -388,6 +390,11 @@ public class PodDBAdapter {
     }
 
     public synchronized PodDBAdapter open() {
+        if (BuildConfig.DEBUG) {
+            if (Looper.myLooper() == Looper.getMainLooper() && !"robolectric".equals(Build.FINGERPRINT)) {
+                throw new RuntimeException("I/O on main thread");
+            }
+        }
         // do nothing
         return this;
     }
