@@ -1,7 +1,11 @@
 package de.danoeh.antennapod.storage.database;
 
+import android.content.Context;
+import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,6 +14,7 @@ import java.util.List;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -17,10 +22,13 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test class for FeedItemPermutors.
  */
+@RunWith(RobolectricTestRunner.class)
 public class FeedItemPermutorsTest {
 
     @Test
     public void testEnsureNonNullPermutors() {
+        final Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        UserPreferences.init(context);
         for (SortOrder sortOrder : SortOrder.values()) {
             assertNotNull("The permutor for SortOrder " + sortOrder + " is unexpectedly null",
                     FeedItemPermutors.getPermutor(sortOrder));
