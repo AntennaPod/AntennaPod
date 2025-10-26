@@ -15,40 +15,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/llEpisode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtvEpisodeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Episode"
-                    style="@style/TextAppearance.Material3.TitleMedium"
-                    android:layout_marginEnd="4dp" />
-
-                <TextView
-                    android:id="@+id/txtvEpisodeName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:text="No episode name set" />
-
-            </LinearLayout>
-
+            <!-- Podcast header, podcast title, button go jump to podcast -->
             <LinearLayout
                 android:id="@+id/llPodcast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="4dp">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -56,7 +28,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/txtvPodcastLabel"
+                        android:id="@+id/txtvPodcastTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Podcast"
@@ -94,12 +66,92 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtvLogMessage"
+            <!-- Episode header, episode title -->
+            <LinearLayout
+                android:id="@+id/llEpisode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Technical reason:"
-                android:layout_marginTop="16dp" />
+                android:orientation="vertical"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:id="@+id/txtvEpisodeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Episode"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_marginEnd="4dp" />
+
+                <TextView
+                    android:id="@+id/txtvEpisodeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:ellipsize="middle"
+                    android:text="No episode name set" />
+
+            </LinearLayout>
+
+            <!-- Human readable reason for the message/error -->
+            <TextView
+                android:id="@+id/txtvHumanReadableMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="successful"
+                android:layout_marginTop="8dp" />
+
+            <!-- Technical details/reason -->
+            <LinearLayout
+                android:id="@+id/llTechnicalReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/txtvTechnicalReasonTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Technical Reason"
+                    android:layout_marginEnd="4dp"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
+
+                <TextView
+                    android:id="@+id/txtvTechnicalReasonContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="No technical reason found" />
+
+            </LinearLayout>
+
+            <!-- File URL -->
+            <LinearLayout
+                android:id="@+id/llFileUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/txtvFileUrlTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="File Url"
+                    android:layout_marginEnd="4dp"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
+
+                <TextView
+                    android:id="@+id/txtvFileUrlContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="No file url found" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
