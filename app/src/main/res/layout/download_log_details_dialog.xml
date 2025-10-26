@@ -32,8 +32,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Podcast"
-                        style="@style/TextAppearance.Material3.TitleMedium"
-                        android:layout_marginEnd="4dp" />
+                        android:layout_marginEnd="4dp"
+                        style="@style/TextAppearance.Material3.TitleMedium" />
 
                     <Space
                         android:layout_width="0dp"
@@ -53,6 +53,7 @@
                         android:paddingBottom="0dp"
                         android:paddingTop="0dp"
                         style="@style/Widget.Material3.Button.TextButton" />
+
                 </LinearLayout>
 
                 <TextView
@@ -79,8 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Episode"
-                    style="@style/TextAppearance.Material3.TitleMedium"
-                    android:layout_marginEnd="4dp" />
+                    android:layout_marginEnd="4dp"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
 
                 <TextView
                     android:id="@+id/txtvEpisodeName"
