@@ -91,11 +91,13 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         }
 
         if (podcastTitle != null) {
-            binding.txtvPodcastLabel.setText(getContext().getString(R.string.feed_title) + ":");
+            binding.txtvPodcastLabel.setText(getContext().getString(R.string.feed_title));
             binding.txtvPodcastName.setText(podcastTitle);
+        } else {
+            binding.llPodcast.setVisibility(View.GONE);
         }
         if (episodeTitle != null) {
-            binding.txtvEpisodeLabel.setText(getContext().getString(R.string.episode_title) + ":");
+            binding.txtvEpisodeLabel.setText(getContext().getString(R.string.episode_title));
             binding.txtvEpisodeName.setText(episodeTitle);
             // Needed for the the ellipsize = marquee to work
             binding.txtvEpisodeName.setSelected(true);
