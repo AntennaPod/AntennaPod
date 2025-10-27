@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import de.danoeh.antennapod.model.feed.DefaultQueueException;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.Queue;
 import de.danoeh.antennapod.model.feed.QueueNameExistsException;
 import de.danoeh.antennapod.model.feed.QueueNotFoundException;
@@ -44,6 +45,7 @@ public class QueueViewModel extends ViewModel {
     private final MutableLiveData<List<Queue>> allQueues = new MutableLiveData<>();
     private final MutableLiveData<Queue> activeQueue = new MutableLiveData<>();
     private final MutableLiveData<Integer> activeQueueEpisodeCount = new MutableLiveData<>();
+    private final MutableLiveData<List<FeedItem>> activeQueueEpisodes = new MutableLiveData<>();
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     /**
@@ -54,6 +56,7 @@ public class QueueViewModel extends ViewModel {
     public QueueViewModel(@NonNull QueueRepository queueRepository) {
         this.queueRepository = queueRepository;
         loadQueues();
+        loadActiveQueue();
     }
 
     /**
@@ -91,6 +94,19 @@ public class QueueViewModel extends ViewModel {
     @NonNull
     public LiveData<Integer> getActiveQueueEpisodeCount() {
         return activeQueueEpisodeCount;
+    }
+
+    /**
+     * Gets the episodes in the currently active queue.
+     *
+     * <p>This list updates when the active queue changes or episodes are added/removed/reordered.
+     * Suitable for binding to RecyclerView adapters in the UI.
+     *
+     * @return LiveData containing list of FeedItem episodes in active queue (never null, may be empty)
+     */
+    @NonNull
+    public LiveData<List<FeedItem>> getActiveQueueEpisodes() {
+        return activeQueueEpisodes;
     }
 
     /**
@@ -355,7 +371,7 @@ public class QueueViewModel extends ViewModel {
     }
 
     /**
-     * Loads the active queue and its episode count from repository.
+     * Loads the active queue, its episode count, and episodes from repository.
      */
     private void loadActiveQueue() {
         Queue active = queueRepository.getActiveQueue();
@@ -363,8 +379,11 @@ public class QueueViewModel extends ViewModel {
         if (active != null) {
             int count = queueRepository.getQueueEpisodeCount(active.getId());
             activeQueueEpisodeCount.postValue(count);
+            List<FeedItem> episodes = queueRepository.getEpisodesForQueue(active.getId());
+            activeQueueEpisodes.postValue(episodes);
         } else {
             activeQueueEpisodeCount.postValue(0);
+            activeQueueEpisodes.postValue(null);
         }
     }
 
