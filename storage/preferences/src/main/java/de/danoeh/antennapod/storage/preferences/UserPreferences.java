@@ -122,6 +122,7 @@ public abstract class UserPreferences {
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
+    private static final String PREF_ACTIVE_QUEUE_ID = "active_queue_id";
 
     // Experimental
     public static final int EPISODE_CLEANUP_QUEUE = -1;
@@ -816,6 +817,47 @@ public abstract class UserPreferences {
             return;
         }
         prefs.edit().putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name()).apply();
+    }
+
+    /**
+     * Gets the currently active queue ID.
+     *
+     * <p>The active queue ID is persisted in SharedPreferences for fast access
+     * without database queries. This value is kept in sync with the Queue table's
+     * isActive flag by {@link de.danoeh.antennapod.storage.database.QueueRepository}.
+     *
+     * @return Active queue ID (default: 1, the default queue)
+     */
+    public static long getActiveQueueId() {
+        return prefs.getLong(PREF_ACTIVE_QUEUE_ID, 1L);
+    }
+
+    /**
+     * Sets the currently active queue ID.
+     *
+     * <p>This should only be called by
+     * {@link de.danoeh.antennapod.storage.database.QueueRepository#switchActiveQueue(long)}
+     * to keep SharedPreferences synchronized with the database.
+     *
+     * <p>Thread-safe: Uses SharedPreferences.apply() for asynchronous write.
+     *
+     * @param queueId The queue ID to set as active
+     */
+    public static void setActiveQueueId(long queueId) {
+        prefs.edit().putLong(PREF_ACTIVE_QUEUE_ID, queueId).apply();
+    }
+
+    /**
+     * Clears the active queue ID cache, resetting to default.
+     *
+     * <p>This is primarily for testing purposes. In production, use
+     * {@link #setActiveQueueId(long)} to update the active queue.
+     *
+     * @see #setActiveQueueId(long)
+     */
+    @VisibleForTesting
+    public static void clearActiveQueueIdCache() {
+        prefs.edit().remove(PREF_ACTIVE_QUEUE_ID).apply();
     }
 
     public static FeedPreferences.NewEpisodesAction getNewEpisodesAction() {
