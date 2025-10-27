@@ -52,7 +52,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 3080000;
+    public static final int VERSION = 3090000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -126,6 +126,21 @@ public class PodDBAdapter {
     public static final String KEY_PODCASTINDEX_TRANSCRIPT_URL = "podcastindex_transcript_url";
     public static final String KEY_PODCASTINDEX_TRANSCRIPT_TYPE = "podcastindex_transcript_type";
 
+    // Queue table keys
+    public static final String KEY_QUEUE_NAME = "name";
+    public static final String KEY_QUEUE_COLOR = "color";
+    public static final String KEY_QUEUE_ICON = "icon";
+    public static final String KEY_QUEUE_IS_DEFAULT = "is_default";
+    public static final String KEY_QUEUE_IS_ACTIVE = "is_active";
+    public static final String KEY_QUEUE_CREATED_AT = "created_at";
+    public static final String KEY_QUEUE_MODIFIED_AT = "modified_at";
+
+    // QueueMembership table keys
+    public static final String KEY_MEMBERSHIP_QUEUE_ID = "queue_id";
+    public static final String KEY_MEMBERSHIP_EPISODE_ID = "episode_id";
+    public static final String KEY_MEMBERSHIP_POSITION = "position";
+    public static final String KEY_MEMBERSHIP_ADDED_AT = "added_at";
+
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
     public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
@@ -135,6 +150,8 @@ public class PodDBAdapter {
     public static final String TABLE_NAME_QUEUE = "Queue";
     public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
     public static final String TABLE_NAME_FAVORITES = "Favorites";
+    public static final String TABLE_NAME_QUEUES = "Queues";
+    public static final String TABLE_NAME_QUEUE_MEMBERSHIP = "QueueMembership";
 
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -248,6 +265,45 @@ public class PodDBAdapter {
             + TABLE_NAME_FAVORITES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
+    static final String CREATE_TABLE_QUEUES = "CREATE TABLE "
+            + TABLE_NAME_QUEUES + " (" + TABLE_PRIMARY_KEY
+            + KEY_QUEUE_NAME + " TEXT NOT NULL UNIQUE,"
+            + KEY_QUEUE_COLOR + " INTEGER NOT NULL,"
+            + KEY_QUEUE_ICON + " TEXT NOT NULL,"
+            + KEY_QUEUE_IS_DEFAULT + " INTEGER NOT NULL,"
+            + KEY_QUEUE_IS_ACTIVE + " INTEGER NOT NULL,"
+            + KEY_QUEUE_CREATED_AT + " INTEGER NOT NULL,"
+            + KEY_QUEUE_MODIFIED_AT + " INTEGER NOT NULL)";
+
+    static final String CREATE_TABLE_QUEUE_MEMBERSHIP = "CREATE TABLE "
+            + TABLE_NAME_QUEUE_MEMBERSHIP + " ("
+            + KEY_MEMBERSHIP_QUEUE_ID + " INTEGER NOT NULL,"
+            + KEY_MEMBERSHIP_EPISODE_ID + " INTEGER NOT NULL,"
+            + KEY_MEMBERSHIP_POSITION + " INTEGER NOT NULL,"
+            + KEY_MEMBERSHIP_ADDED_AT + " INTEGER NOT NULL,"
+            + "PRIMARY KEY(" + KEY_MEMBERSHIP_QUEUE_ID + ", " + KEY_MEMBERSHIP_EPISODE_ID + "),"
+            + "FOREIGN KEY(" + KEY_MEMBERSHIP_QUEUE_ID + ") REFERENCES "
+            + TABLE_NAME_QUEUES + "(" + KEY_ID + ") ON DELETE CASCADE,"
+            + "FOREIGN KEY(" + KEY_MEMBERSHIP_EPISODE_ID + ") REFERENCES "
+            + TABLE_NAME_FEED_ITEMS + "(" + KEY_ID + ") ON DELETE CASCADE)";
+
+    static final String CREATE_INDEX_QUEUES_NAME = "CREATE UNIQUE INDEX "
+            + TABLE_NAME_QUEUES + "_" + KEY_QUEUE_NAME + " ON " + TABLE_NAME_QUEUES + " ("
+            + KEY_QUEUE_NAME + ")";
+
+    static final String CREATE_INDEX_QUEUE_MEMBERSHIP_QUEUE_ID = "CREATE INDEX "
+            + TABLE_NAME_QUEUE_MEMBERSHIP + "_" + KEY_MEMBERSHIP_QUEUE_ID + " ON "
+            + TABLE_NAME_QUEUE_MEMBERSHIP + " (" + KEY_MEMBERSHIP_QUEUE_ID + ")";
+
+    static final String CREATE_INDEX_QUEUE_MEMBERSHIP_EPISODE_ID = "CREATE INDEX "
+            + TABLE_NAME_QUEUE_MEMBERSHIP + "_" + KEY_MEMBERSHIP_EPISODE_ID + " ON "
+            + TABLE_NAME_QUEUE_MEMBERSHIP + " (" + KEY_MEMBERSHIP_EPISODE_ID + ")";
+
+    static final String CREATE_INDEX_QUEUE_MEMBERSHIP_QUEUE_ID_POSITION = "CREATE INDEX "
+            + TABLE_NAME_QUEUE_MEMBERSHIP + "_" + KEY_MEMBERSHIP_QUEUE_ID + "_"
+            + KEY_MEMBERSHIP_POSITION + " ON " + TABLE_NAME_QUEUE_MEMBERSHIP + " ("
+            + KEY_MEMBERSHIP_QUEUE_ID + ", " + KEY_MEMBERSHIP_POSITION + ")";
+
     /**
      * All the tables in the database
      */
@@ -258,7 +314,9 @@ public class PodDBAdapter {
             TABLE_NAME_DOWNLOAD_LOG,
             TABLE_NAME_QUEUE,
             TABLE_NAME_SIMPLECHAPTERS,
-            TABLE_NAME_FAVORITES
+            TABLE_NAME_FAVORITES,
+            TABLE_NAME_QUEUES,
+            TABLE_NAME_QUEUE_MEMBERSHIP
     };
 
     public static final String SELECT_KEY_ITEM_ID = "item_id";

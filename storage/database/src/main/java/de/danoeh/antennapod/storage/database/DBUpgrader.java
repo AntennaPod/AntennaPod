@@ -355,6 +355,52 @@ class DBUpgrader {
             db.execSQL("DELETE FROM " + PodDBAdapter.TABLE_NAME_FAVORITES + " WHERE " + PodDBAdapter.KEY_FEEDITEM
                     + " NOT IN (SELECT " + PodDBAdapter.KEY_ID + " FROM " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + ")");
         }
+        if (oldVersion < 3090000) {
+            // Create Queues table
+            db.execSQL(PodDBAdapter.CREATE_TABLE_QUEUES);
+
+            // Create unique index on queue name
+            db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUES_NAME);
+
+            // Create QueueMembership table
+            db.execSQL(PodDBAdapter.CREATE_TABLE_QUEUE_MEMBERSHIP);
+
+            // Create indices for QueueMembership
+            db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_MEMBERSHIP_QUEUE_ID);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_MEMBERSHIP_EPISODE_ID);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_MEMBERSHIP_QUEUE_ID_POSITION);
+
+            // Create default queue
+            long now = System.currentTimeMillis();
+            ContentValues defaultQueue = new ContentValues();
+            defaultQueue.put(PodDBAdapter.KEY_QUEUE_NAME, "Default");
+            defaultQueue.put(PodDBAdapter.KEY_QUEUE_COLOR, -16776961); // Blue color (0xFF0000FF)
+            defaultQueue.put(PodDBAdapter.KEY_QUEUE_ICON, "ic_queue_music_24dp");
+            defaultQueue.put(PodDBAdapter.KEY_QUEUE_IS_DEFAULT, 1);
+            defaultQueue.put(PodDBAdapter.KEY_QUEUE_IS_ACTIVE, 1);
+            defaultQueue.put(PodDBAdapter.KEY_QUEUE_CREATED_AT, now);
+            defaultQueue.put(PodDBAdapter.KEY_QUEUE_MODIFIED_AT, now);
+            long defaultQueueId = db.insert(PodDBAdapter.TABLE_NAME_QUEUES, null, defaultQueue);
+
+            // Migrate existing queue items to default queue membership
+            Cursor queueCursor = db.query(PodDBAdapter.TABLE_NAME_QUEUE,
+                    new String[]{PodDBAdapter.KEY_ID, PodDBAdapter.KEY_FEEDITEM},
+                    null, null, null, null, PodDBAdapter.KEY_ID + " ASC");
+            if (queueCursor.moveToFirst()) {
+                int position = 0;
+                do {
+                    long episodeId = queueCursor.getLong(queueCursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEEDITEM));
+                    ContentValues membership = new ContentValues();
+                    membership.put(PodDBAdapter.KEY_MEMBERSHIP_QUEUE_ID, defaultQueueId);
+                    membership.put(PodDBAdapter.KEY_MEMBERSHIP_EPISODE_ID, episodeId);
+                    membership.put(PodDBAdapter.KEY_MEMBERSHIP_POSITION, position);
+                    membership.put(PodDBAdapter.KEY_MEMBERSHIP_ADDED_AT, now);
+                    db.insert(PodDBAdapter.TABLE_NAME_QUEUE_MEMBERSHIP, null, membership);
+                    position++;
+                } while (queueCursor.moveToNext());
+            }
+            queueCursor.close();
+        }
     }
 
 }
