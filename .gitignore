@@ -79,6 +79,7 @@ AGENTS.md
 .windsurfrules
 GEMINI.md
 reports/
+specs/
 
 # local checks before committing. Since there's no official one, ignore the users' local ones.
 .pre-commit-config.yaml
