@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -51,8 +50,8 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
         this.onDismiss = onDismiss;
 
         Feed feed = null;
-        String podcastTitle = null;
-        String episodeTitle = null;
+        String podcastName = null;
+        String episodeName = null;
 
         String url = "unknown";
         if (downloadResult.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
@@ -60,15 +59,15 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
             if (media != null && media.getItem() != null) {
                 feed = DBReader.getFeed(media.getItem().getFeedId(), false, 0, 0);
                 if (feed != null) {
-                    podcastTitle = feed.getFeedTitle();
+                    podcastName = feed.getFeedTitle();
                 }
-                episodeTitle = media.getEpisodeTitle();
+                episodeName = media.getEpisodeTitle();
                 url = media.getDownloadUrl();
             }
         } else if (downloadResult.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
             feed = DBReader.getFeed(downloadResult.getFeedfileId(), false, 0, 0);
             if (feed != null) {
-                podcastTitle = feed.getFeedTitle();
+                podcastName = feed.getFeedTitle();
                 url = feed.getDownloadUrl();
             }
         }
@@ -91,34 +90,30 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
             });
         }
 
-        if (podcastTitle != null) {
-            binding.txtvPodcastTitle.setText(getContext().getString(R.string.feed_title));
-            binding.txtvPodcastName.setText(podcastTitle);
+        if (podcastName != null) {
+            binding.txtvPodcastTitle.setText(R.string.feed_title);
+            binding.txtvPodcastName.setText(podcastName);
         } else {
             binding.llPodcast.setVisibility(View.GONE);
         }
-        if (episodeTitle != null) {
-            binding.txtvEpisodeTitle.setText(getContext().getString(R.string.episode_title));
-            binding.txtvEpisodeName.setText(episodeTitle);
+        if (episodeName != null) {
+            binding.txtvEpisodeTitle.setText(R.string.episode_title);
+            binding.txtvEpisodeName.setText(episodeName);
         } else {
             binding.llEpisode.setVisibility(View.GONE);
         }
 
         final String humanReadableReason = context.getString(DownloadErrorLabel.from(downloadResult.getReason()));
-        final Pair<String, String> reasonAndUrlTitlePair = getDownloadLogTitles(context);
-        final String technicalReasonTitle = reasonAndUrlTitlePair.first;
-        final String fileUrlTitle = reasonAndUrlTitlePair.second;
-
-        binding.txtvHumanReadableMessage.setText(humanReadableReason);
-
-        binding.txtvTechnicalReasonTitle.setText(technicalReasonTitle);
+        binding.txtvHumanReadableReasonContent.setText(humanReadableReason);
         binding.txtvTechnicalReasonContent.setText(message);
-
-        binding.txtvFileUrlTitle.setText(fileUrlTitle);
         binding.txtvFileUrlContent.setText(url);
 
-        final String dialogContent = context
-                .getString(R.string.download_log_details_message, humanReadableReason, message, url);
+        final String humanReadableReasonTitle = context
+                .getString(R.string.download_log_details_human_readable_reason_title);
+        final String technicalReasonTitle = context.getString(R.string.download_log_details_technical_reason_title);
+        final String urlTitle = context.getString(R.string.download_log_details_file_url_title);
+        final String dialogContent =  String.format("%s: \n%s \n\n%s: \n%s \n\n%s: \n%s",
+                humanReadableReasonTitle, humanReadableReason, technicalReasonTitle, message, urlTitle, url);
 
         setTitle(R.string.download_error_details);
         setView(binding.getRoot());
@@ -131,40 +126,6 @@ public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));
             }
         });
-    }
-
-    public static Pair<String, String> getDownloadLogTitles(Context context) {
-        final String start = "[START]";
-        final String middle = "[MIDDLE]";
-        final String end = "[END]";
-        String s = context.getString(R.string.download_log_details_message, start, middle, end);
-
-        int startIndex = s.indexOf(start);
-        int middleIndex = s.indexOf(middle);
-        int endIndex = s.indexOf(end);
-
-        String firstLabel = "";
-        String secondLabel = "";
-
-        if (startIndex != -1 && middleIndex != -1) {
-            String between = s.substring(startIndex + start.length(), middleIndex);
-            int colon = between.indexOf(':');
-            if (colon != -1) {
-                between = between.substring(0, colon);
-            }
-            firstLabel = between.trim();
-        }
-
-        if (middleIndex != -1 && endIndex != -1) {
-            String between = s.substring(middleIndex + middle.length(), endIndex);
-            int colon = between.indexOf(':');
-            if (colon != -1) {
-                between = between.substring(0, colon);
-            }
-            secondLabel = between.trim();
-        }
-
-        return new Pair<>(firstLabel, secondLabel);
     }
 
     private Runnable dismissThisDialog;

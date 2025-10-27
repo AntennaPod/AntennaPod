@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Podcast header, podcast title, button go jump to podcast -->
+            <!-- Podcast header, podcast title, button to jump to podcast -->
             <LinearLayout
                 android:id="@+id/llPodcast"
                 android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                         android:id="@+id/txtvPodcastTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Podcast"
+                        android:text="@string/feed"
                         android:layout_marginEnd="4dp"
                         style="@style/TextAppearance.Material3.TitleMedium" />
 
@@ -79,7 +79,7 @@
                     android:id="@+id/txtvEpisodeTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Episode"
+                    android:text="@string/episode"
                     android:layout_marginEnd="4dp"
                     style="@style/TextAppearance.Material3.TitleMedium" />
 
@@ -97,12 +97,29 @@
             </LinearLayout>
 
             <!-- Human readable reason for the message/error -->
-            <TextView
-                android:id="@+id/txtvHumanReadableMessage"
+            <LinearLayout
+                android:id="@+id/llHumanReadableReason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="successful"
-                android:layout_marginTop="8dp" />
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/txtvHumanReadableReasonTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/download_log_details_human_readable_reason_title"
+                    android:layout_marginEnd="4dp"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
+
+                <TextView
+                    android:id="@+id/txtvHumanReadableReasonContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="No technical reason found" />
+
+            </LinearLayout>
 
             <!-- Technical details/reason -->
             <LinearLayout
@@ -116,7 +133,7 @@
                     android:id="@+id/txtvTechnicalReasonTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Technical Reason"
+                    android:text="@string/download_log_details_technical_reason_title"
                     android:layout_marginEnd="4dp"
                     style="@style/TextAppearance.Material3.TitleMedium" />
 
@@ -141,7 +158,7 @@
                     android:id="@+id/txtvFileUrlTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="File Url"
+                    android:text="@string/download_log_details_file_url_title"
                     android:layout_marginEnd="4dp"
                     style="@style/TextAppearance.Material3.TitleMedium" />
 
