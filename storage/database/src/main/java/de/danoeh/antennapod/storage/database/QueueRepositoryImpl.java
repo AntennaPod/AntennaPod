@@ -315,12 +315,36 @@ public class QueueRepositoryImpl implements QueueRepository {
                 adapter.endTransaction();
             }
 
+            // Auto-cleanup: Remove 100% played episodes from target queue (FR-042)
+            cleanupPlayedEpisodes(adapter, queueId);
+
             // Post event after transaction completes
             // EventBus.getDefault().post(new QueueSwitchedEvent(queueId));
         } catch (SQLException e) {
             Log.e(TAG, "Database error during queue switch", e);
             throw new QueueSwitchException("Database error during queue switch", e);
         }
+    }
+
+    /**
+     * Removes all 100% played episodes from the specified queue (FR-042).
+     *
+     * <p>Called automatically when switching to a queue to clean up completed episodes.
+     * Episodes are removed from queue but not deleted from the library.
+     *
+     * <p>TODO (T049): Implement full cleanup logic by checking FeedMedia playback duration
+     * against position. Currently marked for Phase 4 implementation.
+     *
+     * @param adapter Open PodDBAdapter instance
+     * @param queueId Queue to clean up
+     */
+    private void cleanupPlayedEpisodes(PodDBAdapter adapter, long queueId) {
+        // TODO (T049): Implement cleanup when FeedItem/FeedMedia API is clarified
+        // Future implementation should:
+        // 1. Get episodes from selectEpisodesForQueue(queueId)
+        // 2. Check if episode.getMedia().getDuration() <= episode.getMedia().getPosition()
+        // 3. Remove episode via deleteQueueMembership(queueId, episodeId)
+        Log.d(TAG, "Episode cleanup placeholder for queue " + queueId + " (T049)");
     }
 
     @Nullable
