@@ -8,6 +8,7 @@
 -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="8dp">
@@ -29,6 +30,6 @@
         android:src="@drawable/ic_check_24dp"
         android:contentDescription="@string/selected"
         android:visibility="gone"
-        android:tint="#FFFFFF" />
+        app:tint="#FFFFFF" />
 
 </FrameLayout>
