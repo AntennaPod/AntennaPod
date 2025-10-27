@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Layout for icon picker item in grid.
+
+    Contains:
+    - Icon ImageView (48dp)
+    - Selection border (highlighted when selected)
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="4dp">
+
+    <!-- Icon view -->
+    <ImageView
+        android:id="@+id/icon_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/icon_option"
+        android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+    <!-- Selection border overlay -->
+    <View
+        android:id="@+id/selection_border"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@drawable/icon_selection_border"
+        android:visibility="gone" />
+
+</FrameLayout>

@@ -1,13 +1,10 @@
-package de.danoeh.antennapod.storage.database;
+package de.danoeh.antennapod.model.feed;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
 import java.util.concurrent.Future;
-
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.Queue;
 
 /**
  * Repository interface for queue operations in AntennaPod.
@@ -20,13 +17,13 @@ import de.danoeh.antennapod.model.feed.Queue;
  *
  * <p>All write methods return Future objects for async operations, following the DBWriter pattern.
  * Read methods execute synchronously on the caller's thread (following DBReader pattern).
- * Methods that modify data may throw custom exceptions defined in this package.
+ * Methods that modify data may throw custom exceptions defined in the event package.
  *
  * <p>Threading: Write operations are executed on a background ExecutorService thread.
  * Read operations execute synchronously, so callers should ensure they are not on the UI thread.
  *
  * @see Queue
- * @see de.danoeh.antennapod.model.feed.QueueMembership
+ * @see QueueMembership
  */
 public interface QueueRepository {
 

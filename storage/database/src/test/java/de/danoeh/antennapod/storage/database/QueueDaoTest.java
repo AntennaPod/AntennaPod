@@ -26,7 +26,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 /**
  * Unit tests for Queue DAO operations using Robolectric.
  *
- * Tests the low-level database access for queue and queue membership operations.
+ * <p>Tests the low-level database access for queue and queue membership operations.
  * Verifies CRUD operations, constraints (unique names, foreign keys), and cascade deletes.
  */
 @RunWith(RobolectricTestRunner.class)
@@ -101,7 +101,7 @@ public class QueueDaoTest {
             fail("Should have thrown exception for duplicate name");
         } catch (Exception e) {
             assertTrue("Should be SQLiteConstraintException",
-                e instanceof android.database.sqlite.SQLiteConstraintException);
+                    e instanceof android.database.sqlite.SQLiteConstraintException);
         }
     }
 

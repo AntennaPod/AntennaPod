@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Selection border for icon picker items.
+    Shows a colored border when icon is selected.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:width="3dp"
+        android:color="?attr/colorPrimary" />
+    <corners android:radius="4dp" />
+</shape>

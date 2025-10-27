@@ -1,17 +1,17 @@
-package de.danoeh.antennapod.storage.database;
+package de.danoeh.antennapod.model.feed;
 
 import androidx.annotation.NonNull;
 
 /**
  * Exception thrown when attempting to access a queue that does not exist in the database.
  *
- * <p>This exception is thrown by various {@link QueueRepository} methods when
- * a queue lookup by ID fails to find a matching record.
+ * <p>This exception is thrown by various {@link QueueRepository} methods when a queue lookup
+ * by ID fails to find a matching record.
  *
  * <p>Example usage:
  * <pre>
  * try {
- *     Queue queue = queueRepository.getQueueById(nonExistentId).blockingGet();
+ *     Queue queue = queueRepository.getQueueById(nonExistentId);
  * } catch (QueueNotFoundException e) {
  *     // Handle missing queue - may have been deleted, show error
  * }

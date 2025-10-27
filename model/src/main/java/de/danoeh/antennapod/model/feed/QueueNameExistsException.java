@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.storage.database;
+package de.danoeh.antennapod.model.feed;
 
 import androidx.annotation.NonNull;
 
@@ -7,14 +7,13 @@ import androidx.annotation.NonNull;
  * that already exists in the database.
  *
  * <p>Queue names must be unique (database constraint). This exception is thrown
- * by {@link QueueRepository#createQueue(de.danoeh.antennapod.model.feed.Queue)}
- * and {@link QueueRepository#updateQueue(de.danoeh.antennapod.model.feed.Queue)}
+ * by {@link QueueRepository#createQueue(Queue)} and {@link QueueRepository#updateQueue(Queue)}
  * when a name conflict is detected.
  *
  * <p>Example usage:
  * <pre>
  * try {
- *     queueRepository.createQueue(newQueue).blockingGet();
+ *     queueRepository.createQueue(newQueue);
  * } catch (QueueNameExistsException e) {
  *     // Handle duplicate name - prompt user to choose different name
  * }

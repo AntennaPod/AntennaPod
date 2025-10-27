@@ -24,7 +24,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 /**
  * Integration tests for database migration from old schema to new queues schema.
  *
- * Tests verify that:
+ * <p>Tests verify that:
  * 1. Database schema is created correctly on fresh install
  * 2. Queues and QueueMembership tables exist with proper constraints
  * 3. Default queue is created automatically
@@ -89,7 +89,7 @@ public class MigrationTest {
             assertTrue("Should have thrown SQLiteConstraintException", false);
         } catch (android.database.sqlite.SQLiteConstraintException e) {
             assertTrue("Exception message should mention constraint",
-                e.getMessage().toLowerCase().contains("constraint"));
+                    e.getMessage().toLowerCase().contains("constraint"));
         }
     }
 

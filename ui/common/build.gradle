@@ -12,6 +12,8 @@ android {
 }
 
 dependencies {
+    implementation project(":event")
+    implementation project(":model")
     implementation project(":storage:preferences")
     implementation project(":ui:i18n")
 

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.storage.database;
+package de.danoeh.antennapod.model.feed;
 
 import androidx.annotation.NonNull;
 
@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
  *
  * <p>The default queue (isDefault=true) is protected and cannot be:
  * - Deleted via {@link QueueRepository#deleteQueue(long)}
- * - Renamed via {@link QueueRepository#updateQueue(de.danoeh.antennapod.model.feed.Queue)}
+ * - Renamed via {@link QueueRepository#updateQueue(Queue)}
  *
  * <p>This protection ensures there is always at least one queue available for
  * episodes, maintaining application stability.
@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
  * <p>Example usage:
  * <pre>
  * try {
- *     queueRepository.deleteQueue(defaultQueueId).blockingAwait();
+ *     queueRepository.deleteQueue(defaultQueueId);
  * } catch (DefaultQueueException e) {
  *     // Handle attempt to delete default queue - show error to user
  * }

@@ -11,8 +11,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import de.danoeh.antennapod.model.feed.DefaultQueueException;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.Queue;
+import de.danoeh.antennapod.model.feed.QueueNameExistsException;
+import de.danoeh.antennapod.model.feed.QueueNotFoundException;
+import de.danoeh.antennapod.model.feed.QueueRepository;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
