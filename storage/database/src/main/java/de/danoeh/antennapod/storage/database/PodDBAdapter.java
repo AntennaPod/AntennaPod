@@ -284,9 +284,7 @@ public class PodDBAdapter {
             + KEY_MEMBERSHIP_ADDED_AT + " INTEGER NOT NULL,"
             + "PRIMARY KEY(" + KEY_MEMBERSHIP_QUEUE_ID + ", " + KEY_MEMBERSHIP_EPISODE_ID + "),"
             + "FOREIGN KEY(" + KEY_MEMBERSHIP_QUEUE_ID + ") REFERENCES "
-            + TABLE_NAME_QUEUES + "(" + KEY_ID + ") ON DELETE CASCADE,"
-            + "FOREIGN KEY(" + KEY_MEMBERSHIP_EPISODE_ID + ") REFERENCES "
-            + TABLE_NAME_FEED_ITEMS + "(" + KEY_ID + ") ON DELETE CASCADE)";
+            + TABLE_NAME_QUEUES + "(" + KEY_ID + ") ON DELETE CASCADE)";
 
     static final String CREATE_INDEX_QUEUES_NAME = "CREATE UNIQUE INDEX "
             + TABLE_NAME_QUEUES + "_" + KEY_QUEUE_NAME + " ON " + TABLE_NAME_QUEUES + " ("
@@ -439,6 +437,7 @@ public class PodDBAdapter {
         try {
             newDb = dbHelper.getWritableDatabase();
             newDb.disableWriteAheadLogging();
+            newDb.setForeignKeyConstraintsEnabled(true);
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
             newDb = dbHelper.getReadableDatabase();
@@ -1559,7 +1558,7 @@ public class PodDBAdapter {
         values.put(KEY_QUEUE_CREATED_AT, queue.getCreatedAt());
         values.put(KEY_QUEUE_MODIFIED_AT, queue.getModifiedAt());
 
-        long id = db.insert(TABLE_NAME_QUEUES, null, values);
+        long id = db.insertOrThrow(TABLE_NAME_QUEUES, null, values);
         queue.setId(id);
         return id;
     }
@@ -1971,7 +1970,12 @@ public class PodDBAdapter {
             db.execSQL(CREATE_TABLE_FEED_ITEMS);
             db.execSQL(CREATE_TABLE_FEED_MEDIA);
             db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
-            db.execSQL(CREATE_TABLE_QUEUE);
+            db.execSQL(CREATE_TABLE_QUEUES);
+            db.execSQL(CREATE_INDEX_QUEUES_NAME);
+            db.execSQL(CREATE_TABLE_QUEUE_MEMBERSHIP);
+            db.execSQL(CREATE_INDEX_QUEUE_MEMBERSHIP_QUEUE_ID);
+            db.execSQL(CREATE_INDEX_QUEUE_MEMBERSHIP_EPISODE_ID);
+            db.execSQL(CREATE_INDEX_QUEUE_MEMBERSHIP_QUEUE_ID_POSITION);
             db.execSQL(CREATE_TABLE_SIMPLECHAPTERS);
             db.execSQL(CREATE_TABLE_FAVORITES);
 
@@ -1979,8 +1983,19 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDITEMS_PUBDATE);
             db.execSQL(CREATE_INDEX_FEEDITEMS_READ);
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
-            db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
+
+            // Create default queue
+            long now = System.currentTimeMillis();
+            ContentValues defaultQueue = new ContentValues();
+            defaultQueue.put(KEY_QUEUE_NAME, "Default");
+            defaultQueue.put(KEY_QUEUE_COLOR, -16776961); // Blue color (0xFF0000FF)
+            defaultQueue.put(KEY_QUEUE_ICON, "ic_queue_music_24dp");
+            defaultQueue.put(KEY_QUEUE_IS_DEFAULT, 1);
+            defaultQueue.put(KEY_QUEUE_IS_ACTIVE, 1);
+            defaultQueue.put(KEY_QUEUE_CREATED_AT, now);
+            defaultQueue.put(KEY_QUEUE_MODIFIED_AT, now);
+            db.insert(TABLE_NAME_QUEUES, null, defaultQueue);
         }
 
         @Override

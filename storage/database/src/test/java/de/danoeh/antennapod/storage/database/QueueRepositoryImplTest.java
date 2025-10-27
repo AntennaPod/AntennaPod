@@ -45,6 +45,7 @@ public class QueueRepositoryImplTest {
     @Before
     public void setUp() {
         context = ApplicationProvider.getApplicationContext();
+        PodDBAdapter.init(context);
         UserPreferences.init(context);
         adapter = PodDBAdapter.getInstance();
         repository = QueueRepositoryImpl.getInstance();
