@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
  * }
  * </pre>
  */
-public class QueueNotFoundException extends Exception {
+public class QueueNotFoundException extends RuntimeException {
 
     private final long queueId;
 

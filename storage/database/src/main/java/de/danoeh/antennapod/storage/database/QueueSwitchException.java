@@ -24,7 +24,7 @@ import androidx.annotation.Nullable;
  * }
  * </pre>
  */
-public class QueueSwitchException extends Exception {
+public class QueueSwitchException extends RuntimeException {
 
     private final Long oldQueueId;
     private final Long newQueueId;

@@ -22,6 +22,7 @@ import de.danoeh.antennapod.model.feed.FeedFunding;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -475,7 +476,12 @@ public class PodDBAdapter {
         adapter.open();
         try {
             for (String tableName : ALL_TABLES) {
-                adapter.db.delete(tableName, "1", null);
+                try {
+                    adapter.db.delete(tableName, "1", null);
+                } catch (android.database.sqlite.SQLiteException e) {
+                    // Table may not exist yet if migration hasn't run
+                    Log.w(TAG, "Could not delete from table " + tableName + ": " + e.getMessage());
+                }
             }
             return true;
         } finally {
@@ -1533,6 +1539,393 @@ public class PodDBAdapter {
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public void insertTestData(@NonNull String table, @NonNull ContentValues values) {
         db.insert(table, null, values);
+    }
+
+    // ==================== Queue DAO Methods ====================
+
+    /**
+     * Inserts a new queue into the database.
+     *
+     * @param queue Queue to insert (id will be generated)
+     * @return Generated queue ID
+     */
+    public long insertQueue(@NonNull de.danoeh.antennapod.model.feed.Queue queue) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_QUEUE_NAME, queue.getName());
+        values.put(KEY_QUEUE_COLOR, queue.getColor());
+        values.put(KEY_QUEUE_ICON, queue.getIcon());
+        values.put(KEY_QUEUE_IS_DEFAULT, queue.isDefault() ? 1 : 0);
+        values.put(KEY_QUEUE_IS_ACTIVE, queue.isActive() ? 1 : 0);
+        values.put(KEY_QUEUE_CREATED_AT, queue.getCreatedAt());
+        values.put(KEY_QUEUE_MODIFIED_AT, queue.getModifiedAt());
+
+        long id = db.insert(TABLE_NAME_QUEUES, null, values);
+        queue.setId(id);
+        return id;
+    }
+
+    /**
+     * Updates an existing queue in the database.
+     *
+     * @param queue Queue with updated properties (must have valid ID)
+     */
+    public void updateQueue(@NonNull de.danoeh.antennapod.model.feed.Queue queue) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_QUEUE_NAME, queue.getName());
+        values.put(KEY_QUEUE_COLOR, queue.getColor());
+        values.put(KEY_QUEUE_ICON, queue.getIcon());
+        values.put(KEY_QUEUE_IS_DEFAULT, queue.isDefault() ? 1 : 0);
+        values.put(KEY_QUEUE_IS_ACTIVE, queue.isActive() ? 1 : 0);
+        values.put(KEY_QUEUE_MODIFIED_AT, queue.getModifiedAt());
+
+        db.update(TABLE_NAME_QUEUES, values, KEY_ID + "=?",
+                new String[]{String.valueOf(queue.getId())});
+    }
+
+    /**
+     * Deletes a queue from the database.
+     * QueueMembership records are cascade deleted via foreign key constraint.
+     *
+     * @param queueId Queue ID to delete
+     */
+    public void deleteQueue(long queueId) {
+        db.delete(TABLE_NAME_QUEUES, KEY_ID + "=?",
+                new String[]{String.valueOf(queueId)});
+    }
+
+    /**
+     * Selects a queue by its ID.
+     *
+     * @param queueId Queue ID
+     * @return Queue object if found, null otherwise
+     */
+    @Nullable
+    public de.danoeh.antennapod.model.feed.Queue selectQueueById(long queueId) {
+        Cursor cursor = db.query(TABLE_NAME_QUEUES, null, KEY_ID + "=?",
+                new String[]{String.valueOf(queueId)}, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                return queueFromCursor(cursor);
+            }
+            return null;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
+     * Selects all queues, ordered by active status first, then alphabetically by name.
+     *
+     * @return List of all queues
+     */
+    @NonNull
+    public List<de.danoeh.antennapod.model.feed.Queue> selectAllQueues() {
+        List<de.danoeh.antennapod.model.feed.Queue> queues = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_NAME_QUEUES, null, null, null, null, null,
+                KEY_QUEUE_IS_ACTIVE + " DESC, " + KEY_QUEUE_NAME + " COLLATE NOCASE ASC");
+        try {
+            while (cursor.moveToNext()) {
+                queues.add(queueFromCursor(cursor));
+            }
+        } finally {
+            cursor.close();
+        }
+        return queues;
+    }
+
+    /**
+     * Selects the currently active queue.
+     *
+     * @return Active queue, or null if none found (should never happen)
+     */
+    @Nullable
+    public de.danoeh.antennapod.model.feed.Queue selectActiveQueue() {
+        Cursor cursor = db.query(TABLE_NAME_QUEUES, null, KEY_QUEUE_IS_ACTIVE + "=1",
+                null, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                return queueFromCursor(cursor);
+            }
+            return null;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
+     * Selects the default queue.
+     *
+     * @return Default queue, or null if none found (should never happen)
+     */
+    @Nullable
+    public de.danoeh.antennapod.model.feed.Queue selectDefaultQueue() {
+        Cursor cursor = db.query(TABLE_NAME_QUEUES, null, KEY_QUEUE_IS_DEFAULT + "=1",
+                null, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                return queueFromCursor(cursor);
+            }
+            return null;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
+     * Helper method to create Queue object from cursor.
+     *
+     * @param cursor Cursor positioned at a queue row
+     * @return Queue object
+     */
+    @NonNull
+    private de.danoeh.antennapod.model.feed.Queue queueFromCursor(@NonNull Cursor cursor) {
+        int idxId = cursor.getColumnIndexOrThrow(KEY_ID);
+        int idxName = cursor.getColumnIndexOrThrow(KEY_QUEUE_NAME);
+        int idxColor = cursor.getColumnIndexOrThrow(KEY_QUEUE_COLOR);
+        int idxIcon = cursor.getColumnIndexOrThrow(KEY_QUEUE_ICON);
+        int idxIsDefault = cursor.getColumnIndexOrThrow(KEY_QUEUE_IS_DEFAULT);
+        int idxIsActive = cursor.getColumnIndexOrThrow(KEY_QUEUE_IS_ACTIVE);
+        int idxCreatedAt = cursor.getColumnIndexOrThrow(KEY_QUEUE_CREATED_AT);
+        int idxModifiedAt = cursor.getColumnIndexOrThrow(KEY_QUEUE_MODIFIED_AT);
+
+        return new de.danoeh.antennapod.model.feed.Queue(
+                cursor.getLong(idxId),
+                cursor.getString(idxName),
+                cursor.getInt(idxColor),
+                cursor.getString(idxIcon),
+                cursor.getInt(idxIsDefault) == 1,
+                cursor.getInt(idxIsActive) == 1,
+                cursor.getLong(idxCreatedAt),
+                cursor.getLong(idxModifiedAt)
+        );
+    }
+
+    // ==================== QueueMembership DAO Methods ====================
+
+    /**
+     * Inserts a queue membership record.
+     *
+     * @param queueId   Queue ID
+     * @param episodeId Episode ID
+     * @param position  Position in queue (0-based)
+     */
+    public void insertQueueMembership(long queueId, long episodeId, int position) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_MEMBERSHIP_QUEUE_ID, queueId);
+        values.put(KEY_MEMBERSHIP_EPISODE_ID, episodeId);
+        values.put(KEY_MEMBERSHIP_POSITION, position);
+        values.put(KEY_MEMBERSHIP_ADDED_AT, System.currentTimeMillis());
+
+        db.insertWithOnConflict(TABLE_NAME_QUEUE_MEMBERSHIP, null, values,
+                SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    /**
+     * Deletes a queue membership record.
+     *
+     * @param queueId   Queue ID
+     * @param episodeId Episode ID
+     */
+    public void deleteQueueMembership(long queueId, long episodeId) {
+        db.delete(TABLE_NAME_QUEUE_MEMBERSHIP,
+                KEY_MEMBERSHIP_QUEUE_ID + "=? AND " + KEY_MEMBERSHIP_EPISODE_ID + "=?",
+                new String[]{String.valueOf(queueId), String.valueOf(episodeId)});
+    }
+
+    /**
+     * Deletes all queue memberships for a queue.
+     *
+     * @param queueId Queue ID
+     */
+    public void deleteAllQueueMemberships(long queueId) {
+        db.delete(TABLE_NAME_QUEUE_MEMBERSHIP, KEY_MEMBERSHIP_QUEUE_ID + "=?",
+                new String[]{String.valueOf(queueId)});
+    }
+
+    /**
+     * Checks if a queue membership exists.
+     *
+     * @param queueId   Queue ID
+     * @param episodeId Episode ID
+     * @return True if membership exists
+     */
+    public boolean queueMembershipExists(long queueId, long episodeId) {
+        Cursor cursor = db.query(TABLE_NAME_QUEUE_MEMBERSHIP,
+                new String[]{KEY_MEMBERSHIP_QUEUE_ID},
+                KEY_MEMBERSHIP_QUEUE_ID + "=? AND " + KEY_MEMBERSHIP_EPISODE_ID + "=?",
+                new String[]{String.valueOf(queueId), String.valueOf(episodeId)},
+                null, null, null);
+        try {
+            return cursor.getCount() > 0;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
+     * Gets the maximum position value in a queue.
+     *
+     * @param queueId Queue ID
+     * @return Maximum position, or -1 if queue is empty
+     */
+    public int getMaxPositionInQueue(long queueId) {
+        Cursor cursor = db.rawQuery(
+                "SELECT MAX(" + KEY_MEMBERSHIP_POSITION + ") FROM " + TABLE_NAME_QUEUE_MEMBERSHIP
+                        + " WHERE " + KEY_MEMBERSHIP_QUEUE_ID + "=?",
+                new String[]{String.valueOf(queueId)});
+        try {
+            if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                return cursor.getInt(0);
+            }
+            return -1;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
+     * Reorders queue memberships after a removal to maintain continuous position sequence.
+     * Updates all positions to be sequential (0, 1, 2, ...).
+     *
+     * @param queueId Queue ID
+     */
+    public void reorderQueueMembershipsAfterRemoval(long queueId) {
+        // Get all episode IDs in current position order
+        List<Long> episodeIds = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_NAME_QUEUE_MEMBERSHIP,
+                new String[]{KEY_MEMBERSHIP_EPISODE_ID},
+                KEY_MEMBERSHIP_QUEUE_ID + "=?",
+                new String[]{String.valueOf(queueId)},
+                null, null, KEY_MEMBERSHIP_POSITION + " ASC");
+        try {
+            while (cursor.moveToNext()) {
+                episodeIds.add(cursor.getLong(0));
+            }
+        } finally {
+            cursor.close();
+        }
+
+        // Update positions to be sequential
+        for (int i = 0; i < episodeIds.size(); i++) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_MEMBERSHIP_POSITION, i);
+            db.update(TABLE_NAME_QUEUE_MEMBERSHIP, values,
+                    KEY_MEMBERSHIP_QUEUE_ID + "=? AND " + KEY_MEMBERSHIP_EPISODE_ID + "=?",
+                    new String[]{String.valueOf(queueId), String.valueOf(episodeIds.get(i))});
+        }
+    }
+
+    /**
+     * Updates a queue membership position.
+     *
+     * @param queueId    Queue ID
+     * @param episodeId  Episode ID
+     * @param newPosition New position value
+     */
+    public void updateQueueMembershipPosition(long queueId, long episodeId, int newPosition) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_MEMBERSHIP_POSITION, newPosition);
+        db.update(TABLE_NAME_QUEUE_MEMBERSHIP, values,
+                KEY_MEMBERSHIP_QUEUE_ID + "=? AND " + KEY_MEMBERSHIP_EPISODE_ID + "=?",
+                new String[]{String.valueOf(queueId), String.valueOf(episodeId)});
+    }
+
+    /**
+     * Selects episodes for a queue, ordered by position.
+     *
+     * @param queueId Queue ID
+     * @return List of FeedItems in queue order
+     */
+    @NonNull
+    public List<FeedItem> selectEpisodesForQueue(long queueId) {
+        List<FeedItem> items = new ArrayList<>();
+        String query = SELECT_FEED_ITEMS_AND_MEDIA
+                + " INNER JOIN " + TABLE_NAME_QUEUE_MEMBERSHIP
+                + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE_MEMBERSHIP + "."
+                + KEY_MEMBERSHIP_EPISODE_ID
+                + " WHERE " + TABLE_NAME_QUEUE_MEMBERSHIP + "." + KEY_MEMBERSHIP_QUEUE_ID + "=?"
+                + " ORDER BY " + TABLE_NAME_QUEUE_MEMBERSHIP + "." + KEY_MEMBERSHIP_POSITION + " ASC";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(queueId)});
+        try {
+            de.danoeh.antennapod.storage.database.mapper.FeedItemCursor itemCursor =
+                    new de.danoeh.antennapod.storage.database.mapper.FeedItemCursor(cursor);
+            while (itemCursor.moveToNext()) {
+                items.add(itemCursor.getFeedItem());
+            }
+        } finally {
+            cursor.close();
+        }
+        return items;
+    }
+
+    /**
+     * Selects all queues that contain a specific episode.
+     *
+     * @param episodeId Episode ID
+     * @return List of queues containing this episode
+     */
+    @NonNull
+    public List<de.danoeh.antennapod.model.feed.Queue> selectQueuesContainingEpisode(long episodeId) {
+        List<de.danoeh.antennapod.model.feed.Queue> queues = new ArrayList<>();
+        String query = "SELECT " + TABLE_NAME_QUEUES + ".* FROM " + TABLE_NAME_QUEUES
+                + " INNER JOIN " + TABLE_NAME_QUEUE_MEMBERSHIP
+                + " ON " + TABLE_NAME_QUEUES + "." + KEY_ID + " = "
+                + TABLE_NAME_QUEUE_MEMBERSHIP + "." + KEY_MEMBERSHIP_QUEUE_ID
+                + " WHERE " + TABLE_NAME_QUEUE_MEMBERSHIP + "." + KEY_MEMBERSHIP_EPISODE_ID + "=?"
+                + " ORDER BY " + TABLE_NAME_QUEUES + "." + KEY_QUEUE_NAME + " COLLATE NOCASE ASC";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(episodeId)});
+        try {
+            while (cursor.moveToNext()) {
+                queues.add(queueFromCursor(cursor));
+            }
+        } finally {
+            cursor.close();
+        }
+        return queues;
+    }
+
+    /**
+     * Counts episodes in a queue.
+     *
+     * @param queueId Queue ID
+     * @return Episode count
+     */
+    public int countQueueEpisodes(long queueId) {
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM " + TABLE_NAME_QUEUE_MEMBERSHIP
+                        + " WHERE " + KEY_MEMBERSHIP_QUEUE_ID + "=?",
+                new String[]{String.valueOf(queueId)});
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            return 0;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
+     * Begins a database transaction.
+     */
+    public void beginTransaction() {
+        db.beginTransactionNonExclusive();
+    }
+
+    /**
+     * Marks the current transaction as successful.
+     */
+    public void setTransactionSuccessful() {
+        db.setTransactionSuccessful();
+    }
+
+    /**
+     * Ends the current database transaction.
+     */
+    public void endTransaction() {
+        db.endTransaction();
     }
 
     /**

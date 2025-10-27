@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
  * }
  * </pre>
  */
-public class QueueNameExistsException extends Exception {
+public class QueueNameExistsException extends RuntimeException {
 
     private final String queueName;
 

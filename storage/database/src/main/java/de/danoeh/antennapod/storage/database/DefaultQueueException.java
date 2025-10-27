@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
  * }
  * </pre>
  */
-public class DefaultQueueException extends Exception {
+public class DefaultQueueException extends RuntimeException {
 
     private final long queueId;
     private final String operationAttempted;
