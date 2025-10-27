@@ -331,7 +331,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 public void onConfirmButtonPressed(
                         DialogInterface dialog) {
                     dialog.dismiss();
-                    DBWriter.clearQueue();
+                    DBWriter.df_clearQueue(currentQueueId);
                 }
             };
             conDialog.createNewDialog().show();

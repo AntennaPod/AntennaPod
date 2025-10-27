@@ -551,6 +551,20 @@ public class DBWriter {
     }
 
     /**
+     * Removes all FeedItem objects from the queue.
+     */
+    public static Future<?> df_clearQueue(final long queueId) {
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.df_clearQueue(queueId);
+            adapter.close();
+
+            EventBus.getDefault().post(QueueEvent.cleared());
+        });
+    }
+
+    /**
      * Removes a FeedItem object from the queue.
      *
      * @param context             A context that is used for opening a database connection.

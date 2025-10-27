@@ -959,6 +959,11 @@ public class PodDBAdapter {
         db.delete(TABLE_NAME_QUEUE, null, null);
     }
 
+    public void df_clearQueue(final long queueId) {
+        db.execSQL("DELETE FROM " + TABLE_NAME_QUEUE_ITEMS + " WHERE "
+                + KEY_QUEUE_ID + "=" + queueId);
+    }
+
     /**
      * Remove the listed items and their FeedMedia entries.
      */
