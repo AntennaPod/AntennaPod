@@ -824,7 +824,7 @@ public abstract class UserPreferences {
      *
      * <p>The active queue ID is persisted in SharedPreferences for fast access
      * without database queries. This value is kept in sync with the Queue table's
-     * isActive flag by {@link de.danoeh.antennapod.storage.database.QueueRepository}.
+     * isActive flag by {@link de.danoeh.antennapod.model.feed.QueueRepository}.
      *
      * @return Active queue ID (default: 1, the default queue)
      */
@@ -836,7 +836,7 @@ public abstract class UserPreferences {
      * Sets the currently active queue ID.
      *
      * <p>This should only be called by
-     * {@link de.danoeh.antennapod.storage.database.QueueRepository#switchActiveQueue(long)}
+     * {@link de.danoeh.antennapod.model.feed.QueueRepository#switchActiveQueue(long)}
      * to keep SharedPreferences synchronized with the database.
      *
      * <p>Thread-safe: Uses SharedPreferences.apply() for asynchronous write.

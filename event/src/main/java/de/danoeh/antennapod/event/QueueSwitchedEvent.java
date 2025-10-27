@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
  * EventBus event indicating that the active queue has been switched.
  *
  * <p>This event is posted via EventBus whenever
- * {@link de.danoeh.antennapod.storage.database.QueueRepository#switchActiveQueue(long)}
+ * {@link de.danoeh.antennapod.model.feed.QueueRepository#switchActiveQueue(long)}
  * successfully completes. UI components can subscribe to this event to update displays,
  * refresh episode lists, or perform other queue-switch-related actions.
  *

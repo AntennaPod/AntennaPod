@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
  * and update queue displays.
  *
  * <p>Event is posted by:
- * - {@link de.danoeh.antennapod.storage.database.QueueRepository#addEpisodeToQueue(long, long)}
- * - {@link de.danoeh.antennapod.storage.database.QueueRepository#removeEpisodeFromQueue(long, long)}
- * - {@link de.danoeh.antennapod.storage.database.QueueRepository#clearQueue(long)}
- * - {@link de.danoeh.antennapod.storage.database.QueueRepository#moveEpisodeBetweenQueues(long, long, long)}
+ * - {@link de.danoeh.antennapod.model.feed.QueueRepository#addEpisodeToQueue(long, long)}
+ * - {@link de.danoeh.antennapod.model.feed.QueueRepository#removeEpisodeFromQueue(long, long)}
+ * - {@link de.danoeh.antennapod.model.feed.QueueRepository#clearQueue(long)}
+ * - {@link de.danoeh.antennapod.model.feed.QueueRepository#moveEpisodeBetweenQueues(long, long, long)}
  *
  * <p>Example subscription:
  * <pre>
