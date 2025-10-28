@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -24,6 +21,7 @@ import java.util.List;
 import de.danoeh.antennapod.model.feed.DefaultQueueException;
 import de.danoeh.antennapod.model.feed.Queue;
 import de.danoeh.antennapod.model.feed.QueueRepository;
+import de.danoeh.antennapod.ui.common.databinding.QueueSwitchBottomSheetBinding;
 
 /**
  * Bottom sheet dialog for queue selection and management.
@@ -57,10 +55,7 @@ public class QueueSwitchBottomSheet extends BottomSheetDialogFragment {
     private OnQueueSelectedListener queueSelectedListener;
     private OnCreateNewQueueListener createNewQueueListener;
 
-    private RecyclerView queueListView;
-    private Button createButton;
-    @SuppressWarnings("FieldCanBeLocal")
-    private TextView headerTitle;
+    private QueueSwitchBottomSheetBinding binding;
     private QueueButtonAdapter adapter;
 
     private List<Queue> allQueues;
@@ -130,15 +125,10 @@ public class QueueSwitchBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.queue_switch_bottom_sheet, container, false);
-
-        // Initialize views
-        headerTitle = view.findViewById(R.id.header_title);
-        queueListView = view.findViewById(R.id.queue_list);
-        createButton = view.findViewById(R.id.create_queue_button);
+        binding = QueueSwitchBottomSheetBinding.inflate(inflater, container, false);
 
         // Set up RecyclerView
-        queueListView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.queueList.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         // Load queue data
         loadQueues();
@@ -150,12 +140,12 @@ public class QueueSwitchBottomSheet extends BottomSheetDialogFragment {
                 this::onQueueLongClicked
         );
         adapter.setQueues(allQueues);
-        queueListView.setAdapter(adapter);
+        binding.queueList.setAdapter(adapter);
 
         // Set up create button
-        createButton.setOnClickListener(v -> onCreateButtonClicked());
+        binding.createQueueButton.setOnClickListener(v -> onCreateButtonClicked());
 
-        return view;
+        return binding.getRoot();
     }
 
     /**

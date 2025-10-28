@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import de.danoeh.antennapod.ui.common.databinding.IconPickerItemBinding;
+
 /**
  * Dialog for selecting queue icon from Material Design icons.
  *
@@ -190,9 +192,9 @@ public class QueueIconPicker extends DialogFragment {
         @NonNull
         @Override
         public IconViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context)
-                    .inflate(R.layout.icon_picker_item, parent, false);
-            return new IconViewHolder(view);
+            IconPickerItemBinding binding = IconPickerItemBinding.inflate(LayoutInflater.from(context),
+                    parent, false);
+            return new IconViewHolder(binding);
         }
 
         @Override
@@ -210,30 +212,28 @@ public class QueueIconPicker extends DialogFragment {
          * ViewHolder for icon items.
          */
         class IconViewHolder extends RecyclerView.ViewHolder {
-            private final ImageView iconView;
-            private final View selectionBorder;
+            private final IconPickerItemBinding binding;
 
-            IconViewHolder(@NonNull View itemView) {
-                super(itemView);
-                iconView = itemView.findViewById(R.id.icon_view);
-                selectionBorder = itemView.findViewById(R.id.selection_border);
+            IconViewHolder(@NonNull IconPickerItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
             }
 
             void bind(@NonNull IconEntry iconEntry, boolean isSelected) {
                 // Set icon drawable
                 try {
                     Drawable drawable = ContextCompat.getDrawable(context, iconEntry.drawableRes);
-                    iconView.setImageDrawable(drawable);
+                    binding.iconView.setImageDrawable(drawable);
                 } catch (Exception e) {
                     // If resource doesn't exist, use default
-                    iconView.setImageResource(R.drawable.ic_playlist_play_24dp);
+                    binding.iconView.setImageResource(R.drawable.ic_playlist_play_24dp);
                 }
 
                 // Show/hide selection border
-                selectionBorder.setVisibility(isSelected ? View.VISIBLE : View.GONE);
+                binding.selectionBorder.setVisibility(isSelected ? View.VISIBLE : View.GONE);
 
                 // Handle click
-                itemView.setOnClickListener(v -> {
+                binding.getRoot().setOnClickListener(v -> {
                     if (iconSelectedListener != null) {
                         iconSelectedListener.onIconSelected(iconEntry.name);
                     }

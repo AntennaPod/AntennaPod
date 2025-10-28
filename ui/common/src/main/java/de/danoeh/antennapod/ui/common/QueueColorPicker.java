@@ -16,8 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import de.danoeh.antennapod.ui.common.databinding.ColorPickerItemBinding;
 
 /**
  * Dialog for selecting queue color from Material Design palette.
@@ -147,9 +150,9 @@ public class QueueColorPicker extends DialogFragment {
         @NonNull
         @Override
         public ColorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context)
-                    .inflate(R.layout.color_picker_item, parent, false);
-            return new ColorViewHolder(view);
+            ColorPickerItemBinding binding = ColorPickerItemBinding.inflate(LayoutInflater.from(context),
+                    parent, false);
+            return new ColorViewHolder(binding);
         }
 
         @Override
@@ -167,13 +170,11 @@ public class QueueColorPicker extends DialogFragment {
          * ViewHolder for color items.
          */
         class ColorViewHolder extends RecyclerView.ViewHolder {
-            private final ImageView colorCircle;
-            private final ImageView checkmark;
+            private final ColorPickerItemBinding binding;
 
-            ColorViewHolder(@NonNull View itemView) {
-                super(itemView);
-                colorCircle = itemView.findViewById(R.id.color_circle);
-                checkmark = itemView.findViewById(R.id.checkmark);
+            ColorViewHolder(@NonNull ColorPickerItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
             }
 
             void bind(@ColorInt int color, boolean isSelected) {
@@ -184,19 +185,19 @@ public class QueueColorPicker extends DialogFragment {
                     drawable.setShape(GradientDrawable.OVAL);
                     drawable.setStroke(3, Color.GRAY);
                     drawable.setColor(Color.WHITE);
-                    colorCircle.setBackground(drawable);
+                    binding.colorCircle.setBackground(drawable);
                 } else {
                     GradientDrawable drawable = new GradientDrawable();
                     drawable.setShape(GradientDrawable.OVAL);
                     drawable.setColor(color);
-                    colorCircle.setBackground(drawable);
+                    binding.colorCircle.setBackground(drawable);
                 }
 
                 // Show checkmark if selected
-                checkmark.setVisibility(isSelected ? View.VISIBLE : View.GONE);
+                binding.checkmark.setVisibility(isSelected ? View.VISIBLE : View.GONE);
 
                 // Handle click
-                itemView.setOnClickListener(v -> {
+                binding.getRoot().setOnClickListener(v -> {
                     if (colorSelectedListener != null) {
                         colorSelectedListener.onColorSelected(color);
                     }
