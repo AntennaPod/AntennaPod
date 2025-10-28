@@ -142,9 +142,15 @@ public class Queue {
         return isDefault;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
     /**
      * Sets the default status of this queue.
-     * Note: Application-level logic must ensure exactly one queue has isDefault = true.
+     * <p><strong>INTERNAL USE ONLY</strong> - This method should only be called by QueueRepositoryImpl
+     * to maintain the invariant that exactly one queue has isDefault = true.
+     * External code should not call this method directly.
      *
      * @param isDefault True if this is the protected default queue
      */
@@ -153,13 +159,11 @@ public class Queue {
         this.modifiedAt = System.currentTimeMillis();
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
     /**
      * Sets the active status of this queue.
-     * Note: Application-level logic must ensure exactly one queue has isActive = true.
+     * <p><strong>INTERNAL USE ONLY</strong> - This method should only be called by QueueRepositoryImpl
+     * to maintain the invariant that exactly one queue has isActive = true.
+     * External code should not call this method directly.
      *
      * @param isActive True if this is the currently active queue
      */
