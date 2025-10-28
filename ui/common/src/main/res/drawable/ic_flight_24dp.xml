@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Placeholder icon - replace with actual Material Design icon -->
-<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/ic_playlist_play" />

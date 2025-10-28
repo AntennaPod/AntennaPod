@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Alias for ic_delete.xml with 24dp suffix -->
-<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/ic_delete" />
