@@ -239,7 +239,6 @@ public class QueueRepositoryImpl implements QueueRepository {
      * @param adapter Open PodDBAdapter instance
      * @param queueId Target queue ID
      * @throws QueueNotFoundException if target queue doesn't exist
-     * @throws QueueSwitchException if transaction fails
      */
     private void switchActiveQueueSynchronous(PodDBAdapter adapter, long queueId) {
         try {
@@ -266,9 +265,6 @@ public class QueueRepositoryImpl implements QueueRepository {
 
                 adapter.setTransactionSuccessful();
                 Log.d(TAG, "Queue switch successful: " + queueId);
-            } catch (Exception e) {
-                Log.e(TAG, "Queue switch failed", e);
-                throw new QueueSwitchException("Failed to switch active queue to " + queueId, e);
             } finally {
                 adapter.endTransaction();
             }
@@ -278,9 +274,9 @@ public class QueueRepositoryImpl implements QueueRepository {
 
             // Post event after transaction completes
             // EventBus.getDefault().post(new QueueSwitchedEvent(queueId));
-        } catch (SQLException e) {
-            Log.e(TAG, "Database error during queue switch", e);
-            throw new QueueSwitchException("Database error during queue switch", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Queue switch failed", e);
+            throw new RuntimeException("Failed to switch active queue to " + queueId, e);
         }
     }
 
