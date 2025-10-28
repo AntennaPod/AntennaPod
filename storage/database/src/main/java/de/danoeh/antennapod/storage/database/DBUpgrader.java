@@ -382,8 +382,6 @@ class DBUpgrader {
             long now = System.currentTimeMillis();
             ContentValues defaultQueue = new ContentValues();
             defaultQueue.put(PodDBAdapter.KEY_QUEUE_NAME, "Default");
-            defaultQueue.put(PodDBAdapter.KEY_QUEUE_COLOR, -16776961); // Blue color (0xFF0000FF)
-            defaultQueue.put(PodDBAdapter.KEY_QUEUE_ICON, "ic_queue_music_24dp");
             defaultQueue.put(PodDBAdapter.KEY_QUEUE_IS_DEFAULT, 1);
             defaultQueue.put(PodDBAdapter.KEY_QUEUE_IS_ACTIVE, 1);
             defaultQueue.put(PodDBAdapter.KEY_QUEUE_CREATED_AT, now);

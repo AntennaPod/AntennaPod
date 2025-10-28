@@ -269,8 +269,6 @@ public class PodDBAdapter {
     static final String CREATE_TABLE_QUEUES = "CREATE TABLE "
             + TABLE_NAME_QUEUES + " (" + TABLE_PRIMARY_KEY
             + KEY_QUEUE_NAME + " TEXT NOT NULL UNIQUE,"
-            + KEY_QUEUE_COLOR + " INTEGER NOT NULL,"
-            + KEY_QUEUE_ICON + " TEXT NOT NULL,"
             + KEY_QUEUE_IS_DEFAULT + " INTEGER NOT NULL,"
             + KEY_QUEUE_IS_ACTIVE + " INTEGER NOT NULL,"
             + KEY_QUEUE_CREATED_AT + " INTEGER NOT NULL,"
@@ -1551,8 +1549,6 @@ public class PodDBAdapter {
     public long insertQueue(@NonNull de.danoeh.antennapod.model.feed.Queue queue) {
         ContentValues values = new ContentValues();
         values.put(KEY_QUEUE_NAME, queue.getName());
-        values.put(KEY_QUEUE_COLOR, queue.getColor());
-        values.put(KEY_QUEUE_ICON, queue.getIcon());
         values.put(KEY_QUEUE_IS_DEFAULT, queue.isDefault() ? 1 : 0);
         values.put(KEY_QUEUE_IS_ACTIVE, queue.isActive() ? 1 : 0);
         values.put(KEY_QUEUE_CREATED_AT, queue.getCreatedAt());
@@ -1571,8 +1567,6 @@ public class PodDBAdapter {
     public void updateQueue(@NonNull de.danoeh.antennapod.model.feed.Queue queue) {
         ContentValues values = new ContentValues();
         values.put(KEY_QUEUE_NAME, queue.getName());
-        values.put(KEY_QUEUE_COLOR, queue.getColor());
-        values.put(KEY_QUEUE_ICON, queue.getIcon());
         values.put(KEY_QUEUE_IS_DEFAULT, queue.isDefault() ? 1 : 0);
         values.put(KEY_QUEUE_IS_ACTIVE, queue.isActive() ? 1 : 0);
         values.put(KEY_QUEUE_MODIFIED_AT, queue.getModifiedAt());
@@ -1680,8 +1674,6 @@ public class PodDBAdapter {
     private de.danoeh.antennapod.model.feed.Queue queueFromCursor(@NonNull Cursor cursor) {
         int idxId = cursor.getColumnIndexOrThrow(KEY_ID);
         int idxName = cursor.getColumnIndexOrThrow(KEY_QUEUE_NAME);
-        int idxColor = cursor.getColumnIndexOrThrow(KEY_QUEUE_COLOR);
-        int idxIcon = cursor.getColumnIndexOrThrow(KEY_QUEUE_ICON);
         int idxIsDefault = cursor.getColumnIndexOrThrow(KEY_QUEUE_IS_DEFAULT);
         int idxIsActive = cursor.getColumnIndexOrThrow(KEY_QUEUE_IS_ACTIVE);
         int idxCreatedAt = cursor.getColumnIndexOrThrow(KEY_QUEUE_CREATED_AT);
@@ -1690,8 +1682,6 @@ public class PodDBAdapter {
         return new de.danoeh.antennapod.model.feed.Queue(
                 cursor.getLong(idxId),
                 cursor.getString(idxName),
-                cursor.getInt(idxColor),
-                cursor.getString(idxIcon),
                 cursor.getInt(idxIsDefault) == 1,
                 cursor.getInt(idxIsActive) == 1,
                 cursor.getLong(idxCreatedAt),
@@ -1991,8 +1981,6 @@ public class PodDBAdapter {
             long now = System.currentTimeMillis();
             ContentValues defaultQueue = new ContentValues();
             defaultQueue.put(KEY_QUEUE_NAME, "Default");
-            defaultQueue.put(KEY_QUEUE_COLOR, -16776961); // Blue color (0xFF0000FF)
-            defaultQueue.put(KEY_QUEUE_ICON, "ic_queue_music_24dp");
             defaultQueue.put(KEY_QUEUE_IS_DEFAULT, 1);
             defaultQueue.put(KEY_QUEUE_IS_ACTIVE, 1);
             defaultQueue.put(KEY_QUEUE_CREATED_AT, now);

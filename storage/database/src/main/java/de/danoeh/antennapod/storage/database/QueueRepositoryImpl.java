@@ -12,7 +12,6 @@ import java.util.concurrent.Future;
 import org.greenrobot.eventbus.EventBus;
 
 import de.danoeh.antennapod.event.QueueContentChangedEvent;
-import de.danoeh.antennapod.model.feed.DefaultQueueException;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.Queue;
 import de.danoeh.antennapod.model.feed.QueueNameExistsException;
@@ -161,11 +160,6 @@ public class QueueRepositoryImpl implements QueueRepository {
                     throw new QueueNotFoundException(queue.getId());
                 }
 
-                // Cannot rename default queue
-                if (existing.isDefault() && !existing.getName().equals(queue.getName())) {
-                    throw new DefaultQueueException(queue.getId(), "rename");
-                }
-
                 // Check for duplicate name if name is changing
                 if (!existing.getName().equals(queue.getName())) {
                     List<Queue> allQueues = adapter.selectAllQueues();
@@ -208,11 +202,6 @@ public class QueueRepositoryImpl implements QueueRepository {
                 Queue queue = adapter.selectQueueById(queueId);
                 if (queue == null) {
                     throw new QueueNotFoundException(queueId);
-                }
-
-                // Cannot delete default queue
-                if (queue.isDefault()) {
-                    throw new DefaultQueueException(queueId, "delete");
                 }
 
                 // If deleting the active queue, switch to default queue first

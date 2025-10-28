@@ -66,7 +66,7 @@ public class MigrationTest {
      */
     @Test
     public void testQueueMembershipTableCreated() {
-        Queue queue = new Queue("MigrationTest", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("MigrationTest", false, false);
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -80,10 +80,10 @@ public class MigrationTest {
      */
     @Test
     public void testQueueNameUniqueConstraint() {
-        Queue queue1 = new Queue("Unique", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue1 = new Queue("Unique", false, false);
         adapter.insertQueue(queue1);
 
-        Queue queue2 = new Queue("Unique", 0xFF388E3C, "ic_directions_run_24dp", false, false);
+        Queue queue2 = new Queue("Unique", false, false);
         try {
             adapter.insertQueue(queue2);
             assertTrue("Should have thrown SQLiteConstraintException", false);
@@ -98,7 +98,7 @@ public class MigrationTest {
      */
     @Test
     public void testForeignKeyConstraintEnabled() {
-        Queue queue = new Queue("ForeignKeyTest", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("ForeignKeyTest", false, false);
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 200, 0);
@@ -140,9 +140,9 @@ public class MigrationTest {
      */
     @Test
     public void testMultipleQueuesAfterMigration() {
-        Queue queue1 = new Queue("WorkoutQueue", 0xFF1976D2, "ic_directions_run_24dp", false, false);
-        Queue queue2 = new Queue("CommuteQueue", 0xFF388E3C, "ic_directions_car_24dp", false, false);
-        Queue queue3 = new Queue("EducationQueue", 0xFF4CAF50, "ic_school_24dp", false, false);
+        Queue queue1 = new Queue("WorkoutQueue", false, false);
+        Queue queue2 = new Queue("CommuteQueue", false, false);
+        Queue queue3 = new Queue("EducationQueue", false, false);
 
         long id1 = adapter.insertQueue(queue1);
         long id2 = adapter.insertQueue(queue2);
@@ -155,20 +155,16 @@ public class MigrationTest {
     }
 
     /**
-     * T015.8: Verify queue attributes are preserved (color, icon)
+     * T015.8: Verify queue metadata is preserved
      */
     @Test
-    public void testQueueAttributesPersist() {
-        int testColor = 0xFF00FF00; // Green
-        String testIcon = "ic_directions_bike_24dp";
-
-        Queue queue = new Queue("AttributeTest", testColor, testIcon, false, false);
+    public void testQueueMetadataPersist() {
+        Queue queue = new Queue("AttributeTest", false, false);
         long id = adapter.insertQueue(queue);
 
         Queue retrieved = adapter.selectQueueById(id);
         assertNotNull("Queue should be retrievable", retrieved);
-        assertEquals("Color should be preserved", testColor, retrieved.getColor());
-        assertEquals("Icon should be preserved", testIcon, retrieved.getIcon());
+        assertEquals("Name should be preserved", "AttributeTest", retrieved.getName());
     }
 
     /**
@@ -176,7 +172,7 @@ public class MigrationTest {
      */
     @Test
     public void testQueueMembershipOrdering() {
-        Queue queue = new Queue("OrderTest", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("OrderTest", false, false);
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 300, 0);
@@ -194,7 +190,7 @@ public class MigrationTest {
     public void testDatabaseStability() {
         // Create and delete multiple queues
         for (int i = 0; i < 5; i++) {
-            Queue q = new Queue("TempQueue" + i, 0xFF1976D2, "ic_queue_music_24dp", false, false);
+            Queue q = new Queue("TempQueue" + i, false, false);
             long id = adapter.insertQueue(q);
             adapter.deleteQueue(id);
         }
@@ -204,7 +200,7 @@ public class MigrationTest {
         assertNotNull("Default queue should survive operations", defaultQueue);
 
         // Should be able to create new queues
-        Queue finalQueue = new Queue("FinalQueue", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue finalQueue = new Queue("FinalQueue", false, false);
         long finalId = adapter.insertQueue(finalQueue);
         Queue retrieved = adapter.selectQueueById(finalId);
         assertNotNull("Should be able to create queue after operations", retrieved);

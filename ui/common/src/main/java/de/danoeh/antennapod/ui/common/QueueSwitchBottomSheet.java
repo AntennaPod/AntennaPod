@@ -18,7 +18,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
-import de.danoeh.antennapod.model.feed.DefaultQueueException;
 import de.danoeh.antennapod.model.feed.Queue;
 import de.danoeh.antennapod.model.feed.QueueRepository;
 import de.danoeh.antennapod.ui.common.databinding.QueueSwitchBottomSheetBinding;
@@ -226,11 +225,7 @@ public class QueueSwitchBottomSheet extends BottomSheetDialogFragment {
                     "Queue \"" + queue.getName() + "\" deleted",
                     Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            String errorMessage = "Failed to delete queue";
-            if (e.getCause() instanceof DefaultQueueException) {
-                errorMessage = "Cannot delete the default queue";
-            }
-            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Failed to delete queue", Toast.LENGTH_SHORT).show();
         }
     }
 

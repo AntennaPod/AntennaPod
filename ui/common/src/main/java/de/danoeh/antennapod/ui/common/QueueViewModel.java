@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import de.danoeh.antennapod.model.feed.DefaultQueueException;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.Queue;
 import de.danoeh.antennapod.model.feed.QueueNameExistsException;
@@ -171,19 +170,14 @@ public class QueueViewModel extends ViewModel {
      * <p>Validates that:
      * - name is not empty and does not exceed 50 characters
      * - name is unique (does not already exist)
-     * - color is valid
-     * - icon is not empty
      *
      * <p>Runs asynchronously on background thread via repository.
      *
-     * @param name  Queue display name (max 50 characters, unique)
-     * @param color ARGB color from predefined palette
-     * @param icon  Material Design icon resource name
+     * @param name Queue display name (max 50 characters, unique)
      * @throws QueueNameExistsException if name is already in use
-     * @throws IllegalArgumentException if name or icon is empty/invalid
+     * @throws IllegalArgumentException if name is empty/invalid
      */
-    public void createQueue(@NonNull String name, int color, @NonNull String icon)
-            throws QueueNameExistsException {
+    public void createQueue(@NonNull String name) throws QueueNameExistsException {
         // Validate input
         if (name == null || name.trim().isEmpty()) {
             errorMessage.postValue("Queue name cannot be empty");
@@ -192,10 +186,6 @@ public class QueueViewModel extends ViewModel {
         if (name.length() > 50) {
             errorMessage.postValue("Queue name cannot exceed 50 characters");
             throw new IllegalArgumentException("Queue name cannot exceed 50 characters");
-        }
-        if (icon == null || icon.trim().isEmpty()) {
-            errorMessage.postValue("Queue icon cannot be empty");
-            throw new IllegalArgumentException("Queue icon cannot be empty");
         }
 
         // Check for duplicate name
@@ -209,7 +199,7 @@ public class QueueViewModel extends ViewModel {
         }
 
         // Create queue
-        Queue newQueue = new Queue(name.trim(), color, icon, false, false);
+        Queue newQueue = new Queue(name.trim(), false, false);
         Future<Long> future = queueRepository.createQueue(newQueue);
         try {
             future.get(); // Wait for completion
@@ -228,27 +218,20 @@ public class QueueViewModel extends ViewModel {
     }
 
     /**
-     * Deletes a queue with default queue protection.
+     * Deletes a queue.
      *
-     * <p>Cannot delete the default queue (isDefault=true). If deleting the active queue,
-     * automatically switches to default queue before deletion.
+     * <p>If deleting the active queue, automatically switches to default queue before deletion.
      *
      * <p>Runs asynchronously on background thread via repository.
      *
      * @param queueId Queue identifier to delete
-     * @throws DefaultQueueException if attempting to delete default queue
      * @throws QueueNotFoundException if queueId does not exist
      */
-    public void deleteQueue(long queueId) throws DefaultQueueException, QueueNotFoundException {
-        // Validate queue exists and is not default
+    public void deleteQueue(long queueId) throws QueueNotFoundException {
+        // Validate queue exists
         Queue targetQueue = queueRepository.getQueueById(queueId);
         if (targetQueue == null) {
             QueueNotFoundException ex = new QueueNotFoundException(queueId);
-            errorMessage.postValue(ex.getMessage());
-            throw ex;
-        }
-        if (targetQueue.isDefault()) {
-            DefaultQueueException ex = new DefaultQueueException(queueId, "delete");
             errorMessage.postValue(ex.getMessage());
             throw ex;
         }
@@ -262,11 +245,6 @@ public class QueueViewModel extends ViewModel {
                 loadActiveQueue(); // Reload active queue if we deleted the active one
             }
         } catch (ExecutionException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof DefaultQueueException) {
-                errorMessage.postValue(cause.getMessage());
-                throw (DefaultQueueException) cause;
-            }
             errorMessage.postValue("Failed to delete queue: " + e.getMessage());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -277,7 +255,7 @@ public class QueueViewModel extends ViewModel {
     /**
      * Updates an existing queue's metadata.
      *
-     * <p>Can update name, color, and icon. Cannot modify isDefault or isActive flags.
+     * <p>Can update name. Cannot modify isDefault or isActive flags.
      *
      * @param queue Queue with updated properties (must have valid ID)
      * @throws QueueNameExistsException if renaming to an existing name
@@ -330,27 +308,19 @@ public class QueueViewModel extends ViewModel {
     /**
      * Renames a queue with validation.
      *
-     * <p>Cannot rename the default queue. Validates name uniqueness before renaming.
+     * <p>Validates name uniqueness before renaming.
      *
      * @param queueId ID of queue to rename
      * @param newName New queue name (max 50 characters, unique)
      * @throws QueueNameExistsException if newName already exists
-     * @throws DefaultQueueException if attempting to rename default queue
      * @throws QueueNotFoundException if queueId does not exist
      */
     public void renameQueue(long queueId, @NonNull String newName)
-            throws QueueNameExistsException, DefaultQueueException, QueueNotFoundException {
+            throws QueueNameExistsException, QueueNotFoundException {
         // Validate queue exists
         Queue targetQueue = queueRepository.getQueueById(queueId);
         if (targetQueue == null) {
             QueueNotFoundException ex = new QueueNotFoundException(queueId);
-            errorMessage.postValue(ex.getMessage());
-            throw ex;
-        }
-
-        // Cannot rename default queue
-        if (targetQueue.isDefault()) {
-            DefaultQueueException ex = new DefaultQueueException(queueId, "rename");
             errorMessage.postValue(ex.getMessage());
             throw ex;
         }

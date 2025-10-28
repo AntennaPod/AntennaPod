@@ -58,7 +58,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testCreateQueueSuccess() {
-        Queue queue = new Queue("Test Queue", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("Test Queue", false, false);
         long queueId = adapter.insertQueue(queue);
         assertTrue(queueId > 0);
 
@@ -69,10 +69,10 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testCreateQueueDuplicateName() {
-        Queue queue1 = new Queue("Duplicate", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue1 = new Queue("Duplicate", false, false);
         adapter.insertQueue(queue1);
 
-        Queue queue2 = new Queue("Duplicate", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue2 = new Queue("Duplicate", false, false);
         try {
             adapter.insertQueue(queue2);
             fail("Should have thrown exception for duplicate name");
@@ -83,7 +83,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testDeleteQueue() {
-        Queue queue = new Queue("Delete Test", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("Delete Test", false, false);
         long queueId = adapter.insertQueue(queue);
 
         adapter.deleteQueue(queueId);
@@ -117,7 +117,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testQueueNameUniqueness() {
-        Queue queue1 = new Queue("Unique Test", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue1 = new Queue("Unique Test", false, false);
         long id1 = adapter.insertQueue(queue1);
 
         queue1.setId(id1);
@@ -130,22 +130,19 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testUpdateQueueMetadata() {
-        Queue queue = new Queue("Update Test", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("Update Test", false, false);
         long queueId = adapter.insertQueue(queue);
 
         queue.setId(queueId);
-        queue.setColor(0xFF388E3C);
-        queue.setIcon("ic_directions_run_24dp");
         adapter.updateQueue(queue);
 
         Queue retrieved = adapter.selectQueueById(queueId);
-        assertEquals(0xFF388E3C, retrieved.getColor());
-        assertEquals("ic_directions_run_24dp", retrieved.getIcon());
+        assertEquals("Update Test", retrieved.getName());
     }
 
     @Test
     public void testQueueMembershipInsert() {
-        Queue queue = new Queue("Membership Test", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("Membership Test", false, false);
         long queueId = adapter.insertQueue(queue);
 
         // Add episode to queue
@@ -156,7 +153,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testQueueMembershipDelete() {
-        Queue queue = new Queue("Delete Member Test", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("Delete Member Test", false, false);
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -168,7 +165,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testQueueMembershipExists() {
-        Queue queue = new Queue("Exists Test", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("Exists Test", false, false);
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -180,7 +177,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testGetMaxPosition() {
-        Queue queue = new Queue("Position Test", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("Position Test", false, false);
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -193,7 +190,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testClearQueue() {
-        Queue queue = new Queue("Clear Test", 0xFF1976D2, "ic_queue_music_24dp", false, false);
+        Queue queue = new Queue("Clear Test", false, false);
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);

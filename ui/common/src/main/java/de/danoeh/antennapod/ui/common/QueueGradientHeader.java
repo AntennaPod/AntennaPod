@@ -147,7 +147,7 @@ public class QueueGradientHeader extends FrameLayout {
     /**
      * Sets the queue to display.
      *
-     * <p>Updates the gradient color and optionally displays the queue name and icon
+     * <p>Updates the gradient color and optionally displays the queue name
      * if {@link #setShowNameAndIcon(boolean)} is enabled.
      *
      * @param queue Queue to display (null uses default color)
@@ -155,11 +155,10 @@ public class QueueGradientHeader extends FrameLayout {
     public void setQueue(@Nullable Queue queue) {
         this.currentQueue = queue;
         if (queue != null) {
-            setQueueColor(queue.getColor());
+            // Use default color for all queues (color customization removed for MVP)
+            setQueueColor(DEFAULT_COLOR);
             if (showNameAndIcon) {
                 nameView.setText(queue.getName());
-                // Icon loading would require context and icon resolver
-                // For now, just update visibility
                 contentLayout.setVisibility(VISIBLE);
             }
         } else {

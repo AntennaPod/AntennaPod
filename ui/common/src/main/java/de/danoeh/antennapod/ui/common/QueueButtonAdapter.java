@@ -186,12 +186,8 @@ public class QueueButtonAdapter extends RecyclerView.Adapter<QueueButtonAdapter.
             // Set queue name
             name.setText(queue.getName());
 
-            // Set color indicator
-            int color = queue.getColor();
-            if (color == 0) {
-                // Use default color if no color set
-                color = QueueGradientHeader.getDefaultColor();
-            }
+            // Set color indicator to default color (color customization removed for MVP)
+            int color = QueueGradientHeader.getDefaultColor();
             colorIndicator.setBackgroundColor(color);
 
             // Set icon (placeholder for now - requires icon resource mapping)
