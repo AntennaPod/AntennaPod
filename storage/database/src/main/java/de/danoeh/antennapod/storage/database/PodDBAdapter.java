@@ -1970,6 +1970,8 @@ public class PodDBAdapter {
             db.execSQL(CREATE_TABLE_FEED_ITEMS);
             db.execSQL(CREATE_TABLE_FEED_MEDIA);
             db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
+            db.execSQL(CREATE_TABLE_QUEUE);
+            db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_TABLE_QUEUES);
             db.execSQL(CREATE_INDEX_QUEUES_NAME);
             db.execSQL(CREATE_TABLE_QUEUE_MEMBERSHIP);

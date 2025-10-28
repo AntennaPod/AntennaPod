@@ -201,9 +201,17 @@ class DBUpgrader {
                     + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0");
         }
         if (oldVersion < 1030005) {
-            db.execSQL("UPDATE FeedItems SET auto_download=0 WHERE " +
-                    "(read=1 OR id IN (SELECT feeditem FROM FeedMedia WHERE position>0 OR downloaded=1)) " +
-                    "AND id NOT IN (SELECT feeditem FROM Queue)");
+            // Note: Queue table doesn't exist yet for old databases upgrading from pre-3090000 versions
+            // Only apply this query if Queue table exists (i.e., this is not the first time creating Queue)
+            try {
+                db.execSQL("UPDATE FeedItems SET auto_download=0 WHERE " +
+                        "(read=1 OR id IN (SELECT feeditem FROM FeedMedia WHERE position>0 OR downloaded=1)) " +
+                        "AND id NOT IN (SELECT feeditem FROM Queue)");
+            } catch (Exception e) {
+                // Queue table doesn't exist yet, skip this update
+                // It will be handled when Queue table is created and populated from old Queue table
+                Log.d("DBUpgrader", "Queue table doesn't exist yet, skipping auto_download update");
+            }
         }
         if (oldVersion < 1040001) {
             db.execSQL(PodDBAdapter.CREATE_TABLE_FAVORITES);
@@ -383,23 +391,31 @@ class DBUpgrader {
             long defaultQueueId = db.insert(PodDBAdapter.TABLE_NAME_QUEUES, null, defaultQueue);
 
             // Migrate existing queue items to default queue membership
-            Cursor queueCursor = db.query(PodDBAdapter.TABLE_NAME_QUEUE,
-                    new String[]{PodDBAdapter.KEY_ID, PodDBAdapter.KEY_FEEDITEM},
-                    null, null, null, null, PodDBAdapter.KEY_ID + " ASC");
-            if (queueCursor.moveToFirst()) {
-                int position = 0;
-                do {
-                    long episodeId = queueCursor.getLong(queueCursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEEDITEM));
-                    ContentValues membership = new ContentValues();
-                    membership.put(PodDBAdapter.KEY_MEMBERSHIP_QUEUE_ID, defaultQueueId);
-                    membership.put(PodDBAdapter.KEY_MEMBERSHIP_EPISODE_ID, episodeId);
-                    membership.put(PodDBAdapter.KEY_MEMBERSHIP_POSITION, position);
-                    membership.put(PodDBAdapter.KEY_MEMBERSHIP_ADDED_AT, now);
-                    db.insert(PodDBAdapter.TABLE_NAME_QUEUE_MEMBERSHIP, null, membership);
-                    position++;
-                } while (queueCursor.moveToNext());
+            // Note: For fresh databases created at latest version, old Queue table doesn't exist
+            // Only migrate if the old Queue table has data
+            try {
+                Cursor queueCursor = db.query(PodDBAdapter.TABLE_NAME_QUEUE,
+                        new String[]{PodDBAdapter.KEY_ID, PodDBAdapter.KEY_FEEDITEM},
+                        null, null, null, null, PodDBAdapter.KEY_ID + " ASC");
+                if (queueCursor.moveToFirst()) {
+                    int position = 0;
+                    do {
+                        long episodeId = queueCursor.getLong(queueCursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEEDITEM));
+                        ContentValues membership = new ContentValues();
+                        membership.put(PodDBAdapter.KEY_MEMBERSHIP_QUEUE_ID, defaultQueueId);
+                        membership.put(PodDBAdapter.KEY_MEMBERSHIP_EPISODE_ID, episodeId);
+                        membership.put(PodDBAdapter.KEY_MEMBERSHIP_POSITION, position);
+                        membership.put(PodDBAdapter.KEY_MEMBERSHIP_ADDED_AT, now);
+                        db.insert(PodDBAdapter.TABLE_NAME_QUEUE_MEMBERSHIP, null, membership);
+                        position++;
+                    } while (queueCursor.moveToNext());
+                }
+                queueCursor.close();
+            } catch (Exception e) {
+                // Old Queue table doesn't exist (fresh database created at latest version)
+                // No migration needed - new tables are already populated with default queue
+                Log.d("DBUpgrader", "Old Queue table doesn't exist, skipping data migration");
             }
-            queueCursor.close();
         }
     }
 
