@@ -11,7 +11,6 @@
     android:paddingBottom="8dp"
     android:background="?android:attr/selectableItemBackground">
 
-
     <LinearLayout
         android:id="@+id/queue_text_container"
         android:layout_width="wrap_content"
@@ -22,26 +21,26 @@
         android:layout_marginEnd="16dp"
         android:layout_toStartOf="@+id/queue_delete_button">
 
-    <TextView
-        android:id="@+id/queue_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="16sp"
-        tools:text="Queue name" />
+        <TextView
+            android:id="@+id/queue_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp"
+            tools:text="Queue name" />
 
+        <TextView
+            android:id="@+id/queue_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="14sp"
+            tools:text="12 Episodes - Time remaining: 12 hours" />
 
-    <TextView
-        android:id="@+id/queue_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="14sp"
-        tools:text="12 Episodes - Time remaining: 12 hours"/>
     </LinearLayout>
 
     <ImageButton
@@ -52,6 +51,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:background="?attr/selectableItemBackgroundBorderless"
-
         tools:ignore="VectorDrawableCompat" />
+
 </RelativeLayout>
