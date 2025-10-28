@@ -7,7 +7,8 @@
     - RecyclerView for queue list
     - "Create New Queue" button at bottom
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -62,7 +63,6 @@
     <!-- Create New Queue button -->
     <Button
         android:id="@+id/create_queue_button"
-        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -74,6 +74,7 @@
         android:drawablePadding="8dp"
         android:gravity="start|center_vertical"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp" />
+        android:paddingEnd="16dp"
+        style="@style/Widget.Material3.Button.TextButton" />
 
 </LinearLayout>
