@@ -225,11 +225,7 @@ public class PodDBAdapter {
     private static final String CREATE_TABLE_QUEUE_ITEMS = "CREATE TABLE "
             + TABLE_NAME_QUEUE_ITEMS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + KEY_QUEUE_ID + " INTEGER NOT NULL," + KEY_FEEDITEM + " INTEGER NOT NULL, "
-            + KEY_FEED + " INTEGER NOT NULL," + KEY_POSITION + " INTEGER NOT NULL,"
-            + " FOREIGN KEY (" + KEY_QUEUE_ID + ") REFERENCES " + TABLE_NAME_QUEUES + "("
-            + KEY_ID + ") ON DELETE CASCADE,"
-            + " FOREIGN KEY (" + KEY_FEEDITEM + ") REFERENCES " + TABLE_NAME_FEED_ITEMS + "("
-            + KEY_ID + ") ON DELETE CASCADE, UNIQUE(" + KEY_FEEDITEM + "))";
+            + KEY_FEED + " INTEGER NOT NULL," + KEY_POSITION + " INTEGER NOT NULL)";
 
     private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
             + TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -943,10 +939,11 @@ public class PodDBAdapter {
         }
     }
 
-    public void df_removeQueue(long queueId) {
+    public void df_removeQueueAndQueueItems(long queueId) {
         try {
             db.beginTransactionNonExclusive();
-            db.delete(TABLE_NAME_QUEUES, KEY_ID + "=" + queueId, null);
+            db.delete(TABLE_NAME_QUEUES, KEY_ID + "=?", new String[]{String.valueOf(queueId)});
+            db.delete(TABLE_NAME_QUEUE_ITEMS, KEY_QUEUE_ID + "=?" + queueId, new String[]{String.valueOf(queueId)});
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -961,7 +958,7 @@ public class PodDBAdapter {
 
     public void df_clearQueue(final long queueId) {
         db.execSQL("DELETE FROM " + TABLE_NAME_QUEUE_ITEMS + " WHERE "
-                + KEY_QUEUE_ID + "=" + queueId);
+                + KEY_QUEUE_ID + "=?", new String[]{String.valueOf(queueId)});
     }
 
     /**
@@ -990,6 +987,7 @@ public class PodDBAdapter {
                             + " AND " + KEY_FEEDFILE + " IN (" + mediaIds + ")", null);
             db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + " IN (" + mediaIds + ")", null);
             db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + " IN (" + itemIds + ")", null);
+            db.delete(TABLE_NAME_QUEUE_ITEMS, KEY_FEEDITEM + " IN (" + itemIds + ")", null);
             db.delete(TABLE_NAME_FAVORITES, KEY_FEEDITEM + " IN (" + itemIds + ")", null);
             db.setTransactionSuccessful();
         } catch (SQLException e) {

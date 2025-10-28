@@ -529,7 +529,7 @@ public class DBWriter {
         return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.df_removeQueue(queueId);
+            adapter.df_removeQueueAndQueueItems(queueId);
             adapter.close();
 
             EventBus.getDefault().post(QueueEvent.cleared());
