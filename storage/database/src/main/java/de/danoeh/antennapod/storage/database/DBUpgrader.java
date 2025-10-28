@@ -373,11 +373,6 @@ class DBUpgrader {
             // Create QueueMembership table
             db.execSQL(PodDBAdapter.CREATE_TABLE_QUEUE_MEMBERSHIP);
 
-            // Create indices for QueueMembership
-            db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_MEMBERSHIP_QUEUE_ID);
-            db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_MEMBERSHIP_EPISODE_ID);
-            db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_MEMBERSHIP_QUEUE_ID_POSITION);
-
             // Create default queue
             long now = System.currentTimeMillis();
             ContentValues defaultQueue = new ContentValues();
