@@ -10,18 +10,20 @@ import java.util.Objects;
  *
  * <p>Each queue has a unique name (max 50 characters) and is managed by the QueueRepository.
  *
+ * <p>This POJO models only the intrinsic queue properties (id, name, timestamps).
+ *
+ * <p>Global system state (which queue is default, which is active) is managed by the
+ * QueueRepository, not stored in Queue objects. This prevents out-of-sync state
+ * where multiple Queue objects might claim to be default or active.
+ *
  * <p>Database constraints:
  * - name: UNIQUE, NOT NULL, max 50 characters
- * - Exactly one queue must have isDefault = true
- * - Exactly one queue must have isActive = true
  */
 public class Queue {
 
     private long id;
     @NonNull
     private String name;
-    private boolean isDefault;
-    private boolean isActive;
     private long createdAt;
     private long modifiedAt;
 
@@ -31,8 +33,6 @@ public class Queue {
     public Queue() {
         this.id = 0;
         this.name = "";
-        this.isDefault = false;
-        this.isActive = false;
         this.createdAt = System.currentTimeMillis();
         this.modifiedAt = System.currentTimeMillis();
     }
@@ -42,33 +42,24 @@ public class Queue {
      *
      * @param id         Unique queue identifier
      * @param name       Queue display name (max 50 chars)
-     * @param isDefault  True if this is the protected default queue
-     * @param isActive   True if this is the currently active queue
      * @param createdAt  Creation timestamp (milliseconds)
      * @param modifiedAt Last modification timestamp (milliseconds)
      */
-    public Queue(long id, @NonNull String name, boolean isDefault, boolean isActive,
-                 long createdAt, long modifiedAt) {
+    public Queue(long id, @NonNull String name, long createdAt, long modifiedAt) {
         this.id = id;
         this.name = name;
-        this.isDefault = isDefault;
-        this.isActive = isActive;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
 
     /**
-     * Constructor for creating a new Queue with specific properties.
+     * Constructor for creating a new Queue with a name.
      *
-     * @param name      Queue display name (max 50 chars)
-     * @param isDefault True if this is the protected default queue
-     * @param isActive  True if this is the currently active queue
+     * @param name Queue display name (max 50 chars)
      */
-    public Queue(@NonNull String name, boolean isDefault, boolean isActive) {
+    public Queue(@NonNull String name) {
         this.id = 0;
         this.name = name;
-        this.isDefault = isDefault;
-        this.isActive = isActive;
         this.createdAt = System.currentTimeMillis();
         this.modifiedAt = System.currentTimeMillis();
     }
@@ -102,41 +93,6 @@ public class Queue {
         this.modifiedAt = System.currentTimeMillis();
     }
 
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    /**
-     * Sets the default status of this queue.
-     *
-     * <p><strong>INTERNAL USE ONLY</strong> - This method should only be called by QueueRepositoryImpl
-     * to maintain the invariant that exactly one queue has isDefault = true.
-     * External code should not call this method directly.
-     *
-     * @param isDefault True if this is the protected default queue
-     */
-    public void setDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-        this.modifiedAt = System.currentTimeMillis();
-    }
-
-    /**
-     * Sets the active status of this queue.
-     *
-     * <p><strong>INTERNAL USE ONLY</strong> - This method should only be called by QueueRepositoryImpl
-     * to maintain the invariant that exactly one queue has isActive = true.
-     * External code should not call this method directly.
-     *
-     * @param isActive True if this is the currently active queue
-     */
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
-        this.modifiedAt = System.currentTimeMillis();
-    }
 
     public long getCreatedAt() {
         return createdAt;
@@ -157,8 +113,7 @@ public class Queue {
     @NonNull
     @Override
     public String toString() {
-        return "Queue [id=" + id + ", name=" + name + ", isDefault=" + isDefault
-                + ", isActive=" + isActive + ", createdAt=" + createdAt + ", modifiedAt=" + modifiedAt + "]";
+        return "Queue [id=" + id + ", name=" + name + ", createdAt=" + createdAt + ", modifiedAt=" + modifiedAt + "]";
     }
 
     @Override

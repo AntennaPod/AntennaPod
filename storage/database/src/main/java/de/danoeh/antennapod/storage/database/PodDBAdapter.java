@@ -1549,8 +1549,9 @@ public class PodDBAdapter {
     public long insertQueue(@NonNull de.danoeh.antennapod.model.feed.Queue queue) {
         ContentValues values = new ContentValues();
         values.put(KEY_QUEUE_NAME, queue.getName());
-        values.put(KEY_QUEUE_IS_DEFAULT, queue.isDefault() ? 1 : 0);
-        values.put(KEY_QUEUE_IS_ACTIVE, queue.isActive() ? 1 : 0);
+        // New queues are never created as default or active - repository manages this separately
+        values.put(KEY_QUEUE_IS_DEFAULT, 0);
+        values.put(KEY_QUEUE_IS_ACTIVE, 0);
         values.put(KEY_QUEUE_CREATED_AT, queue.getCreatedAt());
         values.put(KEY_QUEUE_MODIFIED_AT, queue.getModifiedAt());
 
@@ -1562,13 +1563,14 @@ public class PodDBAdapter {
     /**
      * Updates an existing queue in the database.
      *
+     * <p>Note: This method only updates the queue name and timestamps. Default/active status
+     * is managed separately through setDefaultQueue() and setActiveQueue() methods.
+     *
      * @param queue Queue with updated properties (must have valid ID)
      */
     public void updateQueue(@NonNull de.danoeh.antennapod.model.feed.Queue queue) {
         ContentValues values = new ContentValues();
         values.put(KEY_QUEUE_NAME, queue.getName());
-        values.put(KEY_QUEUE_IS_DEFAULT, queue.isDefault() ? 1 : 0);
-        values.put(KEY_QUEUE_IS_ACTIVE, queue.isActive() ? 1 : 0);
         values.put(KEY_QUEUE_MODIFIED_AT, queue.getModifiedAt());
 
         db.update(TABLE_NAME_QUEUES, values, KEY_ID + "=?",
@@ -1665,6 +1667,78 @@ public class PodDBAdapter {
     }
 
     /**
+     * Gets the ID of the currently default queue.
+     *
+     * @return ID of default queue, or -1 if none found
+     */
+    public long getDefaultQueueId() {
+        Cursor cursor = db.query(TABLE_NAME_QUEUES, new String[]{KEY_ID}, KEY_QUEUE_IS_DEFAULT + "=1",
+                null, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getLong(0);
+            }
+            return -1;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
+     * Gets the ID of the currently active queue.
+     *
+     * @return ID of active queue, or -1 if none found
+     */
+    public long getActiveQueueId() {
+        Cursor cursor = db.query(TABLE_NAME_QUEUES, new String[]{KEY_ID}, KEY_QUEUE_IS_ACTIVE + "=1",
+                null, null, null, null);
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getLong(0);
+            }
+            return -1;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    /**
+     * Sets the default queue. First clears the default flag from all queues, then sets it
+     * on the specified queue.
+     *
+     * @param queueId ID of queue to make default
+     */
+    public void setDefaultQueue(long queueId) {
+        // Clear default flag from all queues
+        ContentValues values = new ContentValues();
+        values.put(KEY_QUEUE_IS_DEFAULT, 0);
+        db.update(TABLE_NAME_QUEUES, values, null, null);
+
+        // Set default flag on specified queue
+        values.put(KEY_QUEUE_IS_DEFAULT, 1);
+        db.update(TABLE_NAME_QUEUES, values, KEY_ID + "=?",
+                new String[]{String.valueOf(queueId)});
+    }
+
+    /**
+     * Sets the active queue. First clears the active flag from all queues, then sets it
+     * on the specified queue.
+     *
+     * @param queueId ID of queue to make active
+     */
+    public void setActiveQueue(long queueId) {
+        // Clear active flag from all queues
+        ContentValues values = new ContentValues();
+        values.put(KEY_QUEUE_IS_ACTIVE, 0);
+        db.update(TABLE_NAME_QUEUES, values, null, null);
+
+        // Set active flag on specified queue
+        values.put(KEY_QUEUE_IS_ACTIVE, 1);
+        db.update(TABLE_NAME_QUEUES, values, KEY_ID + "=?",
+                new String[]{String.valueOf(queueId)});
+    }
+
+    /**
      * Helper method to create Queue object from cursor.
      *
      * @param cursor Cursor positioned at a queue row
@@ -1674,16 +1748,12 @@ public class PodDBAdapter {
     private de.danoeh.antennapod.model.feed.Queue queueFromCursor(@NonNull Cursor cursor) {
         int idxId = cursor.getColumnIndexOrThrow(KEY_ID);
         int idxName = cursor.getColumnIndexOrThrow(KEY_QUEUE_NAME);
-        int idxIsDefault = cursor.getColumnIndexOrThrow(KEY_QUEUE_IS_DEFAULT);
-        int idxIsActive = cursor.getColumnIndexOrThrow(KEY_QUEUE_IS_ACTIVE);
         int idxCreatedAt = cursor.getColumnIndexOrThrow(KEY_QUEUE_CREATED_AT);
         int idxModifiedAt = cursor.getColumnIndexOrThrow(KEY_QUEUE_MODIFIED_AT);
 
         return new de.danoeh.antennapod.model.feed.Queue(
                 cursor.getLong(idxId),
                 cursor.getString(idxName),
-                cursor.getInt(idxIsDefault) == 1,
-                cursor.getInt(idxIsActive) == 1,
                 cursor.getLong(idxCreatedAt),
                 cursor.getLong(idxModifiedAt)
         );

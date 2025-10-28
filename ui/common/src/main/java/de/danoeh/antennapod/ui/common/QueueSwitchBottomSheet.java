@@ -176,12 +176,15 @@ public class QueueSwitchBottomSheet extends BottomSheetDialogFragment {
      * @return True if handled
      */
     private boolean onQueueLongClicked(@NonNull Queue queue) {
-        // Cannot delete default queue
-        if (queue.isDefault()) {
-            Toast.makeText(requireContext(),
-                    "Cannot delete the default queue",
-                    Toast.LENGTH_SHORT).show();
-            return true;
+        // Check if this is the default queue through the repository
+        if (queueRepository != null) {
+            Queue defaultQueue = queueRepository.getDefaultQueue();
+            if (defaultQueue != null && defaultQueue.getId() == queue.getId()) {
+                Toast.makeText(requireContext(),
+                        "Cannot delete the default queue",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            }
         }
 
         // Show confirmation dialog

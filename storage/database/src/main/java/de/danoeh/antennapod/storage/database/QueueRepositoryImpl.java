@@ -102,14 +102,6 @@ public class QueueRepositoryImpl implements QueueRepository {
                 throw new IllegalArgumentException("Queue name cannot exceed 50 characters");
             }
 
-            // Cannot create queue with isDefault or isActive set to true
-            if (queue.isDefault()) {
-                throw new IllegalArgumentException("Cannot create queue with isDefault=true");
-            }
-            if (queue.isActive()) {
-                throw new IllegalArgumentException("Cannot create queue with isActive=true");
-            }
-
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             try {
@@ -173,10 +165,7 @@ public class QueueRepositoryImpl implements QueueRepository {
                 // Update modifiedAt timestamp
                 queue.setModifiedAt(System.currentTimeMillis());
 
-                // Preserve isDefault and isActive flags (cannot be changed via update)
-                queue.setDefault(existing.isDefault());
-                queue.setActive(existing.isActive());
-
+                // Update queue name and timestamps (default/active status is managed separately)
                 adapter.updateQueue(queue);
                 Log.d(TAG, "Queue updated: id=" + queue.getId());
             } catch (SQLException e) {
@@ -205,7 +194,7 @@ public class QueueRepositoryImpl implements QueueRepository {
                 }
 
                 // If deleting the active queue, switch to default queue first
-                if (queue.isActive()) {
+                if (adapter.getActiveQueueId() == queueId) {
                     Log.d(TAG, "Deleting active queue, switching to default queue first");
                     Queue defaultQueue = adapter.selectDefaultQueue();
                     if (defaultQueue != null) {
@@ -261,26 +250,16 @@ public class QueueRepositoryImpl implements QueueRepository {
             }
 
             // If already active, nothing to do
-            if (targetQueue.isActive()) {
+            if (adapter.getActiveQueueId() == queueId) {
                 Log.d(TAG, "Queue " + queueId + " is already active");
                 return;
             }
 
-            // Get current active queue
-            Queue currentActive = adapter.selectActiveQueue();
-
             // Begin transaction
             adapter.beginTransaction();
             try {
-                // Deactivate current active queue
-                if (currentActive != null) {
-                    currentActive.setActive(false);
-                    adapter.updateQueue(currentActive);
-                }
-
-                // Activate target queue
-                targetQueue.setActive(true);
-                adapter.updateQueue(targetQueue);
+                // Update active queue flag in database (atomically deactivates old, activates new)
+                adapter.setActiveQueue(queueId);
 
                 // Update UserPreferences
                 UserPreferences.setActiveQueueId(queueId);
@@ -334,6 +313,19 @@ public class QueueRepositoryImpl implements QueueRepository {
         adapter.open();
         try {
             return adapter.selectActiveQueue();
+        } finally {
+            adapter.close();
+        }
+    }
+
+    @Nullable
+    @Override
+    public Queue getDefaultQueue() {
+        Log.d(TAG, "getDefaultQueue");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try {
+            return adapter.selectDefaultQueue();
         } finally {
             adapter.close();
         }

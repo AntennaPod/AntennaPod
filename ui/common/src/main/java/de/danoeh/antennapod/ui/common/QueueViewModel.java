@@ -199,7 +199,7 @@ public class QueueViewModel extends ViewModel {
         }
 
         // Create queue
-        Queue newQueue = new Queue(name.trim(), false, false);
+        Queue newQueue = new Queue(name.trim());
         Future<Long> future = queueRepository.createQueue(newQueue);
         try {
             future.get(); // Wait for completion
@@ -241,7 +241,8 @@ public class QueueViewModel extends ViewModel {
         try {
             future.get(); // Wait for completion
             loadQueues(); // Reload queue list
-            if (targetQueue.isActive()) {
+            Queue activeQueue = queueRepository.getActiveQueue();
+            if (activeQueue != null && activeQueue.getId() == queueId) {
                 loadActiveQueue(); // Reload active queue if we deleted the active one
             }
         } catch (ExecutionException e) {
@@ -289,7 +290,8 @@ public class QueueViewModel extends ViewModel {
         try {
             future.get(); // Wait for completion
             loadQueues(); // Reload queue list
-            if (queue.isActive()) {
+            Queue activeQueue = queueRepository.getActiveQueue();
+            if (activeQueue != null && activeQueue.getId() == queue.getId()) {
                 loadActiveQueue(); // Reload active queue if we updated it
             }
         } catch (ExecutionException e) {

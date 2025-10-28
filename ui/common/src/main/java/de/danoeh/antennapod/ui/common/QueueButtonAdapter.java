@@ -200,9 +200,10 @@ public class QueueButtonAdapter extends RecyclerView.Adapter<QueueButtonAdapter.
             activeIndicator.setVisibility(isActive ? View.VISIBLE : View.GONE);
 
             // Show/hide delete button
-            // Cannot delete default queue, so hide button for default queue
-            boolean canDelete = !queue.isDefault() && showDeleteButtons;
-            deleteButton.setVisibility(canDelete ? View.VISIBLE : View.GONE);
+            // Note: Default queue status is managed by repository, not stored in Queue object
+            // For now, always show delete button - UI/repository prevents deletion of default queue
+            boolean canShowDelete = showDeleteButtons;
+            deleteButton.setVisibility(canShowDelete ? View.VISIBLE : View.GONE);
 
             // Set click listeners
             itemView.setOnClickListener(v -> {

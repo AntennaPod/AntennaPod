@@ -58,7 +58,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testCreateQueueSuccess() {
-        Queue queue = new Queue("Test Queue", false, false);
+        Queue queue = new Queue("Test Queue");
         long queueId = adapter.insertQueue(queue);
         assertTrue(queueId > 0);
 
@@ -69,10 +69,10 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testCreateQueueDuplicateName() {
-        Queue queue1 = new Queue("Duplicate", false, false);
+        Queue queue1 = new Queue("Duplicate");
         adapter.insertQueue(queue1);
 
-        Queue queue2 = new Queue("Duplicate", false, false);
+        Queue queue2 = new Queue("Duplicate");
         try {
             adapter.insertQueue(queue2);
             fail("Should have thrown exception for duplicate name");
@@ -83,7 +83,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testDeleteQueue() {
-        Queue queue = new Queue("Delete Test", false, false);
+        Queue queue = new Queue("Delete Test");
         long queueId = adapter.insertQueue(queue);
 
         adapter.deleteQueue(queueId);
@@ -104,20 +104,18 @@ public class QueueRepositoryImplTest {
     public void testGetActiveQueue() {
         Queue active = adapter.selectActiveQueue();
         assertNotNull(active);
-        assertTrue(active.isActive());
     }
 
     @Test
     public void testGetDefaultQueue() {
         Queue defaultQueue = adapter.selectDefaultQueue();
         assertNotNull(defaultQueue);
-        assertTrue(defaultQueue.isDefault());
         assertEquals(1, defaultQueue.getId());
     }
 
     @Test
     public void testQueueNameUniqueness() {
-        Queue queue1 = new Queue("Unique Test", false, false);
+        Queue queue1 = new Queue("Unique Test");
         long id1 = adapter.insertQueue(queue1);
 
         queue1.setId(id1);
@@ -130,7 +128,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testUpdateQueueMetadata() {
-        Queue queue = new Queue("Update Test", false, false);
+        Queue queue = new Queue("Update Test");
         long queueId = adapter.insertQueue(queue);
 
         queue.setId(queueId);
@@ -142,7 +140,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testQueueMembershipInsert() {
-        Queue queue = new Queue("Membership Test", false, false);
+        Queue queue = new Queue("Membership Test");
         long queueId = adapter.insertQueue(queue);
 
         // Add episode to queue
@@ -153,7 +151,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testQueueMembershipDelete() {
-        Queue queue = new Queue("Delete Member Test", false, false);
+        Queue queue = new Queue("Delete Member Test");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -165,7 +163,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testQueueMembershipExists() {
-        Queue queue = new Queue("Exists Test", false, false);
+        Queue queue = new Queue("Exists Test");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -177,7 +175,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testGetMaxPosition() {
-        Queue queue = new Queue("Position Test", false, false);
+        Queue queue = new Queue("Position Test");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -190,7 +188,7 @@ public class QueueRepositoryImplTest {
 
     @Test
     public void testClearQueue() {
-        Queue queue = new Queue("Clear Test", false, false);
+        Queue queue = new Queue("Clear Test");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);

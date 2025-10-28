@@ -58,7 +58,6 @@ public class QueueDaoTest {
         assertNotNull("Default queue should exist", defaultQueue);
         assertEquals("Default queue ID should be 1", 1, defaultQueue.getId());
         assertEquals("Default queue name should be 'Default'", "Default", defaultQueue.getName());
-        assertTrue("Default queue should have isDefault=true", defaultQueue.isDefault());
     }
 
     /**
@@ -68,7 +67,6 @@ public class QueueDaoTest {
     public void testActiveQueueExists() {
         Queue active = adapter.selectActiveQueue();
         assertNotNull("Active queue should exist", active);
-        assertTrue("Active queue should have isActive=true", active.isActive());
     }
 
     /**
@@ -76,7 +74,7 @@ public class QueueDaoTest {
      */
     @Test
     public void testCreateQueue() {
-        Queue queue = new Queue("Test Queue", false, false);
+        Queue queue = new Queue("Test Queue");
         long id = adapter.insertQueue(queue);
         assertTrue("Queue ID should be positive", id > 0);
 
@@ -90,10 +88,10 @@ public class QueueDaoTest {
      */
     @Test
     public void testQueueNameUniqueness() {
-        Queue queue1 = new Queue("UniqueTest", false, false);
+        Queue queue1 = new Queue("UniqueTest");
         adapter.insertQueue(queue1);
 
-        Queue queue2 = new Queue("UniqueTest", false, false);
+        Queue queue2 = new Queue("UniqueTest");
         try {
             adapter.insertQueue(queue2);
             fail("Should have thrown exception for duplicate name");
@@ -108,7 +106,7 @@ public class QueueDaoTest {
      */
     @Test
     public void testUpdateQueue() {
-        Queue queue = new Queue("Original", false, false);
+        Queue queue = new Queue("Original");
         long id = adapter.insertQueue(queue);
 
         queue.setId(id);
@@ -124,7 +122,7 @@ public class QueueDaoTest {
      */
     @Test
     public void testDeleteQueue() {
-        Queue queue = new Queue("ToDelete", false, false);
+        Queue queue = new Queue("ToDelete");
         long id = adapter.insertQueue(queue);
 
         adapter.deleteQueue(id);
@@ -138,7 +136,7 @@ public class QueueDaoTest {
      */
     @Test
     public void testAddEpisodeToQueue() {
-        Queue queue = new Queue("Episodes", false, false);
+        Queue queue = new Queue("Episodes");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -151,7 +149,7 @@ public class QueueDaoTest {
      */
     @Test
     public void testRemoveEpisodeFromQueue() {
-        Queue queue = new Queue("Removal", false, false);
+        Queue queue = new Queue("Removal");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -166,7 +164,7 @@ public class QueueDaoTest {
      */
     @Test
     public void testCascadeDeleteMemberships() {
-        Queue queue = new Queue("Cascade", false, false);
+        Queue queue = new Queue("Cascade");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -186,8 +184,5 @@ public class QueueDaoTest {
         List<Queue> queues = adapter.selectAllQueues();
         assertNotNull("Queue list should not be null", queues);
         assertTrue("Should have at least default queue", queues.size() >= 1);
-
-        // Verify first queue is active (active queues come first in ordering)
-        assertTrue("First queue should be active", queues.get(0).isActive());
     }
 }

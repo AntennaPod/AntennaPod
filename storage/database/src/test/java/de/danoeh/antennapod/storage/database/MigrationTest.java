@@ -66,7 +66,7 @@ public class MigrationTest {
      */
     @Test
     public void testQueueMembershipTableCreated() {
-        Queue queue = new Queue("MigrationTest", false, false);
+        Queue queue = new Queue("MigrationTest");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 100, 0);
@@ -80,10 +80,10 @@ public class MigrationTest {
      */
     @Test
     public void testQueueNameUniqueConstraint() {
-        Queue queue1 = new Queue("Unique", false, false);
+        Queue queue1 = new Queue("Unique");
         adapter.insertQueue(queue1);
 
-        Queue queue2 = new Queue("Unique", false, false);
+        Queue queue2 = new Queue("Unique");
         try {
             adapter.insertQueue(queue2);
             assertTrue("Should have thrown SQLiteConstraintException", false);
@@ -98,7 +98,7 @@ public class MigrationTest {
      */
     @Test
     public void testForeignKeyConstraintEnabled() {
-        Queue queue = new Queue("ForeignKeyTest", false, false);
+        Queue queue = new Queue("ForeignKeyTest");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 200, 0);
@@ -120,8 +120,6 @@ public class MigrationTest {
         assertNotNull("Default queue must exist", defaultQueue);
         assertEquals("Default queue ID should be 1", 1, defaultQueue.getId());
         assertEquals("Default queue name should be 'Default'", "Default", defaultQueue.getName());
-        assertTrue("Default queue should be marked as default", defaultQueue.isDefault());
-        assertTrue("Default queue should be marked as active", defaultQueue.isActive());
     }
 
     /**
@@ -132,7 +130,6 @@ public class MigrationTest {
         Queue activeQueue = adapter.selectActiveQueue();
 
         assertNotNull("Active queue must exist", activeQueue);
-        assertTrue("Active queue should have isActive=true", activeQueue.isActive());
     }
 
     /**
@@ -140,9 +137,9 @@ public class MigrationTest {
      */
     @Test
     public void testMultipleQueuesAfterMigration() {
-        Queue queue1 = new Queue("WorkoutQueue", false, false);
-        Queue queue2 = new Queue("CommuteQueue", false, false);
-        Queue queue3 = new Queue("EducationQueue", false, false);
+        Queue queue1 = new Queue("WorkoutQueue");
+        Queue queue2 = new Queue("CommuteQueue");
+        Queue queue3 = new Queue("EducationQueue");
 
         long id1 = adapter.insertQueue(queue1);
         long id2 = adapter.insertQueue(queue2);
@@ -159,7 +156,7 @@ public class MigrationTest {
      */
     @Test
     public void testQueueMetadataPersist() {
-        Queue queue = new Queue("AttributeTest", false, false);
+        Queue queue = new Queue("AttributeTest");
         long id = adapter.insertQueue(queue);
 
         Queue retrieved = adapter.selectQueueById(id);
@@ -172,7 +169,7 @@ public class MigrationTest {
      */
     @Test
     public void testQueueMembershipOrdering() {
-        Queue queue = new Queue("OrderTest", false, false);
+        Queue queue = new Queue("OrderTest");
         long queueId = adapter.insertQueue(queue);
 
         adapter.insertQueueMembership(queueId, 300, 0);
@@ -190,7 +187,7 @@ public class MigrationTest {
     public void testDatabaseStability() {
         // Create and delete multiple queues
         for (int i = 0; i < 5; i++) {
-            Queue q = new Queue("TempQueue" + i, false, false);
+            Queue q = new Queue("TempQueue" + i);
             long id = adapter.insertQueue(q);
             adapter.deleteQueue(id);
         }
@@ -200,7 +197,7 @@ public class MigrationTest {
         assertNotNull("Default queue should survive operations", defaultQueue);
 
         // Should be able to create new queues
-        Queue finalQueue = new Queue("FinalQueue", false, false);
+        Queue finalQueue = new Queue("FinalQueue");
         long finalId = adapter.insertQueue(finalQueue);
         Queue retrieved = adapter.selectQueueById(finalId);
         assertNotNull("Should be able to create queue after operations", retrieved);

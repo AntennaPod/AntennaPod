@@ -127,6 +127,19 @@ public interface QueueRepository {
     @Nullable
     Queue getActiveQueue();
 
+    /**
+     * Gets the default queue.
+     *
+     * <p>There is always exactly one default queue (database constraint).
+     * This query is fast as it's indexed on isDefault column.
+     *
+     * <p>Executes synchronously on caller's thread (DBReader pattern).
+     *
+     * @return Default Queue, or null if none found (should never happen)
+     */
+    @Nullable
+    Queue getDefaultQueue();
+
     // ==================== Episode Management Operations ====================
 
     /**
