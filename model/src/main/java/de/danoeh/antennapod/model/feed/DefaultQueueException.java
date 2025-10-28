@@ -5,6 +5,10 @@ import androidx.annotation.NonNull;
 /**
  * Exception thrown when attempting to delete or rename the default queue.
  *
+ * <p><strong>DEPRECATED DESIGN</strong> - This exception should be eliminated in favor of
+ * UI-level validation. The delete and rename buttons should not be shown for the default
+ * queue, preventing users from attempting these operations in the first place.
+ *
  * <p>The default queue (isDefault=true) is protected and cannot be:
  * - Deleted via {@link QueueRepository#deleteQueue(long)}
  * - Renamed via {@link QueueRepository#updateQueue(Queue)}
@@ -12,12 +16,25 @@ import androidx.annotation.NonNull;
  * <p>This protection ensures there is always at least one queue available for
  * episodes, maintaining application stability.
  *
- * <p>Example usage:
+ * <p><strong>Recommended approach:</strong> UI components should check
+ * {@link Queue#isDefault()} before showing edit/delete options. This prevents the
+ * exception from ever being thrown.
+ *
+ * <p>Example usage (current):
  * <pre>
  * try {
  *     queueRepository.deleteQueue(defaultQueueId);
  * } catch (DefaultQueueException e) {
  *     // Handle attempt to delete default queue - show error to user
+ * }
+ * </pre>
+ *
+ * <p>Example usage (recommended):
+ * <pre>
+ * Queue queue = queueRepository.getQueueById(queueId);
+ * if (!queue.isDefault()) {
+ *     // Show delete button only for non-default queues
+ *     showDeleteButton();
  * }
  * </pre>
  */

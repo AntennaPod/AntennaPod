@@ -10,13 +10,31 @@ import androidx.annotation.NonNull;
  * by {@link QueueRepository#createQueue(Queue)} and {@link QueueRepository#updateQueue(Queue)}
  * when a name conflict is detected.
  *
- * <p>Example usage:
+ * <p><strong>DESIGN NOTE:</strong> This exception represents a validation failure
+ * that could ideally be checked before calling the repository (by querying all
+ * queue names first). However, it's acceptable as a fallback for runtime detection
+ * of constraint violations, especially if caused by concurrent operations.
+ *
+ * <p>Example usage (exception-based):
  * <pre>
  * try {
  *     queueRepository.createQueue(newQueue);
  * } catch (QueueNameExistsException e) {
  *     // Handle duplicate name - prompt user to choose different name
  * }
+ * </pre>
+ *
+ * <p>Example usage (validation-based, recommended):
+ * <pre>
+ * List<Queue> allQueues = queueRepository.getAllQueues();
+ * for (Queue q : allQueues) {
+ *     if (q.getName().equals(queueName)) {
+ *         // Show error before attempting create/update
+ *         showDuplicateNameError();
+ *         return;
+ *     }
+ * }
+ * queueRepository.createQueue(newQueue); // Safe to call now
  * </pre>
  */
 public class QueueNameExistsException extends RuntimeException {
