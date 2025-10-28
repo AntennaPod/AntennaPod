@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
  * that already exists in the database.
  *
  * <p>Queue names must be unique (database constraint). This exception is thrown
- * by {@link QueueRepository#createQueue(Queue)} and {@link QueueRepository#updateQueue(Queue)}
+ * by {@link QueueRepository#createQueue} and {@link QueueRepository#updateQueue}
  * when a name conflict is detected.
  *
  * <p><strong>DESIGN NOTE:</strong> This exception represents a validation failure
@@ -26,7 +26,7 @@ import androidx.annotation.NonNull;
  *
  * <p>Example usage (validation-based, recommended):
  * <pre>
- * List<Queue> allQueues = queueRepository.getAllQueues();
+ * List&lt;Queue&gt; allQueues = queueRepository.getAllQueues();
  * for (Queue q : allQueues) {
  *     if (q.getName().equals(queueName)) {
  *         // Show error before attempting create/update

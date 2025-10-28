@@ -148,6 +148,7 @@ public class Queue {
 
     /**
      * Sets the default status of this queue.
+     *
      * <p><strong>INTERNAL USE ONLY</strong> - This method should only be called by QueueRepositoryImpl
      * to maintain the invariant that exactly one queue has isDefault = true.
      * External code should not call this method directly.
@@ -161,6 +162,7 @@ public class Queue {
 
     /**
      * Sets the active status of this queue.
+     *
      * <p><strong>INTERNAL USE ONLY</strong> - This method should only be called by QueueRepositoryImpl
      * to maintain the invariant that exactly one queue has isActive = true.
      * External code should not call this method directly.

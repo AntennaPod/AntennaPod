@@ -380,8 +380,8 @@ public class QueueRepositoryImpl implements QueueRepository {
                 Log.d(TAG, "Episode added to queue at position " + nextPosition);
 
                 // Post event to notify UI of queue content change
-                EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
-                    episodeId, QueueContentChangedEvent.ChangeType.ADDED));
+                EventBus.getDefault().post(new QueueContentChangedEvent(queueId, episodeId,
+                        QueueContentChangedEvent.ChangeType.ADDED));
             } finally {
                 adapter.close();
             }
@@ -411,8 +411,8 @@ public class QueueRepositoryImpl implements QueueRepository {
                 }
 
                 // Post event to notify UI of queue content change
-                EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
-                    episodeId, QueueContentChangedEvent.ChangeType.REMOVED));
+                EventBus.getDefault().post(new QueueContentChangedEvent(queueId, episodeId,
+                        QueueContentChangedEvent.ChangeType.REMOVED));
             } finally {
                 adapter.close();
             }
@@ -470,10 +470,10 @@ public class QueueRepositoryImpl implements QueueRepository {
                 }
 
                 // Post events for both queues to notify UI of content changes
-                EventBus.getDefault().post(new QueueContentChangedEvent(fromQueueId,
-                    episodeId, QueueContentChangedEvent.ChangeType.REMOVED));
-                EventBus.getDefault().post(new QueueContentChangedEvent(toQueueId,
-                    episodeId, QueueContentChangedEvent.ChangeType.ADDED));
+                EventBus.getDefault().post(new QueueContentChangedEvent(fromQueueId, episodeId,
+                        QueueContentChangedEvent.ChangeType.REMOVED));
+                EventBus.getDefault().post(new QueueContentChangedEvent(toQueueId, episodeId,
+                        QueueContentChangedEvent.ChangeType.ADDED));
             } finally {
                 adapter.close();
             }
@@ -495,8 +495,8 @@ public class QueueRepositoryImpl implements QueueRepository {
 
                 // Post event to notify UI that queue content was cleared
                 // episodeId=0 indicates all episodes were removed, not a specific one
-                EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
-                    0, QueueContentChangedEvent.ChangeType.REMOVED));
+                EventBus.getDefault().post(new QueueContentChangedEvent(queueId, 0,
+                        QueueContentChangedEvent.ChangeType.REMOVED));
             } finally {
                 adapter.close();
             }
@@ -561,8 +561,8 @@ public class QueueRepositoryImpl implements QueueRepository {
 
                 // Post event to notify UI that queue was reordered
                 // episodeId=0 indicates entire queue was reordered, not a single episode change
-                EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
-                    0, QueueContentChangedEvent.ChangeType.REMOVED));
+                EventBus.getDefault().post(new QueueContentChangedEvent(queueId, 0,
+                        QueueContentChangedEvent.ChangeType.REMOVED));
             } finally {
                 adapter.close();
             }
