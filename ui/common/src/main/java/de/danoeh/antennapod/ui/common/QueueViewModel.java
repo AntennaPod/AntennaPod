@@ -11,7 +11,6 @@ import java.util.concurrent.Future;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.Queue;
-import de.danoeh.antennapod.model.feed.QueueNameExistsException;
 import de.danoeh.antennapod.model.feed.QueueNotFoundException;
 import de.danoeh.antennapod.model.feed.QueueRepository;
 
@@ -174,10 +173,9 @@ public class QueueViewModel extends ViewModel {
      * <p>Runs asynchronously on background thread via repository.
      *
      * @param name Queue display name (max 50 characters, unique)
-     * @throws QueueNameExistsException if name is already in use
-     * @throws IllegalArgumentException if name is empty/invalid
+     * @throws IllegalArgumentException if name is empty, invalid, or already exists
      */
-    public void createQueue(@NonNull String name) throws QueueNameExistsException {
+    public void createQueue(@NonNull String name) {
         // Validate input
         if (name == null || name.trim().isEmpty()) {
             errorMessage.postValue("Queue name cannot be empty");
@@ -192,9 +190,9 @@ public class QueueViewModel extends ViewModel {
         List<Queue> existingQueues = queueRepository.getAllQueues();
         for (Queue q : existingQueues) {
             if (q.getName().equalsIgnoreCase(name.trim())) {
-                QueueNameExistsException ex = new QueueNameExistsException(name.trim());
-                errorMessage.postValue(ex.getMessage());
-                throw ex;
+                String message = "A queue with the name '" + name.trim() + "' already exists";
+                errorMessage.postValue(message);
+                throw new IllegalArgumentException(message);
             }
         }
 
@@ -206,9 +204,9 @@ public class QueueViewModel extends ViewModel {
             loadQueues(); // Reload queue list
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
-            if (cause instanceof QueueNameExistsException) {
+            if (cause instanceof IllegalArgumentException) {
                 errorMessage.postValue(cause.getMessage());
-                throw (QueueNameExistsException) cause;
+                throw (IllegalArgumentException) cause;
             }
             errorMessage.postValue("Failed to create queue: " + e.getMessage());
         } catch (InterruptedException e) {
@@ -259,11 +257,11 @@ public class QueueViewModel extends ViewModel {
      * <p>Can update name. Cannot modify isDefault or isActive flags.
      *
      * @param queue Queue with updated properties (must have valid ID)
-     * @throws QueueNameExistsException if renaming to an existing name
+     * @throws IllegalArgumentException if renaming to an existing name
      * @throws QueueNotFoundException if queue ID does not exist
      */
     public void updateQueue(@NonNull Queue queue)
-            throws QueueNameExistsException, QueueNotFoundException {
+            throws QueueNotFoundException {
         // Validate queue exists
         Queue existingQueue = queueRepository.getQueueById(queue.getId());
         if (existingQueue == null) {
@@ -278,9 +276,9 @@ public class QueueViewModel extends ViewModel {
             for (Queue q : allQueuesList) {
                 if (q.getId() != queue.getId()
                         && q.getName().equalsIgnoreCase(queue.getName().trim())) {
-                    QueueNameExistsException ex = new QueueNameExistsException(queue.getName());
-                    errorMessage.postValue(ex.getMessage());
-                    throw ex;
+                    String message = "A queue with the name '" + queue.getName() + "' already exists";
+                    errorMessage.postValue(message);
+                    throw new IllegalArgumentException(message);
                 }
             }
         }
@@ -296,9 +294,9 @@ public class QueueViewModel extends ViewModel {
             }
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
-            if (cause instanceof QueueNameExistsException) {
+            if (cause instanceof IllegalArgumentException) {
                 errorMessage.postValue(cause.getMessage());
-                throw (QueueNameExistsException) cause;
+                throw (IllegalArgumentException) cause;
             }
             errorMessage.postValue("Failed to update queue: " + e.getMessage());
         } catch (InterruptedException e) {
@@ -314,11 +312,11 @@ public class QueueViewModel extends ViewModel {
      *
      * @param queueId ID of queue to rename
      * @param newName New queue name (max 50 characters, unique)
-     * @throws QueueNameExistsException if newName already exists
+     * @throws IllegalArgumentException if newName already exists
      * @throws QueueNotFoundException if queueId does not exist
      */
     public void renameQueue(long queueId, @NonNull String newName)
-            throws QueueNameExistsException, QueueNotFoundException {
+            throws QueueNotFoundException {
         // Validate queue exists
         Queue targetQueue = queueRepository.getQueueById(queueId);
         if (targetQueue == null) {
