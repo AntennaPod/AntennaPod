@@ -494,6 +494,7 @@ public class QueueRepositoryImpl implements QueueRepository {
                 Log.d(TAG, "Queue cleared: " + queueId);
 
                 // Post event to notify UI that queue content was cleared
+                // episodeId=0 indicates all episodes were removed, not a specific one
                 EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
                     0, QueueContentChangedEvent.ChangeType.REMOVED));
             } finally {
@@ -559,6 +560,7 @@ public class QueueRepositoryImpl implements QueueRepository {
                 }
 
                 // Post event to notify UI that queue was reordered
+                // episodeId=0 indicates entire queue was reordered, not a single episode change
                 EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
                     0, QueueContentChangedEvent.ChangeType.REMOVED));
             } finally {
