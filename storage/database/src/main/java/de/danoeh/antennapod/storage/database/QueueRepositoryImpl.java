@@ -9,6 +9,9 @@ import androidx.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.greenrobot.eventbus.EventBus;
+
+import de.danoeh.antennapod.event.QueueContentChangedEvent;
 import de.danoeh.antennapod.model.feed.DefaultQueueException;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.Queue;
@@ -376,9 +379,9 @@ public class QueueRepositoryImpl implements QueueRepository {
                 adapter.insertQueueMembership(queueId, episodeId, nextPosition);
                 Log.d(TAG, "Episode added to queue at position " + nextPosition);
 
-                // Post event
-                // EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
-                //     QueueContentChangedEvent.Action.ADDED, episodeId));
+                // Post event to notify UI of queue content change
+                EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
+                    episodeId, QueueContentChangedEvent.ChangeType.ADDED));
             } finally {
                 adapter.close();
             }
@@ -407,9 +410,9 @@ public class QueueRepositoryImpl implements QueueRepository {
                     adapter.endTransaction();
                 }
 
-                // Post event
-                // EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
-                //     QueueContentChangedEvent.Action.REMOVED, episodeId));
+                // Post event to notify UI of queue content change
+                EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
+                    episodeId, QueueContentChangedEvent.ChangeType.REMOVED));
             } finally {
                 adapter.close();
             }
@@ -466,11 +469,11 @@ public class QueueRepositoryImpl implements QueueRepository {
                     adapter.endTransaction();
                 }
 
-                // Post events for both queues
-                // EventBus.getDefault().post(new QueueContentChangedEvent(fromQueueId,
-                //     QueueContentChangedEvent.Action.REMOVED, episodeId));
-                // EventBus.getDefault().post(new QueueContentChangedEvent(toQueueId,
-                //     QueueContentChangedEvent.Action.ADDED, episodeId));
+                // Post events for both queues to notify UI of content changes
+                EventBus.getDefault().post(new QueueContentChangedEvent(fromQueueId,
+                    episodeId, QueueContentChangedEvent.ChangeType.REMOVED));
+                EventBus.getDefault().post(new QueueContentChangedEvent(toQueueId,
+                    episodeId, QueueContentChangedEvent.ChangeType.ADDED));
             } finally {
                 adapter.close();
             }
@@ -490,9 +493,9 @@ public class QueueRepositoryImpl implements QueueRepository {
                 adapter.deleteAllQueueMemberships(queueId);
                 Log.d(TAG, "Queue cleared: " + queueId);
 
-                // Post event
-                // EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
-                //     QueueContentChangedEvent.Action.CLEARED));
+                // Post event to notify UI that queue content was cleared
+                EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
+                    0, QueueContentChangedEvent.ChangeType.REMOVED));
             } finally {
                 adapter.close();
             }
@@ -555,9 +558,9 @@ public class QueueRepositoryImpl implements QueueRepository {
                     adapter.endTransaction();
                 }
 
-                // Post event
-                // EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
-                //     QueueContentChangedEvent.Action.REORDERED));
+                // Post event to notify UI that queue was reordered
+                EventBus.getDefault().post(new QueueContentChangedEvent(queueId,
+                    0, QueueContentChangedEvent.ChangeType.REMOVED));
             } finally {
                 adapter.close();
             }
