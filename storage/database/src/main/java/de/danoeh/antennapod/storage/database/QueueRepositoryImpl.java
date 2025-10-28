@@ -105,7 +105,8 @@ public class QueueRepositoryImpl implements QueueRepository {
                 List<Queue> existingQueues = adapter.selectAllQueues();
                 for (Queue existing : existingQueues) {
                     if (existing.getName().equals(queue.getName())) {
-                        throw new IllegalArgumentException("A queue with the name '" + queue.getName() + "' already exists");
+                        String msg = "A queue with the name '" + queue.getName() + "' already exists";
+                        throw new IllegalArgumentException(msg);
                     }
                 }
 
@@ -121,7 +122,8 @@ public class QueueRepositoryImpl implements QueueRepository {
             } catch (SQLException e) {
                 Log.e(TAG, "Error creating queue", e);
                 if (e.getMessage() != null && e.getMessage().contains("UNIQUE constraint")) {
-                    throw new IllegalArgumentException("A queue with the name '" + queue.getName() + "' already exists", e);
+                    String msg = "A queue with the name '" + queue.getName() + "' already exists";
+                    throw new IllegalArgumentException(msg, e);
                 }
                 throw e;
             } finally {
@@ -153,7 +155,8 @@ public class QueueRepositoryImpl implements QueueRepository {
                     List<Queue> allQueues = adapter.selectAllQueues();
                     for (Queue q : allQueues) {
                         if (q.getId() != queue.getId() && q.getName().equals(queue.getName())) {
-                            throw new IllegalArgumentException("A queue with the name '" + queue.getName() + "' already exists");
+                            String msg = "A queue with the name '" + queue.getName() + "' already exists";
+                            throw new IllegalArgumentException(msg);
                         }
                     }
                 }
@@ -167,7 +170,8 @@ public class QueueRepositoryImpl implements QueueRepository {
             } catch (SQLException e) {
                 Log.e(TAG, "Error updating queue", e);
                 if (e.getMessage() != null && e.getMessage().contains("UNIQUE constraint")) {
-                    throw new IllegalArgumentException("A queue with the name '" + queue.getName() + "' already exists", e);
+                    String msg = "A queue with the name '" + queue.getName() + "' already exists";
+                    throw new IllegalArgumentException(msg, e);
                 }
                 throw e;
             } finally {
