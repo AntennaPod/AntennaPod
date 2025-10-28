@@ -1017,4 +1017,38 @@ public class DBWriter {
             return dbExec.submit(runnable);
         }
     }
+
+    /**
+     * Submits a database operation to the shared database executor service.
+     * This method is used by repository implementations to ensure all database
+     * operations use a single-threaded executor for thread safety.
+     *
+     * @param task The database operation to execute
+     * @return A Future that completes when the operation is done
+     */
+    public static Future<?> submitDbTask(Runnable task) {
+        return runOnDbThread(task);
+    }
+
+    /**
+     * Submits a database operation that returns a result to the shared database executor service.
+     * This method is used by repository implementations to ensure all database
+     * operations use a single-threaded executor for thread safety.
+     *
+     * @param task The database operation to execute
+     * @param <T>  The return type
+     * @return A Future containing the result of the operation
+     */
+    public static <T> Future<T> submitDbTaskWithResult(java.util.concurrent.Callable<T> task) {
+        if ("DatabaseExecutor".equals(Thread.currentThread().getName())) {
+            try {
+                T result = task.call();
+                return Futures.immediateFuture(result);
+            } catch (Exception e) {
+                return Futures.immediateFailedFuture(e);
+            }
+        } else {
+            return dbExec.submit(task);
+        }
+    }
 }

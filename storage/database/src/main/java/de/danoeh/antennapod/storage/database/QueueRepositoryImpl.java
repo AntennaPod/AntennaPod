@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.danoeh.antennapod.model.feed.DefaultQueueException;
@@ -39,17 +37,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 public class QueueRepositoryImpl implements QueueRepository {
 
     private static final String TAG = "QueueRepositoryImpl";
-
-    private static final ExecutorService dbExec;
-
-    static {
-        dbExec = Executors.newSingleThreadExecutor(r -> {
-            Thread t = new Thread(r);
-            t.setName("QueueRepositoryExecutor");
-            t.setPriority(Thread.MIN_PRIORITY);
-            return t;
-        });
-    }
 
     /**
      * Singleton instance of the repository.
@@ -104,7 +91,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public Future<Long> createQueue(@NonNull Queue queue) {
         Log.d(TAG, "createQueue: name=" + queue.getName());
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTaskWithResult(() -> {
             // Validate queue name
             if (queue.getName() == null || queue.getName().trim().isEmpty()) {
                 throw new IllegalArgumentException("Queue name cannot be null or empty");
@@ -157,7 +144,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public Future<?> updateQueue(@NonNull Queue queue) {
         Log.d(TAG, "updateQueue: id=" + queue.getId() + ", name=" + queue.getName());
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTask(() -> {
             if (queue.getId() == 0) {
                 throw new IllegalArgumentException("Queue ID must be set for update");
             }
@@ -211,7 +198,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public Future<?> deleteQueue(long queueId) {
         Log.d(TAG, "deleteQueue: id=" + queueId);
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTask(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             try {
@@ -249,7 +236,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public Future<?> switchActiveQueue(long queueId) {
         Log.d(TAG, "switchActiveQueue: queueId=" + queueId);
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTask(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             try {
@@ -366,7 +353,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public Future<?> addEpisodeToQueue(long queueId, long episodeId) {
         Log.d(TAG, "addEpisodeToQueue: queueId=" + queueId + ", episodeId=" + episodeId);
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTask(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             try {
@@ -402,7 +389,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public Future<?> removeEpisodeFromQueue(long queueId, long episodeId) {
         Log.d(TAG, "removeEpisodeFromQueue: queueId=" + queueId + ", episodeId=" + episodeId);
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTask(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             try {
@@ -447,7 +434,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     public Future<?> moveEpisodeBetweenQueues(long fromQueueId, long toQueueId, long episodeId) {
         Log.d(TAG, "moveEpisodeBetweenQueues: from=" + fromQueueId + ", to=" + toQueueId
                 + ", episode=" + episodeId);
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTask(() -> {
             // No-op if same queue
             if (fromQueueId == toQueueId) {
                 Log.d(TAG, "Source and target queues are the same, no-op");
@@ -496,7 +483,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public Future<?> clearQueue(long queueId) {
         Log.d(TAG, "clearQueue: queueId=" + queueId);
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTask(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             try {
@@ -551,7 +538,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     @NonNull
     public Future<?> reorderQueueEpisodes(long queueId, @NonNull List<Long> episodeIds) {
         Log.d(TAG, "reorderQueueEpisodes: queueId=" + queueId + ", count=" + episodeIds.size());
-        return dbExec.submit(() -> {
+        return DBWriter.submitDbTask(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             try {
