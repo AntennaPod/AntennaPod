@@ -1153,6 +1153,24 @@ public class PodDBAdapter {
     }
 
     /**
+     * Returns a cursor which contains FeedItem and QueueItem info for all items currently in a queue.
+     */
+    public final Cursor df_getAllQueueItemsInfoCursor() {
+        final String query = "SELECT "
+                + TABLE_NAME_QUEUE_ITEMS + "." + KEY_QUEUE_ID + ", "
+                + TABLE_NAME_QUEUE_ITEMS + "." + KEY_POSITION + ", "
+                + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", "
+                + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
+                + " ON " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_FEEDITEM + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+                + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "."
+                + KEY_FEEDITEM + " ";
+        return db.rawQuery(query, null);
+    }
+
+    /**
      * Deletes rows from the QueueItems table based on a list of FeedItem IDs.
      *
      * @param inClause      A SQL IN clause, e.g., "(?,?,?)"

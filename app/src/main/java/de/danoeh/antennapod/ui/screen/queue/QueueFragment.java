@@ -122,7 +122,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Override
     public void onStart() {
         super.onStart();
-        viewModel.loadQueues();
+        viewModel.loadQueues(requireContext());
         EventBus.getDefault().register(this);
     }
 
@@ -517,8 +517,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel.getQueues().observe(getViewLifecycleOwner(), queues -> {
-            if (queues == null || queues.isEmpty()) {
+        viewModel.getQueues().observe(getViewLifecycleOwner(), queuesInfo -> {
+            if (queuesInfo == null || queuesInfo.isEmpty()) {
                 this.queue = new ArrayList<>();
                 recyclerAdapter.updateItems(this.queue);
                 toolbar.setTitle(R.string.queue_label);
@@ -529,8 +529,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             boolean currentIsValid = false;
 
             if (queueToDisplay != null) {
-                for (Queue q : queues) {
-                    if (q.getId() == queueToDisplay.getId()) {
+                for (QueueInfo queueInfo : queuesInfo) {
+                    Queue queue = queueInfo.getQueue();
+                    if (queue.getId() == queueToDisplay.getId()) {
                         currentIsValid = true;
                         break;
                     }
@@ -539,14 +540,15 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
             if (!currentIsValid) {
                 queueToDisplay = null;
-                for (Queue q : queues) {
-                    if (q.getId() == 0) {
-                        queueToDisplay = q;
+                for (QueueInfo queueInfo : queuesInfo) {
+                    Queue queue = queueInfo.getQueue();
+                    if (queue.getId() == 0) {
+                        queueToDisplay = queue;
                         break;
                     }
                 }
                 if (queueToDisplay == null) {
-                    queueToDisplay = queues.get(0);
+                    queueToDisplay = queuesInfo.get(0).getQueue();
                 }
             }
 

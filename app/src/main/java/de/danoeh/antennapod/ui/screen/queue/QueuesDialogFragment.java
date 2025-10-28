@@ -83,7 +83,7 @@ public class QueuesDialogFragment extends DialogFragment {
             }
         });
 
-        viewModel.loadQueues();
+        viewModel.loadQueues(requireContext());
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle("Queues").setView(view);

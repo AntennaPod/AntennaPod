@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.queue;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.queue.Queue;
+import de.danoeh.antennapod.ui.common.Converter;
 
-public class QueuesDialogRecyclerAdapter extends ListAdapter<Queue, QueuesDialogRecyclerAdapter.QueuesViewHolder> {
+public class QueuesDialogRecyclerAdapter extends ListAdapter<QueueInfo, QueuesDialogRecyclerAdapter.QueuesViewHolder> {
 
     private OnQueueActionsListener listener;
 
@@ -22,15 +24,17 @@ public class QueuesDialogRecyclerAdapter extends ListAdapter<Queue, QueuesDialog
         super(DIFF_CALLBACK);
     }
 
-    private static final DiffUtil.ItemCallback<Queue> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
+    private static final DiffUtil.ItemCallback<QueueInfo> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Queue oldQueue, @NonNull Queue newQueue) {
-            return oldQueue.getId() == newQueue.getId();
+        public boolean areItemsTheSame(@NonNull QueueInfo oldInfo, @NonNull QueueInfo newInfo) {
+            return oldInfo.getQueue().getId() == newInfo.getQueue().getId();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Queue oldQueue, @NonNull Queue newQueue) {
-            return oldQueue.getName().equals(newQueue.getName());
+        public boolean areContentsTheSame(@NonNull QueueInfo oldInfo, @NonNull QueueInfo newInfo) {
+            return oldInfo.getQueue().getName().equals(newInfo.getQueue().getName())
+                    && oldInfo.getItemCount() == newInfo.getItemCount()
+                    && oldInfo.getTimeLeft() == newInfo.getTimeLeft();
         }
     };
 
@@ -54,8 +58,17 @@ public class QueuesDialogRecyclerAdapter extends ListAdapter<Queue, QueuesDialog
 
     @Override
     public void onBindViewHolder(@NonNull QueuesViewHolder holder, int position) {
-        Queue queue = getItem(position);
+        QueueInfo queueInfo = getItem(position);
+        Queue queue = queueInfo.getQueue();
         holder.queueName.setText(queue.getName());
+
+        Resources res = holder.itemView.getContext().getResources();
+        String info = res.getQuantityString(R.plurals.num_episodes, queueInfo.getItemCount(), queueInfo.getItemCount());
+        if (queueInfo.getItemCount() > 0) {
+            info += " • ";
+            info += Converter.getDurationStringLocalized(res, queueInfo.getTimeLeft(), false);
+        }
+        holder.queueInfo.setText(info);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {

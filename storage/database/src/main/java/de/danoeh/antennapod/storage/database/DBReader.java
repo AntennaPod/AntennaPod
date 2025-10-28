@@ -295,6 +295,43 @@ public final class DBReader {
         }
     }
 
+    /**
+     * Loads all feed items from all queues.
+     *
+     * @return A Map where the key is the queue ID and the value is a list of
+     * FeedItems (with media) belonging to that queue.
+     */
+    @NonNull
+    public static Map<Long, List<FeedItem>> df_getAllQueueItemsWithInfo() {
+        Log.d(TAG, "df_getAllQueueItemsWithInfo() called");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        Map<Long, List<FeedItem>> result = new HashMap<>();
+
+        FeedItemCursor cursor = new FeedItemCursor(adapter.df_getAllQueueItemsInfoCursor());
+        int indexQueueId = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_QUEUE_ID);
+        if (cursor.moveToFirst()) {
+            do {
+                long queueId = cursor.getLong(indexQueueId);
+                FeedItem item = cursor.getFeedItem();
+
+                List<FeedItem> list = result.get(queueId);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    result.put(queueId, list);
+                }
+                list.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        for (List<FeedItem> items : result.values()) {
+            loadAdditionalFeedItemListData(items);
+        }
+
+        adapter.close();
+        return result;
+    }
+
     @NonNull
     private static List<Queue> df_extractQueueListFromCursor(QueueCursor cursor) {
         List<Queue> result = new ArrayList<>(cursor.getCount());
