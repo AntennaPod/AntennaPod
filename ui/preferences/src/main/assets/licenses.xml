@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<libraries>
+    <library
+        name="AntennaPod"
+        author="The AntennaPod team"
+        website="https://github.com/AntennaPod/AntennaPod"
+        license="GPL-3.0"
+        licenseText="LICENSE.txt" />
+    <library
+        name="Android Jetpack"
+        author="Google"
+        website="https://developer.android.com/jetpack"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="Apache Commons"
+        author="The Apache Software Foundation"
+        website="https://commons.apache.org/"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="Balloon"
+        author="Jaewoong Eum"
+        website="https://github.com/skydoves/Balloon"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="Conscrypt"
+        author="Google"
+        website="https://github.com/google/conscrypt"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="EventBus"
+        author="greenrobot"
+        website="https://github.com/greenrobot/EventBus"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="ExoPlayer"
+        author="Google"
+        website="https://github.com/google/ExoPlayer"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="fyydlin"
+        author="Martin Fietz"
+        website="https://github.com/mfietz/fyydlin"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="Glide"
+        author="bumptech"
+        website="https://github.com/bumptech/glide"
+        license="Simplified BSD"
+        licenseText="LICENSE_GLIDE.txt" />
+    <library
+        name="jsoup"
+        author="Jonathan Hedley"
+        website="https://jsoup.org/"
+        license="MIT"
+        licenseText="LICENSE_JSOUP.txt" />
+    <library
+        name="Material Components for Android"
+        author="Google"
+        website="https://github.com/material-components/material-components-android"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="Material Design Icons"
+        author="Google"
+        website="https://github.com/google/material-design-icons"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="Material Design Icons"
+        author="Templarian"
+        website="https://github.com/Templarian/MaterialDesign"
+        license="Pictogrammers Free License"
+        licenseText="LICENSE_PICTOGRAMMERS.txt" />
+    <library
+        name="OkHttp"
+        author="Square"
+        website="https://github.com/square/okhttp"
+        license="Apache 2.0"
+        licenseText="LICENSE_OKHTTP.txt" />
+    <library
+        name="RecyclerViewSwipeDecorator"
+        author="Paolo Montalto"
+        website="https://github.com/xabaras/RecyclerViewSwipeDecorator"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="RxAndroid"
+        author="ReactiveX"
+        website="https://github.com/ReactiveX/RxAndroid"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="RxJava"
+        author="ReactiveX"
+        website="https://github.com/ReactiveX/RxJava"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
+        name="SearchPreference"
+        author="ByteHamster"
+        website="https://github.com/ByteHamster/SearchPreference"
+        license="MIT"
+        licenseText="LICENSE_SEARCHPREFERENCE.txt" />
+    <library
+        name="StackBlur"
+        author="Enrique López Mañas"
+        website="https://github.com/kikoso/android-stackblur"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+</libraries>

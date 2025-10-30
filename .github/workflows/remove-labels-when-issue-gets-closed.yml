@@ -1,0 +1,50 @@
+name: Remove labels when issue gets closed
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  remove-labels:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Remove labels from closed issue
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const labelsToRemove = ['Needs: Triage', 'Needs: Decision', 'Needs: Reply still'];
+            const issue = context.payload.issue;
+            
+            // Get current labels on the issue
+            const currentLabels = issue.labels.map(label => label.name);
+            
+            // Create updated label list by filtering out the labels to remove
+            const updatedLabels = currentLabels.filter(label => 
+              !labelsToRemove.includes(label)
+            );
+            
+            // Check if any labels were actually removed
+            const removedLabels = currentLabels.filter(label => 
+              labelsToRemove.includes(label)
+            );
+            
+            if (removedLabels.length > 0) {
+              console.log(`Removing labels: ${removedLabels.join(', ')}`);
+              console.log(`Updated label list: ${updatedLabels.join(', ') || 'No labels remaining'}`);
+              
+              try {
+                // Update the issue with the new label list in a single operation
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  labels: updatedLabels
+                });
+                console.log(`Successfully updated labels. Removed: ${removedLabels.join(', ')}`);
+              } catch (error) {
+                console.log(`Failed to update labels: ${error.message}`);
+              }
+            } else {
+              console.log('No target labels found on this issue to remove.');
+            }

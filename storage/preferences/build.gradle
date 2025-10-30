@@ -1,0 +1,20 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.storage.preferences"
+
+    lint {
+        disable "StaticFieldLeak"
+    }
+}
+
+dependencies {
+    implementation project(':model')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.fragment:fragment:$fragmentVersion"
+    implementation "androidx.preference:preference:$preferenceVersion"
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:padding="4dp"
+    android:clipToPadding="false"
+    android:clipToOutline="false"
+    android:clipChildren="false">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/non_square_icon_background"
+        app:cardCornerRadius="16dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardElevation="2dp">
+
+        <de.danoeh.antennapod.ui.common.SquareImageView
+            android:id="@+id/discovery_cover"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:elevation="4dp"
+            android:outlineProvider="bounds"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?android:attr/colorBackground"
+            squareImageView:direction="height" />
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/actionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="@style/Widget.Material3.Button.OutlinedButton" />
+
+</LinearLayout>

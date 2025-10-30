@@ -1,9 +1,10 @@
 package de.danoeh.antennapod.parser.feed.namespace;
 
+import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.parser.feed.HandlerState;
-import de.danoeh.antennapod.parser.feed.element.SimpleChapter;
 import de.danoeh.antennapod.parser.feed.element.SyndElement;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
 import org.xml.sax.Attributes;
@@ -31,13 +32,14 @@ public class SimpleChapters extends Namespace {
         if (currentItem != null) {
             if (localName.equals(CHAPTERS)) {
                 currentItem.setChapters(new ArrayList<>());
-            } else if (localName.equals(CHAPTER)) {
+            } else if (localName.equals(CHAPTER) && !TextUtils.isEmpty(attributes.getValue(START))) {
+                // if the chapter's START is empty, we don't need to do anything
                 try {
                     long start = DateUtils.parseTimeString(attributes.getValue(START));
                     String title = attributes.getValue(TITLE);
                     String link = attributes.getValue(HREF);
                     String imageUrl = attributes.getValue(IMAGE);
-                    SimpleChapter chapter = new SimpleChapter(start, title, link, imageUrl);
+                    Chapter chapter = new Chapter(start, title, link, imageUrl);
                     currentItem.getChapters().add(chapter);
                 } catch (NumberFormatException e) {
                     Log.e(TAG, "Unable to read chapter", e);

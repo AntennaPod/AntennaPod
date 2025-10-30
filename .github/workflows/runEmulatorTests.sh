@@ -1,11 +1,10 @@
-#!/bin/zsh
+#!/bin/bash
 
 set -o pipefail
 
 runTests() {
     ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest \
-        -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi \
-        | grep -v "V/InstrumentationResultParser: INSTRUMENTATION_STATUS"
+        -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
 }
 
 # Retry tests to make them less flaky

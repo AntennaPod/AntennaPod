@@ -6,54 +6,40 @@ import android.content.res.Resources;
 
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
-import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
+import de.danoeh.antennapod.net.download.service.episode.autodownload.APCleanupAlgorithm;
+import de.danoeh.antennapod.net.download.service.episode.autodownload.APNullCleanupAlgorithm;
+import de.danoeh.antennapod.net.download.service.episode.autodownload.APQueueCleanupAlgorithm;
+import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.net.download.service.episode.autodownload.EpisodeCleanupAlgorithmFactory;
+import de.danoeh.antennapod.net.download.service.episode.autodownload.ExceptFavoriteCleanupAlgorithm;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
+import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
-import de.test.antennapod.EspressoTestUtils;
-
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @LargeTest
@@ -73,42 +59,10 @@ public class PreferencesTest {
         EspressoTestUtils.clearPreferences();
         activityTestRule.launchActivity(new Intent());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
-        prefs.edit().putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true).commit();
+        prefs.edit().putBoolean(UserPreferences.PREF_AUTODL_GLOBAL, true).commit();
 
         res = activityTestRule.getActivity().getResources();
         UserPreferences.init(activityTestRule.getActivity());
-    }
-
-    @Test
-    public void testSwitchTheme() {
-        final int theme = UserPreferences.getTheme();
-        int otherTheme;
-        if (theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
-            otherTheme = R.string.pref_theme_title_dark;
-        } else {
-            otherTheme = R.string.pref_theme_title_light;
-        }
-        clickPreference(R.string.user_interface_label);
-        clickPreference(R.string.pref_set_theme_title);
-        onView(withText(otherTheme)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getTheme() != theme);
-    }
-
-    @Test
-    public void testSwitchThemeBack() {
-        final int theme = UserPreferences.getTheme();
-        int otherTheme;
-        if (theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
-            otherTheme = R.string.pref_theme_title_dark;
-        } else {
-            otherTheme = R.string.pref_theme_title_light;
-        }
-        clickPreference(R.string.user_interface_label);
-        clickPreference(R.string.pref_set_theme_title);
-        onView(withText(otherTheme)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getTheme() != theme);
     }
 
     @Test
@@ -124,38 +78,22 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testSetLockscreenButtons() {
+    public void testSetNotificationButtons() {
         clickPreference(R.string.user_interface_label);
-        String[] buttons = res.getStringArray(R.array.compact_notification_buttons_options);
-        clickPreference(R.string.pref_compact_notification_buttons_title);
+        String[] buttons = res.getStringArray(R.array.full_notification_buttons_options);
+        clickPreference(R.string.pref_full_notification_buttons_title);
         // First uncheck checkboxes
-        onView(withText(buttons[0])).perform(click());
-        onView(withText(buttons[1])).perform(click());
-
-        // Now try to check all checkboxes
-        onView(withText(buttons[0])).perform(click());
         onView(withText(buttons[1])).perform(click());
         onView(withText(buttons[2])).perform(click());
-
-        // Make sure that the third checkbox is unchecked
-        onView(withText(buttons[2])).check(matches(not(isChecked())));
-
-        String snackBarText = String.format(res.getString(
-                R.string.pref_compact_notification_buttons_dialog_error), 2);
-        Awaitility.await().ignoreExceptions().atMost(4000, MILLISECONDS)
-                .until(() -> {
-                    onView(withText(snackBarText)).check(doesNotExist());
-                    return true;
-                });
 
         onView(withText(R.string.confirm_label)).perform(click());
 
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::showRewindOnCompactNotification);
+                .until(() -> UserPreferences.showSkipOnFullNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::showFastForwardOnCompactNotification);
+                .until(() -> UserPreferences.showNextChapterOnFullNotification());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> !UserPreferences.showSkipOnCompactNotification());
+                .until(() -> !UserPreferences.showPlaybackSpeedOnFullNotification());
     }
 
     @Test
@@ -164,6 +102,7 @@ public class PreferencesTest {
         doTestEnqueueLocation(R.string.enqueue_location_after_current, EnqueueLocation.AFTER_CURRENTLY_PLAYING);
         doTestEnqueueLocation(R.string.enqueue_location_front, EnqueueLocation.FRONT);
         doTestEnqueueLocation(R.string.enqueue_location_back, EnqueueLocation.BACK);
+        doTestEnqueueLocation(R.string.enqueue_location_random, EnqueueLocation.RANDOM);
     }
 
     private void doTestEnqueueLocation(@StringRes int optionResId, EnqueueLocation expected) {
@@ -233,14 +172,33 @@ public class PreferencesTest {
 
     @Test
     public void testAutoDelete() {
-        clickPreference(R.string.storage_pref);
-        final boolean autoDelete = UserPreferences.isAutoDelete();
+        clickPreference(R.string.downloads_pref);
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        final boolean autoDelete = UserPreferences.isAutoDelete();
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> autoDelete != UserPreferences.isAutoDelete());
-        onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> autoDelete == UserPreferences.isAutoDelete());
+    }
+
+    @Test
+    public void testAutoDeleteLocal() {
+        clickPreference(R.string.downloads_pref);
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
+        onView(withText(R.string.pref_auto_delete_playback_title)).perform(click());
+        assertTrue(UserPreferences.isAutoDelete());
+        assertFalse(UserPreferences.isAutoDeleteLocal());
+
+        onView(withText(R.string.pref_auto_local_delete_title)).perform(click());
+        onView(withText(R.string.yes)).perform(click());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> UserPreferences.isAutoDeleteLocal());
+
+        onView(withText(R.string.pref_auto_local_delete_title)).perform(click());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> !UserPreferences.isAutoDeleteLocal());
     }
 
     @Test
@@ -264,70 +222,12 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testDisableUpdateInterval() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.feed_refresh_title);
-        onView(withText(R.string.feed_refresh_never)).perform(click());
-        onView(withId(R.id.disableRadioButton)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getUpdateInterval() == 0);
-    }
-
-    @Test
-    public void testSetUpdateInterval() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.feed_refresh_title);
-        onView(withId(R.id.intervalRadioButton)).perform(click());
-        onView(withId(R.id.spinner)).perform(click());
-        int position = 1; // an arbitrary position
-        onData(anything()).inRoot(RootMatchers.isPlatformPopup()).atPosition(position).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getUpdateInterval() == TimeUnit.HOURS.toMillis(2));
-    }
-
-    @Test
-    public void testSetSequentialDownload() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.pref_parallel_downloads_title);
-        onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
-        onView(withClassName(endsWith("EditText"))).perform(replaceText("1"));
-        onView(withText(android.R.string.ok)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getParallelDownloads() == 1);
-    }
-
-    @Test
-    public void testSetParallelDownloads() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.pref_parallel_downloads_title);
-        onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
-        onView(withClassName(endsWith("EditText"))).perform(replaceText("10"));
-        onView(withClassName(endsWith("EditText"))).perform(closeSoftKeyboard());
-        onView(withText(android.R.string.ok)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getParallelDownloads() == 10);
-    }
-
-    @Test
-    public void testSetParallelDownloadsInvalidInput() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.pref_parallel_downloads_title);
-        onView(isRoot()).perform(waitForView(withClassName(endsWith("EditText")), 1000));
-        onView(withClassName(endsWith("EditText"))).perform(replaceText("0"));
-        onView(withClassName(endsWith("EditText"))).check(matches(withText("")));
-        onView(withClassName(endsWith("EditText"))).perform(replaceText("100"));
-        onView(withClassName(endsWith("EditText"))).check(matches(withText("")));
-    }
-
-    @Test
     public void testSetEpisodeCache() {
         String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String entry = entries[entries.length / 2];
         final int value = Integer.parseInt(values[values.length / 2]);
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_episode_cache_title);
         onView(isRoot()).perform(waitForView(withText(entry), 1000));
@@ -343,7 +243,7 @@ public class PreferencesTest {
         String minEntry = entries[0];
         final int minValue = Integer.parseInt(values[0]);
 
-        clickPreference(R.string.network_pref);
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_episode_cache_title);
         onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
@@ -358,7 +258,7 @@ public class PreferencesTest {
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
         String maxEntry = entries[entries.length - 1];
         final int maxValue = Integer.parseInt(values[values.length - 1]);
-        onView(withText(R.string.network_pref)).perform(click());
+        onView(withText(R.string.downloads_pref)).perform(click());
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cache_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
@@ -369,17 +269,17 @@ public class PreferencesTest {
 
     @Test
     public void testAutomaticDownload() {
-        final boolean automaticDownload = UserPreferences.isEnableAutodownload();
-        clickPreference(R.string.network_pref);
+        final boolean automaticDownload = UserPreferences.isEnableAutodownloadGlobal();
+        clickPreference(R.string.downloads_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_automatic_download_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> automaticDownload != UserPreferences.isEnableAutodownload());
-        if (!UserPreferences.isEnableAutodownload()) {
+                .until(() -> automaticDownload != UserPreferences.isEnableAutodownloadGlobal());
+        if (!UserPreferences.isEnableAutodownloadGlobal()) {
             clickPreference(R.string.pref_automatic_download_title);
         }
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(UserPreferences::isEnableAutodownload);
+                .until(UserPreferences::isEnableAutodownloadGlobal);
         final boolean enableAutodownloadOnBattery = UserPreferences.isEnableAutodownloadOnBattery();
         clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -391,47 +291,47 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupFavoriteOnly() {
-        clickPreference(R.string.network_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        clickPreference(R.string.downloads_pref);
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
         onView(withText(R.string.episode_cleanup_except_favorite_removal)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getEpisodeCleanupAlgorithm() instanceof ExceptFavoriteCleanupAlgorithm);
+                .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof ExceptFavoriteCleanupAlgorithm);
     }
 
     @Test
     public void testEpisodeCleanupQueueOnly() {
-        clickPreference(R.string.network_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        clickPreference(R.string.downloads_pref);
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
         onView(withText(R.string.episode_cleanup_queue_removal)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getEpisodeCleanupAlgorithm() instanceof APQueueCleanupAlgorithm);
+                .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof APQueueCleanupAlgorithm);
     }
 
     @Test
     public void testEpisodeCleanupNeverAlg() {
-        clickPreference(R.string.network_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        clickPreference(R.string.downloads_pref);
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
         onView(withText(R.string.episode_cleanup_never)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getEpisodeCleanupAlgorithm() instanceof APNullCleanupAlgorithm);
+                .until(() -> EpisodeCleanupAlgorithmFactory.build() instanceof APNullCleanupAlgorithm);
     }
 
     @Test
     public void testEpisodeCleanupClassic() {
-        clickPreference(R.string.network_pref);
-        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        clickPreference(R.string.downloads_pref);
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
+        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
         onView(withText(R.string.episode_cleanup_after_listening)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> {
-                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    EpisodeCleanupAlgorithm alg = EpisodeCleanupAlgorithmFactory.build();
                     if (alg instanceof APCleanupAlgorithm) {
                         APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm) alg;
                         return cleanupAlg.getNumberOfHoursAfterPlayback() == 0;
@@ -442,15 +342,15 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupNumDays() {
-        clickPreference(R.string.network_pref);
-        clickPreference(R.string.pref_automatic_download_title);
+        clickPreference(R.string.downloads_pref);
+        onView(withText(R.string.pref_auto_delete_title)).perform(click());
         clickPreference(R.string.pref_episode_cleanup_title);
         String search = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, 3, 3);
         onView(withText(search)).perform(scrollTo());
         onView(withText(search)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> {
-                    EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
+                    EpisodeCleanupAlgorithm alg = EpisodeCleanupAlgorithmFactory.build();
                     if (alg instanceof APCleanupAlgorithm) {
                         APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm) alg;
                         return cleanupAlg.getNumberOfHoursAfterPlayback() == 72; // 5 days
@@ -473,7 +373,6 @@ public class PreferencesTest {
         // Find next value (wrapping around to next)
         int newIndex = (currentIndex + 1) % deltas.length;
         onView(withText(deltas[newIndex] + " seconds")).perform(click());
-        onView(withText("Confirm")).perform(click());
 
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getRewindSecs() == deltas[newIndex]);
@@ -495,7 +394,6 @@ public class PreferencesTest {
             int newIndex = (currentIndex + 1) % deltas.length;
 
             onView(withText(deltas[newIndex] + " seconds")).perform(click());
-            onView(withText("Confirm")).perform(click());
 
             Awaitility.await().atMost(1000, MILLISECONDS)
                     .until(() -> UserPreferences.getFastForwardSecs() == deltas[newIndex]);
@@ -503,37 +401,8 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testBackButtonBehaviorGoToPageSelector() {
-        clickPreference(R.string.user_interface_label);
-        clickPreference(R.string.pref_back_button_behavior_title);
-        onView(withText(R.string.back_button_go_to_page)).perform(click());
-        onView(withText(R.string.queue_label)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonGoToPage().equals(QueueFragment.TAG));
-        clickPreference(R.string.pref_back_button_behavior_title);
-        onView(withText(R.string.back_button_go_to_page)).perform(click());
-        onView(withText(R.string.episodes_label)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonGoToPage().equals(EpisodesFragment.TAG));
-        clickPreference(R.string.pref_back_button_behavior_title);
-        onView(withText(R.string.back_button_go_to_page)).perform(click());
-        onView(withText(R.string.subscriptions_label)).perform(click());
-        onView(withText(R.string.confirm_label)).perform(click());
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonBehavior() == UserPreferences.BackButtonBehavior.GO_TO_PAGE);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> UserPreferences.getBackButtonGoToPage().equals(SubscriptionFragment.TAG));
-    }
-
-    @Test
     public void testDeleteRemovesFromQueue() {
-        clickPreference(R.string.storage_pref);
+        clickPreference(R.string.downloads_pref);
         if (!UserPreferences.shouldDeleteRemoveFromQueue()) {
             clickPreference(R.string.pref_delete_removes_from_queue_title);
             Awaitility.await().atMost(1000, MILLISECONDS)

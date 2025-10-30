@@ -28,25 +28,41 @@ If you would like to translate the app into another language or improve an exist
 
 Submit a pull request
 ---------------------
-- If you want to work on a feature that has been requested or fix a bug that has been reported on the "issues" page, add a comment to it so that other people know that you are working on it.
-- Fork the repository.
-- Almost all changes of AntennaPod are done on the `develop` branch. If a new version of AntennaPod is released, the `develop` branch is merged into `master`. As a result, the `master` branch probably doesn't contain the latest changes when you are reading this. Please make sure that you are branching from `develop`! Otherwise, there might be a lot of merge-conflicts when merging your changes into `develop` and therefore it might take longer to review your pull-request. Exceptions are urgent issues that need to be fixed in the production version.
-- If your pull request fixes a bug that has been reported or implements a feature that has been requested in another issue, try to mention it in the message, so that it can be closed once your pull request has been merged. If you use special keywords in the [commit comment](https://help.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) or [pull request text](https://github.blog/2013-05-14-closing-issues-via-pull-requests/), GitHub will close the issue(s) automatically.
-- If possible, add unit tests for your pull request and make sure that they pass.
-- Please do not upgrade dependencies or build tools unless you have a good reason for it. Doing so can easily introduce bugs that are hard to track down.
-- If you plan to do a change that touches many files (10+), please ask beforehand. This usually causes merge conflicts for other developers.
-- Please follow our code style. You can use Checkstyle within Android Studio using our [configuration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle-new-code.xml).
-- Please only change the English string resources. Translations are handled on [Transifex](https://www.transifex.com/antennapod/antennapod/).
+- Before you work on the code
+  - Make sure that there is an issue *without* the `Needs: Triage` or `Needs: Decision` label for the feature you want to implement or bug you want to fix. If you just start working on a feature that is not approved yet (or not even has an issue), your PR might not get merged.
+  - Add a comment to the issue so that other people know that you are working on it.
+    - You don't need to ask for permission to work on something, just indicate that you are doing so.
+  - If you want to discuss the approach to take, feel free to ask in the issue or join a [community call](https://antennapod.org/events/community-meeting).
+- Fork the repository
+- Create a new branch for your contribution
+  - This makes opening possible additional pull requests easier.
+  - As a base, use the `develop` branch.
+    - Almost all changes of AntennaPod are done on the `develop` branch. If a new version of AntennaPod is released, the `develop` branch is merged into `master`. As a result, the `master` branch probably doesn't contain the latest changes when you are reading this. Otherwise, there might be a lot of merge-conflicts when merging your changes into `develop` and therefore it might take longer to review your pull-request.
+- Get coding :)
+  - If possible, add unit tests for your pull request and make sure that they pass.
+  - Please do not upgrade dependencies or build tools unless you have a good reason for it. Doing so can easily introduce bugs that are hard to track down.
+  - Please follow our code style. You can use Checkstyle within Android Studio using our [configuration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle.xml).
+  - To check the code style locally, run `./gradlew checkstyle spotbugsPlayDebug spotbugsDebug :app:lintPlayDebug`
+  - Please only change the English string resources. Translations are handled on [Transifex](https://www.transifex.com/antennapod/antennapod/).
+- Open the PR
+  - Mention the corresponding issue in the pull request text, so that it can be closed once your pull request has been merged. If you use [special keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue), GitHub will close the issue(s) automatically.
+
 
 Building From Source
 --------------------------
 1. Fork this repository
 1. Download Android Studio
-1. In Android Studio
-   1. File » New » Project from version control
-   2. Enter the remote url of the forked repo
-   2. Wait for a long time until all progress bars go away
-   3. Press the Play button
+1. Download AntennaPod
+   1. Option A: Using the git command line (recommended)
+       1. Use `git clone <url>` with the remote url of your forked repo.
+          The AntennaPod repo contains a large submodule with app store metadata like screenshots.
+          You **do not need that** for normal development.
+       1. In Android Studio: File » New » Project from existing sources
+   1. Option B: From Android Studio
+       1. File » New » Project from version control
+       1. Enter the remote url of the forked repo
+1. Wait for a long time until all progress bars go away
+1. Press the Play button
 
 Testing and Verifying
 --------------------------

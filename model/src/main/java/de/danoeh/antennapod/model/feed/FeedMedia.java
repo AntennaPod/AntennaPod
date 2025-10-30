@@ -1,28 +1,27 @@
 package de.danoeh.antennapod.model.feed;
 
 import android.content.Context;
-import android.content.SharedPreferences.Editor;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
+
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
+import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.model.playback.RemoteMedia;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
-public class FeedMedia extends FeedFile implements Playable {
+public class FeedMedia implements Playable {
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
     public static final String FILENAME_PREFIX_EMBEDDED_COVER = "metadata-retriever:";
-
-    public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
-    private static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
 
     /**
      * Indicates we've checked on the size of the item via the network
@@ -33,14 +32,18 @@ public class FeedMedia extends FeedFile implements Playable {
      */
     private static final int CHECKED_ON_SIZE_BUT_UNKNOWN = Integer.MIN_VALUE;
 
+    private long id;
+    private String localFileUrl;
+    private String downloadUrl;
+    private long downloadDate;
     private int duration;
     private int position; // Current position in file
-    private long lastPlayedTime; // Last time this media was played (in ms)
-    private int played_duration; // How many ms of this file have been played
+    private long lastPlayedTimeStatistics; // Last time this media was played (in ms)
+    private int playedDuration; // How many ms of this file have been played
     private long size; // File size in Byte
-    private String mime_type;
+    private String mimeType;
     @Nullable private volatile FeedItem item;
-    private Date playbackCompletionDate;
+    private Date lastPlayedTimeHistory;
     private int startPosition = -1;
     private int playedDurationWhenStarted;
 
@@ -50,47 +53,52 @@ public class FeedMedia extends FeedFile implements Playable {
     /* Used for loading item when restoring from parcel. */
     private long itemID;
 
-    public FeedMedia(FeedItem i, String download_url, long size,
-                     String mime_type) {
-        super(null, download_url, false);
+    public FeedMedia(FeedItem i, String downloadUrl, long size,
+                     String mimeType) {
+        this.localFileUrl = null;
+        this.downloadUrl = downloadUrl;
+        this.downloadDate = 0;
         this.item = i;
+        this.itemID = i != null ? i.getId() : 0;
         this.size = size;
-        this.mime_type = mime_type;
+        this.mimeType = mimeType;
     }
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
-                     long size, String mime_type, String file_url, String download_url,
-                     boolean downloaded, Date playbackCompletionDate, int played_duration,
-                     long lastPlayedTime) {
-        super(file_url, download_url, downloaded);
+                     long size, String mimeType, String localFileUrl, String downloadUrl,
+                     long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
+                     long lastPlayedTimeStatistics) {
+        this.localFileUrl = localFileUrl;
+        this.downloadUrl = downloadUrl;
+        this.downloadDate = downloadDate;
         this.id = id;
         this.item = item;
+        this.itemID = item != null ? item.getId() : 0;
         this.duration = duration;
         this.position = position;
-        this.played_duration = played_duration;
-        this.playedDurationWhenStarted = played_duration;
+        this.playedDuration = playedDuration;
+        this.playedDurationWhenStarted = playedDuration;
         this.size = size;
-        this.mime_type = mime_type;
-        this.playbackCompletionDate = playbackCompletionDate == null
-                ? null : (Date) playbackCompletionDate.clone();
-        this.lastPlayedTime = lastPlayedTime;
+        this.mimeType = mimeType;
+        this.lastPlayedTimeHistory = lastPlayedTimeHistory == null
+                ? null : (Date) lastPlayedTimeHistory.clone();
+        this.lastPlayedTimeStatistics = lastPlayedTimeStatistics;
     }
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
-                      long size, String mime_type, String file_url, String download_url,
-                      boolean downloaded, Date playbackCompletionDate, int played_duration,
-                      Boolean hasEmbeddedPicture, long lastPlayedTime) {
-        this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
-                playbackCompletionDate, played_duration, lastPlayedTime);
+                     long size, String mimeType, String localFileUrl, String downloadUrl,
+                     long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
+                     Boolean hasEmbeddedPicture, long lastPlayedTimeStatistics) {
+        this(id, item, duration, position, size, mimeType, localFileUrl, downloadUrl, downloadDate,
+                lastPlayedTimeHistory, playedDuration, lastPlayedTimeStatistics);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
-    @Override
     public String getHumanReadableIdentifier() {
         if (item != null && item.getTitle() != null) {
             return item.getTitle();
         } else {
-            return download_url;
+            return downloadUrl;
         }
     }
 
@@ -120,37 +128,45 @@ public class FeedMedia extends FeedFile implements Playable {
      * Uses mimetype to determine the type of media.
      */
     public MediaType getMediaType() {
-        return MediaType.fromMimeType(mime_type);
+        return MediaType.fromMimeType(mimeType);
     }
 
     public void updateFromOther(FeedMedia other) {
-        super.updateFromOther(other);
+        this.downloadUrl = other.downloadUrl;
         if (other.size > 0) {
             size = other.size;
         }
-        if (other.mime_type != null) {
-            mime_type = other.mime_type;
+        if (other.duration > 0 && duration <= 0) { // Do not overwrite duration that we measured after downloading
+            duration = other.duration;
+        }
+        if (other.mimeType != null) {
+            mimeType = other.mimeType;
         }
     }
 
+    /**
+     * Compare's this FeedFile's attribute values with another FeedFile's
+     * attribute values. This method will only compare attributes which were
+     * read from the feed.
+     *
+     * @return true if attribute values are different, false otherwise
+     */
     public boolean compareWithOther(FeedMedia other) {
-        if (super.compareWithOther(other)) {
+        if (!StringUtils.equals(downloadUrl, other.downloadUrl)) {
             return true;
         }
-        if (other.mime_type != null) {
-            if (mime_type == null || !mime_type.equals(other.mime_type)) {
+        if (other.mimeType != null) {
+            if (mimeType == null || !mimeType.equals(other.mimeType)) {
                 return true;
             }
         }
         if (other.size > 0 && other.size != size) {
             return true;
         }
+        if (other.duration > 0 && duration <= 0) {
+            return true;
+        }
         return false;
-    }
-
-    @Override
-    public int getTypeAsInt() {
-        return FEEDFILETYPE_FEEDMEDIA;
     }
 
     public int getDuration() {
@@ -162,20 +178,20 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void setLastPlayedTime(long lastPlayedTime) {
-        this.lastPlayedTime = lastPlayedTime;
+    public void setLastPlayedTimeStatistics(long lastPlayedTimeStatistics) {
+        this.lastPlayedTimeStatistics = lastPlayedTimeStatistics;
     }
 
     public int getPlayedDuration() {
-        return played_duration;
+        return playedDuration;
     }
 
     public int getPlayedDurationWhenStarted() {
         return playedDurationWhenStarted;
     }
 
-    public void setPlayedDuration(int played_duration) {
-        this.played_duration = played_duration;
+    public void setPlayedDuration(int playedDuration) {
+        this.playedDuration = playedDuration;
     }
 
     public int getPosition() {
@@ -183,13 +199,13 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public long getLastPlayedTime() {
-        return lastPlayedTime;
+    public long getLastPlayedTimeStatistics() {
+        return lastPlayedTimeStatistics;
     }
 
     public void setPosition(int position) {
         this.position = position;
-        if(position > 0 && item != null && item.isNew()) {
+        if (position > 0 && item != null && item.isNew()) {
             this.item.setPlayed(false);
         }
     }
@@ -222,8 +238,8 @@ public class FeedMedia extends FeedFile implements Playable {
         return (CHECKED_ON_SIZE_BUT_UNKNOWN == this.size);
     }
 
-    public String getMime_type() {
-        return mime_type;
+    public String getMimeType() {
+        return mimeType;
     }
 
     @Nullable
@@ -238,19 +254,20 @@ public class FeedMedia extends FeedFile implements Playable {
      */
     public void setItem(FeedItem item) {
         this.item = item;
+        this.itemID = item != null ? item.getId() : 0;
         if (item != null && item.getMedia() != this) {
             item.setMedia(this);
         }
     }
 
-    public Date getPlaybackCompletionDate() {
-        return playbackCompletionDate == null
-                ? null : (Date) playbackCompletionDate.clone();
+    public Date getLastPlayedTimeHistory() {
+        return lastPlayedTimeHistory == null
+                ? null : (Date) lastPlayedTimeHistory.clone();
     }
 
-    public void setPlaybackCompletionDate(Date playbackCompletionDate) {
-        this.playbackCompletionDate = playbackCompletionDate == null
-                ? null : (Date) playbackCompletionDate.clone();
+    public void setLastPlayedTimeHistory(Date lastPlayedTimeHistory) {
+        this.lastPlayedTimeHistory = lastPlayedTimeHistory == null
+                ? null : (Date) lastPlayedTimeHistory.clone();
     }
 
     public boolean isInProgress() {
@@ -263,7 +280,7 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public boolean hasEmbeddedPicture() {
-        if(hasEmbeddedPicture == null) {
+        if (hasEmbeddedPicture == null) {
             checkEmbeddedPicture();
         }
         return hasEmbeddedPicture;
@@ -277,23 +294,13 @@ public class FeedMedia extends FeedFile implements Playable {
         dest.writeInt(duration);
         dest.writeInt(position);
         dest.writeLong(size);
-        dest.writeString(mime_type);
-        dest.writeString(file_url);
-        dest.writeString(download_url);
-        dest.writeByte((byte) ((downloaded) ? 1 : 0));
-        dest.writeLong((playbackCompletionDate != null) ? playbackCompletionDate.getTime() : 0);
-        dest.writeInt(played_duration);
-        dest.writeLong(lastPlayedTime);
-    }
-
-    @Override
-    public void writeToPreferences(Editor prefEditor) {
-        if(item != null && item.getFeed() != null) {
-            prefEditor.putLong(PREF_FEED_ID, item.getFeed().getId());
-        } else {
-            prefEditor.putLong(PREF_FEED_ID, 0L);
-        }
-        prefEditor.putLong(PREF_MEDIA_ID, id);
+        dest.writeString(mimeType);
+        dest.writeString(localFileUrl);
+        dest.writeString(downloadUrl);
+        dest.writeLong(downloadDate);
+        dest.writeLong((lastPlayedTimeHistory != null) ? lastPlayedTimeHistory.getTime() : 0);
+        dest.writeInt(playedDuration);
+        dest.writeLong(lastPlayedTimeStatistics);
     }
 
     @Override
@@ -338,13 +345,17 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public String getLocalMediaUrl() {
-        return file_url;
+    public String getLocalFileUrl() {
+        return localFileUrl;
     }
 
     @Override
     public String getStreamUrl() {
-        return download_url;
+        return downloadUrl;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
     }
 
     public int getStartPosition() {
@@ -365,24 +376,49 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public boolean localFileAvailable() {
-        return isDownloaded() && file_url != null;
+        return isDownloaded() && localFileUrl != null;
+    }
+
+    public boolean fileExists() {
+        if (localFileUrl == null) {
+            return false;
+        } else {
+            File f = new File(localFileUrl);
+            return f.exists();
+        }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public boolean isDownloaded() {
+        return downloadDate > 0;
     }
 
     public long getItemId() {
         return itemID;
     }
 
+    public void setItemId(long id) {
+        itemID = id;
+    }
+
     @Override
     public void onPlaybackStart() {
         startPosition = Math.max(position, 0);
-        playedDurationWhenStarted = played_duration;
+        playedDurationWhenStarted = playedDuration;
     }
 
     @Override
     public void onPlaybackPause(Context context) {
         if (position > startPosition) {
-            played_duration = playedDurationWhenStarted + position - startPosition;
-            playedDurationWhenStarted = played_duration;
+            playedDuration = playedDurationWhenStarted + position - startPosition;
+            playedDurationWhenStarted = playedDuration;
         }
         startPosition = position;
     }
@@ -408,8 +444,9 @@ public class FeedMedia extends FeedFile implements Playable {
         public FeedMedia createFromParcel(Parcel in) {
             final long id = in.readLong();
             final long itemID = in.readLong();
-            FeedMedia result = new FeedMedia(id, null, in.readInt(), in.readInt(), in.readLong(), in.readString(), in.readString(),
-                    in.readString(), in.readByte() != 0, new Date(in.readLong()), in.readInt(), in.readLong());
+            FeedMedia result = new FeedMedia(id, null, in.readInt(), in.readInt(), in.readLong(), in.readString(),
+                    in.readString(), in.readString(), in.readLong(), new Date(in.readLong()),
+                    in.readInt(), in.readLong());
             result.itemID = itemID;
             return result;
         }
@@ -424,7 +461,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item != null) {
             return item.getImageLocation();
         } else if (hasEmbeddedPicture()) {
-            return FILENAME_PREFIX_EMBEDDED_COVER + getLocalMediaUrl();
+            return FILENAME_PREFIX_EMBEDDED_COVER + getLocalFileUrl();
         } else {
             return null;
         }
@@ -434,17 +471,22 @@ public class FeedMedia extends FeedFile implements Playable {
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
-    @Override
-    public void setDownloaded(boolean downloaded) {
-        super.setDownloaded(downloaded);
-        if(item != null && downloaded && item.isNew()) {
+    public void setDownloaded(boolean downloaded, long when) {
+        this.downloadDate = downloaded ? when : 0;
+        if (item != null && downloaded && item.isNew()) {
             item.setPlayed(false);
         }
     }
 
-    @Override
-    public void setFile_url(String file_url) {
-        super.setFile_url(file_url);
+    public long getDownloadDate() {
+        return downloadDate;
+    }
+
+    public void setLocalFileUrl(String fileUrl) {
+        this.localFileUrl = fileUrl;
+        if (fileUrl == null) {
+            downloadDate = 0;
+        }
     }
 
     public void checkEmbeddedPicture() {
@@ -452,11 +494,10 @@ public class FeedMedia extends FeedFile implements Playable {
             hasEmbeddedPicture = Boolean.FALSE;
             return;
         }
-        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-        try {
-            mmr.setDataSource(getLocalMediaUrl());
+        try (MediaMetadataRetrieverCompat mmr = new MediaMetadataRetrieverCompat()) {
+            mmr.setDataSource(getLocalFileUrl());
             byte[] image = mmr.getEmbeddedPicture();
-            if(image != null) {
+            if (image != null) {
                 hasEmbeddedPicture = Boolean.TRUE;
             } else {
                 hasEmbeddedPicture = Boolean.FALSE;
@@ -469,12 +510,49 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o == null) {
             return false;
         }
         if (o instanceof RemoteMedia) {
             return o.equals(this);
         }
-        return super.equals(o);
+
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+
+        FeedMedia feedMedia = (FeedMedia) o;
+        return id == feedMedia.id;
+    }
+
+    public String getTranscriptFileUrl() {
+        if (getLocalFileUrl() == null) {
+            return null;
+        }
+        return getLocalFileUrl() + ".transcript";
+    }
+
+    public void setTranscript(Transcript t) {
+        if (item == null)  {
+            return;
+        }
+        item.setTranscript(t);
+    }
+
+    public Transcript getTranscript() {
+        if (item == null)  {
+            return null;
+        }
+        return item.getTranscript();
+    }
+
+    public Boolean hasTranscript() {
+        if (item == null)  {
+            return false;
+        }
+        return item.hasTranscript();
     }
 }

@@ -5,11 +5,10 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.filters.LargeTest;
 
-import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.core.widget.WidgetUpdater;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager;
+import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,13 +21,10 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.model.playback.Playable;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * Test class for PlaybackServiceTaskManager
@@ -63,7 +59,8 @@ public class PlaybackServiceTaskManagerTest {
 
     private List<FeedItem> writeTestQueue(String pref) {
         final int NUM_ITEMS = 10;
-        Feed f = new Feed(0, null, "title", "link", "d", null, null, null, null, "id", null, "null", "url", false);
+        Feed f = new Feed(0, null, "title", "link", "d", null, null, null, null, "id",
+                null, "null", "url", System.currentTimeMillis());
         f.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             f.getItems().add(new FeedItem(0, pref + i, pref + i, "link", new Date(), FeedItem.PLAYED, f));
@@ -189,7 +186,6 @@ public class PlaybackServiceTaskManagerTest {
         pstm.cancelAllTasks();
         assertFalse(pstm.isPositionSaverActive());
         assertFalse(pstm.isWidgetUpdaterActive());
-        assertFalse(pstm.isSleepTimerActive());
         pstm.shutdown();
     }
 
@@ -200,82 +196,9 @@ public class PlaybackServiceTaskManagerTest {
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
         pstm.startWidgetUpdater();
         pstm.startPositionSaver();
-        pstm.setSleepTimer(100000);
         pstm.cancelAllTasks();
         assertFalse(pstm.isPositionSaverActive());
         assertFalse(pstm.isWidgetUpdaterActive());
-        assertFalse(pstm.isSleepTimerActive());
-        pstm.shutdown();
-    }
-
-    @Test
-    @UiThreadTest
-    public void testSetSleepTimer() throws InterruptedException {
-        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        final long TIME = 2000;
-        final long TIMEOUT = 2 * TIME;
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        Object timerReceiver = new Object() {
-            @Subscribe
-            public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
-                if (countDownLatch.getCount() == 0) {
-                    fail();
-                }
-                countDownLatch.countDown();
-            }
-        };
-        EventBus.getDefault().register(timerReceiver);
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(TIME);
-        countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS);
-        EventBus.getDefault().unregister(timerReceiver);
-        pstm.shutdown();
-    }
-
-    @Test
-    @UiThreadTest
-    public void testDisableSleepTimer() throws InterruptedException {
-        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        final long TIME = 5000;
-        final long TIMEOUT = 2 * TIME;
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        Object timerReceiver = new Object() {
-            @Subscribe
-            public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
-                if (event.isOver()) {
-                    countDownLatch.countDown();
-                } else if (event.getTimeLeft() == 1) {
-                    fail("Arrived at 1 but should have been cancelled");
-                }
-            }
-        };
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        EventBus.getDefault().register(timerReceiver);
-        pstm.setSleepTimer(TIME);
-        pstm.disableSleepTimer();
-        assertFalse(countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS));
-        pstm.shutdown();
-        EventBus.getDefault().unregister(timerReceiver);
-    }
-
-    @Test
-    @UiThreadTest
-    public void testIsSleepTimerActivePositive() {
-        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(1000);
-        assertTrue(pstm.isSleepTimerActive());
-        pstm.shutdown();
-    }
-
-    @Test
-    @UiThreadTest
-    public void testIsSleepTimerActiveNegative() {
-        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(10000);
-        pstm.disableSleepTimer();
-        assertFalse(pstm.isSleepTimerActive());
         pstm.shutdown();
     }
 

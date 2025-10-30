@@ -5,16 +5,16 @@ apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
 android {
-    lintOptions {
-        disable "InvalidPeriodicWorkRequestInterval", "MissingPermission", "GradleCompatible",
-                "QueryPermissionsNeeded", "Overdraw", "SetTextI18n", "RtlHardcoded"
-    }
+    namespace "de.danoeh.antennapod.ui.statistics"
 }
 
 dependencies {
-    implementation project(":core")
+    implementation project(":event")
     implementation project(":model")
+    implementation project(':storage:database')
+    implementation project(":ui:app-start-intent")
     implementation project(":ui:common")
+    implementation project(":ui:echo")
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -24,8 +24,8 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
     implementation "com.google.android.material:material:$googleMaterialVersion"
 
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
 }

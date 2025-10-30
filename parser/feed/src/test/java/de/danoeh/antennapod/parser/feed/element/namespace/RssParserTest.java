@@ -48,9 +48,9 @@ public class RssParserTest {
             assertTrue(item.hasMedia());
             FeedMedia media = item.getMedia();
             //noinspection ConstantConditions
-            assertEquals("http://example.com/media-" + i, media.getDownload_url());
+            assertEquals("http://example.com/media-" + i, media.getDownloadUrl());
             assertEquals(1024 * 1024, media.getSize());
-            assertEquals("audio/mp3", media.getMime_type());
+            assertEquals("audio/mp3", media.getMimeType());
             // chapters
             assertNull(item.getChapters());
         }
@@ -81,7 +81,7 @@ public class RssParserTest {
         FeedItem feedItem = feed.getItems().get(0);
         //noinspection ConstantConditions
         assertEquals(MediaType.VIDEO, feedItem.getMedia().getMediaType());
-        assertEquals("https://www.example.com/file.mp4", feedItem.getMedia().getDownload_url());
+        assertEquals("https://www.example.com/file.mp4", feedItem.getMedia().getDownloadUrl());
     }
 
     @Test
@@ -95,6 +95,14 @@ public class RssParserTest {
         assertEquals("https://example.com/funding2", feed.getPaymentLinks().get(1).url);
         assertTrue(TextUtils.isEmpty(feed.getPaymentLinks().get(2).content));
         assertEquals("https://example.com/funding3", feed.getPaymentLinks().get(2).url);
+    }
+
+    @Test
+    public void testPodcastIndexTranscript() throws Exception {
+        File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testPodcastIndexTranscript.xml");
+        Feed feed = FeedParserTestHelper.runFeedParser(feedFile);
+        assertEquals("https://podnews.net/audio/podnews231011.mp3.json", feed.getItems().get(0).getTranscriptUrl());
+        assertEquals("application/json", feed.getItems().get(0).getTranscriptType());
     }
 
     @Test

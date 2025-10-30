@@ -11,7 +11,9 @@ body:
     attributes:
       label: Checklist
       options:
-        - label: I have used the search function to see if someone else has already submitted the same bug report.
+        - label: I have used the search function for [**OPEN**](https://github.com/AntennaPod/AntennaPod/issues) issues to see if someone else has already submitted the same bug report.
+          required: true
+        - label: I have **also** used the search function for [**CLOSED**](https://github.com/AntennaPod/AntennaPod/issues?q=is%3Aissue+is%3Aclosed) issues to see if the problem is already solved and just waiting to be released.
           required: true
         - label: I will describe the problem with as much detail as possible.
           required: true
@@ -23,17 +25,6 @@ body:
       label: App version
       description: The latest version is different on each device, so we need the actual version number found on the settings screen.
       placeholder: x.y.z
-    validations:
-      required: true
-  - type: dropdown
-    id: source
-    attributes:
-      label: Where did you get the app from
-      multiple: false
-      options:
-        - Google Play
-        - F-Droid
-        - Other
     validations:
       required: true
   - type: input
@@ -74,5 +65,5 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Logs
-      description: If you are experiencing a crash, including the stacktrace will likely get it fixed sooner. AntennaPod has an `export logs` feature for this.
+      label: Crash logs
+      description: If you are experiencing a crash, including the stacktrace will likely get it fixed sooner. You can copy them from the 'Report bugs' screen.

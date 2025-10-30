@@ -10,8 +10,7 @@
         android:id="@+id/useGlobalCheckbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/feed_auto_download_global"
-        android:layout_marginBottom="8dp" />
+        android:text="@string/global_default" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +18,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <de.danoeh.antennapod.view.PlaybackSpeedSeekBar
+        <de.danoeh.antennapod.ui.screen.playback.PlaybackSpeedSeekBar
             android:id="@+id/seekBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -33,5 +32,11 @@
             android:layout_marginLeft="8dp" />
 
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/skipSilenceFeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pref_skip_silence_title" />
 
 </LinearLayout>

@@ -12,9 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.storage.StatisticsItem;
-
+import de.danoeh.antennapod.storage.database.StatisticsItem;
 import java.util.List;
 
 /**
@@ -66,7 +64,6 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
                     .apply(new RequestOptions()
                             .placeholder(R.color.light_gray)
                             .error(R.color.light_gray)
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                             .fitCenter()
                             .dontAnimate())
                     .into(holder.image);

@@ -1,94 +1,60 @@
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:3.0.1'
-        classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.4'
-        classpath "gradle.plugin.com.github.spotbugs.snom:spotbugs-gradle-plugin:4.7.0"
-        classpath 'org.codehaus.groovy:groovy-xml:3.0.9'
-    }
+    ext.agpVersion = "8.11.0"
 }
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
-}
-
-// Disable predex if requested (we can"t predex in Circle CI
-// See http://tools.android.com/tech-docs/new-build-system/tips#TOC-Improving-Build-Server-performance
-// and https://circleci.com/docs/android
-project.ext.preDexLibs = !project.hasProperty("disablePreDex")
-
-subprojects {
-    project.plugins.whenPluginAdded { plugin ->
-        if ("com.android.build.gradle.AppPlugin" == plugin.class.name) {
-            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
-        } else if ("com.android.build.gradle.LibraryPlugin" == plugin.class.name) {
-            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
-        }
-    }
+plugins {
+    id 'com.android.application' version "$agpVersion" apply false
+    id 'com.android.library' version "$agpVersion" apply false
+    id 'com.github.spotbugs' version '4.8.0' apply false
+    id 'checkstyle'
 }
 
 project.ext {
     // AndroidX
-    annotationVersion = "1.2.0"
-    appcompatVersion = "1.3.1"
-    coreVersion = "1.5.0"
-    fragmentVersion = "1.3.6"
-    mediaVersion = "1.4.3"
+    annotationVersion = "1.9.1"
+    appcompatVersion = "1.7.1"
+    coreVersion = "1.16.0"
+    fragmentVersion = "1.8.9"
+    mediaVersion = "1.6.0"
+    media3Version = "1.1.1"
     paletteVersion = "1.0.0"
-    preferenceVersion = "1.1.1"
-    recyclerViewVersion = "1.2.1"
-    viewPager2Version = "1.1.0-beta01"
-    workManagerVersion = "2.3.4"
-    googleMaterialVersion = "1.4.0"
+    preferenceVersion = "1.2.1"
+    recyclerViewVersion = "1.4.0"
+    viewPager2Version = "1.1.0"
+    workManagerVersion = "2.10.3"
+    googleMaterialVersion = "1.12.0"
 
     // Third-party
-    commonslangVersion = "3.6"
-    commonsioVersion = "2.5"
-    jsoupVersion = "1.11.2"
-    glideVersion = "4.8.0"
-    okhttpVersion = "3.12.10"
-    okioVersion = "1.17.5"
-    eventbusVersion = "3.2.0"
-    rxAndroidVersion = "2.1.1"
-    rxJavaVersion = "2.2.2"
-    iconifyVersion = "2.2.2"
-    exoPlayerVersion = "2.14.2"
-    audioPlayerVersion = "v2.0.0"
-
-    // Only used for free builds. This version should be updated regularly.
-    conscryptVersion = "2.5.2"
-
-    // Google Play build
-    wearableSupportVersion = "2.6.0"
-    playServicesVersion = "8.4.0"
+    commonslangVersion = "3.18.0"
+    commonsioVersion = "2.20.0"
+    jsoupVersion = "1.15.1"
+    glideVersion = "4.16.0"
+    okhttpVersion = "4.12.0"
+    eventbusVersion = "3.3.1"
+    rxAndroidVersion = "3.0.2"
+    rxJavaVersion = "3.1.5"
 
     //Tests
     awaitilityVersion = "3.1.6"
     junitVersion = "4.13"
-    robolectricVersion = "4.5-alpha-1"
-    robotiumSoloVersion = "5.6.3"
-    espressoVersion = "3.2.0"
-    runnerVersion = "1.2.0"
-    rulesVersion = "1.2.0"
+    robolectricVersion = "4.14"
+    espressoVersion = "3.5.0"
+    runnerVersion = "1.5.0"
+    rulesVersion = "1.5.0"
+    testCoreVersion = "1.5.0"
+    mockitoVersion = "5.15.2"
 }
 
-apply plugin: "checkstyle"
 checkstyle {
-    toolVersion '8.24'
+    toolVersion '10.3.1'
 }
 
-task checkstyle(type: Checkstyle) {
+tasks.register('checkstyle', Checkstyle) {
+    minHeapSize = "200m"
+    maxHeapSize = "2g"
     classpath = files()
     source "${project.rootDir}"
+    exclude("**/generated-sources/**")
     exclude("**/gen/**")
+    exclude("**/build/**")
     exclude("**/generated/**")
 }

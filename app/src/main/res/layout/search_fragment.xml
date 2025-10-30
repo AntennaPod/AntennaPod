@@ -5,20 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:navigationIcon="?homeAsUpIndicator"
-        app:title="@string/search_label" />
+        android:fitsSystemWindows="true"
+        android:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.Material3.ActionBar"
+            app:title="@string/search_label"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
+            app:navigationIcon="?homeAsUpIndicator" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.chip.Chip
         android:id="@+id/feed_title_chip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/appbar"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="0dp"
         android:visibility="gone"
@@ -42,7 +52,7 @@
         android:paddingRight="12dp"
         android:clipToPadding="false" />
 
-    <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+    <de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,5 +60,11 @@
         android:layout_marginTop="-4dp"
         android:paddingTop="12dp"
         android:paddingHorizontal="@dimen/additional_horizontal_spacing" />
+
+    <de.danoeh.antennapod.ui.view.FloatingSelectMenu
+        android:id="@+id/floatingSelectMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

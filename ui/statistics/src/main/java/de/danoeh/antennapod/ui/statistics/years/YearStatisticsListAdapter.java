@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.statistics.R;
 
 import java.util.ArrayList;
@@ -23,8 +22,8 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
     final Context context;
-    private List<DBReader.MonthlyStatisticsItem> statisticsData = new ArrayList<>();
-    LineChartView.LineChartData lineChartData;
+    private final List<DBReader.MonthlyStatisticsItem> statisticsData = new ArrayList<>();
+    private final List<DBReader.MonthlyStatisticsItem> yearlyAggregate = new ArrayList<>();
 
     public YearStatisticsListAdapter(Context context) {
         this.context = context;
@@ -32,7 +31,7 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return statisticsData.size() + 1;
+        return yearlyAggregate.size() + 1;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == TYPE_HEADER) {
-            return new HeaderHolder(inflater.inflate(R.layout.statistics_listitem_linechart, parent, false));
+            return new HeaderHolder(inflater.inflate(R.layout.statistics_listitem_barchart, parent, false));
         }
         return new StatisticsHolder(inflater.inflate(R.layout.statistics_year_listitem, parent, false));
     }
@@ -54,56 +53,56 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         if (getItemViewType(position) == TYPE_HEADER) {
             HeaderHolder holder = (HeaderHolder) h;
-            holder.lineChart.setData(lineChartData);
+            holder.barChart.setData(statisticsData);
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
-            DBReader.MonthlyStatisticsItem statsItem = statisticsData.get(position - 1);
-            holder.year.setText(String.format(Locale.getDefault(), "%d ", statsItem.year));
-            holder.hours.setText(String.format(Locale.getDefault(), "%.1f ", statsItem.timePlayed / 3600000.0f)
+            DBReader.MonthlyStatisticsItem statsItem = yearlyAggregate.get(position - 1);
+            holder.year.setText(String.format(Locale.getDefault(), "%d ", statsItem.getYear()));
+            holder.hours.setText(String.format(Locale.getDefault(), "%.1f ", statsItem.getTimePlayed() / 3600000.0f)
                     + context.getString(R.string.time_hours));
         }
     }
 
     public void update(List<DBReader.MonthlyStatisticsItem> statistics) {
-        int lastYear = statistics.size() > 0 ? statistics.get(0).year : 0;
-        int lastDataPoint = statistics.size() > 0 ? (statistics.get(0).month - 1) + lastYear * 12 : 0;
+        int lastYear = statistics.size() > 0 ? statistics.get(0).getYear() : 0;
+        int lastDataPoint = statistics.size() > 0 ? (statistics.get(0).getMonth() - 1) + lastYear * 12 : 0;
         long yearSum = 0;
+        yearlyAggregate.clear();
         statisticsData.clear();
-        LongList lineChartValues = new LongList();
-        LongList lineChartHorizontalLines = new LongList();
         for (DBReader.MonthlyStatisticsItem statistic : statistics) {
-            if (statistic.year != lastYear) {
+            if (statistic.getYear() != lastYear) {
                 DBReader.MonthlyStatisticsItem yearAggregate = new DBReader.MonthlyStatisticsItem();
-                yearAggregate.year = lastYear;
-                yearAggregate.timePlayed = yearSum;
-                statisticsData.add(yearAggregate);
+                yearAggregate.setYear(lastYear);
+                yearAggregate.setTimePlayed(yearSum);
+                yearlyAggregate.add(yearAggregate);
                 yearSum = 0;
-                lastYear = statistic.year;
-                lineChartHorizontalLines.add(lineChartValues.size());
+                lastYear = statistic.getYear();
             }
-            yearSum += statistic.timePlayed;
-            while (lastDataPoint + 1 < (statistic.month - 1) + statistic.year * 12) {
-                lineChartValues.add(0); // Compensate for months without playback
+            yearSum += statistic.getTimePlayed();
+            while (lastDataPoint + 1 < (statistic.getMonth() - 1) + statistic.getYear() * 12) {
                 lastDataPoint++;
+                DBReader.MonthlyStatisticsItem item = new DBReader.MonthlyStatisticsItem();
+                item.setYear(lastDataPoint / 12);
+                item.setMonth(lastDataPoint % 12 + 1);
+                statisticsData.add(item); // Compensate for months without playback
             }
-            lineChartValues.add(statistic.timePlayed);
-            lastDataPoint = (statistic.month - 1) + statistic.year * 12;
+            statisticsData.add(statistic);
+            lastDataPoint = (statistic.getMonth() - 1) + statistic.getYear() * 12;
         }
         DBReader.MonthlyStatisticsItem yearAggregate = new DBReader.MonthlyStatisticsItem();
-        yearAggregate.year = lastYear;
-        yearAggregate.timePlayed = yearSum;
-        statisticsData.add(yearAggregate);
-        Collections.reverse(statisticsData);
-        lineChartData = new LineChartView.LineChartData(lineChartValues.toArray(), lineChartHorizontalLines.toArray());
+        yearAggregate.setYear(lastYear);
+        yearAggregate.setTimePlayed(yearSum);
+        yearlyAggregate.add(yearAggregate);
+        Collections.reverse(yearlyAggregate);
         notifyDataSetChanged();
     }
 
     static class HeaderHolder extends RecyclerView.ViewHolder {
-        LineChartView lineChart;
+        BarChartView barChart;
 
         HeaderHolder(View itemView) {
             super(itemView);
-            lineChart = itemView.findViewById(R.id.lineChart);
+            barChart = itemView.findViewById(R.id.barChart);
         }
     }
 

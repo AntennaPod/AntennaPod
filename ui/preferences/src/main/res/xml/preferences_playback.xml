@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/interruptions">
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefPauseOnHeadsetDisconnect"
+                android:summary="@string/pref_pauseOnDisconnect_sum"
+                android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:enabled="true"
+                android:dependency="prefPauseOnHeadsetDisconnect"
+                android:key="prefUnpauseOnHeadsetReconnect"
+                android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
+                android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
+                android:enabled="true"
+                android:dependency="prefPauseOnHeadsetDisconnect"
+                android:key="prefUnpauseOnBluetoothReconnect"
+                android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
+                android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefPauseForFocusLoss"
+                android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
+                android:title="@string/pref_pausePlaybackForFocusLoss_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/playback_control">
+        <Preference
+                android:key="prefPlaybackFastForwardDeltaLauncher"
+                android:summary="@string/pref_fast_forward_sum"
+                android:title="@string/pref_fast_forward"/>
+        <Preference
+                android:key="prefPlaybackRewindDeltaLauncher"
+                android:summary="@string/pref_rewind_sum"
+                android:title="@string/pref_rewind"/>
+        <Preference
+                android:key="prefPlaybackSpeedLauncher"
+                android:summary="@string/pref_playback_speed_sum"
+                android:title="@string/playback_speed"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/reassign_hardware_buttons">
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+                android:defaultValue="@string/keycode_media_fast_forward"
+                android:entries="@array/button_action_options"
+                android:entryValues="@array/button_action_values"
+                android:key="prefHardwareForwardButton"
+                android:title="@string/pref_hardware_forward_button_title"
+                android:summary="@string/pref_hardware_forward_button_summary"/>
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+                android:defaultValue="@string/keycode_media_rewind"
+                android:entries="@array/button_action_options"
+                android:entryValues="@array/button_action_values"
+                android:key="prefHardwarePreviousButton"
+                android:title="@string/pref_hardware_previous_button_title"
+                android:summary="@string/pref_hardware_previous_button_summary"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/queue_label">
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+                android:defaultValue="BACK"
+                android:entries="@array/enqueue_location_options"
+                android:entryValues="@array/enqueue_location_values"
+                android:key="prefEnqueueLocation"
+                android:title="@string/pref_enqueue_location_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefEnqueueDownloaded"
+                android:summary="@string/pref_enqueue_downloaded_summary"
+                android:title="@string/pref_enqueue_downloaded_title" />
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefFollowQueue"
+                android:summary="@string/pref_followQueue_sum"
+                android:title="@string/pref_followQueue_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+                android:defaultValue="30"
+                android:entries="@array/smart_mark_as_played_values"
+                android:entryValues="@array/smart_mark_as_played_values"
+                android:key="prefSmartMarkAsPlayedSecs"
+                android:summary="@string/pref_smart_mark_as_played_sum"
+                android:title="@string/pref_smart_mark_as_played_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefSkipKeepsEpisode"
+                android:summary="@string/pref_skip_keeps_episodes_sum"
+                android:title="@string/pref_skip_keeps_episodes_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

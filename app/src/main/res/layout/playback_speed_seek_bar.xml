@@ -1,47 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical">
 
-    <TextView
+    <ImageView
         android:id="@+id/butDecSpeed"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="-"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="14dp"
         android:clickable="true"
-        android:focusable="true"
-        android:scrollbars="none"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:textColor="?attr/colorSecondary"
+        android:src="@drawable/ic_minus"
         android:contentDescription="@string/decrease_speed"
-        android:background="?attr/selectableItemBackgroundBorderless" />
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="?attr/colorSecondary" />
 
     <SeekBar
         android:id="@+id/playback_speed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="40dp"
         android:max="70"
         android:paddingVertical="4dp"
         android:layout_weight="1" />
 
-    <TextView
+    <ImageView
         android:id="@+id/butIncSpeed"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="+"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="14dp"
         android:clickable="true"
-        android:focusable="true"
-        android:scrollbars="none"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:textColor="?attr/colorSecondary"
+        android:src="@drawable/ic_add"
         android:contentDescription="@string/increase_speed"
-        android:background="?attr/selectableItemBackgroundBorderless" />
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="?attr/colorSecondary" />
 
 </LinearLayout>

@@ -1,0 +1,44 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.playback.service"
+}
+
+dependencies {
+    implementation project(':event')
+    implementation project(':model')
+    implementation project(':net:common')
+    implementation project(':net:sync:service-interface')
+    implementation project(':playback:base')
+    implementation project(':playback:cast')
+    implementation project(':storage:database')
+    implementation project(':storage:preferences')
+    implementation project(':ui:app-start-intent')
+    implementation project(':ui:common')
+    implementation project(':ui:episodes')
+    implementation project(':ui:i18n')
+    implementation project(':ui:notifications')
+    implementation project(':ui:widget')
+    implementation project(':ui:chapters')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.car.app:app:1.4.0-rc02"
+    implementation "androidx.core:core:$coreVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "androidx.media:media:$mediaVersion"
+    implementation "androidx.media3:media3-exoplayer:$media3Version"
+    implementation "androidx.media3:media3-ui:$media3Version"
+
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+}

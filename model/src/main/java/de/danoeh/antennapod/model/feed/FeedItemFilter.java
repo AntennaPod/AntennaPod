@@ -1,9 +1,12 @@
 package de.danoeh.antennapod.model.feed;
 
 import android.text.TextUtils;
-import java.util.Arrays;
 
-public class FeedItemFilter {
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+
+public class FeedItemFilter implements Serializable {
 
     private final String[] properties;
 
@@ -20,6 +23,8 @@ public class FeedItemFilter {
     public final boolean showNoMedia;
     public final boolean showIsFavorite;
     public final boolean showNotFavorite;
+    public final boolean showInHistory;
+    public final boolean includeNotSubscribed;
 
     public static final String PLAYED = "played";
     public static final String UNPLAYED = "unplayed";
@@ -34,6 +39,8 @@ public class FeedItemFilter {
     public static final String NOT_QUEUED = "not_queued";
     public static final String DOWNLOADED = "downloaded";
     public static final String NOT_DOWNLOADED = "not_downloaded";
+    public static final String IS_IN_HISTORY = "is_in_history";
+    public static final String INCLUDE_NOT_SUBSCRIBED = "include_not_subscribed";
 
     public static FeedItemFilter unfiltered() {
         return new FeedItemFilter("");
@@ -43,7 +50,11 @@ public class FeedItemFilter {
         this(TextUtils.split(properties, ","));
     }
 
-    public FeedItemFilter(String[] properties) {
+    public FeedItemFilter(FeedItemFilter filter, String... additionalProperties) {
+        this(TextUtils.join(",", filter.getValues()) + "," + TextUtils.join(",", additionalProperties));
+    }
+
+    public FeedItemFilter(String... properties) {
         this.properties = properties;
 
         // see R.arrays.feed_filter_values
@@ -60,6 +71,8 @@ public class FeedItemFilter {
         showIsFavorite = hasProperty(IS_FAVORITE);
         showNotFavorite = hasProperty(NOT_FAVORITE);
         showNew = hasProperty(NEW);
+        showInHistory = hasProperty(IS_IN_HISTORY);
+        includeNotSubscribed = hasProperty(INCLUDE_NOT_SUBSCRIBED);
     }
 
     private boolean hasProperty(String property) {
@@ -70,7 +83,46 @@ public class FeedItemFilter {
         return properties.clone();
     }
 
-    public boolean isShowDownloaded() {
-        return showDownloaded;
+    public List<String> getValuesList() {
+        return Arrays.asList(properties);
+    }
+
+    public boolean matches(FeedItem item) {
+        if (showNew && !item.isNew()) {
+            return false;
+        } else if (showPlayed && !item.isPlayed()) {
+            return false;
+        } else if (showUnplayed && item.isPlayed()) {
+            return false;
+        } else if (showPaused && !item.isInProgress()) {
+            return false;
+        } else if (showNotPaused && item.isInProgress()) {
+            return false;
+        } else if (showNew && !item.isNew()) {
+            return false;
+        } else if (showQueued && !item.isTagged(FeedItem.TAG_QUEUE)) {
+            return false;
+        } else if (showNotQueued && item.isTagged(FeedItem.TAG_QUEUE)) {
+            return false;
+        } else if (showDownloaded && !item.isDownloaded()) {
+            return false;
+        } else if (showNotDownloaded && item.isDownloaded()) {
+            return false;
+        } else if (showHasMedia && !item.hasMedia()) {
+            return false;
+        } else if (showNoMedia && item.hasMedia()) {
+            return false;
+        } else if (showIsFavorite && !item.isTagged(FeedItem.TAG_FAVORITE)) {
+            return false;
+        } else if (showNotFavorite && item.isTagged(FeedItem.TAG_FAVORITE)) {
+            return false;
+        } else if (showInHistory && item.getMedia() != null
+                && item.getMedia().getLastPlayedTimeHistory().getTime() == 0) {
+            return false;
+        } else if (!includeNotSubscribed && item.getFeed() != null
+                && item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+            return false;
+        }
+        return true;
     }
 }

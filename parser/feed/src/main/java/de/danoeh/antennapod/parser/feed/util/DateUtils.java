@@ -1,10 +1,9 @@
 package de.danoeh.antennapod.parser.feed.util;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,18 +13,25 @@ import java.util.TimeZone;
 /**
  * Parses several date formats.
  */
-public class DateUtils {
-
-    private DateUtils() {
-
-    }
-
-    private static final String TAG = "DateUtils";
-    private static final TimeZone defaultTimezone = TimeZone.getTimeZone("GMT");
+public abstract class DateUtils {
+    private static final TimeZone TIME_ZONE_GMT = TimeZone.getTimeZone("GMT");
+    private static final ThreadLocal<SimpleDateFormat> RFC822_DATE_FORMAT = new ThreadLocal<>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
+            dateFormat.setTimeZone(TIME_ZONE_GMT);
+            return dateFormat;
+        }
+    };
 
     public static Date parse(final String input) {
         if (input == null) {
             throw new IllegalArgumentException("Date must not be null");
+        }
+        try {
+            return RFC822_DATE_FORMAT.get().parse(input);
+        } catch (ParseException ignored) {
+            // Feed not following the specification? Now start all our expensive workarounds.
         }
         String date = input.trim().replace('/', '-').replaceAll("( ){2,}+", " ");
 
@@ -86,6 +92,7 @@ public class DateUtils {
                 "EEE MMM d HH:mm yyyy",
                 "yyyy-MM-dd'T'HH:mm:ss",
                 "yyyy-MM-dd'T'HH:mm:ss.SSS Z",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
                 "yyyy-MM-dd'T'HH:mm:ss.SSS",
                 "yyyy-MM-dd'T'HH:mm:ssZ",
                 "yyyy-MM-dd'T'HH:mm:ss'Z'",
@@ -97,7 +104,7 @@ public class DateUtils {
 
         SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);
         parser.setLenient(false);
-        parser.setTimeZone(defaultTimezone);
+        parser.setTimeZone(TIME_ZONE_GMT);
 
         ParsePosition pos = new ParsePosition(0);
         for (String pattern : patterns) {
@@ -108,8 +115,8 @@ public class DateUtils {
                 if (result != null && pos.getIndex() == date.length()) {
                     return result;
                 }
-            } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+            } catch (Exception ignored) {
+                // Ignore
             }
         }
 
@@ -118,7 +125,7 @@ public class DateUtils {
             return parse(date.substring(date.indexOf(',') + 1));
         }
 
-        Log.d(TAG, "Could not parse date string \"" + input + "\" [" + date + "]");
+        System.out.println("Could not parse date string \"" + input + "\" [" + date + "]");
         return null;
     }
 

@@ -12,12 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.event.StatisticsEvent;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.statistics.R;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays the yearly statistics screen
@@ -40,6 +44,7 @@ public class YearsStatisticsFragment extends Fragment {
         listAdapter = new YearStatisticsListAdapter(getContext());
         yearStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
         yearStatisticsList.setAdapter(listAdapter);
+        EventBus.getDefault().register(this);
         return root;
     }
 
@@ -52,15 +57,21 @@ public class YearsStatisticsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void statisticsEvent(StatisticsEvent event) {
+        refreshStatistics();
+    }
+
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.statistics_reset).setVisible(false);
+        menu.findItem(R.id.statistics_reset).setVisible(true);
         menu.findItem(R.id.statistics_filter).setVisible(false);
     }
 

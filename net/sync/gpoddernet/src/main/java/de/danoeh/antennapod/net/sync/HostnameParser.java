@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.net.sync;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.net.IDN;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,29 +10,45 @@ public class HostnameParser {
     public String scheme;
     public int port;
     public String host;
+    public String subfolder;
 
     // split into schema, host and port - missing parts are null
-    private static final Pattern URLSPLIT_REGEX = Pattern.compile("(?:(https?)://)?([^:]+)(?::(\\d+))?");
+    private static final Pattern URLSPLIT_REGEX = Pattern.compile("(?:(https?)://)?([^:/]+)(?::(\\d+))?(.+)?");
 
     public HostnameParser(String hosturl) {
         Matcher m = URLSPLIT_REGEX.matcher(hosturl);
         if (m.matches()) {
             scheme = m.group(1);
-            host = m.group(2);
+            try {
+                host = IDN.toASCII(m.group(2));
+            } catch (IllegalArgumentException e) {
+                host = "invalid-hostname";
+            }
             if (m.group(3) == null) {
                 port = -1;
             } else {
                 port = Integer.parseInt(m.group(3));    // regex -> can only be digits
             }
+            if (m.group(4) == null) {
+                subfolder = "";
+            } else {
+                subfolder = StringUtils.stripEnd(m.group(4), "/");
+            }
         } else {
             // URL does not match regex: use it anyway -> this will cause an exception on connect
             scheme = "https";
-            host = hosturl;
+            try {
+                host = IDN.toASCII(hosturl);
+            } catch (IllegalArgumentException e) {
+                host = "invalid-hostname";
+            }
             port = 443;
         }
 
-        if (scheme == null) {      // assume https
-            scheme = "https";
+        if (scheme == null && port == 80) {
+            scheme = "http";
+        } else if (scheme == null) {
+            scheme = "https"; // assume https
         }
 
         if (scheme.equals("https") && port == -1) {

@@ -96,7 +96,7 @@ public class ChapterReaderTest {
         FrameHeader header = new FrameHeader(ChapterReader.FRAME_ID_TITLE, titleSubframeContent.length, (short) 0);
         CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(titleSubframeContent));
         ChapterReader reader = new ChapterReader(inputStream);
-        Chapter chapter = new ID3Chapter("", 0);
+        Chapter chapter = new Chapter();
         reader.readChapterSubFrame(header, chapter);
         assertEquals("A", chapter.getTitle());
 

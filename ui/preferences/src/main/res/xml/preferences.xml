@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:search="http://schemas.android.com/apk/res-auto">
+
+    <com.bytehamster.lib.preferencesearch.SearchPreference
+            android:key="searchPreference"
+            search:textHint="@string/preference_search_hint"
+            search:textNoResults="@string/preference_search_no_results"
+            search:textClearHistory="@string/preference_search_clear_history"
+            search:textClearInput="@string/preference_search_clear_input"
+            search:textMore="@string/overflow_more" />
+
+    <Preference
+            android:key="prefScreenInterface"
+            android:title="@string/user_interface_label"
+            android:summary="@string/user_interface_sum"
+            android:icon="@drawable/ic_appearance" />
+
+    <Preference
+            android:key="prefScreenPlayback"
+            android:title="@string/playback_pref"
+            android:summary="@string/playback_pref_sum"
+            android:icon="@drawable/ic_play_24dp" />
+
+    <Preference
+            android:key="prefScreenDownloads"
+            android:title="@string/downloads_pref"
+            android:summary="@string/downloads_pref_sum"
+            android:icon="@drawable/ic_download" />
+
+    <Preference
+            android:key="prefScreenSynchronization"
+            android:title="@string/synchronization_pref"
+            android:summary="@string/synchronization_sum"
+            android:icon="@drawable/ic_cloud" />
+
+    <Preference
+            android:key="prefScreenImportExport"
+            android:title="@string/import_export_pref"
+            android:summary="@string/import_export_summary"
+            android:icon="@drawable/ic_storage" />
+
+    <Preference
+            android:key="notifications"
+            android:title="@string/notification_pref_fragment"
+            android:icon="@drawable/ic_notifications"/>
+
+    <PreferenceCategory
+            android:key="project"
+            android:title="@string/project_pref">
+        <Preference
+            android:key="prefDocumentation"
+            android:title="@string/documentation_support"
+            android:icon="@drawable/ic_questionmark" />
+        <Preference
+            android:key="prefViewForum"
+            android:title="@string/visit_user_forum"
+            android:icon="@drawable/ic_chat" />
+        <Preference
+            android:key="prefContribute"
+            android:title="@string/pref_contribute"
+            android:icon="@drawable/ic_contribute" />
+        <Preference
+            android:key="prefSendBugReport"
+            android:title="@string/bug_report_title"
+            android:icon="@drawable/ic_bug" />
+        <Preference
+            android:key="prefAbout"
+            android:title="@string/about_pref"
+            android:icon="@drawable/ic_info" />
+    </PreferenceCategory>
+</PreferenceScreen>

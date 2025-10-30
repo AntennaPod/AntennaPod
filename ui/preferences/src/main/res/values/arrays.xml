@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="spnAutoDeleteItems">
+        <item>@string/global_default</item>
+        <item>@string/feed_auto_download_always</item>
+        <item>@string/feed_auto_download_never</item>
+    </string-array>
+
+    <!-- Keep consistent with AutoDeleteAction -->
+    <string-array name="spnAutoDeleteValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="spnEnableAutoDownloadItems">
+        <item>@string/global_default</item>
+        <item>@string/enabled</item>
+        <item>@string/disabled</item>
+    </string-array>
+
+    <!-- Keep consistent with AutoDownloadSetting -->
+    <string-array name="spnEnableAutoDownloadValues">
+        <item>1</item>
+        <item>2</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="spnVolumeAdaptationItems">
+        <item>@string/feed_volume_reduction_heavy</item>
+        <item>@string/feed_volume_reduction_light</item>
+        <item>@string/feed_volume_reduction_off</item>
+        <item>@string/feed_volume_boost_light</item>
+        <item>@string/feed_volume_boost_medium</item>
+        <item>@string/feed_volume_boost_heavy</item>
+    </string-array>
+
+    <!-- Keep consistent with VolumeAdaptionSetting -->
+    <string-array name="spnVolumeAdaptationValues">
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="feed_refresh_interval_entries">
+        <item>@string/feed_refresh_never</item>
+        <item>@string/feed_every_hour</item>
+        <item>@string/feed_every_2_hours</item>
+        <item>@string/feed_every_4_hours</item>
+        <item>@string/feed_every_8_hours</item>
+        <item>@string/feed_every_12_hours</item>
+        <item>@string/feed_every_24_hours</item>
+        <item>@string/feed_every_72_hours</item>
+    </string-array>
+
+    <string-array name="feed_refresh_interval_values">
+        <item>0</item>
+        <item>60</item>
+        <item>120</item>
+        <item>240</item>
+        <item>480</item>
+        <item>720</item>
+        <item>1440</item>
+        <item>4320</item>
+    </string-array>
+
+    <string-array name="globalNewEpisodesActionItems">
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_add_to_queue</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="globalNewEpisodesActionValues">
+        <item>1</item>
+        <item>3</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionItems">
+        <item>@string/global_default</item>
+        <item>@string/feed_new_episodes_action_add_to_inbox</item>
+        <item>@string/feed_new_episodes_action_add_to_queue</item>
+        <item>@string/feed_new_episodes_action_nothing</item>
+    </string-array>
+
+    <string-array name="feedNewEpisodesActionValues">
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="smart_mark_as_played_values">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>300</item>
+        <item>600</item>
+    </string-array>
+
+
+    <integer-array name="seek_delta_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+    </integer-array>
+
+    <string-array name="episode_cache_size_entries">
+        <item>5</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>500</item>
+        <item>@string/pref_episode_cache_unlimited</item>
+    </string-array>
+
+    <string-array name="episode_cache_size_values">
+        <item>5</item>
+        <item>10</item>
+        <item>25</item>
+        <item>50</item>
+        <item>100</item>
+        <item>500</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="mobile_update_entries">
+        <item>@string/pref_mobileUpdate_refresh</item>
+        <item>@string/pref_mobileUpdate_episode_download</item>
+        <item>@string/pref_automatic_download_title</item>
+        <item>@string/pref_mobileUpdate_streaming</item>
+        <item>@string/pref_mobileUpdate_images</item>
+        <item>@string/synchronization_pref</item>
+    </string-array>
+
+    <string-array name="mobile_update_values">
+        <item>feed_refresh</item>
+        <item>episode_download</item>
+        <item>auto_download</item>
+        <item>streaming</item>
+        <item>images</item>
+        <item>sync</item>
+    </string-array>
+
+    <string-array name="mobile_update_default_value">
+        <item>images</item>
+        <item>sync</item>
+    </string-array>
+
+    <string-array name="episode_cleanup_entries">
+        <item>@string/episode_cleanup_except_favorite_removal</item>
+        <item>@string/episode_cleanup_queue_removal</item>
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+        <item>5</item>
+        <item>7</item>
+        <item>@string/episode_cleanup_never</item>
+    </string-array>
+
+    <string-array name="button_action_options">
+        <item>@string/button_action_fast_forward</item>
+        <item>@string/button_action_rewind</item>
+        <item>@string/button_action_skip_episode</item>
+        <item>@string/button_action_restart_episode</item>
+    </string-array>
+
+    <string-array name="button_action_values">
+        <item>@string/keycode_media_fast_forward</item>
+        <item>@string/keycode_media_rewind</item>
+        <item>@string/keycode_media_next</item>
+        <item>@string/keycode_media_previous</item>
+    </string-array>
+
+    <string-array name="enqueue_location_options">
+        <item>@string/enqueue_location_back</item>
+        <item>@string/enqueue_location_front</item>
+        <item>@string/enqueue_location_after_current</item>
+        <item>@string/enqueue_location_random</item>
+    </string-array>
+
+    <string-array name="enqueue_location_values">
+        <!-- MUST be the same as UserPreferences.EnqueueLocation enum -->
+        <item>BACK</item>
+        <item>FRONT</item>
+        <item>AFTER_CURRENTLY_PLAYING</item>
+        <item>RANDOM</item>
+    </string-array>
+
+    <string-array name="episode_cleanup_values">
+        <item>-3</item>
+        <item>-1</item>
+        <item>0</item>
+        <item>12</item>
+        <item>24</item>
+        <item>72</item>
+        <item>120</item>
+        <item>168</item>
+        <item>-2</item>
+    </string-array>
+
+    <string-array name="nav_drawer_feed_order_options">
+        <item>@string/drawer_feed_order_unplayed_episodes</item>
+        <item>@string/drawer_feed_order_alphabetical</item>
+        <item>@string/drawer_feed_order_last_update</item>
+        <item>@string/drawer_feed_order_most_played</item>
+    </string-array>
+    <string-array name="nav_drawer_feed_order_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="nav_drawer_feed_counter_options">
+        <item>@string/drawer_feed_counter_inbox</item>
+        <item>@string/drawer_feed_counter_unplayed</item>
+        <item>@string/drawer_feed_counter_downloaded</item>
+        <item>@string/drawer_feed_counter_downloaded_unplayed</item>
+        <item>@string/drawer_feed_counter_none</item>
+    </string-array>
+    <string-array name="nav_drawer_feed_counter_values">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>5</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="home_section_titles">
+        <item>@string/home_continue_title</item>
+        <item>@string/home_new_title</item>
+        <item>@string/home_surprise_title</item>
+        <item>@string/home_classics_title</item>
+        <item>@string/home_downloads_title</item>
+    </string-array>
+
+    <string-array name="home_section_tags">
+        <item>QueueSection</item>
+        <item>InboxSection</item>
+        <item>EpisodesSurpriseSection</item>
+        <item>SubscriptionsSection</item>
+        <item>DownloadsSection</item>
+    </string-array>
+
+    <string-array name="full_notification_buttons_options">
+        <item>@string/skip_episode_label</item>
+        <item>@string/next_chapter</item>
+        <item>@string/playback_speed</item>
+        <item>@string/sleep_timer_label</item>
+    </string-array>
+
+    <string-array name="default_page_values">
+        <item>HomeFragment</item>
+        <item>QueueFragment</item>
+        <item>NewEpisodesFragment</item>
+        <item>EpisodesFragment</item>
+        <item>SubscriptionFragment</item>
+        <item>remember</item>
+    </string-array>
+
+    <string-array name="default_page_titles">
+        <item>@string/home_label</item>
+        <item>@string/queue_label</item>
+        <item>@string/inbox_label</item>
+        <item>@string/episodes_label</item>
+        <item>@string/subscriptions_label</item>
+        <item>@string/remember_last_page</item>
+    </string-array>
+</resources>

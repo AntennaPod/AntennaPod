@@ -20,11 +20,14 @@ public enum SortOrder {
     DURATION_LONG_SHORT(6, INTRA_FEED),
     EPISODE_FILENAME_A_Z(7, INTRA_FEED),
     EPISODE_FILENAME_Z_A(8, INTRA_FEED),
+    SIZE_SMALL_LARGE(9, INTRA_FEED),
+    SIZE_LARGE_SMALL(10, INTRA_FEED),
     FEED_TITLE_A_Z(101, INTER_FEED),
     FEED_TITLE_Z_A(102, INTER_FEED),
     RANDOM(103, INTER_FEED),
     SMART_SHUFFLE_OLD_NEW(104, INTER_FEED),
-    SMART_SHUFFLE_NEW_OLD(105, INTER_FEED);
+    SMART_SHUFFLE_NEW_OLD(105, INTER_FEED),
+    COMPLETION_DATE_NEW_OLD(106, INTER_FEED);
 
     public enum Scope {
         INTRA_FEED, INTER_FEED
@@ -69,13 +72,5 @@ public enum SortOrder {
     @Nullable
     public static String toCodeString(@Nullable SortOrder sortOrder) {
         return sortOrder != null ? Integer.toString(sortOrder.code) : null;
-    }
-
-    public static SortOrder[] valuesOf(String[] stringValues) {
-        SortOrder[] values = new SortOrder[stringValues.length];
-        for (int i = 0; i < stringValues.length; i++) {
-            values[i] = SortOrder.valueOf(stringValues[i]);
-        }
-        return values;
     }
 }

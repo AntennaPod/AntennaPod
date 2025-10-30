@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import static de.danoeh.antennapod.activity.MainActivity.EXTRA_FEED_ID;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -26,15 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.databinding.SubscriptionSelectionActivityBinding;
 import de.danoeh.antennapod.model.feed.Feed;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SelectSubscriptionActivity extends AppCompatActivity {
 
@@ -47,7 +45,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTranslucentTheme());
+        setTheme(ThemeSwitcher.getTranslucentTheme(this));
         super.onCreate(savedInstanceState);
 
         viewBinding = SubscriptionSelectionActivityBinding.inflate(getLayoutInflater());
@@ -74,32 +72,18 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
 
     }
 
-    public List<Feed> getFeedItems(List<NavDrawerData.DrawerItem> items, List<Feed> result) {
-        for (NavDrawerData.DrawerItem item : items) {
-            if (item.type == NavDrawerData.DrawerItem.Type.TAG) {
-                getFeedItems(((NavDrawerData.TagDrawerItem) item).children, result);
-            } else {
-                Feed feed = ((NavDrawerData.FeedDrawerItem) item).feed;
-                if (!result.contains(feed)) {
-                    result.add(feed);
-                }
-            }
-        }
-        return result;
-    }
-
     private void addShortcut(Feed feed, Bitmap bitmap) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra(EXTRA_FEED_ID, feed.getId());
+        intent.putExtra(MainActivityStarter.EXTRA_FEED_ID, feed.getId());
         String id = "subscription-" + feed.getId();
         IconCompat icon;
 
         if (bitmap != null) {
             icon = IconCompat.createWithAdaptiveBitmap(bitmap);
         } else {
-            icon = IconCompat.createWithResource(this, R.drawable.ic_folder_shortcut);
+            icon = IconCompat.createWithResource(this, R.drawable.ic_shortcut_subscriptions);
         }
 
         ShortcutInfoCompat shortcut = new ShortcutInfoCompat.Builder(this, id)
@@ -118,7 +102,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         Glide.with(this)
                 .asBitmap()
                 .load(feed.getImageUrl())
-                .apply(new RequestOptions().override(iconSize, iconSize))
+                .apply(RequestOptions.overrideOf(iconSize, iconSize))
                 .listener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model,
@@ -140,11 +124,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Observable.fromCallable(
-                () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData();
-                    return getFeedItems(data.items, new ArrayList<>());
-                })
+        disposable = Observable.fromCallable(DBReader::getFeedList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

@@ -1,0 +1,29 @@
+* {
+     color: %s;
+     overflow-wrap: break-word;
+}
+a {
+     font-style: normal;
+     font-weight: normal;
+     color: %s;
+}
+a.timecode {
+     color: #669900;
+}
+img, iframe {
+     display: block;
+     margin: 10 auto;
+     max-width: 100%%;
+     height: auto;
+}
+body {
+     padding: %dpx %dpx %dpx %dpx;
+}
+p#apNoShownotes {
+    position: fixed;
+    top: 50%%;
+    left: 50%%;
+    transform: translate(-50%%, -50%%);
+    text-align: center;
+    -webkit-text-size-adjust: none;
+}

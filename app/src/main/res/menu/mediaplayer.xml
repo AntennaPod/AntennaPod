@@ -30,9 +30,16 @@
 
     <item
         android:id="@+id/audio_controls"
-        android:icon="@drawable/ic_sliders"
         android:title="@string/audio_controls"
-        custom:showAsAction="always">
+        android:visible="false"
+        custom:showAsAction="never">
+    </item>
+
+    <item
+        android:id="@+id/playback_speed"
+        android:title="@string/playback_speed"
+        android:visible="false"
+        custom:showAsAction="never">
     </item>
 
     <item
@@ -59,9 +66,31 @@
     </item>
 
     <item
-        android:id="@+id/share_item"
-        android:menuCategory="container"
+        android:id="@+id/player_show_chapters"
         custom:showAsAction="never"
-        android:title="@string/share_label_with_ellipses">
+        android:title="@string/chapters_label"
+        android:visible="false">
+    </item>
+
+    <item
+        android:id="@+id/transcript_item"
+        android:icon="@drawable/transcript"
+        android:title="@string/show_transcript"
+        custom:showAsAction="never">
+    </item>
+
+    <item
+        android:id="@+id/open_social_interact_url"
+        android:icon="@drawable/ic_chat"
+        custom:showAsAction="never"
+        android:title="@string/visit_social_interact_label">
+    </item>
+
+    <item
+        android:id="@+id/share_item"
+        android:icon="@drawable/ic_share"
+        android:menuCategory="container"
+        custom:showAsAction="always"
+        android:title="@string/share_label">
     </item>
 </menu>

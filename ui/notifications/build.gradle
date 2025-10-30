@@ -1,0 +1,21 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.ui.notifications"
+
+    defaultConfig {
+        vectorDrawables.useSupportLibrary false
+        vectorDrawables.generatedDensities = ["xhdpi"]
+    }
+}
+
+dependencies {
+    implementation project(':storage:preferences')
+    implementation project(':ui:i18n')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.core:core:$coreVersion"
+}

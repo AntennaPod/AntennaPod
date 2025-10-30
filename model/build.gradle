@@ -3,9 +3,20 @@ plugins {
 }
 apply from: "../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.model"
+
+    lint {
+        disable 'ParcelClassLoader'
+    }
+}
+
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.media:media:$mediaVersion"
-
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "androidx.test:core:$testCoreVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
 }

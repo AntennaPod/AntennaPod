@@ -2,11 +2,12 @@ package de.test.antennapod.ui;
 
 import android.content.Intent;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.test.antennapod.EspressoTestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -44,7 +45,7 @@ public class FeedSettingsTest {
         uiTestUtils.addLocalFeedData(false);
         feed = uiTestUtils.hostedFeeds.get(0);
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_FEED_ID, feed.getId());
+        intent.putExtra(MainActivityStarter.EXTRA_FEED_ID, feed.getId());
         activityRule.launchActivity(intent);
     }
 
@@ -70,10 +71,10 @@ public class FeedSettingsTest {
         clickPreference(R.string.pref_feed_skip);
         onView(withText(R.string.cancel_label)).perform(click());
 
-        clickPreference(R.string.auto_delete_label);
+        clickPreference(R.string.pref_auto_delete_playback_title);
         onView(withText(R.string.cancel_label)).perform(click());
 
-        clickPreference(R.string.feed_volume_reduction);
+        clickPreference(R.string.feed_volume_adapdation);
         onView(withText(R.string.cancel_label)).perform(click());
     }
 }

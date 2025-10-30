@@ -6,13 +6,15 @@ import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.parser.feed.namespace.PodcastIndex;
-import de.danoeh.antennapod.core.util.DateFormatter;
 
 /**
  * Creates RSS 2.0 feeds. See FeedGenerator for more information.
@@ -98,7 +100,7 @@ public class Rss2Generator implements FeedGenerator {
                 }
                 if (item.getPubDate() != null) {
                     xml.startTag(null, "pubDate");
-                    xml.text(DateFormatter.formatRfc822Date(item.getPubDate()));
+                    xml.text(formatRfc822Date(item.getPubDate()));
                     xml.endTag(null, "pubDate");
                 }
                 if ((flags & FEATURE_WRITE_GUID) != 0) {
@@ -108,9 +110,9 @@ public class Rss2Generator implements FeedGenerator {
                 }
                 if (item.getMedia() != null) {
                     xml.startTag(null, "enclosure");
-                    xml.attribute(null, "url", item.getMedia().getDownload_url());
+                    xml.attribute(null, "url", item.getMedia().getDownloadUrl());
                     xml.attribute(null, "length", String.valueOf(item.getMedia().getSize()));
-                    xml.attribute(null, "type", item.getMedia().getMime_type());
+                    xml.attribute(null, "type", item.getMedia().getMimeType());
                     xml.endTag(null, "enclosure");
                 }
                 if (fundingList != null) {
@@ -131,5 +133,10 @@ public class Rss2Generator implements FeedGenerator {
         xml.endTag(null, "rss");
 
         xml.endDocument();
+    }
+
+    private static String formatRfc822Date(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yy HH:mm:ss Z", Locale.US);
+        return format.format(date);
     }
 }

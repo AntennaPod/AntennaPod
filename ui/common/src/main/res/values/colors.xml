@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFF</color>
+    <color name="grey100">#f5f5f5</color>
+    <color name="grey600">#757575</color>
+    <color name="light_gray">#bfbfbf</color>
+    <color name="medium_gray">#afafaf</color>
+    <color name="black">#000000</color>
+    <color name="image_readability_tint">#80000000</color>
+    <color name="feed_text_bg">#55333333</color>
+
+    <!-- Theme colors -->
+    <color name="background_light">#f9fcff</color>
+    <color name="background_elevated_light">#EFEEEE</color>
+    <color name="background_darktheme">#21272b</color>
+    <color name="background_elevated_darktheme">#2D3337</color>
+    <color name="non_square_icon_background">#22777777</color>
+    <color name="seek_background_light">#90000000</color>
+    <color name="seek_background_dark">#905B5B5B</color>
+
+    <color name="accent_light">#0078C2</color>
+    <color name="accent_dark">#3D8BFF</color>
+    
+    <color name="gradient_000">#364ff3</color>
+    <color name="gradient_025">#2E6FF6</color>
+    <color name="gradient_075">#1EB0FC</color>
+    <color name="gradient_100">#16d0ff</color>
+</resources>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.AntennaPod.Dynamic.Light" parent="Theme.Base.AntennaPod.Dynamic.Light">
+        <!-- Room for API dependent attributes -->
+
+        <!-- To make icons visible on API 21-23. Overwritten in API-specific folder -->
+        <item name="android:statusBarColor">@color/grey600</item>
+        <item name="android:navigationBarColor">@color/grey600</item>
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Dynamic.Light" parent="Theme.Material3.DynamicColors.Light">
+        <item name="background_color">@color/background_light</item>
+        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
+        <item name="background_elevated">@color/background_elevated_light</item>
+        <item name="action_icon_color">@color/black</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="seek_background">@color/seek_background_light</item>
+        <item name="dragview_background">@drawable/ic_drag_lighttheme</item>
+        <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
+        <item name="icon_red">#CF1800</item>
+        <item name="icon_yellow">#F59F00</item>
+        <item name="icon_green">#008537</item>
+        <item name="icon_purple">#5F1984</item>
+        <item name="icon_gray">#25365A</item>
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
+        <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Light" parent="Theme.AntennaPod.Dynamic.Light">
+        <item name="isMaterial3DynamicColorApplied">false</item>
+        <item name="colorPrimary">@color/accent_light</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">@color/accent_light</item>
+        <item name="colorSecondary">@color/accent_light</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorPrimaryDark">@color/accent_light</item>
+        <item name="colorPrimaryContainer">#D6E6F3</item>
+        <item name="colorOnPrimaryContainer">@color/black</item>
+        <item name="android:colorBackground">@color/background_light</item>
+        <item name="colorSurface">@color/background_light</item>
+        <item name="colorSurfaceVariant">#D3DCE0</item>
+        <item name="colorSurfaceContainer">#EBEEF3</item>
+        <item name="colorSecondaryContainer">#D3DCE0</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dynamic.Dark" parent="Theme.Base.AntennaPod.Dynamic.Dark">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Dynamic.Dark" parent="Theme.Material3.DynamicColors.Dark">
+        <item name="background_color">@color/background_darktheme</item>
+        <item name="background_elevated">@color/background_elevated_darktheme</item>
+        <item name="action_icon_color">@color/white</item>
+        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="seek_background">@color/seek_background_dark</item>
+        <item name="dragview_background">@drawable/ic_drag_darktheme</item>
+        <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
+        <item name="icon_red">#CF1800</item>
+        <item name="icon_yellow">#F59F00</item>
+        <item name="icon_green">#008537</item>
+        <item name="icon_purple">#AA55D8</item>
+        <item name="icon_gray">#CDD9E4</item>
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="toolbarStyle">@style/Style.AntennaPod.Toolbar</item>
+        <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dark" parent="Theme.AntennaPod.Dynamic.Dark">
+        <item name="isMaterial3DynamicColorApplied">false</item>
+        <item name="colorPrimary">@color/accent_dark</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorAccent">@color/accent_dark</item>
+        <item name="colorSecondary">@color/accent_dark</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorPrimaryDark">@color/accent_dark</item>
+        <item name="colorPrimaryContainer">#29374E</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="android:colorBackground">@color/background_darktheme</item>
+        <item name="colorSurface">@color/background_darktheme</item>
+        <item name="colorSurfaceVariant">#2F3B4F</item>
+        <item name="colorSurfaceContainer">#1C2024</item>
+        <item name="colorSecondaryContainer">#2F3B4F</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dynamic.TrueBlack" parent="Theme.AntennaPod.Dynamic.Dark">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:colorBackground">@color/black</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="background_color">@color/black</item>
+        <item name="background_elevated">@color/black</item>
+    </style>
+
+    <style name="Theme.AntennaPod.TrueBlack" parent="Theme.AntennaPod.Dark">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:color">@color/white</item>
+        <item name="android:colorBackground">@color/black</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="background_color">@color/black</item>
+        <item name="background_elevated">@color/black</item>
+        <item name="colorPrimaryContainer">#0D182B</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dynamic.Light.NoTitle" parent="Theme.AntennaPod.Dynamic.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AntennaPod.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dynamic.Dark.NoTitle" parent="Theme.AntennaPod.Dynamic.Dark">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AntennaPod.Dark">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Theme.AntennaPod.TrueBlack.NoTitle" parent="Theme.AntennaPod.TrueBlack">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dynamic.TrueBlack.NoTitle" parent="Theme.AntennaPod.Dynamic.TrueBlack">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dynamic.Light.Translucent" parent="Theme.AntennaPod.Dynamic.Light.NoTitle">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Light.Translucent" parent="Theme.AntennaPod.Light.NoTitle">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dynamic.Dark.Translucent" parent="Theme.AntennaPod.Dynamic.Dark.NoTitle">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dark.Translucent" parent="Theme.AntennaPod.Dark.NoTitle">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Dynamic.TrueBlack.Translucent" parent="Theme.AntennaPod.Dynamic.TrueBlack.NoTitle">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
+    <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack.NoTitle">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
+    <style name="AnimationFade">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Splash" parent="Theme.SplashScreen">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="M">false</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/launcher_animate</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Splash.Translucent" parent="Theme.AntennaPod.Splash">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimationFade</item>
+    </style>
+
+    <style name="Style.AntennaPod.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="materialThemeOverlay">@style/Theme.AntennaPod.Toolbar</item>
+    </style>
+
+    <style name="Theme.AntennaPod.Toolbar" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
+        <item name="action_icon_color">?attr/colorOnSurface</item>
+        <item name="colorControlNormal">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="AntennaPod.TextView.Heading" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@style/TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">20sp</item>
+    </style>
+
+    <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@style/TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="OutlinedButtonBetterContrast" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="backgroundTint">@color/button_bg_selector</item>
+    </style>
+
+    <style name="FastScrollRecyclerView" parent="android:Widget">
+        <item name="android:scrollbars">none</item>
+        <item name="fastScrollEnabled">true</item>
+        <item name="fastScrollHorizontalThumbDrawable">?attr/scrollbar_thumb</item>
+        <item name="fastScrollHorizontalTrackDrawable">@drawable/scrollbar_track</item>
+        <item name="fastScrollVerticalThumbDrawable">?attr/scrollbar_thumb</item>
+        <item name="fastScrollVerticalTrackDrawable">@drawable/scrollbar_track</item>
+    </style>
+
+    <style name="Widget.AntennaPod.ActionBar" parent="Widget.Material3.Light.ActionBar.Solid">
+        <item name="background">?android:attr/colorBackground</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="AddPodcastTextView" parent="@style/TextAppearance.Material3.BodyMedium">
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:clickable">true</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="TextPill">
+        <item name="android:background">@drawable/bg_pill_translucent</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="TextBottomNav" parent="TextAppearance.Material3.TitleSmall">
+       <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="AppPreferenceThemeOverlay" parent="@style/PreferenceThemeOverlay">
+        <item name="switchPreferenceCompatStyle">@style/AppSwitchPreference</item>
+    </style>
+
+    <style name="AppSwitchPreference" parent="@style/Preference.SwitchPreferenceCompat.Material">
+        <item name="widgetLayout">@layout/preference_material_switch</item>
+    </style>
+
+</resources>

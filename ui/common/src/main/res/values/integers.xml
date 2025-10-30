@@ -1,0 +1,3 @@
+<resources>
+  <integer name="fragment_transition_duration">300</integer>
+</resources>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="statistics_label">സ്ഥിതിവിവരക്കണക്ക്</string>
+    <string name="episodes_label">ലക്കങ്ങള്‍</string>
+    <string name="queue_label">ക്യൂ</string>
+    <string name="favorite_episodes_label">മുന്‍നിരയിലുളളത്</string>
+    <string name="settings_label">ക്രമീകരണം</string>
+    <string name="downloads_label">ഡൗൺലോഡുകൾ</string>
+    <string name="subscriptions_label">സബ്‍സ്‍ക്രിപ്ഷനുകള്‍</string>
+    <string name="notification_pref_fragment">നോട്ടിഫിക്കേഷനുകൾ</string>
+    <string name="swipeactions_summary">ലിസ്റ്റിൽ ഒരു എപ്പിസോഡ് സ്വൈപ്പ് ചെയ്യുമ്പോൾ എന്താണ് സംഭവിക്കുന്നതെന്ന് തിരഞ്ഞെടുക്കുക</string>
+    <string name="change_setting">മാറ്റുക</string>
+    <string name="statistics_speed_not_counted">നോട്ടീസു്: കേള്‍വിയുടേ വേഗം എവിടെയും പരിഗണിച്ചിട്ടില്ല</string>
+    <string name="statistics_reset_data">സ്ഥിതിവിവരക്കണക്കുകൾ പുനഃക്രമീകരിക്കുക</string>
+    <string name="statistics_reset_data_msg">എപ്പിസോഡുകൾ പ്ലേ ചെയ്ത സമയ ദൈർഘ്യത്തിന്റെ ചരിത്രം ഇല്ലാതാക്കും. തുടരട്ടേ?</string>
+    <!--Main activity-->
+  <string name="drawer_open">മെനു തുറക്കുക</string>
+    <string name="drawer_close">മെനു അടക്കുക</string>
+    <string name="drawer_feed_order_unplayed_episodes">എണ്ണത്തിനനുസരിച്ച് ക്രമീകരിക്കുക</string>
+    <string name="drawer_feed_order_alphabetical">അക്ഷരങ്ങള്‍ക്കനുസരിച്ച് ക്രമീകരീക്കുക</string>
+    <string name="drawer_feed_order_last_update">പ്രസിദ്ധീകരിച്ച സമയമനുസരിച്ച് ക്രമീകരിക്കുക</string>
+    <string name="drawer_feed_order_most_played">പരമ്പരകള്‍ പ്ലേ ചെയ്ത എണ്ണത്തിനനുസരിച്ച ക്രമീകരീക്കുക</string>
+    <string name="drawer_feed_counter_unplayed">പ്ലേ ചെയ്യാത്ത പരമ്പരകളുടെ എണ്ണം</string>
+    <string name="drawer_feed_counter_downloaded">ഡൗണ്ലോഡ് ചെയ്ത എപ്പിസോഡുകളുടെ എണ്ണം</string>
+    <string name="drawer_feed_counter_none">ഒന്നുമില്ല</string>
+    <!--Bug report activity-->
+  <string name="log_file_share_exception">അനുയോജ്യമായ ആപ്പുകളോന്നും കണ്ടില്ല</string>
+    <string name="copy_url_label">ലിങ്ക് കോപി ചെയ്യുക</string>
+    <string name="share_url_label">ലിങ്ക് പങ്കുവെക്കാം</string>
+    <!--Other-->
+  <string name="confirm_label">ഉറപ്പാണോ..</string>
+    <string name="cancel_label">ഉപേക്ഷിക്കുക</string>
+    <string name="yes">ശരി</string>
+    <string name="no">വേണ്ട</string>
+    <string name="reset">പുനഃക്രമീകരിക്കുക</string>
+    <string name="url_label">യുആർഎൽ</string>
+    <string name="support_funding_label">പിന്തുണക്കുക</string>
+    <string name="error_label">പ്രശ്നം</string>
+    <string name="error_msg_prefix">ഒരു പ്രശ്നമുണ്ട്:</string>
+    <string name="refresh_label">പുതുക്കുക</string>
+    <string name="chapters_label">അധ്യായങ്ങള്‍</string>
+    <string name="description_label">വിവരണം</string>
+    <string name="close_label">അടക്കുക</string>
+    <string name="retry_label">വീണ്ടും ചെയ്യുക</string>
+    <string name="auto_download_label">ഓട്ടോമാറ്റിക്കായി ഡൌണ്‍ലോഡ് ചെയ്യുന്നതില്‍ ഉള്‍പെടുത്തുക</string>
+    <string name="feed_auto_download_always">എപ്പോഴും</string>
+    <string name="feed_auto_download_never">ഒരിക്കലുമില്ല</string>
+    <string name="episode_cleanup_never">ഒരിയ്ക്കലുമില്ല</string>
+    <string name="episode_cleanup_except_favorite_removal">ഫാവറൈറ്റ് ചെയ്തിട്ടില്ലെങ്കില്‍</string>
+    <string name="episode_cleanup_queue_removal">ക്യുവില്‍ ഇല്ലെങ്കില്‍</string>
+    <string name="episode_cleanup_after_listening">ചെയ്തതിനു ശേഷം</string>
+    <plurals name="num_selected_label">
+        <item quantity="one">%1$d/%2$d തിരഞ്ഞെടുത്തു</item>
+        <item quantity="other">%1$d/%2$d തിരഞ്ഞെടുത്തു</item>
+    </plurals>
+    <plurals name="num_episodes">
+        <item quantity="one">%d എപ്പിസോഡ്</item>
+        <item quantity="other">%d എപ്പിസോഡുകൾ</item>
+    </plurals>
+    <string name="new_episode_notification_group_text">നിങ്ങളുടെ സബ്‌സ്‌ക്രിപ്‌ഷനുകൾക്ക് പുതിയ എപ്പിസോഡുകൾ ഉണ്ട്.</string>
+    <string name="show_info_label">വിവരങ്ങള്‍ കാണിക്കുക</string>
+    <string name="show_feed_settings_label">പോഡ്‍കാസ്റ്റു് ക്രമീകരണങ്ങള്‍ കാണിയ്ക്കുക</string>
+    <string name="feed_settings_label">പോഡ്‍കാസ്റ്റു് ക്രമീകരണങ്ങള്‍</string>
+    <string name="rename_feed_label">പോഡ്‍കാസ്റ്റിന്റെ പേരുമാറ്റുക</string>
+    <string name="remove_feed_label">പോഡ്‍കാസ്റ്റു് നീക്കം ചെയ്യുക</string>
+    <string name="share_label">പങ്കിടുക</string>
+    <string name="feed_remover_msg">പോഡ്‍കാസ്റ്റു് നീക്കം ചെയ്യുന്നു</string>
+    <string name="load_complete_feed">എല്ലാ പോഡ്കാസ്റ്റുകളും പുതുക്കുക</string>
+    <string name="multi_select">ഒന്നിലധികം തിരഞ്ഞെടുക്കുക</string>
+    <string name="select_all_above">എല്ലാം തിരഞ്ഞെടുക്കുക</string>
+    <string name="select_all_below">താഴെയുള്ളവയെല്ലാം തിരഞ്ഞെടുക്കുക</string>
+    <string name="filtered_label">അരിച്ചെടുത്തത്</string>
+    <string name="please_wait_for_data">വിവരം ലോഡ് ചെയ്യുന്നതു വരെ കാത്തിരിക്കുക</string>
+    <!--actions on feeditems-->
+  <string name="download_label">ഡൗൺലോഡ്</string>
+    <string name="play_label">പ്ലേ</string>
+    <string name="pause_label">പോസ്</string>
+    <string name="stream_label">സ്ട്രീം</string>
+    <string name="delete_label">നീക്കം ചെയ്യുക</string>
+    <string name="mark_read_no_media_label">വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
+    <string name="mark_unread_label_no_media">പ്ലേ ചെയ്യാത്തതായി അടയാളപ്പെടുത്തി</string>
+    <string name="skip_episode_label">പരമ്പര വിട്ടു കളയുക</string>
+    <!--Download messages and labels-->
+  <string name="download_successful">സഫലമായി</string>
+    <string name="download_error_details">വിശദാംശങ്ങൾ</string>
+    <string name="download_error_device_not_found">സറ്റോറേജ് ഉപകരണം കാണുന്നില്ല</string>
+    <string name="download_error_insufficient_space">നിങ്ങളുടെ ഉപകരണത്തില്‍ സൂക്ഷിച്ചുവെക്കാന്‍ മതിയായ സ്ഥലമില്ല.</string>
+    <string name="download_error_unknown_host">സെര്‍വര്‍ കാണുന്നില്ല. നിങ്ങളുടെ നെറ്റ്‍വര്‍ക്കുനു കുഴപ്പങ്ങളില്ലെങ്കില്‍ അഡ്രസ്സ് ശരിയാണോ എന്ന് പരിശോദിക്കുക.</string>
+    <string name="confirm_mobile_streaming_notification_message">ക്രമീകരണങ്ങളിൽ മൊബൈൽ ഡാറ്റയിലൂടെ സ്ട്രീം ചെയ്യുന്നത് പ്രവർത്തനരഹിതമാണ്. സ്ട്രീം ചെയ്യാൻ ടാപ്പ് ചെയ്യുക.</string>
+    <string name="confirm_mobile_streaming_button_always">എപ്പോഴും</string>
+    <string name="confirm_mobile_streaming_button_once">ഒരിക്കല്</string>
+    <string name="checkbox_do_not_show_again">വീണ്ടും കാണിക്കരുത്</string>
+    <string name="undo">പഴയപടിയാക്കുക</string>
+    <string name="move_to_top_label">മുകളിലേക്ക് നീക്കുക</string>
+    <string name="move_to_bottom_label">താഴേക്ക് നീക്കുക</string>
+    <string name="button_action_rewind">റിവൈൻഡ് ചെയ്യുക</string>
+    <string name="shake_to_reset_label">പുനഃസജ്ജമാക്കാൻ കുലുക്കുക</string>
+    <string name="time_seconds">സെക്കന്റുകൾ</string>
+    <string name="time_minutes">മിനിറ്റ്</string>
+    <string name="time_hours">മണിക്കൂറുകൾ</string>
+    <string name="username_label">ഉപയോക്തൃനാമം</string>
+    <string name="password_label">പാസ്സ്‌വേർഡ്</string>
+    <string name="media_type_video_label">വീഡിയോ</string>
+    <string name="discover">കണ്ടെത്തുക</string>
+    <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">നിരകളുടെ എണ്ണം</string>
+    <string name="notification_channel_downloading">ഡൗൺലോഡ് ചെയ്യുന്നു</string>
+</resources>

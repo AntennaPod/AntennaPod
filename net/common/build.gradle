@@ -1,0 +1,26 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.net.common"
+
+    lint {
+        disable 'StaticFieldLeak'
+    }
+}
+
+dependencies {
+    implementation project(':model')
+    implementation project(':net:ssl')
+    implementation project(':storage:preferences')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+}

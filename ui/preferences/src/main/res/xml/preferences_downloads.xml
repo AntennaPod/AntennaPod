@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
+
+    <Preference
+        android:title="@string/choose_data_directory"
+        android:key="prefChooseDataDir"/>
+
+    <PreferenceCategory android:title="@string/automation">
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+            android:entryValues="@array/feed_refresh_interval_values"
+            android:entries="@array/feed_refresh_interval_entries"
+            android:key="prefAutoUpdateIntervall"
+            android:title="@string/feed_refresh_title"
+            android:summary="@string/feed_refresh_sum"
+            android:defaultValue="720"/>
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+            android:entryValues="@array/globalNewEpisodesActionValues"
+            android:entries="@array/globalNewEpisodesActionItems"
+            android:key="prefNewEpisodesAction"
+            android:title="@string/pref_new_episodes_action_title"
+            android:summary="@string/pref_new_episodes_action_sum"
+            android:defaultValue="1"/>
+        <Preference
+            android:summary="@string/pref_automatic_download_sum"
+            android:key="prefAutoDownloadSettings"
+            android:title="@string/pref_automatic_download_title"
+            search:ignore="true" />
+        <Preference
+            android:key="prefAutoDeleteScreen"
+            android:summary="@string/pref_auto_delete_sum"
+            android:title="@string/pref_auto_delete_title"/>
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefDeleteRemovesFromQueue"
+            android:summary="@string/pref_delete_removes_from_queue_sum"
+            android:title="@string/pref_delete_removes_from_queue_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/download_pref_details">
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialMultiSelectListPreference
+                android:defaultValue="@array/mobile_update_default_value"
+                android:entries="@array/mobile_update_entries"
+                android:entryValues="@array/mobile_update_values"
+                android:key="prefMobileUpdateTypes"
+                android:summary="@string/pref_mobileUpdate_sum"
+                android:title="@string/pref_mobileUpdate_title"/>
+        <Preference
+                android:key="prefProxy"
+                android:summary="@string/pref_proxy_sum"
+                android:title="@string/pref_proxy_title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

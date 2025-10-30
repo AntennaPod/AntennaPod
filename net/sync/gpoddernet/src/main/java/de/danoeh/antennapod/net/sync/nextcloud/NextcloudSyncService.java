@@ -3,12 +3,12 @@ package de.danoeh.antennapod.net.sync.nextcloud;
 import de.danoeh.antennapod.net.sync.HostnameParser;
 import de.danoeh.antennapod.net.sync.gpoddernet.mapper.ResponseMapper;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetUploadChangesResponse;
-import de.danoeh.antennapod.net.sync.model.EpisodeAction;
-import de.danoeh.antennapod.net.sync.model.EpisodeActionChanges;
-import de.danoeh.antennapod.net.sync.model.ISyncService;
-import de.danoeh.antennapod.net.sync.model.SubscriptionChanges;
-import de.danoeh.antennapod.net.sync.model.SyncServiceException;
-import de.danoeh.antennapod.net.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeActionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.ISyncService;
+import de.danoeh.antennapod.net.sync.serviceinterface.SubscriptionChanges;
+import de.danoeh.antennapod.net.sync.serviceinterface.SyncServiceException;
+import de.danoeh.antennapod.net.sync.serviceinterface.UploadChangesResponse;
 import okhttp3.Credentials;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -16,6 +16,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,9 +30,7 @@ import java.util.List;
 public class NextcloudSyncService implements ISyncService {
     private static final int UPLOAD_BULK_SIZE = 30;
     private final OkHttpClient httpClient;
-    private final String baseScheme;
-    private final int basePort;
-    private final String baseHost;
+    private final HostnameParser hostname;
     private final String username;
     private final String password;
 
@@ -39,10 +39,7 @@ public class NextcloudSyncService implements ISyncService {
         this.httpClient = httpClient;
         this.username = username;
         this.password = password;
-        HostnameParser hostname = new HostnameParser(baseHosturl);
-        this.baseHost = hostname.host;
-        this.basePort = hostname.port;
-        this.baseScheme = hostname.scheme;
+        this.hostname = new HostnameParser(baseHosturl);
     }
 
     @Override
@@ -76,7 +73,7 @@ public class NextcloudSyncService implements ISyncService {
             requestObject.put("add", new JSONArray(addedFeeds));
             requestObject.put("remove", new JSONArray(removedFeeds));
             RequestBody requestBody = RequestBody.create(
-                    MediaType.get("application/json"), requestObject.toString());
+                    requestObject.toString(), MediaType.get("application/json"));
             performRequest(url, "POST", requestBody);
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +123,7 @@ public class NextcloudSyncService implements ISyncService {
             }
             HttpUrl.Builder url = makeUrl("/index.php/apps/gpoddersync/episode_action/create");
             RequestBody requestBody = RequestBody.create(
-                    MediaType.get("application/json"), list.toString());
+                    list.toString(), MediaType.get("application/json"));
             performRequest(url, "POST", requestBody);
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,10 +147,10 @@ public class NextcloudSyncService implements ISyncService {
 
     private HttpUrl.Builder makeUrl(String path) {
         return new HttpUrl.Builder()
-                .scheme(baseScheme)
-                .host(baseHost)
-                .port(basePort)
-                .addPathSegments(path);
+                .scheme(hostname.scheme)
+                .host(hostname.host)
+                .port(hostname.port)
+                .addPathSegments(StringUtils.stripStart(hostname.subfolder + path, "/"));
     }
 
     @Override

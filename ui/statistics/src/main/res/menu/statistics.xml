@@ -11,7 +11,12 @@
         android:id="@+id/statistics_filter"
         android:icon="@drawable/ic_filter"
         android:title="@string/filter"
-        custom:showAsAction="ifRoom">
-    </item>
+        custom:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/show_echo"
+        android:title="@string/antennapod_echo"
+        custom:showAsAction="never"
+        android:visible="false" />
 
 </menu>

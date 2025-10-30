@@ -3,8 +3,12 @@ plugins {
 }
 apply from: "../../../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.net.sync.gpoddernet"
+}
+
 dependencies {
-    implementation project(':net:sync:model')
+    implementation project(':net:sync:service-interface')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -12,6 +16,8 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+
+    testImplementation "junit:junit:$junitVersion"
 }

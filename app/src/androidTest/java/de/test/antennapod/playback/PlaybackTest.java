@@ -3,44 +3,38 @@ package de.test.antennapod.playback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import androidx.preference.PreferenceManager;
+import android.view.KeyEvent;
 import android.view.View;
-
+import androidx.preference.PreferenceManager;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.LongList;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.test.antennapod.EspressoTestUtils;
+import de.test.antennapod.IgnoreOnCi;
+import de.test.antennapod.ui.UITestUtils;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.test.antennapod.EspressoTestUtils;
-import de.test.antennapod.IgnoreOnCi;
-import de.test.antennapod.ui.UITestUtils;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -68,30 +62,19 @@ import static org.junit.Assert.assertTrue;
  */
 @LargeTest
 @IgnoreOnCi
-@RunWith(Parameterized.class)
 public class PlaybackTest {
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, false, false);
 
-    @Parameterized.Parameter(value = 0)
-    public String playerToUse;
     private UITestUtils uiTestUtils;
     protected Context context;
     private PlaybackController controller;
-
-    @Parameterized.Parameters(name = "{0}")
-    public static Collection<Object[]> initParameters() {
-        return Arrays.asList(new Object[][] { { "exoplayer" }, { "builtin" }, { "sonic" } });
-    }
 
     @Before
     public void setUp() throws Exception {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER, playerToUse).apply();
 
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
@@ -241,21 +224,20 @@ public class PlaybackTest {
     }
 
     private void skipEpisode() {
-        IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
+        context.sendBroadcast(MediaButtonStarter.createIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
     }
 
     protected void pauseEpisode() {
-        IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+        context.sendBroadcast(MediaButtonStarter.createIntent(context, KeyEvent.KEYCODE_MEDIA_PAUSE));
     }
 
     protected void startLocalPlayback() {
         openNavDrawer();
         onDrawerItem(withText(R.string.episodes_label)).perform(click());
-        onView(isRoot()).perform(waitForView(withText(R.string.all_episodes_short_label), 1000));
-        onView(withText(R.string.all_episodes_short_label)).perform(click());
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10, FeedItemFilter.unfiltered());
-        Matcher<View> allEpisodesMatcher = allOf(withId(android.R.id.list), isDisplayed(), hasMinimumChildCount(2));
+        final List<FeedItem> episodes = DBReader.getEpisodes(0, 10,
+                FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
+        Matcher<View> allEpisodesMatcher = allOf(withId(R.id.recyclerView), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
         onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.secondaryActionButton)));
 
@@ -289,7 +271,8 @@ public class PlaybackTest {
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
         activityTestRule.launchActivity(new Intent());
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10, FeedItemFilter.unfiltered());
+        final List<FeedItem> episodes = DBReader.getEpisodes(0, 10,
+                FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
 
         startLocalPlayback();
         FeedMedia media = episodes.get(0).getMedia();

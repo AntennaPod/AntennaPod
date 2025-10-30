@@ -14,12 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.statistics.R;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.Collections;
 
@@ -41,7 +41,7 @@ public class DownloadStatisticsFragment extends Fragment {
         View root = inflater.inflate(R.layout.statistics_fragment, container, false);
         downloadStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
-        listAdapter = new DownloadStatisticsListAdapter(getContext());
+        listAdapter = new DownloadStatisticsListAdapter(getContext(), this);
         downloadStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
         downloadStatisticsList.setAdapter(listAdapter);
         return root;

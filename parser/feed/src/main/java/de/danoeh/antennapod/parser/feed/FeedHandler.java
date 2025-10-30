@@ -25,12 +25,12 @@ public class FeedHandler {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(true);
         SAXParser saxParser = factory.newSAXParser();
-        File file = new File(feed.getFile_url());
+        File file = new File(feed.getLocalFileUrl());
         Reader inputStreamReader = new XmlStreamReader(file);
         InputSource inputSource = new InputSource(inputStreamReader);
 
         saxParser.parse(inputSource, handler);
         inputStreamReader.close();
-        return new FeedHandlerResult(handler.state.feed, handler.state.alternateUrls);
+        return new FeedHandlerResult(handler.state.feed, handler.state.alternateUrls, handler.state.redirectUrl);
     }
 }

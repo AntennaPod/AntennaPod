@@ -78,24 +78,29 @@ public class Atom extends Namespace {
             String href = attributes.getValue(LINK_HREF);
             String rel = attributes.getValue(LINK_REL);
             SyndElement parent = state.getTagstack().peek();
-            if (parent.getName().matches(isFeedItem)) {
+            if (parent.getName().matches(isFeedItem) && state.getCurrentItem() != null) {
                 if (rel == null || LINK_REL_ALTERNATE.equals(rel)) {
                     state.getCurrentItem().setLink(href);
                 } else if (LINK_REL_ENCLOSURE.equals(rel)) {
                     String strSize = attributes.getValue(LINK_LENGTH);
                     long size = 0;
                     try {
-                        if (strSize != null) {
+                        if (!TextUtils.isEmpty(strSize)) {
                             size = Long.parseLong(strSize);
                         }
                     } catch (NumberFormatException e) {
                         Log.d(TAG, "Length attribute could not be parsed.");
                     }
                     String mimeType = MimeTypeUtils.getMimeType(attributes.getValue(LINK_TYPE), href);
+                    boolean isValidMedia = MimeTypeUtils.isMediaFile(mimeType);
+                    if (!isValidMedia && state.getCurrentItem().getMedia() == null
+                            && !MimeTypeUtils.isImageFile(mimeType)) {
+                        isValidMedia = true;
+                        mimeType = "audio/*";
+                    }
 
-                    FeedItem currItem = state.getCurrentItem();
-                    if (MimeTypeUtils.isMediaFile(mimeType) && currItem != null && !currItem.hasMedia()) {
-                        currItem.setMedia(new FeedMedia(currItem, href, size, mimeType));
+                    if (isValidMedia && !state.getCurrentItem().hasMedia()) {
+                        state.getCurrentItem().setMedia(new FeedMedia(state.getCurrentItem(), href, size, mimeType));
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel)) {
                     state.getCurrentItem().setPaymentLink(href);
@@ -108,9 +113,9 @@ public class Atom extends Namespace {
                      * feed-object has no link yet b) type of link is
                      * LINK_TYPE_HTML or LINK_TYPE_XHTML
                      */
-                    if (state.getFeed() != null &&
-                        ((type == null && state.getFeed().getLink() == null) ||
-                            (LINK_TYPE_HTML.equals(type) || LINK_TYPE_XHTML.equals(type)))) {
+                    if (state.getFeed() != null
+                            && ((type == null && state.getFeed().getLink() == null)
+                                || (LINK_TYPE_HTML.equals(type) || LINK_TYPE_XHTML.equals(type)))) {
                         state.getFeed().setLink(href);
                     } else if (LINK_TYPE_ATOM.equals(type) || LINK_TYPE_RSS.equals(type)) {
                         // treat as podlove alternate feed
@@ -188,17 +193,17 @@ public class Atom extends Namespace {
                 } else if (ENTRY.equals(second) && state.getCurrentItem() != null) {
                     state.getCurrentItem().setTitle(textElement.getProcessedContent());
                 }
-            } else if (SUBTITLE.equals(top) && FEED.equals(second) && textElement != null &&
-                state.getFeed() != null) {
+            } else if (SUBTITLE.equals(top) && FEED.equals(second) && textElement != null
+                    && state.getFeed() != null) {
                 state.getFeed().setDescription(textElement.getProcessedContent());
-            } else if (CONTENT.equals(top) && ENTRY.equals(second) && textElement != null &&
-                state.getCurrentItem() != null) {
+            } else if (CONTENT.equals(top) && ENTRY.equals(second) && textElement != null
+                    && state.getCurrentItem() != null) {
                 state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
             } else if (SUMMARY.equals(top) && ENTRY.equals(second) && textElement != null
                     && state.getCurrentItem() != null) {
                 state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
-            } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null &&
-                state.getCurrentItem().getPubDate() == null) {
+            } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null
+                    && state.getCurrentItem().getPubDate() == null) {
                 state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
             } else if (PUBLISHED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null) {
                 state.getCurrentItem().setPubDate(DateUtils.parseOrNullIfFuture(content));
@@ -206,8 +211,8 @@ public class Atom extends Namespace {
                 state.getFeed().setImageUrl(content);
             } else if (IMAGE_ICON.equals(top) && state.getFeed() != null) {
                 state.getFeed().setImageUrl(content);
-            } else if (AUTHOR_NAME.equals(top) && AUTHOR.equals(second) &&
-                    state.getFeed() != null && state.getCurrentItem() == null) {
+            } else if (AUTHOR_NAME.equals(top) && AUTHOR.equals(second)
+                    && state.getFeed() != null && state.getCurrentItem() == null) {
                 String currentName = state.getFeed().getAuthor();
                 if (currentName == null) {
                     state.getFeed().setAuthor(content);

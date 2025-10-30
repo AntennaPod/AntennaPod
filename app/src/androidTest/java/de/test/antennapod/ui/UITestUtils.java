@@ -2,12 +2,15 @@ package de.test.antennapod.ui;
 
 import android.content.Context;
 import android.util.Log;
+
+import androidx.test.platform.app.InstrumentationRegistry;
+
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.test.antennapod.util.service.download.HTTPBin;
 import de.test.antennapod.util.syndication.feedgenerator.Rss2Generator;
 import org.apache.commons.io.FileUtils;
@@ -75,7 +78,7 @@ public class UITestUtils {
         }
     }
 
-    private String hostFeed(Feed feed) throws IOException {
+    public String hostFeed(Feed feed) throws IOException {
         File feedFile = new File(hostedFeedDir, feed.getTitle());
         FileOutputStream out = new FileOutputStream(feedFile);
         Rss2Generator generator = new Rss2Generator();
@@ -99,7 +102,8 @@ public class UITestUtils {
         }
         Assert.assertFalse(mediaFile.exists());
 
-        InputStream in = context.getAssets().open(testFileName);
+        InputStream in = InstrumentationRegistry.getInstrumentation().getContext()
+                .getAssets().open(testFileName);
         Assert.assertNotNull(in);
 
         FileOutputStream out = new FileOutputStream(mediaFile);
@@ -119,22 +123,23 @@ public class UITestUtils {
         for (int i = 0; i < NUM_FEEDS; i++) {
             Feed feed = new Feed(0, null, "Title " + i, "http://example.com/" + i, "Description of feed " + i,
                     "http://example.com/pay/feed" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, null, null,
-                    "http://example.com/feed/src/" + i, false);
+                    "http://example.com/feed/src/" + i, System.currentTimeMillis());
 
             // create items
             List<FeedItem> items = new ArrayList<>();
             for (int j = 0; j < NUM_ITEMS_PER_FEED; j++) {
-                FeedItem item = new FeedItem(j, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
+                FeedItem item = new FeedItem(0, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
                         "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);
                 items.add(item);
 
                 if (!hostTextOnlyFeeds) {
                     File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");
-                    item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0, 0));
+                    item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3",
+                            null, hostFile(mediaFile), 0, null, 0, 0));
                 }
             }
             feed.setItems(items);
-            feed.setDownload_url(hostFeed(feed));
+            feed.setDownloadUrl(hostFeed(feed));
             hostedFeeds.add(feed);
         }
         feedDataHosted = true;
@@ -165,21 +170,20 @@ public class UITestUtils {
 
         List<FeedItem> queue = new ArrayList<>();
         for (Feed feed : hostedFeeds) {
-            feed.setDownloaded(true);
             if (downloadEpisodes) {
                 for (FeedItem item : feed.getItems()) {
                     if (item.hasMedia()) {
                         FeedMedia media = item.getMedia();
-                        int fileId = Integer.parseInt(StringUtils.substringAfter(media.getDownload_url(), "files/"));
-                        media.setFile_url(server.accessFile(fileId).getAbsolutePath());
-                        media.setDownloaded(true);
+                        int fileId = Integer.parseInt(StringUtils.substringAfter(media.getDownloadUrl(), "files/"));
+                        media.setLocalFileUrl(server.accessFile(fileId).getAbsolutePath());
+                        media.setDownloaded(true, System.currentTimeMillis());
                     }
                 }
             }
 
             queue.add(feed.getItems().get(0));
             if (feed.getItems().get(1).hasMedia()) {
-                feed.getItems().get(1).getMedia().setPlaybackCompletionDate(new Date());
+                feed.getItems().get(1).getMedia().setLastPlayedTimeHistory(new Date());
             }
         }
         localFeedDataAdded = true;

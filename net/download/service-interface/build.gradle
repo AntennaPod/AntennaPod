@@ -1,0 +1,27 @@
+plugins {
+    id("com.android.library")
+    id("java-test-fixtures")
+}
+apply from: "../../../common.gradle"
+apply from: "../../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.net.download.serviceinterface"
+
+    lint {
+        disable 'ParcelClassLoader'
+    }
+}
+
+dependencies {
+    implementation project(':model')
+    implementation project(':net:common')
+    implementation project(':storage:preferences')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    implementation "commons-io:commons-io:$commonsioVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+}

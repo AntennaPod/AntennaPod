@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="statistics_label">Thống kê</string>
+    <string name="episodes_label">Số tập</string>
+    <string name="queue_label">Danh sách phát</string>
+    <string name="favorite_episodes_label">Lượt thích</string>
+    <string name="settings_label">Cài đặt</string>
+    <string name="downloads_label">Tải về</string>
+    <string name="subscriptions_label">Đăng ký</string>
+    <string name="notification_pref_fragment">Thông báo</string>
+    <!--Google Assistant-->
+  <string name="app_action_not_found">Không tìm thấy \"%1$s\"</string>
+    <string name="swipeactions_summary">Chọn điều sẽ xảy ra khi vuốt một tập trong danh sách</string>
+    <string name="change_setting">Thay đổi</string>
+    <string name="statistics_speed_not_counted">Lưu ý: Tốc độ phát không bao giờ được tính đến.</string>
+    <string name="statistics_reset_data">Đặt lại dữ liệu thống kê</string>
+    <string name="statistics_reset_data_msg">Việc này sẽ xóa lịch sử thời lượng đã phát cho tất cả tập. Bạn có chắc bạn muốn tiếp tục không?</string>
+    <!--Main activity-->
+  <string name="drawer_open">Mở menu</string>
+    <string name="drawer_close">Đóng menu</string>
+    <string name="drawer_feed_order_unplayed_episodes">Sắp xếp theo số lượng</string>
+    <string name="drawer_feed_order_alphabetical">Sắp xếp theo bảng chữ cái</string>
+    <string name="drawer_feed_order_last_update">Sắp xếp theo ngày phát hành</string>
+    <string name="drawer_feed_order_most_played">Sắp xếp theo số tập đã phát</string>
+    <string name="drawer_feed_counter_unplayed">Số tập chưa nghe</string>
+    <string name="drawer_feed_counter_downloaded">Số tập đã tải</string>
+    <string name="drawer_feed_counter_none">Không có</string>
+    <!--Bug report activity-->
+  <string name="log_file_share_exception">Không tìm thấy ứng dụng tương thích</string>
+    <string name="export_logs_menu_title">Xuất nhật ký chi tiết</string>
+    <string name="confirm_export_log_dialog_message">Nhật ký chi tiết có thể chứa thông tin nhạy cảm, chẳng hạn là danh sách đăng ký của bạn</string>
+    <string name="copy_url_label">Sao chép liên kết</string>
+    <string name="share_url_label">Chia sẻ liên kết</string>
+    <!--Other-->
+  <string name="confirm_label">Xác nhận</string>
+    <string name="cancel_label">Hủy bỏ</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="reset">Đặt lại</string>
+    <string name="url_label">Liên kết</string>
+    <string name="support_funding_label">Hỗ trợ</string>
+    <string name="error_label">Lỗi</string>
+    <string name="error_msg_prefix">Đã xảy ra lỗi:</string>
+    <string name="refresh_label">Cập nhật lại</string>
+    <string name="chapters_label">Chương</string>
+    <string name="chapter_duration">Thời lượng: %1$s</string>
+    <string name="description_label">Mô tả</string>
+    <string name="shownotes_label">Ghi chú</string>
+    <string name="shownotes_contentdescription">vuốt lên để đọc ghi chú</string>
+    <string name="close_label">Đóng</string>
+    <string name="retry_label">Thử lại</string>
+    <string name="auto_download_label">Bao gồm trong tự động tải xuống</string>
+    <string name="feed_auto_download_always">Luôn luôn</string>
+    <string name="feed_auto_download_never">Không bao giờ</string>
+    <string name="episode_cleanup_never">Không bao giờ</string>
+    <string name="episode_cleanup_except_favorite_removal">Khi không được yêu thích</string>
+    <string name="episode_cleanup_queue_removal">Khi không trong hàng đợi</string>
+    <string name="episode_cleanup_after_listening">Sau khi nghe xong</string>
+    <plurals name="num_selected_label">
+        <item quantity="other">Đã chọn %1$d/%2$d</item>
+    </plurals>
+    <plurals name="num_episodes">
+        <item quantity="other">%d tập</item>
+    </plurals>
+    <string name="episode_notification_summary">Hiện thông báo khi có tập mới được phát hành.</string>
+    <plurals name="new_episode_notification_message">
+        <item quantity="other">%2$s có %1$d tập mới</item>
+    </plurals>
+    <string name="new_episode_notification_group_text">Mục đăng ký của bạn có tập mới.</string>
+    <string name="show_info_label">Hiện thông tin</string>
+    <string name="filtered_label">Đã lọc</string>
+    <!--actions on feeditems-->
+  <string name="download_label">Tải về</string>
+    <string name="play_label">Phát</string>
+    <string name="pause_label">Tạm dừng</string>
+    <string name="stream_label">Nghe trực tiếp</string>
+    <string name="delete_label">Xoá</string>
+    <string name="skip_episode_label">Bỏ qua tập này</string>
+    <!--Download messages and labels-->
+  <string name="download_successful">thành công</string>
+    <string name="download_pending">Đang chờ tải xuống</string>
+    <string name="download_running">Đang tải xuống</string>
+    <string name="download_error_device_not_found">Không tìm được thiết bị lưu trữ</string>
+    <string name="download_canceled_msg">Đã huỷ bỏ tải xuống</string>
+    <plurals name="downloads_left">
+        <item quantity="other">Còn %d tải xuống</item>
+    </plurals>
+    <string name="download_type_feed">Feed</string>
+    <string name="download_type_media">Tập tin phương tiện</string>
+    <string name="authentication_notification_title">Yêu cầu xác thực</string>
+    <string name="queue_locked">Đã khoá hàng đợi</string>
+    <string name="queue_unlocked">Đã mở khoá hàng đợi</string>
+    <string name="undo">Hoàn tác</string>
+    <string name="move_to_top_label">Chuyển lên trên cùng</string>
+    <string name="move_to_bottom_label">Chuyển xuống dưới cùng</string>
+    <string name="sort">Sắp xếp</string>
+    <string name="date">Ngày</string>
+    <string name="duration">Thời lượng</string>
+    <string name="episode_title">Tiêu đề tập</string>
+    <string name="no_shownotes_label">Tập này không có ghi chú.</string>
+    <string name="pref_pauseOnDisconnect_sum">Tạm dừng khi tai nghe hoặc thiết bị Bluetooth bị ngắt kết nối</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">Tiếp tục phát khi tai nghe được kết nối lại</string>
+    <string name="pref_unpauseOnBluetoothReconnect_sum">Tiếp tục phát khi thiết bị Bluetooth được kết nối lại</string>
+    <string name="pref_followQueue_sum">Chuyển đến mục đợi phát tiếp theo khi nghe xong</string>
+    <string name="pref_smart_mark_as_played_sum">Khi còn một khoảng thời gian chưa nghe hết, vẫn đánh dấu đã nghe tập podcast</string>
+    <string name="pref_skip_keeps_episodes_sum">Giữ lại các tập podcast khi bị bỏ qua</string>
+    <string name="playback_pref">Phát</string>
+    <string name="pref_theme_title_light">Sáng</string>
+    <string name="pref_theme_title_dark">Tối</string>
+    <string name="pref_episode_cache_unlimited">Không giới hạn</string>
+    <string name="pref_smart_mark_as_played_disabled">Tắt</string>
+    <string name="pref_proxy_title">Proxy</string>
+    <string name="pref_proxy_sum">Đặt proxy mạng</string>
+    <string name="pref_no_browser_found">Không tìm thấy trình duyệt nào.</string>
+    <!--About screen-->
+  <string name="about_pref">Thông tin</string>
+    <!--Search-->
+  <string name="search_status_no_results">Không tìm thấy kết quả nào</string>
+    <string name="search_label">Tìm kiếm</string>
+    <string name="pref_gpodnet_setlogin_information_title">Thay đổi thông tin đăng nhập</string>
+    <string name="search_fyyd_label">Tìm kiếm fyyd</string>
+    <string name="filter">Lọc</string>
+    <string name="hide_downloaded_episodes_label">Đã tải</string>
+    <string name="hide_not_downloaded_episodes_label">Chưa tải</string>
+    <string name="hide_paused_episodes_label">Đang tạm dừng</string>
+    <string name="hide_played_episodes_label">Đã nghe</string>
+    <string name="add_feed_label">Thêm podcast</string>
+    <string name="add_feed_label_short">Thêm</string>
+    <string name="downloads_log_label">Lịch sử tải về</string>
+    <string name="queue_label_short">Danh sách phát</string>
+    <string name="playback_history_label_short">Lịch sử nghe</string>
+    <string name="statistics_from">Từ</string>
+    <string name="statistics_to">Đến</string>
+    <string name="statistics_today">Hôm nay</string>
+    <string name="home_continue_title">Tiếp tục nghe</string>
+    <string name="home_welcome_title">Chào mừng tới AntennaPod!</string>
+    <string name="clear_history_label">Xoá lịch sử nghe</string>
+    <string name="open_in_browser_label">Mở trong trình duyệt</string>
+    <string name="support_podcast">Hỗ trợ podcast này</string>
+    <string name="inbox_label_short">Hộp thư</string>
+    <string name="inbox_label">Hộp thư</string>
+</resources>

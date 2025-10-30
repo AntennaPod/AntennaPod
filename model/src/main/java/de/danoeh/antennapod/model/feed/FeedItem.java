@@ -3,28 +3,28 @@ package de.danoeh.antennapod.model.feed;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Item (episode) within a feed.
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements Serializable {
+public class FeedItem implements Serializable {
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
     /** tag that indicates this item is in favorites */
     public static final String TAG_FAVORITE = "Favorite";
 
+    private long id;
     /**
      * The id/guid that can be found in the rss/atom feed. Might not be set.
      */
@@ -41,6 +41,11 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     private transient Feed feed;
     private long feedId;
+    private String podcastIndexChapterUrl;
+    private String socialInteractUrl;
+    private String podcastIndexTranscriptUrl;
+    private String podcastIndexTranscriptType;
+    private Transcript transcript;
 
     private int state;
     public static final int NEW = -1;
@@ -64,7 +69,7 @@ public class FeedItem extends FeedComponent implements Serializable {
     private transient List<Chapter> chapters;
     private String imageUrl;
 
-    private long autoDownload = 1;
+    private boolean autoDownloadEnabled = true;
 
     /**
      * Any tags assigned to this item
@@ -81,7 +86,8 @@ public class FeedItem extends FeedComponent implements Serializable {
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, long autoDownload) {
+                    String itemIdentifier, boolean autoDownloadEnabled, String podcastIndexChapterUrl,
+                    String transcriptType, String transcriptUrl, String socialInteractUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -92,7 +98,13 @@ public class FeedItem extends FeedComponent implements Serializable {
         this.imageUrl = imageUrl;
         this.state = state;
         this.itemIdentifier = itemIdentifier;
-        this.autoDownload = autoDownload;
+        this.autoDownloadEnabled = autoDownloadEnabled;
+        this.podcastIndexChapterUrl = podcastIndexChapterUrl;
+        this.socialInteractUrl = socialInteractUrl;
+        if (transcriptUrl != null) {
+            this.podcastIndexTranscriptUrl = transcriptUrl;
+            this.podcastIndexTranscriptType = transcriptType;
+        }
     }
 
     /**
@@ -112,7 +124,8 @@ public class FeedItem extends FeedComponent implements Serializable {
     /**
      * This constructor should be used for creating test objects involving chapter marks.
      */
-    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, int state, Feed feed, boolean hasChapters) {
+    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate,
+                    int state, Feed feed, boolean hasChapters) {
         this.id = id;
         this.title = title;
         this.itemIdentifier = itemIdentifier;
@@ -124,7 +137,6 @@ public class FeedItem extends FeedComponent implements Serializable {
     }
 
     public void updateFromOther(FeedItem other) {
-        super.updateFromOther(other);
         if (other.imageUrl != null) {
             this.imageUrl = other.imageUrl;
         }
@@ -157,6 +169,29 @@ public class FeedItem extends FeedComponent implements Serializable {
                 chapters = other.chapters;
             }
         }
+        if (other.podcastIndexChapterUrl != null) {
+            podcastIndexChapterUrl = other.podcastIndexChapterUrl;
+        }
+        if (other.socialInteractUrl != null) {
+            socialInteractUrl = other.socialInteractUrl;
+        }
+        if (other.getTranscriptUrl() != null) {
+            podcastIndexTranscriptUrl = other.podcastIndexTranscriptUrl;
+        }
+        if (other.getTranscriptType() != null) {
+            podcastIndexTranscriptType = other.podcastIndexTranscriptType;
+        }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+        if (this.media != null) {
+            media.setItemId(id);
+        }
     }
 
     /**
@@ -170,8 +205,8 @@ public class FeedItem extends FeedComponent implements Serializable {
             return itemIdentifier;
         } else if (title != null && !title.isEmpty()) {
             return title;
-        } else if (hasMedia() && media.getDownload_url() != null) {
-            return media.getDownload_url();
+        } else if (hasMedia() && media.getDownloadUrl() != null) {
+            return media.getDownloadUrl();
         } else {
             return link;
         }
@@ -191,6 +226,19 @@ public class FeedItem extends FeedComponent implements Serializable {
 
     public String getLink() {
         return link;
+    }
+
+    /**
+     * Get the link for the feed item for the purpose of Share.
+     * It falls backs to the feed's link if the item has no link.
+     */
+    public String getLinkWithFallback() {
+        if (StringUtils.isNotBlank(link)) {
+            return link;
+        } else if (StringUtils.isNotBlank(getFeed().getLink())) {
+            return getFeed().getLink();
+        }
+        return null;
     }
 
     public void setLink(String link) {
@@ -313,16 +361,12 @@ public class FeedItem extends FeedComponent implements Serializable {
         if (imageUrl != null) {
             return imageUrl;
         } else if (media != null && media.hasEmbeddedPicture()) {
-            return FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER + media.getLocalMediaUrl();
+            return FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER + media.getLocalFileUrl();
         } else if (feed != null) {
             return feed.getImageUrl();
         } else {
             return null;
         }
-    }
-
-    public enum State {
-        UNREAD, IN_PROGRESS, READ, PLAYING
     }
 
     public long getFeedId() {
@@ -346,60 +390,16 @@ public class FeedItem extends FeedComponent implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    @Override
-    public String getHumanReadableIdentifier() {
-        return title;
-    }
-
     public boolean hasChapters() {
         return hasChapters;
     }
 
     public void disableAutoDownload() {
-        this.autoDownload = 0;
+        this.autoDownloadEnabled = false;
     }
 
-    public long getAutoDownloadAttemptsAndTime() {
-        return autoDownload;
-    }
-
-    public int getFailedAutoDownloadAttempts() {
-        // 0: auto download disabled
-        // 1: auto download enabled (default)
-        // > 1: auto download enabled, timestamp of last failed attempt, last digit denotes number of failed attempts
-        if (autoDownload <= 1) {
-            return 0;
-        }
-        int failedAttempts = (int)(autoDownload % 10);
-        if (failedAttempts == 0) {
-            failedAttempts = 10;
-        }
-        return failedAttempts;
-    }
-
-    public void increaseFailedAutoDownloadAttempts(long now) {
-        if (autoDownload == 0) {
-            return; // Don't re-enable
-        }
-        int failedAttempts = getFailedAutoDownloadAttempts() + 1;
-        if (failedAttempts >= 5) {
-            disableAutoDownload(); // giving up
-        } else {
-            autoDownload = (now / 10) * 10 + failedAttempts;
-        }
-    }
-
-    public boolean isAutoDownloadable(long now) {
-        if (media == null || media.isDownloaded() || autoDownload == 0) {
-            return false;
-        }
-        if (autoDownload == 1) {
-            return true; // Never failed
-        }
-        int failedAttempts = getFailedAutoDownloadAttempts();
-        long waitingTime = TimeUnit.HOURS.toMillis((long) Math.pow(2, failedAttempts - 1));
-        long lastAttempt = (autoDownload / 10) * 10;
-        return now >= (lastAttempt + waitingTime);
+    public boolean isAutoDownloadEnabled() {
+        return this.autoDownloadEnabled;
     }
 
     public boolean isDownloaded() {
@@ -427,9 +427,79 @@ public class FeedItem extends FeedComponent implements Serializable {
         tags.remove(tag);
     }
 
+    public String getPodcastIndexChapterUrl() {
+        return podcastIndexChapterUrl;
+    }
+
+    public void setPodcastIndexChapterUrl(String url) {
+        podcastIndexChapterUrl = url;
+    }
+
+    public void setSocialInteractUrl(String url) {
+        socialInteractUrl = url;
+    }
+
+    public String getSocialInteractUrl() {
+        return socialInteractUrl;
+    }
+
+    public void setTranscriptUrl(String type, String url) {
+        updateTranscriptPreferredFormat(type, url);
+    }
+
+    public String getTranscriptUrl() {
+        return podcastIndexTranscriptUrl;
+    }
+
+    public String getTranscriptType() {
+        return podcastIndexTranscriptType;
+    }
+
+    public void updateTranscriptPreferredFormat(String typeStr, String url) {
+        if (StringUtils.isEmpty(typeStr) || StringUtils.isEmpty(url)) {
+            return;
+        }
+        TranscriptType type = TranscriptType.fromMime(typeStr);
+        TranscriptType previousType = TranscriptType.fromMime(podcastIndexTranscriptType);
+        if (type.priority > previousType.priority) {
+            podcastIndexTranscriptUrl = url;
+            podcastIndexTranscriptType = type.canonicalMime;
+        }
+    }
+
+    public Transcript getTranscript() {
+        return transcript;
+    }
+
+    public void setTranscript(Transcript t) {
+        transcript = t;
+    }
+
+    public boolean hasTranscript() {
+        return (podcastIndexTranscriptUrl != null);
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return "FeedItem [id=" + id + ", title=" + title + ", feedId=" + feedId + ", pubDate=" + pubDate + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        FeedItem feedItem = (FeedItem) o;
+        return id == feedItem.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

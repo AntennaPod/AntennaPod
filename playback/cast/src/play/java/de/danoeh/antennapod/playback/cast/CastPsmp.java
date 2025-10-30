@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.playback.cast;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -8,8 +9,6 @@ import android.view.SurfaceHolder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.Nullable;
@@ -26,6 +25,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -33,11 +33,13 @@ import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
+import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import org.greenrobot.eventbus.EventBus;
 
 /**
  * Implementation of PlaybackServiceMediaPlayer suitable for remote playback on Cast Devices.
  */
+@SuppressLint("VisibleForTests")
 public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     public static final String TAG = "CastPSMP";
@@ -59,11 +61,14 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) != ConnectionResult.SUCCESS) {
             return null;
         }
-        if (CastContext.getSharedInstance(context).getCastState() == CastState.CONNECTED) {
-            return new CastPsmp(context, callback);
-        } else {
-            return null;
+        try {
+            if (CastContext.getSharedInstance(context).getCastState() == CastState.CONNECTED) {
+                return new CastPsmp(context, callback);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public CastPsmp(@NonNull Context context, @NonNull PSMPCallback callback) {
@@ -100,7 +105,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
         @Override
         public void onMediaError(@NonNull MediaError mediaError) {
-            EventBus.getDefault().post(new PlayerErrorEvent(mediaError.getReason()));
+            EventBus.getDefault().postSticky(new PlayerErrorEvent(mediaError.getReason()));
         }
     };
 
@@ -173,12 +178,13 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
         if (mediaChanged && stateChanged && oldState == MediaStatus.PLAYER_STATE_PLAYING
                 && state != MediaStatus.PLAYER_STATE_IDLE) {
-            callback.onPlaybackPause(null, INVALID_TIME);
+            callback.onPlaybackPause(null, Playable.INVALID_TIME);
             // We don't want setPlayerStatus to handle the onPlaybackPause callback
             setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
         }
 
         setBuffering(state == MediaStatus.PLAYER_STATE_BUFFERING);
+        setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia), false);
 
         switch (state) {
             case MediaStatus.PLAYER_STATE_PLAYING:
@@ -197,7 +203,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             case MediaStatus.PLAYER_STATE_BUFFERING:
                 setPlayerStatus((mediaChanged || playerStatus == PlayerStatus.PREPARING)
                                 ? PlayerStatus.PREPARING : PlayerStatus.SEEKING, currentMedia,
-                        currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
+                        currentMedia != null ? currentMedia.getPosition() : Playable.INVALID_TIME);
                 break;
             case MediaStatus.PLAYER_STATE_IDLE:
                 int reason = status.getIdleReason();
@@ -218,7 +224,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                         // Means that a request to load a different media was sent
                         // Not sure if currentMedia already reflects the to be loaded one
                         if (mediaChanged && oldState == MediaStatus.PLAYER_STATE_PLAYING) {
-                            callback.onPlaybackPause(null, INVALID_TIME);
+                            callback.onPlaybackPause(null, Playable.INVALID_TIME);
                             setPlayerStatus(PlayerStatus.INDETERMINATE, currentMedia);
                         }
                         setPlayerStatus(PlayerStatus.PREPARING, currentMedia);
@@ -237,7 +243,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. "
                                 + "Skipping, if possible, to the next episode...");
-                        EventBus.getDefault().post(new PlayerErrorEvent("Chromecast error code 1"));
+                        EventBus.getDefault().postSticky(new PlayerErrorEvent("Chromecast error code 1"));
                         endPlayback(false, false, true, true);
                         return;
                     default:
@@ -278,7 +284,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                          final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (!CastUtils.isCastable(playable, castContext.getSessionManager().getCurrentCastSession())) {
             Log.d(TAG, "media provided is not compatible with cast device");
-            EventBus.getDefault().post(new PlayerErrorEvent("Media not compatible with cast device"));
+            EventBus.getDefault().postSticky(new PlayerErrorEvent("Media not compatible with cast device"));
             Playable nextPlayable = playable;
             do {
                 nextPlayable = callback.getNextInQueue(nextPlayable);
@@ -328,7 +334,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     public void resume() {
         int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                         media.getPosition(),
-                        media.getLastPlayedTime());
+                        media.getLastPlayedTimeStatistics());
         seekTo(newPosition);
         remoteMediaClient.play();
     }
@@ -347,7 +353,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             if (position > 0) {
                 position = RewindAfterPauseUtils.calculatePositionWithRewind(
                         position,
-                        media.getLastPlayedTime());
+                        media.getLastPlayedTimeStatistics());
             }
             remoteMediaClient.load(new MediaLoadRequestData.Builder()
                     .setMediaInfo(remoteMedia)
@@ -376,7 +382,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     @Override
     public void seekDelta(int d) {
         int position = getPosition();
-        if (position != INVALID_TIME) {
+        if (position != Playable.INVALID_TIME) {
             seekTo(position + d);
         } else {
             Log.e(TAG, "getPosition() returned INVALID_TIME in seekDelta");
@@ -386,7 +392,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     @Override
     public int getDuration() {
         int retVal = (int) remoteMediaClient.getStreamDuration();
-        if (retVal == INVALID_TIME && media != null && media.getDuration() > 0) {
+        if (retVal == Playable.INVALID_TIME && media != null && media.getDuration() > 0) {
             retVal = media.getDuration();
         }
         return retVal;
@@ -415,6 +421,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     public void setPlaybackParams(float speed, boolean skipSilence) {
         double playbackRate = (float) Math.max(MediaLoadOptions.PLAYBACK_RATE_MIN,
                 Math.min(MediaLoadOptions.PLAYBACK_RATE_MAX, speed));
+        EventBus.getDefault().post(new SpeedChangedEvent((float) playbackRate));
         remoteMediaClient.setPlaybackRate(playbackRate);
     }
 
@@ -425,19 +432,15 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    public void setVolume(float volumeLeft, float volumeRight) {
-        Log.d(TAG, "Setting the Stream volume on Remote Media Player");
-        remoteMediaClient.setStreamVolume(volumeLeft);
-    }
-
-    @Override
-    public boolean canDownmix() {
+    public boolean getSkipSilence() {
+        // Don't think this is supported
         return false;
     }
 
     @Override
-    public void setDownmix(boolean enable) {
-        throw new UnsupportedOperationException("Setting downmix unsupported in Remote Media Player");
+    public void setVolume(float volumeLeft, float volumeRight) {
+        Log.d(TAG, "Setting the Stream volume on Remote Media Player");
+        remoteMediaClient.setStreamVolume(volumeLeft);
     }
 
     @Override
@@ -497,7 +500,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    protected Future<?> endPlayback(boolean hasEnded, boolean wasSkipped, boolean shouldContinue,
+    protected void endPlayback(boolean hasEnded, boolean wasSkipped, boolean shouldContinue,
                                     boolean toStoppedState) {
         Log.d(TAG, "endPlayback() called");
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
@@ -542,12 +545,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             }
         } else if (isPlaying) {
             callback.onPlaybackPause(currentMedia,
-                    currentMedia != null ? currentMedia.getPosition() : INVALID_TIME);
+                    currentMedia != null ? currentMedia.getPosition() : Playable.INVALID_TIME);
         }
-
-        FutureTask<?> future = new FutureTask<>(() -> { }, null);
-        future.run();
-        return future;
     }
 
     @Override

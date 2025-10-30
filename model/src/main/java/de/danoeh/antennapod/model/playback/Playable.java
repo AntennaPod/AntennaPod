@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.model.playback;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
@@ -16,14 +15,6 @@ import java.util.List;
  */
 public interface Playable extends Parcelable, Serializable {
     int INVALID_TIME = -1;
-
-    /**
-     * Save information about the playable in a preference so that it can be
-     * restored later via PlayableUtils.createInstanceFromPreferences.
-     * Implementations must NOT call commit() after they have written the values
-     * to the preferences file.
-     */
-    void writeToPreferences(SharedPreferences.Editor prefEditor);
 
     /**
      * Returns the title of the episode that this playable represents
@@ -70,7 +61,7 @@ public interface Playable extends Parcelable, Serializable {
      * Returns last time (in ms) when this playable was played or 0
      * if last played time is unknown.
      */
-    long getLastPlayedTime();
+    long getLastPlayedTimeStatistics();
 
     /**
      * Returns the description of the item, if available.
@@ -88,7 +79,7 @@ public interface Playable extends Parcelable, Serializable {
      * Returns an url to a local file that can be played or null if this file
      * does not exist.
      */
-    String getLocalMediaUrl();
+    String getLocalFileUrl();
 
     /**
      * Returns an url to a file that can be streamed by the player or null if
@@ -109,7 +100,7 @@ public interface Playable extends Parcelable, Serializable {
     /**
      * @param lastPlayedTimestamp  timestamp in ms
      */
-    void setLastPlayedTime(long lastPlayedTimestamp);
+    void setLastPlayedTimeStatistics(long lastPlayedTimestamp);
 
     /**
      * This method should be called every time playback starts on this object.
@@ -136,7 +127,7 @@ public interface Playable extends Parcelable, Serializable {
 
     /**
      * Returns an integer that must be unique among all Playable classes. The
-     * return value is later used by PlayableUtils to determine the type of the
+     * return value is later used by PlaybackPreferences to determine the type of the
      * Playable object that is restored.
      */
     int getPlayableType();

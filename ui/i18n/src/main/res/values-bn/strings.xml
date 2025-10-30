@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Activity and fragment titles-->
+  <string name="feed_update_receiver_name">সদস্যতা হালনাগাদ করুন</string>
+    <string name="statistics_label">পরিসংখ্যান</string>
+    <string name="add_feed_label">পডকাস্ট যোগ করুন</string>
+    <string name="episodes_label">পর্বগুলি</string>
+    <string name="home_label">হোম</string>
+    <string name="queue_label">সারি</string>
+    <string name="inbox_label">ইনবক্স</string>
+    <string name="favorite_episodes_label">পছন্দগুলি</string>
+    <string name="settings_label">সেটিংস</string>
+    <string name="downloads_label">ডাউনলোডকৃত ফাইল</string>
+    <string name="downloads_log_label">ডাউনলোড লগ</string>
+    <string name="subscriptions_label">সদস্যতা</string>
+    <string name="subscriptions_list_label">সাবস্ক্রিপশনের তালিকা</string>
+    <string name="cancel_download_label">ডাউনলোড বাতিল করুন</string>
+    <string name="playback_history_label">ইতিহাস</string>
+    <string name="years_statistics_label">বছর</string>
+    <string name="notification_pref_fragment">বিজ্ঞপ্তি</string>
+    <!--Google Assistant-->
+  <string name="app_action_not_found">\"%1$s\" পাওয়া যায় নি</string>
+    <string name="swipeactions_summary">তালিকায় একটি পর্ব সোয়াইপ করার সময় কি হবে তা চয়ন করুন৷</string>
+    <string name="change_setting">পরিবর্তন করুন</string>
+    <string name="individual_subscription">ব্যক্তিগত সাবস্ক্রিপশন</string>
+    <!--Statistics fragment-->
+  <string name="statistics_include_marked">এপিসোডের স্থিতিকাল অন্তর্ভুক্ত করুন যেগুলি শুধুমাত্র প্লে হিসাবে চিহ্নিত করা হয়েছে৷</string>
+    <string name="statistics_speed_not_counted">বিঃদ্রঃ : প্লেব্যাকের গতি কখনই বিবেচনায় নেওয়া হয় না।</string>
+    <string name="statistics_from">থেকে</string>
+    <string name="statistics_to">পর্যন্ত</string>
+    <string name="statistics_today">আজকের</string>
+    <string name="statistics_filter_all_time">সর্বকালীন</string>
+    <string name="statistics_filter_past_year">গত বছর</string>
+    <string name="statistics_reset_data">পরিসংখ্যান ডেটা রিসেট করুন</string>
+    <string name="statistics_reset_data_msg">এটি সমস্ত পর্বের স্থিতিকাল ইতিহাস মুছে ফেলবে৷ আপনি কি নিশ্চিত আপনি এগুতে চান?</string>
+    <string name="statistics_counting_range">%1$s এবং %2$s-এর মধ্যে প্লে করা হয়েছে</string>
+    <string name="statistics_counting_total">মোট প্লে হয়েছে</string>
+    <!--Home fragment-->
+  <string name="home_surprise_title">অবাক হয়ে যান</string>
+    <string name="home_classics_title">আপনার ক্লাসিক পডকাস্ট পরীক্ষা করুন</string>
+    <string name="home_continue_title">শোনা চালিয়ে যান</string>
+    <string name="home_new_title">দেখুন নতুন কি আছে</string>
+    <string name="home_downloads_title">ডাউনলোড পরিচালনা করুন</string>
+    <string name="home_welcome_title">অ্যান্টেনাপডে স্বাগতম!</string>
+    <string name="home_welcome_text">আপনি এখনও কোনো পডকাস্ট সদস্যতা নেননি. পডকাস্ট যোগ করতে পাশের মেনু খুলুন।</string>
+    <string name="configure_home">হোম স্ক্রীন কনফিগার করুন</string>
+    <!--Main activity-->
+  <string name="drawer_open">মেনু খুলুন</string>
+    <string name="drawer_close">মেনু বন্ধ করুন</string>
+    <string name="drawer_feed_order_unplayed_episodes">কাউন্টার দ্বারা সাজান</string>
+    <string name="drawer_feed_order_alphabetical">বর্ণানুক্রমিকভাবে সাজান</string>
+    <string name="drawer_feed_order_last_update">প্রকাশনার তারিখ অনুসারে সাজান</string>
+    <string name="drawer_feed_order_most_played">প্লে করা পর্বের সংখ্যা অনুসারে সাজান</string>
+    <string name="drawer_feed_counter_inbox">ইনবক্সে পর্বের সংখ্যা</string>
+    <string name="drawer_feed_counter_unplayed">প্লে না করা পর্বের সংখ্যা</string>
+    <string name="drawer_feed_counter_downloaded">ডাউনলোড করা পর্বের সংখ্যা</string>
+    <string name="drawer_feed_counter_downloaded_unplayed">ডাউনলোড এবং প্লে না করা পর্বের সংখ্যা</string>
+    <string name="drawer_feed_counter_none">কোনোটিই নয়</string>
+    <!--Bug report activity-->
+  <string name="log_file_share_exception">কোনো সামঞ্জস্যপূর্ণ অ্যাপ পাওয়া যায়নি</string>
+    <string name="export_logs_menu_title">বিস্তারিত লগ রপ্তানি করুন</string>
+    <string name="confirm_export_log_dialog_message">বিশদ লগগুলিতে সংবেদনশীল তথ্য থাকতে পারে, যেমন আপনার সদস্যতা তালিকা</string>
+    <!--Webview actions-->
+  <string name="open_in_browser_label">ব্রাউজারে খুলুন</string>
+    <string name="copy_url_label">URL কপি করুন</string>
+    <string name="share_url_label">URL শেয়ার করুন</string>
+    <string name="go_to_position_label">এই অবস্থানে যান</string>
+    <!--Playback history-->
+  <string name="clear_history_label">ইতিহাস মুছে ফেলুন</string>
+    <string name="clear_playback_history_msg">এটি পুরো প্লেব্যাকের ইতিহাস মুক্ত করবে। আপনি কি নিশ্চিত আপনি এগুতে চান?</string>
+    <string name="remove_history_label">ইতিহাস থেকে সরান</string>
+    <string name="removed_history_label">ইতিহাস থেকে মুছে ফেলা হয়েছে</string>
+    <!--Other-->
+  <string name="confirm_label">নিশ্চিত করুন</string>
+    <string name="cancel_label">বাতিল করুন</string>
+    <string name="yes">হ্যাঁ</string>
+    <string name="no">না</string>
+    <string name="reset">রিসেট</string>
+    <string name="url_label">URL</string>
+    <string name="support_funding_label">সহায়তা করুন</string>
+    <string name="error_label">ত্রুটি</string>
+    <string name="error_msg_prefix">ত্রুটি ঘটেছে</string>
+    <string name="refresh_label">রিফ্রেশ</string>
+    <string name="chapters_label">চ্যাপ্টার</string>
+    <string name="no_chapters_label">কোনো অধ্যায় নেই</string>
+    <string name="chapter_duration">স্থিতিকাল: %1$s</string>
+    <string name="description_label">বিবরণ</string>
+    <string name="shownotes_label">শোনোটস</string>
+    <string name="shownotes_contentdescription">শোনোট পড়তে উপরে সোয়াইপ করুন</string>
+    <string name="close_label">বন্ধ করুন</string>
+    <string name="retry_label">পুনরায় চেষ্টা করুন</string>
+    <string name="feed_auto_download_always">বরাবর</string>
+    <string name="feed_auto_download_never">কখনই না</string>
+    <string name="feed_new_episodes_action_add_to_inbox">ইনবক্সে যোগ করুন</string>
+    <string name="feed_new_episodes_action_add_to_queue">সারিতে যোগ করুন</string>
+    <string name="episode_cleanup_never">কখনই না</string>
+    <string name="episode_cleanup_except_favorite_removal">যখন প্রিয় না</string>
+    <string name="episode_cleanup_queue_removal">যখন সারিতে নেই</string>
+    <string name="episode_cleanup_after_listening">শেষ করার পর</string>
+    <plurals name="num_selected_label">
+        <item quantity="one">%1$d/%2$d নির্বাচন করা হয়েছে</item>
+        <item quantity="other">%1$d/%2$d নির্বাচন করা হয়েছে</item>
+    </plurals>
+    <plurals name="num_episodes">
+        <item quantity="one">%d টি পর্ব</item>
+        <item quantity="other">%d টি পর্ব</item>
+    </plurals>
+    <string name="episode_notification_summary">একটি নতুন পর্ব প্রকাশিত হলে একটি বিজ্ঞপ্তি দেখান।</string>
+    <plurals name="new_episode_notification_title">
+        <item quantity="one">নতুন পর্ব</item>
+        <item quantity="other">নতুন পর্বগুলি</item>
+    </plurals>
+    <!--Actions on feeds-->
+  <string name="remove_all_inbox_label">ইনবক্স থেকে সব সরান</string>
+    <string name="removed_all_inbox_msg">ইনবক্স থেকে সব মুছে ফেলা হয়েছে</string>
+    <string name="remove_all_inbox_confirmation_msg">অনুগ্রহ করে নিশ্চিত করুন যে আপনি ইনবক্স থেকে সব সরাতে চান৷</string>
+    <string name="multi_select_mark_played_confirmation">অনুগ্রহ করে নিশ্চিত করুন যে আপনি সমস্ত নির্বাচিত আইটেমকে প্লে হিসাবে চিহ্নিত করতে চান৷</string>
+    <string name="multi_select_mark_unplayed_confirmation">অনুগ্রহ করে নিশ্চিত করুন যে আপনি সমস্ত নির্বাচিত আইটেমকে প্লে না করা হিসাবে চিহ্নিত করতে চান৷</string>
+    <string name="show_info_label">তথ্য দেখান</string>
+    <string name="show_feed_settings_label">পডকাস্ট সেটিংস দেখান</string>
+    <string name="feed_settings_label">পডকাস্ট সেটিংস</string>
+    <string name="rename_feed_label">পডকাস্টের নাম পরিবর্তন করুন</string>
+    <string name="remove_feed_label">পডকাস্ট সরান</string>
+    <string name="share_label">শেয়ার করুন</string>
+    <string name="feed_remover_msg">পডকাস্ট সরানো হচ্ছে</string>
+    <string name="load_complete_feed">সম্পূর্ণ পডকাস্ট রিফ্রেশ করুন</string>
+    <string name="multi_select">একাধিক নির্বাচন করুন</string>
+    <string name="select_all_above">উপরে সব নির্বাচন করুন</string>
+    <string name="select_all_below">নীচের সব নির্বাচন করুন</string>
+    <string name="filtered_label">পরিস্রুৎ</string>
+    <string name="open_podcast">পডকাস্ট খুলুন</string>
+    <string name="please_wait_for_data">ডেটা লোড না হওয়া পর্যন্ত অনুগ্রহ করে অপেক্ষা করুন</string>
+    <string name="updates_disabled_label">আপডেট নিষ্ক্রিয়</string>
+    <plurals name="updated_feeds_batch_label">
+        <item quantity="one">%d টি সদস্যতা হালনাগাদ করা হয়েছে।</item>
+        <item quantity="other">%d টি সদস্যতা হালনাগাদ করা হয়েছে।</item>
+    </plurals>
+    <string name="edit_tags">ট্যাগ সম্পাদনা করুন</string>
+    <string name="add_tag">ট্যাগ যোগ করুন</string>
+    <string name="rename_tag_label">ট্যাগ পুনঃনামকরণ করুন</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message">মোবাইল ডেটা সংযোগের মাধ্যমে পডকাস্ট রিফ্রেশ করা সেটিংসে অক্ষম করা আছে।\n\nআপনি কি তবুও রিফ্রেশ করতে চান?</string>
+    <!--actions on feeditems-->
+  <string name="download_label">ডাউনলোড</string>
+    <string name="play_label">প্লে</string>
+    <string name="pause_label">বিরতি দিন</string>
+    <string name="stream_label">স্ট্রিম করুন</string>
+    <string name="delete_label">মুছে ফেলুন</string>
+    <string name="remove_inbox_label">ইনবক্স থেকে মুছে ফেলুন</string>
+    <string name="add_to_queue_label">সারিতে যোগ করুন</string>
+    <plurals name="removed_from_inbox_batch_label">
+        <item quantity="one">%d পর্ব ইনবক্স থেকে সরানো হয়েছে।</item>
+        <item quantity="other">%d পর্বগুলি ইনবক্স থেকে সরানো হয়েছে।</item>
+    </plurals>
+    <string name="add_to_favorite_label">পছন্দগুলি-তে যোগ করুন</string>
+    <string name="remove_from_favorite_label">পছন্দগুলি থেকে সরান</string>
+    <string name="download_error_insufficient_space">আপনার ডিভাইসে যথেষ্ট পরিমাণ জায়গা নেই</string>
+    <string name="download_error_error_unknown">অজানা ত্রুটি</string>
+    <string name="download_error_connection_error">কানেকশনে ত্রুটি</string>
+    <string name="download_error_no_connection">কোনো নেটওয়ার্ক কানেকশন নেই</string>
+    <string name="download_canceled_msg">ডাউনলোড বাতিল হয়েছে</string>
+    <string name="download_error_db_access">ডাটাবেজ প্রবেশে ত্রুটি</string>
+    <plurals name="downloads_left">
+        <item quantity="one">%d টি ডাউনলোড বাকি</item>
+        <item quantity="other">%d টি ডাউনলোড বাকি</item>
+    </plurals>
+    <string name="duration">স্থিতিকাল</string>
+    <string name="time_seconds">সেকেন্ড</string>
+    <string name="time_minutes">মিনিট</string>
+    <string name="time_hours">ঘন্টা</string>
+    <string name="gpodnetauth_login_butLabel">লগইন করুন</string>
+    <string name="username_label">ব্যবহারকারীর নাম</string>
+    <string name="password_label">পাসওয়ার্ড দিন</string>
+    <string name="synchronization_login_butLabel">লগইন করুন</string>
+    <string name="gpodnetauth_device_name">ডিভাইসের নাম</string>
+    <string name="gpodnetauth_create_device">ডিভাইস তৈরি করুন</string>
+    <string name="pref_gpodnet_setlogin_information_title">লগইন তথ্য পরিবর্তন করুন</string>
+    <!--Rating dialog-->
+  <string name="rating_tagline">%1$s থেকে, আপনি %2$s%3$d%4$s ঘন্টা পডকাস্ট শুনেছেন।</string>
+    <string name="rating_rate">AntennaPod রেটিং করুন</string>
+    <string name="rating_later">পরে শুনুন</string>
+    <!--Online feed view-->
+  <string name="subscribe_label">সদস্যতা নিন</string>
+    <string name="increase_speed">স্পিড বাড়ান</string>
+    <string name="decrease_speed">স্পিড কমান</string>
+    <string name="media_type_video_label">ভিডিও</string>
+    <string name="is_inbox_label">ইনবক্স</string>
+    <string name="is_played">প্লে করা হয়েছে</string>
+    <string name="load_next_page_label">পরবর্তী পৃষ্ঠা লোড করুন</string>
+    <string name="remaining_time">সময় বাকি আছে: %1$s</string>
+    <string name="play_chapter">অধ্যায় প্লে করুন</string>
+    <string name="prev_chapter">পূর্ববর্তী অধ্যায়</string>
+    <string name="next_chapter">পরবর্তী অধ্যায়</string>
+    <string name="feed_tags_label">ট্যাগ</string>
+    <string name="statistics_expected_next_episode_unknown">অজানা</string>
+    <!--Podcast release schedules-->
+  <string name="release_schedule_daily">দৈনিক</string>
+    <string name="release_schedule_weekdays">শুধু কর্মদিবসে</string>
+    <string name="release_schedule_weekly">সাপ্তাহিক</string>
+    <string name="release_schedule_biweekly">প্রতি দুই সপ্তাহ</string>
+    <string name="release_schedule_monthly">মাসিক</string>
+    <string name="release_schedule_monday">সোম</string>
+    <string name="release_schedule_tuesday">মঙ্গল</string>
+    <string name="release_schedule_wednesday">বুধ</string>
+    <string name="release_schedule_thursday">বৃহস্পতি</string>
+    <string name="release_schedule_friday">শুক্র</string>
+    <string name="release_schedule_saturday">শনি</string>
+    <string name="release_schedule_sunday">রবি</string>
+    <!--Add podcast fragment-->
+  <string name="search_podcast_hint">পডকাস্ট খুঁজুন…</string>
+    <string name="search_itunes_label">Apple Podcasts-এ খুঁজুন</string>
+    <string name="search_podcastindex_label">পডকাস্ট ইনডেক্সে খুঁজুন</string>
+    <string name="search_fyyd_label">fyyd-এ খুঁজুন</string>
+    <string name="discover_powered_by_itunes">Apple Podcasts এর দেওয়া সাজেশন</string>
+    <string name="discover_confirm">সাজেশন দেখান</string>
+    <string name="select_country">দেশ নির্বাচন করুন</string>
+    <string name="hide_downloaded_episodes_label">ডাউনলোড করা হয়েছে</string>
+    <string name="hide_not_downloaded_episodes_label">ডাউনলোড করা হয়নি</string>
+    <string name="hide_played_episodes_label">প্লে করা হয়েছে</string>
+    <string name="playback_speed">প্লেব্যাক স্পিড</string>
+    <!--Notification channels-->
+  <string name="notification_group_errors">ত্রুটিসমূহ</string>
+    <string name="notification_group_news">খবর</string>
+    <string name="notification_channel_new_episode">নতুন পর্ব</string>
+    <string name="shortcut_subscription_label">সদস্যতা শর্টকাট</string>
+    <string name="shortcut_select_subscription">সদস্যতা নির্বাচন করুন</string>
+</resources>

@@ -3,9 +3,25 @@ plugins {
 }
 apply from: "../../common.gradle"
 
+android {
+    namespace "de.danoeh.antennapod.ui.common"
+
+    lint {
+        disable 'VectorPath'
+    }
+}
+
 dependencies {
+    implementation project(":storage:preferences")
+    implementation project(":ui:i18n")
+
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
     implementation "com.google.android.material:material:$googleMaterialVersion"
+    implementation "androidx.core:core-splashscreen:1.0.0"
+    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    implementation "commons-io:commons-io:$commonsioVersion"
+
+    testImplementation "junit:junit:$junitVersion"
 }

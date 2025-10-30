@@ -1,0 +1,190 @@
+package de.danoeh.antennapod.ui.screen.chapter;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.elevation.SurfaceColors;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
+import de.danoeh.antennapod.ui.common.ImagePlaceholder;
+import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.ui.common.CircularProgressBar;
+
+public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapter.ChapterHolder> {
+    private Playable media;
+    private final Callback callback;
+    private final Context context;
+    private int currentChapterIndex = -1;
+    private long currentChapterPosition = -1;
+    private boolean hasImages = false;
+
+    public ChaptersListAdapter(Context context, Callback callback) {
+        this.callback = callback;
+        this.context = context;
+    }
+
+    public void setMedia(Playable media) {
+        this.media = media;
+        hasImages = false;
+        if (media.getChapters() != null) {
+            for (Chapter chapter : media.getChapters()) {
+                if (!TextUtils.isEmpty(chapter.getImageUrl())) {
+                    hasImages = true;
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ChapterHolder holder, int position) {
+        Chapter sc = getItem(position);
+        if (sc == null) {
+            holder.title.setText("Error");
+            return;
+        }
+        holder.title.setText(sc.getTitle());
+        holder.start.setText(Converter.getDurationStringLong((int) sc
+                .getStart()));
+
+        long duration;
+        if (position + 1 < media.getChapters().size()) {
+            duration = media.getChapters().get(position + 1).getStart() - sc.getStart();
+        } else {
+            duration = media.getDuration() - sc.getStart();
+        }
+        holder.duration.setText(context.getString(R.string.chapter_duration,
+                Converter.getDurationStringLocalized(context, (int) duration)));
+
+        if (TextUtils.isEmpty(sc.getLink())) {
+            holder.link.setVisibility(View.GONE);
+        } else {
+            holder.link.setVisibility(View.VISIBLE);
+            holder.link.setText(sc.getLink());
+            holder.link.setOnClickListener(v -> IntentUtils.openInBrowser(context, sc.getLink()));
+        }
+        holder.secondaryActionIcon.setImageResource(R.drawable.ic_play_48dp);
+        holder.secondaryActionButton.setContentDescription(context.getString(R.string.play_chapter));
+        holder.secondaryActionButton.setOnClickListener(v -> {
+            if (callback != null) {
+                callback.onPlayChapterButtonClicked(position);
+            }
+        });
+
+        if (position == currentChapterIndex) {
+            float density = context.getResources().getDisplayMetrics().density;
+            holder.itemView.setBackgroundColor(SurfaceColors.getColorForElevation(context, 32 * density));
+            float progress = ((float) (currentChapterPosition - sc.getStart())) / duration;
+            progress = Math.max(progress, CircularProgressBar.MINIMUM_PERCENTAGE);
+            progress = Math.min(progress, CircularProgressBar.MAXIMUM_PERCENTAGE);
+            holder.progressBar.setPercentage(progress, position);
+            holder.secondaryActionIcon.setImageResource(R.drawable.ic_replay);
+        } else {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+            holder.progressBar.setPercentage(0, null);
+        }
+
+        if (hasImages) {
+            holder.image.setVisibility(View.VISIBLE);
+
+            float radius = 4 * context.getResources().getDisplayMetrics().density;
+            RequestOptions options = new RequestOptions()
+                    .placeholder(ImagePlaceholder.getDrawable(context, radius))
+                    .dontAnimate()
+                    .transform(new FitCenter(), new RoundedCorners((int) radius));
+
+            if (TextUtils.isEmpty(sc.getImageUrl())) {
+                if (media.getImageLocation() == null) {
+                    Glide.with(context).clear(holder.image);
+                    holder.image.setVisibility(View.GONE);
+                } else {
+                    Glide.with(context)
+                            .load(media.getImageLocation())
+                            .apply(options)
+                            .into(holder.image);
+                }
+            } else {
+                Glide.with(context)
+                        .load(EmbeddedChapterImage.getModelFor(media, position))
+                        .apply(options)
+                        .into(holder.image);
+            }
+        } else {
+            holder.image.setVisibility(View.GONE);
+        }
+    }
+
+    @NonNull
+    @Override
+    public ChapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        return new ChapterHolder(inflater.inflate(R.layout.simplechapter_item, parent, false));
+    }
+
+    @Override
+    public int getItemCount() {
+        if (media == null || media.getChapters() == null) {
+            return 0;
+        }
+        return media.getChapters().size();
+    }
+
+    static class ChapterHolder extends RecyclerView.ViewHolder {
+        final TextView title;
+        final TextView start;
+        final TextView link;
+        final TextView duration;
+        final ImageView image;
+        final View secondaryActionButton;
+        final ImageView secondaryActionIcon;
+        final CircularProgressBar progressBar;
+
+        public ChapterHolder(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.txtvTitle);
+            start = itemView.findViewById(R.id.txtvStart);
+            link = itemView.findViewById(R.id.txtvLink);
+            image = itemView.findViewById(R.id.imgvCover);
+            duration = itemView.findViewById(R.id.txtvDuration);
+            secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
+            secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
+            progressBar = itemView.findViewById(R.id.secondaryActionProgress);
+        }
+    }
+
+    public void notifyChapterChanged(int newChapterIndex) {
+        currentChapterIndex = newChapterIndex;
+        currentChapterPosition = getItem(newChapterIndex).getStart();
+        notifyDataSetChanged();
+    }
+
+    public void notifyTimeChanged(long timeMs) {
+        currentChapterPosition = timeMs;
+        // Passing an argument prevents flickering.
+        // See EpisodeItemListAdapter.notifyItemChangedCompat.
+        notifyItemChanged(currentChapterIndex, "foo");
+    }
+
+    public Chapter getItem(int position) {
+        return media.getChapters().get(position);
+    }
+
+    public interface Callback {
+        void onPlayChapterButtonClicked(int position);
+    }
+
+}

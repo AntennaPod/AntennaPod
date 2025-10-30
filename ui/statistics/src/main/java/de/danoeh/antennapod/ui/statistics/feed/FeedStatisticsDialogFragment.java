@@ -2,10 +2,13 @@ package de.danoeh.antennapod.ui.statistics.feed;
 
 import android.app.Dialog;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
+
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.statistics.R;
 
 public class FeedStatisticsDialogFragment extends DialogFragment {
@@ -24,8 +27,12 @@ public class FeedStatisticsDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setPositiveButton(android.R.string.ok, null);
+        dialog.setNeutralButton(R.string.open_podcast, (dialogInterface, i) -> {
+            long feedId = getArguments().getLong(EXTRA_FEED_ID);
+            new MainActivityStarter(getContext()).withOpenFeed(feedId).start();
+        });
         dialog.setTitle(getArguments().getString(EXTRA_FEED_TITLE));
         dialog.setView(R.layout.feed_statistics_dialog);
         return dialog.create();

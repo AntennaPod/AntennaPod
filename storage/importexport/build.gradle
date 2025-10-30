@@ -1,0 +1,30 @@
+plugins {
+    id("com.android.library")
+}
+apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.storage.importexport"
+}
+
+dependencies {
+    implementation project(':event')
+    implementation project(':storage:database')
+    implementation project(':storage:preferences')
+    implementation project(':ui:i18n')
+    implementation project(':ui:notifications')
+    implementation project(':model')
+    implementation project(':net:download:service-interface')
+
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.core:core:$coreVersion"
+    implementation 'androidx.documentfile:documentfile:1.0.1'
+    implementation "androidx.work:work-runtime:$workManagerVersion"
+
+    implementation "commons-io:commons-io:$commonsioVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+    implementation "com.google.guava:guava:31.0.1-android"
+}

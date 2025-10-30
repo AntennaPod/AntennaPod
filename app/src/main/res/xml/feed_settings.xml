@@ -40,29 +40,42 @@
         android:summary="@string/pref_feed_skip_sum"
         android:title="@string/pref_feed_skip" />
 
-    <ListPreference
+    <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
         android:entries="@array/spnAutoDeleteItems"
         android:entryValues="@array/spnAutoDeleteValues"
         android:icon="@drawable/ic_delete"
         android:key="autoDelete"
-        android:summary="@string/feed_auto_download_global"
-        android:title="@string/auto_delete_label" />
+        android:summary="@string/global_default"
+        android:title="@string/pref_auto_delete_playback_title" />
 
-    <ListPreference
+    <de.danoeh.antennapod.ui.screen.feed.preferences.VolumeAdaptationPreference
         android:defaultValue="off"
-        android:entries="@array/spnVolumeReductionItems"
-        android:entryValues="@array/spnVolumeReductionValues"
+        android:entries="@array/spnVolumeAdaptationItems"
+        android:entryValues="@array/spnVolumeAdaptationValues"
         android:icon="@drawable/ic_volume_adaption"
         android:key="volumeReduction"
-        android:summary="@string/feed_volume_reduction_summary"
-        android:title="@string/feed_volume_reduction" />
+        android:summary="@string/feed_volume_adaptation_summary"
+        android:title="@string/feed_volume_adapdation" />
+
+    <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+        android:entries="@array/feedNewEpisodesActionItems"
+        android:entryValues="@array/feedNewEpisodesActionValues"
+        android:icon="@drawable/ic_feed"
+        android:key="feedNewEpisodesAction"
+        android:summary="@string/global_default"
+        android:title="@string/pref_new_episodes_action_title" />
 
     <PreferenceCategory
         android:key="autoDownloadCategory"
-        android:title="@string/auto_download_settings_label">
-        <SwitchPreferenceCompat
-            android:key="autoDownload"
+        android:title="@string/auto_download_inbox_category">
+
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+            android:entries="@array/spnEnableAutoDownloadItems"
+            android:entryValues="@array/spnEnableAutoDownloadValues"
+            android:icon="@drawable/ic_download"
+            android:key="includeAutoDownload"
             android:title="@string/auto_download_label" />
+
         <Preference
             android:key="episodeFilter"
             android:summary="@string/episode_filters_description"

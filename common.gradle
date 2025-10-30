@@ -1,34 +1,40 @@
 android {
-    compileSdk 31
+    compileSdk 35
 
     defaultConfig {
-        minSdk 19
-        targetSdk 30
+        minSdk 21
+        targetSdk 35
 
-        multiDexEnabled true
         vectorDrawables.useSupportLibrary true
         vectorDrawables.generatedDensities = []
 
         testApplicationId "de.danoeh.antennapod.core.tests"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resourceConfigurations += ["en", "ar", "br", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "hi", "hu", "in", "it", "iw", "ja", "ko", "lt", "nb", "nl", "pl", "pt", "pt-rBR", "ro", "ru", "sc", "sk", "sl", "sr", "sv", "tr", "uk", "zh-rCN", "zh-rTW"]
     }
 
     buildTypes {
         release {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard.cfg"
+            resValue "string", "app_name", "AntennaPod"
         }
         debug {
+            resValue "string", "app_name", "AntennaPod Debug"
         }
     }
 
     packagingOptions {
-        exclude "META-INF/LICENSE.txt"
-        exclude "META-INF/NOTICE.txt"
+        resources {
+            excludes += ["META-INF/LICENSE.txt",
+                         "META-INF/NOTICE.txt",
+                         "META-INF/CHANGES",
+                         "META-INF/README.md"]
+        }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     testOptions {
@@ -38,8 +44,8 @@ android {
         }
     }
 
-    lintOptions {
-        disable "GradleDependency"
+    lint {
+        disable "GradleDependency", "OutdatedLibrary", "AndroidGradlePluginVersion"
         checkDependencies true
         warningsAsErrors true
         abortOnError true
@@ -48,10 +54,17 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 
-tasks.withType(Test) {
+dependencies {
+    // align all versions of kotlin transitive dependencies, see
+    // https://youtrack.jetbrains.com/issue/KT-55297/kotlin-stdlib-should-declare-constraints-on-kotlin-stdlib-jdk8-and-kotlin-stdlib-jdk7
+    implementation platform("org.jetbrains.kotlin:kotlin-bom:1.9.24")
+}
+
+tasks.withType(Test).configureEach {
     testLogging {
         exceptionFormat "full"
         events "skipped", "passed", "failed"
@@ -61,39 +74,54 @@ tasks.withType(Test) {
 }
 
 gradle.projectsEvaluated {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint"
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs << "-Xlint"
+        }
     }
 }
 
 apply plugin: 'com.github.spotbugs'
 
 spotbugs {
+    toolVersion = '4.2.3'
     effort = 'max'
     reportLevel = 'medium'
     excludeFilter = rootProject.file('config/spotbugs/exclude.xml')
     ignoreFailures = true // Handled by printing task
 }
 
-gradle.taskGraph.beforeTask { task ->
-    if (task.name.toLowerCase().contains('spotbugs')) {
-        task.doLast {
-            def reportFile = task.project.file("build/reports/spotbugs/playDebug.xml")
-            if (!reportFile.exists()) return
-            def slurped = new groovy.xml.XmlSlurper().parse(reportFile)
+gradle.taskGraph.whenReady { taskGraph ->
+    taskGraph.allTasks.each { task ->
+        if (task.name.toLowerCase().contains('spotbugs')) {
+            task.doLast {
+                def reportFile = task.project.file("build/reports/spotbugs/debug.xml")
+                def reportFilePlay = task.project.file("build/reports/spotbugs/playDebug.xml")
 
-            def foundErrors = false
-            slurped['BugInstance'].each { bug ->
-                logger.error "[SpotBugs] ${bug['LongMessage']} [${bug.@'type'}]"
-                bug['SourceLine'].each { line ->
-                    logger.error "[SpotBugs]     ${line['Message']}"
-                    foundErrors = true
+                if (reportFile.exists()) {
+                    parseSpotBugsXml(task, reportFile)
+                }
+                if (reportFilePlay.exists()) {
+                    parseSpotBugsXml(task, reportFilePlay)
                 }
             }
-            if (foundErrors) {
-                throw new TaskExecutionException(task,
-                        new Exception("SpotBugs violations were found. See output above for details."))
-            }
         }
+    }
+}
+
+def parseSpotBugsXml(task, xmlFile) {
+    def slurped = new groovy.xml.XmlSlurper().parse(xmlFile)
+
+    def foundErrors = false
+    slurped['BugInstance'].each { bug ->
+        logger.error "[SpotBugs] ${bug['LongMessage']} [${bug.@'type'}]"
+        bug['SourceLine'].each { line ->
+            logger.error "[SpotBugs]     ${line['Message']}"
+            foundErrors = true
+        }
+    }
+    if (foundErrors) {
+        throw new TaskExecutionException(task,
+                new Exception("SpotBugs violations were found. See output above for details."))
     }
 }

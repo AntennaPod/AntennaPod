@@ -23,6 +23,7 @@ public class Itunes extends Namespace {
     public static final String DURATION = "duration";
     private static final String SUBTITLE = "subtitle";
     private static final String SUMMARY = "summary";
+    private static final String NEW_FEED_URL = "new-feed-url";
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
@@ -50,12 +51,12 @@ public class Itunes extends Namespace {
         }
 
         String content = state.getContentBuf().toString();
-        String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
         if (TextUtils.isEmpty(content)) {
             return;
         }
 
-        if (AUTHOR.equals(localName) && state.getFeed() != null) {
+        if (AUTHOR.equals(localName) && state.getFeed() != null && state.getTagstack().size() <= 3) {
+            String contentFromHtml = HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_COMPACT).toString();
             state.getFeed().setAuthor(contentFromHtml);
         } else if (DURATION.equals(localName)) {
             try {
@@ -76,6 +77,8 @@ public class Itunes extends Namespace {
             } else if (Rss20.CHANNEL.equals(state.getSecondTag().getName()) && state.getFeed() != null) {
                 state.getFeed().setDescription(content);
             }
+        } else if (NEW_FEED_URL.equals(localName) && content.trim().startsWith("http")) {
+            state.redirectUrl = content.trim();
         }
     }
 }

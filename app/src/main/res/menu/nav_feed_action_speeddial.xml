@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/remove_item"
+        android:id="@+id/remove_feed"
         android:menuCategory="container"
         android:title="@string/remove_feed_label"
         android:icon="@drawable/ic_delete"/>
@@ -11,6 +11,11 @@
         android:title="@string/keep_updated"
         android:icon="@drawable/ic_refresh"/>
     <item
+        android:id="@+id/notify_new_episodes"
+        android:menuCategory="container"
+        android:title="@string/episode_notification"
+        android:icon="@drawable/ic_notifications"/>
+    <item
         android:id="@+id/autodownload"
         android:menuCategory="container"
         android:title="@string/auto_download_label"
@@ -18,7 +23,7 @@
     <item
         android:id="@+id/autoDeleteDownload"
         android:menuCategory="container"
-        android:title="@string/auto_delete_label"
+        android:title="@string/pref_auto_delete_playback_title"
         android:icon="@drawable/ic_delete_auto"/>
     <item
         android:id="@+id/playback_speed"

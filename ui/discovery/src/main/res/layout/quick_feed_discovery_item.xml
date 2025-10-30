@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp"
+    android:clipToPadding="false">
+
+    <de.danoeh.antennapod.ui.common.SquareImageView
+        android:id="@+id/discovery_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="4dp"
+        android:outlineProvider="background"
+        android:foreground="?android:attr/selectableItemBackground"
+        squareImageView:direction="width"
+        tools:src="@tools:sample/avatars" />
+
+</LinearLayout>

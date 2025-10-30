@@ -6,7 +6,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -20,22 +22,21 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.app.ActivityCompat;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.export.opml.OpmlElement;
-import de.danoeh.antennapod.core.export.opml.OpmlReader;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.service.download.DownloadRequestCreator;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import de.danoeh.antennapod.storage.importexport.OpmlElement;
+import de.danoeh.antennapod.storage.importexport.OpmlReader;
+import de.danoeh.antennapod.ui.common.ToolbarActivity;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
 
@@ -43,15 +44,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Activity for Opml Import.
  * */
-public class OpmlImportActivity extends AppCompatActivity {
+public class OpmlImportActivity extends ToolbarActivity {
     private static final String TAG = "OpmlImportBaseActivity";
     @Nullable private Uri uri;
-    OpmlSelectionBinding viewBinding;
+    private OpmlSelectionBinding viewBinding;
     private ArrayAdapter<String> listAdapter;
     private MenuItem selectAll;
     private MenuItem deselectAll;
@@ -59,7 +62,6 @@ public class OpmlImportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewBinding = OpmlSelectionBinding.inflate(getLayoutInflater());
@@ -95,9 +97,12 @@ public class OpmlImportActivity extends AppCompatActivity {
                         continue;
                     }
                     OpmlElement element = readElements.get(checked.keyAt(i));
-                    Feed feed = new Feed(element.getXmlUrl(), null, element.getText());
-                    DownloadService.download(this, false, DownloadRequestCreator.create(feed).build());
+                    Feed feed = new Feed(element.getXmlUrl(), null,
+                            element.getText() != null ? element.getText() : "Unknown podcast");
+                    feed.setItems(Collections.emptyList());
+                    FeedDatabaseWriter.updateFeed(this, feed, false);
                 }
+                FeedUpdateManager.getInstance().runOnce(this);
             })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -109,6 +114,7 @@ public class OpmlImportActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }, e -> {
+                                e.printStackTrace();
                                 viewBinding.progressBar.setVisibility(View.GONE);
                                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
                             });
@@ -128,22 +134,13 @@ public class OpmlImportActivity extends AppCompatActivity {
 
     void importUri(@Nullable Uri uri) {
         if (uri == null) {
-            new AlertDialog.Builder(this)
+            new MaterialAlertDialogBuilder(this)
                     .setMessage(R.string.opml_import_error_no_file)
                     .setPositiveButton(android.R.string.ok, null)
                     .show();
             return;
         }
         this.uri = uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && uri.toString().contains(Environment.getExternalStorageDirectory().toString())) {
-            int permission = ActivityCompat.checkSelfPermission(this,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                requestPermission();
-                return;
-            }
-        }
         startImport();
     }
 
@@ -202,7 +199,7 @@ public class OpmlImportActivity extends AppCompatActivity {
                 if (isGranted) {
                     startImport();
                 } else {
-                    new AlertDialog.Builder(this)
+                    new MaterialAlertDialogBuilder(this)
                             .setMessage(R.string.opml_import_ask_read_permission)
                             .setPositiveButton(android.R.string.ok, (dialog, which) ->
                                     requestPermission())
@@ -239,12 +236,29 @@ public class OpmlImportActivity extends AppCompatActivity {
                                     getTitleList());
                             viewBinding.feedlist.setAdapter(listAdapter);
                         }, e -> {
+                            Log.d(TAG, Log.getStackTraceString(e));
+                            String message = e.getMessage() == null ? "" : e.getMessage();
+                            if (message.toLowerCase(Locale.ROOT).contains("permission")
+                                    && Build.VERSION.SDK_INT >= 23) {
+                                int permission = ActivityCompat.checkSelfPermission(this,
+                                        android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                                if (permission != PackageManager.PERMISSION_GRANTED) {
+                                    requestPermission();
+                                    return;
+                                }
+                            }
                             viewBinding.progressBar.setVisibility(View.GONE);
-                            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                            MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(this);
                             alert.setTitle(R.string.error_label);
-                            alert.setMessage(getString(R.string.opml_reader_error) + e.getMessage());
-                            alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-                            alert.create().show();
+                            String userReadable = getString(R.string.opml_reader_error);
+                            String details = e.getMessage();
+                            String total = userReadable + "\n\n" + details;
+                            SpannableString errorMessage = new SpannableString(total);
+                            errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
+                                    userReadable.length(), total.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            alert.setMessage(errorMessage);
+                            alert.setPositiveButton(android.R.string.ok, (dialog, which) -> finish());
+                            alert.show();
                         });
     }
 }

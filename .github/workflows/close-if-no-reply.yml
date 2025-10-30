@@ -11,17 +11,17 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v4
+      - uses: actions/stale@v10
         with:
-          days-before-stale: 15
-          days-before-close: 15
-          only-labels: 'Awaiting reply'
-          stale-issue-label: 'Still awaiting reply'
-          stale-pr-label: 'Still awaiting reply'
-          stale-issue-message: "This issue will be closed when we don't get a reply within 15 days."
-          stale-pr-message: "This PR will be closed when we don't get a reply within 15 days."
-          labels-to-remove-when-unstale: 'Awaiting reply'
-          close-issue-label: "Close reason: no reply"
-          close-pr-label: "Close reason: no reply"
-          close-issue-message: "This issue was closed because we didn't get a reply for 30 days."
-          close-pr-message: "This PR was closed because we didn't get a reply for 30 days."
+          days-before-stale: 7
+          days-before-close: 7
+          only-labels: 'Needs: Reply'
+          stale-issue-label: 'Needs: Reply still'
+          stale-pr-label: 'Needs: Reply still'
+          stale-issue-message: "This issue will be closed when we don't get a reply within 7 days."
+          stale-pr-message: "This PR will be closed when we don't get a reply within 7 days."
+          labels-to-remove-when-unstale: 'Needs: Reply,Needs: Reply still'
+          close-issue-label: "Close reason: No reply"
+          close-pr-label: "Close reason: No reply"
+          close-issue-message: "This issue was closed because we didn't get a reply for 14 days."
+          close-pr-message: "This PR was closed because we didn't get a reply for 14 days."

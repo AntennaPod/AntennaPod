@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="external_player_height">64dp</dimen>
+    <dimen name="text_size_micro">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_navdrawer">16sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+    <dimen name="thumbnail_length_itemlist">56dp</dimen>
+    <dimen name="thumbnail_length_queue_item">56dp</dimen>
+    <dimen name="thumbnail_length_navlist">40dp</dimen>
+    <dimen name="listitem_iconwithtext_height">48dp</dimen>
+    <dimen name="listitem_iconwithtext_textleftpadding">16dp</dimen>
+
+    <dimen name="listitem_threeline_textleftpadding">16dp</dimen>
+    <dimen name="listitem_threeline_textrightpadding">8dp</dimen>
+    <dimen name="listitem_threeline_verticalpadding">8dp</dimen>
+
+    <dimen name="list_vertical_padding">8dp</dimen>
+    <dimen name="listitem_icon_leftpadding">16dp</dimen>
+
+    <dimen name="audioplayer_playercontrols_length">48dp</dimen>
+    <dimen name="audioplayer_playercontrols_length_big">64dp</dimen>
+    <dimen name="audioplayer_playercontrols_margin">12dp</dimen>
+
+    <dimen name="nav_drawer_max_screen_size">480dp</dimen>
+</resources>

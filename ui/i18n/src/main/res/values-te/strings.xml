@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="statistics_label">గణాంకాలు</string>
+    <string name="episodes_label">ఎపిసోడులు</string>
+    <string name="favorite_episodes_label">ఇష్టాలు</string>
+    <string name="settings_label">అమరికలు</string>
+    <string name="downloads_label">దింపుకోళ్ళు</string>
+    <string name="subscriptions_label">చందాలు</string>
+    <!--Main activity-->
+  <string name="drawer_open">మెనూని తెరువు</string>
+    <string name="drawer_close">మెనూని మూసివేయి</string>
+    <string name="drawer_feed_counter_none">ఏమీలేవు</string>
+    <!--Other-->
+  <string name="confirm_label">నిర్ధారించు</string>
+    <string name="cancel_label">రద్దుచేయి</string>
+    <string name="yes">అవును</string>
+    <string name="no">కాదు</string>
+    <string name="error_label">పొరపాటు</string>
+    <string name="error_msg_prefix">పొరపాటు జరిగింది:</string>
+    <string name="chapters_label">చాప్టర్లు</string>
+    <string name="chapter_duration">నిడివి: %1$s</string>
+    <string name="description_label">వివరణ</string>
+    <string name="close_label">మూసివేయి</string>
+    <string name="retry_label">మళ్ళీ ప్రయత్నించు</string>
+    <string name="feed_auto_download_always">ఎల్లప్పుడూ</string>
+    <string name="show_info_label">సమాచారం చూపించు</string>
+    <!--actions on feeditems-->
+  <string name="download_label">దింపుకో</string>
+    <string name="play_label">ఆడించు</string>
+    <string name="pause_label">నిలుపు</string>
+    <string name="delete_label">తొలగించు</string>
+    <string name="download_error_details">వివరాలు</string>
+    <string name="download_type_feed">ఫీడు</string>
+    <string name="date">తేదీ</string>
+    <string name="duration">నిడివి</string>
+    <string name="pref_theme_title_light">లేత</string>
+    <string name="pref_theme_title_dark">నల్లని</string>
+    <string name="pref_episode_cache_unlimited">అపరిమితం</string>
+    <string name="pref_proxy_title">ప్రాక్సీ</string>
+    <!--About screen-->
+  <string name="about_pref">గురించి</string>
+    <string name="search_label">వెతుకు</string>
+    <string name="select_all_label">అన్నీ ఎంచుకోండి</string>
+    <string name="time_seconds">క్షణాలు</string>
+    <string name="time_minutes">నిమిషాలు</string>
+    <string name="time_hours">గంటలు</string>
+    <string name="username_label">వాడుకరి పేరు</string>
+    <string name="password_label">సంకేతపదం</string>
+    <string name="gpodnetsync_pref_report_successful">విజయవంతం</string>
+    <string name="gpodnetsync_pref_report_failed">విఫలమైంది</string>
+    <!--proxy settings-->
+  <string name="proxy_type_label">రకం</string>
+    <string name="proxy_host_invalid_error">హోస్ట్ చెల్లుబాటు అయ్యే ఐపీ చిరునామా లేదా డొమైన్ కాదు</string>
+</resources>

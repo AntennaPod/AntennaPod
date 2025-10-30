@@ -1,26 +1,32 @@
 package de.danoeh.antennapod.model.feed;
 
-import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Data Object for a whole feed.
  *
  * @author daniel
  */
-public class Feed extends FeedFile {
+public class Feed {
 
     public static final int FEEDFILETYPE_FEED = 0;
+    public static final int STATE_SUBSCRIBED = 0;
+    public static final int STATE_NOT_SUBSCRIBED = 1;
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_ATOM1 = "atom";
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
     public static final String PREFIX_GENERATIVE_COVER = "antennapod_generative_cover:";
 
+    private long id;
+    private String localFileUrl;
+    private String downloadUrl;
     /**
      * title as defined by the feed.
      */
@@ -51,7 +57,8 @@ public class Feed extends FeedFile {
     /**
      * String that identifies the last update (adopted from Last-Modified or ETag header).
      */
-    private String lastUpdate;
+    private String lastModified;
+    private long lastRefreshAttempt;
 
     private ArrayList<FeedFunding> fundingList;
     /**
@@ -98,20 +105,23 @@ public class Feed extends FeedFile {
      */
     @Nullable
     private SortOrder sortOrder;
+    private int state;
 
     /**
      * This constructor is used for restoring a feed from the database.
      */
-    public Feed(long id, String lastUpdate, String title, String customTitle, String link,
+    public Feed(long id, String lastModified, String title, String customTitle, String link,
                 String description, String paymentLinks, String author, String language,
                 String type, String feedIdentifier, String imageUrl, String fileUrl,
-                String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
-                String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
-        super(fileUrl, downloadUrl, downloaded);
+                String downloadUrl, long lastRefreshAttempt, boolean paged, String nextPageLink,
+                String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed, int state) {
+        this.localFileUrl = fileUrl;
+        this.downloadUrl = downloadUrl;
+        this.lastRefreshAttempt = lastRefreshAttempt;
         this.id = id;
         this.feedTitle = title;
         this.customTitle = customTitle;
-        this.lastUpdate = lastUpdate;
+        this.lastModified = lastModified;
         this.link = link;
         this.description = description;
         this.fundingList = FeedFunding.extractPaymentLinks(paymentLinks);
@@ -126,44 +136,40 @@ public class Feed extends FeedFile {
         if (filter != null) {
             this.itemfilter = new FeedItemFilter(filter);
         } else {
-            this.itemfilter = new FeedItemFilter(new String[0]);
+            this.itemfilter = new FeedItemFilter();
         }
         setSortOrder(sortOrder);
         this.lastUpdateFailed = lastUpdateFailed;
+        this.state = state;
     }
 
     /**
      * This constructor is used for test purposes.
      */
-    public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
+    public Feed(long id, String lastModified, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
-                String downloadUrl, boolean downloaded) {
-        this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, imageUrl,
-                fileUrl, downloadUrl, downloaded, false, null, null, null, false);
+                String downloadUrl, long lastRefreshAttempt) {
+        this(id, lastModified, title, null, link, description, paymentLink, author, language, type, feedIdentifier,
+                imageUrl, fileUrl, downloadUrl, lastRefreshAttempt, false, null, null, null, false, STATE_SUBSCRIBED);
     }
 
     /**
-     * This constructor can be used when parsing feed data. Only the 'lastUpdate' and 'items' field are initialized.
+     * This constructor is used for requesting a feed download (it must not be used for anything else!).
+     * It should NOT be used if the title of the feed is already known.
      */
-    public Feed() {
-        super();
-    }
-
-    /**
-     * This constructor is used for requesting a feed download (it must not be used for anything else!). It should NOT be
-     * used if the title of the feed is already known.
-     */
-    public Feed(String url, String lastUpdate) {
-        super(null, url, false);
-        this.lastUpdate = lastUpdate;
+    public Feed(String url, String lastModified) {
+        this.localFileUrl = null;
+        this.downloadUrl = url;
+        this.lastRefreshAttempt = 0;
+        this.lastModified = lastModified;
     }
 
     /**
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
      * used if the title of the feed is already known.
      */
-    public Feed(String url, String lastUpdate, String title) {
-        this(url, lastUpdate);
+    public Feed(String url, String lastModified, String title) {
+        this(url, lastModified);
         this.feedTitle = title;
     }
 
@@ -171,9 +177,11 @@ public class Feed extends FeedFile {
      * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
      * used if the title of the feed is already known.
      */
-    public Feed(String url, String lastUpdate, String title, String username, String password) {
-        this(url, lastUpdate, title);
-        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF, username, password);
+    public Feed(String url, String lastModified, String title, String username, String password) {
+        this(url, lastModified, title);
+        preferences = new FeedPreferences(0, FeedPreferences.AutoDownloadSetting.GLOBAL,
+                FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+                FeedPreferences.NewEpisodesAction.GLOBAL, username, password);
     }
 
     /**
@@ -193,8 +201,8 @@ public class Feed extends FeedFile {
     public String getIdentifyingValue() {
         if (feedIdentifier != null && !feedIdentifier.isEmpty()) {
             return feedIdentifier;
-        } else if (download_url != null && !download_url.isEmpty()) {
-            return download_url;
+        } else if (downloadUrl != null && !downloadUrl.isEmpty()) {
+            return downloadUrl;
         } else if (feedTitle != null && !feedTitle.isEmpty()) {
             return feedTitle;
         } else {
@@ -202,14 +210,13 @@ public class Feed extends FeedFile {
         }
     }
 
-    @Override
     public String getHumanReadableIdentifier() {
-        if (!TextUtils.isEmpty(customTitle)) {
+        if (!StringUtils.isEmpty(customTitle)) {
             return customTitle;
-        } else if (!TextUtils.isEmpty(feedTitle)) {
+        } else if (!StringUtils.isEmpty(feedTitle)) {
             return feedTitle;
         } else {
-            return download_url;
+            return downloadUrl;
         }
     }
 
@@ -240,63 +247,15 @@ public class Feed extends FeedFile {
         if (other.fundingList != null) {
             fundingList = other.fundingList;
         }
+        if (other.lastRefreshAttempt > lastRefreshAttempt) {
+            lastRefreshAttempt = other.lastRefreshAttempt;
+        }
         // this feed's nextPage might already point to a higher page, so we only update the nextPage value
         // if this feed is not paged and the other feed is.
         if (!this.paged && other.paged) {
             this.paged = other.paged;
             this.nextPageLink = other.nextPageLink;
         }
-    }
-
-    public boolean compareWithOther(Feed other) {
-        if (super.compareWithOther(other)) {
-            return true;
-        }
-        if (other.imageUrl != null) {
-            if (imageUrl == null || !TextUtils.equals(imageUrl, other.imageUrl)) {
-                return true;
-            }
-        }
-        if (!TextUtils.equals(feedTitle, other.feedTitle)) {
-            return true;
-        }
-        if (other.feedIdentifier != null) {
-            if (feedIdentifier == null || !feedIdentifier.equals(other.feedIdentifier)) {
-                return true;
-            }
-        }
-        if (other.link != null) {
-            if (link == null || !link.equals(other.link)) {
-                return true;
-            }
-        }
-        if (other.description != null) {
-            if (description == null || !description.equals(other.description)) {
-                return true;
-            }
-        }
-        if (other.language != null) {
-            if (language == null || !language.equals(other.language)) {
-                return true;
-            }
-        }
-        if (other.author != null) {
-            if (author == null || !author.equals(other.author)) {
-                return true;
-            }
-        }
-        if (other.fundingList != null) {
-            if (fundingList == null || !fundingList.equals(other.fundingList)) {
-                return true;
-            }
-        }
-        if (other.isPaged() && !this.isPaged()) {
-            return true;
-        }
-        if (!TextUtils.equals(other.getNextPageLink(), this.getNextPageLink())) {
-            return true;
-        }
-        return false;
     }
 
     public FeedItem getMostRecentItem() {
@@ -312,13 +271,8 @@ public class Feed extends FeedFile {
         return mostRecentItem;
     }
 
-    @Override
-    public int getTypeAsInt() {
-        return FEEDFILETYPE_FEED;
-    }
-
     public String getTitle() {
-        return !TextUtils.isEmpty(customTitle) ? customTitle : feedTitle;
+        return !StringUtils.isEmpty(customTitle) ? customTitle : feedTitle;
     }
 
     public void setTitle(String title) {
@@ -374,12 +328,12 @@ public class Feed extends FeedFile {
         this.items = list;
     }
 
-    public String getLastUpdate() {
-        return lastUpdate;
+    public String getLastModified() {
+        return lastModified;
     }
 
-    public void setLastUpdate(String lastModified) {
-        this.lastUpdate = lastModified;
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
     }
 
     public String getFeedIdentifier() {
@@ -433,12 +387,39 @@ public class Feed extends FeedFile {
         return preferences;
     }
 
-    @Override
     public void setId(long id) {
-        super.setId(id);
+        this.id = id;
         if (preferences != null) {
             preferences.setFeedID(id);
         }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getLocalFileUrl() {
+        return localFileUrl;
+    }
+
+    public void setLocalFileUrl(String fileUrl) {
+        this.localFileUrl = fileUrl;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
+
+    public long getLastRefreshAttempt() {
+        return lastRefreshAttempt;
+    }
+
+    public void setLastRefreshAttempt(long lastRefreshAttempt) {
+        this.lastRefreshAttempt = lastRefreshAttempt;
     }
 
     public int getPageNr() {
@@ -470,12 +451,6 @@ public class Feed extends FeedFile {
         return itemfilter;
     }
 
-    public void setItemFilter(String[] properties) {
-        if (properties != null) {
-            this.itemfilter = new FeedItemFilter(properties);
-        }
-    }
-
     @Nullable
     public SortOrder getSortOrder() {
         return sortOrder;
@@ -498,6 +473,64 @@ public class Feed extends FeedFile {
     }
 
     public boolean isLocalFeed() {
-        return download_url.startsWith(PREFIX_LOCAL_FOLDER);
+        return downloadUrl.startsWith(PREFIX_LOCAL_FOLDER);
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public boolean hasEpisodeInApp() {
+        if (items == null) {
+            return false;
+        }
+        for (FeedItem item : items) {
+            if (item.isTagged(FeedItem.TAG_FAVORITE)
+                    || item.isTagged(FeedItem.TAG_QUEUE)
+                    || item.isDownloaded()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasInteractedWithEpisode() {
+        if (items == null) {
+            return false;
+        }
+        for (FeedItem item : items) {
+            if (item.isTagged(FeedItem.TAG_FAVORITE)
+                    || item.isTagged(FeedItem.TAG_QUEUE)
+                    || item.isDownloaded()
+                    || item.isPlayed()) {
+                return true;
+            }
+            if (item.getMedia() != null && item.getMedia().getPosition() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Feed feed = (Feed) o;
+        return id == feed.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

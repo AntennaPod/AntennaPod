@@ -1,0 +1,33 @@
+<resources>
+    <!-- Menu items -->
+    <item name="select_all_item" type="id"/>
+    <item name="deselect_all_item" type="id"/>
+    <item name="clear_history_item" type="id"/>
+    <item name="open_in_browser_item" type="id"/>
+    <item name="copy_url_item" type="id"/>
+    <item name="share_url_item" type="id"/>
+    <item name="go_to_position_item" type="id"/>
+    <item name="drag_handle" type="id"/>
+    <item name="skip_episode_item" type="id"/>
+    <item name="move_to_top_item" type="id"/>
+    <item name="move_to_bottom_item" type="id"/>
+
+    <!-- View types -->
+    <item name="view_type_episode_item" type="id"/>
+    <item name="view_type_subscription_grid_with_title" type="id"/>
+    <item name="view_type_subscription_grid_without_title" type="id"/>
+    <item name="view_type_subscription_list" type="id"/>
+
+    <!-- Bottom navigation -->
+    <item name="bottom_navigation_home" type="id"/>
+    <item name="bottom_navigation_queue" type="id"/>
+    <item name="bottom_navigation_inbox" type="id"/>
+    <item name="bottom_navigation_episodes" type="id"/>
+    <item name="bottom_navigation_downloads" type="id"/>
+    <item name="bottom_navigation_history" type="id"/>
+    <item name="bottom_navigation_addfeed" type="id"/>
+    <item name="bottom_navigation_subscriptions" type="id"/>
+    <item name="bottom_navigation_more" type="id"/>
+    <item name="bottom_navigation_customize" type="id"/>
+    <item name="bottom_navigation_settings" type="id"/>
+</resources>
