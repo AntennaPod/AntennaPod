@@ -465,7 +465,7 @@ public class SleepTimerDialog extends DialogFragment {
                             R.plurals.num_episodes,
                             (int) event.getDisplayTimeLeft(),
                             (int) event.getDisplayTimeLeft()));
-            default -> time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
+            case CLOCK -> time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
         }
     }
 
