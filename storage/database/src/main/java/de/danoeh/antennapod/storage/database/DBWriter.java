@@ -19,6 +19,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.storage.database.mapper.FeedItemCursor;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,8 +27,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -337,6 +340,24 @@ public class DBWriter {
     }
 
     /**
+     * Creates a new queue.
+     *
+     * @param context             A context that is used for opening a database connection.
+     * @param name                The name of the new queue.
+     */
+    public static Future<?> df_addQueue(final Context context, final String name) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.df_addQueue(name);
+            adapter.close();
+
+            BackupManager backupManager = new BackupManager(context);
+            backupManager.dataChanged();
+        });
+    }
+
+    /**
      * Inserts a FeedItem in the queue at the specified index. The 'read'-attribute of the FeedItem will be set to
      * true. If the FeedItem is already in the queue, the queue will not be modified.
      *
@@ -427,6 +448,62 @@ public class DBWriter {
     }
 
     /**
+     * Appends FeedItem objects to the end of a queue. The 'read'-attribute of all items will be set to true.
+     * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
+     *
+     * @param context  A context that is used for opening a database connection.
+     * @param items    FeedItem objects that should be added to the queue.
+     */
+    public static Future<?> df_addFeedItemToQueue(final Context context, final long queueId, final FeedItem... items) {
+        return runOnDbThread(() -> {
+            if (items.length < 1) {
+                return;
+            }
+
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.df_getFeedItemsInQueue(queueId);
+
+            LongList markAsUnplayedIds = new LongList();
+            List<QueueEvent> events = new ArrayList<>();
+            List<FeedItem> updatedItems = new ArrayList<>();
+            ItemEnqueuePositionCalculator positionCalculator =
+                    new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
+            Playable currentlyPlaying = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
+            for (FeedItem item : items) {
+                if (itemListContains(queue, item.getId())) {
+                    continue;
+                } else if (!item.hasMedia()) {
+                    continue;
+                }
+                queue.add(insertPosition, item);
+                events.add(QueueEvent.added(item, insertPosition));
+
+                item.addTag(FeedItem.TAG_QUEUE);
+                updatedItems.add(item);
+                if (item.isNew()) {
+                    markAsUnplayedIds.add(item.getId());
+                }
+                insertPosition++;
+            }
+            if (!updatedItems.isEmpty()) {
+                applySortOrder(queue, events);
+                adapter.df_setQueue(queueId, queue);
+                for (QueueEvent event : events) {
+                    EventBus.getDefault().post(event);
+                }
+                EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
+                if (markAsUnplayedIds.size() > 0) {
+                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
+                }
+            }
+            adapter.close();
+            AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+        });
+    }
+
+    /**
      * Sorts the queue depending on the configured sort order.
      * If the queue is not in keep sorted mode, nothing happens.
      *
@@ -454,6 +531,20 @@ public class DBWriter {
     }
 
     /**
+     * Removes a queue.
+     */
+    public static Future<?> df_removeQueue(final Context context, long queueId) {
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.df_removeQueueAndQueueItems(queueId);
+            adapter.close();
+
+            EventBus.getDefault().post(QueueEvent.cleared());
+        });
+    }
+
+    /**
      * Removes all FeedItem objects from the queue.
      */
     public static Future<?> clearQueue() {
@@ -461,6 +552,20 @@ public class DBWriter {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.clearQueue();
+            adapter.close();
+
+            EventBus.getDefault().post(QueueEvent.cleared());
+        });
+    }
+
+    /**
+     * Removes all FeedItem objects from the queue.
+     */
+    public static Future<?> df_clearQueue(final long queueId) {
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.df_clearQueue(queueId);
             adapter.close();
 
             EventBus.getDefault().post(QueueEvent.cleared());
@@ -525,6 +630,104 @@ public class DBWriter {
             Log.w(TAG, "Queue was not modified by call to removeQueueItem");
         }
         adapter.close();
+        if (performAutoDownload) {
+            AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+        }
+    }
+
+    /**
+     * Removes a FeedItem object from the queue.
+     *
+     * @param context             A context that is used for opening a database connection.
+     * @param performAutoDownload true if an auto-download process should be started after the operation.
+     * @param item                FeedItem that should be removed.
+     */
+    public static Future<?> df_removeQueueItem(final Context context,
+                                            final boolean performAutoDownload, final FeedItem item) {
+        return runOnDbThread(() -> df_removeQueueItemSynchronous(context, performAutoDownload, item.getId()));
+    }
+
+    public static Future<?> df_removeQueueItem(final Context context, final boolean performAutoDownload,
+                                            final long... itemIds) {
+        return runOnDbThread(() -> df_removeQueueItemSynchronous(context, performAutoDownload, itemIds));
+    }
+
+    private static void df_removeQueueItemSynchronous(final Context context,
+                                                   final boolean performAutoDownload,
+                                                   final long... itemIds) {
+        if (itemIds.length < 1) {
+            return;
+        }
+        final PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        boolean queueModified = false;
+        List<QueueEvent> events = new ArrayList<>();
+        List<FeedItem> updatedItems = new ArrayList<>();
+
+        Map<Long, List<Integer>> affectedQueues = new HashMap<>();
+        StringBuilder inClauseBuilder = new StringBuilder();
+        String[] selectionArgs = new String[itemIds.length];
+        for (int i = 0; i < itemIds.length; i++) {
+            selectionArgs[i] = String.valueOf(itemIds[i]);
+            inClauseBuilder.append("?");
+            if (i < itemIds.length - 1) {
+                inClauseBuilder.append(",");
+            }
+        }
+        String inClause = inClauseBuilder.toString();
+
+        Cursor cursor = adapter.df_getQueueItemsInfoCursor(inClause, selectionArgs);
+        FeedItemCursor feedItemCursor = new FeedItemCursor(cursor);
+        int indexQueueId = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_QUEUE_ID);
+        int indexPosition = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_POSITION);
+
+        if (cursor.moveToFirst()) {
+            do {
+                FeedItem item = feedItemCursor.getFeedItem();
+                long queueId = cursor.getLong(indexQueueId);
+                int position = cursor.getInt(indexPosition);
+
+                List<Integer> positions = affectedQueues.get(queueId);
+                if (positions == null) {
+                    positions = new ArrayList<>();
+                    affectedQueues.put(queueId, positions);
+                }
+
+                positions.add(position);
+                item.removeTag(FeedItem.TAG_QUEUE);
+                updatedItems.add(item);
+                events.add(QueueEvent.removed(item));
+                queueModified = true;
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        if (queueModified) {
+            adapter.df_removeQueueItemsByFeedItem(inClause, selectionArgs);
+
+            for (Map.Entry<Long, List<Integer>> entry : affectedQueues.entrySet()) {
+                long queueId = entry.getKey();
+                List<Integer> removedPositions = entry.getValue();
+
+                Collections.sort(removedPositions, Collections.reverseOrder());
+
+                for (Integer removedPos : removedPositions) {
+                    adapter.df_shiftPositionInQueue(queueId, removedPos);
+                }
+            }
+
+            for (QueueEvent event : events) {
+                EventBus.getDefault().post(event);
+            }
+
+            DBReader.loadAdditionalFeedItemListData(updatedItems);
+            EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
+        } else {
+            Log.w(TAG, "Queue was not modified by call to removeQueueItem");
+        }
+        adapter.close();
+
         if (performAutoDownload) {
             AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
         }

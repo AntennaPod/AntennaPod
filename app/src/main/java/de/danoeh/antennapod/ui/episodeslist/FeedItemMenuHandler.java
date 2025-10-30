@@ -18,14 +18,18 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.queue.Queue;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.playback.service.PlaybackStatus;
+import de.danoeh.antennapod.ui.screen.queue.QueuesDialogFragment;
+import de.danoeh.antennapod.ui.screen.queue.QueuesDialogRecyclerAdapter;
 import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.share.ShareDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -218,9 +222,27 @@ public class FeedItemMenuHandler {
                             .build());
             }
         } else if (menuItemId == R.id.add_to_queue_item) {
-            DBWriter.addQueueItem(context, selectedItem);
+            int defaultQueueId = 1;
+            if (DBReader.df_getQueues().size() > 1) {
+                QueuesDialogRecyclerAdapter.OnQueueActionsListener listener = new
+                        QueuesDialogRecyclerAdapter.OnQueueActionsListener() {
+                            @Override
+                            public void onQueueClicked(Queue queue) {
+                                DBWriter.df_addFeedItemToQueue(context, queue.getId(), selectedItem);
+                            }
+
+                            @Override
+                            public void onQueueDeleteClicked(Queue queue) {
+                            }
+                        };
+                QueuesDialogFragment dialog = QueuesDialogFragment.newInstance(listener);
+                dialog.show(fragment.getParentFragmentManager(), QueuesDialogFragment.TAG);
+            } else {
+                DBWriter.df_addFeedItemToQueue(context, defaultQueueId, selectedItem);
+            }
+
         } else if (menuItemId == R.id.remove_from_queue_item) {
-            DBWriter.removeQueueItem(context, true, selectedItem);
+            DBWriter.df_removeQueueItem(context, true, selectedItem);
         } else if (menuItemId == R.id.add_to_favorites_item) {
             DBWriter.addFavoriteItem(selectedItem);
         } else if (menuItemId == R.id.remove_from_favorites_item) {

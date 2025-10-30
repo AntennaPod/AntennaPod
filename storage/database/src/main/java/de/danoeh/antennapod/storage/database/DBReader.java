@@ -25,10 +25,14 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.model.queue.Queue;
+import de.danoeh.antennapod.model.queue.QueueItem;
 import de.danoeh.antennapod.storage.database.mapper.ChapterCursor;
 import de.danoeh.antennapod.storage.database.mapper.DownloadResultCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemCursor;
+import de.danoeh.antennapod.storage.database.mapper.QueueCursor;
+import de.danoeh.antennapod.storage.database.mapper.QueueItemCursor;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -105,14 +109,20 @@ public final class DBReader {
     }
 
     private static void loadTagsOfFeedItemList(List<FeedItem> items) {
+        //df
         LongList favoriteIds = getFavoriteIDList();
-        LongList queueIds = getQueueIDList();
+        List<QueueItem> queueItems = df_getAllQueueItems();
+        LongList queuedItemsIds = new LongList();
+        for (QueueItem queueItem : queueItems) {
+            queuedItemsIds.add(queueItem.getFeedItemId());
+        }
 
         for (FeedItem item : items) {
+
             if (favoriteIds.contains(item.getId())) {
                 item.addTag(FeedItem.TAG_FAVORITE);
             }
-            if (queueIds.contains(item.getId())) {
+            if (queuedItemsIds.contains(item.getId())) {
                 item.addTag(FeedItem.TAG_QUEUE);
             }
         }
@@ -234,6 +244,118 @@ public final class DBReader {
         } finally {
             adapter.close();
         }
+    }
+
+    /**
+     * Loads a list of the FeedItems in a queue. If the FeedItems of the queue are not used directly, consider using
+     * {@link #getQueueIDList()} instead.
+     *
+     * @return A list of FeedItems sorted by the same order as the queue.
+     */
+    @NonNull
+    public static List<FeedItem> df_getFeedItemsInQueue(final long queueId) {
+        Log.d(TAG, "getQueue() called");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (FeedItemCursor cursor = new FeedItemCursor(adapter.df_getFeedItemsInQueueCursor(queueId))) {
+            List<FeedItem> items = extractItemlistFromCursor(cursor);
+            loadAdditionalFeedItemListData(items);
+            return items;
+        } finally {
+            adapter.close();
+        }
+    }
+
+    /**
+     * Loads a list of all queued items.
+     *
+     * @return A list of QueueItems sorted by their id.
+     */
+    @NonNull
+    public static List<QueueItem> df_getAllQueueItems() {
+        Log.d(TAG, "df_getAllQueueItems() called");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (QueueItemCursor cursor = new QueueItemCursor(adapter.df_getAllQueueItemsCursor())) {
+            return df_extractQueueItemListFromCursor(cursor);
+        } finally {
+            adapter.close();
+        }
+    }
+
+    @NonNull
+    private static List<QueueItem> df_extractQueueItemListFromCursor(QueueItemCursor cursor) {
+        List<QueueItem> result = new ArrayList<>(cursor.getCount());
+        while (cursor.moveToNext()) {
+            result.add(cursor.getQueueItem());
+        }
+        return result;
+    }
+
+    /**
+     * Loads a list of the existing Queues.
+     *
+     * @return A list of Queues sorted by their ids.
+     */
+    @NonNull
+    public static List<Queue> df_getQueues() {
+        Log.d(TAG, "getQueues() called");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (QueueCursor cursor = new QueueCursor(adapter.df_getQueuesCursor())) {
+            return df_extractQueueListFromCursor(cursor);
+        } finally {
+            adapter.close();
+        }
+    }
+
+    /**
+     * Loads all feed items from all queues.
+     *
+     * @return A Map where the key is the queue ID and the value is a list of
+     * FeedItems (with media) belonging to that queue.
+     */
+    @NonNull
+    public static Map<Long, List<FeedItem>> df_getAllQueueItemsWithInfo() {
+        Log.d(TAG, "df_getAllQueueItemsWithInfo() called");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        Map<Long, List<FeedItem>> result = new HashMap<>();
+
+        FeedItemCursor cursor = new FeedItemCursor(adapter.df_getAllQueueItemsInfoCursor());
+        int indexQueueId = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_QUEUE_ID);
+        if (cursor.moveToFirst()) {
+            do {
+                long queueId = cursor.getLong(indexQueueId);
+                FeedItem item = cursor.getFeedItem();
+
+                List<FeedItem> list = result.get(queueId);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    result.put(queueId, list);
+                }
+                list.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        for (List<FeedItem> items : result.values()) {
+            loadAdditionalFeedItemListData(items);
+        }
+
+        adapter.close();
+        return result;
+    }
+
+    @NonNull
+    private static List<Queue> df_extractQueueListFromCursor(QueueCursor cursor) {
+        List<Queue> result = new ArrayList<>(cursor.getCount());
+        while (cursor.moveToNext()) {
+            result.add(cursor.getQueue());
+        }
+        return result;
     }
 
     private static LongList getFavoriteIDList() {

@@ -66,7 +66,7 @@ public class EpisodeMultiSelectActionHandler {
 
     private void removeFromQueueChecked(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
-        DBWriter.removeQueueItem(activity, true, checkedIds);
+        DBWriter.df_removeQueueItem(activity, true, checkedIds);
         showMessage(R.plurals.removed_from_queue_message, checkedIds.length);
     }
 

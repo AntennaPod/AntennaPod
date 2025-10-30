@@ -85,6 +85,8 @@ public class PodDBAdapter {
     public static final String KEY_FEEDFILETYPE = "feedfile_type";
     public static final String KEY_COMPLETION_DATE = "completion_date";
     public static final String KEY_FEEDITEM = "feeditem";
+    public static final String KEY_QUEUE_ID = "queue_id";
+    public static final String KEY_QUEUE_NAME = "name";
     public static final String KEY_PAYMENT_LINK = "payment_link";
     public static final String KEY_START = "start";
     public static final String KEY_LANGUAGE = "language";
@@ -133,6 +135,8 @@ public class PodDBAdapter {
     public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
     public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
     public static final String TABLE_NAME_QUEUE = "Queue";
+    public static final String TABLE_NAME_QUEUES = "Queues";
+    public static final String TABLE_NAME_QUEUE_ITEMS = "QueueItems";
     public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
     public static final String TABLE_NAME_FAVORITES = "Favorites";
 
@@ -213,6 +217,15 @@ public class PodDBAdapter {
     private static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
             + TABLE_NAME_QUEUE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
+
+    private static final String CREATE_TABLE_QUEUES = "CREATE TABLE "
+            + TABLE_NAME_QUEUES + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_QUEUE_NAME + " TEXT NOT NULL)";
+
+    private static final String CREATE_TABLE_QUEUE_ITEMS = "CREATE TABLE "
+            + TABLE_NAME_QUEUE_ITEMS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_QUEUE_ID + " INTEGER NOT NULL," + KEY_FEEDITEM + " INTEGER NOT NULL, "
+            + KEY_FEED + " INTEGER NOT NULL," + KEY_POSITION + " INTEGER NOT NULL)";
 
     private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
             + TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -871,6 +884,20 @@ public class PodDBAdapter {
         return count > 0;
     }
 
+    public void df_addQueue(String name) {
+        ContentValues values = new ContentValues();
+        try {
+            db.beginTransactionNonExclusive();
+            values.put(KEY_QUEUE_NAME, name);
+            db.insert(TABLE_NAME_QUEUES, null, values);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public void setQueue(List<FeedItem> queue) {
         ContentValues values = new ContentValues();
         try {
@@ -891,8 +918,47 @@ public class PodDBAdapter {
         }
     }
 
+    public void df_setQueue(final long queueId, List<FeedItem> queue) {
+        ContentValues values = new ContentValues();
+        try {
+            db.beginTransactionNonExclusive();
+            db.delete(TABLE_NAME_QUEUE_ITEMS, KEY_QUEUE_ID + " = " + queueId, null);
+            for (int i = 0; i < queue.size(); i++) {
+                FeedItem item = queue.get(i);
+                values.put(KEY_QUEUE_ID, queueId);
+                values.put(KEY_FEEDITEM, item.getId());
+                values.put(KEY_FEED, item.getFeed().getId());
+                values.put(KEY_POSITION, i);
+                db.insertWithOnConflict(TABLE_NAME_QUEUE_ITEMS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public void df_removeQueueAndQueueItems(long queueId) {
+        try {
+            db.beginTransactionNonExclusive();
+            db.delete(TABLE_NAME_QUEUES, KEY_ID + "=?", new String[]{String.valueOf(queueId)});
+            db.delete(TABLE_NAME_QUEUE_ITEMS, KEY_QUEUE_ID + "=?" + queueId, new String[]{String.valueOf(queueId)});
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public void clearQueue() {
         db.delete(TABLE_NAME_QUEUE, null, null);
+    }
+
+    public void df_clearQueue(final long queueId) {
+        db.execSQL("DELETE FROM " + TABLE_NAME_QUEUE_ITEMS + " WHERE "
+                + KEY_QUEUE_ID + "=?", new String[]{String.valueOf(queueId)});
     }
 
     /**
@@ -921,6 +987,7 @@ public class PodDBAdapter {
                             + " AND " + KEY_FEEDFILE + " IN (" + mediaIds + ")", null);
             db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + " IN (" + mediaIds + ")", null);
             db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + " IN (" + itemIds + ")", null);
+            db.delete(TABLE_NAME_QUEUE_ITEMS, KEY_FEEDITEM + " IN (" + itemIds + ")", null);
             db.delete(TABLE_NAME_FAVORITES, KEY_FEEDITEM + " IN (" + itemIds + ")", null);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -1044,6 +1111,112 @@ public class PodDBAdapter {
                 + " ON " + SELECT_KEY_ITEM_ID + " = " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
                 +  JOIN_FEED_ITEM_AND_MEDIA
                 + " ORDER BY " + TABLE_NAME_QUEUE + "." + KEY_ID;
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * Returns a cursor which contains all feed items in the queue. The returned
+     * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
+     * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
+     */
+    public final Cursor df_getFeedItemsInQueueCursor(final long queueId) {
+        final String query = "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " = " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_FEEDITEM
+                +  JOIN_FEED_ITEM_AND_MEDIA
+                + " WHERE " + KEY_QUEUE_ID + " = " + queueId
+                + " ORDER BY " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_POSITION;
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * Returns a cursor which contains FeedItem and QueueItem info for all items
+     * matching the given IN clause.
+     *
+     * @param inClause      A SQL IN clause, e.g., "(?,?,?)"
+     * @param selectionArgs An array of FeedItem IDs
+     */
+    public final Cursor df_getQueueItemsInfoCursor(String inClause, String[] selectionArgs) {
+        final String query = "SELECT "
+                + TABLE_NAME_QUEUE_ITEMS + "." + KEY_QUEUE_ID + ", "
+                + TABLE_NAME_QUEUE_ITEMS + "." + KEY_POSITION + ", "
+                + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", "
+                + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
+                + " ON " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_FEEDITEM + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+                + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + " "
+                + " WHERE " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_FEEDITEM + " IN (" + inClause + ")";
+        return db.rawQuery(query, selectionArgs);
+    }
+
+    /**
+     * Returns a cursor which contains FeedItem and QueueItem info for all items currently in a queue.
+     */
+    public final Cursor df_getAllQueueItemsInfoCursor() {
+        final String query = "SELECT "
+                + TABLE_NAME_QUEUE_ITEMS + "." + KEY_QUEUE_ID + ", "
+                + TABLE_NAME_QUEUE_ITEMS + "." + KEY_POSITION + ", "
+                + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", "
+                + KEYS_FEED_MEDIA
+                + " FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_ITEMS
+                + " ON " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_FEEDITEM + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+                + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "."
+                + KEY_FEEDITEM + " ";
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * Deletes rows from the QueueItems table based on a list of FeedItem IDs.
+     *
+     * @param inClause      A SQL IN clause, e.g., "(?,?,?)"
+     * @param selectionArgs An array of FeedItem IDs
+     */
+    public void df_removeQueueItemsByFeedItem(String inClause, String[] selectionArgs) {
+        String deleteSql = "DELETE FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " WHERE " + KEY_FEEDITEM + " IN (" + inClause + ")";
+        db.execSQL(deleteSql, selectionArgs);
+    }
+
+    /**
+     * Decrements the position of all items in a specific queue that are after a given position.
+     *
+     * @param queueId  The ID of the queue to update.
+     * @param position The position to check against (items with position > this value will be shifted).
+     */
+    public void df_shiftPositionInQueue(long queueId, int position) {
+        String updatePosSql = "UPDATE " + TABLE_NAME_QUEUE_ITEMS
+                + " SET " + KEY_POSITION + " = " + KEY_POSITION + " - 1 "
+                + "WHERE " + KEY_QUEUE_ID + " = ? "
+                + "AND " + KEY_POSITION + " > ?";
+        db.execSQL(updatePosSql, new String[]{
+                String.valueOf(queueId),
+                String.valueOf(position)
+        });
+    }
+
+    /**
+     * Returns a cursor which contains all existing queues.
+     */
+    public final Cursor df_getQueuesCursor() {
+        final String query = "SELECT " + KEY_ID + ", " + KEY_QUEUE_NAME
+                + " FROM " + TABLE_NAME_QUEUES
+                + " ORDER BY " + TABLE_NAME_QUEUES + "." + KEY_ID;
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * Returns a cursor which contains all existing queue items.
+     */
+    public final Cursor df_getAllQueueItemsCursor() {
+        final String query = "SELECT " + KEY_ID + ", " + KEY_QUEUE_ID + ", " + KEY_FEEDITEM + ", "
+                + KEY_FEED + ", " + KEY_POSITION
+                + " FROM " + TABLE_NAME_QUEUE_ITEMS
+                + " ORDER BY " + TABLE_NAME_QUEUE_ITEMS + "." + KEY_ID;
         return db.rawQuery(query, null);
     }
 
@@ -1521,6 +1694,8 @@ public class PodDBAdapter {
             db.execSQL(CREATE_TABLE_FEED_MEDIA);
             db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
             db.execSQL(CREATE_TABLE_QUEUE);
+            db.execSQL(CREATE_TABLE_QUEUES);
+            db.execSQL(CREATE_TABLE_QUEUE_ITEMS);
             db.execSQL(CREATE_TABLE_SIMPLECHAPTERS);
             db.execSQL(CREATE_TABLE_FAVORITES);
 
@@ -1530,12 +1705,18 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
+
+            addDefaultQueue(db);
         }
 
         @Override
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
+        }
+
+        public void addDefaultQueue(final SQLiteDatabase db) {
+            DBWriter.df_addQueue(context, "Queue");
         }
     }
 }
