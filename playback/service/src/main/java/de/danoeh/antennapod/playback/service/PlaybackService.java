@@ -1101,6 +1101,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
+            disableSleepTimer();
             if (!isCasting) {
                 stateManager.stopForeground(true);
                 stateManager.stopService();
