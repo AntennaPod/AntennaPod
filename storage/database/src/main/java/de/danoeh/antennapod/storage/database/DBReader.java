@@ -207,7 +207,7 @@ public final class DBReader {
         // now try to find the id
         for (int i = 0; i < wholeQueue.size(); ++i) {
             if (wholeQueue.get(i) == existingId) {
-                return wholeQueue.size() - i; // return however are left, including us
+                return wholeQueue.size() - i; // return however many are left, including us
             }
         }
 
