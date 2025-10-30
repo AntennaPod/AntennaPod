@@ -306,11 +306,12 @@ public class AudioPlayerFragment extends Fragment implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
-        if (event.isCancelled() || event.wasJustEnabled() || event.isOver()) {
-            AudioPlayerFragment.this.loadMediaInfo(false);
-        } else if (event.isOver()) {
+        if (event.isOver()) {
             toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(true);
             toolbar.getMenu().findItem(R.id.disable_sleeptimer_item).setVisible(false);
+        }
+        if (event.isCancelled() || event.wasJustEnabled() || event.isOver()) {
+            AudioPlayerFragment.this.loadMediaInfo(false);
         }
     }
 
@@ -373,7 +374,6 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         txtvPosition.setContentDescription(getString(R.string.position,
                 Converter.getDurationStringLocalized(getContext(), currentPosition)));
-
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         if (showTimeLeft) {
             txtvLength.setContentDescription(getString(R.string.remaining_time,

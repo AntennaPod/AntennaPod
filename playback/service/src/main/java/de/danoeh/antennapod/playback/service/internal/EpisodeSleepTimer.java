@@ -11,7 +11,6 @@ import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.playback.TimerValue;
 
 public class EpisodeSleepTimer extends ClockSleepTimer {
-    private static final String TAG = "EpisodeSleepTimer";
 
     public EpisodeSleepTimer(final Context context) {
         super(context);
@@ -64,11 +63,5 @@ public class EpisodeSleepTimer extends ClockSleepTimer {
         }
 
         return cont;
-    }
-
-    private void stopPlayback() {
-        // send an event with time remaining 0, that stops playback
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.updated(new TimerValue(0, 0)));
-        stop(); // stop the timer too
     }
 }

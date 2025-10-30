@@ -459,13 +459,11 @@ public class SleepTimerDialog extends DialogFragment {
         timeSetup.setVisibility(event.isOver() || event.isCancelled() ? View.VISIBLE : View.GONE);
         sleepTimerType.setEnabled(event.isOver() || event.isCancelled());
 
-        switch (SleepTimerPreferences.getSleepTimerType()) {
-            case EPISODES -> time.setText(
-                    getResources().getQuantityString(
-                            R.plurals.num_episodes,
-                            (int) event.getDisplayTimeLeft(),
-                            (int) event.getDisplayTimeLeft()));
-            case CLOCK -> time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
+        if (SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
+            time.setText(getResources().getQuantityString(R.plurals.num_episodes,
+                    (int) event.getDisplayTimeLeft(), (int) event.getDisplayTimeLeft()));
+        } else {
+            time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
         }
     }
 
