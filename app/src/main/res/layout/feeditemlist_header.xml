@@ -120,6 +120,7 @@
             android:layout_toEndOf="@id/coverHolder"
             android:layout_above="@id/buttonContainer"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:orientation="vertical">
 
             <TextView
