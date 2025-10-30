@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class PreferenceActivity extends ToolbarActivity implements SearchPreferenceResultListener {
     private static final String FRAGMENT_TAG = "tag_preferences";
     public static final String OPEN_AUTO_DOWNLOAD_SETTINGS = "OpenAutoDownloadSettings";
+    public static final String OPEN_PLAYBACK_SETTINGS = "OpenPlaybackSettings";
     private SettingsActivityBinding binding;
 
     @Override
@@ -54,6 +55,9 @@ public class PreferenceActivity extends ToolbarActivity implements SearchPrefere
         Intent intent = getIntent();
         if (intent.getBooleanExtra(OPEN_AUTO_DOWNLOAD_SETTINGS, false)) {
             openScreen(R.xml.preferences_autodownload);
+        }
+        if (intent.getBooleanExtra(OPEN_PLAYBACK_SETTINGS, false)) {
+            openScreen(R.xml.preferences_playback);
         }
     }
 

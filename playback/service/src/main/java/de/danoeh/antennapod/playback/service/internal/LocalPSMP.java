@@ -678,8 +678,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     @Override
     protected void endPlayback(final boolean hasEnded, final boolean wasSkipped,
-                                    final boolean shouldContinue, final boolean toStoppedState) {
+                                    boolean shouldContinue, final boolean toStoppedState) {
         releaseWifiLockIfNecessary();
+
+        callback.episodeFinishedPlayback(); // notify that the current episode just finished
 
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
 
@@ -699,6 +701,9 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         final Playable currentMedia = media;
         Playable nextMedia = null;
+
+        // we should continue to next episode if we were told to continue and we're allowed to (by sleep timer)
+        shouldContinue &= callback.shouldContinueToNextEpisode();
 
         if (shouldContinue) {
             // Load next episode if previous episode was in the queue and if there
