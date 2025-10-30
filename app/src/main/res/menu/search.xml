@@ -6,6 +6,6 @@
             android:id="@+id/action_search"
             android:icon="@drawable/ic_search"
             app:showAsAction="collapseActionView|always"
-            app:actionViewClass="androidx.appcompat.widget.SearchView"
+            app:actionViewClass="de.danoeh.antennapod.ui.common.CollapsibleSearchView"
             android:title="@string/search_label"/>
 </menu>
