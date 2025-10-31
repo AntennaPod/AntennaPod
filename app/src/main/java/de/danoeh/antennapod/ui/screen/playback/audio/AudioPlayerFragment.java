@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.playback.audio;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.color.MaterialColors;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -361,7 +363,6 @@ public class AudioPlayerFragment extends Fragment implements
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
-        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         @Nullable Playable media = controller.getMedia();
         if (media != null) {
             currentChapterIndex = Chapter.getAfterPosition(media.getChapters(), currentPosition);
@@ -374,15 +375,36 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         txtvPosition.setContentDescription(getString(R.string.position,
                 Converter.getDurationStringLocalized(getContext(), currentPosition)));
-        showTimeLeft = UserPreferences.shouldShowRemainingTime();
+
+        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
+        final boolean endingThisEpisode = controller.isSleepTimerEndingThisEpisode(remainingTime);
+
+        showTimeLeft = UserPreferences.shouldShowRemainingTime() || controller.sleepTimerActive();
+        final String endingSymbol = endingThisEpisode ? "⏲" : "-";
+
         if (showTimeLeft) {
+            int remainingSleepTime = Math.toIntExact(controller.getSleepTimerTimeLeft().getMillisValue());
+            if (remainingSleepTime > 0) {
+                remainingTime = Math.min(remainingSleepTime, remainingTime);
+            }
+
             txtvLength.setContentDescription(getString(R.string.remaining_time,
                     Converter.getDurationStringLocalized(getContext(), remainingTime)));
-            txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
+            txtvLength.setText(((remainingTime > 0) ? endingSymbol : "")
+                    + Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setContentDescription(getString(R.string.chapter_duration,
                     Converter.getDurationStringLocalized(getContext(), duration)));
             txtvLength.setText(Converter.getDurationStringLong(duration));
+        }
+        if (controller.sleepTimerActive()) {
+            txtvLength.setTextColor(
+                    MaterialColors.getColor(getContext(),
+                            android.R.attr.colorActivatedHighlight, Color.RED));
+        } else {
+            txtvLength.setTextColor(
+                    MaterialColors.getColor(getContext(),
+                            android.R.attr.textColorSecondary, Color.BLACK));
         }
 
         if (!sbPosition.isPressed()) {
