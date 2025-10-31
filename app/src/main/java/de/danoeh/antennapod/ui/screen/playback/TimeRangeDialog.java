@@ -42,6 +42,7 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
         private int to;
         private final RectF bounds = new RectF();
         int touching = 0;
+        boolean invertAfterAlways = false;
 
         public TimeRangeView(Context context) { // Used by Android tools
             this(context, 0, 0);
@@ -118,7 +119,11 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
             float angleDistance = (float) ((to - from + 24) % 24) / 24 * 360;
             paintSelected.setStrokeWidth(padding / 6);
             paintSelected.setStyle(Paint.Style.STROKE);
-            canvas.drawArc(bounds, angleFrom, angleDistance, false, paintSelected);
+            if (from == to) {
+                canvas.drawArc(bounds, 0, 360, false, paintSelected);
+            } else {
+                canvas.drawArc(bounds, angleFrom, angleDistance, false, paintSelected);
+            }
             paintSelected.setStyle(Paint.Style.FILL);
             Point p1 = radToPoint(angleFrom + 90, size / 2 - padding);
             canvas.drawCircle(p1.x, p1.y, padding / 2, paintSelected);
@@ -159,6 +164,11 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 float fromDistance = Math.abs(angle - (float) from / 24 * 360);
                 float toDistance = Math.abs(angle - (float) to / 24 * 360);
+
+                if (from == to) {
+                    invertAfterAlways = true;
+                }
+
                 if (fromDistance < 15 || fromDistance > (360 - 15)) {
                     touching = 1;
                     return true;
@@ -168,23 +178,36 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
                 }
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 int newTime = (int) (24 * (angle / 360.0));
+
                 if (from == to && touching != 0) {
-                    // Switch which handle is focussed such that selection is the smaller arc
                     touching = (((newTime - to + 24) % 24) < 12) ? 2 : 1;
                 }
+
                 if (touching == 1) {
-                    from = newTime;
+                    if (invertAfterAlways) {
+                        to = newTime;
+                    } else {
+                        from = newTime;
+                    }
                     invalidate();
                     return true;
                 } else if (touching == 2) {
-                    to = newTime;
+                    if (invertAfterAlways) {
+                        from = newTime;
+                    } else {
+                        to = newTime;
+                    }
                     invalidate();
                     return true;
                 }
-            } else if (touching != 0) {
-                touching = 0;
-                return true;
+            } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                if (touching != 0) {
+                    touching = 0;
+                    invertAfterAlways = false;
+                    return true;
+                }
             }
+
             return super.onTouchEvent(event);
         }
     }
