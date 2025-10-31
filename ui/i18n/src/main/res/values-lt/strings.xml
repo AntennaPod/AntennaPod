@@ -90,7 +90,6 @@
     <string name="rename_feed_label">Pervadinti tinklalaidę</string>
     <string name="remove_feed_label">Pašalinti tinklalaidę</string>
     <string name="share_label">Dalintis</string>
-    <string name="feed_remover_msg">Tinklalaidė šalinama</string>
     <string name="load_complete_feed">Atnaujinti visą tinklalaidę</string>
     <string name="multi_select">Pažymėti keletą</string>
     <string name="select_all_above">Pažymėti visus aukščiau</string>
@@ -186,8 +185,8 @@
     <string name="synchronization_sum">Sinchronizuoti su kitais įrenginiais</string>
     <string name="automation">Automatizacija</string>
     <string name="download_pref_details">Išsamiau</string>
-    <string name="import_export_pref">Importas/Eksportas</string>
-    <string name="import_export_search_keywords">atsarginės kopijos, atkūrimas</string>
+    <string name="import_export_pref">Atsarginės kopijos ir atkūrimas</string>
+    <string name="import_export_search_keywords">importavimas, eksportavimas, importuoti, eksportuoti, atsarginė kopija, atkūrimas</string>
     <string name="external_elements">Išoriniai elementai</string>
     <string name="interruptions">Pertraukimai</string>
     <string name="playback_control">Atkūrimo valdymas</string>
@@ -196,7 +195,7 @@
     <string name="preference_search_no_results">Rezultatų nėra</string>
     <string name="preference_search_clear_history">Išvalyti istoriją</string>
     <string name="pref_episode_cleanup_summary">Epizodai, kurie gali būti ištrinti automatinio atsiuntimo metu pritrūkus laisvos vietos naujiems epizodams</string>
-    <string name="pref_pauseOnDisconnect_sum">Pristabdyti atkūrimą, kai atjungiamos ausinės ar „Bluetooth“</string>
+    <string name="pref_pauseOnDisconnect_sum">Pristabdyti atkūrimą, kai atjungiamos ausinės ar „Bluetooth“ įrenginiai</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Pratęsti atkūrimą, kai ausinės pakartotinai prijungiamos</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Pratęsti atkūrimą, kai pakartotinai prisijungiama prie „Bluetooth“</string>
     <string name="pref_hardware_forward_button_summary">Derinkite mygtuko „pirmyn“ elgseną</string>
@@ -215,8 +214,6 @@
     <string name="pref_mobileUpdate_images">Viršelio paveikslėliai</string>
     <string name="pref_mobileUpdate_episode_download">Epizodų atsiuntimas</string>
     <string name="pref_mobileUpdate_streaming">Klausymasis tiesiogiai</string>
-    <string name="pref_nav_drawer_feed_order_sum">Keiskite prenumeratų tvarką</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Keisti prenumeratų skaitiklyje atvaizduojamą informaciją. Gali paveikti prenumeratų rikiavimą, jei prenumeratų tvarka nustatyta rikiuoti pagal skaitiklio reikšmę.</string>
     <string name="pref_automatic_download_on_battery_title">Atsiuntimas ne įkrovimo metu</string>
     <string name="pref_automatic_download_on_battery_sum">Leisti automatinį atsiuntimą kai baterija nėra įkraunama</string>
     <string name="pref_episode_cover_summary">Naudoti epizodo viršelį, kai prieinama. Nepažymėjus, programėlė visada naudos tinklalaidės viršelio paveikslėlį.</string>
@@ -328,7 +325,7 @@
   <string name="synchronization_choose_title">Pasirinkite sinchronizavimo teikėją</string>
     <string name="synchronization_summary_unchoosen">Galite pasirinkti iš keleto teikėjų prenumeratų ir epizodų atkūrimo būsenai sinchronizuoti</string>
     <string name="dialog_choose_sync_service_title">Pasirinkite sinchronizavimo teikėją</string>
-    <string name="synchronization_summary_nextcloud">„Gpoddersync“ ir atvirojo kodo „Nextcloud“ programėlė, kurią nesunkiai galite įsidiegti savo serveryje. Ši programėlė yra nepriklausoma nuo „AntennaPod“ projekto.</string>
+    <string name="synchronization_summary_nextcloud">„Gpodder Sync“ yra atvirojo kodo „Nextcloud“ programėlė, kurią galite nesunkiai įdiegti savo serveryje. „Gpodder Sync“ yra nepriklausoma nuo „AntennaPod“ projekto.</string>
     <string name="synchronization_nextcloud_authenticate_browser">Suteikite prieigą atsivėrusioje interneto naršyklėje ir sugrįžkite į „AntennaPod“.</string>
     <string name="gpodnetauth_login_butLabel">Prisijungti</string>
     <string name="gpodnetauth_encryption_warning">Slaptažodis ir duomenys nėra užšifruojami!</string>
@@ -485,7 +482,6 @@
     <string name="section_hidden">Paslėptas</string>
     <string name="remove_history_label">Pašalinti iš istorijos</string>
     <string name="feed_volume_boost_heavy">Stiprus postūmis</string>
-    <string name="feed_delete_confirmation_msg_batch">Patvirtinkite, kad norite pašalinti pasirinktas podkastas, VISUS jų epizodus (įskaitant atsisiųstus epizodus), atkūrimo istoriją ir statistiką.</string>
     <string name="open_podcast">Atviras podcast\'as</string>
     <string name="add_to_queue_label">Įtraukti į eilę</string>
     <string name="download_error_io_error">IO klaida</string>
@@ -504,7 +500,6 @@
     <string name="automatic_database_export_label">Automatinis duomenų bazės eksportavimas</string>
     <string name="no_all_episodes_head_label">Nėra epizodų</string>
     <string name="home_continue_empty_text">Epizodus galite įtraukti juos atsisiųsdami arba ilgai paspausdami ir pasirinkdami „Įtraukti į eilę“.</string>
-    <string name="statistics_episodes_started">pradėjo</string>
     <string name="drawer_preferences">Šoninės panelės nustatymai</string>
     <string name="smart_shuffle">Išmanusis maišymas</string>
     <string name="add_to_favorite_label">Pridėti prie mėgstamiausių</string>
@@ -555,7 +550,6 @@
     <string name="episode_notification">Epizodų pranešimai</string>
     <string name="remove_all_inbox_confirmation_msg">Patvirtinkite, kad norite pašalinti visas iš gaunamųjų laiškų dėžutės.</string>
     <string name="remove_all_inbox_label">Pašalinti viską iš gautųjų</string>
-    <string name="feed_delete_confirmation_msg">Patvirtinkite, kad norite ištrinti podkastą „%1$s“, VISUS jo epizodus (įskaitant atsisiųstus epizodus), atkūrimo istoriją ir statistiką.</string>
     <string name="multi_select_started_talkback">Daugkartinio pasirinkimo veiksmai rodomi apačioje</string>
     <string name="refresh_failed_msg">Paskutinis atnaujinimas nepavyko. Bakstelėkite , kad peržiūrėtumėte išsamią informaciją.</string>
     <string name="add_tag">Pridėti žymą</string>
@@ -576,10 +570,10 @@
     <string name="download_error_file_type_type">Failo tipo klaida</string>
     <string name="download_error_db_access">Prieigos prie duomenų bazės klaida</string>
     <string name="download_log_title_unknown">Nežinomas pavadinimas</string>
-    <string name="null_value_podcast_error">Paliestoje nuorodoje nėra galiojančio podkasto URL. Patikrinkite nuorodą ir bandykite dar kartą arba ieškokite podkasto rankiniu būdu.</string>
+    <string name="null_value_podcast_error">Paspaustoje nuorodoje nėra galiojančio tinklalaidės URL. Patikrinkite nuorodą ir bandykite dar kartą arba ieškokite tinklalaidės rankiniu būdu.</string>
     <string name="confirm_mobile_download_dialog_title">Patvirtinkite mobilųjį atsisiuntimą</string>
     <string name="confirm_mobile_download_dialog_download_later">Atsisiųsti vėliau</string>
-    <string name="confirm_mobile_download_dialog_allow_this_time">Atsisiųskite vis tiek</string>
+    <string name="confirm_mobile_download_dialog_allow_this_time">Vis tiek atsisiųsti</string>
     <string name="confirm_mobile_streaming_notification_title">Patvirtinkite mobiliąją transliaciją</string>
     <string name="lock_queue">Užrakinimo eilė</string>
     <string name="clear_queue_label">Išvalyti eilę</string>
@@ -622,8 +616,7 @@
     <string name="user_interface_sum">Išvaizda, prenumeratos, užrakintas ekranas</string>
     <string name="pref_black_theme_title">Visiškai juoda</string>
     <string name="pref_nav_drawer_items_sum">Pakeiskite, kurie elementai rodomi navigacijos stalčiuje arba apatinėje navigacijoje</string>
-    <string name="pref_nav_drawer_feed_order_title">Nustatykite prenumeratos tvarką</string>
-    <string name="pref_nav_drawer_feed_counter_title">Nustatyti prenumeratos skaitiklį</string>
+    <string name="pref_nav_drawer_feed_counter_title">Skaitiklis</string>
     <string name="pref_automatic_download_title">Automatinis atsisiuntimas</string>
     <string name="pref_automatic_download_sum">Automatinio epizodų atsisiuntimo konfigūravimas</string>
     <string name="pref_episode_cache_title">Epizodo riba</string>
@@ -650,8 +643,6 @@
     <string name="pref_delete_removes_from_queue_title">Ištrinti pašalina iš eilės</string>
     <string name="pref_default_page_sum">Ekranas, atveriamas paleidžiant AntennaPod</string>
     <string name="pref_delete_removes_from_queue_sum">Automatiškai pašalinti epizodą iš eilės, kai jis ištrinamas</string>
-    <string name="pref_filter_feed_title">Prenumeratos filtras</string>
-    <string name="pref_filter_feed_sum">Filtruoti prenumeratas šoninėje juostoje ir prenumeratos apžvalgoje</string>
     <string name="sleep_timer_always">Visada</string>
     <string name="auto_enable_label_with_times">Automatiškai įjungiamas miego laikmatis, kai paspaudžiamas atkūrimas tarp %1$s ir %2$s</string>
     <string name="gpodnet_description">Gpodder.net yra atvirojo kodo podkastų sinchronizavimo paslauga, kurią galite įdiegti savo serveryje. Gpodder.net nepriklauso nuo AntennaPod projekto.</string>
@@ -692,27 +683,23 @@
     <string name="section_shown">Parodyta</string>
     <string name="home_downloads_empty_text">Galite atsisiųsti bet kurį epizodą ir klausytis jo neprisijungę prie interneto.</string>
     <string name="delete_downloads_played">Ištrinti grojo</string>
-    <string name="mobile_download_notice">Atsisiųskite per mobiliojo ryšio duomenų ryšį kitas %d minutes</string>
     <string name="delete_downloads_played_confirmation">Patvirtinkite, kad norite ištrinti visus atsisiųstus failus, kurie buvo paleisti.</string>
     <string name="bottom_navigation">Apatinė navigacija</string>
-    <string name="statistics_episodes_total">iš viso</string>
-    <string name="statistics_episodes_downloaded">atsisiųsta</string>
     <string name="statistics_episodes_space">užimama vieta</string>
     <string name="episode_download_failed">Epizodo atsisiųsti nepavyko</string>
     <string name="go_to_position_label">Eikite į šią poziciją</string>
     <string name="removed_history_label">Pašalinta iš istorijos</string>
-    <string name="nextcloud_login_error_generic">Nepavyksta prisijungti prie Nextcloud.\n\n- Patikrinkite tinklo ryšį.\n- Patikrinkite, ar naudojate teisingą serverio adresą.\n- Įsitikinkite, kad įdiegtas „Nextcloud“ įskiepis gpoddersync.</string>
+    <string name="nextcloud_login_error_generic">Nepavyksta prisijungti prie Nextcloud.\n\n- Patikrinkite tinklo ryšį.\n- Patikrinkite, ar naudojate teisingą serverio adresą.\n- Įsitikinkite, kad įdiegtas „Gpodder Sync“ įskiepis iš Nextcloud.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">- Naudojatės VPN? Jūsų VPN programa apsimeta mobiliuoju tinklu (matuojamas ryšys). Jei norite, kad ši problema būtų išspręsta, susisiekite su savo VPN programos kūrėjais.\n- Nesinaudojate VPN? Android Wi-Fi nustatymuose pakeiskite Wi-Fi tipą į nematuojamą.</string>
     <string name="feed_volume_boost_light">Nedidelis postūmis</string>
     <string name="auto_enable_label">Automatiškai įjungti miego laikmatį paspaudus groti</string>
     <string name="pref_black_theme_message">Tamsiam dizainui naudokite visiškai juodą spalvą</string>
     <string name="clear_queue_confirmation_msg">Prašome patvirtinti, kad norite pašalinti VISAS epizodas iš eilės.</string>
-    <string name="feed_folders_include_root">Rodyti šį podkastą pagrindiniame sąraše</string>
+    <string name="feed_folders_include_root">Rodyti aukščiau esančias žymes (tik, kai navigacijos skydelis yra šone)</string>
     <string name="cancel_download_label">Atšaukti atsisiuntimą</string>
     <string name="pref_theme_title_automatic">Automatinis</string>
     <string name="confirm_mobile_download_dialog_message">Nustatymuose išjungtas atsisiuntimas per mobilųjį duomenų ryšį. Vėliau AntennaPod gali automatiškai atsisiųsti epizodą, kai bus prieinamas Wi-Fi ryšys.</string>
     <string name="no_chapters_label">Nėra skyrių</string>
-    <string name="feed_delete_confirmation_local_msg">Patvirtinkite, kad norite pašalinti podkastą „%1$s“, jo atkūrimo istoriją ir statistiką.Vietiniame šaltinio aplanke esantys failai nebus pašalinti.</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">VPN programa apsimeta mobiliuoju tinklu (matuojamas ryšys). Nustatymuose išjungtas podkastų atnaujinimas naudojant mobiliųjų duomenų ryšį.\n\nAr vis dėlto norite atnaujinti? Jei norite, kad ši problema būtų išspręsta, kreipkitės į savo VPN programėlės kūrėjus.</string>
     <string name="pref_auto_local_delete_title">Automatinis ištrynimas iš vietinių aplankų</string>
     <string name="rating_contribute_label">Norite prisijungti? Nesvarbu, ar norite versti, palaikyti, kurti ar programuoti, mes mielai jus priimtume!</string>
@@ -776,14 +763,16 @@
     <string name="removed_from_inbox_message">Pašalinta iš gautųjų</string>
     <string name="mark_as_played_label">Pažymėti kaip perklausytą</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Pažymėtas kaip perklausytas</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d epizodas pažymėtas kaip perklausytas.</item>
+        <item quantity="few">%d epizodai pažymėti kaip perklausyti.</item>
+        <item quantity="many">%d epizodų pažymėta kaip perklausyti.</item>
+        <item quantity="other">%d epizodų pažymėta kaip perklausyti.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Pažymėtas kaip neperklausytas</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d epizodas pažymėtas kaip neperklausytas.</item>
+        <item quantity="few">%d epizodai pažymėti kaip neperklausyti.</item>
+        <item quantity="many">%d epizodų pažymėta kaip neperklausyti.</item>
+        <item quantity="other">%d epizodų pažymėta kaip neperklausyti.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Kad peršoktumėte į kitą poziciją, turite paleisti epizodą</string>
     <string name="mark_as_unplayed_label">Pažymėti kaip neperklausytą</string>
@@ -896,4 +885,10 @@
     <string name="echo_thanks_now_favorite">O dabar žvilgtelėkime į jūsų pamėgtas tinklalaides…</string>
     <string name="echo_share_heading">Mano mėgstamiausios tinklalaidės</string>
     <string name="echo_share">Mano %d metai su tinklalaidėmis. #AntennaPodEcho</string>
+    <string name="please_wait_before_refreshing">Šiek tiek palaukite prieš vėl atnaujindami tinklalaides.</string>
+    <string name="already_downloaded">Epizodas jau atsisiųstas</string>
+    <string name="tag_all">Visos</string>
+    <string name="statistics_expected_next_episode_any_time">Netrukus</string>
+    <string name="release_schedule_multiple_per_day">keliskart per dieną</string>
+    <string name="cover_as_background">Viršelis kaip fonas</string>
 </resources>

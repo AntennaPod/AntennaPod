@@ -175,6 +175,10 @@
         <item quantity="one">%d episode</item>
         <item quantity="other">%d episodes</item>
     </plurals>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d subscription</item>
+        <item quantity="other">%d subscriptions</item>
+    </plurals>
     <string name="episode_notification">Episode notifications</string>
     <string name="episode_notification_summary">Show a notification when a new episode is released</string>
     <plurals name="new_episode_notification_message">
@@ -196,14 +200,16 @@
     <string name="show_info_label">Show information</string>
     <string name="show_feed_settings_label">Show podcast settings</string>
     <string name="feed_settings_label">Podcast settings</string>
-    <string name="rename_feed_label">Rename podcast</string>
-    <string name="remove_feed_label">Remove podcast</string>
+    <string name="rename_feed_label">Rename</string>
+    <string name="archive_feed_label_verb">Archive</string>
+    <string name="archive_feed_label_noun">Archive</string>
+    <string name="restore_archive_label">Restore</string>
+    <string name="remove_archive_feed_label">Delete / archive</string>
+    <string name="remove_feed_label">Delete</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
-    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\", ALL its episodes (including downloaded episodes), playback history, and its statistics.</string>
-    <string name="feed_delete_confirmation_msg_batch">Please confirm that you want to remove the selected podcasts, ALL their episodes (including downloaded episodes), playback history, and its statistics.</string>
-    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\", its playback history, and its statistics. The files in the local source folder will not be deleted.</string>
-    <string name="feed_remover_msg">Removing podcast</string>
+    <string name="feed_delete_explanation_delete">Deleting will remove ALL its episodes including downloads, playback history, and statistics.</string>
+    <string name="feed_delete_explanation_archive">Archiving will hide it from the subscription list and avoid it getting updates. Downloads, statistics and playback state are kept.</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
@@ -408,6 +414,8 @@
     <string name="no_inbox_label">When new episodes arrive, they will be shown here. You can then decide if you are interested in them or not.</string>
     <string name="no_subscriptions_head_label">No subscriptions</string>
     <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
+    <string name="no_archive_head_label">Nothing archived</string>
+    <string name="no_archive_label">You can archive podcasts from the main subscriptions screen.</string>
 
     <!-- Preferences -->
     <string name="project_pref">Project</string>
@@ -771,6 +779,7 @@
     <string name="feed_tags_summary">Change the tags of this podcast to help organize your subscriptions</string>
     <string name="feed_folders_include_root">Show above tags (side navigation only)</string>
     <string name="tag_all">All</string>
+    <string name="tag_untagged">Untagged</string>
     <string name="multi_feed_common_tags_info">Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
     <string name="auto_download_inbox_category">Automatically download episodes from the inbox</string>
     <string name="episode_filters_label">Episode filter</string>

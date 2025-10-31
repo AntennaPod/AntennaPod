@@ -17,9 +17,9 @@
         android:title="@string/rename_feed_label" />
 
     <item
-        android:id="@+id/remove_feed"
+        android:id="@+id/remove_archive_feed"
         android:menuCategory="container"
-        android:title="@string/remove_feed_label" />
+        android:title="@string/remove_archive_feed_label" />
 
     <item
         android:id="@+id/share_feed"

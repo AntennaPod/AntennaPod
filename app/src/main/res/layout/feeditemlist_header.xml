@@ -38,6 +38,15 @@
                 android:layout_marginVertical="4dp"
                 tools:visibility="visible" />
 
+            <Button
+                android:id="@+id/butRestore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/restore_archive_label"
+                android:visibility="gone"
+                android:layout_marginVertical="4dp"
+                tools:visibility="visible" />
+
             <ImageButton
                 android:id="@+id/butShowInfo"
                 android:layout_width="48dp"

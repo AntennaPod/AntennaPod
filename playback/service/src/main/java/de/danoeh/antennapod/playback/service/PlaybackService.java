@@ -301,9 +301,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (mediaPlayer == null) {
             mediaPlayer = new LocalPSMP(this, mediaPlayerCallback); // Cast not supported or not connected
         }
-        if (media == null) { // Media is null here if app is restarted from ACTION_MEDIA_BUTTON
-            media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
-        }
         if (media != null) {
             mediaPlayer.playMediaObject(media, !media.localFileAvailable(), wasPlaying, true);
         }
@@ -1922,7 +1919,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return;
             }
 
-            List<FeedItem> results = DBReader.searchFeedItems(0, query);
+            List<FeedItem> results = DBReader.searchFeedItems(0, query, Feed.STATE_SUBSCRIBED);
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
                 startPlaying(media, false);

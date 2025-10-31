@@ -683,17 +683,22 @@ public final class DBReader {
      */
     @NonNull
     public static NavDrawerData getNavDrawerData(@Nullable SubscriptionsFilter subscriptionsFilter,
-                                                 FeedOrder feedOrder, FeedCounter feedCounter) {
+                                                 FeedOrder feedOrder, FeedCounter feedCounter, int feedState) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
         final Map<Long, Integer> feedCounters = adapter.getFeedCounters(feedCounter);
-        List<Feed> feeds = getFeedList();
-
+        List<Feed> allFeeds = getFeedList();
+        List<Feed> typeFilteredFeeds = new ArrayList<>();
+        for (Feed feed : allFeeds) {
+            if (feed.getState() == feedState) {
+                typeFilteredFeeds.add(feed);
+            }
+        }
         if (subscriptionsFilter == null) {
             subscriptionsFilter = new SubscriptionsFilter("");
         }
-        feeds = SubscriptionsFilterExecutor.filter(feeds, feedCounters, subscriptionsFilter);
+        List<Feed> feeds = SubscriptionsFilterExecutor.filter(typeFilteredFeeds, feedCounters, subscriptionsFilter);
 
         Comparator<Feed> comparator;
         switch (feedOrder) {
@@ -754,8 +759,13 @@ public final class DBReader {
         final int numNewItems = getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW));
         final int numDownloadedItems = getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
 
+        NavDrawerData.TagItem untaggedTag = new NavDrawerData.TagItem(FeedPreferences.TAG_UNTAGGED);
         Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
         for (Feed feed : feeds) {
+            if (feed.getPreferences().getTags().isEmpty() || (feed.getPreferences().getTags().size()) == 1
+                    && feed.getPreferences().getTags().contains(FeedPreferences.TAG_ROOT)) {
+                untaggedTag.addFeed(feed, 0);
+            }
             for (String tag : feed.getPreferences().getTags()) {
                 if (!tags.containsKey(tag)) {
                     tags.put(tag, new NavDrawerData.TagItem(tag));
@@ -767,16 +777,31 @@ public final class DBReader {
         List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
         Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
 
+        if (!untaggedTag.getFeeds().isEmpty()) {
+            tagsSorted.add(0, untaggedTag);
+        }
+
         NavDrawerData result = new NavDrawerData(feeds, tagsSorted,
                 queueSize, numNewItems, numDownloadedItems, feedCounters);
         adapter.close();
         return result;
     }
 
-    public static List<NavDrawerData.TagItem> getAllTags() {
+    public static List<NavDrawerData.TagItem> getAllTags(int feedState) {
         Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
-        List<Feed> feeds = getFeedList();
+        List<Feed> allFeeds = getFeedList();
+        List<Feed> feeds = new ArrayList<>();
+        for (Feed feed : allFeeds) {
+            if (feed.getState() == feedState) {
+                feeds.add(feed);
+            }
+        }
+        NavDrawerData.TagItem untaggedTag = new NavDrawerData.TagItem(FeedPreferences.TAG_UNTAGGED);
         for (Feed feed : feeds) {
+            if (feed.getPreferences().getTags().isEmpty() || (feed.getPreferences().getTags().size()) == 1
+                    && feed.getPreferences().getTags().contains(FeedPreferences.TAG_ROOT)) {
+                untaggedTag.addFeed(feed, 0);
+            }
             for (String tag : feed.getPreferences().getTags()) {
                 if (FeedPreferences.TAG_ROOT.equals(tag)) {
                     continue;
@@ -789,6 +814,9 @@ public final class DBReader {
         }
         List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
         Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        if (!untaggedTag.getFeeds().isEmpty()) {
+            tagsSorted.add(0, untaggedTag);
+        }
         // Root tag here means "all feeds", this is different from the nav drawer.
         NavDrawerData.TagItem rootTag = new NavDrawerData.TagItem(FeedPreferences.TAG_ROOT);
         for (Feed feed : feeds) {
@@ -798,10 +826,10 @@ public final class DBReader {
         return tagsSorted;
     }
 
-    public static List<FeedItem> searchFeedItems(final long feedId, final String query) {
+    public static List<FeedItem> searchFeedItems(final long feedId, final String query, int state) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (FeedItemCursor searchResult = new FeedItemCursor(adapter.searchItems(feedId, query))) {
+        try (FeedItemCursor searchResult = new FeedItemCursor(adapter.searchItems(feedId, query, state))) {
             List<FeedItem> items = extractItemlistFromCursor(searchResult);
             loadAdditionalFeedItemListData(items);
             return items;
@@ -810,10 +838,10 @@ public final class DBReader {
         }
     }
 
-    public static List<Feed> searchFeeds(final String query) {
+    public static List<Feed> searchFeeds(final String query, int state) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (FeedCursor cursor = new FeedCursor(adapter.searchFeeds(query))) {
+        try (FeedCursor cursor = new FeedCursor(adapter.searchFeeds(query, state))) {
             List<Feed> items = new ArrayList<>();
             while (cursor.moveToNext()) {
                 items.add(cursor.getFeed());

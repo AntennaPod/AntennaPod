@@ -154,7 +154,6 @@
     <string name="remove_feed_label">Suprimeix el pòdcast</string>
     <string name="share_label">Comparteix</string>
     <string name="share_file_label">Comparteix el fitxer</string>
-    <string name="feed_remover_msg">S\'està eliminant el pòdcast</string>
     <string name="load_complete_feed">Actualitza el pòdcast sencer</string>
     <string name="multi_select">Selecció múltiple</string>
     <string name="select_all_above">Seleccionar tots cap amunt</string>
@@ -372,10 +371,7 @@
     <string name="pref_black_theme_message">Utilitza tot negre per al tema fosc</string>
     <string name="pref_tinted_theme_title">Colors dinàmics</string>
     <string name="pref_tinted_theme_message">Adaptar colors segons el fons</string>
-    <string name="pref_nav_drawer_feed_order_title">Ajustar l\'ordre de les subscripcions</string>
-    <string name="pref_nav_drawer_feed_order_sum">Canvia l\'ordre de les subscripcions</string>
     <string name="pref_nav_drawer_feed_counter_title">Ajustar el comptador de subscripcions</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Canvia la informació mostrada pel comptador de les subscripcions. També afecta l\'ordre de les subscripcions si a l\'opció \'Ordre de les subscripcions\' s\'ha indicat \'Comptador\'.</string>
     <string name="pref_automatic_download_title">Baixada automàtica</string>
     <string name="pref_automatic_download_sum">Configureu la baixada automàtica d\'episodis</string>
     <string name="pref_automatic_download_on_battery_title">Baixa mentre no es carrega</string>
@@ -438,8 +434,6 @@
     <string name="remember_last_page">Recorda l\'última pàgina</string>
     <string name="pref_delete_removes_from_queue_title">Eliminar remoure de la cua</string>
     <string name="pref_delete_removes_from_queue_sum">Elimina automàticament un episodi de la cua quan s\'esborri</string>
-    <string name="pref_filter_feed_title">Filtre de subscripcions</string>
-    <string name="pref_filter_feed_sum">Filtreu les vostres subscripcions al tauler de navegació i a la pantalla de subscripcions</string>
     <string name="subscriptions_counter_greater_zero">Comptador superior a zero</string>
     <string name="auto_downloaded">Auto descarregat</string>
     <string name="not_auto_downloaded">No auto descarregat</string>
@@ -752,14 +746,12 @@
         <item quantity="other">Mida total de %d episodis al dispositiu</item>
     </plurals>
     <string name="home_continue_empty_text">Podeu afegir episodis baixant-los o mantenint premut i seleccionant «Afegeix a la cua».</string>
-    <string name="feed_delete_confirmation_local_msg">Confirmeu que voleu eliminar el pòdcast «%1$s» i l\'historial de reproduccions i estadístiques corresponents. Els fitxers a la carpeta d\'origen local no se suprimiran.</string>
     <string name="delete_downloads_played_confirmation">Confirmeu que voleu suprimir totes les baixades reproduides.</string>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d dia despres d\'acabar</item>
         <item quantity="many">%d dies despres d\'acabar</item>
         <item quantity="other">%d dies despres d\'acabar</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">Confirmeu que voleu eliminar el pòdcast «%1$s», TOTS els seus episodis (incloent-hi els baixats), l\'historial de reproduccions i les estadístiques.</string>
     <string name="delete_downloads_played">Eliminar reproduit</string>
     <string name="episode_download_failed">No s\'ha pogut baixar l\'episodi</string>
     <string name="visit_social_interact_label">Mostra els comentaris</string>
@@ -792,7 +784,6 @@
     <string name="episode_lists">Llistes d\'episodis</string>
     <string name="echo_hours_this_year">Aquest any heu reproduït</string>
     <string name="echo_share">El meu any %d en pòdcasts. #AntennaPodEcho</string>
-    <string name="feed_delete_confirmation_msg_batch">Confirmeu que voleu eliminar els pòdcasts seleccionats, TOTS els seus episodis (incloent-hi els baixats), l\'historial de reproduccions i les estadístiques.</string>
     <string name="pref_nav_drawer_items_title">Personalitza la navegació</string>
     <string name="notification_channel_refreshing_description">Es mostra quan es comprova si hi ha episodis nous.</string>
     <string name="enabled">Habilitat</string>
@@ -882,11 +873,6 @@
     </plurals>
     <string name="removed_from_inbox_message">S\'ha eliminat de la safata d\'entrada</string>
     <string name="mark_as_played_label">Marca com a reproduït</string>
-    <plurals name="marked_as_played_message">
-        <item quantity="one">S\'ha marcat com a reproduït</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
-    </plurals>
     <string name="play_this_to_seek_position_message">Per a saltar a certa posició, heu de reproduir l\'episodi</string>
     <plurals name="move_to_top_message">
         <item quantity="one">S\'ha mogut %d episodi al principi.</item>
@@ -912,15 +898,16 @@
     </plurals>
     <string name="visit_social_interact_confirm_dialog_title">Esteu abandonant AntennaPod</string>
     <string name="visit_social_interact_confirm_dialog_message">Assegureu-vos que confieu en la pàgina web «%1$s».</string>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">S\'ha marcat com a no reproduït</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
-    </plurals>
     <string name="mark_as_unplayed_label">Marca com a no reproduït</string>
     <string name="transcript_follow_audio_label">Seguiu l\'àudio</string>
     <string name="reset_playback_position_label">Restabliu la posició de reproducció</string>
     <string name="no_items_selected_message">No hi ha elements seleccionats</string>
     <string name="delete_local_feed_confirmation_dialog_message">En suprimir elimina l\'episodi de l\'AntennaPod i suprimeix el fitxer multimèdia de l\'emmagatzematge del dispositiu. No es pot tornar a descarregar a través d\'AntennaPod.</string>
     <string name="no_queue_items_inbox_has_items_label">No hi ha episodis a la cúa, però hi ha nous episodis que t\'esperen!</string>
+    <string name="please_wait_before_refreshing">Espereu un temps abans de tornar a refrescar els podcasts.</string>
+    <string name="already_downloaded">L’episodi ja s’ha descarregat</string>
+    <string name="tag_all">Totes</string>
+    <string name="statistics_expected_next_episode_any_time">En qualsevol moment</string>
+    <string name="release_schedule_multiple_per_day">diverses vegades al dia</string>
+    <string name="cover_as_background">Portada com a fons</string>
 </resources>

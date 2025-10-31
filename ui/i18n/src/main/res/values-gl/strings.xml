@@ -154,11 +154,10 @@
     <string name="show_info_label">Mostrar información</string>
     <string name="show_feed_settings_label">Mostrar axustes do podcast</string>
     <string name="feed_settings_label">Axustes do podcast</string>
-    <string name="rename_feed_label">Mudar nome do podcast</string>
-    <string name="remove_feed_label">Eliminar o podcast</string>
+    <string name="rename_feed_label">Cambiar nome</string>
+    <string name="remove_feed_label">Eliminar</string>
     <string name="share_label">Compartir</string>
     <string name="share_file_label">Compartir ficheiro</string>
-    <string name="feed_remover_msg">Eliminando o podcast</string>
     <string name="load_complete_feed">Actualizar o podcast completo</string>
     <string name="multi_select">Selección múltiple</string>
     <string name="select_all_above">Seleccionar todo arriba</string>
@@ -304,8 +303,8 @@
     <string name="synchronization_sum">Sincronizar con outros dispositivos</string>
     <string name="automation">Automatizado</string>
     <string name="download_pref_details">Detalles</string>
-    <string name="import_export_pref">Importar/Exportar</string>
-    <string name="import_export_search_keywords">respaldar, restaurar</string>
+    <string name="import_export_pref">Copia e restablecemento</string>
+    <string name="import_export_search_keywords">importar, exportar</string>
     <string name="theming">Aparencia</string>
     <string name="external_elements">Elementos externos</string>
     <string name="interruptions">Interrupcións</string>
@@ -316,7 +315,7 @@
     <string name="preference_search_clear_history">Eliminar historial</string>
     <string name="pref_episode_cleanup_title">Eliminar antes da descarga automática</string>
     <string name="pref_episode_cleanup_summary">Episodios que se poden eliminar se a Descarga Automática precisa espazo para novos episodios</string>
-    <string name="pref_pauseOnDisconnect_sum">Deter a reprodución cando se desconectan os auriculares ou bluetooth</string>
+    <string name="pref_pauseOnDisconnect_sum">Deter a reprodución cando se desconectan os auriculares ou dispositivos Bluetooth</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Retomar a reprodución cando se conectan os auriculares</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Retomar a reprodución cando se reconecta o bluetooth</string>
     <string name="pref_hardware_forward_button_title">Botón avanzar</string>
@@ -373,10 +372,7 @@
     <string name="pref_black_theme_message">Usar o negro total no decorado escuro</string>
     <string name="pref_tinted_theme_title">Cores dinámicas</string>
     <string name="pref_tinted_theme_message">As cores da app varían en función do fondo de pantalla</string>
-    <string name="pref_nav_drawer_feed_order_title">Arranxar as subscricións</string>
-    <string name="pref_nav_drawer_feed_order_sum">Arranxa as subscricións</string>
-    <string name="pref_nav_drawer_feed_counter_title">Establecer a conta de subscricións</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Cambia a información mostrada polo contador de subscricións. Tamén afecta á orde das subscricións se \'Orde das subscricións\' está establecida a \'Contador\'.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Contador</string>
     <string name="pref_automatic_download_title">Descarga automática</string>
     <string name="pref_automatic_download_sum">Configurar a descarga automática de episodios</string>
     <string name="pref_automatic_download_on_battery_title">Descargar elementos cando non esté cargando</string>
@@ -439,8 +435,6 @@
     <string name="remember_last_page">Lembrar última páxina</string>
     <string name="pref_delete_removes_from_queue_title">Eliminar quita da cola</string>
     <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio da cola cando se borra</string>
-    <string name="pref_filter_feed_title">Filtro da subscrición</string>
-    <string name="pref_filter_feed_sum">Filtra as subscricións no panel de navegación e pantalla de subscricións</string>
     <string name="subscriptions_counter_greater_zero">Conta maior que cero</string>
     <string name="auto_downloaded">Descargado automáticamente</string>
     <string name="not_auto_downloaded">Non descargado automáticamente</string>
@@ -549,7 +543,7 @@
     <string name="synchronization_summary_unchoosen">Podes elexir entre múltiples provedores para sincronizar as túas subscricións e estado de reprodución dos episodios</string>
     <string name="dialog_choose_sync_service_title">Elixe o provedor de sincronización</string>
     <string name="gpodnet_description">Gpodder.net é un servizo de código aberto para a sincronización de podcasts que podes instalar no teu propio servidor. Gpodder.net é independente do proxecto AntennaPod.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync é unha app Nextcloud de código aberto que podes instalar fácilmente no teu servidor. A app é independente do proxecto AntennaPod.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync é unha app Nextcloud de código aberto que podes instalar fácilmente no teu servidor. Gpodder Sync é independente do proxecto AntennaPod.</string>
     <string name="synchronization_host_explanation">Podes elexir o teu propio servidor co que sincronizar. Cando elixas o teu servidor de sincronización, escribe aquí o seu enderezo.</string>
     <string name="synchronization_host_label">Enderezo do servidor</string>
     <string name="proceed_to_login_butLabel">Acceder ao servidor</string>
@@ -624,7 +618,7 @@
     <string name="authentication_descr">Cambiar o identificador e contrasinal para este podcast e os seus episodios</string>
     <string name="feed_tags_label">Etiquetas</string>
     <string name="feed_tags_summary">Cambia as etiquetas deste podcast para axudarche a organizar as subscricións</string>
-    <string name="feed_folders_include_root">Mostrar este podcast na lista principal</string>
+    <string name="feed_folders_include_root">Mostrar as etiquetas (só en panel lateral)</string>
     <string name="multi_feed_common_tags_info">Só se mostran as etiquetas común das subscricións seleccionadas. As outras etiquetas non se ven afectadas.</string>
     <string name="episode_filters_label">Filtro para episodios</string>
     <string name="episode_filters_description">Lista dos termos utilizados para decidir se un episodio debe ser incluído ou excluído das descargas automáticas</string>
@@ -738,7 +732,6 @@
     <string name="add_shortcut">Engadir atallo</string>
     <string name="sync_status_wait_for_downloads">Agardando a que se actualicen as subscricións…</string>
     <string name="statistics_view_all">Todos os podcasts »</string>
-    <string name="statistics_episodes_started">iniciado</string>
     <string name="bottom_navigation_summary">Acceder ás pantallas máis importantes dende calquera lugar cun só toque</string>
     <string name="statistics_episodes_space">espazo ocupado</string>
     <string name="home_new_empty_text">Aquí aparecerán os episodios novos. Poderás decidir entón se son do teu interese.</string>
@@ -746,8 +739,6 @@
     <string name="section_shown">Mostrados</string>
     <string name="delete_downloads_played">Eliminar os escoitados</string>
     <string name="delete_downloads_played_confirmation">Confirma que queres eliminar todos as descargas escoitadas.</string>
-    <string name="statistics_episodes_total">total</string>
-    <string name="statistics_episodes_downloaded">descargado</string>
     <string name="statistics_release_next">próximo episodio (estimación)</string>
     <string name="statistics_years_barchart_description">Tempo de escoita por mes</string>
     <string name="statistics_release_schedule">calendario de lanzamento</string>
@@ -757,16 +748,12 @@
     </plurals>
     <string name="home_no_recent_unplayed_episodes_text">Xa escoitaches todos os episodios recentes. Nada por aquí para sorprenderte ;)</string>
     <string name="home_continue_empty_text">Podes engadir episodios descargándoos ou cunha pulsación longa sobre eles e elixir \"Engadir á cola\".</string>
-    <string name="feed_delete_confirmation_msg_batch">Confirma que queres retirar os podcasts seleccionados, TODOS os seus episodios (incluíndo os episodios descargados, historial de reprodución e a súas estatísticas.</string>
-    <string name="feed_delete_confirmation_msg">Confirma que queres eliminar o podcast \"%1$s\", TODOS os seus episodios (incluídos os descargados), historial de reprodución e as súas estatísticas.</string>
-    <string name="feed_delete_confirmation_local_msg">Confirma que queres retirar o podcast \"%1$s\", o seu historial de reprodución e estatísticas. Os ficheiros no cartafol de base local non serán eliminados.</string>
-    <string name="mobile_download_notice">Descargar usando datos do móbil durante os próximos %d minutos</string>
     <string name="null_value_podcast_error">A ligazón indicada non contén un URL de podcast válido. Comproba a ligazón e volve a intentalo, ou busca o podcast de xeito manual.</string>
     <string name="bottom_navigation">Navegación inferior</string>
     <string name="pref_nav_drawer_items_title">Personalizar a navegación</string>
     <string name="pref_nav_drawer_items_sum">Cambia os elementos que aparecen na caixa de navegación ou na barra inferior</string>
     <string name="discover_more">Achar mais »</string>
-    <string name="nextcloud_login_error_generic">Non se puido acceder ao teu Nextcloud.\n\n- Comproba a conexión á rede.\n- Confirma que é o enderezo correcto do servidor.\n- Verifica que está instalado o complemento Nextcloud gpoddersync.</string>
+    <string name="nextcloud_login_error_generic">Non se puido acceder a Nextcloud.\n\n- Comproba a conexión á rede.\n- Confirma que é o enderezo correcto do servidor.\n- Comproba que está instalado o complemento Nextcloud Gpodder Sync.</string>
     <string name="episode_download_failed">Erro ao descargar o episodio</string>
     <string name="echo_listened_after_title">Facemos unha pequena análise cando se publican os episodios e cando os escoitas. A nosa conclusión?</string>
     <string name="echo_home_header">Resumo do ano</string>
@@ -849,12 +836,12 @@
     <string name="removed_from_inbox_message">Retirado das novidades</string>
     <string name="mark_as_played_label">Marcar como reproducido</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Marcado como reproducido</item>
-        <item quantity="other"/>
+        <item quantity="one">Marcouse %d episodio como reproducido.</item>
+        <item quantity="other">Marcáronse %d episodios como reproducidos.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Marcado como non reproducido</item>
-        <item quantity="other"/>
+        <item quantity="one">Marcouse %d episodio como non reproducido.</item>
+        <item quantity="other">Marcáronse %d episodios como non reproducidos.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Para ir a unha posición tes que reproducir o episodio</string>
     <string name="mark_as_unplayed_label">Marcar como non reproducido</string>
@@ -883,4 +870,21 @@
     <string name="no_queue_items_inbox_has_items_label">Sen episodios preparados, pero hai novos episodios agardando por ti!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Ir ás novidades</string>
     <string name="auto_download_inbox_category">Descarga automatica das novidades</string>
+    <string name="please_wait_before_refreshing">Agarda uns minutos antes de volver actualizar os podcasts.</string>
+    <string name="already_downloaded">O episodio xa está descargado</string>
+    <string name="tag_all">Todo</string>
+    <string name="statistics_expected_next_episode_any_time">En calquera momento</string>
+    <string name="release_schedule_multiple_per_day">varias veces ao día</string>
+    <string name="cover_as_background">Portada como imaxe de fondo</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d subscrición</item>
+        <item quantity="other">%d subscricións</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arquivar</string>
+    <string name="archive_feed_label_noun">Arquivo</string>
+    <string name="restore_archive_label">Restablecer</string>
+    <string name="remove_archive_feed_label">Eliminar / arquivar</string>
+    <string name="feed_delete_explanation_delete">Eliminar vas eliminar TODOS os seus episodios incluíndo as descargas, historial de reprodución e estatísticas.</string>
+    <string name="feed_delete_explanation_archive">Arquivar o podcast no aparecerá na lista de subscricións e non se actualizará. Vanse manter as descargas, estatísticas e estados de reprodución.</string>
+    <string name="tag_untagged">Sen etiquetar</string>
 </resources>

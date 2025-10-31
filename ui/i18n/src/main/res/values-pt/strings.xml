@@ -165,7 +165,6 @@
     <string name="remove_feed_label">Remover podcast</string>
     <string name="share_label">Partilhar</string>
     <string name="share_file_label">Partilhar ficheiro</string>
-    <string name="feed_remover_msg">A remover podcast</string>
     <string name="load_complete_feed">Atualizar podcast</string>
     <string name="multi_select">Seleção múltipla</string>
     <string name="select_all_above">Marcar tudo acima</string>
@@ -383,10 +382,7 @@
     <string name="pref_black_theme_message">Utilizar preto total para o tema escuro</string>
     <string name="pref_tinted_theme_title">Cores dinâmicas</string>
     <string name="pref_tinted_theme_message">Ajustar cores da aplicação à cor de fundo do ecrã</string>
-    <string name="pref_nav_drawer_feed_order_title">Ordem de subscrições</string>
-    <string name="pref_nav_drawer_feed_order_sum">Alterar ordem das subscrições</string>
     <string name="pref_nav_drawer_feed_counter_title">Contador de subscrições</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Alterar informação mostrada no contador de subscrições. Também afeta as subscrições se a \'Ordem de subscrições\' estiver definida como \'Contador\'.</string>
     <string name="pref_automatic_download_title">Transferência automática</string>
     <string name="pref_automatic_download_sum">Configurar transferência automática de episódios</string>
     <string name="pref_automatic_download_on_battery_title">Descarregar se não estiver a carregar</string>
@@ -449,8 +445,6 @@
     <string name="remember_last_page">Lembrar último ecrã</string>
     <string name="pref_delete_removes_from_queue_title">Remover da fila</string>
     <string name="pref_delete_removes_from_queue_sum">Remover episódio da fila se for eliminado do dispositivo</string>
-    <string name="pref_filter_feed_title">Filtro de subscrições</string>
-    <string name="pref_filter_feed_sum">Filtrar subscrições no menu de navegação e no ecrã de subscrições</string>
     <string name="subscriptions_counter_greater_zero">Contador superior a zero</string>
     <string name="auto_downloaded">Transferido automaticamente</string>
     <string name="not_auto_downloaded">Não transferido automaticamente</string>
@@ -767,21 +761,14 @@
     <string name="discover_more">Descobrir mais »</string>
     <string name="statistics_release_schedule">Período de lançamento</string>
     <string name="nextcloud_login_error_generic">Não foi possível iniciar sessão no servidor Nextcloud.\n\n- Verifique a sua ligação de rede.\n- Confirme se introduziu o endereço correto do servidor.\n- Certifique-se de que o plugin \"gpoddersync Nextcloud\" está instalado.</string>
-    <string name="feed_delete_confirmation_msg_batch">Confirma que pretende remover os podcasts selecionados? Irá eliminar todos os episódios (incluindo os transferidos), histórico de reprodução e as suas estatísticas.</string>
     <string name="null_value_podcast_error">O link introduzido não contém um URL de podcast válido. Verifique o link e tente novamente, ou pesquise o podcast manualmente.</string>
     <string name="pref_nav_drawer_items_title">Personalizar navegação</string>
     <string name="pref_nav_drawer_items_sum">Alterar itens mostrados no menu de navegação e na navegação em baixo</string>
-    <string name="mobile_download_notice">Descarregar através de dados móveis durante os próximos %d minutos</string>
-    <string name="statistics_episodes_started">iniciados</string>
     <string name="statistics_release_next">próximo episódio (estimativa)</string>
-    <string name="feed_delete_confirmation_msg">Confirma que pretende remover o podcast \"%1$s\"? Irá eliminar todos os episódios (incluindo os transferidos), histórico de reprodução e as suas estatísticas.</string>
-    <string name="feed_delete_confirmation_local_msg">Confirma que pretende remover o podcast \"%1$s\", o seu histórico de reprodução e as suas estatísticas? Os ficheiros guardados na pasta não serão eliminados.</string>
     <string name="bottom_navigation_summary">Aceda aos ecrãs mais importantes em qualquer lado com apenas um toque</string>
     <string name="bottom_navigation">Navegação em baixo</string>
-    <string name="statistics_episodes_total">total</string>
     <string name="statistics_episodes_space">espaço ocupado</string>
     <string name="statistics_years_barchart_description">Tempo de reprodução (por mês)</string>
-    <string name="statistics_episodes_downloaded">descarregados</string>
     <string name="episode_download_failed">Falha ao transferir o episódio</string>
     <string name="add_feed_label_short">Adicionar</string>
     <string name="episodes_label_short">Episódios</string>
@@ -867,16 +854,6 @@
     </plurals>
     <string name="removed_from_inbox_message">Removido da caixa de entrada</string>
     <string name="mark_as_played_label">Marcar como reproduzido</string>
-    <plurals name="marked_as_played_message">
-        <item quantity="one">Marcado como reproduzido</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
-    </plurals>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Marcado como não reproduzido</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
-    </plurals>
     <string name="play_this_to_seek_position_message">Para pular para uma posição, tem que reproduzir o episódio</string>
     <string name="mark_as_unplayed_label">Marcar como não reproduzido</string>
     <plurals name="added_to_queue_message">

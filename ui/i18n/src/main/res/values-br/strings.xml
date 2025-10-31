@@ -161,7 +161,6 @@
     <string name="remove_feed_label">Dilemel ar podskignad</string>
     <string name="share_label">Rannañ</string>
     <string name="share_file_label">Rannañ ar restr</string>
-    <string name="feed_remover_msg">O tilemel ar podskignad</string>
     <string name="load_complete_feed">Hizivaat ar podskignad a-bezh</string>
     <string name="multi_select">Diuzañ meur a elfenn</string>
     <string name="select_all_above">Diuzañ gant ar re a-us</string>
@@ -358,10 +357,7 @@
     <string name="pref_black_theme_message">Implijout an du gwir evit an tem teñval</string>
     <string name="pref_tinted_theme_title">Livioù dinamek</string>
     <string name="pref_tinted_theme_message">Azasaat livioù an arload diouzh an drekleur</string>
-    <string name="pref_nav_drawer_feed_order_title">Despizañ urzh ar c\'houmanantoù</string>
-    <string name="pref_nav_drawer_feed_order_sum">Kemmañ urzh ar c\'houmanantoù</string>
     <string name="pref_nav_drawer_feed_counter_title">Despizañ ar c\'honter koumanant</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Kemmañ an titour diskouezet war ar c\'honter koumanantoù. Kemmañ a ra ivez urzh ar podskignadoù mard eo urzh ar podskignadoù lakaet da \"Konter\".</string>
     <string name="pref_automatic_download_title">Pellgargañ emgefreek</string>
     <string name="pref_automatic_download_sum">Kefluniañ pellgargañ emgefreek ar rannoù.</string>
     <string name="pref_automatic_download_on_battery_title">Pellgargañ pa ne vez ket o kargañ</string>
@@ -417,8 +413,6 @@
     <string name="remember_last_page">Derc\'hel soñj eus ar bajenn ziwezhañ</string>
     <string name="pref_delete_removes_from_queue_title">Dilemel a denn eus al lost</string>
     <string name="pref_delete_removes_from_queue_sum">Tennañ ur rann eus al lost ent emgefreek pa vez dilamet</string>
-    <string name="pref_filter_feed_title">Sil ar c\'houmanantoù</string>
-    <string name="pref_filter_feed_sum">Silañ ho koumanantoù war ar stalaf merdeiñ ha war skramm ar c\'houmanantoù</string>
     <string name="subscriptions_counter_greater_zero">Konter brasoc\'h eget mann</string>
     <string name="auto_downloaded">Pellgarget ent emgefreek</string>
     <string name="not_auto_downloaded">N\'eo ket pellgarget ent emgefreek</string>

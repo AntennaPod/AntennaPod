@@ -147,7 +147,6 @@
     <string name="remove_feed_label">팟캐스트 제거</string>
     <string name="share_label">공유</string>
     <string name="share_file_label">파일 공유</string>
-    <string name="feed_remover_msg">팟캐스트 삭제하는 중</string>
     <string name="load_complete_feed">전체 팟캐스트 새로 고침</string>
     <string name="multi_select">다중 선택</string>
     <string name="select_all_above">위 모두 선택</string>
@@ -347,10 +346,7 @@
     <string name="pref_black_theme_message">다크모드에서 완전 검정 사용</string>
     <string name="pref_tinted_theme_title">동적으로 색깔 바꾸기</string>
     <string name="pref_tinted_theme_message">배경에 따라 앱의 색 맞추기</string>
-    <string name="pref_nav_drawer_feed_order_title">구독 순서 설정</string>
-    <string name="pref_nav_drawer_feed_order_sum">구독 순서를 바꿉니다</string>
     <string name="pref_nav_drawer_feed_counter_title">구독 카운터 설정</string>
-    <string name="pref_nav_drawer_feed_counter_sum">구독 카운터로 표시하는 정보를 바꿉니다. \'구독 순서\'를 \'카운터\'로 설정한 경우 구독 목록의 정렬 순서에도 영향을 미칩니다.</string>
     <string name="pref_automatic_download_title">자동 다운로드</string>
     <string name="pref_automatic_download_sum">에피소드 자동 다운로드 설정</string>
     <string name="pref_automatic_download_on_battery_title">충전하지 않을 때 다운로드</string>
@@ -409,8 +405,6 @@
     <string name="remember_last_page">마지막 페이지 저장</string>
     <string name="pref_delete_removes_from_queue_title">제거된 항목 대기열에서 삭제</string>
     <string name="pref_delete_removes_from_queue_sum">에피소드를 삭제할 때 대기열에서 자동으로 제거</string>
-    <string name="pref_filter_feed_title">구독 필터</string>
-    <string name="pref_filter_feed_sum">네비게이션 드로어 및 구독 화면에서 내 구독 필터링</string>
     <string name="subscriptions_counter_greater_zero">0보다 큰 개수</string>
     <string name="auto_downloaded">자동 다운로드</string>
     <string name="not_auto_downloaded">자동 다운로드 아님</string>

@@ -12,8 +12,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 3090095
-        versionName "3.9.0"
+        versionCode 3100095
+        versionName "3.10.0"
 
         javaCompileOptions {
             annotationProcessorOptions {

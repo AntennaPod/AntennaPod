@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_label">Галоўная</string>
+    <string name="home_label_short">Галоўная</string>
+    <string name="feed_update_receiver_name">Абнаўленне падпісак</string>
+</resources>

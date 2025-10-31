@@ -170,7 +170,6 @@
     <string name="remove_feed_label">Удалить подкаст</string>
     <string name="share_label">Поделиться</string>
     <string name="share_file_label">Поделиться файлом</string>
-    <string name="feed_remover_msg">Подкаст удаляется</string>
     <string name="load_complete_feed">Обновить весь подкаст</string>
     <string name="multi_select">Множественный выбор</string>
     <string name="select_all_above">Выбрать все выше</string>
@@ -391,10 +390,7 @@
     <string name="pref_black_theme_message">Чёрная тема вместо тёмной</string>
     <string name="pref_tinted_theme_title">Динамические цвета</string>
     <string name="pref_tinted_theme_message">Адаптировать цвет приложения на основе обоев</string>
-    <string name="pref_nav_drawer_feed_order_title">Порядок подписок</string>
-    <string name="pref_nav_drawer_feed_order_sum">Выберите порядок отображения подписок</string>
     <string name="pref_nav_drawer_feed_counter_title">Выбрать счётчик подписок</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Выберите какую информацию отображает счётчик подписок. Влияет также на порядок подписок, если сортировка подписок производится по количеству.</string>
     <string name="pref_automatic_download_title">Автоматическая загрузка</string>
     <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков</string>
     <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
@@ -457,8 +453,6 @@
     <string name="remember_last_page">Запоминать последнюю страницу</string>
     <string name="pref_delete_removes_from_queue_title">Убирать удаленные из очереди</string>
     <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении</string>
-    <string name="pref_filter_feed_title">Фильтр подписок</string>
-    <string name="pref_filter_feed_sum">Отфильтруйте подписки на панели навигации и на экране подписок</string>
     <string name="subscriptions_counter_greater_zero">Ненулевой счётчик подписок</string>
     <string name="auto_downloaded">С автозагрузкой</string>
     <string name="not_auto_downloaded">Без автозагрузки</string>
@@ -763,13 +757,9 @@
     <string name="shortcut_select_subscription">Выбрать подписку</string>
     <string name="add_shortcut">Добавить ярлык</string>
     <string name="home_downloads_empty_text">Вы можете скачать любой выпуск, чтобы слушать его офлайн.</string>
-    <string name="feed_delete_confirmation_msg">Подтвердите, что вы хотите удалить подкаст «%1$s», все его выпуски (включая скачанные), историю воспроизведения и статистику.</string>
-    <string name="feed_delete_confirmation_msg_batch">Подтвердите, что вы хотите удалить выбранные подкасты, все выпуски (включая скачанные), историю воспроизведения и статистику.</string>
-    <string name="feed_delete_confirmation_local_msg">Подтвердите, что вы хотите удалить подкаст «%1$s», историю его воспроизведения и статистику. Файлы в локальной исходной папке удалены не будут.</string>
     <string name="home_no_recent_unplayed_episodes_text">Вы уже прослушали все недавние выпуски. Так что непрослушанных выпусков тут нет ;)</string>
     <string name="home_continue_empty_text">Вы можете добавлять выпуски, скачав их или через длительное нажатие и «Добавить в очередь».</string>
     <string name="home_new_empty_text">Здесь будут появляться новые выпуски. Вы сможете выбрать интересные для вас.</string>
-    <string name="statistics_episodes_downloaded">Загруженные</string>
     <string name="statistics_release_schedule">Расписание выхода</string>
     <string name="statistics_release_next">Следующий выпуск</string>
     <string name="statistics_years_barchart_description">Прослушано в месяц</string>
@@ -788,12 +778,9 @@
     <string name="discover_more">Найти новое</string>
     <string name="section_shown">Отображаемые</string>
     <string name="delete_downloads_played">Удалить прослушанные</string>
-    <string name="mobile_download_notice">В течение %d минут включена загрузка через мобильную сеть</string>
     <string name="bottom_navigation">Навигация внизу</string>
     <string name="bottom_navigation_summary">Доступ к важным страницам отовсюду, в одно нажатие</string>
-    <string name="statistics_episodes_started">Начатые</string>
     <string name="nextcloud_login_error_generic">Не удалось войти в Nextcloud.\n\n— Проверьте соединение с интернетом.\n— Удостоверьтесь, что указан правильный адрес сервера.\n— Удостоверьтесь, что gpoddersync установлен в Nextcloud.</string>
-    <string name="statistics_episodes_total">Всего</string>
     <string name="episode_download_failed">Не удалось скачать выпуск</string>
     <string name="delete_downloads_played_confirmation">Подтвердите, что вы хотите удалить все прослушанные скачанные выпуски.</string>
     <string name="preference_search_clear_input">Очистить</string>
@@ -872,18 +859,6 @@
     <string name="echo_hoarder_comment_medium">Вы слушали выпуски из %1$d%% от общего числа %2$d ваших активных подписок в этом году. Почему бы не послушать «%3$s» снова?</string>
     <string name="removed_from_inbox_message">Удалено из входящих</string>
     <string name="mark_as_played_label">Отметить как прослушанное</string>
-    <plurals name="marked_as_played_message">
-        <item quantity="one">Отметить как прослушанное</item>
-        <item quantity="few"/>
-        <item quantity="many"/>
-        <item quantity="other"/>
-    </plurals>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Отметить как непрослушанное</item>
-        <item quantity="few"/>
-        <item quantity="many"/>
-        <item quantity="other"/>
-    </plurals>
     <string name="mark_as_unplayed_label">Отметить как непрослушанный</string>
     <string name="reset_playback_position_label">Сбросить позицию</string>
     <string name="no_items_selected_message">Ничего не выделено</string>
