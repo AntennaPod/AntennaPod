@@ -9,11 +9,12 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.playback.TimerValue;
+import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 
 public class EpisodeSleepTimer extends ClockSleepTimer {
 
-    public EpisodeSleepTimer(final Context context) {
-        super(context);
+    public EpisodeSleepTimer(final Context context, PlaybackServiceMediaPlayer mediaPlayer) {
+        super(context, mediaPlayer);
     }
 
     @Override

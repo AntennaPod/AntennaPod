@@ -1255,7 +1255,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             sleepTimer.updateRemainingTime(waitingTime);
         } else {
             sleepTimer = SleepTimerPreferences.getSleepTimerType() == SleepTimerType.CLOCK ?
-                    new ClockSleepTimer(getApplicationContext()) : new EpisodeSleepTimer(getApplicationContext());
+                    new ClockSleepTimer(getApplicationContext(), mediaPlayer) :
+                    new EpisodeSleepTimer(getApplicationContext(), mediaPlayer);
             sleepTimer.start(waitingTime);
         }
     }
