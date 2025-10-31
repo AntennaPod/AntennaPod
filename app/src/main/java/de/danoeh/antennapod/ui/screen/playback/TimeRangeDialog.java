@@ -173,6 +173,7 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 int newTime = (int) (24 * (angle / 360.0));
                 if (from == to && touching != 0) {
+                    // Switch which handle is focused such that selection is the longer arc
                     touching = (((newTime - to + 24) % 24) < 12) ? 1 : 2;
                 }
                 if (touching == 1) {
