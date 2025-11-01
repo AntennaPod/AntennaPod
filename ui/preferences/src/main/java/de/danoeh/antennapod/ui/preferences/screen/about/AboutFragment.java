@@ -36,7 +36,7 @@ public class AboutFragment extends AnimatedPreferenceFragment {
                 "%s (%s)", versionName, BuildConfig.COMMIT_HASH));
         findPreference("about_version").setOnPreferenceClickListener((preference) -> {
             ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(getString(R.string.report_bug_title),
+            ClipData clip = ClipData.newPlainText(getString(R.string.about_pref),
                     findPreference("about_version").getSummary());
             clipboard.setPrimaryClip(clip);
             if (Build.VERSION.SDK_INT <= 32) {
