@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.preferences.screen.bugreport;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.os.Build;
 import android.text.format.DateUtils;
@@ -12,11 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import de.danoeh.antennapod.core.CrashReportWriter;
 import de.danoeh.antennapod.core.utils.PackageUtils;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * Viewmodel encapsulating all data and business logic required
@@ -178,8 +180,9 @@ public class BugReportViewModel extends AndroidViewModel {
     }
 
     private final MutableLiveData<UiState> uiState = new MutableLiveData<>();
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Disposable disposable;
 
+    @SuppressLint("CheckResult")
     public BugReportViewModel(Application application) {
         super(application);
 
@@ -188,15 +191,15 @@ public class BugReportViewModel extends AndroidViewModel {
         // initialisation we should perform the file I/O on a background thread.
         //
 
-        executor.submit(() -> {
-            this.uiState.postValue(new UiState(application));
-        });
+        this.disposable = Observable.fromCallable(() -> new UiState(application))
+                .subscribeOn(Schedulers.io())
+                .subscribe(this.uiState::postValue);
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        executor.shutdown();
+        disposable.dispose();
     }
 
     public LiveData<UiState> getState() {
