@@ -1,0 +1,18 @@
+plugins {
+    id 'com.android.library'
+}
+apply from: "../common.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.core"
+
+    lint {
+        disable 'VectorPath'
+    }
+}
+
+dependencies {
+    implementation project(":storage:preferences")
+
+    implementation "commons-io:commons-io:$commonsioVersion"
+}
