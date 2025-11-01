@@ -49,7 +49,8 @@ public class BugReportViewModel extends AndroidViewModel {
         }
 
         public String getFriendlyDeviceName() {
-            if (Build.MODEL.toLowerCase().startsWith(Build.MANUFACTURER.toLowerCase())) {
+            if (Build.MODEL.toLowerCase(Locale.getDefault()).startsWith(Build.MANUFACTURER
+                    .toLowerCase(Locale.getDefault()))) {
                 return Build.MODEL;
             }
 
