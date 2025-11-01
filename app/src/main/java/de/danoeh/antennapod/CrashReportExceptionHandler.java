@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.core.CrashReportWriter;
 
-public class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+public class CrashReportExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     private final Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler;
 
-    public UncaughtExceptionHandler() {
+    public CrashReportExceptionHandler() {
         defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 
