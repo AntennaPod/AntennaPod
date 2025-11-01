@@ -18,9 +18,9 @@ dependencyResolutionManagement {
 }
 
 include ':app'
-include ':core'
 include ':event'
 include ':model'
+include ':system'
 
 include ':net:common'
 include ':net:discovery'

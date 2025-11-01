@@ -23,12 +23,12 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
     implementation project(":event")
     implementation project(":net:common")
     implementation project(":net:sync:gpoddernet")
     implementation project(":storage:preferences")
     implementation project(":storage:importexport")
+    implementation project(':system')
     implementation project(":ui:common")
     implementation project(":ui:i18n")
     implementation project(':net:sync:service-interface')
