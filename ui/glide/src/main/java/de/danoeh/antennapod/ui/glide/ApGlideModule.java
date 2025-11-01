@@ -44,6 +44,8 @@ public class ApGlideModule extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
+        registry.prepend(AuthenticatedImageUrl.class, InputStream.class, new AuthenticatedImageLoader.Factory());
+
         registry.replace(String.class, InputStream.class, new MetadataRetrieverLoader.Factory(context));
         registry.append(String.class, InputStream.class, new GenerativePlaceholderImageModelLoader.Factory());
         registry.append(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
