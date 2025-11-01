@@ -11,8 +11,6 @@ import android.os.Vibrator;
 import android.os.VibratorManager;
 import android.util.Log;
 
-import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
-
 public class ShakeListener implements SensorEventListener {
     private static final String TAG = ShakeListener.class.getSimpleName();
 
@@ -20,12 +18,10 @@ public class ShakeListener implements SensorEventListener {
     private SensorManager mSensorMgr;
     private final SleepTimer mSleepTimer;
     private final Context mContext;
-    private final PlaybackServiceMediaPlayer mediaPlayer;
 
-    public ShakeListener(Context context, SleepTimer sleepTimer, PlaybackServiceMediaPlayer mediaPlayer) {
+    public ShakeListener(Context context, SleepTimer sleepTimer) {
         mContext = context;
         mSleepTimer = sleepTimer;
-        this.mediaPlayer = mediaPlayer;
         resume();
     }
 
@@ -79,7 +75,6 @@ public class ShakeListener implements SensorEventListener {
         double gForce = Math.sqrt(gX * gX + gY * gY + gZ * gZ);
         if (gForce > 2.25) {
             Log.d(TAG, "Detected shake " + gForce);
-            mediaPlayer.setVolume(1.0f, 1.0f); //set the volume back to full when resetting
             mSleepTimer.reset();
             vibrate();
         }

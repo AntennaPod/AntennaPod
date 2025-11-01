@@ -13,7 +13,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 
 public class ClockSleepTimer implements SleepTimer {
@@ -26,11 +25,9 @@ public class ClockSleepTimer implements SleepTimer {
     private long lastTick = 0;
     private boolean hasVibrated = false;
     private ShakeListener shakeListener;
-    private final PlaybackServiceMediaPlayer mediaPlayer;
 
-    public ClockSleepTimer(final Context context, PlaybackServiceMediaPlayer mediaPlayer) {
+    public ClockSleepTimer(final Context context) {
         this.context = context;
-        this.mediaPlayer = mediaPlayer;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -83,7 +80,7 @@ public class ClockSleepTimer implements SleepTimer {
         }
         // start listening for shakes if shake to reset is enabled
         if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
-            shakeListener = new ShakeListener(getContext(), this, mediaPlayer);
+            shakeListener = new ShakeListener(getContext(), this);
         }
     }
 
@@ -135,6 +132,8 @@ public class ClockSleepTimer implements SleepTimer {
 
     @Override
     public void reset() {
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
         updateRemainingTime(initialWaitingTime);
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(getTimeLeft()));
     }
 }
