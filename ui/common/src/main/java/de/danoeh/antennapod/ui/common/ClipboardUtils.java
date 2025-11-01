@@ -15,13 +15,11 @@ import com.google.android.material.snackbar.Snackbar;
 /**
  * Utilities for commonly used clipboard functionality.
  */
-
 public abstract class ClipboardUtils {
 
     /**
      * Utility class used to copy the content of a TextView to the clipboard when the view is clicked.
      */
-
     public static class TextViewCopyOnClickListener extends ViewCopyOnClickListener {
         public TextViewCopyOnClickListener(@NonNull Context context, @StringRes int labelId) {
             super(context, labelId, R.string.copied_to_clipboard);
@@ -41,7 +39,6 @@ public abstract class ClipboardUtils {
     /**
      * Abstract utility class used to copy user-defined text to the clipboard when a view is clicked.
      */
-
     public abstract static class ViewCopyOnClickListener implements View.OnClickListener {
         private final String label;
         private final String message;
