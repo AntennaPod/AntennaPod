@@ -21,12 +21,14 @@ public class PodcastApp extends Application {
 
         if (BuildConfig.DEBUG) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
+                    .penaltyDeath()
                     .penaltyLog()
-                    .penaltyDropBox()
+                    .detectLeakedSqlLiteObjects()
                     .detectActivityLeaks()
-                    .detectLeakedClosableObjects()
                     .detectLeakedRegistrationObjects();
+            if (android.os.Build.VERSION.SDK_INT >= 26) {
+                builder.detectContentUriWithoutPermission();
+            }
             StrictMode.setVmPolicy(builder.build());
         }
 
