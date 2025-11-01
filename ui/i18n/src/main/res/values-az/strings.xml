@@ -63,7 +63,6 @@
     <string name="auto_download_label">Avtomatik yükləməyə daxil edin</string>
     <string name="show_info_label">Məlumatı göstər</string>
     <string name="remove_feed_label">Podcastı silin</string>
-    <string name="feed_remover_msg">Podcast silinir</string>
     <!--actions on feeditems-->
   <string name="download_label">Yüklə</string>
     <string name="play_label">Dinlə</string>
@@ -216,7 +215,6 @@
     <string name="removed_all_inbox_msg">Gələnlər qutusundan hamısı silindi</string>
     <string name="remove_all_inbox_confirmation_msg">Zəhmət olmasa, gələnlər qutusundan hamısı silmək istədiyinizi təsdiqləyin.</string>
     <string name="feed_volume_adapdation">Səs gücününün uyğunlaşması</string>
-    <string name="feed_delete_confirmation_msg_batch">Zəhmət olmasa, seçilmiş podkastları silmək istədiyinizi təsdiq edin, BÜTÜN bölümlərini (yüklənmişlər daxil), dinləmə tarixçələrini və statistikalarını.</string>
     <string name="show_feed_settings_label">Podkast ayarlarını göstər</string>
     <string name="rename_feed_label">Podkastın adını dəyiş</string>
     <string name="share_label">Paylaş</string>
@@ -278,7 +276,6 @@
     <string name="confirm_mobile_download_dialog_message">Mobil bağlantı üzərindən yükləmə ayarlarda deaktiv edilib. Daha sonra Wi-Fi bağlantı olanda AntennaPod yükləməni avtomotik başlaya bilər.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">Sizin VPN proqramı özünün mobil bağlantı kimi qələmə verir (ölçülən bağlantı). Podkastların mobil bağlantı üzərindən yüklənməsi ayarlarda deaktiv edilib. Bu problemin həlli üçün VPN proqramının müəllifi ilə əlaqə qurun.</string>
     <string name="confirm_mobile_download_dialog_download_later">Daha sonra yüklə</string>
-    <string name="mobile_download_notice">Növbəti %d dəqiqə ərzində mobil bağlantı üzərində yüklə</string>
     <string name="confirm_mobile_streaming_notification_message">Mobil bağlantı üzərindən dinləmə ayarlarda deaktiv edilib. Yenə də dinləmək üçün toxunun.</string>
     <string name="confirm_mobile_streaming_notification_title">Mobil dinləməni təsdiqləyin</string>
     <string name="confirm_mobile_streaming_button_always">Həmişə</string>
@@ -308,7 +305,6 @@
     <string name="home_continue_empty_text">Bölümləri yükləyərək və ya uzun basaraq və \"Növbəyə əlavə et\" seçərək əlavə edə bilərsiniz.</string>
     <string name="home_no_recent_unplayed_episodes_text">Siz artıq bütün bölümlər dinləmisiniz. Yeni bir şey yoxdur ;)</string>
     <string name="pref_smart_mark_as_played_sum">Bitməsinə beir neçə saniyə qaldığı halda belə, bölümləri dinlənmiş kimi işarələ</string>
-    <string name="feed_delete_confirmation_local_msg">Zəhmət olmasa, \"%1$s\" podkastını, onun dinləmə tarixçəsini və statistikasını silmək istədiyinizi təsdiq edin. Cihazın yaddaşındakı fayllar silinməyəcək.</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">%d bölümün ümumi ölçüsü</item>
         <item quantity="other">%d bölümün ümumi ölçüsü</item>
@@ -317,7 +313,6 @@
     <string name="support_podcast">Bu podkastı dəstəklə</string>
     <string name="favorites_export_summary">Saxlanılmış sevimliləri fayla ixrac et</string>
     <string name="home_new_empty_text">Yeni bölümlər burada göstəriləcək. Sİzə maraq olub-olmadığını sonra qərar verə bilərsiniz.</string>
-    <string name="feed_delete_confirmation_msg">Zəhmət olmasa, \"%1$s\" podkastını silmək istədiyinizi təsdiq edin, BÜTÜN bölümlərini (yüklənmişlər daxil), dinləmə tarixçəsini və statistikasını.</string>
     <string name="pref_smart_mark_as_played_title">Ağıllı dinlənmiş işarələmə</string>
     <string name="favorites_export_label">Sevimliləri ixrac et</string>
     <string name="playback_error_generic">Mediyafayl səsləndirilə bilinmədi.\n\n- Bölümü silib və yenidən yükləyin.\n- İnternet bağlantınızı yoxlayın və əmin olun ki, heç bir VPN və ya qeydiyyat səhifəsi bağlantıya maneçilik törətmir. \n- \"Media ünvanı\"-nı internet bələdçisində açın və orada səsləndirin. Əgər alınmırsa podkast müəlliflərinə müraciət edin.</string>

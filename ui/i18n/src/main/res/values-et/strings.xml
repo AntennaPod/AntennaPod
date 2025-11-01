@@ -150,7 +150,6 @@
     <string name="remove_feed_label">Eemalda taskuhääling</string>
     <string name="share_label">Jaga</string>
     <string name="share_file_label">Jaga faili</string>
-    <string name="feed_remover_msg">Taskuhäälingu eemaldamine</string>
     <string name="load_complete_feed">Värskenda kogu taskuhääling</string>
     <string name="multi_select">Mitme valimine</string>
     <string name="select_all_above">Vali kõik ülemised</string>
@@ -353,10 +352,7 @@
     <string name="pref_black_theme_message">Kasuta tumedat kujundust</string>
     <string name="pref_tinted_theme_title">Dünaamilised värvid</string>
     <string name="pref_tinted_theme_message">Kohanda rakenduse värvid taustapildile</string>
-    <string name="pref_nav_drawer_feed_order_title">Määra tellimuste järjekord</string>
-    <string name="pref_nav_drawer_feed_order_sum">Muuda oma tellimuste järjekorda</string>
     <string name="pref_nav_drawer_feed_counter_title">Määra tellimuste loendur</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Muuda, millist infot kuvatakse tellimuste loenduris. See mõjutab ka tellimuste järjekorda, kui \'Tellimuste järjekorra\' aluseks on \'Loendur\'.</string>
     <string name="pref_automatic_download_title">Automaatne allalaadimine</string>
     <string name="pref_automatic_download_sum">Saadete automaatse allalaadimise seadistamine</string>
     <string name="pref_automatic_download_on_battery_title">Allalaadimine, kui seade ei lae</string>
@@ -415,8 +411,6 @@
     <string name="remember_last_page">Jäta viimane leht meelde</string>
     <string name="pref_delete_removes_from_queue_title">Kustuta eemaldab järjekorrast</string>
     <string name="pref_delete_removes_from_queue_sum">Saate kustutamisel eemaldatakse see järjekorrast</string>
-    <string name="pref_filter_feed_title">Tellimuste filter</string>
-    <string name="pref_filter_feed_sum">Filtreeri oma tellimusi navigeerimismenüüs ja tellimuste lehel</string>
     <string name="subscriptions_counter_greater_zero">Loendur on suurem kui null</string>
     <string name="auto_downloaded">Automaatselt alla laaditud</string>
     <string name="not_auto_downloaded">Pole automaatselt alla laaditud</string>
@@ -706,12 +700,9 @@
     <string name="enabled">Lubatud</string>
     <string name="disabled">Keelatud</string>
     <string name="global_default_with_value">Globaalne vaikeväärtus (%1$s)</string>
-    <string name="feed_delete_confirmation_msg">Kinnita, et soovid kustutada taskuhäälingu \"%1$s\", KÕIK selle saated (sh allalaaditud), taasesituse ajaloo ja selle statistika.</string>
     <string name="delete_tag_label">Kustuta silt</string>
     <string name="delete_tag_confirmation">Kinnita, et soovid kustutada sildi \"%1$s\".</string>
     <string name="echo_share">Minu aasta %d taskuhäälingutes. #AntennaPodEcho</string>
-    <string name="feed_delete_confirmation_local_msg">Kinnita, et soovid eemaldada taskuhäälingu \"%1$s\", selle taasesituse ajaloo ja statistika. Kohalikus kaustas olevaid faile ei kustutata.</string>
-    <string name="feed_delete_confirmation_msg_batch">Kinnita, et soovid eemaldada valitud taskuhäälingu, KÕIK nende saated (sh allalaaditud), taasesituse ajaloo ja statistika.</string>
     <string name="pref_nav_drawer_items_title">Kohanda navigeerimist</string>
     <string name="statistics_release_next">järgmine saade (tõenäoliselt)</string>
     <string name="episode_information">Saate teave</string>
@@ -860,14 +851,6 @@
     </plurals>
     <string name="removed_from_inbox_message">Eemaldati postkastist</string>
     <string name="mark_as_played_label">Märgi kuulatuks</string>
-    <plurals name="marked_as_played_message">
-        <item quantity="one">Märgiti kuulatuks</item>
-        <item quantity="other"></item>
-    </plurals>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Märgiti kui kuulamata</item>
-        <item quantity="other"></item>
-    </plurals>
     <string name="play_this_to_seek_position_message">Asukohtadele juurdepääsuks tuleb saadet esitada</string>
     <string name="mark_as_unplayed_label">Märgi kui kuulamata</string>
     <plurals name="added_to_queue_message">

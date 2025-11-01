@@ -128,8 +128,6 @@
     <string name="feed_settings_label">Подешавања подкаста</string>
     <string name="rename_feed_label">Преименуј подкаст</string>
     <string name="remove_feed_label">Уклони подкаст</string>
-    <string name="feed_delete_confirmation_msg_batch">Потврдите да желите да уклоните изабране подкасте, СВЕ њихове епизоде (обухватајући преузете епизоде), историју репродукције и статистику.</string>
-    <string name="feed_remover_msg">Уклањање подкаста</string>
     <string name="load_complete_feed">Освежи цео подкаст</string>
     <string name="multi_select">Вишеструки избор</string>
     <string name="select_all_above">Изабери све изнад</string>
@@ -272,12 +270,9 @@
     <string name="pref_black_theme_message">Користи потпуно црну за тамну тему</string>
     <string name="pref_tinted_theme_title">Динамичке боје</string>
     <string name="pref_tinted_theme_message">Прилагодите боје апликације на основу позадине</string>
-    <string name="pref_nav_drawer_feed_order_sum">Промените редослед својих претплата</string>
     <string name="pref_nav_drawer_feed_counter_title">Подешавање бројача претплата</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Промените информације које приказује бројач претплата. Такође, утиче на сортирање претплата ако је „Редослед претплата“ подешен на „Бројач“.</string>
     <string name="pref_automatic_download_title">Аутоматско преузимање</string>
     <string name="pref_automatic_download_global_description">Аутоматски преузимајте епизоде из сандучета. Може се заменити по подкасту.</string>
-    <string name="pref_nav_drawer_feed_order_title">Подешавање редоследа претплата</string>
     <string name="pref_automatic_download_queue_title">Преузимање у редоследу</string>
     <string name="pref_automatic_download_queue_description">Аутоматски преузимајте епизоде у редоследу</string>
     <string name="pref_automatic_download_on_battery_sum">Дозволите аутоматско преузимање када се батерија не пуни</string>
@@ -328,7 +323,6 @@
     <string name="pref_delete_removes_from_queue_title">Избрисати уклоњено из редоследа</string>
     <string name="pref_downloads_button_action_title">Репродукција са екрана за преузимање</string>
     <string name="pref_downloads_button_action_sum">Прикажите дугме за репродукцију уместо дугмета за брисање на екрану за преузимање</string>
-    <string name="pref_filter_feed_title">Филтер претплата</string>
     <string name="subscriptions_counter_greater_zero">Бројач већи од нуле</string>
     <string name="auto_downloaded">Аутоматски преузето</string>
     <string name="not_auto_downloaded">Није аутоматски преузето</string>
@@ -581,11 +575,9 @@
         <item quantity="other">%2$s има %1$d нових епизода</item>
     </plurals>
     <string name="share_file_label">Дели фајл</string>
-    <string name="feed_delete_confirmation_local_msg">Потврдите да желите да уклоните подкаст „%1$s“, његову историју репродукције и статистику. Фајлови у локалном изворном фолдеру неће бити избрисани.</string>
     <string name="remove_all_inbox_confirmation_msg">Потврдите да желите да уклоните све из сандучета.</string>
     <string name="download_error_error_unknown">Непозната грешка</string>
     <string name="download_error_forbidden">Сервер подкаста одбија да одговори.</string>
-    <string name="feed_delete_confirmation_msg">Потврдите да желите да избришете подкаст „%1$s“, СВЕ његове епизоде (обухватајући преузете епизоде), историју репродукције и статистику.</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Освежавање подкаста преко мобилних података је онемогућено у подешавањима.\n\nИпак желите да освежите?</string>
     <string name="delete_tag_confirmation">Потврдите да желите да избришете ознаку „%1$s“.</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Ваша VPN апликација се претвара да је мобилна мрежа (веза са ограничењем). Освежавање подкаста преко мобилних података је онемогућено у подешавањима.\n\nИпак желите да освежите? Ако желите да се овај проблем реши, контактирајте креаторе ваше VPN апликације.</string>
@@ -662,7 +654,6 @@
     <string name="pref_full_notification_buttons_sum">Промените дугмад на обавештењу о репродукцији</string>
     <string name="pref_delete_removes_from_queue_sum">Аутоматски уклоните епизоду из редоследа када је избрисана</string>
     <string name="pref_feed_settings_dialog_msg">Ово подешавање је јединствено за сваки подкаст. Можете га променити отварањем странице подкаста.</string>
-    <string name="pref_filter_feed_sum">Филтрирајте своје претплате на траци за навигацију и на екрану претплата</string>
     <string name="not_kept_updated">Није одржавано ажурирано</string>
     <string name="pref_show_subscription_title">Прикажи наслове</string>
     <string name="deselect_all_label">Поништи избор свега</string>
@@ -843,16 +834,6 @@
     </plurals>
     <string name="removed_from_inbox_message">Уклоњено из сандучета</string>
     <string name="mark_as_played_label">Означи као слушано</string>
-    <plurals name="marked_as_played_message">
-        <item quantity="one">Означено као слушано</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
-    </plurals>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Означено као неслушано</item>
-        <item quantity="few"></item>
-        <item quantity="other"></item>
-    </plurals>
     <string name="play_this_to_seek_position_message">Да бисте прешли на позиције, потребно је да пустите епизоду</string>
     <string name="mark_as_unplayed_label">Означи као неслушано</string>
     <plurals name="added_to_queue_message">

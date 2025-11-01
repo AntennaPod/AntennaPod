@@ -69,6 +69,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
     private static final String ARG_FEED_NAME = "feedName";
+    private static final String ARG_ARCHIVED = "archived";
     private static final int SEARCH_DEBOUNCE_INTERVAL = 1500;
 
     private EpisodeItemListAdapter adapter;
@@ -114,6 +115,12 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         SearchFragment fragment = newInstance();
         fragment.getArguments().putLong(ARG_FEED, feed);
         fragment.getArguments().putString(ARG_FEED_NAME, feedTitle);
+        return fragment;
+    }
+
+    public static SearchFragment newInstanceArchive() {
+        SearchFragment fragment = newInstance();
+        fragment.getArguments().putBoolean(ARG_ARCHIVED, true);
         return fragment;
     }
 
@@ -198,10 +205,10 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         chip = layout.findViewById(R.id.feed_title_chip);
         chip.setOnCloseIconClickListener(v -> {
             getArguments().putLong(ARG_FEED, 0);
+            getArguments().putBoolean(ARG_ARCHIVED, false);
             searchWithProgressBar();
         });
-        chip.setVisibility((getArguments().getLong(ARG_FEED, 0) == 0) ? View.GONE : View.VISIBLE);
-        chip.setText(getArguments().getString(ARG_FEED_NAME, ""));
+        updateChipVisibility();
         if (getArguments().getString(ARG_QUERY, null) != null) {
             search();
         }
@@ -377,6 +384,17 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         search();
     }
 
+    private void updateChipVisibility() {
+        chip.setVisibility(View.GONE);
+        if (getArguments().getBoolean(ARG_ARCHIVED, false)) {
+            chip.setVisibility(View.VISIBLE);
+            chip.setText(R.string.archive_feed_label_noun);
+        } else if (getArguments().getLong(ARG_FEED, 0) != 0) {
+            chip.setVisibility(View.VISIBLE);
+            chip.setText(getArguments().getString(ARG_FEED_NAME, ""));
+        }
+    }
+
     private void search() {
         if (disposableFeeds != null) {
             disposableFeeds.dispose();
@@ -386,7 +404,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         }
         long feed = getArguments().getLong(ARG_FEED, 0);
         boolean isSearchingFeed = feed != 0;
-        chip.setVisibility(isSearchingFeed ? View.VISIBLE : View.GONE);
+        updateChipVisibility();
         adapterFeeds.setEndButton(R.string.search_online, isSearchingFeed ? null : this::searchOnline);
 
         String query = searchView.getQuery().toString();
@@ -394,11 +412,12 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             emptyViewHandler.setTitle(R.string.type_to_search);
             return;
         }
+        final int state = getArguments().getBoolean(ARG_ARCHIVED, false) ? Feed.STATE_ARCHIVED : Feed.STATE_SUBSCRIBED;
         if (feed != 0) {
             // Search within a feed
             adapterFeeds.updateData(Collections.emptyList());
         } else {
-            disposableFeeds = Observable.fromCallable(() -> DBReader.searchFeeds(query))
+            disposableFeeds = Observable.fromCallable(() -> DBReader.searchFeeds(query, state))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(results -> {
@@ -407,7 +426,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                         emptyViewHandler.setTitle(getString(R.string.no_results_for_query, query));
                     }, error -> Log.e(TAG, Log.getStackTraceString(error)));
         }
-        disposableEpisodes = Observable.fromCallable(() -> DBReader.searchFeedItems(feed, query))
+        disposableEpisodes = Observable.fromCallable(() -> DBReader.searchFeedItems(feed, query, state))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(results -> {

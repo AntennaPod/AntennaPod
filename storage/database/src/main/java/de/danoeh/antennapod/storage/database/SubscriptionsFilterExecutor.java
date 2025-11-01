@@ -37,7 +37,7 @@ public abstract class SubscriptionsFilterExecutor {
                 continue;
             }
 
-            if (filter.hideNonSubscribedFeeds && item.getState() != Feed.STATE_SUBSCRIBED) {
+            if (filter.hideNonSubscribedFeeds && item.getState() == Feed.STATE_NOT_SUBSCRIBED) {
                 continue;
             }
 

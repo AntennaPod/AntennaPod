@@ -108,7 +108,6 @@
     <string name="rename_feed_label">Ubah nama siniar</string>
     <string name="remove_feed_label">Hapus siniar</string>
     <string name="share_label">Bagikan</string>
-    <string name="feed_remover_msg">Menghapus siniar</string>
     <string name="load_complete_feed">Segarkan siniar selesai</string>
     <string name="multi_select">Pilih banyak</string>
     <string name="select_all_above">Pilih semua di atas</string>
@@ -267,8 +266,6 @@
     <string name="pref_black_theme_message">Gunakan warna hitam seluruhnya sebagai tema gelap</string>
     <string name="pref_tinted_theme_title">Warna dinamis</string>
     <string name="pref_tinted_theme_message">Sesuaikan warna aplikasi dengan gambar latar</string>
-    <string name="pref_nav_drawer_feed_order_sum">Ubah urutan langganan Anda</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Ubah informasi yang ditampilkan oleh penghitung langganan. Hal ini dapat memengaruhi urutan langganan jika \'Urutan Langganan\' diatur ke \'Penghitung\'.</string>
     <string name="pref_automatic_download_on_battery_title">Unduh saat sedang tidak mengisi daya perangkat</string>
     <string name="pref_automatic_download_on_battery_sum">Izinkan pengunduhan otomatis saat sedang tidak mengisi daya perangkat</string>
     <string name="pref_episode_cover_title">Gunakan sampul episode</string>
@@ -558,7 +555,6 @@
     <plurals name="new_episode_notification_title">
         <item quantity="other">Episode baru</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">Silakan konfirmasi bahwa Anda ingin menghapus siniar\"%1$s\" berikut SEMUA episode (termasuk eepisode-episode terunduh), riwayat pemutaran, dan statistiknya.</string>
     <string name="refresh_failed_msg">Penyegaran terakhir gagal. Ketuk untuk melihat detail.</string>
     <string name="add_to_favorite_label">Tambahkan ke daftar favorit</string>
     <string name="download_error_error_unknown">Galat tidak diketahui</string>
@@ -613,7 +609,6 @@
     <string name="feed_new_episodes_action_add_to_queue">Tambahkan ke antrean</string>
     <string name="episode_notification">Notifikasi episode</string>
     <string name="share_file_label">Bagikan berkas</string>
-    <string name="feed_delete_confirmation_msg_batch">Silakan konfirmasi bahwa Anda ingin menghapus siniar yang dipilih berikut SEMUA episode, (termasuk episode-episode terunduh), riwayat pemutaran, dan statistiknya.</string>
     <string name="multi_select_started_talkback">Aksi pemilihan ganda ditampilkan di bagian bawah</string>
     <string name="open_podcast">Buka siniar</string>
     <string name="delete_tag_label">Hapus penanda</string>
@@ -632,7 +627,6 @@
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="other">Ukuran seluruh %d episode pada perangkat ini</item>
     </plurals>
-    <string name="feed_delete_confirmation_local_msg">Silakan konfirmasi bahwa Anda ingin menghapus siniar \"%1$s\" berikut riwayat pemutaran dan statistiknya. Berkas di folder sumber lokal tidak akan dihapus.</string>
     <string name="episode_download_failed">Gagal mengunduh episode</string>
     <string name="playback_error_generic">File media tidak dapat diputar.\n\n- Coba hapus dan unduh ulang episode.\n- Periksa koneksi jaringan dan pastikan tidak ada VPN atau halaman catatan masuk yang menghalangi akses.\n- Coba tekan lama dan bagikan \"Alamat media\" ke peramban web untuk melihat apakah media bisa diputar di situs. Jika tidak, hubungi pembuat siniar.</string>
     <string name="rating_later">Nanti saja</string>
@@ -645,7 +639,6 @@
     <string name="no_all_episodes_head_label">Tidak ada episode</string>
     <string name="pref_auto_delete_title">Penghapusan otomatis</string>
     <string name="pref_nav_drawer_items_title">Suai ubahkan navigasi</string>
-    <string name="pref_nav_drawer_feed_order_title">Atur urutan langganan</string>
     <string name="pref_fast_forward">Majukan-lekas waktu yang dilewati</string>
     <string name="sleep_timer_always">Selalu</string>
     <plurals name="time_minutes_quantified">
@@ -657,7 +650,6 @@
     <string name="multi_feed_common_tags_info">Hanya penanda umum dari langganan terpilih yang ditampilkan. Penanda lainnya tidak terpengaruhi.</string>
     <string name="statistics_expected_next_episode_unknown">Tak diketahui</string>
     <string name="release_schedule_friday">Jum</string>
-    <string name="pref_filter_feed_title">Penapis langganan</string>
     <string name="search_online">Cari secara daring</string>
     <string name="release_schedule_monday">Sen</string>
     <string name="preview_episodes">Pratayangan episode</string>
@@ -737,7 +729,6 @@
     <string name="pref_delete_removes_from_queue_sum">Singkirkan episode dari antrean secara otomatis ketika episode tersebut dihapus</string>
     <string name="pref_downloads_button_action_title">Putar episode dari layar pengunduhan</string>
     <string name="pref_downloads_button_action_sum">Tampilkan tombol putar pada layar pengunduhan alih-alih tombol hapus</string>
-    <string name="pref_filter_feed_sum">Tapis langganan pada laci navigasi dan layar langganan</string>
     <string name="pref_new_episodes_action_title">Tindakan pada episode-episode baru</string>
     <string name="opml_reader_error">Terdapat galat ketika sedang membaca berkas. Pastikan Anda benar-benar telah memilih berkas OPML dan berkas terkait valid.</string>
     <string name="auto_enable_label_with_times">Nyalakan pewaktu tidur saat menekan tombol putar antara %1$s dan %2$s</string>

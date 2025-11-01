@@ -120,7 +120,7 @@ public class FeedItemFilter implements Serializable {
                 && item.getMedia().getLastPlayedTimeHistory().getTime() == 0) {
             return false;
         } else if (!includeNotSubscribed && item.getFeed() != null
-                && item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+                && item.getFeed().getState() == Feed.STATE_NOT_SUBSCRIBED) {
             return false;
         }
         return true;

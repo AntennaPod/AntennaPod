@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTagsDialogBinding;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedOrder;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.SimpleChipAdapter;
 import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -76,6 +78,8 @@ public class TagSettingsDialog extends DialogFragment {
         };
         viewBinding.tagsRecycler.setAdapter(adapter);
         viewBinding.rootFolderCheckbox.setChecked(commonTags.contains(FeedPreferences.TAG_ROOT));
+        viewBinding.rootFolderCheckbox.setVisibility(UserPreferences.isBottomNavigationEnabled()
+                ? View.GONE : View.VISIBLE);
 
         viewBinding.newTagTextInput.setEndIconOnClickListener(v ->
                 addTag(viewBinding.newTagEditText.getText().toString().trim()));
@@ -109,10 +113,12 @@ public class TagSettingsDialog extends DialogFragment {
     private void loadTags() {
         Observable.fromCallable(
                 () -> {
-                    NavDrawerData data = DBReader.getNavDrawerData(null, FeedOrder.ALPHABETICAL, FeedCounter.SHOW_NONE);
+                    NavDrawerData data = DBReader.getNavDrawerData(null, FeedOrder.ALPHABETICAL, FeedCounter.SHOW_NONE,
+                            Feed.STATE_SUBSCRIBED);
                     List<String> folders = new ArrayList<>();
                     for (NavDrawerData.TagItem item : data.tags) {
-                        if (!FeedPreferences.TAG_ROOT.equals(item.getTitle())) {
+                        if (!FeedPreferences.TAG_ROOT.equals(item.getTitle())
+                                && !FeedPreferences.TAG_UNTAGGED.equals(item.getTitle())) {
                             folders.add(item.getTitle());
                         }
                     }
@@ -131,7 +137,7 @@ public class TagSettingsDialog extends DialogFragment {
     }
 
     private void addTag(String name) {
-        if (TextUtils.isEmpty(name) || displayedTags.contains(name)) {
+        if (TextUtils.isEmpty(name) || displayedTags.contains(name) || FeedPreferences.TAG_UNTAGGED.equals(name)) {
             return;
         }
         displayedTags.add(name);
