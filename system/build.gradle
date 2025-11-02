@@ -4,7 +4,7 @@ plugins {
 apply from: "../common.gradle"
 
 android {
-    namespace "de.danoeh.antennapod.core"
+    namespace "de.danoeh.antennapod.system"
 
     lint {
         disable 'VectorPath'

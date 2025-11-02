@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.utils;
+package de.danoeh.antennapod.system.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

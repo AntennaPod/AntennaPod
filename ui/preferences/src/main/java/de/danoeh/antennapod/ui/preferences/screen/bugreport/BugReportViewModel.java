@@ -14,8 +14,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import de.danoeh.antennapod.core.CrashReportWriter;
-import de.danoeh.antennapod.core.utils.PackageUtils;
+import de.danoeh.antennapod.system.CrashReportWriter;
+import de.danoeh.antennapod.system.utils.PackageUtils;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;

@@ -2,7 +2,7 @@ package de.danoeh.antennapod;
 
 import androidx.annotation.NonNull;
 
-import de.danoeh.antennapod.core.CrashReportWriter;
+import de.danoeh.antennapod.system.CrashReportWriter;
 
 public class CrashReportExceptionHandler implements Thread.UncaughtExceptionHandler {
 

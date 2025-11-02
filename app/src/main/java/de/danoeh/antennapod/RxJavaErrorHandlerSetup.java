@@ -2,7 +2,7 @@ package de.danoeh.antennapod;
 
 import android.util.Log;
 
-import de.danoeh.antennapod.core.CrashReportWriter;
+import de.danoeh.antennapod.system.CrashReportWriter;
 import io.reactivex.rxjava3.exceptions.UndeliverableException;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 

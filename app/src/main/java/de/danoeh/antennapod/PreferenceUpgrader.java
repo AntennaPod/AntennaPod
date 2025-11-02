@@ -6,7 +6,7 @@ import android.view.KeyEvent;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
-import de.danoeh.antennapod.core.CrashReportWriter;
+import de.danoeh.antennapod.system.CrashReportWriter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import org.apache.commons.lang3.StringUtils;
 
