@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.preferences.screen.bugreport;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -171,30 +171,20 @@ public class BugReportFragment extends AnimatedFragment {
     }
 
     private void setupClipboardCopy() {
-        Context ctx = requireContext();
-
-        viewBinding.attribAppVersionLabel.setOnClickListener(
-                new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_app_version));
-        viewBinding.attribAndroidVersionLabel.setOnClickListener(
-                new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_android_version));
-        viewBinding.attribDeviceNameLabel.setOnClickListener(
-                new ClipboardUtils.TextViewCopyOnClickListener(ctx, R.string.report_bug_attrib_device_name));
-
-        viewBinding.crashLogContentText.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
-                R.string.report_bug_crash_log_title, R.string.copied_to_clipboard) {
-            @Override
-            protected String getText(View view) {
-                return viewModel.requireCurrentState().getCrashInfoWithMarkup();
-            }
-        });
-
-        viewBinding.copyToClipboardButton.setOnClickListener(new ClipboardUtils.ViewCopyOnClickListener(ctx,
-                R.string.report_bug_title, R.string.copied_to_clipboard) {
-            @Override
-            protected String getText(View view) {
-                return viewModel.requireCurrentState().getBugReportWithMarkup();
-            }
-        });
+        viewBinding.attribAppVersionLabel.setOnClickListener(view ->
+                ClipboardUtils.copyText((TextView) view, R.string.report_bug_attrib_app_version));
+        viewBinding.attribAndroidVersionLabel.setOnClickListener(view ->
+                ClipboardUtils.copyText((TextView) view, R.string.report_bug_attrib_android_version));
+        viewBinding.attribDeviceNameLabel.setOnClickListener(view ->
+                ClipboardUtils.copyText((TextView) view, R.string.report_bug_attrib_device_name));
+        viewBinding.crashLogContentText.setOnClickListener(view ->
+                ClipboardUtils.copyText(view, R.string.report_bug_title,
+                        viewModel.requireCurrentState().getCrashInfoWithMarkup())
+        );
+        viewBinding.copyToClipboardButton.setOnClickListener(view ->
+                ClipboardUtils.copyText(view, R.string.report_bug_title,
+                        viewModel.requireCurrentState().getBugReportWithMarkup())
+        );
     }
 
     private void exportLogcat() {

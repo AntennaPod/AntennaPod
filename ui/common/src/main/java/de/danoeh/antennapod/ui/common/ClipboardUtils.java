@@ -7,7 +7,6 @@ import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -15,55 +14,50 @@ import com.google.android.material.snackbar.Snackbar;
 /**
  * Utilities for commonly used clipboard functionality.
  */
-public abstract class ClipboardUtils {
+public interface ClipboardUtils {
 
     /**
-     * Utility class used to copy the content of a TextView to the clipboard when the view is clicked.
+     * Utility function used to copy the text from the given TextView to the clipboard.
+     * @param textView TextView to copy the text from.
+     * @param labelId ID of string resource to used as label for the copied text within the clipboard.
      */
-    public static class TextViewCopyOnClickListener extends ViewCopyOnClickListener {
-        public TextViewCopyOnClickListener(@NonNull Context context, @StringRes int labelId) {
-            super(context, labelId, R.string.copied_to_clipboard);
-        }
-
-        @NonNull
-        @Override
-        protected String getText(View view) {
-            if (view instanceof TextView textView) {
-                return textView.getText().toString();
-            }
-
-            return "";
-        }
+    static void copyText(TextView textView, @StringRes int labelId) {
+        copyText(textView, labelId, R.string.copied_to_clipboard);
     }
 
     /**
-     * Abstract utility class used to copy user-defined text to the clipboard when a view is clicked.
+     * Utility function used to copy the text from the given TextView to the clipboard.
+     * @param textView TextView to copy the text from.
+     * @param labelId ID of string resource to used as label for the copied text within the clipboard.
+     * @param messageId ID of string resource use to display confirmation to user on SDK versions prior to 32.
      */
-    public abstract static class ViewCopyOnClickListener implements View.OnClickListener {
-        private final String label;
-        private final String message;
+    static void copyText(TextView textView, @StringRes int labelId, @StringRes int messageId) {
+        Context context = textView.getContext();
 
-        public ViewCopyOnClickListener(@NonNull Context context, @StringRes int labelId, @StringRes int messageId) {
-            this(context.getString(labelId), context.getString(messageId));
+        copyText(textView, context.getString(labelId), context.getString(messageId), textView.getText().toString());
+    }
+
+    /**
+     * Utility function used to copy the given text to the clipboard. The give View is used for context
+     * and to display a confirmation Toast to the user on completion where the SDK level is prior to 32.
+     * @param view View to copy the text from.
+     * @param labelId ID of string resource to use as label for the copied text within the clipboard buffer.
+     * @param text Text to copy to the clipboard.
+     */
+    static void copyText(View view, @StringRes int labelId, String text) {
+        Context context = view.getContext();
+
+        copyText(view, context.getString(labelId), context.getString(R.string.copied_to_clipboard), text);
+    }
+
+    private static void copyText(View view, String label, String message, String text) {
+        ClipboardManager clipboard = (ClipboardManager) view.getContext()
+                .getSystemService(Context.CLIPBOARD_SERVICE);
+
+        clipboard.setPrimaryClip(ClipData.newPlainText(label, text));
+
+        if (Build.VERSION.SDK_INT < 32) {
+            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
         }
-
-        public ViewCopyOnClickListener(String label, String message) {
-            this.label = label;
-            this.message = message;
-        }
-
-        @Override
-        public void onClick(@NonNull View view) {
-            ClipboardManager clipboard = (ClipboardManager) view.getContext()
-                    .getSystemService(Context.CLIPBOARD_SERVICE);
-
-            clipboard.setPrimaryClip(ClipData.newPlainText(label, getText(view)));
-
-            if (Build.VERSION.SDK_INT < 32) {
-                Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
-            }
-        }
-
-        protected abstract String getText(View view);
     }
 }
