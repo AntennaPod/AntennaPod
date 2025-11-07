@@ -36,37 +36,29 @@ public class CrashReportWriter {
 
     public static Date getTimestamp() {
         Date timestamp = null;
-
         try {
             File file = getFile();
-
             if (file.exists()) {
                 timestamp = new Date(file.lastModified());
             }
-
         } catch (SecurityException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
-
         return timestamp;
     }
 
     public static String read() {
         String content = "";
-
         try {
             File file = getFile();
-
             if (file.exists()) {
                 try (FileInputStream fin = new FileInputStream(file)) {
                     content = IOUtils.toString(fin, StandardCharsets.UTF_8);
                 }
             }
-
         } catch (SecurityException | IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
-
         return content;
     }
 }
