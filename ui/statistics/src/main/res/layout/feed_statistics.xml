@@ -34,11 +34,11 @@
         tools:visibility="visible">
 
         <include
-            android:id="@+id/episodesTotal"
+            android:id="@+id/durationTotal"
             layout="@layout/feed_statistics_card" />
 
         <include
-            android:id="@+id/durationTotal"
+            android:id="@+id/episodesTotal"
             layout="@layout/feed_statistics_card" />
 
         <include
