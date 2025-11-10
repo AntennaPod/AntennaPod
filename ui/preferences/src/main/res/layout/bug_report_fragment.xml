@@ -211,7 +211,7 @@
                     android:id="@+id/expandCrashLogButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/report_bug_crash_log_expand"
+                    android:text="@string/general_expand_button"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/crashLogTitleLabel"
