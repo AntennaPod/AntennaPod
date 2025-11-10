@@ -887,4 +887,22 @@
     <string name="feed_delete_explanation_delete">Ezabatzen baduzu, atal GUZTIAK kenduko dira, deskargak, erreprodukzio-historia eta estatistikak barne.</string>
     <string name="feed_delete_explanation_archive">Artxibatzeak harpidetza-zerrendatik ezkutatuko du eta eguneraketak jasotzea eragotziko du. Deskargak, estatistikak eta erreprodukzio-egoera gordetzen dira.</string>
     <string name="tag_untagged">Etiketarik gabe</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Hurrengo %d minutuz datu mugikorren konexioaren bidez deskargatzen</item>
+        <item quantity="other">Hurrengo %d minutuz datu mugikorren konexioaren bidez deskargatzen</item>
+    </plurals>
+    <string name="no_archive_head_label">Ez da ezer artxibatu</string>
+    <string name="no_archive_label">Podcastak harpidetza-pantaila nagusitik artxibatu ditzakezu.</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">hasita</item>
+        <item quantity="other">hasita</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">guztira</item>
+        <item quantity="other">guztira</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">deskargatuta</item>
+        <item quantity="other">deskargatuta</item>
+    </plurals>
 </resources>

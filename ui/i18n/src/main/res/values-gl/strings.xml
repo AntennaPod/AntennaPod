@@ -887,4 +887,22 @@
     <string name="feed_delete_explanation_delete">Eliminar vas eliminar TODOS os seus episodios incluíndo as descargas, historial de reprodución e estatísticas.</string>
     <string name="feed_delete_explanation_archive">Arquivar o podcast no aparecerá na lista de subscricións e non se actualizará. Vanse manter as descargas, estatísticas e estados de reprodución.</string>
     <string name="tag_untagged">Sen etiquetar</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Descargar usando datos do móbil no próximo %d minuto</item>
+        <item quantity="other">Descargar usando datos do móbil nos próximos %d minutos</item>
+    </plurals>
+    <string name="no_archive_head_label">Non hai nada arquivado</string>
+    <string name="no_archive_label">Podes arquivar os podcast desde a pantalla principal de subscricións.</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">iniciado</item>
+        <item quantity="other">iniciados</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">en total</item>
+        <item quantity="other">en total</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">descargado</item>
+        <item quantity="other">descargados</item>
+    </plurals>
 </resources>

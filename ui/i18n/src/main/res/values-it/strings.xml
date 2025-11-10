@@ -30,7 +30,7 @@
     <string name="change_setting">Modifica</string>
     <string name="individual_subscription">Iscrizioni individuali</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">Includi durata degli episodi segnati come riprodotti</string>
+  <string name="statistics_include_marked">Includi la durata degli episodi contrassegnati come riprodotti manualmente</string>
     <string name="statistics_speed_not_counted">Avviso: la velocità di riproduzione non viene considerata.</string>
     <string name="statistics_from">Da</string>
     <string name="statistics_to">A</string>
@@ -155,8 +155,8 @@
   <string name="remove_all_inbox_label">Svuota l\'inbox</string>
     <string name="removed_all_inbox_msg">Inbox svuotata</string>
     <string name="remove_all_inbox_confirmation_msg">Conferma che vuoi rimuovere tutto dall\'inbox.</string>
-    <string name="multi_select_mark_played_confirmation">Conferma di voler segnare tutti gli elementi selezionati come riprodotti.</string>
-    <string name="multi_select_mark_unplayed_confirmation">Conferma di voler segnare tutti gli elementi selezionati come non riprodotti.</string>
+    <string name="multi_select_mark_played_confirmation">Conferma di voler contrassegnare tutti gli elementi selezionati come riprodotti.</string>
+    <string name="multi_select_mark_unplayed_confirmation">Conferma di voler contrassegnare tutti gli elementi selezionati come non riprodotti.</string>
     <string name="show_info_label">Mostra informazioni</string>
     <string name="show_feed_settings_label">Mostra impostazioni podcast</string>
     <string name="feed_settings_label">Impostazioni podcast</string>
@@ -192,8 +192,8 @@
     <string name="delete_label">Elimina</string>
     <string name="remove_inbox_label">Rimuovi dall\'inbox</string>
     <string name="toggle_played_label">Cambia stato di riproduzione</string>
-    <string name="mark_read_no_media_label">Segna come letto</string>
-    <string name="mark_unread_label_no_media">Segna come non letto</string>
+    <string name="mark_read_no_media_label">Contrassegna come letto</string>
+    <string name="mark_unread_label_no_media">Contrassegna come non letto</string>
     <string name="add_to_queue_label">Aggiungi alla coda</string>
     <string name="remove_from_queue_label">Rimuovi dalla coda</string>
     <plurals name="removed_from_inbox_batch_label">
@@ -276,7 +276,7 @@
     <string name="move_to_top_label">Sposta in cima</string>
     <string name="move_to_bottom_label">Sposta in fondo</string>
     <string name="sort">Ordina</string>
-    <string name="keep_sorted">Mantieni ordine</string>
+    <string name="keep_sorted">Mantieni l\'ordine</string>
     <string name="date">Data</string>
     <string name="duration">Durata</string>
     <string name="episode_title">Titolo episodio</string>
@@ -323,7 +323,7 @@
     <string name="preference_search_no_results">Nessun risultato</string>
     <string name="preference_search_clear_history">Svuota cronologia</string>
     <string name="pref_episode_cleanup_title">Elimina prima del download automatico</string>
-    <string name="pref_episode_cleanup_summary">Episodi cancellabili se il download automatico richiede altro spazio per nuovi episodi</string>
+    <string name="pref_episode_cleanup_summary">Episodi rimuovibili se il download automatico necessita di spazio per nuovi episodi</string>
     <string name="pref_pauseOnDisconnect_sum">Sospendi la riproduzione quando le cuffie o i dispositivi Bluetooth vengono disconnessi</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Riprendi la riproduzione quando le cuffie vengono ricollegate</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Riprendi la riproduzione quando il Bluetooth si riconnette</string>
@@ -344,11 +344,11 @@
     <string name="pref_auto_local_delete_sum">Includi le cartelle locali nella funzione di eliminazione automatica</string>
     <string name="pref_auto_local_delete_dialog_body">Ricorda che questa funzione rimuoverà gli episodi da AntennaPod ed eliminerà i file multimediali dallo spazio di archiviazione del tuo dispositivo. Non potranno essere scaricati di nuovo attraverso AntennaPod. Sei sicuro di voler abilitare l\'eliminazione automatica?</string>
     <string name="pref_smart_mark_as_played_sum">Contrassegna gli episodi come riprodotti anche se rimangono alcuni secondi da riprodurre</string>
-    <string name="pref_smart_mark_as_played_title">Segna come riprodotto in modo intelligente</string>
-    <string name="pref_skip_keeps_episodes_sum">Mantiene gli episodi nella coda quando vengono saltati</string>
-    <string name="pref_skip_keeps_episodes_title">Manteni gli episodi saltati</string>
-    <string name="pref_favorite_keeps_episodes_sum">Mantieni gli episodi se sono segnati come preferiti</string>
-    <string name="pref_favorite_keeps_episodes_title">Mantieni episodi preferiti</string>
+    <string name="pref_smart_mark_as_played_title">Contrassegna come riprodotto in modo intelligente</string>
+    <string name="pref_skip_keeps_episodes_sum">Conserva gli episodi nella coda quando vengono saltati</string>
+    <string name="pref_skip_keeps_episodes_title">Conserva gli episodi saltati</string>
+    <string name="pref_favorite_keeps_episodes_sum">Conserva gli episodi se sono contrassegnati come preferiti</string>
+    <string name="pref_favorite_keeps_episodes_title">Conserva episodi preferiti</string>
     <string name="playback_pref">Riproduzione</string>
     <string name="playback_pref_sum">Controllo cuffie, salto intervalli, coda</string>
     <string name="downloads_pref">Download</string>
@@ -502,7 +502,7 @@
     <string name="html_export_label">Esporta in HTML</string>
     <string name="database_export_label">Esporta database</string>
     <string name="automatic_database_export_label">Esportazione automatica database</string>
-    <string name="automatic_database_export_summary">Crea un backup del database di AntennaPod ogni 3 giorni. Vengono mantenuti solo gli ultimi 5 backup.</string>
+    <string name="automatic_database_export_summary">Crea un backup del database di AntennaPod ogni 3 giorni. Vengono conservati solo gli ultimi 5 backup.</string>
     <string name="automatic_database_export_error">Errore durante il backup automatico del database</string>
     <string name="database_import_label">Importa database</string>
     <string name="database_import_warning">L\'importazione di un database sostituirà tutte le iscrizioni attuali e la cronologia di riproduzione. Dovresti eseguire un backup del tuo database attuale. Vuoi proseguire?</string>
@@ -603,7 +603,7 @@
     <!--Online feed view-->
   <string name="subscribe_label">Iscriviti</string>
     <string name="preview_episodes">Anteprima episodi</string>
-    <string name="state_deleted_not_subscribed">Non sei ancora iscritto a questo podcast. Iscriviti gratuitamente per accedervi più facilmente e mantenere la cronologia riproduzioni.</string>
+    <string name="state_deleted_not_subscribed">Non sei ancora iscritto a questo podcast. Iscriviti gratuitamente per accedervi più facilmente e conservare la cronologia riproduzioni.</string>
     <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Indietro</string>
     <string name="rewind_label">Riavvolgi</string>
@@ -613,7 +613,7 @@
     <string name="media_type_video_label">Video</string>
     <string name="status_downloading_label">L\'episodio è in download</string>
     <string name="in_queue_label">Nella coda</string>
-    <string name="is_favorite_label">Segnato come preferito</string>
+    <string name="is_favorite_label">Contrassegnato come preferito</string>
     <string name="is_inbox_label">Nell\'inbox</string>
     <string name="is_played">Riprodotti</string>
     <string name="load_next_page_label">Carica la pagina successiva</string>
@@ -874,19 +874,19 @@
     <string name="removed_from_inbox_message">Rimosso dall\'inbox</string>
     <string name="no_queue_items_inbox_has_items_button_label">Vai all\'inbox</string>
     <string name="auto_download_inbox_category">Scarica automaticamente gli episodi dall\'inbox</string>
-    <string name="mark_as_played_label">Segna come riprodotto</string>
+    <string name="mark_as_played_label">Contrassegna come riprodotto</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">%d episodio segnato come riprodotto.</item>
-        <item quantity="many">%d di episodi segnati come riprodotti.</item>
-        <item quantity="other">%d episodi segnati come riprodotti.</item>
+        <item quantity="one">%d episodio contrassegnato come riprodotto.</item>
+        <item quantity="many">%d di episodi contrassegnati come riprodotti.</item>
+        <item quantity="other">%d episodi contrassegnati come riprodotti.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">%d episodio segnato come non riprodotto.</item>
-        <item quantity="many">%d di episodi segnati come non riprodotti.</item>
-        <item quantity="other">%d episodi segnati come non riprodotti.</item>
+        <item quantity="one">%d episodio contrassegnato come non riprodotto.</item>
+        <item quantity="many">%d di episodi contrassegnati come non riprodotti.</item>
+        <item quantity="other">%d episodi contrassegnati come non riprodotti.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Per saltare a una posizione specifica, l\'episodio deve essere in riproduzione</string>
-    <string name="mark_as_unplayed_label">Segna come non riprodotto</string>
+    <string name="mark_as_unplayed_label">Contrassegna come non riprodotto</string>
     <plurals name="added_to_queue_message">
         <item quantity="one">%d episodio aggiunto alla coda.</item>
         <item quantity="many">%d di episodi aggiunti alla coda.</item>
@@ -932,4 +932,6 @@
     <string name="feed_delete_explanation_delete">Eliminandola rimuoverai TUTTI gli episodi, compresi download, cronologia riproduzioni e statistiche.</string>
     <string name="feed_delete_explanation_archive">Archiviandola la nasconderai dall\'elenco delle iscrizioni e impedirai che riceva aggiornamenti. Download, statistiche e stato di riproduzione saranno mantenuti.</string>
     <string name="tag_untagged">Senza tag</string>
+    <string name="no_archive_label">È possibile archiviare i podcast dalla schermata principale delle iscrizioni.</string>
+    <string name="no_archive_head_label">Niente archiviato</string>
 </resources>

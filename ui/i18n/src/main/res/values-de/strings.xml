@@ -242,12 +242,12 @@
     <string name="no_feed_url_podcast_found_by_search">Der vorgeschlagene Podcast hat keinen RSS-Link. AntennaPod hat einen Podcast gefunden, welcher der gleiche sein könnte</string>
     <string name="authentication_notification_title">Authentifizierung erforderlich</string>
     <string name="confirm_mobile_download_dialog_title">Mobilen Download bestätigen</string>
-    <string name="confirm_mobile_download_dialog_message">Der Download über mobile Datenverbindung wurde in den Einstellungen deaktiviert. AntennaPod kann die Episode später herunterladen, wenn WLAN verfügbar ist.</string>
+    <string name="confirm_mobile_download_dialog_message">Das Herunterladen über eine mobile Datenverbindung ist in den Einstellungen deaktiviert. AntennaPod kann die Episode später automatisch herunterladen, sobald eine WLAN-Verbindung verfügbar ist.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">– VPN wird verwendet? Deine VPN-App gibt vor, ein mobiles Netzwerk zu sein (kostenpflichtige Verbindung). Wenn du möchtest, dass dieses Problem behoben wird, wende dich an die Entwickler der VPN-App.\n– Kein VPN wird verwendet? Öffne die WLAN-Einstellungen von Android und ändere den Typ des WLANs auf nicht kostenpflichtig.</string>
     <string name="confirm_mobile_download_dialog_download_later">Später herunterladen</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Trotzdem herunterladen</string>
     <string name="confirm_mobile_streaming_notification_title">Mobiles Streaming bestätigen</string>
-    <string name="confirm_mobile_streaming_notification_message">Streamen über mobile Datenverbindung ist in den Einstellungen deaktiviert. Tippen, um trotzdem zu streamen.</string>
+    <string name="confirm_mobile_streaming_notification_message">Das Streamen über eine mobile Datenverbindung ist in den Einstellungen deaktiviert. Tippen, um trotzdem zu streamen.</string>
     <string name="confirm_mobile_streaming_button_always">Immer</string>
     <string name="confirm_mobile_streaming_button_once">Einmalig</string>
     <!--Mediaplayer messages-->
@@ -343,7 +343,7 @@
     <string name="playback_pref">Wiedergabe</string>
     <string name="playback_pref_sum">Kopfhörersteuerung, Sprungintervall, Warteschlange</string>
     <string name="downloads_pref">Downloads</string>
-    <string name="downloads_pref_sum">Aktualisierungsintervall, Mobile Daten, Automatischer Download, Automatisches Löschen</string>
+    <string name="downloads_pref_sum">Aktualisierungsintervall, Mobile Daten, Automatisches Herunterladen, Automatisches Löschen</string>
     <string name="feed_refresh_title">Podcasts aktualisieren</string>
     <string name="feed_refresh_sum">Ein Intervall festlegen, in dem AntennaPod automatisch nach neuen Episoden sucht</string>
     <string name="feed_refresh_never">Niemals</string>
@@ -375,10 +375,10 @@
     <string name="pref_nav_drawer_feed_counter_title">Zähler</string>
     <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
     <string name="pref_automatic_download_sum">Automatisches Herunterladen von Episoden einrichten</string>
-    <string name="pref_automatic_download_on_battery_title">Automatischer Download im Akkubetrieb</string>
-    <string name="pref_automatic_download_on_battery_sum">Automatische Downloads auch erlauben, wenn der Akku nicht geladen wird</string>
+    <string name="pref_automatic_download_on_battery_title">Automatisches Herunterladen im Akkubetrieb</string>
+    <string name="pref_automatic_download_on_battery_sum">Automatisches Herunterladen zulassen, auch wenn der Akku nicht geladen wird</string>
     <string name="pref_episode_cache_title">Episoden-Limit</string>
-    <string name="pref_episode_cache_summary">Der automatische Download wird beendet, wenn diese Anzahl erreicht wurde</string>
+    <string name="pref_episode_cache_summary">Das automatische Herunterladen wird beendet, wenn diese Anzahl erreicht wurde</string>
     <string name="pref_episode_cover_title">Episoden-Bilder verwenden</string>
     <string name="pref_episode_cover_summary">Falls verfügbar, episodenspezifische Titelbilder in Listen verwenden. Falls nicht ausgewählt, wird immer das Titelbild des Podcasts verwendet.</string>
     <string name="pref_show_remain_time_title">Verbleibende Zeit anzeigen</string>
@@ -435,7 +435,7 @@
     <string name="remember_last_page">Letzte Seite merken</string>
     <string name="pref_delete_removes_from_queue_title">Gelöschte aus Warteschlange entfernen</string>
     <string name="pref_delete_removes_from_queue_sum">Episode automatisch aus der Warteschlange entfernen, wenn sie gelöscht wird</string>
-    <string name="subscriptions_counter_greater_zero">Anzahl größer als Null</string>
+    <string name="subscriptions_counter_greater_zero">Zähler größer als Null</string>
     <string name="auto_downloaded">Automatisch heruntergeladen</string>
     <string name="not_auto_downloaded">Nicht automatisch heruntergeladen</string>
     <string name="kept_updated">Aktuell gehalten</string>
@@ -496,7 +496,7 @@
     <string name="automatic_database_export_summary">Erstellt alle 3 Tage eine Sicherungskopie der AntennaPod-Datenbank. Es werden nur die 5 aktuellsten Sicherungen aufbewahrt.</string>
     <string name="automatic_database_export_error">Fehler bei der automatischen Datenbanksicherung</string>
     <string name="database_import_label">Datenbank importieren</string>
-    <string name="database_import_warning">Das Importieren einer Datenbank ersetzt alle Abonnements und abgespielte Episoden. Ein Export als Sicherungskopie wird empfohlen. Möchtest du die Datenbank wirklich ersetzen?</string>
+    <string name="database_import_warning">Das Importieren einer Datenbank ersetzt alle Abonnements und abgespielte Episoden. Ein Datenbank-Export als Sicherungskopie wird empfohlen. Möchtest du die Datenbank wirklich ersetzen?</string>
     <string name="please_wait">Bitte warten…</string>
     <string name="export_error_label">Exportfehler</string>
     <string name="export_success_title">Export erfolgreich</string>
@@ -582,7 +582,7 @@
     <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Seit %1$s, hast du %2$s%3$d%4$s Stunden Podcasts gehört.</string>
-    <string name="rating_contribute_label">Willst du mitmachen? Egal, ob du übersetzen, unterstützen, entwerfen oder programmieren willst, wir würden uns freuen, wenn du dabei bist!</string>
+    <string name="rating_contribute_label">Möchtest du mitmachen? Egal, ob du übersetzen, unterstützen, entwerfen oder programmieren möchtest, wir würden uns freuen, wenn du dabei bist!</string>
     <string name="rating_contribute_button">Entdecke, wie du beitragen kannst</string>
     <string name="rating_volunteers_label">AntennaPod wird von Freiwilligen in ihrer Freizeit entwickelt. Teile deine Wertschätzung für ihre Arbeit, indem du eine gute Bewertung hinterlässt.</string>
     <string name="rating_rate">Bewerte AntennaPod</string>
@@ -621,7 +621,7 @@
     <string name="feed_folders_include_root">Über den Tags anzeigen (nur in der Seitenleiste)</string>
     <string name="multi_feed_common_tags_info">Es werden nur gemeinsame Tags aus allen ausgewählten Abonnements angezeigt. Andere Tags bleiben davon unberührt.</string>
     <string name="episode_filters_label">Episoden-Filter</string>
-    <string name="episode_filters_description">Liste von Begriffen, die dazu verwendet wird, Episoden beim automatischen Download einzubeziehen oder auszuschließen</string>
+    <string name="episode_filters_description">Liste von Begriffen, die dazu verwendet wird, um Episoden beim automatischen Herunterladen einzubeziehen oder auszuschließen</string>
     <string name="add_term">Begriff hinzufügen</string>
     <string name="exclude_terms">Episoden ausschließen, die einen der folgenden Begriffe enthalten</string>
     <string name="include_terms">Nur Episoden einbeziehen, die einen der folgenden Begriffe enthalten</string>

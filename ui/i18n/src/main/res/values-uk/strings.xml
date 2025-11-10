@@ -937,4 +937,30 @@
     <string name="feed_delete_explanation_delete">Видалення призведе до вилучення ВСІХ епізодів, включаючи завантаження, історію відтворення та статистику.</string>
     <string name="feed_delete_explanation_archive">Архівування приховає його зі списку підписок і запобігатиме отриманню оновлень. Завантаження, статистика та стан відтворення зберігаються.</string>
     <string name="tag_untagged">Без тегів</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Завантаження через мобільне з’єднання даних протягом наступної %d хвилина</item>
+        <item quantity="few">Завантаження через мобільне з’єднання даних протягом наступних %d хвилини</item>
+        <item quantity="many">Завантаження через мобільне з’єднання даних протягом наступних %d хвилин</item>
+        <item quantity="other">Завантаження через мобільне з’єднання даних протягом наступних %d хвилин</item>
+    </plurals>
+    <string name="no_archive_head_label">Нічого не архівовано</string>
+    <string name="no_archive_label">Ви можете архівувати подкасти на головному екрані підписок.</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">розпочато</item>
+        <item quantity="few">розпочала</item>
+        <item quantity="many">розпочали</item>
+        <item quantity="other">розпочали</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">загальна сума</item>
+        <item quantity="few">загальна суми</item>
+        <item quantity="many">загальна суми</item>
+        <item quantity="other">загальна суми</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">завантажено</item>
+        <item quantity="few">завантаженні</item>
+        <item quantity="many">завантаженні</item>
+        <item quantity="other">завантаженні</item>
+    </plurals>
 </resources>
