@@ -935,4 +935,5 @@
     <string name="feed_delete_explanation_delete">Smazáním se odstraní VŠECHNY epizody včetně stažených souborů, historie přehrávání a statistik.</string>
     <string name="feed_delete_explanation_archive">Archivováním se skryje ze seznamu odběrů a nebude dostávat aktualizace. Stažené soubory, statistiky a stav přehrávání zůstanou zachovány.</string>
     <string name="tag_untagged">Bez štítku</string>
+    <string name="no_archive_label">Podcast můžete archivovat z hlavní stránky s odběry.</string>
 </resources>

@@ -887,4 +887,22 @@
     <string name="feed_delete_explanation_delete">Sletning vil fjerne ALLE afsnit, herunder overførsler, afspilningshistorik og statistik.</string>
     <string name="feed_delete_explanation_archive">Arkivering skjuler den fra abonnementslisten og forhindrer, at den modtager opdateringer. Overførsler, statistikker og afspilningsstatus bevares.</string>
     <string name="tag_untagged">Uden etikette</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Overfører via mobildataforbindelse i det næste %d minut</item>
+        <item quantity="other">Overfører via mobildataforbindelse i de næste %d minutter</item>
+    </plurals>
+    <string name="no_archive_head_label">Intet arkiveret</string>
+    <string name="no_archive_label">Du kan arkivere podcasts fra hovedskærmen for abonnementer.</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">startet</item>
+        <item quantity="other">startet</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">i alt</item>
+        <item quantity="other">i alt</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">overført</item>
+        <item quantity="other">overført</item>
+    </plurals>
 </resources>
