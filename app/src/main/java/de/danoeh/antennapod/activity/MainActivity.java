@@ -69,6 +69,7 @@ import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
 import de.danoeh.antennapod.ui.screen.drawer.BottomNavigation;
 import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
+import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
 import de.danoeh.antennapod.ui.screen.playback.audio.AudioPlayerFragment;
@@ -140,16 +141,42 @@ public class MainActivity extends CastEnabledActivity {
 
             @Override
             public void onItemReselected(@IdRes int itemId) {
-                // If queue was reselected, and the queue fragment is currently shown, ask it to scroll to the playing item
                 int queueId = R.id.bottom_navigation_queue;
                 if (itemId == queueId) {
-                    Fragment current = getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG);
-                    if (current instanceof QueueFragment) {
-                        ((QueueFragment) current).scrollToPlayingItem();
-                    } else {
-                        // If queue isn't the current fragment, simply load it (this mimics normal selection behavior)
-                        loadFragment(QueueFragment.TAG, null);
+                    FragmentManager fm = getSupportFragmentManager();
+                    if (!fm.getFragments().isEmpty()) {
+                        Fragment top = null;
+                        for (int i = fm.getFragments().size() - 1; i >= 0; i--) {
+                            Fragment f = fm.getFragments().get(i);
+                            if (f != null && f.isVisible()) {
+                                top = f;
+                                break;
+                            }
+                        }
+                        if (top instanceof ItemPagerFragment) {
+                            // Pop details, then trigger auto-scroll on the now-visible queue
+                            boolean popped = fm.popBackStackImmediate();
+                            if (popped) {
+                                Fragment newTop = null;
+                                for (int i = fm.getFragments().size() - 1; i >= 0; i--) {
+                                    Fragment f = fm.getFragments().get(i);
+                                    if (f != null && f.isVisible()) {
+                                        newTop = f;
+                                        break;
+                                    }
+                                }
+                                if (newTop instanceof QueueFragment) {
+                                    ((QueueFragment) newTop).scrollToPlayingItem();
+                                }
+                            }
+                            return;
+                        } else if (top instanceof QueueFragment) {
+                            ((QueueFragment) top).scrollToPlayingItem();
+                            return;
+                        }
                     }
+                    // Fallback: load the queue fragment
+                    loadFragment(QueueFragment.TAG, null);
                 }
             }
         };
