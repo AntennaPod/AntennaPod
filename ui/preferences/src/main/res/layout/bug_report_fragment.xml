@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/userMessageLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/report_bug_message"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/topDivider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/userMessageLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Environment / Device Information -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/deviceInfoGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/topDivider">
+
+                <ImageView
+                    android:id="@+id/deviceInfoImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_info"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/deviceInformationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_device_info_title"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    app:layout_constraintStart_toEndOf="@+id/deviceInfoImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/appVersionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_attrib_app_version"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    app:layout_constraintTop_toBottomOf="@+id/deviceInformationLabel"
+                    app:layout_constraintStart_toEndOf="@+id/deviceInfoImage" />
+
+                <TextView
+                    android:id="@+id/androidVersionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_attrib_android_version"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    app:layout_constraintTop_toBottomOf="@+id/appVersionLabel"
+                    app:layout_constraintStart_toEndOf="@+id/deviceInfoImage" />
+
+                <TextView
+                    android:id="@+id/deviceNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_attrib_device_name"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    app:layout_constraintStart_toEndOf="@+id/deviceInfoImage"
+                    app:layout_constraintTop_toBottomOf="@+id/androidVersionLabel" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/reportDetailsBarrier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="end"
+                    app:constraint_referenced_ids="appVersionLabel, androidVersionLabel, deviceNameLabel" />
+
+                <TextView
+                    android:id="@+id/attribAppVersionLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    app:layout_constraintHorizontal_weight="1"
+                    tools:text="[v1.0.0]"
+                    app:layout_constraintStart_toEndOf="@+id/reportDetailsBarrier"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/appVersionLabel"
+                    app:layout_constraintBottom_toBottomOf="@+id/appVersionLabel" />
+
+                <TextView
+                    android:id="@+id/attribAndroidVersionLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    app:layout_constraintHorizontal_weight="1"
+                    tools:text="[16]"
+                    app:layout_constraintStart_toEndOf="@+id/reportDetailsBarrier"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/androidVersionLabel"
+                    app:layout_constraintTop_toTopOf="@+id/androidVersionLabel" />
+
+                <TextView
+                    android:id="@+id/attribDeviceNameLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="end"
+                    android:paddingVertical="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintStart_toEndOf="@+id/reportDetailsBarrier"
+                    tools:text="[Device Name]"
+                    app:layout_constraintTop_toTopOf="@+id/deviceNameLabel"
+                    app:layout_constraintBottom_toBottomOf="@+id/deviceNameLabel" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Crash Log Information (Optional) -->
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/middleDivider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/deviceInfoGroup"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crashLogGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintTop_toBottomOf="@id/middleDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/crashLogImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_bug"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/crashLogTitleLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/report_bug_crash_log_title"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    app:layout_constraintStart_toEndOf="@+id/crashLogImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/expandCrashLogButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/general_expand_button"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/crashLogTitleLabel"
+                    app:layout_constraintBottom_toBottomOf="@+id/crashLogTitleLabel" />
+
+                <TextView
+                    android:id="@+id/crashLogMessageLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    tools:text="@string/report_bug_crash_log_message"
+                    app:layout_constraintTop_toBottomOf="@+id/crashLogTitleLabel"
+                    app:layout_constraintStart_toEndOf="@+id/crashLogImage"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <HorizontalScrollView
+                    android:id="@+id/crashLogContentContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorSurfaceContainer"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:layout_marginBottom="8dp"
+                    android:scrollbars="none"
+                    app:layout_constraintTop_toBottomOf="@+id/crashLogMessageLabel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        android:id="@+id/crashLogContentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:maxLines="4"
+                        android:minLines="4"
+                        android:padding="8dp"
+                        android:textSize="12sp"
+                        android:typeface="monospace"
+                        android:scrollbars="none"
+                        tools:text="[The content of the latest crash log will be displayed here!]" />
+
+                </HorizontalScrollView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/crashLogToggleGroup"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:constraint_referenced_ids="middleDivider, crashLogGroup" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <!-- Buttons -->
+    <Button
+        android:id="@+id/copyToClipboardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/copy_to_clipboard"
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/openGithubButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_bug_github_title"
+            android:layout_marginEnd="8dp"
+            android:textColor="?attr/colorPrimary"
+            style="?android:attr/borderlessButtonStyle" />
+
+        <Button
+            android:id="@+id/openForumButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_bug_forum_title"
+            android:layout_marginEnd="8dp"
+            tools:ignore="ButtonStyle" />
+
+    </LinearLayout>
+
+</LinearLayout>

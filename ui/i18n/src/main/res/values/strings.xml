@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
+    <!-- Shared strings that are, or can, be shared throughout the UI  -->
+    <string name="general_expand_button">Expand</string>
+    <string name="general_collapse_button">Collapse</string>
+
     <!-- Activity and fragment titles -->
     <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update subscriptions</string>
@@ -546,8 +550,6 @@
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="documentation_support">Documentation &amp; support</string>
     <string name="visit_user_forum">User forum</string>
-    <string name="bug_report_title">Report bug</string>
-    <string name="open_bug_tracker">Open bug tracker</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -580,6 +582,18 @@
     <string name="pref_new_episodes_action_title">New episodes action</string>
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
     <string name="episode_information">Episode information</string>
+
+    <!-- Report bug -->
+    <string name="report_bug_title">Report bug</string>
+    <string name="report_bug_message">Sorry to hear something isn’t working. We’d love your help to improve AntennaPod. Please check our forum or GitHub to see if the issue has already been reported. If not, let us know and we’ll investigate.</string>
+    <string name="report_bug_device_info_title">Device</string>
+    <string name="report_bug_attrib_app_version">App version</string>
+    <string name="report_bug_attrib_android_version">Android version</string>
+    <string name="report_bug_attrib_device_name">Device Name</string>
+    <string name="report_bug_crash_log_title">Crash log</string>
+    <string name="report_bug_crash_log_message">Created: %1$s.</string>
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_github_title">GitHub</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>

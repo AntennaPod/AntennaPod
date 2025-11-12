@@ -1,0 +1,14 @@
+plugins {
+    id 'com.android.library'
+}
+apply from: "../common.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.system"
+}
+
+dependencies {
+    implementation project(":storage:preferences")
+
+    implementation "commons-io:commons-io:$commonsioVersion"
+}
