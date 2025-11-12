@@ -14,7 +14,7 @@
         android:padding="16dp">
 
         <LinearLayout
-            android:id="@+id/timeSetup"
+            android:id="@+id/timeSetupContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -25,7 +25,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/etxtTime"
+                    android:id="@+id/timeEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -65,7 +65,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/timeDisplay"
+            android:id="@+id/timeDisplayContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -141,13 +141,13 @@
             android:layout_marginTop="8dp">
 
             <CheckBox
-                android:id="@+id/cbShakeToReset"
+                android:id="@+id/shakeToResetCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/shake_to_reset_label" />
 
             <CheckBox
-                android:id="@+id/cbVibrate"
+                android:id="@+id/vibrateCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/timer_vibration_label" />
@@ -159,7 +159,7 @@
                 android:weightSum="1">
 
                 <CheckBox
-                    android:id="@+id/chAutoEnable"
+                    android:id="@+id/autoEnableCheckbox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

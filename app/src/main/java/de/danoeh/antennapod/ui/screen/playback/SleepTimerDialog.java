@@ -12,12 +12,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +31,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.TimeDialogBinding;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -55,27 +50,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SleepTimerDialog extends DialogFragment {
-    private PlaybackController controller;
-    private EditText etxtTime;
-    private TextView sleepTimerHintText;
-    private LinearLayout timeSetup;
-    private LinearLayout timeDisplay;
-    private TextView time;
-    private Spinner sleepTimerType;
-    private CheckBox chAutoEnable;
-    private ImageView changeTimesButton;
-    private CheckBox cbVibrate;
-    private CheckBox cbShakeToReset;
-    private Button setTimerButton;
-    private Button playbackPreferencesButton;
-
-    private Disposable disposable;
-    private volatile Integer currentQueueSize = null;
-
-    Button extendSleepFiveMinutesButton;
-    Button extendSleepTenMinutesButton;
-    Button extendSleepTwentyMinutesButton;
-
     private static final int EXTEND_FEW_MINUTES_DISPLAY_VALUE = 5;
     private static final int EXTEND_FEW_MINUTES = 5 * 1000 * 60;
     private static final int EXTEND_MID_MINUTES_DISPLAY_VALUE = 10;
@@ -85,8 +59,12 @@ public class SleepTimerDialog extends DialogFragment {
     private static final int EXTEND_FEW_EPISODES = 1;
     private static final int EXTEND_MID_EPISODES = 2;
     private static final int EXTEND_LOTS_EPISODES = 3;
-
     private static final int SLEEP_DURATION_DAILY_HOURS_CUTOFF = 12;
+
+    private PlaybackController controller;
+    private TimeDialogBinding viewBinding;
+    private Disposable disposable;
+    private volatile Integer currentQueueSize = null;
 
     public SleepTimerDialog() {
     }
@@ -125,10 +103,10 @@ public class SleepTimerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View content = View.inflate(getContext(), R.layout.time_dialog, null);
+        viewBinding = TimeDialogBinding.inflate(getLayoutInflater());
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle(R.string.sleep_timer_label);
-        builder.setView(content);
+        builder.setView(viewBinding.getRoot());
         builder.setPositiveButton(R.string.close_label, null);
 
         List<String> spinnerContent = new ArrayList<>();
@@ -138,10 +116,9 @@ public class SleepTimerDialog extends DialogFragment {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
                 getContext(), android.R.layout.simple_spinner_item, spinnerContent);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sleepTimerType = content.findViewById(R.id.sleepTimerType);
-        sleepTimerType.setAdapter(spinnerAdapter);
-        sleepTimerType.setSelection(SleepTimerPreferences.getSleepTimerType().index);
-        sleepTimerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        viewBinding.sleepTimerType.setAdapter(spinnerAdapter);
+        viewBinding.sleepTimerType.setSelection(SleepTimerPreferences.getSleepTimerType().index);
+        viewBinding.sleepTimerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             private boolean sleepTimerTypeInitialized = false;
 
             @Override
@@ -153,13 +130,13 @@ public class SleepTimerDialog extends DialogFragment {
                 if (sleepTimerTypeInitialized) {
                     // disable auto sleep timer if they've configured it for most of the day
                     if (isSleepTimerConfiguredForMostOfTheDay()) {
-                        chAutoEnable.setChecked(false);
+                        viewBinding.autoEnableCheckbox.setChecked(false);
                     }
                     // change suggested value back to default value for sleep type
                     if (sleepType == SleepTimerType.EPISODES) {
-                        etxtTime.setText(SleepTimerPreferences.DEFAULT_SLEEP_TIMER_EPISODES);
+                        viewBinding.timeEditText.setText(SleepTimerPreferences.DEFAULT_SLEEP_TIMER_EPISODES);
                     } else {
-                        etxtTime.setText(SleepTimerPreferences.DEFAULT_SLEEP_TIMER_MINUTES);
+                        viewBinding.timeEditText.setText(SleepTimerPreferences.DEFAULT_SLEEP_TIMER_MINUTES);
                     }
                 }
                 sleepTimerTypeInitialized = true;
@@ -170,27 +147,9 @@ public class SleepTimerDialog extends DialogFragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        etxtTime = content.findViewById(R.id.etxtTime);
-        sleepTimerHintText = content.findViewById(R.id.sleepTimerHintText);
-        timeSetup = content.findViewById(R.id.timeSetup);
-        timeDisplay = content.findViewById(R.id.timeDisplay);
-        timeDisplay.setVisibility(View.GONE);
-        time = content.findViewById(R.id.time);
-
-        cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
-        cbVibrate = content.findViewById(R.id.cbVibrate);
-        chAutoEnable = content.findViewById(R.id.chAutoEnable);
-        changeTimesButton = content.findViewById(R.id.changeTimesButton);
-        setTimerButton = content.findViewById(R.id.setSleeptimerButton);
-        playbackPreferencesButton = content.findViewById(R.id.playbackPreferencesButton);
-
-        extendSleepFiveMinutesButton = content.findViewById(R.id.extendSleepFiveMinutesButton);
-        extendSleepTenMinutesButton = content.findViewById(R.id.extendSleepTenMinutesButton);
-        extendSleepTwentyMinutesButton = content.findViewById(R.id.extendSleepTwentyMinutesButton);
-
-        etxtTime.setText(SleepTimerPreferences.lastTimerValue());
-        etxtTime.addTextChangedListener(new TextWatcher() {
+        viewBinding.timeDisplayContainer.setVisibility(View.GONE);
+        viewBinding.timeEditText.setText(SleepTimerPreferences.lastTimerValue());
+        viewBinding.timeEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -204,30 +163,27 @@ public class SleepTimerDialog extends DialogFragment {
                 refreshUiState();
             }
         });
-
-        playbackPreferencesButton.setOnClickListener(view -> {
+        viewBinding.playbackPreferencesButton.setOnClickListener(view -> {
             final Intent playbackIntent = new Intent(getActivity(), PreferenceActivity.class);
             playbackIntent.putExtra(PreferenceActivity.OPEN_PLAYBACK_SETTINGS, true);
             startActivity(playbackIntent);
             dismiss();
         });
-
-        etxtTime.postDelayed(() -> {
+        viewBinding.timeEditText.postDelayed(() -> {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(viewBinding.timeEditText, InputMethodManager.SHOW_IMPLICIT);
         }, 100);
-
         refreshUiState();
-        chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
-        cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
-        cbVibrate.setChecked(SleepTimerPreferences.vibrate());
+        viewBinding.autoEnableCheckbox.setChecked(SleepTimerPreferences.autoEnable());
+        viewBinding.shakeToResetCheckbox.setChecked(SleepTimerPreferences.shakeToReset());
+        viewBinding.vibrateCheckbox.setChecked(SleepTimerPreferences.vibrate());
         refreshAutoEnableControls(SleepTimerPreferences.autoEnable());
 
-        cbShakeToReset.setOnCheckedChangeListener((buttonView, isChecked)
+        viewBinding.shakeToResetCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setShakeToReset(isChecked));
-        cbVibrate.setOnCheckedChangeListener((buttonView, isChecked)
+        viewBinding.vibrateCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setVibrate(isChecked));
-        chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked)
+        viewBinding.autoEnableCheckbox.setOnCheckedChangeListener((compoundButton, isChecked)
                 -> {
             boolean mostOfDay = isSleepTimerConfiguredForMostOfTheDay();
             if (isChecked && mostOfDay && SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
@@ -237,23 +193,20 @@ public class SleepTimerDialog extends DialogFragment {
         });
         updateAutoEnableText();
 
-        changeTimesButton.setOnClickListener(changeTimesBtn -> {
+        viewBinding.changeTimesButton.setOnClickListener(changeTimesBtn -> {
             int from = SleepTimerPreferences.autoEnableFrom();
             int to = SleepTimerPreferences.autoEnableTo();
             showTimeRangeDialog(getContext(), from, to);
         });
-
-        Button disableButton = content.findViewById(R.id.disableSleeptimerButton);
-        disableButton.setOnClickListener(v -> {
+        viewBinding.disableSleeptimerButton.setOnClickListener(v -> {
             if (controller != null) {
                 controller.disableSleepTimer();
             }
         });
-
-        setTimerButton.setOnClickListener(v -> {
+        viewBinding.setSleeptimerButton.setOnClickListener(v -> {
             if (!PlaybackService.isRunning
                     || (controller != null && controller.getStatus() != PlayerStatus.PLAYING)) {
-                Snackbar.make(content, R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(viewBinding.getRoot(), R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
                 return;
             }
             try {
@@ -261,10 +214,10 @@ public class SleepTimerDialog extends DialogFragment {
                 if (controller != null) {
                     controller.setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 }
-                closeKeyboard(content);
+                closeKeyboard(viewBinding.getRoot());
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                Snackbar.make(content, R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(viewBinding.getRoot(), R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
             }
         });
         return builder.create();
@@ -282,7 +235,7 @@ public class SleepTimerDialog extends DialogFragment {
                         (dialogInterface, i) -> {
                             // disable continuous playback and also disable the auto sleep timer
                             UserPreferences.setFollowQueue(false);
-                            chAutoEnable.setChecked(false);
+                            viewBinding.autoEnableCheckbox.setChecked(false);
                             refreshUiState();
                         })
                 .setPositiveButton(R.string.sleep_timer_without_continuous_playback_change_hours,
@@ -292,15 +245,14 @@ public class SleepTimerDialog extends DialogFragment {
                             showTimeRangeDialog(getContext(), from, to);
                         })
                 .create();
-        dialog.setOnCancelListener(dialogInterface -> chAutoEnable.setChecked(false));
+        dialog.setOnCancelListener(dialogInterface -> viewBinding.autoEnableCheckbox.setChecked(false));
         dialog.show();
-        // mark the disable continuous playback option in red
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                 .setTextColor(ThemeUtils.getColorFromAttr(requireContext(), R.attr.colorError));
     }
 
     private long getSelectedSleepTime() throws NumberFormatException {
-        long time = Long.parseLong(etxtTime.getText().toString());
+        long time = Long.parseLong(viewBinding.timeEditText.getText().toString());
         if (time == 0) {
             throw new NumberFormatException("Timer must not be zero");
         }
@@ -309,7 +261,7 @@ public class SleepTimerDialog extends DialogFragment {
 
     private void refreshAutoEnableControls(boolean enabled) {
         SleepTimerPreferences.setAutoEnable(enabled);
-        changeTimesButton.setAlpha(enabled ? 1.0f : 0.5f);
+        viewBinding.changeTimesButton.setAlpha(enabled ? 1.0f : 0.5f);
     }
 
     private void refreshUiState() {
@@ -319,23 +271,23 @@ public class SleepTimerDialog extends DialogFragment {
         boolean noEpisodeSelection = isEpisodeType && !UserPreferences.isFollowQueue();
 
         if (noEpisodeSelection) {
-            etxtTime.setEnabled(false);
-            playbackPreferencesButton.setVisibility(View.VISIBLE);
-            sleepTimerHintText.setText(R.string.multiple_sleep_episodes_while_continuous_playback_disabled);
-            sleepTimerHintText.setVisibility(View.VISIBLE);
-            chAutoEnable.setVisibility(View.GONE);
-            changeTimesButton.setVisibility(View.GONE);
-            cbShakeToReset.setVisibility(View.GONE);
-            cbVibrate.setVisibility(View.GONE);
-            setTimerButton.setEnabled(false);
+            viewBinding.timeEditText.setEnabled(false);
+            viewBinding.playbackPreferencesButton.setVisibility(View.VISIBLE);
+            viewBinding.sleepTimerHintText.setText(R.string.multiple_sleep_episodes_while_continuous_playback_disabled);
+            viewBinding.sleepTimerHintText.setVisibility(View.VISIBLE);
+            viewBinding.autoEnableCheckbox.setVisibility(View.GONE);
+            viewBinding.changeTimesButton.setVisibility(View.GONE);
+            viewBinding.shakeToResetCheckbox.setVisibility(View.GONE);
+            viewBinding.vibrateCheckbox.setVisibility(View.GONE);
+            viewBinding.setSleeptimerButton.setEnabled(false);
         } else {
-            playbackPreferencesButton.setVisibility(View.GONE);
-            chAutoEnable.setVisibility(View.VISIBLE);
-            changeTimesButton.setVisibility(View.VISIBLE);
-            cbShakeToReset.setVisibility(isEpisodeType ? View.GONE : View.VISIBLE);
-            cbVibrate.setVisibility(View.VISIBLE);
-            setTimerButton.setEnabled(true);
-            etxtTime.setEnabled(true);
+            viewBinding.playbackPreferencesButton.setVisibility(View.GONE);
+            viewBinding.autoEnableCheckbox.setVisibility(View.VISIBLE);
+            viewBinding.changeTimesButton.setVisibility(View.VISIBLE);
+            viewBinding.shakeToResetCheckbox.setVisibility(isEpisodeType ? View.GONE : View.VISIBLE);
+            viewBinding.vibrateCheckbox.setVisibility(View.VISIBLE);
+            viewBinding.setSleeptimerButton.setEnabled(true);
+            viewBinding.timeEditText.setEnabled(true);
             long selectedSleepTime;
             try {
                 selectedSleepTime = getSelectedSleepTime();
@@ -346,13 +298,13 @@ public class SleepTimerDialog extends DialogFragment {
             if (isEpisodeType) {
                 // for episode timers check if the queue length exceeds the number of sleep episodes we have
                 if (currentQueueSize != null && selectedSleepTime > currentQueueSize) {
-                    sleepTimerHintText.setText(getResources().getQuantityString(
+                    viewBinding.sleepTimerHintText.setText(getResources().getQuantityString(
                             R.plurals.episodes_sleep_timer_exceeds_queue,
                             currentQueueSize,
                             currentQueueSize));
-                    sleepTimerHintText.setVisibility(View.VISIBLE);
+                    viewBinding.sleepTimerHintText.setVisibility(View.VISIBLE);
                 } else {
-                    sleepTimerHintText.setVisibility(View.GONE); // could maybe show duration in minutes
+                    viewBinding.sleepTimerHintText.setVisibility(View.GONE);
                 }
             } else {
                 // for time sleep timers check if the selected value exceeds the remaining play time in the episode
@@ -361,43 +313,43 @@ public class SleepTimerDialog extends DialogFragment {
                 final long timer = TimeUnit.MINUTES.toMillis(selectedSleepTime);
                 if ((timer > remaining) && !UserPreferences.isFollowQueue()) {
                     final int remainingMinutes = Math.toIntExact(TimeUnit.MILLISECONDS.toMinutes(remaining));
-                    sleepTimerHintText
+                    viewBinding.sleepTimerHintText
                             .setText(getResources().getQuantityString(
                                     R.plurals.timer_exceeds_remaining_time_while_continuous_playback_disabled,
                                     remainingMinutes,
                                     remainingMinutes
                             ));
-                    sleepTimerHintText.setVisibility(View.VISIBLE);
+                    viewBinding.sleepTimerHintText.setVisibility(View.VISIBLE);
                 } else {
                     // don't show it at all
-                    sleepTimerHintText.setVisibility(View.GONE);
+                    viewBinding.sleepTimerHintText.setVisibility(View.GONE); // could maybe show duration in minutes
                 }
             }
         }
 
         // disable extension for episodes if we're not moving to next one
-        extendSleepFiveMinutesButton.setEnabled(!noEpisodeSelection);
-        extendSleepTenMinutesButton.setEnabled(!noEpisodeSelection);
-        extendSleepTwentyMinutesButton.setEnabled(!noEpisodeSelection);
+        viewBinding.extendSleepFiveMinutesButton.setEnabled(!noEpisodeSelection);
+        viewBinding.extendSleepTenMinutesButton.setEnabled(!noEpisodeSelection);
+        viewBinding.extendSleepTwentyMinutesButton.setEnabled(!noEpisodeSelection);
 
         if (SleepTimerPreferences.getSleepTimerType() == SleepTimerType.CLOCK) {
-            setupExtendButton(extendSleepFiveMinutesButton,
+            setupExtendButton(viewBinding.extendSleepFiveMinutesButton,
                     getString(R.string.extend_sleep_timer_label, EXTEND_FEW_MINUTES_DISPLAY_VALUE),
                     EXTEND_FEW_MINUTES);
-            setupExtendButton(extendSleepTenMinutesButton,
+            setupExtendButton(viewBinding.extendSleepTenMinutesButton,
                     getString(R.string.extend_sleep_timer_label, EXTEND_MID_MINUTES_DISPLAY_VALUE),
                     EXTEND_MID_MINUTES);
-            setupExtendButton(extendSleepTwentyMinutesButton,
+            setupExtendButton(viewBinding.extendSleepTwentyMinutesButton,
                     getString(R.string.extend_sleep_timer_label, EXTEND_LOTS_MINUTES_DISPLAY_VALUE),
                     EXTEND_LOTS_MINUTES);
         } else {
-            setupExtendButton(extendSleepFiveMinutesButton,
+            setupExtendButton(viewBinding.extendSleepFiveMinutesButton,
                     "+" + getResources().getQuantityString(R.plurals.num_episodes,
                     EXTEND_FEW_EPISODES, EXTEND_FEW_EPISODES), EXTEND_FEW_EPISODES);
-            setupExtendButton(extendSleepTenMinutesButton,
+            setupExtendButton(viewBinding.extendSleepTenMinutesButton,
                     "+" + getResources().getQuantityString(R.plurals.num_episodes,
                     EXTEND_MID_EPISODES, EXTEND_MID_EPISODES), EXTEND_MID_EPISODES);
-            setupExtendButton(extendSleepTwentyMinutesButton,
+            setupExtendButton(viewBinding.extendSleepTwentyMinutesButton,
                     "+" + getResources().getQuantityString(R.plurals.num_episodes,
                     EXTEND_LOTS_EPISODES, EXTEND_LOTS_EPISODES), EXTEND_LOTS_EPISODES);
         }
@@ -422,8 +374,9 @@ public class SleepTimerDialog extends DialogFragment {
             // only change the state if true, don't change it regardless of flag (although we could)
             if (mostOfDay && SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
                 confirmAlwaysSleepTimerDialog();
-            } else if (!chAutoEnable.isChecked()) { // if it's not checked, then make sure it's checked in UI too
-                chAutoEnable.setChecked(true);
+            } else if (!viewBinding.autoEnableCheckbox.isChecked()) {
+                // if it's not checked, then make sure it's checked in UI too
+                viewBinding.autoEnableCheckbox.setChecked(true);
             }
             updateAutoEnableText();
         });
@@ -449,21 +402,22 @@ public class SleepTimerDialog extends DialogFragment {
             text = getString(R.string.auto_enable_label_with_times, formattedFrom, formattedTo);
 
         }
-        chAutoEnable.setText(text);
+        viewBinding.autoEnableCheckbox.setText(text);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     @SuppressWarnings("unused")
     public void timerUpdated(SleepTimerUpdatedEvent event) {
-        timeDisplay.setVisibility(event.isOver() || event.isCancelled() ? View.GONE : View.VISIBLE);
-        timeSetup.setVisibility(event.isOver() || event.isCancelled() ? View.VISIBLE : View.GONE);
-        sleepTimerType.setEnabled(event.isOver() || event.isCancelled());
+        viewBinding.timeDisplayContainer.setVisibility(
+                event.isOver() || event.isCancelled() ? View.GONE : View.VISIBLE);
+        viewBinding.timeSetupContainer.setVisibility(event.isOver() || event.isCancelled() ? View.VISIBLE : View.GONE);
+        viewBinding.sleepTimerType.setEnabled(event.isOver() || event.isCancelled());
 
         if (SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
-            time.setText(getResources().getQuantityString(R.plurals.num_episodes,
+            viewBinding.time.setText(getResources().getQuantityString(R.plurals.num_episodes,
                     (int) event.getDisplayTimeLeft(), (int) event.getDisplayTimeLeft()));
         } else {
-            time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
+            viewBinding.time.setText(Converter.getDurationStringLong((int) event.getDisplayTimeLeft()));
         }
     }
 
