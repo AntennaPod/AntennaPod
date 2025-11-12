@@ -137,6 +137,21 @@ public class MainActivity extends CastEnabledActivity {
                 }
                 loadFragment(NavigationNames.getBottomNavigationFragmentTag(itemId), null);
             }
+
+            @Override
+            public void onItemReselected(@IdRes int itemId) {
+                // If queue was reselected, and the queue fragment is currently shown, ask it to scroll to the playing item
+                int queueId = R.id.bottom_navigation_queue;
+                if (itemId == queueId) {
+                    Fragment current = getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG);
+                    if (current instanceof QueueFragment) {
+                        ((QueueFragment) current).scrollToPlayingItem();
+                    } else {
+                        // If queue isn't the current fragment, simply load it (this mimics normal selection behavior)
+                        loadFragment(QueueFragment.TAG, null);
+                    }
+                }
+            }
         };
         if (UserPreferences.isBottomNavigationEnabled()) {
             bottomNavigation.buildMenu();

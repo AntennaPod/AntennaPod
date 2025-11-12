@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -73,6 +74,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import de.danoeh.antennapod.playback.service.PlaybackStatus;
 
 /**
  * Shows all items in the queue.
@@ -726,5 +728,54 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             DBWriter.moveQueueItem(from, to, true);
         }
 
+    }
+
+    /**
+     * Smooth-scrolls the RecyclerView to the currently playing item in the queue.
+     * If the queue is large and the target is far away, perform a quick jump near the target
+     * and then smooth-scroll the remaining small distance to keep the animation fast.
+     */
+    public void scrollToPlayingItem() {
+        if (recyclerView == null || recyclerAdapter == null || queue == null || queue.isEmpty()) {
+            return;
+        }
+        // Find index of currently playing item
+        int playingIndex = -1;
+        for (int i = 0, size = queue.size(); i < size; i++) {
+            FeedItem item = queue.get(i);
+            if (item.getMedia() != null && PlaybackStatus.isCurrentlyPlaying(item.getMedia())) {
+                playingIndex = i;
+                break;
+            }
+        }
+        if (playingIndex < 0) {
+            // Nothing currently playing - no-op
+            return;
+        }
+
+        final int target = playingIndex;
+        recyclerView.post(() -> {
+            LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+            if (lm == null) {
+                recyclerView.smoothScrollToPosition(target);
+                return;
+            }
+            int firstVisible = lm.findFirstVisibleItemPosition();
+            int lastVisible = lm.findLastVisibleItemPosition();
+            if (target >= firstVisible && target <= lastVisible) {
+                // already visible, smooth scroll to center it
+                recyclerView.smoothScrollToPosition(target);
+                return;
+            }
+            int distance = Math.abs(target - firstVisible);
+            // If target far (>30 items), jump near it first for speed
+            if (distance > 30) {
+                int jumpTo = Math.max(0, target - 10);
+                lm.scrollToPositionWithOffset(jumpTo, 0);
+                recyclerView.postDelayed(() -> recyclerView.smoothScrollToPosition(target), 50);
+            } else {
+                recyclerView.smoothScrollToPosition(target);
+            }
+        });
     }
 }
