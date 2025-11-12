@@ -743,7 +743,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         int playingIndex = -1;
         for (int i = 0, size = queue.size(); i < size; i++) {
             FeedItem item = queue.get(i);
-            if (item.getMedia() != null && PlaybackStatus.isCurrentlyPlaying(item.getMedia())) {
+            if (item.getMedia() != null && PlaybackStatus.isPlaying(item.getMedia())) {
                 playingIndex = i;
                 break;
             }
