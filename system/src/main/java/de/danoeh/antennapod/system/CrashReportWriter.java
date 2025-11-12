@@ -26,7 +26,6 @@ public class CrashReportWriter {
         try {
             out = new PrintWriter(path, "UTF-8");
             exception.printStackTrace(out);
-
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {

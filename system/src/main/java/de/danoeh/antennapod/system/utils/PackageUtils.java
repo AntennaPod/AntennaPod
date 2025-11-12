@@ -12,7 +12,6 @@ import java.util.Objects;
 /**
  * Utilities for accessing the package information.
  */
-
 public final class PackageUtils {
 
     public static String getApplicationVersion(@NonNull Context context) {

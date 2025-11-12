@@ -33,7 +33,6 @@ public final class ClipboardUtils {
      */
     public static void copyText(TextView textView, @StringRes int labelId, @StringRes int messageId) {
         Context context = textView.getContext();
-
         copyText(textView, context.getString(labelId), context.getString(messageId), textView.getText().toString());
     }
 
@@ -46,14 +45,12 @@ public final class ClipboardUtils {
      */
     public static void copyText(View view, @StringRes int labelId, String text) {
         Context context = view.getContext();
-
         copyText(view, context.getString(labelId), context.getString(R.string.copied_to_clipboard), text);
     }
 
     private static void copyText(View view, String label, String message, String text) {
         ClipboardManager clipboard = (ClipboardManager) view.getContext()
                 .getSystemService(Context.CLIPBOARD_SERVICE);
-
         clipboard.setPrimaryClip(ClipData.newPlainText(label, text));
 
         if (Build.VERSION.SDK_INT < 32) {

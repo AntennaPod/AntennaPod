@@ -63,9 +63,7 @@ public class BugReportFragment extends AnimatedFragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setupContextMenu();
-        setupClipboardCopy();
 
         viewModel.getState().observe(getViewLifecycleOwner(), uiState -> {
             refreshEnvironmentInfo(uiState.getEnvironmentInfo());
@@ -79,23 +77,29 @@ public class BugReportFragment extends AnimatedFragment {
                 case SHOWN_COLLAPSED:
                     viewModel.setCrashLogState(BugReportViewModel.UiState.CrashLogState.SHOWN_EXPANDED);
                     break;
-
                 case SHOWN_EXPANDED:
                     viewModel.setCrashLogState(BugReportViewModel.UiState.CrashLogState.SHOWN_COLLAPSED);
                     break;
-
                 default:    // UNAVAILABLE
                     break;
             }
         });
-
-        viewBinding.openForumButton.setOnClickListener(v -> {
-            IntentUtils.openInBrowser(requireContext(), "https://forum.antennapod.org/search");
-        });
-
-        viewBinding.openGithubButton.setOnClickListener(v -> {
-            IntentUtils.openInBrowser(requireContext(), "https://github.com/AntennaPod/AntennaPod/issues");
-        });
+        viewBinding.openForumButton.setOnClickListener(v ->
+                IntentUtils.openInBrowser(requireContext(), "https://forum.antennapod.org/search"));
+        viewBinding.openGithubButton.setOnClickListener(v ->
+                IntentUtils.openInBrowser(requireContext(), "https://github.com/AntennaPod/AntennaPod/issues"));
+        viewBinding.attribAppVersionLabel.setOnClickListener(v ->
+                ClipboardUtils.copyText((TextView) v, R.string.report_bug_attrib_app_version));
+        viewBinding.attribAndroidVersionLabel.setOnClickListener(v ->
+                ClipboardUtils.copyText((TextView) v, R.string.report_bug_attrib_android_version));
+        viewBinding.attribDeviceNameLabel.setOnClickListener(v ->
+                ClipboardUtils.copyText((TextView) v, R.string.report_bug_attrib_device_name));
+        viewBinding.crashLogContentText.setOnClickListener(v ->
+                ClipboardUtils.copyText(v, R.string.report_bug_title,
+                        viewModel.requireCurrentState().getCrashInfoWithMarkup()));
+        viewBinding.copyToClipboardButton.setOnClickListener(v ->
+                ClipboardUtils.copyText(v, R.string.report_bug_title,
+                        viewModel.requireCurrentState().getBugReportWithMarkup()));
     }
 
     @Override
@@ -119,6 +123,7 @@ public class BugReportFragment extends AnimatedFragment {
         switch (state) {
             case SHOWN_COLLAPSED:
             case SHOWN_EXPANDED:
+                viewBinding.crashLogToggleGroup.setVisibility(View.VISIBLE);
                 viewBinding.crashLogContentText.setText(crashLogInfo.getContent());
                 viewBinding.crashLogMessageLabel.setText(getString(
                         R.string.report_bug_crash_log_message, uiState.getFormattedCrashLogTimestamp()));
@@ -130,10 +135,7 @@ public class BugReportFragment extends AnimatedFragment {
                     viewBinding.expandCrashLogButton.setText(R.string.general_collapse_button);
                     viewBinding.crashLogContentText.setMaxLines(Integer.MAX_VALUE);
                 }
-
-                viewBinding.crashLogToggleGroup.setVisibility(View.VISIBLE);
                 break;
-
             default:    // UNAVAILABLE
                 viewBinding.crashLogToggleGroup.setVisibility(View.GONE);
                 break;
@@ -150,41 +152,21 @@ public class BugReportFragment extends AnimatedFragment {
             @Override
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 if (menuItem.getItemId() == R.id.export_logcat) {
-                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-
-                    builder.setTitle(menuItem.getTitle());
-                    builder.setMessage(R.string.confirm_export_log_dialog_message);
-                    builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                        exportLogcat();
-                        dialog.dismiss();
-                    });
-
-                    builder.setNegativeButton(R.string.cancel_label, null);
-                    builder.show();
-
+                    showExportLogcatDialog();
                     return true;
                 }
-
                 return false;
             }
         }, getViewLifecycleOwner());
     }
 
-    private void setupClipboardCopy() {
-        viewBinding.attribAppVersionLabel.setOnClickListener(view ->
-                ClipboardUtils.copyText((TextView) view, R.string.report_bug_attrib_app_version));
-        viewBinding.attribAndroidVersionLabel.setOnClickListener(view ->
-                ClipboardUtils.copyText((TextView) view, R.string.report_bug_attrib_android_version));
-        viewBinding.attribDeviceNameLabel.setOnClickListener(view ->
-                ClipboardUtils.copyText((TextView) view, R.string.report_bug_attrib_device_name));
-        viewBinding.crashLogContentText.setOnClickListener(view ->
-                ClipboardUtils.copyText(view, R.string.report_bug_title,
-                        viewModel.requireCurrentState().getCrashInfoWithMarkup())
-        );
-        viewBinding.copyToClipboardButton.setOnClickListener(view ->
-                ClipboardUtils.copyText(view, R.string.report_bug_title,
-                        viewModel.requireCurrentState().getBugReportWithMarkup())
-        );
+    private void showExportLogcatDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(R.string.export_logs_menu_title);
+        builder.setMessage(R.string.confirm_export_log_dialog_message);
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> exportLogcat());
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.show();
     }
 
     private void exportLogcat() {

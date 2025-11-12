@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.preferences.screen.bugreport;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.os.Build;
 import android.text.format.DateUtils;
@@ -24,13 +23,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * Viewmodel encapsulating all data and business logic required
  * to present the report bug UI.
  */
-
 public class BugReportViewModel extends AndroidViewModel {
-
     /**
      * Device runtime environment information
      */
-
     public static class EnvironmentInfo {
         String applicationVersion;
         String androidVersion;
@@ -55,7 +51,6 @@ public class BugReportViewModel extends AndroidViewModel {
                     .toLowerCase(Locale.getDefault()))) {
                 return Build.MODEL;
             }
-
             return Build.MANUFACTURER + " " + Build.MODEL;
         }
     }
@@ -63,7 +58,6 @@ public class BugReportViewModel extends AndroidViewModel {
     /**
      * Contents of the latest crash log / stacktrace file
      */
-
     public static class CrashLogInfo {
         private final Date timestamp;
         private final String content;
@@ -89,7 +83,6 @@ public class BugReportViewModel extends AndroidViewModel {
     /**
      * Full UI state required by the report bug presentation layer
      */
-
     public static class UiState {
         public enum CrashLogState {
             UNAVAILABLE,
@@ -120,13 +113,9 @@ public class BugReportViewModel extends AndroidViewModel {
 
             if (crashLogInfo.isAvailable()) {
                 this.formattedCrashLogTimestamp = DateUtils.formatDateTime(
-                        application,
-                        crashLogInfo.timestamp.getTime(),
-                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME
-                );
-
+                        application, crashLogInfo.timestamp.getTime(),
+                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
                 SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
-
                 this.formattedCrashLog = "## Crash info"
                         + "\nTime: " + df.format(crashLogInfo.getTimestamp())
                         + "\nAntennaPod version: " + environmentInfo.applicationVersion
@@ -135,7 +124,6 @@ public class BugReportViewModel extends AndroidViewModel {
                         + "\n```"
                         + "\n" + crashLogInfo.getContent()
                         + "\n```";
-
                 this.crashLogState = CrashLogState.SHOWN_COLLAPSED;
             } else {
                 this.crashLogState = CrashLogState.UNAVAILABLE;
@@ -162,7 +150,6 @@ public class BugReportViewModel extends AndroidViewModel {
             if (crashLogInfo.isAvailable()) {
                 return getEnvironmentInfoWithMarkup() + "\n\n" + getCrashInfoWithMarkup();
             }
-
             return formattedEnvironmentInfo;
         }
 
@@ -182,15 +169,9 @@ public class BugReportViewModel extends AndroidViewModel {
     private final MutableLiveData<UiState> uiState = new MutableLiveData<>();
     private final Disposable disposable;
 
-    @SuppressLint("CheckResult")
     public BugReportViewModel(Application application) {
         super(application);
-
-        //
-        // Since the crash log is read in from a file as part of the UI state
-        // initialisation we should perform the file I/O on a background thread.
-        //
-
+        // Does file I/O, so we have to use a background thread
         this.disposable = Observable.fromCallable(() -> new UiState(application))
                 .subscribeOn(Schedulers.io())
                 .subscribe(this.uiState::postValue);
