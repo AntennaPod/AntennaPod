@@ -70,7 +70,6 @@ import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -336,7 +335,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         singleShotDisposables.clear();
         WidgetUpdater.updateWidget(getApplicationContext(), new WidgetUpdater.WidgetState(getPlayable(), getStatus(),
-                getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed()));
+                    getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed()));
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
@@ -375,15 +374,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void loadQueueForMediaSession() {
         Disposable d = Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
-                    List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
-                    for (FeedItem feedItem : DBReader.getQueue()) {
-                        if (feedItem.getMedia() != null) {
-                            MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
-                            queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
-                        }
-                    }
-                    emitter.onSuccess(queueItems);
-                })
+            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
+            for (FeedItem feedItem : DBReader.getQueue()) {
+                if (feedItem.getMedia() != null) {
+                    MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
+                    queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
+                }
+            }
+            emitter.onSuccess(queueItems);
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
@@ -441,17 +440,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         result.detach();
 
         Disposable d = Completable.create(emitter -> {
-                    result.sendResult(loadChildrenSynchronous(parentId));
-                    emitter.onComplete();
-                })
+            result.sendResult(loadChildrenSynchronous(parentId));
+            emitter.onComplete();
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        () -> {
-                        }, e -> {
-                            e.printStackTrace();
-                            result.sendResult(null);
-                        });
+                    () -> {
+                    }, e -> {
+                        e.printStackTrace();
+                        result.sendResult(null);
+                    });
         singleShotDisposables.add(d);
     }
 
@@ -587,13 +586,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 UserPreferences.setAllowMobileStreaming(true);
             }
             Disposable d = Observable.fromCallable(
-                            () -> {
-                                if (playable instanceof FeedMedia) {
-                                    return DBReader.getFeedMedia(((FeedMedia) playable).getId());
-                                } else {
-                                    return playable;
-                                }
-                            })
+                    () -> {
+                        if (playable instanceof FeedMedia) {
+                            return DBReader.getFeedMedia(((FeedMedia) playable).getId());
+                        } else {
+                            return playable;
+                        }
+                    })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -612,7 +611,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void skipIntro(Playable playable) {
-        if (!(playable instanceof FeedMedia)) {
+        if (! (playable instanceof FeedMedia)) {
             return;
         }
 
@@ -1139,7 +1138,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     /**
      * Tells if we should continue to next episode
-     *
      * @return True if we can proceed to the next episode (might be blocked by other things), or not
      */
     private boolean shouldContinueToNextEpisode() {
@@ -1297,7 +1295,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void skipEndingIfNecessary() {
         Playable playable = mediaPlayer.getPlayable();
-        if (!(playable instanceof FeedMedia)) {
+        if (! (playable instanceof FeedMedia)) {
             return;
         }
 
@@ -1395,10 +1393,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (UserPreferences.showPlaybackSpeedOnFullNotification()) {
             sessionState.addCustomAction(
                     new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
-                            getString(R.string.playback_speed),
-                            R.drawable.ic_notification_playback_speed
-                    ).build()
+                    CUSTOM_ACTION_CHANGE_PLAYBACK_SPEED,
+                    getString(R.string.playback_speed),
+                    R.drawable.ic_notification_playback_speed
+                ).build()
             );
         }
 
@@ -1416,19 +1414,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (getPlayable() != null && getPlayable().getChapters() != null) {
                 sessionState.addCustomAction(
                         new PlaybackStateCompat.CustomAction.Builder(
-                                CUSTOM_ACTION_NEXT_CHAPTER,
-                                getString(R.string.next_chapter), R.drawable.ic_notification_next_chapter)
-                                .build());
+                        CUSTOM_ACTION_NEXT_CHAPTER,
+                        getString(R.string.next_chapter), R.drawable.ic_notification_next_chapter)
+                        .build());
             }
         }
 
         if (UserPreferences.showSkipOnFullNotification()) {
             sessionState.addCustomAction(
-                    new PlaybackStateCompat.CustomAction.Builder(
-                            CUSTOM_ACTION_SKIP_TO_NEXT,
-                            getString(R.string.skip_episode_label),
-                            R.drawable.ic_notification_skip
-                    ).build()
+                new PlaybackStateCompat.CustomAction.Builder(
+                    CUSTOM_ACTION_SKIP_TO_NEXT,
+                    getString(R.string.skip_episode_label),
+                    R.drawable.ic_notification_skip
+                ).build()
             );
         }
 
@@ -1619,10 +1617,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (state != -1) {
                     if (state == UNPLUGGED) {
                         Log.d(TAG, "Headset was unplugged during playback.");
-                    } else if (state == PLUGGED) {
+                      } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
                         unpauseIfPauseOnDisconnect(false);
-                    }
+                      }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
                 }
