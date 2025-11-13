@@ -68,7 +68,7 @@ import de.danoeh.antennapod.ui.screen.playback.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.ui.screen.playback.PlaybackControlsDialog;
 import de.danoeh.antennapod.ui.screen.playback.SleepTimerDialog;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -189,7 +189,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         controller = newPlaybackController();
         controller.init();
         loadMediaInfo();
-        onPositionObserverUpdate();
         EventBus.getDefault().register(this);
     }
 
@@ -266,24 +265,55 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     protected void loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
-        if (controller == null || controller.getMedia() == null) {
-            return;
+        if (disposable != null) {
+            disposable.dispose();
         }
-        if (controller.getStatus() == PlayerStatus.PLAYING && !controller.isPlayingVideoLocally()) {
-            Log.d(TAG, "Closing, no longer video");
-            destroyingDueToReload = true;
-            finish();
-            new MainActivityStarter(this).withOpenPlayer().start();
-            return;
-        }
-        showTimeLeft = UserPreferences.shouldShowRemainingTime();
-        onPositionObserverUpdate();
-        checkFavorite();
-        Playable media = controller.getMedia();
-        if (media != null) {
-            getSupportActionBar().setSubtitle(media.getEpisodeTitle());
-            getSupportActionBar().setTitle(media.getFeedTitle());
-        }
+        disposable = Maybe.<Pair<Playable, FeedItem>>create(emitter -> {
+            if (controller == null) {
+                emitter.onComplete();
+                return;
+            }
+            Playable media = controller.getMedia();
+            if (media == null) {
+                emitter.onComplete();
+                return;
+            }
+            FeedItem feedItem = getFeedItem(controller.getMedia());
+            if (feedItem != null) {
+                feedItem = DBReader.getFeedItem(feedItem.getId());
+            }
+            emitter.onSuccess(new Pair<>(media, feedItem));
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> {
+                            final Playable media = result.first;
+                            final FeedItem item = result.second;
+                            if (controller.getStatus() == PlayerStatus.PLAYING
+                                    && !controller.isPlayingVideoLocally()) {
+                                Log.d(TAG, "Closing, no longer video");
+                                destroyingDueToReload = true;
+                                finish();
+                                new MainActivityStarter(this).withOpenPlayer().start();
+                                return;
+                            }
+                            showTimeLeft = UserPreferences.shouldShowRemainingTime();
+                            onPositionObserverUpdate(
+                                    new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
+
+                            if (media != null) {
+                                getSupportActionBar().setSubtitle(media.getEpisodeTitle());
+                                getSupportActionBar().setTitle(media.getFeedTitle());
+                            }
+
+                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if (isFavorite != isFav) {
+                                isFavorite = isFav;
+                                invalidateOptionsMenu();
+                            }
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error))
+                );
     }
 
     protected void setupView() {
@@ -532,7 +562,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        onPositionObserverUpdate();
+        onPositionObserverUpdate(event);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -659,24 +689,21 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         return null;
     }
 
-    void onPositionObserverUpdate() {
+    void onPositionObserverUpdate(PlaybackPositionEvent event) {
         if (controller == null) {
             return;
         }
-
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
-        int currentPosition = converter.convert(controller.getPosition());
-        int duration = converter.convert(controller.getDuration());
-        int remainingTime = converter.convert(
-                controller.getDuration() - controller.getPosition());
+        int currentPosition = converter.convert(event.getPosition());
+        int duration = converter.convert(event.getDuration());
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
-        if (currentPosition == Playable.INVALID_TIME
-                || duration == Playable.INVALID_TIME) {
+        if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }
         viewBinding.positionLabel.setText(Converter.getDurationStringLong(currentPosition));
         if (showTimeLeft) {
+            int remainingTime = converter.convert(event.getDuration() - event.getPosition());
             viewBinding.durationLabel.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {
             viewBinding.durationLabel.setText(Converter.getDurationStringLong(duration));
@@ -728,27 +755,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 .setDuration(200)
                 .start();
         setupVideoControlsToggler();
-    }
-
-    private void checkFavorite() {
-        FeedItem feedItem = getFeedItem(controller.getMedia());
-        if (feedItem == null) {
-            return;
-        }
-        if (disposable != null) {
-            disposable.dispose();
-        }
-        disposable = Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        item -> {
-                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
-                            if (isFavorite != isFav) {
-                                isFavorite = isFav;
-                                invalidateOptionsMenu();
-                            }
-                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Nullable
