@@ -58,6 +58,8 @@ public class BottomNavigation {
         MenuItem moreItem = menu.add(0, R.id.bottom_navigation_more, 0, context.getString(R.string.overflow_more));
         moreItem.setIcon(R.drawable.dots_vertical);
         bottomNavigationView.setOnItemSelectedListener(bottomItemSelectedListener);
+        // Handle reselection (pressing already selected item)
+        bottomNavigationView.setOnItemReselectedListener(bottomItemReselectedListener);
         updateBottomNavigationBadgeIfNeeded();
     }
 
@@ -88,6 +90,14 @@ public class BottomNavigation {
         } else {
             onItemSelected(item.getItemId());
             return true;
+        }
+    };
+
+    private final NavigationBarView.OnItemReselectedListener bottomItemReselectedListener = item -> {
+        if (item.getItemId() == R.id.bottom_navigation_more) {
+            showBottomNavigationMorePopup();
+        } else {
+            onItemReselected(item.getItemId());
         }
     };
 
@@ -142,6 +152,10 @@ public class BottomNavigation {
     }
 
     public void onItemSelected(@IdRes int itemId) {
+    }
+
+    // Called when an already-selected bottom nav item is pressed again.
+    public void onItemReselected(@IdRes int itemId) {
     }
 
     public void hide() {
