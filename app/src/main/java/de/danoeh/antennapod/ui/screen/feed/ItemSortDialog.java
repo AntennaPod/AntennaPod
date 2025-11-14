@@ -32,7 +32,7 @@ public class ItemSortDialog extends BottomSheetDialogFragment {
         return viewBinding.getRoot();
     }
 
-    private void populateList() {
+    protected void populateList() {
         viewBinding.gridLayout.removeAllViews();
         onAddItem(R.string.episode_title, SortOrder.EPISODE_TITLE_A_Z, SortOrder.EPISODE_TITLE_Z_A, true);
         onAddItem(R.string.feed_title, SortOrder.FEED_TITLE_A_Z, SortOrder.FEED_TITLE_Z_A, true);

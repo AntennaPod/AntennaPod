@@ -2,11 +2,12 @@ package de.danoeh.antennapod.storage.database.mapper;
 
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class FeedItemSortQuery {
     public static String generateFrom(SortOrder sortOrder) {
-        if (sortOrder == null) {
-            sortOrder = SortOrder.DATE_NEW_OLD;
+        if (sortOrder == null || SortOrder.GLOBAL_DEFAULT.equals(sortOrder)) {
+            sortOrder = UserPreferences.getPrefGlobalSortedOrder();
         }
         switch (sortOrder) {
             case EPISODE_TITLE_A_Z:
