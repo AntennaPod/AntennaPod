@@ -122,7 +122,6 @@
     <string name="rename_feed_label">পডকাস্টের নাম পরিবর্তন করুন</string>
     <string name="remove_feed_label">পডকাস্ট সরান</string>
     <string name="share_label">শেয়ার করুন</string>
-    <string name="feed_remover_msg">পডকাস্ট সরানো হচ্ছে</string>
     <string name="load_complete_feed">সম্পূর্ণ পডকাস্ট রিফ্রেশ করুন</string>
     <string name="multi_select">একাধিক নির্বাচন করুন</string>
     <string name="select_all_above">উপরে সব নির্বাচন করুন</string>

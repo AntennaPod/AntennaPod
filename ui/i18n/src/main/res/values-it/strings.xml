@@ -13,7 +13,7 @@
     <string name="downloads_label">Download</string>
     <string name="downloads_log_label">Registro dei download</string>
     <string name="subscriptions_label">Iscrizioni</string>
-    <string name="subscriptions_list_label">Lista iscrizioni</string>
+    <string name="subscriptions_list_label">Elenco iscrizioni</string>
     <string name="cancel_download_label">Annulla download</string>
     <string name="playback_history_label">Cronologia riproduzioni</string>
     <string name="years_statistics_label">Anni</string>
@@ -68,7 +68,7 @@
     <!--Bug report activity-->
   <string name="log_file_share_exception">Nessuna applicazione compatibile trovata</string>
     <string name="export_logs_menu_title">Esporta log dettagliato</string>
-    <string name="confirm_export_log_dialog_message">Il log dettagliato può contenere informazioni sensibili come il tuo elenco di iscrizioni</string>
+    <string name="confirm_export_log_dialog_message">I log dettagliati possono contenere informazioni sensibili, come il tuo elenco di iscrizioni</string>
     <!--Webview actions-->
   <string name="open_in_browser_label">Apri nel browser</string>
     <string name="copy_url_label">Copia URL</string>
@@ -120,12 +120,12 @@
     <string name="episode_cleanup_after_listening">Dopo il completamento</string>
     <plurals name="episode_cleanup_hours_after_listening">
         <item quantity="one">%d ora dopo il completamento</item>
-        <item quantity="many">%d ore dopo il completamento</item>
+        <item quantity="many">%d di ore dopo il completamento</item>
         <item quantity="other">%d ore dopo il completamento</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d giorno dopo il completamento</item>
-        <item quantity="many">%d giorni dopo il completamento</item>
+        <item quantity="many">%d di giorni dopo il completamento</item>
         <item quantity="other">%d giorni dopo il completamento</item>
     </plurals>
     <plurals name="num_selected_label">
@@ -160,11 +160,10 @@
     <string name="show_info_label">Mostra informazioni</string>
     <string name="show_feed_settings_label">Mostra impostazioni podcast</string>
     <string name="feed_settings_label">Impostazioni podcast</string>
-    <string name="rename_feed_label">Rinomina podcast</string>
-    <string name="remove_feed_label">Rimuovi podcast</string>
+    <string name="rename_feed_label">Rinomina</string>
+    <string name="remove_feed_label">Elimina</string>
     <string name="share_label">Condividi</string>
     <string name="share_file_label">Condividi il file</string>
-    <string name="feed_remover_msg">Rimozione podcast in corso</string>
     <string name="load_complete_feed">Aggiorna podcast completo</string>
     <string name="multi_select">Selezione multipla</string>
     <string name="select_all_above">Seleziona tutti in su</string>
@@ -199,7 +198,7 @@
     <string name="remove_from_queue_label">Rimuovi dalla coda</string>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episodio rimosso dall\'inbox.</item>
-        <item quantity="many">%d episodi rimossi dall\'inbox.</item>
+        <item quantity="many">%d di episodi rimossi dall\'inbox.</item>
         <item quantity="other">%d episodi rimossi dall\'inbox.</item>
     </plurals>
     <string name="add_to_favorite_label">Aggiungi ai preferiti</string>
@@ -278,8 +277,8 @@
     <string name="move_to_bottom_label">Sposta in fondo</string>
     <string name="sort">Ordina</string>
     <string name="keep_sorted">Mantieni ordine</string>
-    <string name="date">Per data</string>
-    <string name="duration">Per durata</string>
+    <string name="date">Data</string>
+    <string name="duration">Durata</string>
     <string name="episode_title">Titolo episodio</string>
     <string name="feed_title">Titolo podcast</string>
     <string name="random">Casuale</string>
@@ -313,8 +312,8 @@
     <string name="synchronization_sum">Sincronizza con altri dispositivi</string>
     <string name="automation">Automazione</string>
     <string name="download_pref_details">Dettagli</string>
-    <string name="import_export_pref">Importa/Esporta</string>
-    <string name="import_export_search_keywords">backup, ripristina, ripristino, importa, esporta</string>
+    <string name="import_export_pref">Backup e ripristino</string>
+    <string name="import_export_search_keywords">ripristina, ripristinare, importa, importare, esporta, esportare</string>
     <string name="theming">Temi</string>
     <string name="external_elements">Elementi esterni</string>
     <string name="interruptions">Interruzioni</string>
@@ -325,7 +324,7 @@
     <string name="preference_search_clear_history">Svuota cronologia</string>
     <string name="pref_episode_cleanup_title">Elimina prima del download automatico</string>
     <string name="pref_episode_cleanup_summary">Episodi cancellabili se il download automatico richiede altro spazio per nuovi episodi</string>
-    <string name="pref_pauseOnDisconnect_sum">Sospendi la riproduzione quando le cuffie o il bluetooth vengono disconnessi</string>
+    <string name="pref_pauseOnDisconnect_sum">Sospendi la riproduzione quando le cuffie o i dispositivi Bluetooth vengono disconnessi</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Riprendi la riproduzione quando le cuffie vengono ricollegate</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Riprendi la riproduzione quando il Bluetooth si riconnette</string>
     <string name="pref_hardware_forward_button_title">Tasto Avanti</string>
@@ -382,10 +381,7 @@
     <string name="pref_black_theme_message">Usa il nero come tema scuro</string>
     <string name="pref_tinted_theme_title">Colori dinamici</string>
     <string name="pref_tinted_theme_message">Adatta i colori dell\'app in base allo sfondo</string>
-    <string name="pref_nav_drawer_feed_order_title">Ordine delle iscrizioni</string>
-    <string name="pref_nav_drawer_feed_order_sum">Modifica l\'ordine delle iscrizioni</string>
-    <string name="pref_nav_drawer_feed_counter_title">Contatore delle iscrizioni</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Cambia il criterio di calcolo del contatore delle iscrizioni. Influenza anche l\'ordinamento delle iscrizioni se impostato su \'Ordina per contatore\'.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Contatore</string>
     <string name="pref_automatic_download_title">Download automatici</string>
     <string name="pref_automatic_download_sum">Configura il download automatico degli episodi</string>
     <string name="pref_automatic_download_on_battery_title">Download con batteria non in carica</string>
@@ -448,8 +444,6 @@
     <string name="remember_last_page">Riapri l\'ultima pagina</string>
     <string name="pref_delete_removes_from_queue_title">Rimuovi dalla coda gli eliminati</string>
     <string name="pref_delete_removes_from_queue_sum">Rimuovi automaticamente un episodio dalla coda quando viene eliminato</string>
-    <string name="pref_filter_feed_title">Filtro iscrizioni</string>
-    <string name="pref_filter_feed_sum">Filtra le iscrizioni mostrate nella barra laterale e nella schermata iscrizioni</string>
     <string name="subscriptions_counter_greater_zero">Contatore maggiore di zero</string>
     <string name="auto_downloaded">Con download automatico</string>
     <string name="not_auto_downloaded">Senza download automatico</string>
@@ -535,22 +529,22 @@
     <string name="time_hours">ore</string>
     <plurals name="time_seconds_quantified">
         <item quantity="one">%d secondo</item>
-        <item quantity="many">%d secondi</item>
+        <item quantity="many">%d di secondi</item>
         <item quantity="other">%d secondi</item>
     </plurals>
     <plurals name="time_minutes_quantified">
         <item quantity="one">%d minuto</item>
-        <item quantity="many">%d minuti</item>
+        <item quantity="many">%d di minuti</item>
         <item quantity="other">%d minuti</item>
     </plurals>
     <plurals name="time_hours_quantified">
         <item quantity="one">%d ora</item>
-        <item quantity="many">%d ore</item>
+        <item quantity="many">%d di ore</item>
         <item quantity="other">%d ore</item>
     </plurals>
     <plurals name="time_days_quantified">
         <item quantity="one">%d giorno</item>
-        <item quantity="many">%d giorni</item>
+        <item quantity="many">%d di giorni</item>
         <item quantity="other">%d giorni</item>
     </plurals>
     <string name="auto_enable_label">Attivazione automatica timer di spegnimento</string>
@@ -562,7 +556,7 @@
     <string name="synchronization_summary_unchoosen">Puoi scegliere tra diversi fornitori con cui sincronizzare le iscrizioni e lo stato di riproduzione degli episodi</string>
     <string name="dialog_choose_sync_service_title">Scegli provider di sincronizzazione</string>
     <string name="gpodnet_description">Gpodder.net è un servizio di sincronizzazione podcast che puoi installare sul tuo server. Gpodder.net è indipendente dal progetto AntennaPod.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync è un\'app open source per Nextcloud che puoi installare facilmente sul tuo server. L\'app è indipendente dal progetto AntennaPod.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync è un\'app open source per Nextcloud che puoi installare facilmente sul tuo server. Gpodder Sync è indipendente dal progetto AntennaPod.</string>
     <string name="synchronization_host_explanation">Puoi scegliere un server personale per la sincronizzazione. Quando hai trovato il server più adatto inserisci qui l\'indirizzo.</string>
     <string name="synchronization_host_label">Indirizzo server</string>
     <string name="proceed_to_login_butLabel">Effettua l\'accesso</string>
@@ -637,7 +631,7 @@
     <string name="authentication_descr">Cambia il nome utente e la password per questo podcast e i suoi episodi</string>
     <string name="feed_tags_label">Tag</string>
     <string name="feed_tags_summary">Cambia i tag di questo podcast per agevolare l\'organizzazione delle tue iscrizioni</string>
-    <string name="feed_folders_include_root">Mostra il podcast nella lista principale</string>
+    <string name="feed_folders_include_root">Mostra sopra i tag (solo in navigazione laterale)</string>
     <string name="multi_feed_common_tags_info">Vengono mostrati solo tag i comuni alle iscrizioni selezionate. Gli altri tag non vengono toccati.</string>
     <string name="episode_filters_label">Filtro degli episodi</string>
     <string name="episode_filters_description">Elenco di termini per filtrare gli episodi da includere o escludere dai download automatici</string>
@@ -751,36 +745,49 @@
     <string name="add_shortcut">Aggiungi collegamento</string>
     <string name="statistics_view_all">Tutti i podcast »</string>
     <string name="home_downloads_empty_text">Puoi scaricare qualsiasi episodio per ascoltarlo offline.</string>
-    <string name="feed_delete_confirmation_msg_batch">Conferma di voler rimuovere i podcast selezionati, TUTTI i relativi episodi (inclusi quelli scaricati), la cronologia delle riproduzioni e le relative statistiche.</string>
-    <string name="feed_delete_confirmation_msg">Conferma di voler eliminare il podcast \"%1$s\", TUTTI i suoi episodi (inclusi quelli scaricati), la cronologia delle riproduzioni e le sue statistiche.</string>
     <string name="home_new_empty_text">I nuovi episodi appariranno qui. Potrai quindi decidere se ti interessano.</string>
     <string name="delete_downloads_played">Elimina riprodotti</string>
     <string name="home_no_recent_unplayed_episodes_text">Hai già riprodotto tutti gli episodi recenti. Niente di cui sorprendersi qui ;)</string>
     <string name="home_continue_empty_text">Puoi aggiungere episodi scaricandoli oppure tenendoli premuti a lungo e selezionando \"Aggiungi alla coda\".</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Dimensione totale di %d episodio sul dispositivo</item>
-        <item quantity="many">Dimensione totale di %d episodi sul dispositivo</item>
+        <item quantity="many">Dimensione totale di %d di episodi sul dispositivo</item>
         <item quantity="other">Dimensione totale di %d episodi sul dispositivo</item>
     </plurals>
-    <string name="feed_delete_confirmation_local_msg">Conferma di voler rimuovere il podcast \"%1$s\", la sua cronologia di riproduzione e le sue statistiche. I file nella cartella di origine locale non verranno eliminati.</string>
     <string name="delete_downloads_played_confirmation">Conferma che vuoi eliminare tutti i download riprodotti.</string>
     <string name="null_value_podcast_error">Il link che hai toccato non contiene un URL podcast valido. Verifica il link e riprova, oppure cerca il podcast manualmente.</string>
     <string name="pref_nav_drawer_items_title">Personalizza navigazione</string>
     <string name="discover_more">Scopri di più »</string>
     <string name="section_shown">Mostrati</string>
-    <string name="mobile_download_notice">Download tramite connessione dati mobile per i prossimi %d minuti</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Download tramite connessione dati mobile per il prossimo %d minuto</item>
+        <item quantity="many">Download tramite connessione dati mobile per i prossimi %d di minuti</item>
+        <item quantity="other">Download tramite connessione dati mobile per i prossimi %d minuti</item>
+    </plurals>
     <string name="bottom_navigation">Navigazione inferiore</string>
     <string name="bottom_navigation_summary">Accedi alle schermate più importanti da qualsiasi luogo, con un solo tocco</string>
-    <string name="statistics_episodes_started">iniziati</string>
-    <string name="statistics_episodes_downloaded">scaricati</string>
-    <string name="statistics_episodes_total">totali</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">iniziato</item>
+        <item quantity="many">iniziati</item>
+        <item quantity="other">iniziati</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">scaricato</item>
+        <item quantity="many">scaricati</item>
+        <item quantity="other">scaricati</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">totale</item>
+        <item quantity="many">totali</item>
+        <item quantity="other">totali</item>
+    </plurals>
     <string name="statistics_episodes_space">spazio occupato</string>
     <string name="statistics_release_schedule">piano di rilascio</string>
     <string name="statistics_release_next">prossimo episodio (stima)</string>
     <string name="statistics_years_barchart_description">Tempo di riproduzione mensile</string>
     <string name="pref_nav_drawer_items_sum">Cambia quali elementi vengono visualizzati nel cassetto o nella navigazione inferiore</string>
     <string name="sync_status_wait_for_downloads">In attesa dell\'aggiornamento delle iscrizioni…</string>
-    <string name="nextcloud_login_error_generic">Impossibile accedere al tuo Nextcloud.\n\n- Controlla la tua connessione di rete.\n- Conferma che stai usando l\'indirizzo corretto del server.\n- Assicurati che il plugin gpoddersync di Nextcloud sia installato.</string>
+    <string name="nextcloud_login_error_generic">Impossibile accedere al tuo Nextcloud.\n\n- Controlla la tua connessione di rete.\n- Conferma che stai usando l\'indirizzo corretto del server.\n- Assicurati che il plugin Gpodder Sync di Nextcloud sia installato.</string>
     <string name="episode_download_failed">Download dell\'episodio fallito</string>
     <string name="echo_home_header">Passa in rassegna l\'anno</string>
     <string name="echo_home_subtitle">I tuoi podcast più ascoltati e statistiche sull\'anno appena trascorso. In esclusiva sul tuo telefono.</string>
@@ -869,14 +876,14 @@
     <string name="auto_download_inbox_category">Scarica automaticamente gli episodi dall\'inbox</string>
     <string name="mark_as_played_label">Segna come riprodotto</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Segnato come riprodotto</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d episodio segnato come riprodotto.</item>
+        <item quantity="many">%d di episodi segnati come riprodotti.</item>
+        <item quantity="other">%d episodi segnati come riprodotti.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Segnato come non riprodotto</item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d episodio segnato come non riprodotto.</item>
+        <item quantity="many">%d di episodi segnati come non riprodotti.</item>
+        <item quantity="other">%d episodi segnati come non riprodotti.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Per saltare a una posizione specifica, l\'episodio deve essere in riproduzione</string>
     <string name="mark_as_unplayed_label">Segna come non riprodotto</string>
@@ -907,4 +914,22 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Non hai nessun episodio in coda, ma ci sono nuovi episodi che ti aspettano!</string>
     <string name="delete_local_feed_confirmation_dialog_message">Eliminare un episodio lo rimuove da AntennaPod ed elimina il file multimediale dallo spazio di archiviazione del tuo dispositivo. Non potrà essere scaricato di nuovo attraverso AntennaPod.</string>
+    <string name="please_wait_before_refreshing">Aspetta un po\' prima di aggiornare di nuovo i podcast.</string>
+    <string name="already_downloaded">L\'episodio è già scaricato</string>
+    <string name="tag_all">Tutte</string>
+    <string name="statistics_expected_next_episode_any_time">A breve</string>
+    <string name="release_schedule_multiple_per_day">più volte al giorno</string>
+    <string name="cover_as_background">Copertina come sfondo</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d iscrizione</item>
+        <item quantity="many">%d di iscrizioni</item>
+        <item quantity="other">%d iscrizioni</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Archivia</string>
+    <string name="archive_feed_label_noun">Archivio</string>
+    <string name="restore_archive_label">Ripristina</string>
+    <string name="remove_archive_feed_label">Elimina / Archivia</string>
+    <string name="feed_delete_explanation_delete">Eliminandola rimuoverai TUTTI gli episodi, compresi download, cronologia riproduzioni e statistiche.</string>
+    <string name="feed_delete_explanation_archive">Archiviandola la nasconderai dall\'elenco delle iscrizioni e impedirai che riceva aggiornamenti. Download, statistiche e stato di riproduzione saranno mantenuti.</string>
+    <string name="tag_untagged">Senza tag</string>
 </resources>

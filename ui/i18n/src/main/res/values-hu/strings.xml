@@ -151,7 +151,6 @@
     <string name="remove_feed_label">Podcast eltávolítása</string>
     <string name="share_label">Megosztás</string>
     <string name="share_file_label">Fájl megosztása</string>
-    <string name="feed_remover_msg">Podcast eltávolítása</string>
     <string name="load_complete_feed">Teljes podcast frissítése</string>
     <string name="multi_select">Több kiválasztása</string>
     <string name="select_all_above">Az összes felette lévő kiválasztása</string>
@@ -292,8 +291,8 @@
     <string name="synchronization_sum">Szinkronizáció más eszközökkel</string>
     <string name="automation">Automatizálás</string>
     <string name="download_pref_details">Részletek</string>
-    <string name="import_export_pref">Importálás/exportálás</string>
-    <string name="import_export_search_keywords">biztonsági mentés, helyreállítás</string>
+    <string name="import_export_pref">Biztonsági mentés és helyreállítás</string>
+    <string name="import_export_search_keywords">import, export</string>
     <string name="external_elements">Külső elemek</string>
     <string name="interruptions">Megszakítások</string>
     <string name="playback_control">Lejátszásvezérlés</string>
@@ -354,10 +353,7 @@
     <string name="pref_black_theme_message">Teljesen fekete használata a sötét témához</string>
     <string name="pref_tinted_theme_title">Dinamikus színek</string>
     <string name="pref_tinted_theme_message">Háttérképen alapuló alkalmazásszínezés használata</string>
-    <string name="pref_nav_drawer_feed_order_title">Feliratkozási sorrend beállítása</string>
-    <string name="pref_nav_drawer_feed_order_sum">A feliratkozásai sorrendjének módosítása</string>
-    <string name="pref_nav_drawer_feed_counter_title">Feliratkozásszámláló beállítása</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Módosítja a feliratkozásszámlálóban megjelenített információt. A feliratkozások sorrendjére is hatással van, ha a „Feliratkozási sorrend” a „Számláló” értékre van állítva.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Feliratkozás számláló beállítása</string>
     <string name="pref_automatic_download_title">Automatikus letöltés</string>
     <string name="pref_automatic_download_sum">Az epizódok automatikus letöltésének beállítása</string>
     <string name="pref_automatic_download_on_battery_title">Letöltés, ha nincs akkumulátortöltés</string>
@@ -416,8 +412,6 @@
     <string name="remember_last_page">Legutóbbi oldal megjegyzése</string>
     <string name="pref_delete_removes_from_queue_title">A törlés eltávolítja a sorból</string>
     <string name="pref_delete_removes_from_queue_sum">Törléskor az epizód automatikus eltávolítása a sorból</string>
-    <string name="pref_filter_feed_title">Feliratkozások szűrője</string>
-    <string name="pref_filter_feed_sum">A feliratkozások szűrése a navigációs fiókban és a feliratkozások képernyőjén</string>
     <string name="subscriptions_counter_greater_zero">Nullánál nagyobb számláló</string>
     <string name="auto_downloaded">Automatikusan letöltve</string>
     <string name="not_auto_downloaded">Nem automatikusan letöltve</string>
@@ -508,7 +502,7 @@
     <string name="synchronization_summary_unchoosen">Több szolgáltató közül választhat, melyekkel szinkronizálhatja a feliratkozásait és az epizódok lejátszási állapotait</string>
     <string name="dialog_choose_sync_service_title">Válasszon szinkronizálási szolgáltatót</string>
     <string name="gpodnet_description">A gpodder.net egy nyílt forráskódú podcast szinkronizációs szolgáltatás, amelyet a saját kiszolgálójára telepíthet. A gpodder.net független az AntennaPod projekttől.</string>
-    <string name="synchronization_summary_nextcloud">A Gpoddersync egy nyílt forráskódú nextcloudos alkalmazás, amelyet könnyedén telepíthet a saját kiszolgálójára. Az alkalmazás független az AntennaPod projekttől.</string>
+    <string name="synchronization_summary_nextcloud">A Gpodder Sync egy nyílt forráskódú Nextcloudos alkalmazás, amelyet könnyedén telepíthet a saját kiszolgálójára. Az alkalmazás független az AntennaPod projekttől.</string>
     <string name="synchronization_host_explanation">Kiválaszthatja a saját, szinkronizációhoz használt kiszolgálóját. Ha azonosította az előnyben részesített szinkronizációs kiszolgálóját, akkor itt adja meg a címét.</string>
     <string name="synchronization_host_label">Kiszolgálócím</string>
     <string name="proceed_to_login_butLabel">Tovább a bejelentkezéshez</string>
@@ -576,7 +570,7 @@
     <string name="authentication_descr">A felhasználónév és jelszó módosítása ennél a podcastnél és az epizódjainál</string>
     <string name="feed_tags_label">Címkék</string>
     <string name="feed_tags_summary">Módosítja a podcast címkéit, hogy segítsen a feliratkozásai rendszerezésében</string>
-    <string name="feed_folders_include_root">A podcast megjelenítése a fő listában</string>
+    <string name="feed_folders_include_root">Fenti címkék megjelenítése (csak oldalsó navigáció)</string>
     <string name="multi_feed_common_tags_info">Csak a kiválasztott feliratkozások közös címkéi jelennek meg. A többi címke változatlan marad.</string>
     <string name="episode_filters_label">Epizódszűrő</string>
     <string name="episode_filters_description">A kulcsszavak, mely alapján eldől, hogy az automatikus letöltés beleveszi-e az epizódot, vagy sem</string>
@@ -700,7 +694,6 @@
     <string name="pref_nav_drawer_items_title">Navigáció testreszabása</string>
     <string name="download_completed_talkback">A(z) %1$s letöltése befejeződött</string>
     <string name="statistics_years_barchart_description">Havi lejátszás</string>
-    <string name="feed_delete_confirmation_local_msg">Erősítse meg, hogy eltávolítja a(z) „%1$s” podcastet, az előzményeivel és a statisztákáival. A helyi forrásmappában lévő fájlok nem lesznek törölve.</string>
     <string name="show_transcript">Leirat megjelenítése</string>
     <string name="transcript">Leirat</string>
     <string name="null_value_podcast_error">A hivatkozás, amelyre koppintott, nem tartalmaz érvényes podcastwebcímet. Ellenőrizze a hivatkozást és próbálja újra, vagy keressen rá kézileg a podcastre.</string>
@@ -719,15 +712,9 @@
     <string name="section_shown">Megjelenítve</string>
     <string name="delete_downloads_played">Lejátszottak törlése</string>
     <string name="bottom_navigation">Alsó navigáció</string>
-    <string name="statistics_episodes_total">összesen</string>
-    <string name="statistics_episodes_started">elindítva</string>
-    <string name="statistics_episodes_downloaded">letöltve</string>
-    <string name="feed_delete_confirmation_msg">Erősítse meg, hogy törli a(z) „%1$s” podcastet, az ÖSSZES epizóddal (beleértve a letöltött epizódokat is), előzménnyel és a statisztákáival.</string>
-    <string name="feed_delete_confirmation_msg_batch">Erősítse meg, hogy eltávolítja a kiválasztott podcastet, az ÖSSZES epizóddal (beleértve a letöltött epizódokat is), előzménnyel és statisztákáival.</string>
     <string name="multi_select_started_talkback">A többszörös kiválasztási műveletek lent jelennek meg</string>
     <string name="delete_downloads_played_confirmation">Erősítse meg, hogy törli az összes lejátszott letöltést.</string>
     <string name="no_transcript_label">Nincs leirat</string>
-    <string name="mobile_download_notice">Letöltés mobil-adatkapcsolaton keresztül a következő %d percben</string>
     <string name="theming">Téma</string>
     <string name="pref_auto_delete_playback_title">Törlés lejátszás után</string>
     <string name="pref_auto_delete_title">Automatikus törlés</string>
@@ -768,7 +755,7 @@
         <item quantity="one">%d nap</item>
         <item quantity="other">%d nap</item>
     </plurals>
-    <string name="nextcloud_login_error_generic">Nem sikerült bejelentkezni a Nextcloudba.\n\n- Ellenőrizze a hálózati kapcsolatot.\n- Győződjön meg róla, hogy a helyes kiszolgálócímet használja.\n- Bizonyosodjon meg róla, ha a gpoddersync Nextcloud-bővítmény telepítve van.</string>
+    <string name="nextcloud_login_error_generic">Nem sikerült bejelentkezni a Nextcloudba.\n\n- Ellenőrizze a hálózati kapcsolatot.\n- Győződjön meg róla, hogy a helyes kiszolgálócímet használja.\n- Bizonyosodjon meg róla, ha a Gpodder Sync Nextcloud-bővítmény telepítve van.</string>
     <string name="add_feed_label_short">Hozzáadás</string>
     <string name="episodes_label_short">Epizódok</string>
     <string name="home_label_short">Kezdőlap</string>
@@ -850,12 +837,12 @@
     <string name="removed_from_inbox_message">Eltávolítva a beérkezők közül</string>
     <string name="mark_as_played_label">Megjelölés lejátszottként</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Megjelölve lejátszottként</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d epizód megjelölve lejátszottként.</item>
+        <item quantity="other">%d epizódok megjelölve lejáttszottként.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Megjelölve nem lejátszottként</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d epizód megjelölve nem lejátszottként.</item>
+        <item quantity="other">%d epizódok megjelölve nem lejátszottként.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">A pozíciókra ugráshoz le kell játszania az epizódot</string>
     <string name="mark_as_unplayed_label">Megjelölés nem lejátszottként</string>
@@ -884,4 +871,10 @@
     <string name="no_queue_items_inbox_has_items_label">Nincs epizód bekészítve, de új epizódok várnak Önre!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Ugrás a beérkezettekhez</string>
     <string name="auto_download_inbox_category">Az epizódok automatikus letöltése a beérkezettekből</string>
+    <string name="please_wait_before_refreshing">Kérjük, várjon egy kis időt, mielőtt újra frissíti a podcastokat.</string>
+    <string name="already_downloaded">Az epizód már le van töltve</string>
+    <string name="tag_all">Összes</string>
+    <string name="statistics_expected_next_episode_any_time">Mostmár bármikor</string>
+    <string name="release_schedule_multiple_per_day">többször egy nap folyamán</string>
+    <string name="cover_as_background">Borító háttérként</string>
 </resources>

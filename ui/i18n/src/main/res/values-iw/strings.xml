@@ -160,11 +160,10 @@
     <string name="show_info_label">הצגת מידע</string>
     <string name="show_feed_settings_label">הצגת הגדרות הסכת</string>
     <string name="feed_settings_label">הגדרות הסכת</string>
-    <string name="rename_feed_label">שינוי שם הסכת</string>
-    <string name="remove_feed_label">הסרת הסכת</string>
+    <string name="rename_feed_label">שינוי שם</string>
+    <string name="remove_feed_label">מחיקה</string>
     <string name="share_label">שיתוף</string>
     <string name="share_file_label">שיתוף קובץ</string>
-    <string name="feed_remover_msg">ההסכת נמחק</string>
     <string name="load_complete_feed">רענון מלא של ההסכת</string>
     <string name="multi_select">לבחור מגוון</string>
     <string name="select_all_above">בחירת כל אלו שלעיל</string>
@@ -313,8 +312,8 @@
     <string name="synchronization_sum">סנכרון עם מכשירים אחרים</string>
     <string name="automation">אוטומציה</string>
     <string name="download_pref_details">פרטים</string>
-    <string name="import_export_pref">ייבוא/ייצוא</string>
-    <string name="import_export_search_keywords">גיבוי, שחזור</string>
+    <string name="import_export_pref">גיבוי ושחזור</string>
+    <string name="import_export_search_keywords">ייבוא, ייצוא</string>
     <string name="theming">עיצוב כולל</string>
     <string name="external_elements">רכיבים חיצוניים</string>
     <string name="interruptions">הפרעות</string>
@@ -325,7 +324,7 @@
     <string name="preference_search_clear_history">פינוי ההיסטוריה</string>
     <string name="pref_episode_cleanup_title">למחוק לפני הורדה אוטומטית</string>
     <string name="pref_episode_cleanup_summary">פרקים שמועמדים להסרה אם ההורדה האוטומטית צריכה מקום לפרקים חדשים</string>
-    <string name="pref_pauseOnDisconnect_sum">השהיית הנגינה כאשר האוזניות או ה־Bluetooth מתנתקים</string>
+    <string name="pref_pauseOnDisconnect_sum">השהיית הנגינה כאשר האוזניות או התקני ה־Bluetooth מתנתקים</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">להמשיך את הניגון כשהאוזניות מתחברות מחדש</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">להמשיך את הנגינה עם חיבור מחדש של ה־Bluetooth</string>
     <string name="pref_hardware_forward_button_title">כפתור קדימה</string>
@@ -382,10 +381,7 @@
     <string name="pref_black_theme_message">להשתמש בשחור מלא לערכת העיצוב המלאה</string>
     <string name="pref_tinted_theme_title">צבעים דינמיים</string>
     <string name="pref_tinted_theme_message">להתאים את צבעי היישומון לפי הטפט</string>
-    <string name="pref_nav_drawer_feed_order_title">הגדרת סדר מינוי</string>
-    <string name="pref_nav_drawer_feed_order_sum">שינוי סדר המינויים שלך</string>
-    <string name="pref_nav_drawer_feed_counter_title">הגדרת מונה מינוי</string>
-    <string name="pref_nav_drawer_feed_counter_sum">שינוי המידע שמוצג במונה המינויים. משפיע גם על סדר המינויים אם ‚סדר המינויים’ מוגדר כ־‚מונה’.</string>
+    <string name="pref_nav_drawer_feed_counter_title">מונה</string>
     <string name="pref_automatic_download_title">הורדה אוטומטית</string>
     <string name="pref_automatic_download_sum">הגדרת הורדה אטומטית של פרקים</string>
     <string name="pref_automatic_download_on_battery_title">להוריד שלא בזמן טעינה</string>
@@ -448,8 +444,6 @@
     <string name="remember_last_page">זכירת העמוד האחרון</string>
     <string name="pref_delete_removes_from_queue_title">מחיקה מסירה מהתור</string>
     <string name="pref_delete_removes_from_queue_sum">הסרת פרק מהתור אוטומטית עם מחיקתו</string>
-    <string name="pref_filter_feed_title">מסנן מינויים</string>
-    <string name="pref_filter_feed_sum">סינון המינויים שלך במגירת הניווט ובמסך המינויים</string>
     <string name="subscriptions_counter_greater_zero">המונה גדול מאפס</string>
     <string name="auto_downloaded">התקבלו אוטומטית</string>
     <string name="not_auto_downloaded">לא התקבלו אוטומטית</string>
@@ -562,7 +556,7 @@
     <string name="synchronization_summary_unchoosen">אפשר לבחור בין מגוון ספקית לסנכרון המינויים ומצב נגינ הפרקים שלך עם</string>
     <string name="dialog_choose_sync_service_title">בחירת ספק סנכרון</string>
     <string name="gpodnet_description">Gpodder.net הוא שירות סנכרון הסכתים בקוד פתוח שניתן להתקין על שרת משלך. ל־Gpodder.net אין לו קשר למיזם אנטנה־פּוֹד.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync הוא יישומון Nextcloud בקוד פתוח שניתן להתקין בקלות בשרת שלך. היישומון אינו תלוי במיזם AntennaPod.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync הוא יישומון Nextcloud בקוד פתוח שניתן להתקין בקלות בשרת שלך. Gpodder Sync אינו תלוי במיזם אנטנה־פּוֹד.</string>
     <string name="synchronization_host_explanation">אפשר לבחור שרת משלך להסתנכרן מולו. כשזיהית את שרת הסנכרון המועדף עליך, נא למלא את הכתובת שלו כאן.</string>
     <string name="synchronization_host_label">כתובת שרת</string>
     <string name="proceed_to_login_butLabel">המשך לכניסה</string>
@@ -637,7 +631,7 @@
     <string name="authentication_descr">שינוי שם המשתמש והססמה שלך להסכת הזה ולפרקים שלו</string>
     <string name="feed_tags_label">תגיות</string>
     <string name="feed_tags_summary">ניתן לערוך את תגיות ההסכת הזה כדי לסייע בארגון המינויים שלך</string>
-    <string name="feed_folders_include_root">הצגת ההסכת הזה ברשימה הראשית</string>
+    <string name="feed_folders_include_root">הצגת התגיות שלעיל (ניווט צד בלבד)</string>
     <string name="multi_feed_common_tags_info">רק תגיות שמשותפות לכל המינויים הנבחרים מוצגות. תגיות אחרות לא משתתפות.</string>
     <string name="episode_filters_label">מסנן פרקים</string>
     <string name="episode_filters_description">רשימת המונחים בהם יעשה שימוש כדי להחליט אם להכליל או להחריג פרק כלשהו במהלך הורדה אוטומטית</string>
@@ -750,36 +744,49 @@
     <string name="shortcut_select_subscription">בחירת מינוי</string>
     <string name="add_shortcut">הוספת קיצור דרך</string>
     <string name="statistics_view_all">כל ההסכתים »</string>
-    <string name="statistics_episodes_started">החל</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">החל</item>
+        <item quantity="two">החלו</item>
+        <item quantity="other">החלו</item>
+    </plurals>
     <string name="delete_downloads_played">מחיקת אלו שהושמעו</string>
     <string name="pref_nav_drawer_items_title">ניווט מותאם אישית</string>
     <string name="home_new_empty_text">פרקים חדשים יופיעו כאן. אפשר להחליט האם הם מעניינים אותך.</string>
     <string name="home_downloads_empty_text">אפשר להוריד כל פרק שהוא כדי להאזין לו ללא חיבור לאינטרנט.</string>
     <string name="section_shown">מוצג</string>
     <string name="delete_downloads_played_confirmation">נא לאשר את מחיקת על ההורדות שהושמעו.</string>
-    <string name="mobile_download_notice">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך %d הדקות הקרובות</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך הדקה הקרובה</item>
+        <item quantity="two">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך שתי הדקות הקרובות</item>
+        <item quantity="other">מתבצעת הורדה דרך חיבור נתונים סלולרי למשך %d הדקות הקרובות</item>
+    </plurals>
     <string name="statistics_release_schedule">לו״ז הוצאה לאור</string>
-    <string name="nextcloud_login_error_generic">לא ניתן להיכנס ל־Nextcloud שלך.\n\n- נא לבדוק שהחיבור שלך לרשת תקין.\n- לוודא שזאת כתובת השרת הנכונה.\n- לבדוק שתוסף Nextcloud בשם gpoddersync מותקן.</string>
+    <string name="nextcloud_login_error_generic">לא ניתן להיכנס ל־Nextcloud שלך.\n\n- נא לבדוק שהחיבור שלך לרשת תקין.\n- לוודא שזאת כתובת השרת הנכונה.\n- לבדוק שתוסף Nextcloud בשם Gpodder Sync מותקן.</string>
     <string name="statistics_release_next">הפרק הבא (הערכה)</string>
     <string name="statistics_years_barchart_description">זמן השמעה בחודש</string>
     <string name="home_no_recent_unplayed_episodes_text">כבר ניגנת את כל הפרקים האחרונים. אין יותר איך להפתיע אותך ؛)</string>
-    <string name="feed_delete_confirmation_msg_batch">נא לאשר את הסרת ההסכתים הנבחרים, לרבות כל הפרקים שלהם (כולל פרקים שירדו), היסטוריית נגינה והסטטיסטיקה שלהם.</string>
     <string name="home_continue_empty_text">אפשר להוסיף פרקים על ידי הורדתם או בלחיצה ארוכה עליהם ובחירה ב„הוספה לתור”.</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">הגודל הכולל של פרק במכשיר</item>
         <item quantity="two">הגודל הכולל של שני פרקים במכשיר</item>
         <item quantity="other">הגודל הכולל של %d פרקים במכשיר</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">נא לאשר את מחיקת ההסכת „%1$s”, לרבות כל הפרקים (כולל פרקים שירדו), היסטוריית הנגינה והסטטיסטיקה שלו.</string>
-    <string name="feed_delete_confirmation_local_msg">נא לאשר את הסרת ההסכת „%1$s”, לרבות היסטוריית הנגינה שלו והסטטיסטיקה שלו. הקבצים בתיקיית המקור המקומית לא יימחקו.</string>
     <string name="null_value_podcast_error">הקישור בו נגעת לא מכיל כתובת הסכת תקנית. נא לוודא שהקישור תקין ולנסות שוב או לחפש את ההסכת ידנית.</string>
     <string name="bottom_navigation">ניווט תחתון</string>
     <string name="bottom_navigation_summary">גישה למסכים החשובים ביותר מכל מקום, בנגיעה אחת</string>
-    <string name="statistics_episodes_total">סך הכול</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">סך הכול</item>
+        <item quantity="two">סך הכול</item>
+        <item quantity="other">סך הכול</item>
+    </plurals>
     <string name="statistics_episodes_space">מקום תפוס</string>
     <string name="pref_nav_drawer_items_sum">נא לבחור אילו פריטים מופיעים במגירת הניווט או בניווט התחתון</string>
     <string name="sync_status_wait_for_downloads">בהמתנה לרענון המינויים…</string>
-    <string name="statistics_episodes_downloaded">ירדו</string>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">ירד</item>
+        <item quantity="two">ירדו</item>
+        <item quantity="other">ירדו</item>
+    </plurals>
     <string name="discover_more">להיחשף לעוד »</string>
     <string name="episode_download_failed">הורדת פרק נכשלה</string>
     <string name="add_feed_label_short">הוספה</string>
@@ -867,14 +874,14 @@
     <string name="removed_from_inbox_message">הוסר מהדואר הנכנס</string>
     <string name="mark_as_played_label">סימון כהושמע</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">סומן כהושמע</item>
-        <item quantity="two"></item>
-        <item quantity="other"></item>
+        <item quantity="one">פרק סומן כהושמע.</item>
+        <item quantity="two">שני פרקים סומנו כהושמעו.</item>
+        <item quantity="other">%d פרקים סומנו כהושמעו.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">סומן כלא הושמע</item>
-        <item quantity="two"></item>
-        <item quantity="other"></item>
+        <item quantity="one">פרק סומן כלא הושמע.</item>
+        <item quantity="two">שני פרקים סומנו כלא הושמעו.</item>
+        <item quantity="other">%d פרקים סומנו כלא הושמעו.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">כדי לקפוץ בין מקומות, צריך להשמיע את הפרק</string>
     <string name="mark_as_unplayed_label">סימון כלא הושמע</string>
@@ -907,4 +914,22 @@
     <string name="no_queue_items_inbox_has_items_label">אין פרקים שממתינים בתור, אך יש פרקים חדשים שממתינים לך!</string>
     <string name="no_queue_items_inbox_has_items_button_label">מעבר לדואר הנכנס</string>
     <string name="auto_download_inbox_category">להוריד פרקים מהדואר הנכנס אוטומטית</string>
+    <string name="tag_all">הכול</string>
+    <string name="please_wait_before_refreshing">נא להמתין לפני ריענון ההסכתים שוב.</string>
+    <string name="already_downloaded">הפרק כבר ירד</string>
+    <string name="statistics_expected_next_episode_any_time">ממש כל רגע</string>
+    <string name="release_schedule_multiple_per_day">מספר פעמים ביום</string>
+    <string name="cover_as_background">עטיפה כרקע</string>
+    <string name="archive_feed_label_verb">העברה לארכיון</string>
+    <string name="archive_feed_label_noun">ארכיון</string>
+    <string name="restore_archive_label">שחזור</string>
+    <string name="remove_archive_feed_label">מחיקה / ארכיון</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">מינוי</item>
+        <item quantity="two">שני מינויים</item>
+        <item quantity="other">%d מינויים</item>
+    </plurals>
+    <string name="feed_delete_explanation_delete">מחיקה תסיר את ﬤﬥ הפרקים כולל ההורדות, היסטוריית הנגינה והסטטיסטיקה.</string>
+    <string name="tag_untagged">ללא תיוג</string>
+    <string name="feed_delete_explanation_archive">העברה לארכיון תסתיר מרשימת המינויים ותפסיק את קבלת העדכונים. הורדות, סטטיסטיקות ומצב הנגינה יישמרו.</string>
 </resources>

@@ -182,7 +182,6 @@
     <string name="remove_feed_label">أزل المسموعيَّة</string>
     <string name="share_label">مشاركة</string>
     <string name="share_file_label">مشاركة ملف</string>
-    <string name="feed_remover_msg">جار إزالة المسموعيَّة</string>
     <string name="load_complete_feed">حدِّث كامل المسموعيَّة</string>
     <string name="multi_select">اختيار متعدد</string>
     <string name="select_all_above">حدد الكل أعلاه</string>
@@ -409,10 +408,7 @@
     <string name="pref_black_theme_message">استخدم النمط الأسود بالكامل كالنمط الداكن</string>
     <string name="pref_tinted_theme_title">الألوان الحركية</string>
     <string name="pref_tinted_theme_message">تكييف ألوان التطبيق بناءً على الخلفية</string>
-    <string name="pref_nav_drawer_feed_order_title">حدد ترتيب الاشتراكات</string>
-    <string name="pref_nav_drawer_feed_order_sum">غير ترتيب اشتراكاتك</string>
     <string name="pref_nav_drawer_feed_counter_title">حدد عداد الاشتراكات</string>
-    <string name="pref_nav_drawer_feed_counter_sum">غير المعلومات المعروضة بعداد الاشتراكات. يغير أيضا ترتيب الاشتراكات إذا كان ترتيبها يحدد بالـ\'العداد\'.</string>
     <string name="pref_automatic_download_title">تنزيل تلقائي</string>
     <string name="pref_automatic_download_sum">أضبط التنزيل التلقائي للحلقات</string>
     <string name="pref_automatic_download_on_battery_title">التنزيل عند عدم الشحن الجهاز</string>
@@ -475,8 +471,6 @@
     <string name="remember_last_page">تذكر الصفحة الأخيرة</string>
     <string name="pref_delete_removes_from_queue_title">يزيل الحذف الحلقة من الطابور</string>
     <string name="pref_delete_removes_from_queue_sum">أزل الحلقة من الطابور آليا عند حذفها</string>
-    <string name="pref_filter_feed_title">مصفاة الاشتراكات</string>
-    <string name="pref_filter_feed_sum">صفي اشتراكاتك في درج التنقل وشاشة الاشتراكات</string>
     <string name="subscriptions_counter_greater_zero">العداد به رقم أكبر من صفر</string>
     <string name="auto_downloaded">تنزيل تلقائي</string>
     <string name="not_auto_downloaded">لم يتم التنزيل تلقائياً</string>
@@ -788,25 +782,19 @@
     <string name="shortcut_subscription_label">اختصار الاشتراك</string>
     <string name="shortcut_select_subscription">اختر الاشتراك</string>
     <string name="add_shortcut">أضف اختصارا</string>
-    <string name="statistics_episodes_total">الإجمالي</string>
     <string name="home_continue_empty_text">يمكنك إضافة حلقات عن طريق تنزيلها أو الضغط مطولًا عليها واختيار ”أضف إلى الطابور“.</string>
     <string name="home_no_recent_unplayed_episodes_text">لقد استمعت بالفعل لجميع الحلقات الأخيرة. لا شيء يدعو للدهشة هنا ؛)</string>
     <string name="home_new_empty_text">ستظهر الحلقات الجديدة هنا. يمكنك بعد ذلك تحديد ما إذا كنت مهتمًا بها أم لا.</string>
     <string name="statistics_view_all">جميع المسموعيَّات »</string>
     <string name="delete_downloads_played">احذف المشغَّل</string>
-    <string name="feed_delete_confirmation_msg">أكد رغبتك في حذف المسموعيَّة \"%1$s\"، وكل حلقاتها (بما فيها المُنزَّلة)، وسجل تشغيلها، وإحصائياتها.</string>
     <string name="statistics_release_schedule">جدول الإصدار</string>
     <string name="statistics_release_next">توقع الحلقة القادمة</string>
     <string name="section_shown">معروض</string>
     <string name="pref_nav_drawer_items_title">خصّص التنقل</string>
-    <string name="feed_delete_confirmation_local_msg">أكد رغبتك في إزالة المسموعيَّة \"%1$s\"، وسجل تشغيلها، وإحصائياتها. لن تُحذف ملفاتها من المجلد المحلي.</string>
     <string name="null_value_podcast_error">لا يحتوي الرابط المنقور على عنوان صحيح للمسموعيَّة. تأكد من الرابط وحاول مجددًا، أو ابحث عن المسموعيَّة يدويًّا.</string>
     <string name="home_downloads_empty_text">يمكنك تحميل أي حلقة لتستمع لها بدون اتصال.</string>
     <string name="delete_downloads_played_confirmation">أكد رغبتك في حذف جميع التنزيلات المشغَّلة.</string>
-    <string name="mobile_download_notice">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقيقة</string>
     <string name="bottom_navigation">التنقل السفلي</string>
-    <string name="statistics_episodes_started">بُدأت</string>
-    <string name="statistics_episodes_downloaded">نزِّلت</string>
     <string name="statistics_episodes_space">المساحة المستخدمة</string>
     <string name="statistics_years_barchart_description">مدة التشغيل في الشهر</string>
     <plurals name="total_size_downloaded_podcasts">
@@ -817,7 +805,6 @@
         <item quantity="many">الحجم الكلي لـ%d حلقةً في الجهاز</item>
         <item quantity="other">الحجم الكلي لـ%d حلقةٍ في الجهاز</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg_batch">أكِّد رغبتك في إزالة المسموعيَّات المحددة، وكل حلقاتها (بما فيها المُنزَّلة)، وسجل تشغيلها، وإحصائياتها.</string>
     <string name="episode_download_failed">فشل تنزيل الحلقة</string>
     <string name="bottom_navigation_summary">أوصل إلى الشاشات المهمة من أي مكان، بنقرة واحدة</string>
     <string name="pref_nav_drawer_items_sum">غير الأدوات التي ستظهر في درج التنقل أو التنقل السفلي</string>

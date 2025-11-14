@@ -14,7 +14,7 @@
         android:padding="16dp">
 
         <LinearLayout
-            android:id="@+id/timeSetup"
+            android:id="@+id/timeSetupContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -25,7 +25,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/etxtTime"
+                    android:id="@+id/timeEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -35,7 +35,8 @@
                     android:inputType="number"
                     android:maxLength="3" />
 
-                <TextView
+                <Spinner
+                    android:id="@+id/sleepTimerType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/time_minutes"
@@ -44,16 +45,28 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/sleepTimerHintText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                android:layout_weight="1"
+                android:selectAllOnFocus="true"
+                android:layout_margin="8dp"
+                android:ems="2"
+                android:text="@string/multiple_sleep_episodes_while_continuous_playback_disabled" />
+
             <Button
                 android:id="@+id/setSleeptimerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/set_sleeptimer_label" />
+                android:text="@string/set_sleeptimer_label"
+                style="@style/Widget.Material3.Button" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/timeDisplay"
+            android:id="@+id/timeDisplayContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -68,12 +81,6 @@
                 android:gravity="center"
                 android:textSize="32sp"
                 android:textColor="?android:attr/textColorPrimary" />
-
-            <Button
-                android:id="@+id/disableSleeptimerButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/disable_sleeptimer_label" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,6 +127,13 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/disableSleeptimerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/disable_sleeptimer_label"
+                style="@style/Widget.Material3.Button" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -129,13 +143,13 @@
             android:layout_marginTop="8dp">
 
             <CheckBox
-                android:id="@+id/cbShakeToReset"
+                android:id="@+id/shakeToResetCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/shake_to_reset_label" />
 
             <CheckBox
-                android:id="@+id/cbVibrate"
+                android:id="@+id/vibrateCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/timer_vibration_label" />
@@ -147,7 +161,7 @@
                 android:weightSum="1">
 
                 <CheckBox
-                    android:id="@+id/chAutoEnable"
+                    android:id="@+id/autoEnableCheckbox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -162,6 +176,13 @@
                     app:srcCompat="@drawable/ic_settings" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/playbackPreferencesButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:text="@string/settings_label" />
 
         </LinearLayout>
 

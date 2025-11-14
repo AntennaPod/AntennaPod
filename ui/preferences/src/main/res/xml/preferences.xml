@@ -63,7 +63,7 @@
             android:icon="@drawable/ic_contribute" />
         <Preference
             android:key="prefSendBugReport"
-            android:title="@string/bug_report_title"
+            android:title="@string/report_bug_title"
             android:icon="@drawable/ic_bug" />
         <Preference
             android:key="prefAbout"

@@ -146,11 +146,10 @@
     <string name="show_info_label">Informatie tonen</string>
     <string name="show_feed_settings_label">Podcastinstellingen tonen</string>
     <string name="feed_settings_label">Podcastinstellingen</string>
-    <string name="rename_feed_label">Podcastnaam wijzigen</string>
-    <string name="remove_feed_label">Podcast verwijderen</string>
+    <string name="rename_feed_label">Hernoemen</string>
+    <string name="remove_feed_label">Verwijderen</string>
     <string name="share_label">Delen</string>
     <string name="share_file_label">Bestand delen</string>
-    <string name="feed_remover_msg">Podcast wordt verwijderd</string>
     <string name="load_complete_feed">Volledige podcast vernieuwen</string>
     <string name="multi_select">Meervoudige selectie</string>
     <string name="select_all_above">Alles hierboven selecteren</string>
@@ -259,10 +258,10 @@
     <string name="keep_sorted">Gesorteerd houden</string>
     <string name="date">Datum</string>
     <string name="duration">Duur</string>
-    <string name="episode_title">Titel van de aflevering</string>
+    <string name="episode_title">Afleveringstitel</string>
     <string name="feed_title">Podcast-titel</string>
     <string name="random">Willekeurig</string>
-    <string name="smart_shuffle">Slim willekeurig afspelen</string>
+    <string name="smart_shuffle">Slimme shuffle</string>
     <string name="size">Grootte</string>
     <string name="time_left_label">"Resterende tijd: "</string>
     <!--Variable Speed-->
@@ -291,8 +290,8 @@
     <string name="synchronization_sum">Synchroniseren met andere apparaten</string>
     <string name="automation">Automatische acties</string>
     <string name="download_pref_details">Details</string>
-    <string name="import_export_pref">Importeren/Exporteren</string>
-    <string name="import_export_search_keywords">back-up, herstel</string>
+    <string name="import_export_pref">Back-up maken en herstellen</string>
+    <string name="import_export_search_keywords">importeren, exporteren</string>
     <string name="external_elements">Externe elementen</string>
     <string name="interruptions">Onderbrekingen</string>
     <string name="playback_control">Afspeelbediening</string>
@@ -301,7 +300,7 @@
     <string name="preference_search_no_results">Geen resultaten</string>
     <string name="preference_search_clear_history">Geschiedenis wissen</string>
     <string name="pref_episode_cleanup_summary">Hier instellen wanneer afleveringen mogen worden verwijderd, in het geval \'Automatisch downloaden\' ruimte nodig heeft voor nieuwe afleveringen</string>
-    <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren na loskoppelen van de koptelefoon of bluetooth</string>
+    <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren na loskoppelen van de koptelefoon of Bluetooth-apparaat</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten na aansluiten van de koptelefoon</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten na herstel van de bluetoothverbinding</string>
     <string name="pref_hardware_forward_button_title">Knop Vooruit</string>
@@ -353,10 +352,7 @@
     <string name="pref_black_theme_message">Gebruik echt zwart voor het donkere kleurenschema</string>
     <string name="pref_tinted_theme_title">Dynamische kleuren</string>
     <string name="pref_tinted_theme_message">Gebruik kleuren op basis van de achtergrondafbeelding</string>
-    <string name="pref_nav_drawer_feed_order_title">Volgorde van de abonnementen instellen</string>
-    <string name="pref_nav_drawer_feed_order_sum">De volgorde van de abonnementen wijzigen</string>
-    <string name="pref_nav_drawer_feed_counter_title">Abonnementsteller instellen</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Pas de door de teller te tonen informatie aan. Beïnvloedt ook de sortering van abonnementen indien \'Volgorde van abonnementen\' is ingesteld op \'Teller\'.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Teller</string>
     <string name="pref_automatic_download_title">Automatisch downloaden</string>
     <string name="pref_automatic_download_sum">Automatisch downloaden van afleveringen instellen</string>
     <string name="pref_automatic_download_on_battery_title">Downloaden als toestel niet oplaadt</string>
@@ -415,8 +411,6 @@
     <string name="remember_last_page">Vorige pagina onthouden</string>
     <string name="pref_delete_removes_from_queue_title">Afleveringen uit wachtrij verwijderen na wissen</string>
     <string name="pref_delete_removes_from_queue_sum">Automatisch uit de wachtrij wissen als de aflevering is verwijderd</string>
-    <string name="pref_filter_feed_title">Abonnementsfilter</string>
-    <string name="pref_filter_feed_sum">Filter de abonnementen in het menu en op het abonnementsscherm</string>
     <string name="subscriptions_counter_greater_zero">Teller hoger dan nul</string>
     <string name="auto_downloaded">Automatisch gedownload</string>
     <string name="not_auto_downloaded">Niet automatisch gedownload</string>
@@ -507,7 +501,7 @@
     <string name="synchronization_summary_unchoosen">Er is keuze uit meerdere aanbieders om de abonnementen en aflevering-stand mee te synchroniseren</string>
     <string name="dialog_choose_sync_service_title">Kies een synchronisatiedienst</string>
     <string name="gpodnet_description">Gpodder.net is een opensource-podcastsynchronisatiedienst die je op je eigen server kunt installeren. Let op: Gpodder.net is niet verbonden aan het AntennaPod-project.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync kan als open source Nextcloud-app op een eigen server geïnstalleerd worden. De app is niet betrokken bij het AntennaPod-project.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync kan als open source Nextcloud-app op een eigen server geïnstalleerd worden. Gpodder Sync is niet betrokken bij het AntennaPod-project.</string>
     <string name="synchronization_host_explanation">Je kunt je eigen synchronisatieserver kiezen. Als je voorkeur voor een bepaalde server hebt, voer dan hier het adres ervan in.</string>
     <string name="synchronization_host_label">Serveradres</string>
     <string name="proceed_to_login_butLabel">Doorgaan met inloggen</string>
@@ -575,7 +569,7 @@
     <string name="authentication_descr">Gebruikersnaam en wachtwoord wijzigen voor deze podcast en bijbehorende afleveringen</string>
     <string name="feed_tags_label">Labels</string>
     <string name="feed_tags_summary">Wijzig de labels van deze podcast om abonnementen te organiseren</string>
-    <string name="feed_folders_include_root">Podcast in de hoofdlijst tonen</string>
+    <string name="feed_folders_include_root">Boven labels tonen (alleen zijnavigatie)</string>
     <string name="multi_feed_common_tags_info">Alleen labels die alle geselecteerde abonnementen delen worden getoond. Andere labels worden niet aangepast.</string>
     <string name="episode_filters_label">Afleveringsfilter</string>
     <string name="episode_filters_description">Lijst van zoektermen om te beslissen of een aflevering al of niet automatisch wordt gedownload</string>
@@ -585,7 +579,7 @@
     <string name="exclude_episodes_shorter_than">Afleveringen uitsluiten die korter zijn dan</string>
     <string name="keep_updated">Bijgewerkt houden</string>
     <string name="keep_updated_summary">Deze podcast meenemen bij het (automatisch) vernieuwen van alle podcasts</string>
-    <string name="statistics_expected_next_episode_any_day">Elk moment</string>
+    <string name="statistics_expected_next_episode_any_day">Binnenkort</string>
     <string name="statistics_expected_next_episode_unknown">Onbekend</string>
     <string name="edit_url_menu">Feed-url bewerken</string>
     <!--Podcast release schedules-->
@@ -706,8 +700,6 @@
     <string name="preview_episodes">Preview van afleveringen</string>
     <string name="bottom_navigation">Navigatiebalk</string>
     <string name="statistics_view_all">Alle podcasts »</string>
-    <string name="feed_delete_confirmation_msg_batch">Bevestig dat je de geselecteerde podcasts, ALLE afleveringen (ook al gedownloade afleveringen), afspeelgeschiedenis en bijbehorende statistieken wilt verwijderen.</string>
-    <string name="feed_delete_confirmation_local_msg">Bevestig dat je de podcast \"%1$s\", inclusief bijbehorende afspeelgeschiedenis en statistieken wilt verwijderen. De bestanden in de lokale bron-map worden niet verwijderd.</string>
     <string name="show_transcript">Toon transcript</string>
     <string name="transcript">Transcript</string>
     <string name="pref_auto_delete_title">Automatisch verwijderen</string>
@@ -726,8 +718,6 @@
     <string name="section_shown">Getoond</string>
     <string name="delete_downloads_played">Afgespeelde bestanden verwijderen</string>
     <string name="bottom_navigation_summary">Navigeer naar de belangrijkste schermen waar je ook bent, met één tik</string>
-    <string name="statistics_episodes_started">gestart</string>
-    <string name="statistics_episodes_total">totaal</string>
     <string name="statistics_release_schedule">Uitgaveschema</string>
     <string name="statistics_years_barchart_description">Afspeeltijd per maand</string>
     <plurals name="time_hours_quantified">
@@ -743,11 +733,9 @@
         <item quantity="one">%d dag na afloop</item>
         <item quantity="other">%d dagen na afloop</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">Bevestig dat je de podcast \"%1$s\", ALLE afleveringen (ook al gedownloade afleveringen), afspeelgeschiedenis en bijbehorende statistieken wilt verwijderen.</string>
     <string name="delete_downloads_played_confirmation">Bevestig dat je alle afgespeelde downloads wilt verwijderen.</string>
     <string name="no_transcript_label">Geen transcript</string>
     <string name="null_value_podcast_error">De link die je aantikte bevat geen geldige podcast URL. Controleer de link en probeer het nogmaals, of zoek handmatig naar de podcast.</string>
-    <string name="mobile_download_notice">De komende %d minuten word er over mobiele data gedownload</string>
     <string name="clear_queue_confirmation_msg">Bevestig dat je ALLE afleveringen uit de wachtrij wilt verwijderen.</string>
     <string name="pref_episode_cleanup_title">Verwijder vóór automatische download</string>
     <string name="pref_auto_delete_playback_title">Verwijder na afspelen</string>
@@ -758,12 +746,11 @@
         <item quantity="one">%d dag</item>
         <item quantity="other">%d dagen</item>
     </plurals>
-    <string name="nextcloud_login_error_generic">Kan niet inloggen in je Nextcloud.\n\n- Check je netwerkverbinding.\n- Controleer dat je het juiste server adres gebruikt.\n- Zorg dat de gpoddersync Nextcloud plugin is geïnstalleerd.</string>
+    <string name="nextcloud_login_error_generic">Kan niet inloggen in je Nextcloud.\n\n- Check je netwerkverbinding.\n- Controleer dat je het juiste server adres gebruikt.\n- Zorg dat de Gpodder Sync Nextcloud plugin is geïnstalleerd.</string>
     <string name="choose_data_directory_message">Kies de basis van je data-map. AntennaPod zal de passende submappen aanmaken.</string>
     <string name="rating_volunteers_label">AntennaPod wordt door vrijwilligers ontwikkeld, in hun vrije tijd. Deel je waardering van hun werk door een mooie beoordeling achter te laten.</string>
     <string name="state_deleted_not_subscribed">Je bent nog niet geabonneerd op deze podcast. Abonneer je gratis om er makkelijker toegang toe te krijgen en afspeelgeschiedenis bij te houden.</string>
     <string name="download_started_talkback">Download gestart voor %1$s</string>
-    <string name="statistics_episodes_downloaded">gedownload</string>
     <string name="statistics_episodes_space">ingenomen opslagruimte</string>
     <string name="edit_url_confirmation_msg">Het RSS adres veranderen maakt vaak de afspeelstatus en afleveringslijst van de podcast kapot. We raden dit af en bieden GEEN ondersteuning als er iets mis gaat. Dit kan niet ongedaan gemaakt worden. Het kapotte abonnement kan NIET gerepareerd worden door het oude adres weer terug te zetten. We raden aan om een eerst back-up te maken voordat je verder gaat.</string>
     <string name="multi_select_started_talkback">Meervoudige selectie acties onderaan getoond</string>
@@ -849,12 +836,12 @@
     <string name="removed_from_inbox_message">Verwijderd uit Postvak IN</string>
     <string name="mark_as_played_label">Markeer als afgespeeld</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Markeer als afgespeeld</item>
-        <item quantity="other"/>
+        <item quantity="one">Één aflevering gemarkeerd als afgespeeld.</item>
+        <item quantity="other">%d afleveringen gemarkeerd als afgespeeld.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Markeer als onafgespeeld</item>
-        <item quantity="other"/>
+        <item quantity="one">Één aflevering gemarkeerd als onafgespeeld.</item>
+        <item quantity="other">%d afleveringen gemarkeerd als onafgespeeld.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Om naar een andere positie te springen moet je de aflevering afspelen</string>
     <string name="mark_as_unplayed_label">Markeer als onafgespeeld</string>
@@ -883,4 +870,21 @@
     <string name="no_queue_items_inbox_has_items_button_label">Ga naar Postvak IN</string>
     <string name="auto_download_inbox_category">Automatisch downloaden van afleveringen in Postvak IN</string>
     <string name="delete_local_feed_confirmation_dialog_message">Dit verwijdert de aflevering uit AntennaPod en verwijdert de mediabestanden van de opslag op je apparaat. Het kan niet opnieuw gedownload worden via AntennaPod.</string>
+    <string name="please_wait_before_refreshing">Wacht even voordat je de podcasts weer ververst.</string>
+    <string name="already_downloaded">Aflevering is al gedownload</string>
+    <string name="tag_all">Alles</string>
+    <string name="statistics_expected_next_episode_any_time">Elk moment</string>
+    <string name="release_schedule_multiple_per_day">Meerdere keren per dag</string>
+    <string name="cover_as_background">Omslagafbeelding als achtergrond</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">Één abonnement</item>
+        <item quantity="other">%d abonnementen</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Archiveren</string>
+    <string name="archive_feed_label_noun">Archief</string>
+    <string name="restore_archive_label">Herstellen</string>
+    <string name="remove_archive_feed_label">Verwijderen / archivereren</string>
+    <string name="feed_delete_explanation_delete">Verwijderen verwijdert ALLE afleveringen inclusief downloads, afspeelgeschiedenis, en statistieken.</string>
+    <string name="feed_delete_explanation_archive">Archiveren verbergt het van de abonnementenlijst en stopt automatische updates. Downloads, statistieken en afspeelstatus worden behouden.</string>
+    <string name="tag_untagged">Ongelabeld</string>
 </resources>

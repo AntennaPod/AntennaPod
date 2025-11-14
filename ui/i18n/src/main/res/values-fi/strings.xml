@@ -145,7 +145,6 @@
     <string name="remove_feed_label">Poista podcast</string>
     <string name="share_label">Jaa</string>
     <string name="share_file_label">Jaa tietodosto</string>
-    <string name="feed_remover_msg">Poistetaan podcast</string>
     <string name="load_complete_feed">Päivitä podcast</string>
     <string name="multi_select">Monivalinta</string>
     <string name="select_all_above">Valitse kaikki yllä</string>
@@ -282,8 +281,8 @@
     <string name="synchronization_sum">Synkronoi muiden laitteiden kanssa</string>
     <string name="automation">Automaatio</string>
     <string name="download_pref_details">Tietoja</string>
-    <string name="import_export_pref">Tuo/Vie</string>
-    <string name="import_export_search_keywords">varmuuskopiointi, palautus</string>
+    <string name="import_export_pref">Varmuuskopiointi ja palautus</string>
+    <string name="import_export_search_keywords">tuonti, vienti</string>
     <string name="external_elements">Ulkoiset elementit</string>
     <string name="interruptions">Keskeytykset</string>
     <string name="playback_control">Toistonhallinta</string>
@@ -292,7 +291,7 @@
     <string name="preference_search_no_results">Ei tuloksia</string>
     <string name="preference_search_clear_history">Tyhjennä historia</string>
     <string name="pref_episode_cleanup_summary">Jaksot, jotka voidaan poistaa, jos automaattinen lataus tarvitsee tilaa uusille jaksoille</string>
-    <string name="pref_pauseOnDisconnect_sum">Pysäytä toisto, kun kuuloke- tai bluetooth-yhteys katkaistaan</string>
+    <string name="pref_pauseOnDisconnect_sum">Keskeytä toisto, kun kuulokkeiden tai Bluetooth-laitteiden yhteys katkeaa</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Jatka toistoa, kun kuulokkeet yhdistetään uudestaan</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Jatka toistoa, kun bluetooth yhdistyy uudestaan</string>
     <string name="pref_hardware_forward_button_title">Eteenpäin-painike</string>
@@ -338,10 +337,7 @@
     <string name="user_interface_sum">Ulkoasu, tilaukset, ruudun lukitus</string>
     <string name="pref_tinted_theme_title">Dynaamiset värit</string>
     <string name="pref_tinted_theme_message">Mukauta sovelluksen värit taustakuvaan perustuen</string>
-    <string name="pref_nav_drawer_feed_order_title">Aseta tilausten järjestys</string>
-    <string name="pref_nav_drawer_feed_order_sum">Vaihda tilauksiesi järjestystä</string>
-    <string name="pref_nav_drawer_feed_counter_title">Aseta tilauslaskuri</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Vaihda tilauslaskurin näyttämiä tietoja. Tämä vaikuttaa myös tilausten järjestykseen, jos \"Tilausjärjestys\" on \"Laskuri\".</string>
+    <string name="pref_nav_drawer_feed_counter_title">Laskuri</string>
     <string name="pref_automatic_download_title">Automaattinen lataus</string>
     <string name="pref_automatic_download_sum">Aseta jaksojen automaattinen lataus</string>
     <string name="pref_automatic_download_on_battery_title">Lataa, kun akkua ei ladata</string>
@@ -393,8 +389,6 @@
     <string name="pref_default_page_sum">Näkymä, joka avataan AntennaPodin käynnistyessä</string>
     <string name="remember_last_page">Muista viimeisin näkymä</string>
     <string name="pref_delete_removes_from_queue_title">Deletointi poistaa jonosta</string>
-    <string name="pref_filter_feed_title">Tilaussuodin</string>
-    <string name="pref_filter_feed_sum">Suodata navigointivalikossa ja tilausnäkymässä näytettäviä tilauksia</string>
     <string name="subscriptions_counter_greater_zero">Laskurin arvo suurempi kuin nolla</string>
     <string name="auto_downloaded">Automaattisesti ladattu</string>
     <string name="not_auto_downloaded">Ei ladattu automaattisesti</string>
@@ -475,7 +469,7 @@
     <string name="synchronization_summary_unchoosen">Voit valita useista palveluntarjoajista, joiden kanssa voit synkronoida tilauksesi ja jaksojen toistotilan</string>
     <string name="dialog_choose_sync_service_title">Valitse synkronointipalveluntarjoaja</string>
     <string name="gpodnet_description">Gpodder.net on avoimen lähdekoodin podcast-synkronointipalvelu, jonka voit asentaa omalle palvelimellesi. Gpodder.net on riippumaton AntennaPod-projektista.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync on avoimen lähdekoodin Nextcloud-sovellus, jonka voit helposti asentaa omalle palvelimellesi. Sovellus on riippumaton AntennaPod-projektista.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync on avoimen lähdekoodin Nextcloud-sovellus, jonka voit helposti asentaa omalle palvelimellesi. Gpodder Sync on riippumaton AntennaPod-projektista.</string>
     <string name="synchronization_host_explanation">Voit valita oman synkronointipalvelimesi. Kun olet tunnistanut mieluisen synkronointipalvelimesi, anna sen osoite tässä.</string>
     <string name="synchronization_host_label">Palvelimen osoite</string>
     <string name="proceed_to_login_butLabel">Jatka kirjautumaan</string>
@@ -536,7 +530,7 @@
     <string name="authentication_descr">Vaihda käyttäjänimesi ja salasanasi tälle podcastille ja sen jaksoille</string>
     <string name="feed_tags_label">Tunnisteet</string>
     <string name="feed_tags_summary">Muokkaa tämän podcastin tunnisteita tilaustesi järjestelemisen avuksi</string>
-    <string name="feed_folders_include_root">Näytä tämä podcast päälistassa</string>
+    <string name="feed_folders_include_root">Näytä yllä olevat tunnisteet (vain sivunavigointi)</string>
     <string name="episode_filters_label">Jaksosuodin</string>
     <string name="episode_filters_description">Lista termeistä joilla valitaan jakso automaattiseen lataukseen</string>
     <string name="add_term">Lisää termi</string>
@@ -666,7 +660,6 @@
     <string name="statistics_release_schedule">julkaisuaikataulu</string>
     <string name="pref_compact_notification_buttons_dialog_error_exact">Sinun on valittava täsmälleen kaksi kohdetta</string>
     <string name="pref_fast_forward_sum">Mukauta sekuntien lukumäärää eteenpäin siirtymiseen, kun pikakelaus eteenpäin -painiketta napsautetaan</string>
-    <string name="statistics_episodes_started">aloitettu</string>
     <string name="section_shown">Näytetty</string>
     <string name="preview_episodes">Jaksojen esikatselu</string>
     <string name="pref_full_notification_buttons_sum">Muuta toistoilmoituksen painikkeita</string>
@@ -682,9 +675,6 @@
     <string name="feed_volume_boost_light">Kevyt tehostus</string>
     <string name="feed_volume_boost_medium">Keskitehostus</string>
     <string name="feed_volume_boost_heavy">Voimakas tehostus</string>
-    <string name="feed_delete_confirmation_msg">Vahvista, että haluat poistaa podcastin \"%1$s\": Kaikki sen jaksot (mukaan lukien ladatut jaksot), toistohistorian ja sen tilastot.</string>
-    <string name="feed_delete_confirmation_msg_batch">Vahvista, että haluat poistaa valitut podcastit, kaikki niiden jaksot (mukaan lukien ladatut jaksot), toistohistorian ja sen tilastot.</string>
-    <string name="feed_delete_confirmation_local_msg">Vahvista, että haluat poistaa podcastin \"%1$s\", sen toistohistorian ja tilastot. Paikallisen lähdekansion tiedostoja ei poisteta.</string>
     <string name="multi_select_started_talkback">Monivalintatoiminnot näkyvät alareunassa</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">VPN-sovelluksesi teeskentelee olevansa mobiiliverkko (mittariyhteys). Podcastien päivittäminen mobiilidatayhteydellä on poissa käytöstä asetuksista.\n\nHaluatko silti virkistää? Jos haluat korjata tämän ongelman, ota yhteyttä VPN-sovelluksesi tekijöihin.</string>
     <string name="show_transcript">Näytä transkriptio</string>
@@ -730,13 +720,10 @@
     <string name="home_downloads_empty_text">Voit ladata minkä tahansa jakson kuunnellaksesi sen ei-verkkotilassa.</string>
     <string name="delete_downloads_played">Poista toistetut</string>
     <string name="delete_downloads_played_confirmation">Vahvista, että haluat poistaa kaikki toistetut lataukset.</string>
-    <string name="mobile_download_notice">Ladataan mobiilidatayhteyden kautta seuraavan %d minuutin ajan</string>
     <string name="bottom_navigation">Alareunanavigointi</string>
     <string name="bottom_navigation_summary">Pääset tärkeimpiin näyttöihin mistä tahansa, yhdellä napautuksella</string>
-    <string name="nextcloud_login_error_generic">Nextcloudiin kirjautuminen ei onnistu.\n\n- Tarkista verkkoyhteytesi.\n- Varmista, että käytät oikeaa palvelinosoitetta.\n- Varmista, että gpoddersync Nextcloud -liitännäinen on asennettu.</string>
-    <string name="statistics_episodes_downloaded">ladattu</string>
+    <string name="nextcloud_login_error_generic">Nextcloudiin sisäänkirjautuminen ei onnistu.\n\n- Tarkista verkkoyhteytesi.\n- Varmista, että käytät oikeaa palvelinosoitetta.\n- Varmista, että Gpodder Sync Nextcloud -liitännäinen on asennettu.</string>
     <string name="statistics_episodes_space">käytetty tila</string>
-    <string name="statistics_episodes_total">yhteensä</string>
     <string name="statistics_release_next">seuraava jakso (arvio)</string>
     <string name="statistics_years_barchart_description">Toistoaika kuukaudessa</string>
     <plurals name="time_days_quantified">
@@ -847,12 +834,12 @@
     <string name="removed_from_inbox_message">Poistettu postilaatikosta</string>
     <string name="mark_as_played_label">Merkitse toistetuksi</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Merkitty toistetuksi</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d jakso merkitty toistetuiksi.</item>
+        <item quantity="other">%d jaksoa merkitty toistetuiksi.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Merkitty toistamattomaksi</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d jakso merkitty ei-toistetuksi.</item>
+        <item quantity="other">%d jaksoa merkitty ei-toistetuiksi.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Päästäksesi sijainteihin sinun on toistettava jakso</string>
     <string name="mark_as_unplayed_label">Merkitse toistamattomaksi</string>
@@ -881,4 +868,10 @@
     <string name="no_queue_items_inbox_has_items_label">Ei jaksoja tiedossa, mutta uusia jaksoja odottavat sinua!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Siirry postilaatikkoon</string>
     <string name="auto_download_inbox_category">Lataa jaksot automaattisesti postilaatikosta</string>
+    <string name="please_wait_before_refreshing">Odota hetki ennen kuin virkistät podcastit uudelleen.</string>
+    <string name="already_downloaded">Jakso on jo ladattu</string>
+    <string name="tag_all">Kaikki</string>
+    <string name="statistics_expected_next_episode_any_time">Milloin vain nyt</string>
+    <string name="release_schedule_multiple_per_day">useita kertoja päivässä</string>
+    <string name="cover_as_background">Kansi taustana</string>
 </resources>

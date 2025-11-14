@@ -146,11 +146,10 @@
     <string name="show_info_label">Programaren informazioa</string>
     <string name="show_feed_settings_label">Erakutsi podcastaren ezarpenak</string>
     <string name="feed_settings_label">Podcastaren ezarpenak</string>
-    <string name="rename_feed_label">Berrizendatu podcasta</string>
-    <string name="remove_feed_label">Kendu podcasta</string>
+    <string name="rename_feed_label">Berrizendatu</string>
+    <string name="remove_feed_label">Ezabatu</string>
     <string name="share_label">Partekatu</string>
     <string name="share_file_label">Partekatu fitxategia</string>
-    <string name="feed_remover_msg">Podcasta ezabatzen</string>
     <string name="load_complete_feed">Eguneratu podcast osoa</string>
     <string name="multi_select">Hautaketa anitza</string>
     <string name="select_all_above">Hautatu goiko guztiak</string>
@@ -291,8 +290,8 @@
     <string name="synchronization_sum">Sinkronizatu beste gailuekin</string>
     <string name="automation">Automatizazioa</string>
     <string name="download_pref_details">Xehetasunak</string>
-    <string name="import_export_pref">Inportatu/esportatu</string>
-    <string name="import_export_search_keywords">babeskopia, segurtasun kopia, berrezarri, leheneratu, backupa, restore</string>
+    <string name="import_export_pref">Babeskopia eta leheneratzea</string>
+    <string name="import_export_search_keywords">inportatu, esportatu</string>
     <string name="external_elements">Kanpo elementuak</string>
     <string name="interruptions">Etenaldiak</string>
     <string name="playback_control">Erreprodukzioaren kontrola</string>
@@ -301,7 +300,7 @@
     <string name="preference_search_no_results">Emaitzarik ez</string>
     <string name="preference_search_clear_history">Garbitu historia</string>
     <string name="pref_episode_cleanup_summary">Deskarga automatikoak saio berrientzat lekua behar badu, kendu daitezkeen saioak</string>
-    <string name="pref_pauseOnDisconnect_sum">Pausatu erreprodukzioa entzungailu edo bluetooth-a deskonektatzean</string>
+    <string name="pref_pauseOnDisconnect_sum">Erreprodukzioa pausatu entzungailuak edo Bluetooth gailuak deskonektatzen direnean</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Jarraitu erreproduzitzen entzungailuak berriz konektatutakoan</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Jarraitu erreproduzitzen bluetooth-a berriz konektatzean</string>
     <string name="pref_hardware_forward_button_title">Aurrera botoia</string>
@@ -353,10 +352,7 @@
     <string name="pref_black_theme_message">Erabili erabateko beltza gai ilunean</string>
     <string name="pref_tinted_theme_title">Kolore dinamikoak</string>
     <string name="pref_tinted_theme_message">Egokitu aplikazioaren koloreak horma-paperaren arabera</string>
-    <string name="pref_nav_drawer_feed_order_title">Ezarri harpidetzen ordena</string>
-    <string name="pref_nav_drawer_feed_order_sum">Aldatu harpidetzen ordena</string>
-    <string name="pref_nav_drawer_feed_counter_title">Ezarri harpidetzen kontagailua</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Aldatu harpidetzen kontagailuan erakutsitako informazioa. Harpidetzen ordenari ere eragiten dio, \'Harpidetzaren ordena\' \'Kontagailu\' moduan badago.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Kontagailua</string>
     <string name="pref_automatic_download_title">Deskarga automatikoa</string>
     <string name="pref_automatic_download_sum">Konfiguratu saioen deskarga automatikoa</string>
     <string name="pref_automatic_download_on_battery_title">Deskargatu kargatzen ari ez denean</string>
@@ -415,8 +411,6 @@
     <string name="remember_last_page">Gogoratu azken orria</string>
     <string name="pref_delete_removes_from_queue_title">Ezabatu ilaratik kendutakoak</string>
     <string name="pref_delete_removes_from_queue_sum">Kendu saio bat automatikoki ilaratik ezabatzean</string>
-    <string name="pref_filter_feed_title">Harpidetzen iragazkia</string>
-    <string name="pref_filter_feed_sum">Iragazi harpidetzak nabigazioko tiraderan eta harpidetzen pantailan</string>
     <string name="subscriptions_counter_greater_zero">Kontagailua zero baino handiagoa</string>
     <string name="auto_downloaded">Automatikoki deskargatuta</string>
     <string name="not_auto_downloaded">Automatikoki deskargatu gabe</string>
@@ -507,7 +501,7 @@
     <string name="synchronization_summary_unchoosen">Hainbat hornitzaileren artean hauta dezakezu zure harpidetzak eta saioen erreprodukzioaren egoera sinkronizatzeko</string>
     <string name="dialog_choose_sync_service_title">Aukeratu sinkronizazio-hornitzailea</string>
     <string name="gpodnet_description">Gpodder.net kode irekiko podcastak sinkronizatzeko zerbitzu bat da, zure zerbitzarian bertan instala dezakezuna. Gpodder.net AntennaPod proiektutik independentea da.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync kode irekiko Nextcloud aplikazio bat da, zure zerbitzarian erraz instala dezakezuna. Aplikazioa independentea da AntennaPod proiektuarekiko.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync Nextcloud aplikazio kode irekikoa da, zure zerbitzarian erraz instala dezakezuna. Gpodder Sync AntennaPod proiektutik independentea da.</string>
     <string name="synchronization_host_explanation">Zure zerbitzari propioa aukeratu dezakezu sinkronizatzeko. Zure gustuko sinkronizazio-zerbitzaria hautatu ondoren, sartu bere helbidea hemen.</string>
     <string name="synchronization_host_label">Zerbitzariaren helbidea</string>
     <string name="proceed_to_login_butLabel">Jarraitu saio hasierara</string>
@@ -575,7 +569,7 @@
     <string name="authentication_descr">Aldatu erabiltzaile-izena eta pasahitza podcast honentzat eta bere saioentzat</string>
     <string name="feed_tags_label">Etiketak</string>
     <string name="feed_tags_summary">Aldatu podcast honen etiketak zure harpidetzak antolatzen laguntzeko</string>
-    <string name="feed_folders_include_root">Erakutsi podcast hau zerrenda nagusian</string>
+    <string name="feed_folders_include_root">Erakutsi goiko etiketak (alboko nabigazioa soilik)</string>
     <string name="multi_feed_common_tags_info">Hautatutako harpidetza guztien ohiko etiketak baino ez dira erakusten. Gainerako etiketei ez die eragingo.</string>
     <string name="episode_filters_label">Saioen iragazkia</string>
     <string name="episode_filters_description">Saio bat deskarga automatikotik kanpo utzi behar den edo ez erabakitzeko erabilitako terminoen zerrenda</string>
@@ -693,7 +687,7 @@
     <string name="theming">Gaiak</string>
     <string name="button_action_fast_forward">Aurrera bizkor</string>
     <string name="episode_information">Atalari buruzko informazioa</string>
-    <string name="nextcloud_login_error_generic">Ezinezkoa zure Nextcloud-en logeatzea.\n\n- Egiazta ezazu zure sareko konexioa.\n- Berretsi zerbitzariaren helbide zuzena erabiltzen ari zarela.\n- Ziurtatu gpoddersync Nextcloud hedapena instalatuta dagoela.</string>
+    <string name="nextcloud_login_error_generic">Ezinezkoa zure Nextcloud-en logeatzea.\n\n- Egiazta ezazu zure sareko konexioa.\n- Berretsi zerbitzariaren helbide zuzena erabiltzen ari zarela.\n- Ziurtatu Gpodder Sync Nextcloud hedapena instalatuta dagoela.</string>
     <string name="statistics_episodes_space">hartutako espazioa</string>
     <string name="state_deleted_not_subscribed">Oraindik ez zaude podcast honetara harpidetuta. Harpidetu doan, errazago sartzeko eta erreprodukzio-historia mantentzeko.</string>
     <string name="fast_forward_label">Aurrera bizkor</string>
@@ -701,7 +695,6 @@
         <item quantity="one">Atalaren %d guztizko tamaina gailuan</item>
         <item quantity="other">Atalen %d guztizko tamaina gailuan</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">Mesedez, berretsi \"%1$s\" podcasta, bere atal GUZTIAK (deskargatutako pasarteak barne), erreprodukzio-historia eta bere estatistikak ezabatu nahi dituzula.</string>
     <string name="multi_select_started_talkback">Aukera anitzeko ekintzak behealdean agertzen dira</string>
     <string name="show_transcript">Transkripzioa erakutsi</string>
     <string name="transcript">Transkripzioa</string>
@@ -719,8 +712,6 @@
     <string name="section_shown">Erakutsita</string>
     <string name="delete_downloads_played_confirmation">Mesedez, berretsi erreproduzitutako deskarga guztiak ezabatu nahi dituzula.</string>
     <string name="bottom_navigation">Nabigatzeko botoia</string>
-    <string name="statistics_episodes_started">abiatuta</string>
-    <string name="statistics_episodes_total">guztira</string>
     <string name="statistics_release_schedule">kaleratzeen egutegia</string>
     <string name="statistics_years_barchart_description">Erreprodukzio denbora hilean</string>
     <plurals name="episode_cleanup_hours_after_listening">
@@ -737,10 +728,7 @@
     </plurals>
     <string name="home_no_recent_unplayed_episodes_text">Azken saio guztiak entzun dituzu. Ez da harritzeko ezer ;)</string>
     <string name="home_continue_empty_text">Atalak gehi ditzakezu deskargatuz edo haien gainean luze sakatuz eta \"Gehitu ilaran\" hautatuz.</string>
-    <string name="feed_delete_confirmation_msg_batch">Mesedez, berretsi hautatutako podcastak, haien atal GUZTIAK (deskargatutako atalak barne), erreprodukzio-historia eta bere estatistikak kendu nahi dituzula.</string>
-    <string name="feed_delete_confirmation_local_msg">Mesedez, berretsi \"%1$s\" podcasta, erreprodukzio-historia eta estatistikak kendu nahi dituzula. Iturburu lokaleko karpetako fitxategiak ez dira ezabatuko.</string>
     <string name="null_value_podcast_error">Sakatu duzun estekak ez du baliozko podcast URLrik. Egiaztatu esteka eta saiatu berriro, edo bilatu podcasta eskuz.</string>
-    <string name="mobile_download_notice">Mugikorraren datu-konexioari esker deskargatzen hurrengo %d minutuetan</string>
     <string name="pref_auto_delete_sum">Ezabatu atalak erreproduzitu ondoren edo deskarga automatikoak lekua behar duenean</string>
     <string name="pref_episode_cache_title">Atal muga</string>
     <string name="bottom_navigation_summary">Atzitu pantaila garrantzitsuenetara edonondik, ukitu bakarrean</string>
@@ -764,7 +752,6 @@
     <string name="preview_episodes">Atalen aurreikustaldiak</string>
     <string name="download_started_talkback">Deskarga hasi da %1$s-entzat</string>
     <string name="download_completed_talkback">Deskarga osatu da %1$s-entzat</string>
-    <string name="statistics_episodes_downloaded">deskargatuta</string>
     <string name="statistics_release_next">hurrengo atala (aurreikuspena)</string>
     <string name="edit_url_confirmation_msg">RSS helbidea aldatzeak erraz hautsi ditzake podcastaren erreprodukzio-egoera eta pasarte-zerrendak. EZ dugu aldatzea gomendatzen eta EZ dugu laguntza emango zerbait gaizki gertatzen bada. Hau ezin da desegin. Hautsitako harpidetza EZIN DA konpondu helbidea berriro aldatuz. Jarraitu aurretik, babeskopia sortzea gomendatzen dugu.</string>
     <string name="sync_status_wait_for_downloads">Harpidetzak freskatzeko zain…</string>
@@ -849,12 +836,12 @@
     <string name="removed_from_inbox_message">Sarrera-ontzitik kendu da</string>
     <string name="mark_as_played_label">Erreproduzituta gisa ezarri</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Erreproduzituta gisa ezarri da</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d erreproduzituta gisa ezarri da.</item>
+        <item quantity="other">%d erreproduzituta gisa ezarri da.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Erreproduzitu gabea gisa ezarrita</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d erreproduzitu gabe gisa ezarrita.</item>
+        <item quantity="other">%d erreproduzitu gabe gisa ezarrita.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Posizioetara salto egiteko, atala erreproduzitu behar duzu</string>
     <string name="mark_as_unplayed_label">Erreproduzitu gabea gisa ezarri</string>
@@ -883,4 +870,21 @@
     <string name="no_queue_items_inbox_has_items_label">Ez dago atalik programatuta, baina badaude zain dituzun atal berriak!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Sarrera-otzira joan</string>
     <string name="auto_download_inbox_category">Deskargatu automatikoki atalak sarrera-ontzitik</string>
+    <string name="please_wait_before_refreshing">Mesedez, itxaron pixka bat podcastak berriro freskatu aurretik.</string>
+    <string name="already_downloaded">Atala dagoeneko deskargatuta dago</string>
+    <string name="tag_all">Denak</string>
+    <string name="statistics_expected_next_episode_any_time">Edozein unetan</string>
+    <string name="release_schedule_multiple_per_day">egunean hainbat aldiz</string>
+    <string name="cover_as_background">Azala atzeko plano gisa</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d harpidetza</item>
+        <item quantity="other">%d harpidetzak</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Artxiboa</string>
+    <string name="archive_feed_label_noun">Artxiboa</string>
+    <string name="restore_archive_label">Berrezarri</string>
+    <string name="remove_archive_feed_label">Ezabatu / artxiboa</string>
+    <string name="feed_delete_explanation_delete">Ezabatzen baduzu, atal GUZTIAK kenduko dira, deskargak, erreprodukzio-historia eta estatistikak barne.</string>
+    <string name="feed_delete_explanation_archive">Artxibatzeak harpidetza-zerrendatik ezkutatuko du eta eguneraketak jasotzea eragotziko du. Deskargak, estatistikak eta erreprodukzio-egoera gordetzen dira.</string>
+    <string name="tag_untagged">Etiketarik gabe</string>
 </resources>
