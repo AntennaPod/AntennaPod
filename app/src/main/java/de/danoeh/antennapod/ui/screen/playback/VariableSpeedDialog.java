@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.screen.playback;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,10 @@ import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -31,12 +36,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class VariableSpeedDialog extends BottomSheetDialogFragment {
+    private static final String TAG = "VariableSpeedDialog";
     private SpeedSelectionAdapter adapter;
     private PlaybackController controller;
     private final List<Float> selectedSpeeds;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
     private CheckBox skipSilenceCheckbox;
+    private Disposable disposable;
 
     public VariableSpeedDialog() {
         DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
@@ -50,14 +57,12 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public void loadMediaInfo() {
-                updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
-                updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
+                VariableSpeedDialog.this.loadMediaInfo();
             }
         };
         controller.init();
         EventBus.getDefault().register(this);
-        updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
-        updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
+        loadMediaInfo();
     }
 
     @Override
@@ -66,6 +71,32 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         controller.release();
         controller = null;
         EventBus.getDefault().unregister(this);
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    private void loadMediaInfo() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(() -> {
+            if (controller == null) {
+                return null;
+            }
+            // Make sure the media is loaded in case getCurrentPlaybackSpeedMultiplier has to access it
+            return controller.getMedia();
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(pair -> {
+                    if (controller == null) {
+                        return;
+                    }
+                    updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
+                    updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
