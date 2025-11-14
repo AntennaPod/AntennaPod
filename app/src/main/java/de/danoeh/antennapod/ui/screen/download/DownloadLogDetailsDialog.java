@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.DownloadLogDetailsDialogBinding;
@@ -65,15 +66,19 @@ public class DownloadLogDetailsDialog extends DialogFragment {
         dialog.setTitle(R.string.download_error_details);
         dialog.setPositiveButton(android.R.string.ok, null);
         dialog.setNeutralButton(R.string.copy_to_clipboard, (copyDialog, which) ->
-                ClipboardUtils.copyText(getView(), R.string.download_error_details, clipboardContent));
+                ClipboardUtils.copyText(viewBinding.getRoot(), R.string.download_error_details, clipboardContent));
 
         viewBinding = DownloadLogDetailsDialogBinding.inflate(getLayoutInflater());
         dialog.setView(viewBinding.getRoot());
 
         viewBinding.btnGoToPodcast.setVisibility(isJumpToFeed ? View.VISIBLE : View.GONE);
         viewBinding.btnGoToPodcast.setOnClickListener(v -> {
-            goToFeedOrFeedItem();
+            goToFeed();
             dismiss();
+            Fragment downloadLog = getParentFragmentManager().findFragmentByTag(DownloadLogFragment.TAG);
+            if (downloadLog instanceof DownloadLogFragment) {
+                ((DownloadLogFragment) downloadLog).dismiss();
+            }
         });
         viewBinding.txtvFileUrlContent.setOnClickListener(v ->
                 ClipboardUtils.copyText(viewBinding.txtvFileUrlContent, R.string.download_log_details_file_url_title));
@@ -97,19 +102,23 @@ public class DownloadLogDetailsDialog extends DialogFragment {
         disposable = Single.create(emitter -> {
             if (downloadResult.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 FeedMedia media = DBReader.getFeedMedia(downloadResult.getFeedfileId());
-                if (media != null && media.getItem() != null) {
-                    feed = DBReader.getFeed(media.getItem().getFeedId(), false, 0, 0);
-                    if (feed != null) {
-                        podcastName = feed.getFeedTitle();
+                if (media != null) {
+                    if (media.getItem() != null && media.getItem().getFeed() != null) {
+                        feed = media.getItem().getFeed();
+                        podcastName = feed.getTitle();
                     }
                     episodeName = media.getEpisodeTitle();
                     url = media.getDownloadUrl();
+                } else {
+                    episodeName = downloadResult.getTitle();
                 }
             } else if (downloadResult.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
                 feed = DBReader.getFeed(downloadResult.getFeedfileId(), false, 0, 0);
                 if (feed != null) {
-                    podcastName = feed.getFeedTitle();
+                    podcastName = feed.getTitle();
                     url = feed.getDownloadUrl();
+                } else {
+                    podcastName = downloadResult.getTitle();
                 }
             }
             emitter.onSuccess(true);
@@ -125,19 +134,10 @@ public class DownloadLogDetailsDialog extends DialogFragment {
         if (!downloadResult.isSuccessful()) {
             message = downloadResult.getReasonDetailed();
         }
-
-        if (podcastName != null) {
-            viewBinding.txtvPodcastTitle.setText(R.string.feed_title);
-            viewBinding.txtvPodcastName.setText(podcastName);
-        } else {
-            viewBinding.llPodcast.setVisibility(View.GONE);
-        }
-        if (episodeName != null) {
-            viewBinding.txtvEpisodeTitle.setText(R.string.episode_title);
-            viewBinding.txtvEpisodeName.setText(episodeName);
-        } else {
-            viewBinding.llEpisode.setVisibility(View.GONE);
-        }
+        viewBinding.txtvPodcastName.setText(podcastName);
+        viewBinding.llPodcast.setVisibility(podcastName == null ? View.GONE : View.VISIBLE);
+        viewBinding.txtvEpisodeName.setText(episodeName);
+        viewBinding.llEpisode.setVisibility(episodeName == null ? View.GONE : View.VISIBLE);
 
         final String humanReadableReason = getString(DownloadErrorLabel.from(downloadResult.getReason()));
         viewBinding.txtvHumanReadableReasonContent.setText(humanReadableReason);
@@ -151,7 +151,7 @@ public class DownloadLogDetailsDialog extends DialogFragment {
                 humanReadableReasonTitle, humanReadableReason, technicalReasonTitle, message, urlTitle, url);
     }
 
-    void goToFeedOrFeedItem() {
+    void goToFeed() {
         Intent intent;
         if (feed != null && feed.getState() == Feed.STATE_SUBSCRIBED) {
             intent = new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).getIntent();

@@ -1,60 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="?dialogPreferredPadding">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <!-- Podcast header, podcast title, button to jump to podcast -->
         <LinearLayout
+            android:id="@+id/llPodcast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <!-- Podcast header, podcast title, button to jump to podcast -->
             <LinearLayout
-                android:id="@+id/llPodcast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_weight="1">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/txtvPodcastTitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txtvPodcastTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/feed"
-                        android:layout_marginEnd="4dp"
-                        style="@style/TextAppearance.Material3.TitleMedium" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnGoToPodcast"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/download_log_open_feed"
-                        android:layout_marginStart="8dp"
-                        android:minHeight="0dp"
-                        android:minWidth="0dp"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:paddingBottom="0dp"
-                        android:paddingTop="0dp"
-                        style="@style/Widget.Material3.Button.TextButton" />
-
-                </LinearLayout>
+                    android:text="@string/feed"
+                    android:layout_marginEnd="4dp"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
 
                 <TextView
                     android:id="@+id/txtvPodcastName"
@@ -67,112 +43,122 @@
 
             </LinearLayout>
 
-            <!-- Episode header, episode title -->
-            <LinearLayout
-                android:id="@+id/llEpisode"
-                android:layout_width="match_parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGoToPodcast"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="4dp">
-
-                <TextView
-                    android:id="@+id/txtvEpisodeTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/episode"
-                    android:layout_marginEnd="4dp"
-                    style="@style/TextAppearance.Material3.TitleMedium" />
-
-                <TextView
-                    android:id="@+id/txtvEpisodeName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:singleLine="true"
-                    android:ellipsize="middle"
-                    android:text="No episode name set" />
-
-            </LinearLayout>
-
-            <!-- Human readable reason for the message/error -->
-            <LinearLayout
-                android:id="@+id/llHumanReadableReason"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:id="@+id/txtvHumanReadableReasonTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/download_log_details_human_readable_reason_title"
-                    android:layout_marginEnd="4dp"
-                    style="@style/TextAppearance.Material3.TitleMedium" />
-
-                <TextView
-                    android:id="@+id/txtvHumanReadableReasonContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="No technical reason found" />
-
-            </LinearLayout>
-
-            <!-- Technical details/reason -->
-            <LinearLayout
-                android:id="@+id/llTechnicalReason"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:id="@+id/txtvTechnicalReasonTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/download_log_details_technical_reason_title"
-                    android:layout_marginEnd="4dp"
-                    style="@style/TextAppearance.Material3.TitleMedium" />
-
-                <TextView
-                    android:id="@+id/txtvTechnicalReasonContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="No technical reason found" />
-
-            </LinearLayout>
-
-            <!-- File URL -->
-            <LinearLayout
-                android:id="@+id/llFileUrl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:id="@+id/txtvFileUrlTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/download_log_details_file_url_title"
-                    android:layout_marginEnd="4dp"
-                    style="@style/TextAppearance.Material3.TitleMedium" />
-
-                <TextView
-                    android:id="@+id/txtvFileUrlContent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="No file url found" />
-
-            </LinearLayout>
+                android:minWidth="0dp"
+                android:text="@string/download_log_open_feed"
+                android:layout_marginStart="8dp"
+                style="@style/Widget.Material3.Button.TextButton" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <!-- Episode header, episode title -->
+        <LinearLayout
+            android:id="@+id/llEpisode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/txtvEpisodeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/episode"
+                android:layout_marginEnd="4dp"
+                style="@style/TextAppearance.Material3.TitleMedium" />
+
+            <TextView
+                android:id="@+id/txtvEpisodeName"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:singleLine="true"
+                android:ellipsize="middle"
+                android:text="No episode name set" />
+
+        </LinearLayout>
+
+        <!-- Human readable reason for the message/error -->
+        <LinearLayout
+            android:id="@+id/llHumanReadableReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/txtvHumanReadableReasonTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_log_details_human_readable_reason_title"
+                android:layout_marginEnd="4dp"
+                style="@style/TextAppearance.Material3.TitleMedium" />
+
+            <TextView
+                android:id="@+id/txtvHumanReadableReasonContent"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="No technical reason found" />
+
+        </LinearLayout>
+
+        <!-- Technical details/reason -->
+        <LinearLayout
+            android:id="@+id/llTechnicalReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/txtvTechnicalReasonTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_log_details_technical_reason_title"
+                android:layout_marginEnd="4dp"
+                style="@style/TextAppearance.Material3.TitleMedium" />
+
+            <TextView
+                android:id="@+id/txtvTechnicalReasonContent"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="No technical reason found" />
+
+        </LinearLayout>
+
+        <!-- File URL -->
+        <LinearLayout
+            android:id="@+id/llFileUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/txtvFileUrlTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_log_details_file_url_title"
+                android:layout_marginEnd="4dp"
+                style="@style/TextAppearance.Material3.TitleMedium" />
+
+            <TextView
+                android:id="@+id/txtvFileUrlContent"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="No file url found" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

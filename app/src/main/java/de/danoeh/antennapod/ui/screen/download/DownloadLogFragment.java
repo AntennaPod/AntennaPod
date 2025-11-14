@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class DownloadLogFragment extends BottomSheetDialogFragment
         implements AdapterView.OnItemClickListener, MaterialToolbar.OnMenuItemClickListener {
-    private static final String TAG = "DownloadLogFragment";
+    public static final String TAG = "DownloadLogFragment";
 
     private List<DownloadResult> downloadLog = new ArrayList<>();
     private DownloadLogAdapter adapter;
