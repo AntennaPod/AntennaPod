@@ -2,12 +2,15 @@ package de.danoeh.antennapod.model.download;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Contains status attributes for one download
  */
-public class DownloadResult {
+public class DownloadResult implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /**
      * Downloaders should use this constant for the size attribute if necessary
      * so that the listadapters etc. can react properly.
