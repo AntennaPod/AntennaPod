@@ -1,155 +1,163 @@
 package de.danoeh.antennapod.ui.screen.download;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
-import android.os.Build;
-
-import android.view.LayoutInflater;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-
+import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.DownloadLogDetailsDialogBinding;
 import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
-import org.greenrobot.eventbus.EventBus;
+import de.danoeh.antennapod.ui.common.ClipboardUtils;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class DownloadLogDetailsDialog extends MaterialAlertDialogBuilder {
+/**
+ * Creates a dialog with Feed title (and FeedItem title if possible).
+ * Can show a button to jump to the feed details view.
+ * Will take a callback function to call when being dismissed.
+ */
+public class DownloadLogDetailsDialog extends DialogFragment {
+    public static final String TAG = "DownloadLogDetails";
+    private static final String EXTRA_IS_JUMP_TO_FEED = "isJumpToFeed";
+    private static final String EXTRA_DOWNLOAD_RESULT = "downloadResult";
+    private DownloadLogDetailsDialogBinding viewBinding;
+    private Disposable disposable;
+    private boolean isJumpToFeed;
+    private DownloadResult downloadResult;
+    private Feed feed = null;
+    private String podcastName = null;
+    private String episodeName = null;
+    private String url = "unknown";
+    private String clipboardContent = "";
 
-    /**
-     * Called when the dialog is dismissed.
-     */
-    final Runnable onDismiss;
-
-    /**
-     * Creates a dialog with Feed title (and FeedItem title if possible).
-     */
-    public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult status) {
-        this(context, status, false, null);
+    public static DownloadLogDetailsDialog newInstance(DownloadResult downloadResult, boolean isJumpToFeed) {
+        DownloadLogDetailsDialog dialog = new DownloadLogDetailsDialog();
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_DOWNLOAD_RESULT, downloadResult);
+        args.putBoolean(EXTRA_IS_JUMP_TO_FEED, isJumpToFeed);
+        dialog.setArguments(args);
+        return dialog;
     }
 
-    /**
-     * Creates a dialog with Feed title (and FeedItem title if possible).
-     * Can show a button to jump to the feed details view.
-     * Will take a callback function to call when being dismissed.
-     */
-    public DownloadLogDetailsDialog(@NonNull Context context, DownloadResult downloadResult, boolean isJumpToFeed,
-                                    @Nullable Runnable onDismiss) {
-        super(context);
-        this.onDismiss = onDismiss;
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        downloadResult = (DownloadResult) getArguments().getSerializable(EXTRA_DOWNLOAD_RESULT);
+        isJumpToFeed = getArguments().getBoolean(EXTRA_IS_JUMP_TO_FEED, true);
+    }
 
-        Feed feed = null;
-        String podcastName = null;
-        String episodeName = null;
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(R.string.download_error_details);
+        dialog.setPositiveButton(android.R.string.ok, null);
+        dialog.setNeutralButton(R.string.copy_to_clipboard, (copyDialog, which) ->
+                ClipboardUtils.copyText(getView(), R.string.download_error_details, clipboardContent));
 
-        String url = "unknown";
-        if (downloadResult.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-            FeedMedia media = DBReader.getFeedMedia(downloadResult.getFeedfileId());
-            if (media != null && media.getItem() != null) {
-                feed = DBReader.getFeed(media.getItem().getFeedId(), false, 0, 0);
+        viewBinding = DownloadLogDetailsDialogBinding.inflate(getLayoutInflater());
+        dialog.setView(viewBinding.getRoot());
+
+        viewBinding.btnGoToPodcast.setVisibility(isJumpToFeed ? View.VISIBLE : View.GONE);
+        viewBinding.btnGoToPodcast.setOnClickListener(v -> {
+            goToFeedOrFeedItem();
+            dismiss();
+        });
+        viewBinding.txtvFileUrlContent.setOnClickListener(v ->
+                ClipboardUtils.copyText(viewBinding.txtvFileUrlContent, R.string.download_log_details_file_url_title));
+
+        loadData();
+        return dialog.create();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    private void loadData() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Single.create(emitter -> {
+            if (downloadResult.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                FeedMedia media = DBReader.getFeedMedia(downloadResult.getFeedfileId());
+                if (media != null && media.getItem() != null) {
+                    feed = DBReader.getFeed(media.getItem().getFeedId(), false, 0, 0);
+                    if (feed != null) {
+                        podcastName = feed.getFeedTitle();
+                    }
+                    episodeName = media.getEpisodeTitle();
+                    url = media.getDownloadUrl();
+                }
+            } else if (downloadResult.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+                feed = DBReader.getFeed(downloadResult.getFeedfileId(), false, 0, 0);
                 if (feed != null) {
                     podcastName = feed.getFeedTitle();
+                    url = feed.getDownloadUrl();
                 }
-                episodeName = media.getEpisodeTitle();
-                url = media.getDownloadUrl();
             }
-        } else if (downloadResult.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-            feed = DBReader.getFeed(downloadResult.getFeedfileId(), false, 0, 0);
-            if (feed != null) {
-                podcastName = feed.getFeedTitle();
-                url = feed.getDownloadUrl();
-            }
-        }
+            emitter.onSuccess(true);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(obj -> updateUi(),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
 
-        String message = context.getString(R.string.download_successful);
+    private void updateUi() {
+        String message = getString(R.string.download_successful);
         if (!downloadResult.isSuccessful()) {
             message = downloadResult.getReasonDetailed();
         }
 
-        final Boolean isSubscribed = feed != null ? feed.getState() == Feed.STATE_SUBSCRIBED : null;
-        final DownloadLogDetailsDialogBinding binding =
-                DownloadLogDetailsDialogBinding.inflate(LayoutInflater.from(context));
-        if (!isJumpToFeed) {
-            binding.btnGoToPodcast.setVisibility(View.GONE);
-        } else {
-            final Feed f = feed;
-            binding.btnGoToPodcast.setOnClickListener(v -> {
-                goToFeedOrFeedItem(context, f, isSubscribed);
-                dismissThisDialog.run();
-            });
-        }
-
         if (podcastName != null) {
-            binding.txtvPodcastTitle.setText(R.string.feed_title);
-            binding.txtvPodcastName.setText(podcastName);
+            viewBinding.txtvPodcastTitle.setText(R.string.feed_title);
+            viewBinding.txtvPodcastName.setText(podcastName);
         } else {
-            binding.llPodcast.setVisibility(View.GONE);
+            viewBinding.llPodcast.setVisibility(View.GONE);
         }
         if (episodeName != null) {
-            binding.txtvEpisodeTitle.setText(R.string.episode_title);
-            binding.txtvEpisodeName.setText(episodeName);
+            viewBinding.txtvEpisodeTitle.setText(R.string.episode_title);
+            viewBinding.txtvEpisodeName.setText(episodeName);
         } else {
-            binding.llEpisode.setVisibility(View.GONE);
+            viewBinding.llEpisode.setVisibility(View.GONE);
         }
 
-        final String humanReadableReason = context.getString(DownloadErrorLabel.from(downloadResult.getReason()));
-        binding.txtvHumanReadableReasonContent.setText(humanReadableReason);
-        binding.txtvTechnicalReasonContent.setText(message);
-        binding.txtvFileUrlContent.setText(url);
+        final String humanReadableReason = getString(DownloadErrorLabel.from(downloadResult.getReason()));
+        viewBinding.txtvHumanReadableReasonContent.setText(humanReadableReason);
+        viewBinding.txtvTechnicalReasonContent.setText(message);
+        viewBinding.txtvFileUrlContent.setText(url);
 
-        final String humanReadableReasonTitle = context
-                .getString(R.string.download_log_details_human_readable_reason_title);
-        final String technicalReasonTitle = context.getString(R.string.download_log_details_technical_reason_title);
-        final String urlTitle = context.getString(R.string.download_log_details_file_url_title);
-        final String dialogContent =  String.format("%s: \n%s \n\n%s: \n%s \n\n%s: \n%s",
+        final String humanReadableReasonTitle = getString(R.string.download_log_details_human_readable_reason_title);
+        final String technicalReasonTitle = getString(R.string.download_log_details_technical_reason_title);
+        final String urlTitle = getString(R.string.download_log_details_file_url_title);
+        clipboardContent =  String.format("%s: \n%s \n\n%s: \n%s \n\n%s: \n%s",
                 humanReadableReasonTitle, humanReadableReason, technicalReasonTitle, message, urlTitle, url);
-
-        setTitle(R.string.download_error_details);
-        setView(binding.getRoot());
-        setPositiveButton(android.R.string.ok, null);
-        setNeutralButton(R.string.copy_to_clipboard, (copyDialog, which) -> {
-            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(context.getString(R.string.download_error_details), dialogContent);
-            clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT < 32) {
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.copied_to_clipboard)));
-            }
-        });
     }
 
-    private Runnable dismissThisDialog;
-
-    void goToFeedOrFeedItem(Context context, Feed feed, Boolean isSubscribed) {
-        if (isSubscribed != null) {
-            Intent intent;
-            if (isSubscribed) {
-                intent = new MainActivityStarter(context).withOpenFeed(feed.getId()).getIntent();
-            } else {
-                intent = new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent();
-            }
-            if (onDismiss != null) {
-                onDismiss.run();
-            }
-            context.startActivity(intent);
+    void goToFeedOrFeedItem() {
+        Intent intent;
+        if (feed != null && feed.getState() == Feed.STATE_SUBSCRIBED) {
+            intent = new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).getIntent();
+        } else {
+            intent = new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent();
         }
-    }
-
-    @Override
-    public AlertDialog show() {
-        AlertDialog dialog = super.show();
-        ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
-        dismissThisDialog = dialog::dismiss;
-        return dialog;
+        getContext().startActivity(intent);
     }
 }
