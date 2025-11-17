@@ -134,7 +134,9 @@ public class ClockSleepTimer implements SleepTimer {
 
     @Override
     public void reset() {
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
         updateRemainingTime(initialWaitingTime);
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(getTimeLeft()));
     }
 
     @Override

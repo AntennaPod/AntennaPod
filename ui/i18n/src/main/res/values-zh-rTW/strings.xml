@@ -874,4 +874,6 @@
     <string name="statistics_expected_next_episode_any_time">現在任何時間</string>
     <string name="release_schedule_multiple_per_day">每天多次</string>
     <string name="cover_as_background">封面作為背景</string>
+    <string name="no_archive_head_label">無封存內容</string>
+    <string name="no_archive_label">你可以在主要的訂閱頁面中封存 Podcast 節目。</string>
 </resources>

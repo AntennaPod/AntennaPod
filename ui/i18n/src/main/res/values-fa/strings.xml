@@ -903,4 +903,6 @@
     <string name="feed_delete_explanation_delete">حذف کردن تمامی قسمت‌هایش از جمله بارگیری‌ها، تاریخچهٔ پخش و آمارها را برخواهد داشت.</string>
     <string name="feed_delete_explanation_archive">بایگانی کردن از سیاههٔ اشتراک‌ها نهفته و جلوی به‌روز شدنش را خواهد گرفت. بارگیری‌ها، آکارها و وضعیت پخش نگه داشته خواهد شد.</string>
     <string name="tag_untagged">برچسب نخورده</string>
+    <string name="no_archive_head_label">هیچ چیزی بایگانی نشده</string>
+    <string name="no_archive_label">می توانید پادپخش‌ها را از صفحهٔ اشتراک اصلی بایگانی کنید.</string>
 </resources>
