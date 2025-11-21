@@ -13,6 +13,8 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
@@ -40,7 +42,7 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertEquals;
@@ -66,13 +68,14 @@ public class LocalFeedUpdaterTest {
     private Context context;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         // Initialize environment
         context = InstrumentationRegistry.getInstrumentation().getContext();
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
         SynchronizationSettings.init(context);
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
+        SynchronizationQueue.setInstance(new SynchronizationQueueStub());
 
         // Initialize database
         PodDBAdapter.init(context);
@@ -156,7 +159,7 @@ public class LocalFeedUpdaterTest {
         callUpdateFeed(LOCAL_FEED_DIR1);
 
         Feed feedAfter = verifySingleFeedInDatabase();
-        assertThat(feedAfter.getImageUrl(), startsWith(Feed.PREFIX_GENERATIVE_COVER));
+        assertThat(feedAfter.getImageUrl(), nullValue());
     }
 
     /**
@@ -177,14 +180,14 @@ public class LocalFeedUpdaterTest {
     @Test
     public void testGetImageUrl_EmptyFolder() {
         String imageUrl = LocalFeedUpdater.getImageUrl(Collections.emptyList(), Uri.EMPTY);
-        assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
+        assertThat(imageUrl, nullValue());
     }
 
     @Test
     public void testGetImageUrl_NoImageButAudioFiles() {
         List<FastDocumentFile> folder = Collections.singletonList(mockDocumentFile("audio.mp3", "audio/mp3"));
         String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY);
-        assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
+        assertThat(imageUrl, nullValue());
     }
 
     @Test
@@ -226,7 +229,7 @@ public class LocalFeedUpdaterTest {
         List<FastDocumentFile> folder = Arrays.asList(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.svg", "image/svg+xml"));
         String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY);
-        assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
+        assertThat(imageUrl, nullValue());
     }
 
     /**

@@ -12,10 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
@@ -24,6 +23,7 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.ui.common.ImageModel;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.screen.playback.PlayButton;
 import io.reactivex.rxjava3.core.Maybe;
@@ -197,19 +197,11 @@ public class ExternalPlayerFragment extends Fragment {
         feedName.setText(media.getFeedTitle());
         onPositionObserverUpdate(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
 
-        RequestOptions options = new RequestOptions()
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
-                .fitCenter()
-                .dontAnimate();
-
-        Glide.with(this)
-                .load(ImageResourceUtils.getEpisodeListImageLocation(media))
-                .error(Glide.with(this)
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
-                        .apply(options))
-                .apply(options)
-                .into(imgvCover);
+        new CoverLoader(imgvCover, new ImageModel(
+                ImageResourceUtils.getEpisodeListImageLocation(media),
+                ImageResourceUtils.getFallbackImageLocation(media),
+                media.getFeedTitle()))
+                .load();
 
         if (controller != null && controller.isPlayingVideoLocally()) {
             ((MainActivity) getActivity()).getBottomSheet().setLocked(true);

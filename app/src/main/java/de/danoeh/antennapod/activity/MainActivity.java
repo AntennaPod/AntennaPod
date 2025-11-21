@@ -33,7 +33,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import com.bumptech.glide.Glide;
+import de.danoeh.antennapod.ui.glide.GlideApp;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
@@ -608,13 +608,13 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        Glide.get(this).trimMemory(level);
+        GlideApp.get(this).trimMemory(level);
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Glide.get(this).clearMemory();
+        GlideApp.get(this).clearMemory();
     }
 
     @Override

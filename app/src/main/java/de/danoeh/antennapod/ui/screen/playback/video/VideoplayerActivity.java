@@ -37,7 +37,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-import com.bumptech.glide.Glide;
+import de.danoeh.antennapod.ui.glide.GlideApp;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -210,13 +210,13 @@ public class VideoplayerActivity extends CastEnabledActivity
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        Glide.get(this).trimMemory(level);
+        GlideApp.get(this).trimMemory(level);
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Glide.get(this).clearMemory();
+        GlideApp.get(this).clearMemory();
     }
 
     private PlaybackController newPlaybackController() {

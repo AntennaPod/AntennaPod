@@ -23,7 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -41,6 +40,7 @@ import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFunding;
+import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.screen.feed.preferences.EditUrlSettingsDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
@@ -181,22 +181,24 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         Log.d(TAG, "Language is " + feed.getLanguage());
         Log.d(TAG, "Author is " + feed.getAuthor());
         Log.d(TAG, "URL is " + feed.getDownloadUrl());
-        Glide.with(this)
-                .load(feed.getImageUrl())
-                .apply(new RequestOptions()
+        
+        // Use new CoverLoader with ImageModel for enhanced fallback support
+        new CoverLoader(viewBinding.header.imgvCover, CoverLoader.fromFeed(feed))
+                .withRequestOptions(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
                         .fitCenter()
                         .dontAnimate())
-                .into(viewBinding.header.imgvCover);
-        Glide.with(this)
-                .load(feed.getImageUrl())
-                .apply(new RequestOptions()
+                .load();
+        
+        // Background image with ImageModel for consistent fallback behavior
+        new CoverLoader(viewBinding.imgvBackground, CoverLoader.fromFeed(feed))
+                .withRequestOptions(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)
                         .error(R.color.image_readability_tint)
                         .transform(new FastBlurTransformation())
                         .dontAnimate())
-                .into(viewBinding.imgvBackground);
+                .load();
 
         viewBinding.header.txtvTitle.setText(feed.getTitle());
         viewBinding.header.txtvTitle.setMaxLines(6);

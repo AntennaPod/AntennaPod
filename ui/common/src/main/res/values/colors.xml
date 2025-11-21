@@ -8,7 +8,6 @@
     <color name="medium_gray">#afafaf</color>
     <color name="black">#000000</color>
     <color name="image_readability_tint">#80000000</color>
-    <color name="feed_text_bg">#55333333</color>
 
     <!-- Theme colors -->
     <color name="background_light">#f9fcff</color>

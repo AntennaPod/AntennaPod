@@ -13,15 +13,17 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
+
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.load.Transformation;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.ui.common.ToolbarActivity;
-import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 import java.util.Locale;
+
+import de.danoeh.antennapod.ui.common.ImageModel;
+import de.danoeh.antennapod.ui.common.ToolbarActivity;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
+import de.danoeh.antennapod.ui.glide.GlideApp;
 
 public class WidgetConfigActivity extends ToolbarActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -146,9 +148,10 @@ public class WidgetConfigActivity extends ToolbarActivity {
 
     private void loadCover(int viewId, Transformation<android.graphics.Bitmap> transform) {
         ImageView target = findViewById(viewId);
-        Glide.with(this)
+        ImageModel generativeImageModel = new ImageModel(null, "Widget Preview");
+        GlideApp.with(this)
                 .asBitmap()
-                .load(Feed.PREFIX_GENERATIVE_COVER)
+                .load(generativeImageModel)
                 .dontAnimate()
                 .transform(new FitCenter(), transform)
                 .into(target);

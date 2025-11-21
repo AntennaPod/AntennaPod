@@ -14,6 +14,8 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 
 /**
@@ -132,7 +134,20 @@ public class Rss20 extends Namespace {
             } else if (URL.equals(top) && IMAGE.equals(second) && CHANNEL.equals(third)) {
                 // prefer itunes:image
                 if (state.getFeed() != null && state.getFeed().getImageUrl() == null) {
-                    state.getFeed().setImageUrl(content);
+                    if (content.startsWith("/")) {
+                        // its a relative path
+                        try {
+                            URL url = new URL(state.getFeed().getDownloadUrl());
+                            String path = url.getPath();
+                            String parentPath = path.substring(0, path.lastIndexOf("/"));
+                            String parentUrl = url.getProtocol() + "://" + url.getHost() + parentPath;
+                            state.getFeed().setImageUrl(parentUrl + content);
+                        } catch (MalformedURLException e) {
+                            state.getFeed().setImageUrl(content);
+                        }
+                    } else {
+                        state.getFeed().setImageUrl(content);
+                    }
                 }
             } else if (DESCR.equals(localName)) {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {

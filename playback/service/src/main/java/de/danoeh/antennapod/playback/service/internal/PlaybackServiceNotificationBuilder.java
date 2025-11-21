@@ -16,10 +16,10 @@ import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.NotificationCompat;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.playback.service.MediaButtonReceiver;
 import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.ui.glide.GlideApp;
+import de.danoeh.antennapod.ui.common.ImageModel;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.Converter;
@@ -28,7 +28,6 @@ import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import org.apache.commons.lang3.ArrayUtils;
@@ -71,28 +70,17 @@ public class PlaybackServiceNotificationBuilder {
 
     public void loadIcon() {
         int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
-        final RequestOptions options = new RequestOptions().centerCrop();
         try {
-            icon = Glide.with(context)
+            ImageModel playableImageModel = new ImageModel(
+                    playable.getImageLocation(),
+                    ImageResourceUtils.getFallbackImageLocation(playable),
+                    playable.getFeedTitle());
+            icon = GlideApp.with(context)
                     .asBitmap()
-                    .load(playable.getImageLocation())
-                    .apply(options)
+                    .load(playableImageModel)
+                    .centerCrop()
                     .submit(iconSize, iconSize)
                     .get();
-        } catch (ExecutionException e) {
-            try {
-                icon = Glide.with(context)
-                        .asBitmap()
-                        .load(ImageResourceUtils.getFallbackImageLocation(playable))
-                        .apply(options)
-                        .submit(iconSize, iconSize)
-                        .get();
-            } catch (InterruptedException ignore) {
-                Thread.currentThread().interrupt();
-                Log.e(TAG, "Media icon loader was interrupted");
-            } catch (Throwable tr) {
-                Log.e(TAG, "Error loading the media icon for the notification", tr);
-            }
         } catch (InterruptedException ignore) {
             Thread.currentThread().interrupt();
             Log.e(TAG, "Media icon loader was interrupted");

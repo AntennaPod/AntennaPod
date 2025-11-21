@@ -7,22 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
+
 import com.google.android.material.elevation.SurfaceColors;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
-import de.danoeh.antennapod.ui.common.ImagePlaceholder;
-import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 
 public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapter.ChapterHolder> {
     private Playable media;
@@ -101,34 +99,17 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             holder.progressBar.setPercentage(0, null);
         }
+        holder.image.setVisibility(View.GONE);
 
         if (hasImages) {
-            holder.image.setVisibility(View.VISIBLE);
 
-            float radius = 4 * context.getResources().getDisplayMetrics().density;
-            RequestOptions options = new RequestOptions()
-                    .placeholder(ImagePlaceholder.getDrawable(context, radius))
-                    .dontAnimate()
-                    .transform(new FitCenter(), new RoundedCorners((int) radius));
+            if (!(TextUtils.isEmpty(sc.getImageUrl()) && media.getImageLocation() == null)) {
 
-            if (TextUtils.isEmpty(sc.getImageUrl())) {
-                if (media.getImageLocation() == null) {
-                    Glide.with(context).clear(holder.image);
-                    holder.image.setVisibility(View.GONE);
-                } else {
-                    Glide.with(context)
-                            .load(media.getImageLocation())
-                            .apply(options)
-                            .into(holder.image);
-                }
-            } else {
-                Glide.with(context)
-                        .load(EmbeddedChapterImage.getModelFor(media, position))
-                        .apply(options)
-                        .into(holder.image);
+                // a image in the chapter
+                holder.image.setVisibility(View.VISIBLE);
+                new CoverLoader(holder.image, CoverLoader.fromMedia(media, sc)).load();
             }
-        } else {
-            holder.image.setVisibility(View.GONE);
+
         }
     }
 

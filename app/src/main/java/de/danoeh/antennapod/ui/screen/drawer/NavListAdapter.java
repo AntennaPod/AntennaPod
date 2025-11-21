@@ -16,12 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.CoverLoader;
+import de.danoeh.antennapod.ui.glide.GlideApp;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -251,8 +252,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
 
         float radius = 4 * context.getResources().getDisplayMetrics().density;
-        Glide.with(context)
-                .load(feed.getImageUrl())
+        GlideApp.with(context)
+                .load(CoverLoader.fromFeed(feed))
                 .apply(new RequestOptions()
                     .placeholder(ImagePlaceholder.getDrawable(context, radius))
                     .error(ImagePlaceholder.getDrawable(context, radius))
@@ -275,7 +276,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (FeedPreferences.TAG_UNTAGGED.equals(tag.getTitle())) {
             holder.title.setText(R.string.tag_untagged);
         }
-        Glide.with(context).clear(holder.image);
+        GlideApp.with(context).clear(holder.image);
         holder.image.setImageResource(R.drawable.ic_tag);
         holder.failure.setVisibility(View.GONE);
     }

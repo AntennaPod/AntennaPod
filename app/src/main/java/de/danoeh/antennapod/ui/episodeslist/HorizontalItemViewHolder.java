@@ -21,7 +21,6 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.common.SquareImageView;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 
 public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
     public final CardView card;
@@ -56,11 +55,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
 
         card.setAlpha(1.0f);
         card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.colorSurfaceContainer));
-        new CoverLoader()
-                .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
-                .withFallbackUri(item.getFeed().getImageUrl())
-                .withCoverView(cover)
-                .load();
+        new CoverLoader(cover, CoverLoader.fromFeedItem(item)).load();
         title.setText(item.getTitle());
         date.setText(DateFormatter.formatAbbrev(activity, item.getPubDate()));
         date.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
@@ -100,10 +95,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bindDummy() {
         card.setAlpha(0.1f);
-        new CoverLoader()
-                .withResource(android.R.color.transparent)
-                .withCoverView(cover)
-                .load();
+        new CoverLoader(cover, android.R.color.transparent).load();
         title.setText("████ █████");
         date.setText("███");
         secondaryActionIcon.setImageDrawable(null);

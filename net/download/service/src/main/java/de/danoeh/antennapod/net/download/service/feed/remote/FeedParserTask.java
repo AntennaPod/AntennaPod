@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.net.download.service.feed.remote;
 
-import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -54,9 +53,6 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
             result = feedHandler.parseFeed(feed);
             Log.d(TAG, feed.getTitle() + " parsed");
             checkFeedData(feed);
-            if (TextUtils.isEmpty(feed.getImageUrl())) {
-                feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownloadUrl());
-            }
         } catch (SAXException | IOException | ParserConfigurationException e) {
             successful = false;
             e.printStackTrace();
