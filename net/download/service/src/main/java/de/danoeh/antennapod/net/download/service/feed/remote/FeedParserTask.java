@@ -55,7 +55,15 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
             Log.d(TAG, feed.getTitle() + " parsed");
             checkFeedData(feed);
             if (TextUtils.isEmpty(feed.getImageUrl())) {
-                feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownloadUrl());
+                try {
+                    String encodedTitle =
+                            java.net.URLEncoder.encode(feed.getTitle() != null ? feed.getTitle() : "", "UTF-8");
+                    feed.setImageUrl(
+                            Feed.PREFIX_GENERATIVE_COVER + feed.getDownloadUrl()
+                            + Feed.SUFFIX_GENERATIVE_COVER_TITLE + encodedTitle);
+                } catch (Exception e) {
+                    feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownloadUrl());
+                }
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {
             successful = false;
