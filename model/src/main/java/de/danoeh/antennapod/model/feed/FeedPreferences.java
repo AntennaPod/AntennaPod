@@ -187,6 +187,10 @@ public class FeedPreferences implements Serializable {
             return;
         this.username = other.username;
         this.password = other.password;
+        // Preserve tags from the new feed (e.g., auto-tagged categories)
+        if (!other.tags.isEmpty()) {
+            this.tags.addAll(other.tags);
+        }
     }
 
     public long getFeedID() {

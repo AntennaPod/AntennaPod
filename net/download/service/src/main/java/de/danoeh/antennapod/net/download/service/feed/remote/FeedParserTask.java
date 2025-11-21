@@ -13,6 +13,7 @@ import de.danoeh.antennapod.parser.feed.FeedHandler;
 import de.danoeh.antennapod.parser.feed.FeedHandlerResult;
 import de.danoeh.antennapod.parser.feed.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.model.download.DownloadError;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -54,6 +55,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
             result = feedHandler.parseFeed(feed);
             Log.d(TAG, feed.getTitle() + " parsed");
             checkFeedData(feed);
+            autoTagFromCategories(feed);
             if (TextUtils.isEmpty(feed.getImageUrl())) {
                 feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownloadUrl());
             }
@@ -115,6 +117,45 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
                 throw new InvalidFeedException("Item has no title: " + item);
             }
         }
+    }
+
+    /**
+     * Automatically adds categories as tags to the feed preferences.
+     */
+    private void autoTagFromCategories(Feed feed) {
+        if (!UserPreferences.isAutoTagCategoriesEnabled() 
+                || feed.getCategories().isEmpty() || feed.getPreferences() == null) {
+            return;
+        }
+        
+        for (String category : feed.getCategories()) {
+            String tag = sanitizeTagName(category);
+            if (!TextUtils.isEmpty(tag) && !feed.getPreferences().getTags().contains(tag)) {
+                feed.getPreferences().getTags().add(tag);
+                Log.d(TAG, "Auto-tagged feed '" + feed.getTitle() + "' with category: " + tag);
+            }
+        }
+        
+        // Note: FeedPreferences will be saved later when the feed is processed
+    }
+
+    /**
+     * Sanitizes category names to be suitable as tags.
+     */
+    private String sanitizeTagName(String category) {
+        if (TextUtils.isEmpty(category)) {
+            return "";
+        }
+        // Remove special characters and limit length
+        String sanitized = category.trim()
+                .replaceAll("[^\\w\\s-]", "")
+                .replaceAll("\\s+", " ");
+        
+        if (sanitized.length() > 30) {
+            sanitized = sanitized.substring(0, 30).trim();
+        }
+        
+        return sanitized;
     }
 
     @NonNull
