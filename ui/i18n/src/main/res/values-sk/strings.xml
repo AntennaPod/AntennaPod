@@ -161,7 +161,7 @@
     <string name="show_feed_settings_label">Zobraziť nastavenia podcastu</string>
     <string name="feed_settings_label">Nastavenia podcastu</string>
     <string name="rename_feed_label">Premenovať</string>
-    <string name="remove_feed_label">Odstrániť podcast</string>
+    <string name="remove_feed_label">Odstrániť</string>
     <string name="share_label">Zdieľať</string>
     <string name="share_file_label">Zdielať súbor</string>
     <string name="load_complete_feed">Aktualizovať celý podcast</string>
@@ -241,7 +241,8 @@
     <plurals name="downloads_left">
         <item quantity="one">%d čaká na stiahnutie</item>
         <item quantity="few">%d čakajú na stiahnutie</item>
-        <item quantity="other">%d čakajúcich na stiahnutie</item>
+        <item quantity="many">%d čaká na stiahnutie</item>
+        <item quantity="other">%d čaká na stiahnutie</item>
     </plurals>
     <string name="download_notification_title_feeds">Aktualizácia podcastov</string>
     <string name="download_notification_title_episodes">Sťahovanie epizód</string>
@@ -899,4 +900,46 @@
     <string name="archive_feed_label_verb">Archivovať</string>
     <string name="no_archive_head_label">Nič nie je archivované</string>
     <string name="no_archive_label">Podcasty môžete archivovať na hlavnej obrazovke odberov.</string>
+    <string name="archive_feed_label_noun">Archív</string>
+    <string name="restore_archive_label">Obnoviť</string>
+    <string name="remove_archive_feed_label">Odstrániť/archivovať</string>
+    <string name="feed_delete_explanation_delete">Odstránením sa zmažú VŠETKY epizódy vrátane stiahnutých súborov, histórie prehrávania a štatistík.</string>
+    <string name="feed_delete_explanation_archive">Archivovaním sa skryje zoznam odberov a nebudete dostávať aktualizácie. Stiahnuté súbory, štatistiky a stav prehrávania zostanú.</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">%d epizóda označená ako prehraná.</item>
+        <item quantity="few">%d epizódy označené ako prehrané.</item>
+        <item quantity="many">%d epizód označených ako prehrané.</item>
+        <item quantity="other">%d epizód označených ako prehrané.</item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">%d epizódy označené ako neprehrané.</item>
+        <item quantity="few">%d epizódy označené ako neprehrané.</item>
+        <item quantity="many">%d epizód označených ako neprehraných.</item>
+        <item quantity="other">%d epizód označených ako neprehraných.</item>
+    </plurals>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Sťahovanie cez mobilné pripojenie nasledujúcu %d minútu</item>
+        <item quantity="few">Sťahovanie cez mobilné pripojenie nasledujúce %d minúty</item>
+        <item quantity="many">Sťahovanie cez mobilné pripojenie nasledujúcich %d minút</item>
+        <item quantity="other">Sťahovanie cez mobilné pripojenie nasledujúcich %d minút</item>
+    </plurals>
+    <string name="tag_untagged">Bez štítku</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">spustená</item>
+        <item quantity="few">spustené</item>
+        <item quantity="many">spustených</item>
+        <item quantity="other">spustených</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">celkovo</item>
+        <item quantity="few">celkovo</item>
+        <item quantity="many">celkovo</item>
+        <item quantity="other">celkovo</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">stiahnutá</item>
+        <item quantity="few">stiahnuté</item>
+        <item quantity="many">stiahnutých</item>
+        <item quantity="other">stiahnutých</item>
+    </plurals>
 </resources>
