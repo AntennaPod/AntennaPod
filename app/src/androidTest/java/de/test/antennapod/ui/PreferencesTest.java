@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
+import android.os.Build;
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 import androidx.test.filters.LargeTest;
@@ -41,6 +42,7 @@ import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 @LargeTest
 public class PreferencesTest {
@@ -126,6 +128,7 @@ public class PreferencesTest {
 
     @Test
     public void testHeadPhonesReconnect() {
+        assumeTrue(Build.VERSION.SDK_INT < 31); // Setting hidden on Android 12+
         clickPreference(R.string.playback_pref);
         if (!UserPreferences.isPauseOnHeadsetDisconnect()) {
             onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
@@ -143,6 +146,7 @@ public class PreferencesTest {
 
     @Test
     public void testBluetoothReconnect() {
+        assumeTrue(Build.VERSION.SDK_INT < 31); // Setting hidden on Android 12+
         clickPreference(R.string.playback_pref);
         if (!UserPreferences.isPauseOnHeadsetDisconnect()) {
             onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
