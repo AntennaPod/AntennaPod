@@ -943,8 +943,8 @@
         <item quantity="many">Завантаження через мобільне з’єднання даних протягом наступних %d хвилин</item>
         <item quantity="other">Завантаження через мобільне з’єднання даних протягом наступних %d хвилин</item>
     </plurals>
-    <string name="no_archive_head_label">Нічого не архівовано</string>
-    <string name="no_archive_label">Ви можете архівувати подкасти на головному екрані підписок.</string>
+    <string name="no_archive_head_label">Нічого не Архівовано</string>
+    <string name="no_archive_label">Ви зможете архівувати подкасти на головному екрані підписок.</string>
     <plurals name="statistics_episodes_started">
         <item quantity="one">розпочато</item>
         <item quantity="few">розпочала</item>

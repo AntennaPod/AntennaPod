@@ -214,7 +214,7 @@
     <string name="download_error_http_data_error">Fallo de datos HTTP</string>
     <string name="download_error_error_unknown">Erro descoñecido</string>
     <string name="download_error_parser_exception">O servidor que hospeda o podcast enviou unha canle do podcast incompleta. Recomendamos verificala cunha ferramenta como castfeedvalidator.com e informar ás creadoras do podcast.</string>
-    <string name="download_error_unsupported_type">Tipo de fonte non admitida</string>
+    <string name="download_error_unsupported_type">Tipo de canle non admitida</string>
     <string name="download_error_unsupported_type_html">O servidor que hospeda o podcast é un sitio web, non un podcast.</string>
     <string name="download_error_not_found">O servidor que hospeda o podcast non sabe onde se atopa o ficheiro. Pode que fose eliminado.</string>
     <string name="download_error_connection_error">Fallo na conexión</string>
@@ -237,7 +237,7 @@
     <string name="download_notification_title_feeds">Actualizando podcasts</string>
     <string name="download_notification_title_episodes">Descargando episodios</string>
     <string name="download_log_title_unknown">Título descoñecido</string>
-    <string name="download_type_feed">Fonte</string>
+    <string name="download_type_feed">Canle</string>
     <string name="download_type_media">Ficheiro de medios</string>
     <string name="no_feed_url_podcast_found_by_search">O podcast suxerido non ten ligazón RSS, AntennaPod atopou un podcast que podería corresponder</string>
     <string name="authentication_notification_title">Precísase autenticación</string>
@@ -458,7 +458,7 @@
     <string name="special_thanks">Grazas especialmente a</string>
     <string name="privacy_policy">Política de privacidade</string>
     <string name="licenses">Licenzas</string>
-    <string name="licenses_summary">AntennaPod toma como fonte outro software</string>
+    <string name="licenses_summary">AntennaPod benefíciase de outro software</string>
     <!--Search-->
   <string name="search_status_no_results">Non se atoparon resultados</string>
     <string name="type_to_search">Escribe a palabra a buscar</string>
@@ -630,7 +630,7 @@
     <string name="keep_updated_summary">Incluír este podcast ao (auto-)actualizar todos os podcast</string>
     <string name="statistics_expected_next_episode_any_day">Calquera destes días</string>
     <string name="statistics_expected_next_episode_unknown">Descoñecido</string>
-    <string name="edit_url_menu">Editar URL da fonte</string>
+    <string name="edit_url_menu">Editar URL da canle</string>
     <string name="edit_url_confirmation_msg">Ao mudar o enderezo RSS podes quebrar o estado da reprodución e as listas de episodios do podcast. Non recomendamos cambialo e NON proporcionamos axuda se algo vai mal. Non ten volta atrás. Unha subscrición mal configurada NON PODE ser reparada simplemente volvendo ao enderezo anterior. Recomendamos crear unha copia de apoio antes de continuar.</string>
     <!--Podcast release schedules-->
   <string name="release_schedule_daily">a diario</string>
@@ -714,7 +714,7 @@
     <string name="notification_channel_playing">Soando agora</string>
     <string name="notification_channel_playing_description">Permite controlar a reprodución. Esta é a notificación principal que verás mentras escoitas un podcast.</string>
     <string name="notification_channel_download_error">Fallou a descarga</string>
-    <string name="notification_channel_download_error_description">Mostrado cando a descarga ou actualización da fonte fallou.</string>
+    <string name="notification_channel_download_error_description">Mostrado cando a descarga ou actualización da canle fallou.</string>
     <string name="notification_channel_sync_error">Fallou a sincronización</string>
     <string name="notification_channel_sync_error_description">Mostrado cando falla a sincronización con gpodder.</string>
     <string name="notification_channel_new_episode">Novo episodio</string>
