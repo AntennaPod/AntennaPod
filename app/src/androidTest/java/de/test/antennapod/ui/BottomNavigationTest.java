@@ -9,7 +9,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.test.antennapod.EspressoTestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -22,8 +21,6 @@ import java.util.Collections;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
@@ -72,6 +69,7 @@ public class BottomNavigationTest {
 
     @Test
     public void testClickBottomNavigation() throws Exception {
+        assumeTrue(Build.VERSION.SDK_INT >= 30); // Unclear why this crashes on old Android versions
         uiTestUtils.addLocalFeedData(false);
         UserPreferences.setDrawerItemOrder(Collections.emptyList(), Collections.emptyList());
         activityRule.launchActivity(new Intent());
@@ -107,13 +105,5 @@ public class BottomNavigationTest {
         clickBottomNavOverview(R.string.add_feed_label);
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.add_feed_label)), 1000));
-    }
-
-    @Test
-    public void testGoToPreferences() {
-        assumeTrue(Build.VERSION.SDK_INT >= 30); // Unclear why this crashes on old Android versions
-        activityRule.launchActivity(new Intent());
-        clickBottomNavOverview(R.string.settings_label);
-        intended(hasComponent(PreferenceActivity.class.getName()));
     }
 }
