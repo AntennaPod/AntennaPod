@@ -1,5 +1,6 @@
 package de.test.antennapod.service.download;
 
+import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;
 import android.util.Log;
@@ -51,7 +52,12 @@ public class HttpDownloaderTest {
     @Before
     public void setUp() throws Exception {
         UserPreferences.init(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        destDir = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        destDir = context.getExternalFilesDir(DOWNLOAD_DIR);
+        if (destDir == null) { // Emulator without SD card
+            destDir = new File(context.getFilesDir(), DOWNLOAD_DIR);
+            destDir.mkdirs();
+        }
         assertNotNull(destDir);
         assertTrue(destDir.exists());
         httpServer = new HTTPBin();

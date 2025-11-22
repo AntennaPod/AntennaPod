@@ -101,13 +101,22 @@ jobs:
           path: app/build/outputs/apk/play/debug/app-play-debug.apk
 
   emulator-test:
-    name: "Emulator Test"
+    name: "Emulator Test API ${{ matrix.version.api-level }}"
     needs: static-analysis
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    env:
-      api-level: 30
+    strategy:
+      matrix:
+        version:
+          - api-level: 21
+            target: default
+          - api-level: 30
+            target: aosp_atd
+          - api-level: 34
+            target: aosp_atd
     steps:
+      - name: Remove unused packages to save space
+        run: sudo apt-get remove firefox google-chrome-stable microsoft-edge-stable snapd powershell azure-cli llvm-16 llvm-17 llvm-18 llvm-16-dev llvm-17-dev llvm-18-dev
       - uses: actions/checkout@v5
       - name: Set up JDK 21
         uses: actions/setup-java@v5
@@ -133,8 +142,9 @@ jobs:
       - name: Android Emulator test
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ env.api-level }}
-          target: aosp_atd
+          api-level: ${{ matrix.version.api-level }}
+          target: ${{ matrix.version.target }}
+          arch: x86_64
           channel: canary
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -145,3 +155,13 @@ jobs:
         with:
           name: test-report
           path: app/build/reports/androidTests/connected/flavors/PLAY/
+
+  ci-summary:
+    name: "CI Summary"
+    needs:
+      - wrapper-validation
+      - emulator-test
+      - unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All checks passed"

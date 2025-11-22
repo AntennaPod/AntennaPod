@@ -2,6 +2,7 @@ package de.test.antennapod.service.playback;
 
 import android.content.Context;
 
+import android.os.Build;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.filters.MediumTest;
 
@@ -42,6 +43,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * Test class for LocalPSMP
@@ -59,6 +61,9 @@ public class PlaybackServiceMediaPlayerTest {
     @After
     @UiThreadTest
     public void tearDown() throws Exception {
+        if (Build.VERSION.SDK_INT < 30) {
+            return; // Test ignored on old Android versions for now
+        }
         PodDBAdapter.deleteDatabase();
         httpServer.stop();
     }
@@ -66,6 +71,8 @@ public class PlaybackServiceMediaPlayerTest {
     @Before
     @UiThreadTest
     public void setUp() throws Exception {
+        assumeTrue(Build.VERSION.SDK_INT >= 30); // Ignored on old Android versions for now
+
         assertionError = null;
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
