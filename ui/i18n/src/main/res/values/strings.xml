@@ -304,7 +304,7 @@
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
     <string name="download_log_details_message">%1$s \n\nTechnical reason: \n%2$s \n\nFile URL:\n%3$s</string>
-    <string name="download_log_details_human_readable_reason_title">Issue</string>
+    <string name="download_log_details_human_readable_reason_title">Status</string>
     <string name="download_log_details_technical_reason_title">Technical details</string>
     <string name="download_log_details_file_url_title">File URL</string>
     <string name="download_log_open_feed">Open</string>
