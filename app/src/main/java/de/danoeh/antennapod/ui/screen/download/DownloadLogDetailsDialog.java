@@ -71,7 +71,7 @@ public class DownloadLogDetailsDialog extends DialogFragment {
         viewBinding = DownloadLogDetailsDialogBinding.inflate(getLayoutInflater());
         dialog.setView(viewBinding.getRoot());
 
-        viewBinding.btnGoToPodcast.setVisibility(isJumpToFeed ? View.VISIBLE : View.GONE);
+        viewBinding.btnGoToPodcast.setVisibility(View.GONE);
         viewBinding.btnGoToPodcast.setOnClickListener(v -> {
             goToFeed();
             dismiss();
@@ -134,6 +134,7 @@ public class DownloadLogDetailsDialog extends DialogFragment {
         if (!downloadResult.isSuccessful()) {
             message = downloadResult.getReasonDetailed();
         }
+        viewBinding.btnGoToPodcast.setVisibility((isJumpToFeed && feed != null) ? View.VISIBLE : View.GONE);
         viewBinding.txtvPodcastName.setText(podcastName);
         viewBinding.llPodcast.setVisibility(podcastName == null ? View.GONE : View.VISIBLE);
         viewBinding.txtvEpisodeName.setText(episodeName);
@@ -152,8 +153,11 @@ public class DownloadLogDetailsDialog extends DialogFragment {
     }
 
     void goToFeed() {
+        if (feed == null) {
+            return;
+        }
         Intent intent;
-        if (feed != null && feed.getState() == Feed.STATE_SUBSCRIBED) {
+        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
             intent = new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).getIntent();
         } else {
             intent = new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent();
