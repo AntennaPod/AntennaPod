@@ -25,7 +25,7 @@ project.ext {
 
     // Third-party
     commonslangVersion = "3.18.0"
-    commonsioVersion = "2.20.0"
+    commonsioVersion = "2.5" // Recent versions cause ClassNotFoundException on Android 6
     jsoupVersion = "1.15.1"
     glideVersion = "4.16.0"
     okhttpVersion = "4.12.0"

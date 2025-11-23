@@ -745,7 +745,7 @@
     <string name="shortcut_select_subscription">Sélectionner un abonnement</string>
     <string name="add_shortcut">Ajouter le raccourci</string>
     <string name="statistics_years_barchart_description">Temps de lecture par mois</string>
-    <string name="pref_nav_drawer_items_title">Personnaliser la navigation</string>
+    <string name="pref_nav_drawer_items_title">Changer la navigation</string>
     <string name="pref_nav_drawer_items_sum">Choisir les éléments du volet de navigation ou pour la navigation en bas</string>
     <string name="statistics_view_all">Tous les podcasts »</string>
     <string name="section_shown">Affiché</string>
@@ -933,6 +933,6 @@
     <string name="feed_delete_explanation_archive">Archiver cache le podcast de la liste des abonnements et désactive les mises à jour. Les téléchargements, l\'historique de lecture et les statistiques restent disponibles.</string>
     <string name="tag_untagged">Sans tag</string>
     <string name="restore_archive_label">Désarchiver</string>
-    <string name="no_archive_head_label">Rien d\'archivé</string>
+    <string name="no_archive_head_label">Aucune archive</string>
     <string name="no_archive_label">Vous pouvez archiver des podcasts depuis l\'écran des abonnements.</string>
 </resources>

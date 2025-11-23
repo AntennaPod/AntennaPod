@@ -903,4 +903,19 @@
         <item quantity="other">%d odcinków przeniesionych na dół.</item>
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Brak odcinków w kolejce, ale czekają na Ciebie nowe!</string>
+    <string name="no_archive_label">Podcasty można archiwizować z poziomu głównego ekranu subskrypcji.</string>
+    <string name="no_archive_head_label">Niczego nie zarchiwizowano</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d subskrybcja</item>
+        <item quantity="few">%d subskrybcji</item>
+        <item quantity="many">%d subskrybcji</item>
+        <item quantity="other">%d subskrybcji</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Archiwizuj</string>
+    <string name="archive_feed_label_noun">Archiwum</string>
+    <string name="restore_archive_label">Przywróć</string>
+    <string name="remove_archive_feed_label">Usuń / Archiwizuj</string>
+    <string name="feed_delete_explanation_delete">Usunięcie WSZYSTKICH odcinków, w tym pobranych plików, historii odtwarzania i statystyk.</string>
+    <string name="feed_delete_explanation_archive">Archiwizacja spowoduje ukrycie go na liście subskrypcji i uniknięcie jego aktualizacji. Pobrane pliki, statystyki i stan odtwarzania zostaną zachowane.</string>
+    <string name="please_wait_before_refreshing">Odczekaj chwilę przed ponownym odświeżeniem podcastów.</string>
 </resources>
