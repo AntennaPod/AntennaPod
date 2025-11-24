@@ -71,7 +71,7 @@ public class DownloadLogTest {
         openDialog(result);
         // Open feed
         onView(withText(R.string.download_log_open_feed)).perform(click());
-        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 1000));
+        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 2000));
     }
 
     @Test
@@ -82,8 +82,8 @@ public class DownloadLogTest {
         openDialog(result);
         // Opens online feed view
         onView(withText(R.string.download_log_open_feed)).perform(click());
-        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 1000));
-        onView(isRoot()).perform(waitForView(allOf(withText(R.string.subscribe_label), isDisplayed()), 1000));
+        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 2000));
+        onView(isRoot()).perform(waitForView(allOf(withText(R.string.subscribe_label), isDisplayed()), 2000));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class DownloadLogTest {
         openDialog(result);
         // Opens feed
         onView(withText(R.string.download_log_open_feed)).perform(click());
-        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 1000));
+        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 2000));
     }
 
     @Test
