@@ -118,6 +118,7 @@ public class DownloadLogTest {
         DBWriter.addDownloadStatus(result);
         activityRule.launchActivity(completedDownloadsIntent);
         onView(withContentDescription(R.string.downloads_log_label)).perform(click());
+        onView(isRoot()).perform(waitForView(allOf(withText(result.getTitle()), isDisplayed()), 1000));
         onView(withText(result.getTitle())).perform(click());
         onView(isRoot()).perform(waitForView(allOf(withText(result.getReasonDetailed()), isDisplayed()), 1000));
     }
