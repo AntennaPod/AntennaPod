@@ -224,7 +224,8 @@ public abstract class UserPreferences {
     }
 
     public static List<Integer> getFullNotificationButtons() {
-        String[] buttons = TextUtils.split(prefs.getString(PREF_FULL_NOTIFICATION_BUTTONS,
+        String[] buttons = TextUtils.split(
+                prefs.getString(PREF_FULL_NOTIFICATION_BUTTONS,
                 NOTIFICATION_BUTTON_SKIP + "," + NOTIFICATION_BUTTON_PLAYBACK_SPEED), ",");
 
         List<Integer> notificationButtons = new ArrayList<>();
