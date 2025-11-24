@@ -268,7 +268,7 @@ public class ItemFragment extends Fragment {
             viewBinding.txtvPublished.setText(pubDateStr);
             viewBinding.txtvPublished.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
         }
-        if (item.getFeed().getState() != Feed.STATE_SUBSCRIBED) {
+        if (item.getFeed().getState() == Feed.STATE_NOT_SUBSCRIBED) {
             viewBinding.nonSubscribedWarningLabel.setVisibility(View.VISIBLE);
             viewBinding.nonSubscribedWarningLabel.setOnClickListener(v -> openPodcast());
         }
@@ -349,12 +349,12 @@ public class ItemFragment extends Fragment {
         if (item == null) {
             return;
         }
-        if (item.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
-            Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
-            ((MainActivity) getActivity()).loadChildFragment(fragment);
-        } else {
+        if (item.getFeed().getState() == Feed.STATE_NOT_SUBSCRIBED) {
             startActivity(new OnlineFeedviewActivityStarter(getContext(), item.getFeed().getDownloadUrl())
                     .getIntent());
+        } else {
+            Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
+            ((MainActivity) getActivity()).loadChildFragment(fragment);
         }
     }
 

@@ -154,11 +154,10 @@
     <string name="show_info_label">Visa information</string>
     <string name="show_feed_settings_label">Visa podcastinställningar</string>
     <string name="feed_settings_label">Podcastinställningar</string>
-    <string name="rename_feed_label">Byt namn på podcast</string>
-    <string name="remove_feed_label">Ta bort podcast</string>
+    <string name="rename_feed_label">Byt namn</string>
+    <string name="remove_feed_label">Ta bort</string>
     <string name="share_label">Dela</string>
     <string name="share_file_label">Dela fil</string>
-    <string name="feed_remover_msg">Tar bort podcast</string>
     <string name="load_complete_feed">Uppdatera hela podcasten</string>
     <string name="multi_select">Välj flera</string>
     <string name="select_all_above">Välj alla ovanför</string>
@@ -174,7 +173,7 @@
         <item quantity="other">%d prenumerationer uppdaterade.</item>
     </plurals>
     <string name="edit_tags">Redigera etiketter</string>
-    <string name="add_tag">Lägg till tagg</string>
+    <string name="add_tag">Lägg till etikett</string>
     <string name="rename_tag_label">Byt namn på etikett</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Uppdatering av poddar över mobil dataanslutning är avstängt i inställningarna.\n\nVill du fortfarande uppdatera alla poddar över mobildata?</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Din VPN-app låtsas vara ett mobilt nätverk (med datapriser). Uppdatering av podcasts över mobila dataanslutningar är avstängt i inställningarna.\n\nVill du uppdatera ändå? Om du vill lösa detta problem, kontakta skaparen av din VPN-app.</string>
@@ -304,8 +303,8 @@
     <string name="synchronization_sum">Synkronisera med andra enheter</string>
     <string name="automation">Automatisering</string>
     <string name="download_pref_details">Detaljer</string>
-    <string name="import_export_pref">Importera/Exportera</string>
-    <string name="import_export_search_keywords">säkerhetskopiering, återställning</string>
+    <string name="import_export_pref">Säkerhetskopiera &amp; återställ</string>
+    <string name="import_export_search_keywords">importera, exportera, backup, återställning</string>
     <string name="theming">Teman</string>
     <string name="external_elements">Externa element</string>
     <string name="interruptions">Avbrott</string>
@@ -316,7 +315,7 @@
     <string name="preference_search_clear_history">Resnsa historiken</string>
     <string name="pref_episode_cleanup_title">Radera innan automatiskt nedladdning</string>
     <string name="pref_episode_cleanup_summary">Avsnitt som får tas bort om Automatisk Nedladdning behöver mer utrymme för nya avsnitt</string>
-    <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller bluetooth kopplas ifrån</string>
+    <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller Bluetooth-enheter kopplas ifrån</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när bluetooth återansluts</string>
     <string name="pref_hardware_forward_button_title">Framåtknapp</string>
@@ -373,10 +372,7 @@
     <string name="pref_black_theme_message">Använd helsvart för det mörka temat</string>
     <string name="pref_tinted_theme_title">Dynamiska färger</string>
     <string name="pref_tinted_theme_message">Anpassa appfärger baserat på bakgrunden</string>
-    <string name="pref_nav_drawer_feed_order_title">Välj prenumerationsordning</string>
-    <string name="pref_nav_drawer_feed_order_sum">Ändra ordningen på dina prenumerationer</string>
-    <string name="pref_nav_drawer_feed_counter_title">Ställ in prenumerationsräknare</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Ändra informationen som visas vid prenumerationsräknaren. Påverkar även sorteringen av prenumerationer om \'Prenumerationsordning\' är satt till \'Räknare\'.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Räknare</string>
     <string name="pref_automatic_download_title">Automatisk nedladdning</string>
     <string name="pref_automatic_download_sum">Konfigurera automatisk nedladdning av avsnitt</string>
     <string name="pref_automatic_download_on_battery_title">Nedladdning vid batteridrift</string>
@@ -439,8 +435,6 @@
     <string name="remember_last_page">Kom ihåg senaste sida</string>
     <string name="pref_delete_removes_from_queue_title">Radering tar bort från kön</string>
     <string name="pref_delete_removes_from_queue_sum">Ta automatiskt bort ett avsnitt från kön när det raderas</string>
-    <string name="pref_filter_feed_title">Prenumerationsfilter</string>
-    <string name="pref_filter_feed_sum">Filtrera dina prenumerationer i navigeringsmenyn och på prenumerationsskärmen</string>
     <string name="subscriptions_counter_greater_zero">Räknare högre än noll</string>
     <string name="auto_downloaded">Automatiskt nedladdad</string>
     <string name="not_auto_downloaded">Manuellt nedladdad</string>
@@ -549,7 +543,7 @@
     <string name="synchronization_summary_unchoosen">Du kan välja bland flera leverantörer för att synkronisera dina prenumerationer och uppspelningsstatus med</string>
     <string name="dialog_choose_sync_service_title">Välj synkroniseringsleverantör</string>
     <string name="gpodnet_description">Gpodder.net är en öppen källkodstjänst som du kan installera på en egen server. Gpodder.net är oberende från AntennaPod-projektet.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync är en Nexcloud-app med öppen källkod som du enkelt kan installera på din egen server. Appen är oberoende från AntennaPod-projektet.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync är en Nexcloud-app med öppen källkod som du enkelt kan installera på din egen server. Gpodder Sync är oberoende från AntennaPod-projektet.</string>
     <string name="synchronization_host_explanation">Du kan använda din egen server att synkronisera med. När du valt en server att synkronisera med, ange dess adress här.</string>
     <string name="synchronization_host_label">Serveradress</string>
     <string name="proceed_to_login_butLabel">Fortsätt till inloggning</string>
@@ -624,7 +618,7 @@
     <string name="authentication_descr">Byt ditt användarnamn och lösenord för den här podcasten och dess avsnitt</string>
     <string name="feed_tags_label">Etiketter</string>
     <string name="feed_tags_summary">Ändra etiketterna för denna podcast för att organisera prenumerationerna</string>
-    <string name="feed_folders_include_root">Visa denna podcast i huvudlistan</string>
+    <string name="feed_folders_include_root">Visa ovanför etiketter (endast i sidomeny)</string>
     <string name="multi_feed_common_tags_info">Visar endast gemensamma etiketter bland valda prenumerationer. Andra etiketter påverkas inte.</string>
     <string name="episode_filters_label">Avsnittsfilter</string>
     <string name="episode_filters_description">Lista av termer som används för att avgöra om ett avsnitt ingår eller ej vid automatisk nedladdning</string>
@@ -742,28 +736,21 @@
     </plurals>
     <string name="null_value_podcast_error">Länken du tryckte på innehåller inte en giltig podcast-URL. Verifiera länken och försök igen, eller sök efter podcasten manuellt.</string>
     <string name="bottom_navigation_summary">Få tillgång till de viktigaste skärmarna överallt, med ett enda tryck</string>
-    <string name="feed_delete_confirmation_local_msg">Vänligen bekräfta att du vill ta bort podcasten \"%1$s\", dess uppspelningshistorik och dess statistik. Filerna i den lokala källmappen kommer inte att raderas.</string>
     <string name="home_new_empty_text">Nya avsnitt kommer att dyka upp här. Du kan sedan bestämma om du är intresserad av dem.</string>
     <string name="delete_downloads_played">Ta bort spelade</string>
     <string name="delete_downloads_played_confirmation">Vänligen bekräfta att du vill ta bort alla spelade nedladdningar.</string>
     <string name="bottom_navigation">Bottennavigering</string>
-    <string name="statistics_episodes_started">påbörjad</string>
-    <string name="statistics_episodes_downloaded">nedladdade</string>
     <string name="statistics_episodes_space">upptaget utrymme</string>
     <string name="statistics_release_next">nästa avsnitt (uppskattning)</string>
-    <string name="feed_delete_confirmation_msg_batch">Bekräfta att du vill ta bort de valda poddarna, ALLA deras avsnitt (inklusive nedladdade avsnitt), uppspelningshistorik och dess statistik.</string>
     <string name="section_shown">Visade</string>
     <string name="home_no_recent_unplayed_episodes_text">Du har redan spelat alla senaste avsnitt. Inget att bli förvånad över här ;)</string>
     <string name="home_continue_empty_text">Du kan lägga till avsnitt genom att ladda ner dem eller trycka länge på dem och välja \"Lägg till i kö\".</string>
     <string name="home_downloads_empty_text">Du kan ladda ner vilket avsnitt som helst för att lyssna på det offline.</string>
-    <string name="feed_delete_confirmation_msg">Vänligen bekräfta att du vill radera podcasten \"%1$s\", ALLA dess avsnitt (inklusive nedladdade avsnitt), uppspelningshistorik och dess statistik.</string>
-    <string name="mobile_download_notice">Laddar ner via mobildataanslutning under de kommande %d minuterna</string>
     <string name="pref_nav_drawer_items_title">Anpassa navigering</string>
     <string name="pref_nav_drawer_items_sum">Ändra vilka objekt som visas i navigeringslådan eller nedersta navigeringen</string>
     <string name="sync_status_wait_for_downloads">Väntar på uppdatering av prenumerationer…</string>
     <string name="statistics_years_barchart_description">Spelad tid per månad</string>
-    <string name="nextcloud_login_error_generic">Kan inte logga in på din Nextcloud.\n\nKontrollera nätverksanslutningen.\nBekräfta att du använder rätt serveradress.\nSe till att insticksprogrammet gpoddersync Nextcloud är installerat.</string>
-    <string name="statistics_episodes_total">total</string>
+    <string name="nextcloud_login_error_generic">Kan inte logga in på din Nextcloud.\n\n- Kontrollera nätverksanslutningen.\n- Bekräfta att du använder rätt serveradress.\n- Se till att insticksprogrammet Gpodder Sync till Nextcloud är installerat.</string>
     <string name="statistics_release_schedule">släppschema</string>
     <string name="statistics_view_all">Alla poddar »</string>
     <string name="discover_more">Upptäck mer »</string>
@@ -852,12 +839,8 @@
         <item quantity="other">Tog bort %d avsnitt från kön.</item>
     </plurals>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Markera som spelad</item>
-        <item quantity="other"></item>
-    </plurals>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Markera som ospelad</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d avsnitt markerat som uppspelat.</item>
+        <item quantity="other">%d avsnitt markerade som uppspelade.</item>
     </plurals>
     <string name="mark_as_played_label">Markera som spelad</string>
     <string name="feed_new_episodes_action_summary_autodownload">Automatisk nedladdning aktiverad. Avsnitt läggs till i inkorgen och flyttas sedan till kön när de har laddats ned.</string>
@@ -883,4 +866,43 @@
     <string name="no_queue_items_inbox_has_items_label">Inga avsnitt är köade, men det finns nya avsnitt som väntar dig!</string>
     <string name="auto_download_inbox_category">Ladda automatiskt ned avsnitt från inkorgen</string>
     <string name="transcript_follow_audio_label">Följ ljuduppspelning</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d prenumeration</item>
+        <item quantity="other">%d prenumerationer</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arkivera</string>
+    <string name="archive_feed_label_noun">Arkiv</string>
+    <string name="restore_archive_label">Återställ</string>
+    <string name="remove_archive_feed_label">Ta bort / arkivera</string>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">%d avsnitt markerat som ospelat.</item>
+        <item quantity="other">%d avsnitt markerade som ospelade.</item>
+    </plurals>
+    <string name="already_downloaded">Avsnittet är redan nedladdat</string>
+    <string name="no_archive_head_label">Ingenting är arkiverat</string>
+    <string name="tag_all">Alla</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">startat</item>
+        <item quantity="other">startade</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">totalt</item>
+        <item quantity="other">totalt</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">nedladdat</item>
+        <item quantity="other">nedladdade</item>
+    </plurals>
+    <string name="statistics_expected_next_episode_any_time">När som helst nu</string>
+    <string name="release_schedule_multiple_per_day">flera gånger om dagen</string>
+    <string name="cover_as_background">Omslagsbild som bakgrund</string>
+    <string name="feed_delete_explanation_delete">Borttagningen kommer att radera ALLA dess avsnitt, inklusive nedladdningar, uppspelningshistorik och statistik.</string>
+    <string name="feed_delete_explanation_archive">Arkiverandet kommer att dölja den från prenumerationslistan och hindra den från att uppdateras. Nedladdningar, statistik och uppspelningsposition behålls.</string>
+    <string name="please_wait_before_refreshing">Vänligen vänta en stund innan du uppdaterar poddarna igen.</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Laddar ned via mobil dataanslutning under den kommande minuten</item>
+        <item quantity="other">Laddar ned via mobil dataanslutning under de kommande %d minuterna</item>
+    </plurals>
+    <string name="no_archive_label">Du kan arkivera poddar från huvudskärmen för prenumerationer.</string>
+    <string name="tag_untagged">Utan etikett</string>
 </resources>

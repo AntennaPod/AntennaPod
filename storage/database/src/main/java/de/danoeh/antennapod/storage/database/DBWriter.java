@@ -33,7 +33,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Semaphore;
 
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -82,10 +82,18 @@ public class DBWriter {
      * Robolectric. Call this method only for unit tests.
      */
     public static void tearDownTests() {
+        // dbExec is single-threaded FIFO, so if a newly submitted task runs, all previous tasks must have finished
+        final Semaphore available = new Semaphore(1, true);
         try {
-            dbExec.awaitTermination(1, TimeUnit.SECONDS);
+            available.acquire();
         } catch (InterruptedException e) {
-            // ignore error
+            throw new RuntimeException(e);
+        }
+        dbExec.submit(() -> available.release());
+        try {
+            available.acquire();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -151,7 +159,7 @@ public class DBWriter {
             // Do full update of this feed to get rid of the item
             FeedUpdateManager.getInstance().runOnce(context, media.getItem().getFeed());
         } else {
-            if (media.getItem().getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+            if (media.getItem().getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueEpisodeAction(
                         new EpisodeAction.Builder(media.getItem(), EpisodeAction.DELETE)
                             .currentTimestamp()
@@ -184,7 +192,7 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+            if (!feed.isLocalFeed() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueFeedRemoved(feed.getDownloadUrl());
             }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
@@ -726,7 +734,7 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                if (!feed.isLocalFeed() && feed.getState() == Feed.STATE_SUBSCRIBED) {
+                if (!feed.isLocalFeed() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                     SynchronizationQueue.getInstance().enqueueFeedAdded(feed.getDownloadUrl());
                 }
             }

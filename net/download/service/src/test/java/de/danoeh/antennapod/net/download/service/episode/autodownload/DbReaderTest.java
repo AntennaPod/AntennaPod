@@ -342,7 +342,8 @@ public class DbReaderTest {
             final int numItems = 10;
             DbTestUtils.saveFeedlist(numFeeds, numItems, true);
             NavDrawerData navDrawerData = DBReader.getNavDrawerData(
-                    UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER, FeedCounter.SHOW_NEW);
+                    UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER, FeedCounter.SHOW_NEW,
+                    Feed.STATE_SUBSCRIBED);
             assertEquals(numFeeds, navDrawerData.feeds.size());
             assertEquals(0, navDrawerData.numNewItems);
             assertEquals(0, navDrawerData.queueSize);
@@ -372,7 +373,8 @@ public class DbReaderTest {
             adapter.close();
 
             NavDrawerData navDrawerData = DBReader.getNavDrawerData(
-                    UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER, FeedCounter.SHOW_NEW);
+                    UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER, FeedCounter.SHOW_NEW,
+                    Feed.STATE_SUBSCRIBED);
             assertEquals(numFeeds, navDrawerData.feeds.size());
             assertEquals(numNew, navDrawerData.numNewItems);
             assertEquals(numQueue, navDrawerData.queueSize);
@@ -469,7 +471,7 @@ public class DbReaderTest {
         private int paramOffset;
         private int paramLimit;
 
-        @ParameterizedRobolectricTestRunner.Parameters
+        @ParameterizedRobolectricTestRunner.Parameters(name = "offset={0} limit={1}")
         public static Collection<Object[]> data() {
             List<Integer> limits = Arrays.asList(1, 20, 100);
             List<Integer> offsets = Arrays.asList(0, 10, 20);

@@ -181,10 +181,10 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         if (item == null) {
             return;
         }
-        if (item.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
-            new MainActivityStarter(getContext()).withOpenFeed(item.getFeedId()).withClearTop().start();
-        } else {
+        if (item.getFeed().getState() == Feed.STATE_NOT_SUBSCRIBED) {
             startActivity(new OnlineFeedviewActivityStarter(getContext(), item.getFeed().getDownloadUrl()).getIntent());
+        } else {
+            new MainActivityStarter(getContext()).withOpenFeed(item.getFeedId()).withClearTop().start();
         }
     }
 

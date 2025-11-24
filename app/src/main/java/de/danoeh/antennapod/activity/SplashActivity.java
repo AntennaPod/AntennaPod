@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.CrashReportWriter;
+
+import de.danoeh.antennapod.system.CrashReportWriter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;

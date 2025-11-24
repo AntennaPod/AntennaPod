@@ -50,7 +50,7 @@
     <string name="home_welcome_title">به آنتناپاد خوش‌آمدید!</string>
     <string name="home_welcome_text">هنوز مشترک پادپخشی نشده‌اید. گشودن فهرست برای افزودن پادپخش.</string>
     <string name="notification_permission_denied">اجازه را رد کردید.</string>
-    <string name="configure_home">پیکربندی صفحه اصلی</string>
+    <string name="configure_home">پیکربندی صفحهٔ اصلی</string>
     <string name="section_hidden">نهفته</string>
     <!--Main activity-->
   <string name="drawer_open">باز کردن منو</string>
@@ -146,11 +146,10 @@
     <string name="show_info_label">نمایش اطلاعات</string>
     <string name="show_feed_settings_label">نمایش تنظیمات پادپخش</string>
     <string name="feed_settings_label">تنظیمات پادپخش</string>
-    <string name="rename_feed_label">تغییر نام پادپخش</string>
-    <string name="remove_feed_label">برداشتن پادپخش</string>
+    <string name="rename_feed_label">تغییر نام</string>
+    <string name="remove_feed_label">حذف</string>
     <string name="share_label">هم‌رسانی</string>
     <string name="share_file_label">هم‌رسانی پرونده</string>
-    <string name="feed_remover_msg">برداشتن پادپخش</string>
     <string name="load_complete_feed">نوسازی پادپخش کامل</string>
     <string name="multi_select">چند گزینه‌ای</string>
     <string name="select_all_above">انتخاب همهٔ بالایی‌ها</string>
@@ -291,8 +290,8 @@
     <string name="synchronization_sum">همگام‌سازی با دیگر دستگاه‌ها</string>
     <string name="automation">خودکارسازی</string>
     <string name="download_pref_details">جزییات</string>
-    <string name="import_export_pref">درون‌ریزی و برون‌ریزی</string>
-    <string name="import_export_search_keywords">پشتیبان، بازگردانی</string>
+    <string name="import_export_pref">پشتیبان و بازگردانی</string>
+    <string name="import_export_search_keywords">درون‌ریزی و برون‌ریزی</string>
     <string name="external_elements">عناصر خارجی</string>
     <string name="interruptions">وقفه‌ها</string>
     <string name="playback_control">هدایت پخش</string>
@@ -301,7 +300,7 @@
     <string name="preference_search_no_results">نتیجه‌ای یافت نشد</string>
     <string name="preference_search_clear_history">پاک‌کردن تاریخچه</string>
     <string name="pref_episode_cleanup_summary">قسمت‌هایی که اگر بارگیری خودکار نیاز به فضا برای قسمت‌های جدید داشت، شایستهٔ برداشتنند</string>
-    <string name="pref_pauseOnDisconnect_sum">مکث پخش هنگام قطع شدن هدفون یا بلوتوث</string>
+    <string name="pref_pauseOnDisconnect_sum">مکث پخش هنگام قطع شدن هدفون یا افزاره‌های بلوتوثی</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">ادامه پخش هنگام وصل شدن دوبارهٔ هدفون</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">‮‮ادامه پخش هنگامی که بلوتوث دوباره متصل شود</string>
     <string name="pref_hardware_forward_button_title">دکمهٔ پیش‌روی</string>
@@ -353,10 +352,7 @@
     <string name="pref_black_theme_message">استفاده از سیاه کامل برای زمینهٔ تیره</string>
     <string name="pref_tinted_theme_title">رنگ‌های پویا</string>
     <string name="pref_tinted_theme_message">سازگاری رنگ‌های کاره بر پایه کاغذدیواری</string>
-    <string name="pref_nav_drawer_feed_order_title">تنظیم ترتیب اشتراک</string>
-    <string name="pref_nav_drawer_feed_order_sum">تغییر ترتیب اشتراک هایتان</string>
-    <string name="pref_nav_drawer_feed_counter_title">تنظیم شمارشگر اشتراک</string>
-    <string name="pref_nav_drawer_feed_counter_sum">اطلاعات نمایش داده شده توسط شمارندهٔ اشتراک را تغییر دهید. همچنین اگر «ترتیب اشتراک» روی «شمارنده» تنظیم شود، بر مرتب‌سازی اشتراک‌ها نیز تأثیر می‌گذارد.</string>
+    <string name="pref_nav_drawer_feed_counter_title">شمارشگر</string>
     <string name="pref_automatic_download_title">بارگیری خودکار</string>
     <string name="pref_automatic_download_sum">پیکربندی بارگیری خودکار قسمت‌ها</string>
     <string name="pref_automatic_download_on_battery_title">بارگیری زمانی که سیستم شارژ نمی‌شود مجاز باشد</string>
@@ -415,8 +411,6 @@
     <string name="remember_last_page">صفحه آخر را به خاطر بسپار</string>
     <string name="pref_delete_removes_from_queue_title">پاک‌کردن از صف برمی‌دارد</string>
     <string name="pref_delete_removes_from_queue_sum">برداشتن خودکار قسمت از صف هنگام پاک شدنش</string>
-    <string name="pref_filter_feed_title">پالایهٔ اشتراک</string>
-    <string name="pref_filter_feed_sum">پالایش اشتراک‌هایتان در کشوی پیمایش و صفحهٔ اشتراک‌ها</string>
     <string name="subscriptions_counter_greater_zero">شمارنده بزرگتر از صفر</string>
     <string name="auto_downloaded">بارگیری خودکار</string>
     <string name="not_auto_downloaded">بارگیری خودکار انجام نشود</string>
@@ -507,7 +501,7 @@
     <string name="synchronization_summary_unchoosen">می‌توانید چند فراهم‌کننده را برای همگام سازی اشتراک‌ها و وضعیت پخش قسمت‌هایتان برگزینید</string>
     <string name="dialog_choose_sync_service_title">گزینش فراهم‌کننده همگام سازی</string>
     <string name="gpodnet_description">Gpodder.net خدمت همگام‌سازی پادپخش آزادی است که می‌توانید روی کارساز خودتان نصبش کنید. جی‌پادر دات نت مستقل از پروژهٔ آنتناپاد است.</string>
-    <string name="synchronization_summary_nextcloud">جی‌پادرسینک برنامه نکست‌کلودی آزاد است که می‌توانید به سادگی روی کارساز خودتان نصبش کنید. این کاره مستقل از پروژهٔ آنتناپاد است.</string>
+    <string name="synchronization_summary_nextcloud">هم‌گام سازی جی‌پادر کارهٔ نکست‌کلودی آزادیست که می‌توانید به سادگی روی کارساز خودتان نصبش کنید. هم‌گام سازی جی‌پادر مستقل از پروژهٔ آنتناپاد است.</string>
     <string name="synchronization_host_explanation">می‌توانید کارساز خودتان را برای همگام‌سازی برگزینید. لطفاً پس از مشخص کردن کارساز همگام‌سازی ترجیحیتان، نشانی‌اش را اینجا وارد کنید.</string>
     <string name="synchronization_host_label">نشانی کارساز</string>
     <string name="proceed_to_login_butLabel">برای ورود به سیستم اقدام کنید</string>
@@ -575,7 +569,7 @@
     <string name="authentication_descr">تغییر نام کاربری و گذرواژه‌تان برای این پادپخش و قسمت‌هایش</string>
     <string name="feed_tags_label">برچسب‌ها</string>
     <string name="feed_tags_summary">تغییر برچسب‌های این پادپخش برای کمک به سازمان‌دهی اشتراک‌هایتان</string>
-    <string name="feed_folders_include_root">نمایش این قسمت در فهرست اصلی</string>
+    <string name="feed_folders_include_root">نمایش برجسب‌های بالا (فقط پیمایش جانبی)</string>
     <string name="multi_feed_common_tags_info">تنها برجسب‌های معمول از تمامی اشتراک‌های گزیده نشان داده می‌شوند. دیگر برچسب‌ها تأثیر نمی‌پذیرند.</string>
     <string name="episode_filters_label">پالایهٔ قسمت</string>
     <string name="episode_filters_description">فهرست اصطلاحاتی که هنگام بارگیری خودکار برای تصمیم گیری درباره بودن یا نبودن یک قسمت استفاده می‌شود</string>
@@ -702,7 +696,6 @@
     <string name="bottom_navigation_summary">دسترسی به مهم‌ترین صفحه‌ها از هرجا با یک لمس</string>
     <string name="pref_episode_cache_title">بیشینه قسمت</string>
     <string name="clear_queue_confirmation_msg">لطفاً تأیید کنید که می‌خواهید همهٔ قسمت‌ها را از صف بردارید.</string>
-    <string name="feed_delete_confirmation_local_msg">لطفاً تأیید کنید که می‌خواهید پادپخش «%1$s»، تاریخچه پخش و آمارهایش را بردارید. پرونده‌های موجود در پوشه منبع محلی پاک نخواهند شد.</string>
     <string name="multi_select_started_talkback">کنش‌های چندگزینه‌ای نمایش داده شده در پایین</string>
     <string name="show_transcript">نمایش ترانوشته</string>
     <string name="null_value_podcast_error">پیوندی که زده‌اید نشانی پادپخش درستی ندارد. لطفاً پیوند را تأیید و دوباره تلاش کنید و یا به صورت دستی پادپخش را جستجو کنید.</string>
@@ -720,9 +713,18 @@
     <string name="delete_downloads_played_confirmation">لطفاً تأیید کنید که می‌خواهید همهٔ بارگیری‌های پخش شده را پاک کنید.</string>
     <string name="home_no_recent_unplayed_episodes_text">همهٔ قسمت‌های اخیر را پخش کرده‌اید. چیزی برای شگفتی نیست ;)</string>
     <string name="bottom_navigation">پیمایش پایینی</string>
-    <string name="statistics_episodes_started">آغاز شده</string>
-    <string name="statistics_episodes_total">مجموع</string>
-    <string name="statistics_episodes_downloaded">بار گرفته</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">آغاز شده</item>
+        <item quantity="other">آغاز شده</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">در مجموع</item>
+        <item quantity="other">در مجموع</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">بار گرفته</item>
+        <item quantity="other">بار گرفته</item>
+    </plurals>
     <string name="statistics_episodes_space">فضای گرفته</string>
     <string name="statistics_release_schedule">زمان‌بندی انتشار</string>
     <string name="statistics_release_next">قسمت بعدی (تخمینی)</string>
@@ -743,7 +745,7 @@
         <item quantity="one">%d دقیقه</item>
         <item quantity="other">%d دقیقه</item>
     </plurals>
-    <string name="nextcloud_login_error_generic">ناتوان در ورود به نکست‌کلودتان.\n\n- اتّصال شبکه‌ایتان را بررسی کنید.\n- درستی نشانی کارساز را تأیید کنید\n- مطمئن شوید که افزایهٔ نکست‌کلود gpoddersync نصب شده است.</string>
+    <string name="nextcloud_login_error_generic">ناتوان در ورود به نکست‌کلودتان.\n\n- بررسی اتّصال شبکه‌تان.\n- تأیید درستی نشانی کارساز.\n- اطمینان از نصب بودن افزایهٔ هم‌گام سازی جی‌پادر روی نکست‌کلود.</string>
     <string name="transcript">ترانوشته</string>
     <string name="button_action_fast_forward">پیشبرد سریع</string>
     <string name="no_transcript_label">بدون ترانوشته</string>
@@ -756,7 +758,10 @@
     <string name="download_completed_talkback">تکمیل بارگیری %1$s</string>
     <string name="pref_episode_cache_summary">بارگیری خودکار در صورت رسیدن به این عدد به پایان می‌رسد</string>
     <string name="pref_auto_delete_sum">پاک‌کردن قسمت‌ها پس از پخش یا وقتی بارگیری خودکار نیاز به فضا دارد</string>
-    <string name="mobile_download_notice">بار گرفتن با دادهٔ همراه برای %d دقیقهٔ آینده</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">بار گرفتن با دادهٔ همراه برای %d دقیقهٔ آینده</item>
+        <item quantity="other">بار گرفتن با دادهٔ همراه برای %d دقیقهٔ آینده</item>
+    </plurals>
     <string name="choose_data_directory_message">لطفاً پوشه پایه داده‌تان را برگزینید. آنتناپاد زیرشاخه‌های مرتبط را خواهد ساخت.</string>
     <string name="home_continue_empty_text">می‌توانید با بارگیری قسمت‌ها یا نگه داشتن طولانی رویشان و گزینش «افزودن به صف» بیفزاییدشان.</string>
     <plurals name="total_size_downloaded_podcasts">
@@ -764,8 +769,6 @@
         <item quantity="other">کل حجم %d قسمت روی دستگاه</item>
     </plurals>
     <string name="rating_volunteers_label">آنتناپاد به دست داوطلبانی در زمان آزادشان توسعه یافته. با دادن رتبه خوب از آنان قدردانی کنید.</string>
-    <string name="feed_delete_confirmation_msg">لطفاً تأیید کنید که می‌خواهید پادپخش «%1$s»، همهٔ قسمت‌هایش (از جمله بارگرفته‌ها)، تاریخچه پخش و آمارهایش را پاک کنید.</string>
-    <string name="feed_delete_confirmation_msg_batch">لطفاً تأیید کنید که می‌خواهید پادپخش گزیده، همهٔ قسمت‌هایش (دارای بارگرفته‌ها)، تاریخچه پخش و آمارهایش را بردارید.</string>
     <string name="state_deleted_not_subscribed">هنوز مشترک این پادپخش نیستید. برای دسترسی آسان‌تر و نگه‌داشتن تاریخچه پخش‌اش، رایگان مشترک شوید.</string>
     <string name="edit_url_confirmation_msg">تغییر دادن نشانی خوراک می‌تواند وضعیت پخش و فهرست کردن پادپخش را به آسانی خراب کند. تغییرش را توصیه نکرده و در صورت خراب شدن چیزی پشتیبانی ارائه نخواهیم داد. این کار بازگشت‌پذیر نیست. اشتراک‌های خراب نمی‌توانند با تغییر دوبارهٔ نشانی درست شوند. توصیه می‌کنیم پیش از ادامه، پشتیبان بگیرید.</string>
     <string name="inbox_label_more">صندوق »</string>
@@ -842,12 +845,12 @@
     <string name="removed_from_inbox_message">برداشته از صندوق ورودی</string>
     <string name="mark_as_played_label">علامت به پخش شده</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">علامت خورده به پخش شده</item>
-        <item quantity="other"></item>
+        <item quantity="one">‫‏%d قسمت به پخش شده علامت خورد.</item>
+        <item quantity="other">‫‏%d قسمت به پخش شده علامت خوردند.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">علامت خورده به پخش نشده</item>
-        <item quantity="other"></item>
+        <item quantity="one">‫‏%d قسمت به پخش نشده علامت خورد.</item>
+        <item quantity="other">‫‏%d قسمت به پخش نشده علامت خوردند.</item>
     </plurals>
     <string name="mark_as_unplayed_label">علامت به پخش نشده</string>
     <string name="play_this_to_seek_position_message">برای پرش به موقعیت‌ها باید قسمت را پخش کنید</string>
@@ -882,4 +885,24 @@
         <item quantity="other">%d قسمت به پایین رفتند.</item>
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">هیج قسمتی صف نشده؛‌ولی قسمت‌های جدیدی منتظرتانند!</string>
+    <string name="please_wait_before_refreshing">لطفاً پیش از بازخوانی دوبارهٔ پادپخش‌ها کمی شکیبایی کنید.</string>
+    <string name="delete_local_feed_confirmation_dialog_message">حذف کردن قسمت‌ها را از آنتاپاد برداشته و پرونده‌های رسانه را از ذخیره‌ساز افزاره‌تان حذف می‌کند. دیگر نمی‌تواند با آنتاپاد بارگرفته شود.</string>
+    <string name="already_downloaded">قسمت از پیش بار گرفته شده</string>
+    <string name="tag_all">همه</string>
+    <string name="statistics_expected_next_episode_any_time">همین الآن‌ها</string>
+    <string name="release_schedule_multiple_per_day">چند بار در روز</string>
+    <string name="cover_as_background">طرح جلد در پس‌زمینه</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d اشتراک</item>
+        <item quantity="other">%d اشتراک</item>
+    </plurals>
+    <string name="archive_feed_label_verb">بایگانی</string>
+    <string name="archive_feed_label_noun">بایگانی</string>
+    <string name="restore_archive_label">بازگردانی</string>
+    <string name="remove_archive_feed_label">حذف یا بایگانی</string>
+    <string name="feed_delete_explanation_delete">حذف کردن تمامی قسمت‌هایش از جمله بارگیری‌ها، تاریخچهٔ پخش و آمارها را برخواهد داشت.</string>
+    <string name="feed_delete_explanation_archive">بایگانی کردن از سیاههٔ اشتراک‌ها نهفته و جلوی به‌روز شدنش را خواهد گرفت. بارگیری‌ها، آکارها و وضعیت پخش نگه داشته خواهد شد.</string>
+    <string name="tag_untagged">برچسب نخورده</string>
+    <string name="no_archive_head_label">هیچ چیزی بایگانی نشده</string>
+    <string name="no_archive_label">می توانید پادپخش‌ها را از صفحهٔ اشتراک اصلی بایگانی کنید.</string>
 </resources>

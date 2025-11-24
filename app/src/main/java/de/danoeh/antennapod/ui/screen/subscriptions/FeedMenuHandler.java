@@ -58,8 +58,9 @@ public abstract class FeedMenuHandler {
                     .show(fragment.getChildFragmentManager(), TagSettingsDialog.TAG);
         } else if (menuItemId == R.id.rename_item) {
             new RenameFeedDialog(fragment.getActivity(), selectedFeed).show();
-        } else if (menuItemId == R.id.remove_feed) {
-            RemoveFeedDialog.show(context, selectedFeed, null);
+        } else if (menuItemId == R.id.remove_archive_feed) {
+            new RemoveFeedDialog(Collections.singletonList(selectedFeed))
+                    .show(fragment.getChildFragmentManager(), null);
         } else if (menuItemId == R.id.share_feed) {
             ShareUtils.shareFeedLink(context, selectedFeed);
         } else {

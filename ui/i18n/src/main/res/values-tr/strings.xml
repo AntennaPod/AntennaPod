@@ -50,7 +50,7 @@
     <string name="home_welcome_title">AntennaPod\'a hoşgeldin!</string>
     <string name="home_welcome_text">Henüz hiçbir podcast\'e abone olmadın. Menüyü aç ve bir podcast ekle.</string>
     <string name="notification_permission_denied">İzni reddettiniz.</string>
-    <string name="configure_home">Ana Ekranı Özelleştir</string>
+    <string name="configure_home">Ana ekranı özelleştir</string>
     <string name="section_hidden">Gizli</string>
     <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
@@ -154,11 +154,10 @@
     <string name="show_info_label">Bilgiyi göster</string>
     <string name="show_feed_settings_label">Podcast ayarlarını göster</string>
     <string name="feed_settings_label">Podcast ayarları</string>
-    <string name="rename_feed_label">Podcasti yeniden adlandır</string>
-    <string name="remove_feed_label">Podcasti kaldır</string>
+    <string name="rename_feed_label">Yeniden adlandır</string>
+    <string name="remove_feed_label">Sil</string>
     <string name="share_label">Paylaş</string>
     <string name="share_file_label">Dosyaları paylaşın</string>
-    <string name="feed_remover_msg">Podcast kaldırılıyor</string>
     <string name="load_complete_feed">Tüm Podcastleri yenile</string>
     <string name="multi_select">Çoklu seçim</string>
     <string name="select_all_above">Üsttekilerin tümünü seç</string>
@@ -304,8 +303,8 @@
     <string name="synchronization_sum">Diğer cihazlarla senkronize et</string>
     <string name="automation">Otomasyon</string>
     <string name="download_pref_details">Detaylar</string>
-    <string name="import_export_pref">Al/Aktar</string>
-    <string name="import_export_search_keywords">Yedekle, Geri Al</string>
+    <string name="import_export_pref">Yedekle ve geri yükle</string>
+    <string name="import_export_search_keywords">içe aktar, dışa aktar</string>
     <string name="theming">Temalandırma</string>
     <string name="external_elements">Dış elemanlar</string>
     <string name="interruptions">Kesintiler</string>
@@ -316,8 +315,8 @@
     <string name="preference_search_clear_history">Geçmişi temizle</string>
     <string name="pref_episode_cleanup_title">Otomatik indirmeden önce sil</string>
     <string name="pref_episode_cleanup_summary">Otomatik İndirme\'nin yeni bölümler için alana ihtiyacı varsa kaldırılmaya uygun olması gereken bölümler</string>
-    <string name="pref_pauseOnDisconnect_sum">Kulaklıklar çıkarıldığında veya bluetooth bağlantısı kesildiğinde çalmayı duraklat</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
+    <string name="pref_pauseOnDisconnect_sum">Kulaklık veya Bluetooth aygıtlarının bağlantısı kesildiğinde oynatmayı duraklat</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında oynatmaya devam et</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetooth yeniden bağlandığında çalmaya devam et</string>
     <string name="pref_hardware_forward_button_title">İleri tuşu</string>
     <string name="pref_hardware_forward_button_summary">İleri düğmesinin davranışını değiştir</string>
@@ -373,10 +372,7 @@
     <string name="pref_black_theme_message">Karanlık tema için tamamen siyah kullanın</string>
     <string name="pref_tinted_theme_title">Dinamik renkler</string>
     <string name="pref_tinted_theme_message">Uygulama renklerini duvar kağıdına göre uyarla</string>
-    <string name="pref_nav_drawer_feed_order_title">Abonelik sıralamasını ayarla</string>
-    <string name="pref_nav_drawer_feed_order_sum">Abonelik sırasını değiştir</string>
-    <string name="pref_nav_drawer_feed_counter_title">Abonelik sayacını ayarla</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Abonelik sayacı tarafından görüntülenen bilgileri değiştirin. Ayrıca \'Abonelik Sırası\' \'Sayaç\' olarak ayarlanmışsa aboneliklerin sıralanmasını da etkiler.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Sayaç</string>
     <string name="pref_automatic_download_title">Otomatik indirme</string>
     <string name="pref_automatic_download_sum">Bölümlerin otomatik indirilmesini yapılandır</string>
     <string name="pref_automatic_download_on_battery_title">Şarj olmuyorken indir</string>
@@ -439,8 +435,6 @@
     <string name="remember_last_page">Kaldığım hatırlat</string>
     <string name="pref_delete_removes_from_queue_title">Kuyruktan silme</string>
     <string name="pref_delete_removes_from_queue_sum">Bir bölüm silindiğinde otomatik olarak kuyruktan kaldırın</string>
-    <string name="pref_filter_feed_title">Abonelik filtresi</string>
-    <string name="pref_filter_feed_sum">Gezinme çekmecesinde ve abonelikler ekranında aboneliklerinizi filtreleyin</string>
     <string name="subscriptions_counter_greater_zero">Sayacı sıfırdan büyük olanlar</string>
     <string name="auto_downloaded">Otomatik indirildi</string>
     <string name="not_auto_downloaded">Otomatik indirilmedi</string>
@@ -549,7 +543,7 @@
     <string name="synchronization_summary_unchoosen">Aboneliklerinizi ve bölüm oynatma durumunuzu senkronize etmek için birden fazla sağlayıcı arasından seçim yapabilirsiniz</string>
     <string name="dialog_choose_sync_service_title">Senkronizasyon sağlayıcınızı seçin</string>
     <string name="gpodnet_description">Gpodder.net, kendi sunucunuza yükleyebileceğiniz açık kaynaklı bir podcast senkronizasyon hizmetidir. Gpodder.net, AntennaPod projesinden bağımsızdır.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync, kendi sunucunuza kolayca yükleyebileceğiniz açık kaynaklı bir Nextcloud uygulamasıdır. Uygulama AntennaPod projesinden bağımsızdır.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync, kendi sunucunuza kolayca yükleyebileceğiniz açık kaynaklı bir Nextcloud uygulamasıdır. Gpodder Sync, AntennaPod projesinden bağımsızdır.</string>
     <string name="synchronization_host_explanation">Senkronize etmek için kendi sunucunuzu seçebilirsiniz. Tercih ettiğiniz senkronizasyon sunucusu adresini lütfen buraya girin.</string>
     <string name="synchronization_host_label">Sunucu adresi</string>
     <string name="proceed_to_login_butLabel">Oturum açmak için ilerleyin</string>
@@ -624,7 +618,7 @@
     <string name="authentication_descr">Bu podcast ve bölümleri için kullanıcı adınızı ve şifrenizi değiştirin</string>
     <string name="feed_tags_label">Etiketler</string>
     <string name="feed_tags_summary">Aboneliklerinizi düzenlemek için bu podcastin etiketlerini değiştirin</string>
-    <string name="feed_folders_include_root">Bu podcast ana listede gösterilsin</string>
+    <string name="feed_folders_include_root">Etiketlerin üstünde göster (yalnızca yan gezinme)</string>
     <string name="multi_feed_common_tags_info">Yalnızca seçilen tüm aboneliklerdeki ortak etiketler gösterilir. Diğer etiketler etkilenmez.</string>
     <string name="episode_filters_label">Bölüm filtresi</string>
     <string name="episode_filters_description">Otomatik olarak indirirken bir bölümün dahil edilmesi veya hariç tutulması gerektiğine karar vermek için kullanılan terimlerin listesi</string>
@@ -714,7 +708,7 @@
   <string name="notification_group_errors">Hatalar</string>
     <string name="notification_group_news">Haberler</string>
     <string name="notification_channel_user_action">Yapılması gereken işlemler</string>
-    <string name="notification_channel_user_action_description">Eyleminiz gerekliyse, örneğin bir parola girmeniz gerekiyorsa gösterilir..</string>
+    <string name="notification_channel_user_action_description">Eyleminiz gerekliyse, örneğin bir parola girmeniz gerekiyorsa gösterilir.</string>
     <string name="notification_channel_downloading">Bölümler indiriliyor</string>
     <string name="notification_channel_downloading_description">Bölümler indirilirken gösterilir.</string>
     <string name="notification_channel_playing">Oynatılıyor</string>
@@ -746,11 +740,11 @@
         <item quantity="one">Cihazdaki %d bölümün toplam boyutu</item>
         <item quantity="other">Cihazdaki %d bölümün toplam boyutu</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">Lütfen \" %1$s \" adlı podcast\'i, TÜM bölümlerini (indirilen bölümler dahil), oynatma geçmişini ve istatistiklerini silmek istediğinizi onaylayın .</string>
-    <string name="feed_delete_confirmation_msg_batch">Lütfen seçili podcast\'leri, TÜM bölümlerini (indirilen bölümler dahil), oynatma geçmişini ve istatistiklerini kaldırmak istediğinizi onaylayın.</string>
-    <string name="feed_delete_confirmation_local_msg">Lütfen \" %1$s \" podcast\'ini, oynatma geçmişini ve istatistiklerini kaldırmak istediğinizi onaylayın . Yerel kaynak klasöründeki dosyalar silinmeyecektir.</string>
     <string name="delete_downloads_played">Oynatılanı sil</string>
-    <string name="mobile_download_notice">Önümüzdeki %d dakika boyunca mobil veri bağlantısı üzerinden indiriliyor</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Sonraki %d dakika boyunca mobil veri bağlantısı üzerinden indirme yapılıyor</item>
+        <item quantity="other">Sonraki %d dakika boyunca mobil veri bağlantısı üzerinden indirme yapılıyor</item>
+    </plurals>
     <string name="bottom_navigation">Alt gezinme</string>
     <string name="delete_downloads_played_confirmation">Lütfen oynatılan tüm indirmeleri silmek istediğinizi onaylayın.</string>
     <string name="null_value_podcast_error">Dokunduğunuz bağlantı geçerli bir podcast URL\'si içermiyor. Lütfen bağlantıyı doğrulayın ve tekrar deneyin veya podcast\'i manuel olarak arayın.</string>
@@ -799,10 +793,10 @@
         <item quantity="one">saat bölüm\n%1$d podcastten</item>
         <item quantity="other">saat bölüm\n%1$d podcastlerden</item>
     </plurals>
-    <string name="pref_automatic_download_global_description">Yeni bölümleri otomatik olarak indir. Podcast başına istisna eklenebilir.</string>
+    <string name="pref_automatic_download_global_description">Gelen kutusundaki bölümleri otomatik olarak indir. Podcast başına istisna eklenebilir.</string>
     <string name="pref_automatic_download_queue_title">İndirme sıraya eklendi</string>
     <string name="pref_automatic_download_queue_description">Sıradaki bölümleri otomatik olarak indir</string>
-    <string name="nextcloud_login_error_generic">Nextcloud hesabınıza giriş yapılamadı.\n\n- Ağ bağlantınızı kontrol edin.\n- Doğru sunucu adresini kullandığınızı doğrulayın.\n- gpoddersync Nextcloud eklentisinin yüklü olduğundan emin olun.</string>
+    <string name="nextcloud_login_error_generic">Nextcloud hesabınıza giriş yapılamadı.\n\n- Ağ bağlantınızı kontrol edin.\n- Doğru sunucu adresini kullandığınızı doğrulayın.\n- Gpodder Sync Nextcloud eklentisinin yüklü olduğundan emin olun.</string>
     <string name="playback_history_label_short">Geçmiş</string>
     <string name="download_error_unsupported_type_html_manual">Girdiğiniz adres bir website adresi, podcast RSS adresi değil.</string>
     <string name="delete_tag_label">Etiketi sil</string>
@@ -851,16 +845,62 @@
     <string name="mark_as_played_label">Oynatıldı olarak işaretle</string>
     <plurals name="added_to_queue_message">
         <item quantity="one">%d bölüm sıraya eklendi.</item>
-        <item quantity="other"></item>
+        <item quantity="other">%d bölüm sıraya eklendi.</item>
     </plurals>
     <string name="visit_social_interact_confirm_dialog_title">AntennaPod\'dan ayrılıyorsunuz</string>
     <string name="no_items_selected_message">Hiçbir öğe seçilmedi</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Oynatıldı olarak işaretlendi</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d bölüm oynatıldı olarak işaretlendi.</item>
+        <item quantity="other">%d bölüm oynatıldı olarak işaretlendi.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Oynatılmadı olarak işaretlendi</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d bölüm oynatılmadı olarak işaretlendi.</item>
+        <item quantity="other">%d bölüm oynatılmadı olarak işaretlendi.</item>
     </plurals>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d abonelik</item>
+        <item quantity="other">%d abonelik</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arşivle</string>
+    <string name="archive_feed_label_noun">Arşiv</string>
+    <string name="restore_archive_label">Geri yükle</string>
+    <string name="remove_archive_feed_label">Sil / arşivle</string>
+    <string name="feed_delete_explanation_delete">Silme işlemi indirilenler, oynatma geçmişi ve istatistikler dahil olmak üzere TÜM bölümleri silecektir.</string>
+    <string name="feed_delete_explanation_archive">Arşivleme işlemi, abonelik listesinden gizler ve güncelleme almamasını sağlar. İndirilenler, istatistikler ve oynatma durumu korunur.</string>
+    <string name="please_wait_before_refreshing">Podcastleri yeniden yenilemek için lütfen bir süre bekleyin.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">%d bölüm indiriliyor.</item>
+        <item quantity="other">%d bölüm indiriliyor.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d indirilen bölüm silindi.</item>
+        <item quantity="other">%d indirilen bölüm silindi.</item>
+    </plurals>
+    <string name="play_this_to_seek_position_message">Konumlara atlamak için bölümü oynatmanız gerekir</string>
+    <string name="mark_as_unplayed_label">Oynatılmadı olarak işaretle</string>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d bölüm sıradan kaldırıldı.</item>
+        <item quantity="other">%d bölüm sıradan kaldırıldı.</item>
+    </plurals>
+    <string name="transcript_follow_audio_label">Sesi takip et</string>
+    <string name="visit_social_interact_confirm_dialog_message">Lütfen \"%1$s\" web sitesine güvendiğinizden emin olun.</string>
+    <string name="reset_playback_position_label">Oynatma konumunu sıfırla</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Silme işlemi, bölümü AntennaPod\'dan kaldırır ve medya dosyasını aygıtınızın depolama alanından siler. AntennaPod üzerinden tekrar indirilemez.</string>
+    <string name="already_downloaded">Bölüm zaten indirildi</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d bölüm yukarı taşındı.</item>
+        <item quantity="other">%d bölüm yukarı taşındı.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d bölüm aşağı taşındı.</item>
+        <item quantity="other">%d bölüm aşağı taşındı.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">Sırada bölüm yok, ama sizi bekleyen yeni bölümler var!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Gelen kutusuna git</string>
+    <string name="tag_all">Tümü</string>
+    <string name="tag_untagged">Etiketsiz</string>
+    <string name="auto_download_inbox_category">Gelen kutusundaki bölümleri otomatik olarak indir</string>
+    <string name="statistics_expected_next_episode_any_time">Her an olabilir</string>
+    <string name="release_schedule_multiple_per_day">günde birkaç kez</string>
+    <string name="cover_as_background">Arka plan olarak kapak</string>
 </resources>

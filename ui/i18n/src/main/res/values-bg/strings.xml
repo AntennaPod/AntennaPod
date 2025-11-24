@@ -149,7 +149,6 @@
     <string name="remove_feed_label">Премахни подкаста</string>
     <string name="share_label">Сподели</string>
     <string name="share_file_label">Сподели файл</string>
-    <string name="feed_remover_msg">Премахни подкаста</string>
     <string name="load_complete_feed">Обнови целия подкаст</string>
     <string name="multi_select">Избери много</string>
     <string name="select_all_above">Избери всички над текущия</string>
@@ -215,7 +214,6 @@
     <string name="pref_smart_mark_as_played_sum">Маркиране на епизодите като слушани, дори когато остават определени секунди от времето за възпроизвеждане</string>
     <string name="playback_pref">Възпроизвеждане</string>
     <string name="feed_refresh_never">Никога</string>
-    <string name="pref_nav_drawer_feed_order_sum">Променете реда на абонаментите си</string>
     <string name="pref_automatic_download_on_battery_title">Изтегляне, когато не се зарежда</string>
     <string name="pref_automatic_download_on_battery_sum">Позволява автоматично изтегляне, когато батерията не се зарежда</string>
     <string name="pref_show_remain_time_summary">Покажи оставащото време на епизодите когато отметнато. Ако не е отметнато, покажи пълното времетраене на епизодите.</string>

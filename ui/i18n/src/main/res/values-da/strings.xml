@@ -50,7 +50,7 @@
     <string name="home_welcome_title">Velkommen til AntennaPod!</string>
     <string name="home_welcome_text">Du abonnerer endnu ikke på nogen podcasts. Åbn menuen for at tilføje en podcast.</string>
     <string name="notification_permission_denied">Du afviste tilladelsen.</string>
-    <string name="configure_home">Konfigurer Hjem-skærm</string>
+    <string name="configure_home">Konfigurer hjem-skærm</string>
     <string name="section_hidden">Skjult</string>
     <!--Main activity-->
   <string name="drawer_open">Åbn menu</string>
@@ -154,11 +154,10 @@
     <string name="show_info_label">Vis information</string>
     <string name="show_feed_settings_label">Vis podcast-indstillinger</string>
     <string name="feed_settings_label">Podcast-indstillinger</string>
-    <string name="rename_feed_label">Omdøb podcast</string>
-    <string name="remove_feed_label">Fjern podcast</string>
+    <string name="rename_feed_label">Omdøb</string>
+    <string name="remove_feed_label">Slet</string>
     <string name="share_label">Del</string>
     <string name="share_file_label">Del fil</string>
-    <string name="feed_remover_msg">Fjerner podcast</string>
     <string name="load_complete_feed">Opdater hele podcasten</string>
     <string name="multi_select">Vælg flere</string>
     <string name="select_all_above">Vælg alt ovenfor</string>
@@ -304,8 +303,8 @@
     <string name="synchronization_sum">Synkroniser med andre enheder</string>
     <string name="automation">Automatisering</string>
     <string name="download_pref_details">Detaljer</string>
-    <string name="import_export_pref">Import/eksport</string>
-    <string name="import_export_search_keywords">sikkerhedskopiering, sikkerhedskopi, backup, gendan, gendannelse, restore</string>
+    <string name="import_export_pref">Sikkerhedskopiering og gendannelse</string>
+    <string name="import_export_search_keywords">import, eksport</string>
     <string name="theming">Tema</string>
     <string name="external_elements">Eksterne elementer</string>
     <string name="interruptions">Afbrydelser</string>
@@ -316,7 +315,7 @@
     <string name="preference_search_clear_history">Slet historik</string>
     <string name="pref_episode_cleanup_title">Slet før automatisk overførsel</string>
     <string name="pref_episode_cleanup_summary">Afsnit der kan fjernes, hvis Automatisk overførsel har brug for plads til nye afsnit</string>
-    <string name="pref_pauseOnDisconnect_sum">Sæt afspilning på pause, hvis hovedtelefoner eller bluetooth afbrydes</string>
+    <string name="pref_pauseOnDisconnect_sum">Sæt afspilning på pause, hvis hovedtelefoner eller bluetooth-enheder afbrydes</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Genoptag afspilning når hovedtelefonerne tilsluttes igen</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Genoptag afspilning når bluetooth forbinder igen</string>
     <string name="pref_hardware_forward_button_title">Fremadknap</string>
@@ -364,7 +363,7 @@
     <string name="pref_mobileUpdate_title">Mobilopdateringer</string>
     <string name="pref_mobileUpdate_sum">Vælg hvad der skal være tilladt via mobil dataforbindelse</string>
     <string name="pref_mobileUpdate_refresh">Opdatering af podcast</string>
-    <string name="pref_mobileUpdate_images">Billeder</string>
+    <string name="pref_mobileUpdate_images">Cover-billeder</string>
     <string name="pref_mobileUpdate_episode_download">Download af afsnit</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">Brugerflade</string>
@@ -373,17 +372,14 @@
     <string name="pref_black_theme_message">Brug helt sort til det mørke tema</string>
     <string name="pref_tinted_theme_title">Dynamiske farver</string>
     <string name="pref_tinted_theme_message">Tilpas appens farver i forhold til baggrunden</string>
-    <string name="pref_nav_drawer_feed_order_title">Indstil abonnementsrækkefølge</string>
-    <string name="pref_nav_drawer_feed_order_sum">Ændr rækkefølgen af dine abonnementer</string>
-    <string name="pref_nav_drawer_feed_counter_title">Indstil abonnementstæller</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Ændr informationen vist af abonnementstælleren. Påvirker også rækkefølgen af abonnementer, hvis abonnementsrækkefølgen er sat til \'Tæller\'.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Tæller</string>
     <string name="pref_automatic_download_title">Automatisk overførsel</string>
     <string name="pref_automatic_download_sum">Konfigurér automatisk overførsel af afsnit</string>
     <string name="pref_automatic_download_on_battery_title">Tillad overførsel ved batteridrift</string>
     <string name="pref_automatic_download_on_battery_sum">Tillad automatisk overførsel, når batteriet ikke oplades</string>
     <string name="pref_episode_cache_title">Afsnitsgrænse</string>
     <string name="pref_episode_cache_summary">Automatisk overførsel stoppes, hvis dette antal nås</string>
-    <string name="pref_episode_cover_title">Brug afsnitbillede</string>
+    <string name="pref_episode_cover_title">Brug afsnits cover</string>
     <string name="pref_episode_cover_summary">Brug det afsnitspecifikke cover i lister når muligt. Hvis dette slås fra, vil appen altid bruge podcastens coverbillede.</string>
     <string name="pref_show_remain_time_title">Vis resterende tid</string>
     <string name="pref_show_remain_time_summary">Vis resterende tid for afsnit når valgt. Hvis ikke valgt vises den samlede varighed af afsnit.</string>
@@ -439,8 +435,6 @@
     <string name="remember_last_page">Husk sidste side</string>
     <string name="pref_delete_removes_from_queue_title">Slet fjerner fra kø</string>
     <string name="pref_delete_removes_from_queue_sum">Fjern automatisk et afsnit fra køen, når det slettes</string>
-    <string name="pref_filter_feed_title">Abonnementsfilter</string>
-    <string name="pref_filter_feed_sum">Filtrér dine abonnementer i navigationspanelet og på abonnementsskærmen</string>
     <string name="subscriptions_counter_greater_zero">Tæller større end 0</string>
     <string name="auto_downloaded">Automatisk hentet</string>
     <string name="not_auto_downloaded">Ikke automatisk hentet</string>
@@ -549,7 +543,7 @@
     <string name="synchronization_summary_unchoosen">Du kan vælge mellem flere udbydere til at synkronisere dine abonnementer og afspilningsstatus for afsnit med</string>
     <string name="dialog_choose_sync_service_title">Vælg synkroniseringsudbyder</string>
     <string name="gpodnet_description">Gpodder.net er en open source synkroniseringstjeneste til podcasts, som du kan installere på din egen server. Gpodder.net er uafhængig af AntennaPod-projektet.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync er en open source-app fra Nextcloud, som du nemt kan installere på din egen server. Appen er uafhængig af AntennaPod-projektet.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync er en open source-app fra Nextcloud, som du nemt kan installere på din egen server. Gpodder Sync er uafhængig af AntennaPod-projektet.</string>
     <string name="synchronization_host_explanation">Du kan vælge din egen server at synkronisere med. Når du har fundet din foretrukne synkroniseringsserver, skal du indtaste dens adresse her.</string>
     <string name="synchronization_host_label">Server-adresse</string>
     <string name="proceed_to_login_butLabel">Fortsæt til login</string>
@@ -624,7 +618,7 @@
     <string name="authentication_descr">Ændr dit brugernavn og adgangskode for denne podcast og dens afsnit</string>
     <string name="feed_tags_label">Etiketter</string>
     <string name="feed_tags_summary">Ændr etiketterne for denne podcast for at hjælpe med organiseringen af dine abonnementer</string>
-    <string name="feed_folders_include_root">Vis denne podcast i hovedlisten</string>
+    <string name="feed_folders_include_root">Vis over etiketter (kun sidenavigation)</string>
     <string name="multi_feed_common_tags_info">Kun fælles etiketter fra alle valgte abonnementer vises. Andre etiketter forbliver upåvirkede.</string>
     <string name="episode_filters_label">Afsnitsfilter</string>
     <string name="episode_filters_description">Liste af ord, der bliver brugt til at beslutte, om et afsnit skal medtages eller udelades ved automatisk overførsel</string>
@@ -739,32 +733,25 @@
     <string name="home_no_recent_unplayed_episodes_text">Du har allerede afspillet alle de seneste afsnit. Ingen ting at blive overrasket over her ;)</string>
     <string name="sync_status_wait_for_downloads">Venter på opdatering af abonnementer…</string>
     <string name="home_continue_empty_text">Du kan tilføje afsnit ved at overføre dem eller trykke længe på dem og vælge \"Tilføj til kø\".</string>
-    <string name="nextcloud_login_error_generic">Kan ikke logge ind på din Nextcloud.\n\n- Tjek din netværksforbindelse.\n- Bekræft, at du bruger den rigtige serveradresse.\n- Sørg for, at gpoddersync Nextcloud-udvidelsen er installeret.</string>
-    <string name="statistics_episodes_downloaded">overført</string>
+    <string name="nextcloud_login_error_generic">Kan ikke logge ind på din Nextcloud.\n\n- Tjek din netværksforbindelse.\n- Bekræft, at du bruger den rigtige serveradresse.\n- Sørg for, at Gpodder Sync Nextcloud-udvidelsen er installeret.</string>
     <string name="discover_more">Opdag mere »</string>
     <string name="bottom_navigation_summary">Få adgang til de vigtigste skærme fra alle steder med et enkelt tryk</string>
     <string name="delete_downloads_played">Slet afspillede</string>
-    <string name="feed_delete_confirmation_local_msg">Bekræft, at du vil fjerne podcasten \"%1$s\", dens afspilningshistorik og dens statistikker. Filerne i den lokale kildemappe vil ikke blive slettet.</string>
     <string name="pref_nav_drawer_items_sum">Skift hvilke elementer, der vises i navigationsskuffen eller bundnavigationen</string>
     <string name="home_downloads_empty_text">Du kan overføre ethvert afsnit for at lytte til det offline.</string>
-    <string name="mobile_download_notice">Overfører via mobildataforbindelse i de næste %d minutter</string>
     <string name="bottom_navigation">Bundnavigation</string>
-    <string name="statistics_episodes_started">påbegyndt</string>
     <string name="statistics_episodes_space">plads brugt</string>
     <string name="statistics_release_schedule">udgivelsesplan</string>
     <string name="statistics_years_barchart_description">Spilletid pr. måned</string>
-    <string name="feed_delete_confirmation_msg_batch">Bekræft, at du vil fjerne de valgte podcasts, ALLE deres afsnit (inklusive overførte afsnit), afspilningshistorik og statistikker.</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Samlet størrelse af %d afsnit på enheden</item>
         <item quantity="other">Samlet størrelse af %d afsnit på enheden</item>
     </plurals>
     <string name="home_new_empty_text">Nye afsnit vil dukke op her. Så kan du beslutte, om du er interesseret i dem.</string>
     <string name="section_shown">Vist</string>
-    <string name="feed_delete_confirmation_msg">Bekræft, at du ønsker at slette podcasten \"%1$s\", ALLE dens afsnit (inklusive overførte afsnit), afspilningshistorik og dens statistikker.</string>
     <string name="null_value_podcast_error">Det link, du trykkede på, indeholder ikke en gyldig podcast-URL. Bekræft venligst linket, og prøv igen, eller søg efter podcasten manuelt.</string>
     <string name="delete_downloads_played_confirmation">Bekræft, at du vil slette alle afspillede downloads.</string>
     <string name="pref_nav_drawer_items_title">Tilpas navigation</string>
-    <string name="statistics_episodes_total">total</string>
     <string name="statistics_release_next">næste afsnit (estimat)</string>
     <string name="statistics_view_all">Alle podcasts »</string>
     <string name="episode_download_failed">Overførsel af afsnit mislykkedes</string>
@@ -849,12 +836,12 @@
     <string name="removed_from_inbox_message">Fjernet fra indbakke</string>
     <string name="mark_as_played_label">Markér som afspillet</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Markeret som afspillet</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d afsnit markeret som afspillet.</item>
+        <item quantity="other">%d afsnit markeret som afspillet.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Markeret som uafspillet</item>
-        <item quantity="other"></item>
+        <item quantity="one">%d afsnit markeret som uafspillet.</item>
+        <item quantity="other">%d afsnit markeret som uafspillet.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">For at springe til positioner skal du afspille afsnittet</string>
     <string name="mark_as_unplayed_label">Markér som uafspillet</string>
@@ -883,4 +870,39 @@
     <string name="no_queue_items_inbox_has_items_label">Der er ingen afsnit i kø, men der er nye afsnit, der venter på dig!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Gå til indbakke</string>
     <string name="auto_download_inbox_category">Overfør automatisk afsnit fra indbakken</string>
+    <string name="please_wait_before_refreshing">Vent et øjeblik, før du opdaterer podcasts igen.</string>
+    <string name="already_downloaded">Afsnittet er allerede overført</string>
+    <string name="tag_all">Alle</string>
+    <string name="statistics_expected_next_episode_any_time">Når som helst nu</string>
+    <string name="release_schedule_multiple_per_day">flere gange om dagen</string>
+    <string name="cover_as_background">Cover som baggrund</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d abonnement</item>
+        <item quantity="other">%d abonnementer</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arkivér</string>
+    <string name="archive_feed_label_noun">Arkiv</string>
+    <string name="restore_archive_label">Gendan</string>
+    <string name="remove_archive_feed_label">Slet / arkivér</string>
+    <string name="feed_delete_explanation_delete">Sletning vil fjerne ALLE afsnit, herunder overførsler, afspilningshistorik og statistik.</string>
+    <string name="feed_delete_explanation_archive">Arkivering skjuler den fra abonnementslisten og forhindrer, at den modtager opdateringer. Overførsler, statistikker og afspilningsstatus bevares.</string>
+    <string name="tag_untagged">Uden etikette</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Overfører via mobildataforbindelse i det næste %d minut</item>
+        <item quantity="other">Overfører via mobildataforbindelse i de næste %d minutter</item>
+    </plurals>
+    <string name="no_archive_head_label">Intet arkiveret</string>
+    <string name="no_archive_label">Du kan arkivere podcasts fra hovedskærmen for abonnementer.</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">startet</item>
+        <item quantity="other">startet</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">i alt</item>
+        <item quantity="other">i alt</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">overført</item>
+        <item quantity="other">overført</item>
+    </plurals>
 </resources>

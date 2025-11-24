@@ -20,6 +20,7 @@ dependencyResolutionManagement {
 include ':app'
 include ':event'
 include ':model'
+include ':system'
 
 include ':net:common'
 include ':net:discovery'

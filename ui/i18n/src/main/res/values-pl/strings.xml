@@ -158,7 +158,6 @@
     <string name="remove_feed_label">Usuń podcast</string>
     <string name="share_label">Udostępnij</string>
     <string name="share_file_label">Udostępnij plik</string>
-    <string name="feed_remover_msg">Usuwanie podcastu</string>
     <string name="load_complete_feed">Odśwież cały podcast</string>
     <string name="multi_select">Wybierz wiele</string>
     <string name="select_all_above">Zaznacz wszystkie powyżej</string>
@@ -376,10 +375,7 @@
     <string name="pref_black_theme_message">Używaj prawdziwej czerni w ciemnym motywie</string>
     <string name="pref_tinted_theme_title">Dynamiczne kolory</string>
     <string name="pref_tinted_theme_message">Dostosuj kolory na podstawie tapety</string>
-    <string name="pref_nav_drawer_feed_order_title">Ustaw kolejność subskrypcji</string>
-    <string name="pref_nav_drawer_feed_order_sum">Zmień kolejność subskrybowanych kanałów</string>
     <string name="pref_nav_drawer_feed_counter_title">Ustaw licznik subskrypcji</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Zmień informacje wyświetlane przez licznik subskrypcji. Zmienia również sortowanie subskrypcji, jeśli kolejność ustawiona jest na \'Sortuj wg licznika\'.</string>
     <string name="pref_automatic_download_title">Automatyczne pobieranie</string>
     <string name="pref_automatic_download_sum">Skonfiguruj automatyczne pobieranie odcinków</string>
     <string name="pref_automatic_download_on_battery_title">Pobieraj, gdy nie ładuje</string>
@@ -439,8 +435,6 @@
     <string name="remember_last_page">Zapiętaj ostatnią stronę</string>
     <string name="pref_delete_removes_from_queue_title">Kasowanie usuwa z kolejki</string>
     <string name="pref_delete_removes_from_queue_sum">Automatycznie usuwaj odcinek z kolejki gdy go kasujesz</string>
-    <string name="pref_filter_feed_title">Filtr subskrypcji</string>
-    <string name="pref_filter_feed_sum">Filtruj subskrypcje widoczne w panelu nawigacyjnym i na ekranie subskrypcji</string>
     <string name="subscriptions_counter_greater_zero">Licznik większy niż zero</string>
     <string name="auto_downloaded">Pobrane automatycznie</string>
     <string name="not_auto_downloaded">Nie pobrane automatycznie</string>
@@ -713,7 +707,6 @@
         <item quantity="many">%d godzin po zakończeniu</item>
         <item quantity="other">%d godzin po zakończeniu</item>
     </plurals>
-    <string name="feed_delete_confirmation_local_msg">Potwierdź proszę, że chcesz usunąć podcast \"%1$s\", jego historię odtwarzania i jego statystyki. Pliki w lokalnym folderze nie zostaną usunięte.</string>
     <plurals name="time_hours_quantified">
         <item quantity="one">%d godzina</item>
         <item quantity="few">%d godziny</item>
@@ -735,7 +728,6 @@
     <string name="download_started_talkback">Zaczęto pobieranie dla %1$s</string>
     <string name="rating_tagline">Od %1$s odtworzyłeś %2$s%3$d%4$s godzin podcastów.</string>
     <string name="statistics_release_next">następny odcinek (w przybliżeniu)</string>
-    <string name="feed_delete_confirmation_msg">Potwierdź proszę, że chcesz usunąć podcast \"%1$s\", WSZYSTKIE jego odcinki (w tym te pobrane), historię odtwarzania i jego statystyki.</string>
     <string name="multi_select_started_talkback">Akcje wielokrotnego wyboru widziane na dole</string>
     <string name="null_value_podcast_error">Link, który kliknąłeś nie zawiera działającego adresu podcastu. Zweryfikuj, proszę, link i spróbuj ponownie lub poszukaj podcastu ręcznie.</string>
     <string name="pref_episode_cleanup_title">Usuń przed automatycznym pobieraniem</string>
@@ -768,15 +760,11 @@
     <string name="home_downloads_empty_text">Możesz pobrać dowolny odcinek, aby słuchać go bez dostępu do internetu.</string>
     <string name="delete_downloads_played">Usuń odtworzone</string>
     <string name="delete_downloads_played_confirmation">Potwierdź proszę, że chcesz usunąć wszystkie odtworzone pobrane odcinki.</string>
-    <string name="mobile_download_notice">Pobieranie przez dane mobilne przez następne %d minut(y)</string>
     <string name="section_shown">Pokazane</string>
     <string name="bottom_navigation">Dolny pasek nawigacji</string>
-    <string name="statistics_episodes_total">łącznie</string>
     <string name="statistics_episodes_space">zajęta pamięć</string>
     <string name="statistics_release_schedule">termin publikowania</string>
     <string name="statistics_years_barchart_description">Miesięczny czas odtwarzania</string>
-    <string name="statistics_episodes_started">zaczęty(ch)</string>
-    <string name="statistics_episodes_downloaded">pobrany(ch)</string>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="one">%d dzień po zakończeniu</item>
         <item quantity="few">%d dni po zakończeniu</item>
@@ -792,7 +780,6 @@
         <item quantity="many">Łączny rozmiar %d odcinków na urządzeniu</item>
         <item quantity="other">Łączny rozmiar %d odcinków na urządzeniu</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg_batch">Potwierdź proszę, że chcesz usunąć wybrane podcasty, WSZYSTKIE ich odcinki (w tym te pobrane), historię odtwarzania i ich statystyki.</string>
     <string name="bottom_navigation_summary">Dostęp do najpotrzebniejszych menu wszędzie, za jednym dotknięciem</string>
     <string name="no_transcript_label">Bez transkrypcji</string>
     <string name="add_feed_label_short">Dodaj</string>
@@ -882,18 +869,6 @@
     </plurals>
     <string name="removed_from_inbox_message">Usunięto ze skrzynki odbiorczej</string>
     <string name="mark_as_played_label">Oznacz jako odtworzone</string>
-    <plurals name="marked_as_played_message">
-        <item quantity="one">Oznaczono jako odtworzone</item>
-        <item quantity="few"/>
-        <item quantity="many"/>
-        <item quantity="other"/>
-    </plurals>
-    <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Oznaczono jako nieodtworzone</item>
-        <item quantity="few"/>
-        <item quantity="many"/>
-        <item quantity="other"/>
-    </plurals>
     <string name="play_this_to_seek_position_message">Aby przewinąć do konkretnej pozycji, musisz odtworzyć odcinek</string>
     <string name="mark_as_unplayed_label">Oznacz jako nieodtworzone</string>
     <plurals name="added_to_queue_message">
@@ -928,4 +903,19 @@
         <item quantity="other">%d odcinków przeniesionych na dół.</item>
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Brak odcinków w kolejce, ale czekają na Ciebie nowe!</string>
+    <string name="no_archive_label">Podcasty można archiwizować z poziomu głównego ekranu subskrypcji.</string>
+    <string name="no_archive_head_label">Niczego nie zarchiwizowano</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d subskrybcja</item>
+        <item quantity="few">%d subskrybcji</item>
+        <item quantity="many">%d subskrybcji</item>
+        <item quantity="other">%d subskrybcji</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Archiwizuj</string>
+    <string name="archive_feed_label_noun">Archiwum</string>
+    <string name="restore_archive_label">Przywróć</string>
+    <string name="remove_archive_feed_label">Usuń / Archiwizuj</string>
+    <string name="feed_delete_explanation_delete">Usunięcie WSZYSTKICH odcinków, w tym pobranych plików, historii odtwarzania i statystyk.</string>
+    <string name="feed_delete_explanation_archive">Archiwizacja spowoduje ukrycie go na liście subskrypcji i uniknięcie jego aktualizacji. Pobrane pliki, statystyki i stan odtwarzania zostaną zachowane.</string>
+    <string name="please_wait_before_refreshing">Odczekaj chwilę przed ponownym odświeżeniem podcastów.</string>
 </resources>

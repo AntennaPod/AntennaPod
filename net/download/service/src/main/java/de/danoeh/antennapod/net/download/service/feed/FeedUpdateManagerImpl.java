@@ -35,6 +35,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     public static final String EXTRA_MANUAL = "manual";
     private static final String TAG = "AutoUpdateManager";
     private static long lastManualRefreshTime = 0;
+    private static long lastManualRefreshFeedId = -1;
     private static final long REFRESH_COOLDOWN_MS = 20_000;
 
     /**
@@ -67,6 +68,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
 
     public void runOnce(Context context, Feed feed, boolean nextPage) {
         lastManualRefreshTime = System.currentTimeMillis();
+        lastManualRefreshFeedId = feed != null ? feed.getId() : -1;
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
@@ -92,7 +94,9 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     }
 
     public void runOnceOrAsk(@NonNull Context context, @Nullable Feed feed) {
-        if (System.currentTimeMillis() - lastManualRefreshTime < REFRESH_COOLDOWN_MS) {
+        long feedId = feed != null ? feed.getId() : -1;
+        if (System.currentTimeMillis() - lastManualRefreshTime < REFRESH_COOLDOWN_MS
+                && lastManualRefreshFeedId == feedId) {
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.please_wait_before_refreshing)));
             EventBus.getDefault().postSticky(new FeedUpdateRunningEvent(false));
             return;

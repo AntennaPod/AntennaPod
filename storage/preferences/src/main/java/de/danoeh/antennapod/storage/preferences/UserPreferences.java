@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
@@ -400,7 +399,6 @@ public abstract class UserPreferences {
     /**
      * Set to true to enable Continuous Playback
      */
-    @VisibleForTesting
     public static void setFollowQueue(boolean value) {
         prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).apply();
     }

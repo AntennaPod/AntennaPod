@@ -114,7 +114,7 @@ public class MediaDownloadedHandler implements Runnable {
                     FeedMedia.FEEDFILETYPE_FEEDMEDIA, false, DownloadError.ERROR_DB_ACCESS_ERROR, e.getMessage());
         }
 
-        if (item != null && item.getFeed().getState() == Feed.STATE_SUBSCRIBED) {
+        if (item != null && item.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
             SynchronizationQueue.getInstance().enqueueEpisodeAction(
                     new EpisodeAction.Builder(item, EpisodeAction.DOWNLOAD)
                         .currentTimestamp()

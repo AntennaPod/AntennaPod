@@ -15,7 +15,7 @@
     <string name="subscriptions_label">Abonnements</string>
     <string name="subscriptions_list_label">Abonnement-Übersicht</string>
     <string name="cancel_download_label">Download abbrechen</string>
-    <string name="playback_history_label">Abspielverlauf</string>
+    <string name="playback_history_label">Wiedergabeverlauf</string>
     <string name="years_statistics_label">Jahre</string>
     <string name="notification_pref_fragment">Benachrichtigungen</string>
     <string name="current_playing_episode">Aktuell</string>
@@ -152,13 +152,12 @@
     <string name="multi_select_mark_played_confirmation">Bitte bestätige, dass du alle ausgewählten Einträge als abgespielt markieren möchtest.</string>
     <string name="multi_select_mark_unplayed_confirmation">Bitte bestätige, dass du alle ausgewählten Einträge als nicht abgespielt markieren möchtest.</string>
     <string name="show_info_label">Informationen anzeigen</string>
-    <string name="show_feed_settings_label">Zeige Podcast-Einstellungen</string>
+    <string name="show_feed_settings_label">Podcast-Einstellungen anzeigen</string>
     <string name="feed_settings_label">Podcast-Einstellungen</string>
-    <string name="rename_feed_label">Podcast umbenennen</string>
-    <string name="remove_feed_label">Podcast entfernen</string>
+    <string name="rename_feed_label">Umbenennen</string>
+    <string name="remove_feed_label">Löschen</string>
     <string name="share_label">Teilen</string>
-    <string name="share_file_label">Teile Datei</string>
-    <string name="feed_remover_msg">Podcast wird entfernt</string>
+    <string name="share_file_label">Datei teilen</string>
     <string name="load_complete_feed">Kompletten Podcast aktualisieren</string>
     <string name="multi_select">Mehrere auswählen</string>
     <string name="select_all_above">Alles oberhalb auswählen</string>
@@ -185,7 +184,7 @@
     <string name="stream_label">Streamen</string>
     <string name="delete_label">Löschen</string>
     <string name="remove_inbox_label">Aus dem Posteingang entfernen</string>
-    <string name="toggle_played_label">Abgespielt-Zustand umschalten</string>
+    <string name="toggle_played_label">Abspielstatus umschalten</string>
     <string name="mark_read_no_media_label">Als gelesen markieren</string>
     <string name="mark_unread_label_no_media">Als ungelesen markieren</string>
     <string name="add_to_queue_label">Zur Warteschlange hinzufügen</string>
@@ -243,12 +242,12 @@
     <string name="no_feed_url_podcast_found_by_search">Der vorgeschlagene Podcast hat keinen RSS-Link. AntennaPod hat einen Podcast gefunden, welcher der gleiche sein könnte</string>
     <string name="authentication_notification_title">Authentifizierung erforderlich</string>
     <string name="confirm_mobile_download_dialog_title">Mobilen Download bestätigen</string>
-    <string name="confirm_mobile_download_dialog_message">Der Download über mobile Datenverbindung wurde in den Einstellungen deaktiviert. AntennaPod kann die Episode später herunterladen, wenn WLAN verfügbar ist.</string>
+    <string name="confirm_mobile_download_dialog_message">Das Herunterladen über eine mobile Datenverbindung ist in den Einstellungen deaktiviert. AntennaPod kann die Episode später automatisch herunterladen, sobald eine WLAN-Verbindung verfügbar ist.</string>
     <string name="confirm_mobile_download_dialog_message_vpn">– VPN wird verwendet? Deine VPN-App gibt vor, ein mobiles Netzwerk zu sein (kostenpflichtige Verbindung). Wenn du möchtest, dass dieses Problem behoben wird, wende dich an die Entwickler der VPN-App.\n– Kein VPN wird verwendet? Öffne die WLAN-Einstellungen von Android und ändere den Typ des WLANs auf nicht kostenpflichtig.</string>
     <string name="confirm_mobile_download_dialog_download_later">Später herunterladen</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Trotzdem herunterladen</string>
     <string name="confirm_mobile_streaming_notification_title">Mobiles Streaming bestätigen</string>
-    <string name="confirm_mobile_streaming_notification_message">Streamen über mobile Datenverbindung ist in den Einstellungen deaktiviert. Tippen, um trotzdem zu streamen.</string>
+    <string name="confirm_mobile_streaming_notification_message">Das Streamen über eine mobile Datenverbindung ist in den Einstellungen deaktiviert. Tippen, um trotzdem zu streamen.</string>
     <string name="confirm_mobile_streaming_button_always">Immer</string>
     <string name="confirm_mobile_streaming_button_once">Einmalig</string>
     <!--Mediaplayer messages-->
@@ -304,8 +303,8 @@
     <string name="synchronization_sum">Mit anderen Geräten synchronisieren</string>
     <string name="automation">Automatisierung</string>
     <string name="download_pref_details">Details</string>
-    <string name="import_export_pref">Import/Export</string>
-    <string name="import_export_search_keywords">Backup, Sicherung, Datensicherung, Wiederherstellung</string>
+    <string name="import_export_pref">Sicherung und Wiederherstellung</string>
+    <string name="import_export_search_keywords">Import, Export, Backup, Sicherung, Wiederherstellung</string>
     <string name="theming">Thema</string>
     <string name="external_elements">Externe Elemente</string>
     <string name="interruptions">Unterbrechungen</string>
@@ -316,7 +315,7 @@
     <string name="preference_search_clear_history">Verlauf leeren</string>
     <string name="pref_episode_cleanup_title">Vor automatischem Herunterladen löschen</string>
     <string name="pref_episode_cleanup_summary">Episoden, die gelöscht werden können, wenn beim automatischen Herunterladen Platz für neue Episoden benötigt wird</string>
-    <string name="pref_pauseOnDisconnect_sum">Wiedergabe pausieren, wenn Kopfhörer ausgesteckt oder Bluetooth getrennt wird</string>
+    <string name="pref_pauseOnDisconnect_sum">Wiedergabe pausieren, wenn Kopfhörer ausgesteckt oder Bluetooth-Geräte getrennt werden</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder eingesteckt werden</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Wiedergabe fortsetzen, wenn Bluetooth wieder verbunden ist</string>
     <string name="pref_hardware_forward_button_title">Vorwärtstaste</string>
@@ -344,7 +343,7 @@
     <string name="playback_pref">Wiedergabe</string>
     <string name="playback_pref_sum">Kopfhörersteuerung, Sprungintervall, Warteschlange</string>
     <string name="downloads_pref">Downloads</string>
-    <string name="downloads_pref_sum">Aktualisierungsintervall, Mobile Daten, Automatischer Download, Automatisches Löschen</string>
+    <string name="downloads_pref_sum">Aktualisierungsintervall, Mobile Daten, Automatisches Herunterladen, Automatisches Löschen</string>
     <string name="feed_refresh_title">Podcasts aktualisieren</string>
     <string name="feed_refresh_sum">Ein Intervall festlegen, in dem AntennaPod automatisch nach neuen Episoden sucht</string>
     <string name="feed_refresh_never">Niemals</string>
@@ -373,16 +372,13 @@
     <string name="pref_black_theme_message">Schwarz für das dunkle Design verwenden</string>
     <string name="pref_tinted_theme_title">Dynamische Farben</string>
     <string name="pref_tinted_theme_message">App-Farben basierend auf dem Hintergrundbild anpassen</string>
-    <string name="pref_nav_drawer_feed_order_title">Abonnement-Reihenfolge einstellen</string>
-    <string name="pref_nav_drawer_feed_order_sum">Die Reihenfolge deiner Abonnements ändern</string>
-    <string name="pref_nav_drawer_feed_counter_title">Abonnement-Zähler einstellen</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Die durch den Abonnementszähler angezeigten Informationen ändern. Betrifft auch die Sortierung der Abonnements wenn „Reihenfolge der Abonnements“ auf „Zähler“ gesetzt ist.</string>
+    <string name="pref_nav_drawer_feed_counter_title">Zähler</string>
     <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
     <string name="pref_automatic_download_sum">Automatisches Herunterladen von Episoden einrichten</string>
-    <string name="pref_automatic_download_on_battery_title">Automatischer Download im Akkubetrieb</string>
-    <string name="pref_automatic_download_on_battery_sum">Automatische Downloads auch erlauben, wenn der Akku nicht geladen wird</string>
+    <string name="pref_automatic_download_on_battery_title">Automatisches Herunterladen im Akkubetrieb</string>
+    <string name="pref_automatic_download_on_battery_sum">Automatisches Herunterladen zulassen, auch wenn der Akku nicht geladen wird</string>
     <string name="pref_episode_cache_title">Episoden-Limit</string>
-    <string name="pref_episode_cache_summary">Der automatische Download wird beendet, wenn diese Anzahl erreicht wurde</string>
+    <string name="pref_episode_cache_summary">Das automatische Herunterladen wird beendet, wenn diese Anzahl erreicht wurde</string>
     <string name="pref_episode_cover_title">Episoden-Bilder verwenden</string>
     <string name="pref_episode_cover_summary">Falls verfügbar, episodenspezifische Titelbilder in Listen verwenden. Falls nicht ausgewählt, wird immer das Titelbild des Podcasts verwendet.</string>
     <string name="pref_show_remain_time_title">Verbleibende Zeit anzeigen</string>
@@ -419,7 +415,7 @@
     <string name="enqueue_location_after_current">Hinter der aktuell abgespielten Episode</string>
     <string name="enqueue_location_random">Zufällig</string>
     <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
-    <string name="documentation_support">Dokumentation &amp; Support</string>
+    <string name="documentation_support">Dokumentation und Support</string>
     <string name="visit_user_forum">Benutzerforum</string>
     <string name="bug_report_title">Fehler melden</string>
     <string name="open_bug_tracker">Bug-Tracker öffnen</string>
@@ -439,9 +435,7 @@
     <string name="remember_last_page">Letzte Seite merken</string>
     <string name="pref_delete_removes_from_queue_title">Gelöschte aus Warteschlange entfernen</string>
     <string name="pref_delete_removes_from_queue_sum">Episode automatisch aus der Warteschlange entfernen, wenn sie gelöscht wird</string>
-    <string name="pref_filter_feed_title">Abonnement-Filter</string>
-    <string name="pref_filter_feed_sum">Deine Abonnements in der Seitenleiste und auf der Abonnement-Übersicht filtern</string>
-    <string name="subscriptions_counter_greater_zero">Anzahl größer als Null</string>
+    <string name="subscriptions_counter_greater_zero">Zähler größer als Null</string>
     <string name="auto_downloaded">Automatisch heruntergeladen</string>
     <string name="not_auto_downloaded">Nicht automatisch heruntergeladen</string>
     <string name="kept_updated">Aktuell gehalten</string>
@@ -449,7 +443,7 @@
     <string name="new_episode_notification_enabled">Benachrichtigung aktiviert</string>
     <string name="new_episode_notification_disabled">Benachrichtigung deaktiviert</string>
     <string name="pref_feed_settings_dialog_msg">Diese Einstellung wird pro Podcast festgelegt. Du kannst sie ändern, indem du die Podcast-Seite öffnest.</string>
-    <string name="pref_contribute">Mitwirken</string>
+    <string name="pref_contribute">Mitmachen</string>
     <string name="pref_show_subscription_title">Titel anzeigen</string>
     <string name="pref_new_episodes_action_title">Aktion für neue Episoden</string>
     <string name="pref_new_episodes_action_sum">Aktion, die ausgeführt wird, wenn neue Episoden erscheinen</string>
@@ -462,7 +456,7 @@
     <string name="developers">Entwickler</string>
     <string name="translators">Übersetzer</string>
     <string name="special_thanks">Besonderen Dank</string>
-    <string name="privacy_policy">Datenschutzrichtlinie</string>
+    <string name="privacy_policy">Datenschutzerklärung</string>
     <string name="licenses">Lizenzen</string>
     <string name="licenses_summary">AntennaPod verwendet nützliche andere Software</string>
     <!--Search-->
@@ -502,7 +496,7 @@
     <string name="automatic_database_export_summary">Erstellt alle 3 Tage eine Sicherungskopie der AntennaPod-Datenbank. Es werden nur die 5 aktuellsten Sicherungen aufbewahrt.</string>
     <string name="automatic_database_export_error">Fehler bei der automatischen Datenbanksicherung</string>
     <string name="database_import_label">Datenbank importieren</string>
-    <string name="database_import_warning">Das Importieren einer Datenbank ersetzt alle Abonnements und abgespielte Episoden. Ein Export als Backup wird empfohlen. Möchtest du die Datenbank wirklich ersetzen?</string>
+    <string name="database_import_warning">Das Importieren einer Datenbank ersetzt alle Abonnements und abgespielte Episoden. Ein Datenbank-Export als Sicherungskopie wird empfohlen. Möchtest du die Datenbank wirklich ersetzen?</string>
     <string name="please_wait">Bitte warten…</string>
     <string name="export_error_label">Exportfehler</string>
     <string name="export_success_title">Export erfolgreich</string>
@@ -548,19 +542,19 @@
   <string name="synchronization_choose_title">Anbieter für Synchronisierung auswählen</string>
     <string name="synchronization_summary_unchoosen">Du kannst zwischen mehreren Anbietern wählen, um deine Abonnement- und Episodenzustände zu synchronisieren</string>
     <string name="dialog_choose_sync_service_title">Anbieter für Synchronisierung auswählen</string>
-    <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Podcast-Synchronisationsdienst, den du auf deinem eigenen Server installieren kannst. Gpodder.net ist unabhängig vom AntennaPod-Projekt.</string>
-    <string name="synchronization_summary_nextcloud">Gpodder Sync ist eine quelloffene Nextcloud-Anwendung, die du einfach auf deinem eigenen Server installieren kannst. Die App ist unabhängig vom AntennaPod-Projekt.</string>
-    <string name="synchronization_host_explanation">Du kannst deinen eigenen Server zur Synchronisation auswählen. Wenn du deinen bevorzugten Synchronisationsserver gefunden hast, gib bitte hier seine Adresse ein.</string>
-    <string name="synchronization_host_label">Server-Adresse</string>
+    <string name="gpodnet_description">Gpodder.net ist ein Open-Source-Podcast-Synchronisierungsdienst, den du auf deinem eigenen Server installieren kannst. Gpodder.net ist unabhängig vom AntennaPod-Projekt.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync ist eine quelloffene Nextcloud-Anwendung, die du einfach auf deinem eigenen Server installieren kannst. Gpodder Sync ist unabhängig vom AntennaPod-Projekt.</string>
+    <string name="synchronization_host_explanation">Du kannst deinen eigenen Server für die Synchronisierung auswählen. Wenn du deinen bevorzugten Synchronisierungsserver gefunden hast, gib bitte hier seine Adresse ein.</string>
+    <string name="synchronization_host_label">Serveradresse</string>
     <string name="proceed_to_login_butLabel">Weiter zur Anmeldung</string>
     <string name="synchronization_nextcloud_authenticate_browser">Gewähre den Zugriff über den geöffneten Webbrowser und kehre zu AntennaPod zurück.</string>
     <string name="gpodnetauth_login_butLabel">Anmelden</string>
-    <string name="synchronization_credentials_explanation">Bitte gib die Anmeldeinformationen deines Kontos auf dem Synchronisationsserver an.</string>
+    <string name="synchronization_credentials_explanation">Bitte gib die Anmeldedaten deines Kontos auf dem Synchronisierungsserver an.</string>
     <string name="gpodnetauth_encryption_warning">Passwort und Daten sind nicht verschlüsselt!</string>
     <string name="username_label">Benutzername</string>
     <string name="password_label">Passwort</string>
     <string name="synchronization_login_butLabel">Anmelden</string>
-    <string name="synchronization_selectDevice_explanation">Bitte wähle das Gerät aus, das du auf dem Synchronisationsserver erstellt hast, oder erstelle ein neues.</string>
+    <string name="synchronization_selectDevice_explanation">Bitte wähle das Gerät aus, das du auf dem Synchronisierungsserver erstellt hast, oder erstelle ein neues.</string>
     <string name="gpodnetauth_device_name">Gerätename</string>
     <string name="gpodnetauth_device_name_default">AntennaPod auf %1$s</string>
     <string name="gpodnetauth_existing_devices">Bestehende Geräte</string>
@@ -588,7 +582,7 @@
     <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Seit %1$s, hast du %2$s%3$d%4$s Stunden Podcasts gehört.</string>
-    <string name="rating_contribute_label">Willst du mitmachen? Egal, ob du übersetzen, unterstützen, entwerfen oder programmieren willst, wir würden uns freuen, wenn du dabei bist!</string>
+    <string name="rating_contribute_label">Möchtest du mitmachen? Egal, ob du übersetzen, unterstützen, entwerfen oder programmieren möchtest, wir würden uns freuen, wenn du dabei bist!</string>
     <string name="rating_contribute_button">Entdecke, wie du beitragen kannst</string>
     <string name="rating_volunteers_label">AntennaPod wird von Freiwilligen in ihrer Freizeit entwickelt. Teile deine Wertschätzung für ihre Arbeit, indem du eine gute Bewertung hinterlässt.</string>
     <string name="rating_rate">Bewerte AntennaPod</string>
@@ -624,10 +618,10 @@
     <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden</string>
     <string name="feed_tags_label">Tags</string>
     <string name="feed_tags_summary">Ändere die Schlagworte (Tags) dieses Podcasts, um deine Abonnements zu organisieren</string>
-    <string name="feed_folders_include_root">Diesen Podcast in der Hauptliste anzeigen</string>
+    <string name="feed_folders_include_root">Über den Tags anzeigen (nur in der Seitenleiste)</string>
     <string name="multi_feed_common_tags_info">Es werden nur gemeinsame Tags aus allen ausgewählten Abonnements angezeigt. Andere Tags bleiben davon unberührt.</string>
     <string name="episode_filters_label">Episoden-Filter</string>
-    <string name="episode_filters_description">Liste von Begriffen, die dazu verwendet wird, Episoden beim automatischen Download einzubeziehen oder auszuschließen</string>
+    <string name="episode_filters_description">Liste von Begriffen, die dazu verwendet wird, um Episoden beim automatischen Herunterladen einzubeziehen oder auszuschließen</string>
     <string name="add_term">Begriff hinzufügen</string>
     <string name="exclude_terms">Episoden ausschließen, die einen der folgenden Begriffe enthalten</string>
     <string name="include_terms">Nur Episoden einbeziehen, die einen der folgenden Begriffe enthalten</string>
@@ -637,7 +631,7 @@
     <string name="statistics_expected_next_episode_any_day">In Kürze</string>
     <string name="statistics_expected_next_episode_unknown">Unbekannt</string>
     <string name="edit_url_menu">Feed-URL bearbeiten</string>
-    <string name="edit_url_confirmation_msg">Das Ändern der RSS-Adresse kann leicht den Abgespielt-Zustand und die Episoden des Podcasts beeinträchtigen. Wir empfehlen NICHT, die Adresse zu ändern und bieten KEINEN Support an, wenn etwas schief geht. Dies kann nicht rückgängig gemacht werden. Das defekte Abonnement kann NICHT repariert werden, indem die Adresse einfach wieder geändert wird. Wir empfehlen, eine Sicherungskopie zu erstellen, bevor du fortfährst.</string>
+    <string name="edit_url_confirmation_msg">Das Ändern der RSS-Adresse kann leicht den Abspielstatus und die Episodenliste des Podcasts beeinträchtigen. Wir empfehlen, die Adresse NICHT zu ändern und bieten KEINEN Support, falls etwas schiefgeht. Dies kann nicht rückgängig gemacht werden. Das defekte Abonnement kann NICHT repariert werden, indem die Adresse einfach wieder geändert wird. Wir empfehlen, eine Sicherungskopie zu erstellen, bevor du fortfährst.</string>
     <!--Podcast release schedules-->
   <string name="release_schedule_daily">täglich</string>
     <string name="release_schedule_weekdays">an Wochentagen</string>
@@ -745,19 +739,29 @@
     <string name="home_new_empty_text">Neue Episoden werden hier angezeigt. Du kannst dann entscheiden, ob sie für dich interessant sind.</string>
     <string name="delete_downloads_played_confirmation">Bitte bestätige, dass du alle abgespielten Downloads löschen möchtest.</string>
     <string name="delete_downloads_played">Abgespielte löschen</string>
-    <string name="mobile_download_notice">Herunterladen über mobile Datenverbindung für die nächsten %d Minuten</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Herunterladen über mobile Datenverbindung für die nächste %d Minute</item>
+        <item quantity="other">Herunterladen über mobile Datenverbindung für die nächsten %d Minuten</item>
+    </plurals>
     <string name="bottom_navigation_summary">Zugriff auf die wichtigsten Bildschirme von überall aus, mit einem einzigen Fingertipp</string>
     <string name="bottom_navigation">Untere Navigation</string>
-    <string name="statistics_episodes_started">begonnen</string>
-    <string name="nextcloud_login_error_generic">Anmeldung bei Nextcloud fehlgeschlagen.\n\n- Überprüfe die Netzwerkverbindung.\n- Stelle sicher, dass du die richtige Serveradresse verwendest.\n- Stelle sicher, dass das gpoddersync-Nextcloud-Plugin installiert ist.</string>
-    <string name="statistics_episodes_total">gesamt</string>
-    <string name="statistics_episodes_downloaded">heruntergeladen</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">begonnen</item>
+        <item quantity="other">begonnen</item>
+    </plurals>
+    <string name="nextcloud_login_error_generic">Anmeldung bei Nextcloud fehlgeschlagen.\n\n- Überprüfe die Netzwerkverbindung.\n- Stelle sicher, dass du die richtige Serveradresse verwendest.\n- Stelle sicher, dass das Gpodder-Sync-Nextcloud-Plugin installiert ist.</string>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">gesamt</item>
+        <item quantity="other">gesamt</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">heruntergeladen</item>
+        <item quantity="other">heruntergeladen</item>
+    </plurals>
     <string name="statistics_release_next">nächste Episode (geschätzt)</string>
     <string name="statistics_release_schedule">Veröffentlichungsrhythmus</string>
     <string name="statistics_episodes_space">belegter Platz</string>
     <string name="statistics_years_barchart_description">Abgespielte Zeit pro Monat</string>
-    <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast „%1$s“, ALLE seine Episoden (einschließlich heruntergeladener Episoden), den Wiedergabeverlauf und seine Statistiken löschen möchtest.</string>
-    <string name="feed_delete_confirmation_local_msg">Bitte bestätige, dass du den Podcast „%1$s“, seinen Wiedergabeverlauf und seine Statistiken entfernen möchtest. Die Dateien im lokalen Quellordner werden nicht gelöscht.</string>
     <string name="null_value_podcast_error">Der Link, auf den du getippt hast, enthält keine gültige Podcast-URL. Bitte überprüfe den Link und versuche es erneut, oder suche manuell nach dem Podcast.</string>
     <string name="pref_nav_drawer_items_sum">Die Anzeige der Elemente in der Seitenleiste oder unteren Navigation ändern</string>
     <string name="statistics_view_all">Alle Podcasts »</string>
@@ -766,7 +770,6 @@
         <item quantity="one">Gesamtgröße der %d Episode auf dem Gerät</item>
         <item quantity="other">Gesamtgröße der %d Episoden auf dem Gerät</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg_batch">Bitte bestätige, dass du die ausgewählten Podcasts, ALLE ihre Episoden (einschließlich heruntergeladener Episoden), den Wiedergabeverlauf und ihre Statistiken entfernen möchtest.</string>
     <string name="episode_download_failed">Download der Episode fehlgeschlagen</string>
     <string name="echo_home_header">Jahresrückblick</string>
     <string name="echo_home_subtitle">Deine Lieblings-Podcasts und Statistiken aus dem letzten Jahr. Exklusiv auf deinem Telefon.</string>
@@ -849,12 +852,12 @@
     <string name="removed_from_inbox_message">Aus dem Posteingang entfernt</string>
     <string name="mark_as_played_label">Als abgespielt markieren</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Als abgespielt markiert</item>
-        <item quantity="other"/>
+        <item quantity="one">%d Episode als abgespielt markiert.</item>
+        <item quantity="other">%d Episoden als abgespielt markiert.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Als ungespielt markiert</item>
-        <item quantity="other"/>
+        <item quantity="one">%d Episode als ungespielt markiert.</item>
+        <item quantity="other">%d Episoden als ungespielt markiert.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Um zu Positionen zu springen, musst du die Episode abspielen</string>
     <string name="mark_as_unplayed_label">Als ungespielt markieren</string>
@@ -883,4 +886,23 @@
     <string name="no_queue_items_inbox_has_items_label">Es sind keine Episoden eingereiht, aber es warten neue Episoden auf dich!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Zum Posteingang gehen</string>
     <string name="auto_download_inbox_category">Automatisches Herunterladen von Episoden aus dem Posteingang</string>
+    <string name="please_wait_before_refreshing">Bitte etwas warten, bevor du die Podcasts erneut aktualisierst.</string>
+    <string name="already_downloaded">Episode wurde bereits heruntergeladen</string>
+    <string name="statistics_expected_next_episode_any_time">Jederzeit</string>
+    <string name="release_schedule_multiple_per_day">mehrmals täglich</string>
+    <string name="tag_all">Alle</string>
+    <string name="cover_as_background">Titelbild als Hintergrund</string>
+    <string name="archive_feed_label_verb">Archivieren</string>
+    <string name="archive_feed_label_noun">Archiv</string>
+    <string name="restore_archive_label">Wiederherstellen</string>
+    <string name="remove_archive_feed_label">Löschen / archivieren</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d Abonnement</item>
+        <item quantity="other">%d Abonnements</item>
+    </plurals>
+    <string name="feed_delete_explanation_delete">Durch das Löschen werden ALLE Episoden einschließlich Downloads, Wiedergabeverlauf und Statistiken entfernt.</string>
+    <string name="feed_delete_explanation_archive">Durch das Archivieren wird es aus der Abonnementliste ausgeblendet und erhält keine Aktualisierungen mehr. Downloads, Statistiken und der Abspielstatus bleiben erhalten.</string>
+    <string name="tag_untagged">Ohne Tags</string>
+    <string name="no_archive_head_label">Nichts archiviert</string>
+    <string name="no_archive_label">Du kannst Podcasts über den Hauptbildschirm für Abonnements archivieren.</string>
 </resources>

@@ -158,7 +158,6 @@
     <string name="remove_feed_label">Boga su podcast</string>
     <string name="share_label">Cumpartzi</string>
     <string name="share_file_label">Cumpartzi s\'archìviu</string>
-    <string name="feed_remover_msg">Cantzellende su podcast</string>
     <string name="load_complete_feed">Atualiza su podcast intreu</string>
     <string name="multi_select">Multi-seletzione</string>
     <string name="select_all_above">Seletziona de inoghe in artu</string>
@@ -373,10 +372,7 @@
     <string name="pref_black_theme_message">Imprea totu nieddu pro su tema iscuru</string>
     <string name="pref_tinted_theme_title">Colores dinàmicos</string>
     <string name="pref_tinted_theme_message">Adata is colores de s\'aplicatzione de acordu cun s\'isfundu</string>
-    <string name="pref_nav_drawer_feed_order_title">Cunfigura s\'òrdine de sutiscritziones</string>
-    <string name="pref_nav_drawer_feed_order_sum">Modìfica s\'òrdine de is sutiscritziones</string>
     <string name="pref_nav_drawer_feed_counter_title">Cunfigura su contadore de sutiscritziones</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Modìfica s\'informatzione ammustrada dae su contadore de sutiscritziones. Interessat puru s\'òrdine de is sutiscritziones si \"Òrdine de sutiscritziones\" est in \"Contadore\".</string>
     <string name="pref_automatic_download_title">Iscarrigamentu in automàticu</string>
     <string name="pref_automatic_download_sum">Cunfigura s\'iscarrigamentu automàticu de episòdios</string>
     <string name="pref_automatic_download_on_battery_title">Iscàrriga cando su dispositivu non siat in càrriga</string>
@@ -439,8 +435,6 @@
     <string name="remember_last_page">Regorda s\'ùrtima pàgina</string>
     <string name="pref_delete_removes_from_queue_title">Sa cantzelladura de un\'episòdiu dd\'at a bogare de sa lista</string>
     <string name="pref_delete_removes_from_queue_sum">Boga in automàticu de sa lista is episòdios cantzellados</string>
-    <string name="pref_filter_feed_title">Filtru de sutiscritziones</string>
-    <string name="pref_filter_feed_sum">Filtra is sutiscritziones in sa barra de navigatzione e in s\'ischermu de sutiscritziones</string>
     <string name="subscriptions_counter_greater_zero">Contadore prus mannu de zero</string>
     <string name="auto_downloaded">Iscarrigadu in automàticu</string>
     <string name="not_auto_downloaded">No iscarrigadu in automàticu</string>
@@ -739,8 +733,6 @@
     <string name="statistics_years_barchart_description">Tempus de riprodutzione a su mese</string>
     <string name="pref_nav_drawer_items_title">Personaliza sa navigatzione</string>
     <string name="sync_status_wait_for_downloads">Abetende s\'atualizatzione de is sutiscritziones…</string>
-    <string name="feed_delete_confirmation_msg_batch">Cunfirma chi boles cantzellare is podcast seletzionados, TOTU is episòdios (incluidos cussos iscarrigados), sa cronologia de riprodutzione e is istatìsticas.</string>
-    <string name="feed_delete_confirmation_local_msg">Cunfirma chi boles cantzellare su podcast \"%1$s\", sa cronologia de riprodutzione e is istatìsticas. Is archìvios in sa cartella de orìgine locale no ant a èssere cantzellados.</string>
     <string name="pref_nav_drawer_items_sum">Modifica cale elementos ant a èssere visualizados in su pannellu o in sa navigatzione inferiore</string>
     <string name="statistics_view_all">Totu is podcasts »</string>
     <string name="discover_more">Iscoberi·nde àteros »</string>
@@ -751,17 +743,12 @@
     <string name="section_shown">Ammustrados</string>
     <string name="delete_downloads_played">Cantzella cussos riproduidos</string>
     <string name="delete_downloads_played_confirmation">Cunfirma chi boles cantzellare totu is iscarrigamentos riproduidos.</string>
-    <string name="mobile_download_notice">Iscarrighende cun connessione de datos mòbiles pro is %d minutos imbenientes</string>
     <string name="bottom_navigation">Navigatzione inferiore</string>
     <string name="bottom_navigation_summary">Funtzionalidade beta: atzede a is ischermos de prus importu dae onni logu, cun unu tocu isceti</string>
-    <string name="statistics_episodes_downloaded">iscarrigados</string>
     <string name="nextcloud_login_error_generic">Impossìbile atzèdere a su Nextcloud tuo.\n\n- Controlla sa connessione de rete.\n- Cunfirma chi ses impreende s\'indiritzu de su serbidore curretu.\n- Assegura·ti chi su cumplementu gpoddersync Nextcloud est installadu.</string>
-    <string name="statistics_episodes_started">cumintzados</string>
-    <string name="statistics_episodes_total">totales</string>
     <string name="statistics_release_schedule">programmatzione de is publicatziones</string>
     <string name="statistics_release_next">episòdiu imbeniente (istimadu)</string>
     <string name="statistics_episodes_space">ispàtziu ocupadu</string>
-    <string name="feed_delete_confirmation_msg">Cunfirma chi boles cantzellare su podcast \"%1$s\", TOTU is episòdios suos (incluidos cussos iscarrigados) sa cronologia de riprodutzione e is istatìsticas.</string>
     <string name="null_value_podcast_error">Su ligòngiu chi as tocadu non cuntenet nissunu URL de podcast vàlidu. Controlla su ligòngiu e torra·nche a proare, o chirca su podcast a manu.</string>
     <string name="episode_download_failed">Faddina in s\'iscarrigamentu de s\'episòdiu</string>
     <plurals name="total_size_downloaded_podcasts">

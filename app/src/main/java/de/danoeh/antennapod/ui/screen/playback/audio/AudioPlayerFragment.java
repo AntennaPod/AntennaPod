@@ -306,6 +306,10 @@ public class AudioPlayerFragment extends Fragment implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (event.isOver()) {
+            toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(true);
+            toolbar.getMenu().findItem(R.id.disable_sleeptimer_item).setVisible(false);
+        }
         if (event.isCancelled() || event.wasJustEnabled() || event.isOver()) {
             AudioPlayerFragment.this.loadMediaInfo(false);
         }
@@ -514,10 +518,10 @@ public class AudioPlayerFragment extends Fragment implements
         if (feed == null) {
             return;
         }
-        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-            new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).withClearTop().start();
-        } else {
+        if (feed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
             startActivity(new OnlineFeedviewActivityStarter(getContext(), feed.getDownloadUrl()).getIntent());
+        } else {
+            new MainActivityStarter(getContext()).withOpenFeed(feed.getId()).withClearTop().start();
         }
     }
 

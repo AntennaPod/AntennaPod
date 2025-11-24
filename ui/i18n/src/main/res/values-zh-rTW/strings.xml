@@ -91,7 +91,7 @@
     <string name="support_podcast">支持這個 Podcast</string>
     <string name="error_label">錯誤</string>
     <string name="error_msg_prefix">發生錯誤：</string>
-    <string name="refresh_label">刷新</string>
+    <string name="refresh_label">重新整理</string>
     <string name="chapters_label">章節</string>
     <string name="no_chapters_label">沒有章節</string>
     <string name="chapter_duration">時長： %1$s</string>
@@ -148,18 +148,17 @@
     <string name="show_info_label">顯示資料</string>
     <string name="show_feed_settings_label">顯示 Podcast 設定</string>
     <string name="feed_settings_label">Podcast 設定</string>
-    <string name="rename_feed_label">重新命名 Podcast</string>
-    <string name="remove_feed_label">移除 Podcast</string>
+    <string name="rename_feed_label">重新命名</string>
+    <string name="remove_feed_label">刪除</string>
     <string name="share_label">分享</string>
     <string name="share_file_label">分享檔案</string>
-    <string name="feed_remover_msg">移除 Podcast</string>
     <string name="load_complete_feed">更新所有 Podcast</string>
     <string name="multi_select">多重選取</string>
     <string name="select_all_above">選取以上全部</string>
     <string name="select_all_below">選取以下全部</string>
     <string name="multi_select_started_talkback">底部顯示多選動作</string>
     <string name="filtered_label">已過濾</string>
-    <string name="refresh_failed_msg">上次刷新失敗。點擊查看詳細資訊。</string>
+    <string name="refresh_failed_msg">上次重新整理失敗。點擊查看詳細資訊。</string>
     <string name="open_podcast">打開 Podcast</string>
     <string name="please_wait_for_data">資料載入中，請稍候</string>
     <string name="updates_disabled_label">已停用更新</string>
@@ -295,8 +294,8 @@
     <string name="synchronization_sum">與其他設備同步</string>
     <string name="automation">自動化</string>
     <string name="download_pref_details">細節</string>
-    <string name="import_export_pref">匯入/匯出</string>
-    <string name="import_export_search_keywords">備份, 還原, backup, restore, export, import, 匯出, 匯入</string>
+    <string name="import_export_pref">備份 &amp; 恢復</string>
+    <string name="import_export_search_keywords">備份, 還原, backup, restore, 匯出, 匯入, export, import</string>
     <string name="theming">主題設定</string>
     <string name="external_elements">外部元素</string>
     <string name="interruptions">中斷</string>
@@ -307,8 +306,8 @@
     <string name="preference_search_clear_history">清除搜尋紀錄</string>
     <string name="pref_episode_cleanup_title">自動下載前刪除</string>
     <string name="pref_episode_cleanup_summary">如果「自動下載」需要空間放置新集數，將會刪除符合條件的集數</string>
-    <string name="pref_pauseOnDisconnect_sum">耳機或藍牙連結斷開時暫停播放</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">當耳機再次連接時繼續播放</string>
+    <string name="pref_pauseOnDisconnect_sum">耳機或藍牙連線斷開時暫停播放</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">當耳機再次連線時繼續播放</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">當藍牙再次連接時繼續播放</string>
     <string name="pref_hardware_forward_button_title">快轉鈕</string>
     <string name="pref_hardware_forward_button_summary">自訂快轉鈕的功能</string>
@@ -364,10 +363,7 @@
     <string name="pref_black_theme_message">用全黑作為深色主題</string>
     <string name="pref_tinted_theme_title">動態顏色</string>
     <string name="pref_tinted_theme_message">根據桌布調整應用程式顏色</string>
-    <string name="pref_nav_drawer_feed_order_title">設定訂閱排序方式</string>
-    <string name="pref_nav_drawer_feed_order_sum">更改您訂閱頻道的排序方式</string>
-    <string name="pref_nav_drawer_feed_counter_title">設定訂閱計數器</string>
-    <string name="pref_nav_drawer_feed_counter_sum">調整訂閱計數器中要顯示的東西，同時也會在排序方式設定為「計數」時影響排序。</string>
+    <string name="pref_nav_drawer_feed_counter_title">計數器</string>
     <string name="pref_automatic_download_title">自動下載</string>
     <string name="pref_automatic_download_sum">設定單集自動下載機制</string>
     <string name="pref_automatic_download_on_battery_title">未充電時下載</string>
@@ -430,8 +426,6 @@
     <string name="remember_last_page">記住上次頁面</string>
     <string name="pref_delete_removes_from_queue_title">刪除時同步自待播清單中移除</string>
     <string name="pref_delete_removes_from_queue_sum">刪除某單集後，也自動將其從待播清單中移除</string>
-    <string name="pref_filter_feed_title">篩選訂閱內容</string>
-    <string name="pref_filter_feed_sum">在側邊欄和訂閱頁面中篩選您的訂閱</string>
     <string name="subscriptions_counter_greater_zero">計數大於 0 的</string>
     <string name="auto_downloaded">已自動下載</string>
     <string name="not_auto_downloaded">未自動下載</string>
@@ -536,7 +530,7 @@
     <string name="synchronization_summary_unchoosen">您可以選擇多個提供者，以同步您的訂閱和集數播放狀態</string>
     <string name="dialog_choose_sync_service_title">選擇同步提供者</string>
     <string name="gpodnet_description">Gpodder.net 是一個開放原始碼的 Podcast 同步服務，您可以安裝在自己的伺服器上。Gpodder.net 獨立於 AntennaPod 專案。</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync 是一個開放原始碼的 Nextcloud 應用程式，您可以輕鬆安裝在自己的伺服器上。此應用程式獨立於 AntennaPod 專案。</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync 是一個開放原始碼的 Nextcloud 應用程式，您可以輕鬆安裝在自己的伺服器上。Gpodder Sync 獨立於 AntennaPod 專案。</string>
     <string name="synchronization_host_explanation">您可以選擇與自己的伺服器同步。當您確定您的首選同步伺服器後，請在此輸入其位址。</string>
     <string name="synchronization_host_label">伺服器位址</string>
     <string name="proceed_to_login_butLabel">繼續登入</string>
@@ -611,7 +605,7 @@
     <string name="authentication_descr">修改此 Podcast 及其單集的用帳號和密碼</string>
     <string name="feed_tags_label">標籤</string>
     <string name="feed_tags_summary">變更此 Podcast 的標籤以協助整理您的訂閱</string>
-    <string name="feed_folders_include_root">在主清單中顯示此Podcast</string>
+    <string name="feed_folders_include_root">顯示上述標籤（僅限側邊導覽列）</string>
     <string name="multi_feed_common_tags_info">只顯示所有選取訂閱的共通標籤。其他標籤則不受影響。</string>
     <string name="episode_filters_label">篩選</string>
     <string name="episode_filters_description">自動下載時要列入或排除的條件清單</string>
@@ -758,7 +752,7 @@
     <string name="pref_downloads_button_action_title">從下載頁面播放</string>
     <string name="pref_downloads_button_action_sum">在下載頁面顯示播放按鈕而非刪除按鈕</string>
     <string name="sync_status_wait_for_downloads">正在等待訂閱重新整理…</string>
-    <string name="nextcloud_login_error_generic">無法登入您的 Nextcloud。\n\n- 檢查您的網路連線。\n- 確認您使用正確的伺服器位址。\n- 確保已安裝 gpoddersync Nextcloud 外掛程式。</string>
+    <string name="nextcloud_login_error_generic">無法登入您的 Nextcloud。\n\n- 檢查您的網路連線。\n- 確認您使用正確的伺服器位址。\n- 確保已安裝 Gpodder Sync Nextcloud 外掛程式。</string>
     <plurals name="statistics_episodes_total">
         <item quantity="other">總共</item>
     </plurals>
@@ -811,12 +805,9 @@
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="other">裝置上共計 %d 個單集的總大小</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg">請確認您要刪除 Podcast「%1$s」、它的所有單集（包括已下載的單集）、播放記錄，以及其統計資料。</string>
     <plurals name="mobile_download_notice">
         <item quantity="other">將透過行動網路連線下載，持續 %d 分鐘</item>
     </plurals>
-    <string name="feed_delete_confirmation_local_msg">請確認您要移除 Podcast「%1$s」、其播放記錄，以及其統計資料。本機資料夾中的檔案將不會被刪除。</string>
-    <string name="feed_delete_confirmation_msg_batch">請確認您要移除所選的 Podcast、它們所有的單集（包括已下載的單集）、播放記錄，以及其統計資料。</string>
     <string name="echo_home_subtitle">您過去一年最常聽的 Podcast 和統計數據。僅限在您的手機。</string>
     <string name="echo_queue_hours_clean">這大約是每天 %1$s，直到 %2$d 年開始。</string>
     <string name="echo_intro_locally">僅在您的手機上產生</string>
@@ -839,10 +830,10 @@
     <string name="removed_from_inbox_message">從最新單集中移除</string>
     <string name="mark_as_played_label">標示為已播放</string>
     <plurals name="marked_as_played_message">
-        <item quantity="other">已標示為已播放</item>
+        <item quantity="other">已將 %d 集標示為已播放。</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="other">已標示為未播放</item>
+        <item quantity="other">已將 %d 集標示為未播放。</item>
     </plurals>
     <string name="play_this_to_seek_position_message">要跳到位置，你需要播放單集</string>
     <string name="mark_as_unplayed_label">表示為未播放</string>
@@ -866,4 +857,23 @@
     <string name="no_queue_items_inbox_has_items_label">暫無已排定的單集，但有新單集等著您！</string>
     <string name="no_queue_items_inbox_has_items_button_label">移至最新單集</string>
     <string name="auto_download_inbox_category">自動從最新單集下載</string>
+    <plurals name="num_subscriptions">
+        <item quantity="other">%d 個訂閱</item>
+    </plurals>
+    <string name="archive_feed_label_verb">封存</string>
+    <string name="archive_feed_label_noun">封存</string>
+    <string name="restore_archive_label">復原</string>
+    <string name="remove_archive_feed_label">刪除 / 封存</string>
+    <string name="feed_delete_explanation_delete">將會刪除其所有集數，包括下載、播放歷史記錄和統計資料。</string>
+    <string name="feed_delete_explanation_archive">封存會將其從訂閱清單中隱藏，並停止更新。下載、統計資料和播放狀態都會保留。</string>
+    <string name="please_wait_before_refreshing">請等待一段時間後再重新載入 Podcasts 。</string>
+    <string name="transcript_follow_audio_label">跟隨音訊</string>
+    <string name="already_downloaded">單集已下載</string>
+    <string name="tag_all">所有</string>
+    <string name="tag_untagged">未標記</string>
+    <string name="statistics_expected_next_episode_any_time">現在任何時間</string>
+    <string name="release_schedule_multiple_per_day">每天多次</string>
+    <string name="cover_as_background">封面作為背景</string>
+    <string name="no_archive_head_label">無封存內容</string>
+    <string name="no_archive_label">你可以在主要的訂閱頁面中封存 Podcast 節目。</string>
 </resources>

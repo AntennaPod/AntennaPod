@@ -50,7 +50,7 @@
     <string name="home_welcome_title">Вітаємо у AntennaPod!</string>
     <string name="home_welcome_text">Ви ще не підписані на жодні подкасти. Відкрийте меню, щоб додати подкаст.</string>
     <string name="notification_permission_denied">Ви відмовили у дозволі.</string>
-    <string name="configure_home">Налаштувати домашній екран</string>
+    <string name="configure_home">Налаштувати головний екран</string>
     <string name="section_hidden">Приховано</string>
     <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
@@ -166,11 +166,10 @@
     <string name="show_info_label">Інформація</string>
     <string name="show_feed_settings_label">Показати налаштування подкасту</string>
     <string name="feed_settings_label">Налаштування подкасту</string>
-    <string name="rename_feed_label">Перейменувати подкаст</string>
-    <string name="remove_feed_label">Видалити подкаст</string>
+    <string name="rename_feed_label">Перейменувати</string>
+    <string name="remove_feed_label">Видалити</string>
     <string name="share_label">Поділитися</string>
     <string name="share_file_label">Поділитися файлом</string>
-    <string name="feed_remover_msg">Видаляємо подкаст</string>
     <string name="load_complete_feed">Оновити весь подкаст</string>
     <string name="multi_select">Мультивибір</string>
     <string name="select_all_above">Вибрати все вище</string>
@@ -322,8 +321,8 @@
     <string name="synchronization_sum">Синхронізувати з іншими пристроями</string>
     <string name="automation">Автоматизація</string>
     <string name="download_pref_details">Детально</string>
-    <string name="import_export_pref">Імпорт/Експорт</string>
-    <string name="import_export_search_keywords">резервувати, відновити</string>
+    <string name="import_export_pref">Резервне копіювання та відновлення</string>
+    <string name="import_export_search_keywords">імпорт, експорт</string>
     <string name="theming">Теми</string>
     <string name="external_elements">Зовнішні елементи</string>
     <string name="interruptions">Тимчасові паузи</string>
@@ -334,7 +333,7 @@
     <string name="preference_search_clear_history">Очистити історію</string>
     <string name="pref_episode_cleanup_title">Видалити перед автозавантаженням</string>
     <string name="pref_episode_cleanup_summary">Випуски, які слід вилучати, якщо для автоматичного завантаження нових потрібне вільне місце</string>
-    <string name="pref_pauseOnDisconnect_sum">Призупинити відтворення, коли навушники або Bluetooth відключаються</string>
+    <string name="pref_pauseOnDisconnect_sum">Призупиняти відтворення, коли навушники або пристрої Bluetooth відключаються</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Відновлення відтворення після повторного підключення навушників</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Поновити відтворення коли блютуз повторно під’єднано</string>
     <string name="pref_hardware_forward_button_title">Кнопка вперед</string>
@@ -391,10 +390,7 @@
     <string name="pref_black_theme_message">Використовуйте повний чорний для темної теми</string>
     <string name="pref_tinted_theme_title">Динамічні кольори</string>
     <string name="pref_tinted_theme_message">Адаптація кольорів програми на основі шпалер</string>
-    <string name="pref_nav_drawer_feed_order_title">Оберіть сортування подкастів</string>
-    <string name="pref_nav_drawer_feed_order_sum">Змінити порядок ваших підписок</string>
-    <string name="pref_nav_drawer_feed_counter_title">Налаштувати лічильник підписок</string>
-    <string name="pref_nav_drawer_feed_counter_sum">Змініть інформацію, що відображається лічильником підписки. Це впливає на сортування підписок, якщо в параметрі \"Порядок підписок\" вибрано \"Лічильник\".</string>
+    <string name="pref_nav_drawer_feed_counter_title">Лічильник</string>
     <string name="pref_automatic_download_title">Автозавантаження</string>
     <string name="pref_automatic_download_sum">Налаштуйте автозавантаження випусків</string>
     <string name="pref_automatic_download_on_battery_title">Завантаження без зарядного пристрою</string>
@@ -457,8 +453,6 @@
     <string name="remember_last_page">Остання відкрита сторінка</string>
     <string name="pref_delete_removes_from_queue_title">Вилучати з черги при видаленні завантажень</string>
     <string name="pref_delete_removes_from_queue_sum">У разі видалення завантаженого випуску також вилучати його з черги</string>
-    <string name="pref_filter_feed_title">Фільтр підписок</string>
-    <string name="pref_filter_feed_sum">Фільтруйте підписки на панелі навігації та на сторінці підписок</string>
     <string name="subscriptions_counter_greater_zero">З новими випусками</string>
     <string name="auto_downloaded">Завантажується автоматично</string>
     <string name="not_auto_downloaded">Не завантажується автоматично</string>
@@ -575,7 +569,7 @@
     <string name="synchronization_summary_unchoosen">Ви можете вибрати одного з наведених провайдерів для синхронізації ваших підписок і стану прослуховування випусків</string>
     <string name="dialog_choose_sync_service_title">Обрати постачальника синхронізації</string>
     <string name="gpodnet_description">Gpodder.net — це сервіс синхронізації подкастів з відкритим вихідним кодом, який ви можете встановити на власному сервері. Gpodder.net не залежить від проекту AntennaPod.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync — це додаток Nextcloud з відкритим вихідним кодом, який ви можете легко встановити на власний сервер. Додаток не залежить від проекту AntennaPod.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync — це застосунок Nextcloud з відкритим кодом, який ви можете легко встановити на власний сервер. Gpodder Sync не залежить від проекту AntennaPod.</string>
     <string name="synchronization_host_explanation">Ви можете вибрати власний сервер для синхронізації. Коли ви визначитеся з бажаним сервером синхронізації, будь ласка, введіть його адресу тут.</string>
     <string name="synchronization_host_label">Адреса сервера</string>
     <string name="proceed_to_login_butLabel">Перейти до сторінки авторизації</string>
@@ -650,7 +644,7 @@
     <string name="authentication_descr">Змініть своє ім’я користувача та пароль для цього подкасту та його випусків</string>
     <string name="feed_tags_label">Мітки</string>
     <string name="feed_tags_summary">Змініть теги цього подкасту, щоб упорядкувати ваші підписки</string>
-    <string name="feed_folders_include_root">Відображати цей подкаст в основному списку підписок</string>
+    <string name="feed_folders_include_root">Показати вищезгадані теги (лише бічна навігація)</string>
     <string name="multi_feed_common_tags_info">Показані лише спільні теги з усіх вибраних підписок. Інші теги залишаються без змін.</string>
     <string name="episode_filters_label">Фільтр випусків</string>
     <string name="episode_filters_description">Перелік термінів, що використовуються для вирішення чи слід завантажувати випуск автоматично</string>
@@ -774,27 +768,20 @@
     <string name="home_continue_empty_text">Ви можете додати випуски, завантаживши їх або довго натиснувши на них і вибравши «Додати в чергу».</string>
     <string name="section_shown">Показані</string>
     <string name="delete_downloads_played_confirmation">Будь ласка, підтвердіть, що ви хочете видалити всі відтворені завантаження.</string>
-    <string name="mobile_download_notice">Завантаження через мобільне з\'єднання протягом наступних %d хвилин</string>
     <string name="bottom_navigation">Навігація внизу екрана</string>
-    <string name="nextcloud_login_error_generic">Не вдається увійти до Nextcloud.\n\n- Перевірте, чи є з\'єднання з мережею.\n- Переконайтеся, що ви використовуєте правильну адресу сервера.\n- Переконайтеся, що плагін gpoddersync Nextcloud встановлено.</string>
-    <string name="statistics_episodes_started">початі</string>
-    <string name="statistics_episodes_total">загалом</string>
+    <string name="nextcloud_login_error_generic">Не вдається увійти до вашого Nextcloud.\n\n- Перевірте мережеве з’єднання.\n- Підтвердіть, що ви використовуєте правильну адресу сервера.\n- Переконайтеся, що встановлено плагін Gpodder Sync Nextcloud.</string>
     <string name="statistics_episodes_space">використано місця</string>
     <string name="statistics_release_schedule">графік випусків</string>
     <string name="statistics_release_next">наступний випуск (орієнтовно)</string>
     <string name="statistics_years_barchart_description">Час, прослуханий за місяць</string>
     <string name="home_new_empty_text">Тут з\'являтимуться нові випуски. Ви зможете вирішити, чи вони вам цікаві.</string>
-    <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть, що ви хочете видалити подкаст «%1$s», а також ВСІ його випуски (включно із завантаженими), історію відтворення та статистику.</string>
-    <string name="feed_delete_confirmation_local_msg">Будь ласка, підтвердіть, що ви хочете видалити подкаст «%1$s», історію його відтворення та статистику. Файли у локальній теці джерела не буде видалено.</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Загальний розмір %d випуску на пристрої</item>
         <item quantity="few">Загальний розмір %d випусків на пристрої</item>
         <item quantity="many">Загальний розмір %d випусків на пристрої</item>
         <item quantity="other">Загальний розмір %d випусків на пристрої</item>
     </plurals>
-    <string name="feed_delete_confirmation_msg_batch">Будь ласка, підтвердьте, що хочете видалити вибрані подкасти. УСІ їхні випуски (включно із завантаженими), історія відтворення і статистика також будуть видалені.</string>
     <string name="bottom_navigation_summary">Отримуйте доступ до найважливіших екранів звідусіль одним дотиком</string>
-    <string name="statistics_episodes_downloaded">завантажено</string>
     <string name="episode_download_failed">Не вдалося завантажити випуск</string>
     <string name="pref_automatic_download_global_description">Автоматично завантажувати епізоди з папки \"Вхідні\". Можна змінити для кожного подкасту окремо.</string>
     <string name="pref_automatic_download_queue_title">Завантаження в черзі</string>
@@ -885,16 +872,16 @@
     <string name="removed_from_inbox_message">Видалено з папки \"Вхідні\"</string>
     <string name="mark_as_played_label">Позначити як відтворене</string>
     <plurals name="marked_as_played_message">
-        <item quantity="one">Позначено як відтворене</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d епізод позначено як відтворений.</item>
+        <item quantity="few">%d епізоди позначено як відтворені.</item>
+        <item quantity="many">%d епізодів позначено як відтворені.</item>
+        <item quantity="other">%d епізодів позначено як відтворені.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">Позначено як невідтворене</item>
-        <item quantity="few"></item>
-        <item quantity="many"></item>
-        <item quantity="other"></item>
+        <item quantity="one">%d епізод позначено як невідтворений.</item>
+        <item quantity="few">%d епізоди позначено як невідтворені.</item>
+        <item quantity="many">%d епізодів позначено як невідтворені.</item>
+        <item quantity="other">%d епізодів позначено як невідтворені.</item>
     </plurals>
     <string name="play_this_to_seek_position_message">Щоб перейти до позицій, потрібно відтворити епізод</string>
     <string name="mark_as_unplayed_label">Позначити як невідтворене</string>
@@ -931,4 +918,49 @@
     <string name="no_queue_items_inbox_has_items_label">Немає запланованих епізодів, але на вас чекають нові епізоди!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Перейти до папки \"Вхідні\"</string>
     <string name="auto_download_inbox_category">Автоматично завантажувати епізоди з папки \"Вхідні\"</string>
+    <string name="please_wait_before_refreshing">Будь ласка, зачекайте деякий час, перш ніж знову оновлювати подкасти.</string>
+    <string name="already_downloaded">Епізод вже завантажено</string>
+    <string name="tag_all">Усі</string>
+    <string name="statistics_expected_next_episode_any_time">Будь-коли зараз</string>
+    <string name="release_schedule_multiple_per_day">кілька разів на день</string>
+    <string name="cover_as_background">Обкладинка як фон</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d підписка</item>
+        <item quantity="few">%d підписки</item>
+        <item quantity="many">%d підписків</item>
+        <item quantity="other">%d підписків</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Архів</string>
+    <string name="archive_feed_label_noun">Архів</string>
+    <string name="restore_archive_label">Відновити</string>
+    <string name="remove_archive_feed_label">Видалити / архівувати</string>
+    <string name="feed_delete_explanation_delete">Видалення призведе до вилучення ВСІХ епізодів, включаючи завантаження, історію відтворення та статистику.</string>
+    <string name="feed_delete_explanation_archive">Архівування приховає його зі списку підписок і запобігатиме отриманню оновлень. Завантаження, статистика та стан відтворення зберігаються.</string>
+    <string name="tag_untagged">Без тегів</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Завантаження через мобільне з’єднання даних протягом наступної %d хвилина</item>
+        <item quantity="few">Завантаження через мобільне з’єднання даних протягом наступних %d хвилини</item>
+        <item quantity="many">Завантаження через мобільне з’єднання даних протягом наступних %d хвилин</item>
+        <item quantity="other">Завантаження через мобільне з’єднання даних протягом наступних %d хвилин</item>
+    </plurals>
+    <string name="no_archive_head_label">Нічого не архівовано</string>
+    <string name="no_archive_label">Ви можете архівувати подкасти на головному екрані підписок.</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">розпочато</item>
+        <item quantity="few">розпочала</item>
+        <item quantity="many">розпочали</item>
+        <item quantity="other">розпочали</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">загальна сума</item>
+        <item quantity="few">загальна суми</item>
+        <item quantity="many">загальна суми</item>
+        <item quantity="other">загальна суми</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">завантажено</item>
+        <item quantity="few">завантаженні</item>
+        <item quantity="many">завантаженні</item>
+        <item quantity="other">завантаженні</item>
+    </plurals>
 </resources>

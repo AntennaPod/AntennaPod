@@ -16,17 +16,19 @@ public class PodcastApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Thread.setDefaultUncaughtExceptionHandler(new CrashReportWriter());
+        Thread.setDefaultUncaughtExceptionHandler(new CrashReportExceptionHandler());
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
 
         if (BuildConfig.DEBUG) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
+                    .penaltyDeath()
                     .penaltyLog()
-                    .penaltyDropBox()
+                    .detectLeakedSqlLiteObjects()
                     .detectActivityLeaks()
-                    .detectLeakedClosableObjects()
                     .detectLeakedRegistrationObjects();
+            if (android.os.Build.VERSION.SDK_INT >= 26) {
+                builder.detectContentUriWithoutPermission();
+            }
             StrictMode.setVmPolicy(builder.build());
         }
 
