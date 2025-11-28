@@ -1,15 +1,24 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.storage.StorageManager;
+
 import androidx.preference.PreferenceManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.storage.mediamanagement.MediaFileMigrationWorker;
+import de.danoeh.antennapod.storage.databasemaintenanceservice.MediaRelocationWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.preferences.screen.downloads.ChooseDataFolderDialog;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
@@ -18,6 +27,7 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
     private static final String PREF_SCREEN_AUTO_DELETE = "prefAutoDeleteScreen";
     private static final String PREF_PROXY = "prefProxy";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
+    private static final String PREF_RELOCATE_MEDIA = "prefRelocateMedia";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -60,10 +70,18 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
             return true;
         });
         findPreference(PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(preference -> {
-            ChooseDataFolderDialog.showDialog(getContext(), path -> {
-                UserPreferences.setDataFolder(path);
-                setDataFolderText();
+            ChooseDataFolderDialog.showDialog(getContext(), moveRequest -> {
+                if (moveRequest.moveFiles) {
+                    showMoveFilesDialog(moveRequest.newPath);
+                } else {
+                    UserPreferences.setDataFolder(moveRequest.newPath);
+                    setDataFolderText();
+                }
             });
+            return true;
+        });
+        findPreference(PREF_RELOCATE_MEDIA).setOnPreferenceClickListener(preference -> {
+            showRelocateMediaDialog();
             return true;
         });
         setDataFolderText();
@@ -74,6 +92,92 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
         if (f != null) {
             findPreference(PREF_CHOOSE_DATA_DIR).setSummary(f.getAbsolutePath());
         }
+    }
+
+    private void showMoveFilesDialog(String newPath) {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle(R.string.move_files_dialog_title)
+                .setMessage(R.string.move_files_dialog_message)
+                .setPositiveButton(R.string.move_files_button, (dialog, which) -> startFileMigration(newPath))
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
+    }
+
+    private void startFileMigration(String newPath) {
+        // Check space before starting migration
+        if (!hasEnoughSpaceForMigration(newPath)) {
+            return; // Error dialog already shown
+        }
+        
+        MediaFileMigrationWorker.enqueue(getContext(), newPath);
+        setDataFolderText();
+    }
+    
+    private boolean hasEnoughSpaceForMigration(String newPath) {
+        File targetDir = new File(newPath);
+        
+        // Use same validation as storage detection
+        if (!isWritable(targetDir)) {
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle("Storage Not Accessible")
+                    .setMessage("The selected storage location is not accessible for writing.")
+                    .setPositiveButton(R.string.confirm_label, null)
+                    .show();
+            return false;
+        }
+
+        long availableSpace = getAvailableSpace(targetDir);
+
+        // Quick space check before starting worker
+        // Rough estimate: assume average 50MB per episode
+        // The worker will do precise calculation
+        long roughEstimate = 50 * 1024 * 1024; // 50MB in bytes
+
+        if (availableSpace < roughEstimate) {
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle("Insufficient Storage")
+                    .setMessage(getString(R.string.migration_failed))
+                    .setPositiveButton(R.string.confirm_label, null)
+                    .show();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isWritable(File dir) {
+        return dir != null && dir.exists() && dir.canRead() && dir.canWrite();
+    }
+
+    private long getAvailableSpace(File dir) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                StorageManager storageManager = (StorageManager) getContext()
+                        .getSystemService(android.content.Context.STORAGE_SERVICE);
+                return storageManager.getAllocatableBytes(storageManager.getUuidForPath(dir));
+            } catch (IOException e) {
+                // Fall back to traditional method if StorageManager fails
+                return dir.getUsableSpace();
+            }
+        } else {
+            return dir.getUsableSpace();
+        }
+    }
+
+    private void showRelocateMediaDialog() {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle(R.string.relocate_media_dialog_title)
+                .setMessage(R.string.relocate_media_dialog_message)
+                .setPositiveButton(R.string.relocate_media_button, (dialog, which) -> startMediaRelocation())
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
+    }
+
+    private void startMediaRelocation() {
+        MediaRelocationWorker.enqueue(getContext());
+        // Show toast or snackbar to indicate process started
+        android.widget.Toast.makeText(getContext(), R.string.relocating_media_progress,
+                android.widget.Toast.LENGTH_SHORT).show();
     }
 
     @Override

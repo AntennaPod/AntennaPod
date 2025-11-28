@@ -75,6 +75,8 @@ dependencies {
     implementation project(':storage:database')
     implementation project(':storage:database-maintenance-service')
     implementation project(':storage:importexport')
+    implementation project(':storage:database-maintenance-service')
+    implementation project(':storage:media-management')
     implementation project(':storage:preferences')
     implementation project(':system')
     implementation project(':ui:app-start-intent')
