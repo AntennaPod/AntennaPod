@@ -67,7 +67,11 @@ public class ChapterUtils {
 
             }
 
-            List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
+            List<Chapter> chaptersFromMediaFile = null;
+            // Skip media file chapter loading for streaming content to avoid slow connection issues
+            if (playable.localFileAvailable()) {
+                chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
+            }
             List<Chapter> chaptersMergePhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
             List<Chapter> chapters = ChapterMerger.merge(chaptersMergePhase1, chaptersFromPodcastIndex);
             if (chapters == null) {
@@ -170,7 +174,7 @@ public class ChapterUtils {
         } catch (InterruptedIOException e) {
             throw e;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, "Failed to load chapters from URL: " + url, e);
         } finally {
             if (response != null) {
                 response.close();
