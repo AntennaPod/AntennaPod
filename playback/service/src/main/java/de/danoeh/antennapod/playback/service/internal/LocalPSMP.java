@@ -700,25 +700,47 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         abandonAudioFocus();
 
         final Playable currentMedia = media;
-        Playable nextMedia = null;
 
         // we should continue to next episode if we were told to continue and we're allowed to (by sleep timer)
         shouldContinue &= callback.shouldContinueToNextEpisode();
 
         if (shouldContinue) {
-            // Load next episode if previous episode was in the queue and if there
-            // is an episode in the queue left.
-            // Start playback immediately if continuous playback is enabled
-            nextMedia = callback.getNextInQueue(currentMedia);
-            if (nextMedia != null) {
-                callback.onPlaybackEnded(nextMedia.getMediaType(), false);
-                // setting media to null signals to playMediaObject() that
-                // we're taking care of post-playback processing
-                media = null;
-                playMediaObject(nextMedia, false, !nextMedia.localFileAvailable(), isPlaying, isPlaying);
-            }
+            // Move database operations to background thread
+            java.util.concurrent.Executors.newSingleThreadExecutor().submit(() -> {
+                try {
+                    // Load next episode if previous episode was in the queue and if there
+                    // is an episode in the queue left.
+                    // Start playback immediately if continuous playback is enabled
+                    Playable nextMedia = callback.getNextInQueue(currentMedia);
+                    
+                    // Continue on main thread
+                    new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                        continuePlayback(nextMedia, currentMedia, hasEnded, wasSkipped, isPlaying, toStoppedState);
+                    });
+                } catch (Exception e) {
+                    Log.e(TAG, "Error getting next in queue", e);
+                    // Continue without next media
+                    new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                        continuePlayback(null, currentMedia, hasEnded, wasSkipped, isPlaying, toStoppedState);
+                    });
+                }
+            });
+        } else {
+            continuePlayback(null, currentMedia, hasEnded, wasSkipped, isPlaying, toStoppedState);
         }
-        if (shouldContinue || toStoppedState) {
+    }
+    
+    private void continuePlayback(Playable nextMedia, Playable currentMedia, boolean hasEnded, 
+                                 boolean wasSkipped, boolean isPlaying, boolean toStoppedState) {
+        if (nextMedia != null) {
+            callback.onPlaybackEnded(nextMedia.getMediaType(), false);
+            // setting media to null signals to playMediaObject() that
+            // we're taking care of post-playback processing
+            media = null;
+            playMediaObject(nextMedia, false, !nextMedia.localFileAvailable(), isPlaying, isPlaying);
+        }
+        
+        if (nextMedia != null || toStoppedState) {
             if (nextMedia == null) {
                 callback.onPlaybackEnded(null, true);
                 stop();
