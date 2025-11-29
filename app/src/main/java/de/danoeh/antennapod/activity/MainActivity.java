@@ -707,7 +707,7 @@ public class MainActivity extends CastEnabledActivity {
             drawerLayout.open();
         }
         if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_DOWNLOAD_LOGS, false)) {
-            new DownloadLogFragment().show(getSupportFragmentManager(), null);
+            new DownloadLogFragment().show(getSupportFragmentManager(), DownloadLogFragment.TAG);
         }
         if (intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false)) {
             FeedUpdateManager.getInstance().runOnceOrAsk(this);

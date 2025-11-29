@@ -304,6 +304,10 @@
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
     <string name="download_log_details_message">%1$s \n\nTechnical reason: \n%2$s \n\nFile URL:\n%3$s</string>
+    <string name="download_log_details_human_readable_reason_title">Status</string>
+    <string name="download_log_details_technical_reason_title">Technical details</string>
+    <string name="download_log_details_file_url_title">File URL</string>
+    <string name="download_log_open_feed">Open</string>
     <string name="download_error_retrying">Download of \"%1$s\" failed. Will be retried later.</string>
     <string name="download_error_not_retrying">Download of \"%1$s\" failed.</string>
     <string name="download_error_tap_for_details">Tap to view details.</string>
@@ -387,7 +391,9 @@
     <string name="keep_sorted">Keep sorted</string>
     <string name="date">Date</string>
     <string name="duration">Duration</string>
+    <string name="episode">Episode</string>
     <string name="episode_title">Episode title</string>
+    <string name="feed">Podcast</string>
     <string name="feed_title">Podcast title</string>
     <string name="random">Random</string>
     <string name="smart_shuffle">Smart shuffle</string>
