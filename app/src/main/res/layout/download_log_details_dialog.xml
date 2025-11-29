@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -39,7 +40,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:text="No podcast name set" />
+                    tools:text="Podcast name" />
 
             </LinearLayout>
 
@@ -79,7 +80,7 @@
                 android:focusableInTouchMode="true"
                 android:singleLine="true"
                 android:ellipsize="middle"
-                android:text="No episode name set" />
+                tools:text="Episode Name" />
 
         </LinearLayout>
 
@@ -104,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="No technical reason found" />
+                tools:text="@string/download_error_not_found" />
 
         </LinearLayout>
 
@@ -129,7 +130,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="No technical reason found" />
+                tools:text="Http error 404" />
 
         </LinearLayout>
 
@@ -155,7 +156,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackground"
-                android:text="No file url found" />
+                tools:text="http://example.com/feed.xml" />
 
         </LinearLayout>
 

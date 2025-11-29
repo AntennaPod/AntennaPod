@@ -34,6 +34,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
+import static de.test.antennapod.EspressoTestUtils.waitForViewGlobally;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 
@@ -55,13 +56,13 @@ public class DownloadLogTest {
         completedDownloadsIntent.putExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG, CompletedDownloadsFragment.TAG);
 
         feed = new Feed(0, "last modified", "@@Feed title@@", "link", "description", "payment link",
-                "author", "language", "type", "feedIdentifier", "http://localhost/cover.png",
+                "@author@", "language", "type", "feedIdentifier", "http://localhost/cover.png",
                 "/sdcard/abc", "http://localhost/feed.xml", 0);
         FeedItem item = new FeedItem(0, "title", "identifier", "link", new Date(), FeedItem.UNPLAYED, feed);
         media = new FeedMedia(item, "http://localhost/media.mp3", 10000, "mime type");
         item.setMedia(media);
         feed.setItems(Collections.singletonList(item));
-        FeedDatabaseWriter.updateFeed(context, feed, false);
+        feed = FeedDatabaseWriter.updateFeed(context, feed, false);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class DownloadLogTest {
         openDialog(result);
         // Open feed
         onView(withText(R.string.download_log_open_feed)).perform(click());
-        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 2000));
+        waitForViewGlobally(withText(feed.getAuthor()), 2000);
     }
 
     @Test
@@ -82,7 +83,7 @@ public class DownloadLogTest {
         openDialog(result);
         // Opens online feed view
         onView(withText(R.string.download_log_open_feed)).perform(click());
-        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 2000));
+        waitForViewGlobally(withText(feed.getAuthor()), 2000);
         onView(isRoot()).perform(waitForView(allOf(withText(R.string.subscribe_label), isDisplayed()), 2000));
     }
 
@@ -102,7 +103,7 @@ public class DownloadLogTest {
         openDialog(result);
         // Opens feed
         onView(withText(R.string.download_log_open_feed)).perform(click());
-        onView(isRoot()).perform(waitForView(allOf(withText(feed.getTitle()), isDisplayed()), 2000));
+        waitForViewGlobally(withText(feed.getAuthor()), 2000);
     }
 
     @Test
