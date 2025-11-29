@@ -63,6 +63,7 @@ public abstract class UserPreferences {
     public static final String PREF_BACK_OPENS_DRAWER = "prefBackButtonOpensDrawer";
     public static final String PREF_BOTTOM_NAVIGATION = "prefBottomNavigation";
 
+    public static final String PREF_GLOBAL_DEFAULT_SORTED_ORDER = "prefGlobalDefaultSortedOrder";
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
     public static final String PREF_NEW_EPISODES_ACTION = "prefNewEpisodesAction";
@@ -224,7 +225,7 @@ public abstract class UserPreferences {
 
     public static List<Integer> getFullNotificationButtons() {
         String[] buttons = TextUtils.split(
-            prefs.getString(PREF_FULL_NOTIFICATION_BUTTONS,
+                prefs.getString(PREF_FULL_NOTIFICATION_BUTTONS,
                 NOTIFICATION_BUTTON_SKIP + "," + NOTIFICATION_BUTTON_PLAYBACK_SPEED), ",");
 
         List<Integer> notificationButtons = new ArrayList<>();
@@ -861,6 +862,15 @@ public abstract class UserPreferences {
 
     public static void setShouldShowSubscriptionTitle(boolean show) {
         prefs.edit().putBoolean(PREF_SUBSCRIPTION_TITLE, show).apply();
+    }
+
+    public static void setPrefGlobalSortedOrder(SortOrder sortOrder) {
+        prefs.edit().putString(PREF_GLOBAL_DEFAULT_SORTED_ORDER, "" + sortOrder.code).apply();
+    }
+
+    public static SortOrder getPrefGlobalSortedOrder() {
+        return SortOrder.fromCodeString(prefs.getString(PREF_GLOBAL_DEFAULT_SORTED_ORDER,
+                "" + SortOrder.DATE_NEW_OLD.code));
     }
 
     public static void setAllEpisodesSortOrder(SortOrder s) {
