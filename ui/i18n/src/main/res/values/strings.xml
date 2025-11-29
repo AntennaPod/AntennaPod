@@ -567,6 +567,8 @@
     <string name="remember_last_page">Remember last page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted</string>
+    <string name="pref_auto_tag_categories_title">Auto-tag from categories</string>
+    <string name="pref_auto_tag_categories_sum">Automatically add RSS/iTunes categories as tags when subscribing to feeds</string>
     <string name="pref_downloads_button_action_title">Play from downloads screen</string>
     <string name="pref_downloads_button_action_sum">Display play button instead of delete button on downloads screen</string>
     <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>

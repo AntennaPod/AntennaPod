@@ -24,6 +24,7 @@ public class Itunes extends Namespace {
     private static final String SUBTITLE = "subtitle";
     private static final String SUMMARY = "summary";
     private static final String NEW_FEED_URL = "new-feed-url";
+    private static final String CATEGORY = "category";
 
     @Override
     public SyndElement handleElementStart(String localName, HandlerState state,
@@ -39,6 +40,11 @@ public class Itunes extends Namespace {
                 if (!TextUtils.isEmpty(url)) {
                     state.getFeed().setImageUrl(url);
                 }
+            }
+        } else if (CATEGORY.equals(localName) && state.getFeed() != null) {
+            String text = attributes.getValue("text");
+            if (!TextUtils.isEmpty(text)) {
+                state.getFeed().addCategory(text);
             }
         }
         return new SyndElement(localName, this);

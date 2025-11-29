@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.model.feed;
 
+import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -62,6 +63,10 @@ public class Feed {
     private long lastRefreshAttempt;
 
     private ArrayList<FeedFunding> fundingList;
+    /**
+     * Feed categories from RSS/iTunes.
+     */
+    private List<String> categories = new ArrayList<>();
     /**
      * Feed type, for example RSS 2 or Atom.
      */
@@ -354,6 +359,16 @@ public class Feed {
 
     public ArrayList<FeedFunding> getPaymentLinks() {
         return fundingList;
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void addCategory(String category) {
+        if (!TextUtils.isEmpty(category) && !categories.contains(category)) {
+            categories.add(category.trim());
+        }
     }
 
     public String getLanguage() {

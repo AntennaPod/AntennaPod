@@ -37,6 +37,12 @@
             android:key="prefDeleteRemovesFromQueue"
             android:summary="@string/pref_delete_removes_from_queue_sum"
             android:title="@string/pref_delete_removes_from_queue_title"/>
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefAutoTagCategories"
+            android:summary="@string/pref_auto_tag_categories_sum"
+            android:title="@string/pref_auto_tag_categories_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">

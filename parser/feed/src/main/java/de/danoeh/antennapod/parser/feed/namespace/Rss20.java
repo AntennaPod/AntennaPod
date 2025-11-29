@@ -34,6 +34,7 @@ public class Rss20 extends Namespace {
     private static final String IMAGE = "image";
     private static final String URL = "url";
     private static final String LANGUAGE = "language";
+    private static final String CATEGORY = "category";
 
     private static final String ENC_URL = "url";
     private static final String ENC_LEN = "length";
@@ -144,6 +145,8 @@ public class Rss20 extends Namespace {
                 }
             } else if (LANGUAGE.equals(localName) && state.getFeed() != null) {
                 state.getFeed().setLanguage(content.toLowerCase(Locale.US));
+            } else if (CATEGORY.equals(localName) && CHANNEL.equals(second) && state.getFeed() != null) {
+                state.getFeed().addCategory(content);
             }
         }
     }

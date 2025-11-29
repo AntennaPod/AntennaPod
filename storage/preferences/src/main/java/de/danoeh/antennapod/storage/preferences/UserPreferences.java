@@ -62,6 +62,7 @@ public abstract class UserPreferences {
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
     public static final String PREF_BACK_OPENS_DRAWER = "prefBackButtonOpensDrawer";
     public static final String PREF_BOTTOM_NAVIGATION = "prefBottomNavigation";
+    public static final String PREF_AUTO_TAG_CATEGORIES = "prefAutoTagCategories";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -757,6 +758,10 @@ public abstract class UserPreferences {
 
     public static boolean isBottomNavigationEnabled() {
         return prefs.getBoolean(PREF_BOTTOM_NAVIGATION, false);
+    }
+
+    public static boolean isAutoTagCategoriesEnabled() {
+        return prefs.getBoolean(PREF_AUTO_TAG_CATEGORIES, true);
     }
 
     public static void setBottomNavigationEnabled(boolean enabled) {
