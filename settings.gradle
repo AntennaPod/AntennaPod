@@ -42,6 +42,7 @@ include ':playback:service'
 include ':storage:database'
 include ':storage:database-maintenance-service'
 include ':storage:importexport'
+include ':storage:media-management'
 include ':storage:preferences'
 
 include ':ui:app-start-intent'

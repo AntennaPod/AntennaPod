@@ -5,17 +5,23 @@ apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
 android {
-    namespace "de.danoeh.antennapod.storage.databasemaintenanceservice"
+    namespace "de.danoeh.antennapod.storage.mediamanagement"
 }
 
 dependencies {
+    implementation project(':event')
     implementation project(':model')
+    implementation project(':net:download:service-interface')
     implementation project(':storage:database')
+    implementation project(':storage:preferences')
     implementation project(':ui:i18n')
     implementation project(':ui:notifications')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.core:core:$coreVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
+
+    implementation "commons-io:commons-io:$commonsioVersion"
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
     implementation "com.google.guava:guava:31.0.1-android"
 }
