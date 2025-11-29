@@ -145,7 +145,7 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
-            <de.danoeh.antennapod.ui.screen.playback.video.GestureAwareSeekBar
+            <SeekBar
                 android:id="@+id/sbPosition"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
