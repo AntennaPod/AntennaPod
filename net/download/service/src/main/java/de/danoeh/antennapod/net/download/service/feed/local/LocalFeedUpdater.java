@@ -126,7 +126,7 @@ public class LocalFeedUpdater {
             }
         }
 
-        feed.setImageUrl(getImageUrl(allFiles, folderUri));
+        feed.setImageUrl(getImageUrl(allFiles, folderUri, feed.getTitle()));
 
         feed.getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.DISABLED);
         feed.setDescription(context.getString(R.string.local_feed_description));
@@ -141,7 +141,7 @@ public class LocalFeedUpdater {
      * Returns the image URL for the local feed.
      */
     @NonNull
-    static String getImageUrl(List<FastDocumentFile> files, Uri folderUri) {
+    static String getImageUrl(List<FastDocumentFile> files, Uri folderUri, String feedTitle) {
         // look for special file names
         for (String iconLocation : PREFERRED_FEED_IMAGE_FILENAMES) {
             for (FastDocumentFile file : files) {
@@ -159,8 +159,14 @@ public class LocalFeedUpdater {
             }
         }
 
-        // use default icon as fallback
-        return Feed.PREFIX_GENERATIVE_COVER + folderUri;
+        // use default icon as fallback with encoded feed title
+        try {
+            String encodedTitle = java.net.URLEncoder.encode(feedTitle != null ? feedTitle : "", "UTF-8");
+            return Feed.PREFIX_GENERATIVE_COVER + folderUri
+                    + Feed.SUFFIX_GENERATIVE_COVER_TITLE + encodedTitle;
+        } catch (Exception e) {
+            return Feed.PREFIX_GENERATIVE_COVER + folderUri;
+        }
     }
 
     private static FeedItem feedContainsFile(Feed feed, String filename) {

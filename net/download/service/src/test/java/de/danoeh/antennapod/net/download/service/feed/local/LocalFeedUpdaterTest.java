@@ -28,6 +28,7 @@ import org.robolectric.shadows.ShadowMediaMetadataRetriever;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,6 +63,8 @@ public class LocalFeedUpdaterTest {
             "content://com.android.externalstorage.documents/tree/primary%3ADownload%2Flocal-feed";
     private static final String LOCAL_FEED_DIR1 = "src/test/assets/local-feed1";
     private static final String LOCAL_FEED_DIR2 = "src/test/assets/local-feed2";
+    public static final String PODCAST_TITLE = "Podcast Title";
+    public static final String UTF_8 = "UTF-8";
 
     private Context context;
 
@@ -175,16 +178,20 @@ public class LocalFeedUpdaterTest {
     }
 
     @Test
-    public void testGetImageUrl_EmptyFolder() {
-        String imageUrl = LocalFeedUpdater.getImageUrl(Collections.emptyList(), Uri.EMPTY);
+    public void testGetImageUrl_EmptyFolder() throws UnsupportedEncodingException {
+        String imageUrl = LocalFeedUpdater.getImageUrl(Collections.emptyList(), Uri.EMPTY, PODCAST_TITLE);
         assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
+        assertThat(imageUrl, endsWith(Feed.SUFFIX_GENERATIVE_COVER_TITLE
+                + java.net.URLEncoder.encode(PODCAST_TITLE, UTF_8)));
     }
 
     @Test
-    public void testGetImageUrl_NoImageButAudioFiles() {
+    public void testGetImageUrl_NoImageButAudioFiles() throws UnsupportedEncodingException {
         List<FastDocumentFile> folder = Collections.singletonList(mockDocumentFile("audio.mp3", "audio/mp3"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY);
+        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY, PODCAST_TITLE);
         assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
+        assertThat(imageUrl, endsWith(Feed.SUFFIX_GENERATIVE_COVER_TITLE
+                + java.net.URLEncoder.encode(PODCAST_TITLE, UTF_8)));
     }
 
     @Test
@@ -192,7 +199,7 @@ public class LocalFeedUpdaterTest {
         for (String filename : LocalFeedUpdater.PREFERRED_FEED_IMAGE_FILENAMES) {
             List<FastDocumentFile> folder = Arrays.asList(mockDocumentFile("audio.mp3", "audio/mp3"),
                     mockDocumentFile(filename, "image/jpeg")); // image MIME type doesn't matter
-            String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY);
+            String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY, PODCAST_TITLE);
             assertThat(imageUrl, endsWith(filename));
         }
     }
@@ -201,7 +208,7 @@ public class LocalFeedUpdaterTest {
     public void testGetImageUrl_OtherImageFilenameJpg() {
         List<FastDocumentFile> folder = Arrays.asList(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.jpg", "image/jpeg"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY);
+        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY, PODCAST_TITLE);
         assertThat(imageUrl, endsWith("my-image.jpg"));
     }
 
@@ -209,7 +216,7 @@ public class LocalFeedUpdaterTest {
     public void testGetImageUrl_OtherImageFilenameJpeg() {
         List<FastDocumentFile> folder = Arrays.asList(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.jpeg", "image/jpeg"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY);
+        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY, PODCAST_TITLE);
         assertThat(imageUrl, endsWith("my-image.jpeg"));
     }
 
@@ -217,16 +224,18 @@ public class LocalFeedUpdaterTest {
     public void testGetImageUrl_OtherImageFilenamePng() {
         List<FastDocumentFile> folder = Arrays.asList(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.png", "image/png"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY);
+        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY, PODCAST_TITLE);
         assertThat(imageUrl, endsWith("my-image.png"));
     }
 
     @Test
-    public void testGetImageUrl_OtherImageFilenameUnsupportedMimeType() {
+    public void testGetImageUrl_OtherImageFilenameUnsupportedMimeType() throws UnsupportedEncodingException {
         List<FastDocumentFile> folder = Arrays.asList(mockDocumentFile("audio.mp3", "audio/mp3"),
                 mockDocumentFile("my-image.svg", "image/svg+xml"));
-        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY);
+        String imageUrl = LocalFeedUpdater.getImageUrl(folder, Uri.EMPTY, PODCAST_TITLE);
         assertThat(imageUrl, startsWith(Feed.PREFIX_GENERATIVE_COVER));
+        assertThat(imageUrl, endsWith(Feed.SUFFIX_GENERATIVE_COVER_TITLE
+                + java.net.URLEncoder.encode(PODCAST_TITLE, UTF_8)));
     }
 
     /**
