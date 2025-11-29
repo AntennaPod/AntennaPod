@@ -540,7 +540,12 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             viewBinding.bottomControlsContainer.startAnimation(animation);
             viewBinding.controlsContainer.startAnimation(animation);
         }
-        viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        // Show system UI partially (following NewPipe's approach)
+        // Remove IMMERSIVE_STICKY and HIDE_NAVIGATION to allow system bars to appear
+        // Keep LAYOUT_* flags to prevent layout shifts
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
     }
 
     private void hideVideoControls(boolean showAnimation) {
@@ -551,9 +556,15 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 viewBinding.controlsContainer.startAnimation(animation);
             }
         }
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        // Use IMMERSIVE_STICKY to keep controls hidden when system bars appear temporarily
+        // This prevents accidental seekbar touches during gesture navigation (swipe up to home)
+        // Following NewPipe's approach: https://github.com/TeamNewPipe/NewPipe
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
 
         viewBinding.bottomControlsContainer.setVisibility(View.GONE);
