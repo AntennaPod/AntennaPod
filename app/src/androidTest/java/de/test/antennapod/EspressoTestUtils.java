@@ -99,9 +99,8 @@ public class EspressoTestUtils {
      *
      * @param viewMatcher The view to wait for.
      * @param timeoutMillis Maximum waiting period in milliseconds.
-     * @throws Exception Throws an Exception in case of a timeout.
      */
-    public static void waitForViewGlobally(@NonNull Matcher<View> viewMatcher, long timeoutMillis) throws Exception {
+    public static void waitForViewGlobally(@NonNull Matcher<View> viewMatcher, long timeoutMillis) {
         long startTime = System.currentTimeMillis();
         long endTime = startTime + timeoutMillis;
 
@@ -110,14 +109,21 @@ public class EspressoTestUtils {
                 onView(viewMatcher).check(matches(isDisplayed()));
                 // no Exception thrown -> check successful
                 return;
-            } catch (NoMatchingViewException | AssertionFailedError ignore) {
+            } catch (NoMatchingViewException | AssertionFailedError exception) {
                 // check was not successful "not found" -> continue waiting
+                if (System.currentTimeMillis() >= endTime) {
+                    throw exception;
+                }
             }
-            //noinspection BusyWait
-            Thread.sleep(50);
-        } while (System.currentTimeMillis() < endTime);
+            try {
+                //noinspection BusyWait
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                break;
+            }
+        } while (true);
 
-        throw new Exception("Timeout after " + timeoutMillis + " ms");
+        throw new RuntimeException("Timeout after " + timeoutMillis + " ms");
     }
 
     /**
