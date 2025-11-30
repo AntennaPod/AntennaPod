@@ -71,8 +71,8 @@ public class DownloadLogDetailsDialog extends DialogFragment {
         viewBinding = DownloadLogDetailsDialogBinding.inflate(getLayoutInflater());
         dialog.setView(viewBinding.getRoot());
 
-        viewBinding.btnGoToPodcast.setVisibility(View.GONE);
-        viewBinding.btnGoToPodcast.setOnClickListener(v -> {
+        viewBinding.goToPodcastButton.setVisibility(View.GONE);
+        viewBinding.goToPodcastButton.setOnClickListener(v -> {
             goToFeed();
             dismiss();
             Fragment downloadLog = getParentFragmentManager().findFragmentByTag(DownloadLogFragment.TAG);
@@ -80,8 +80,11 @@ public class DownloadLogDetailsDialog extends DialogFragment {
                 ((DownloadLogFragment) downloadLog).dismiss();
             }
         });
-        viewBinding.txtvFileUrlContent.setOnClickListener(v ->
-                ClipboardUtils.copyText(viewBinding.txtvFileUrlContent, R.string.download_log_details_file_url_title));
+        viewBinding.fileUrlLabel.setOnClickListener(v ->
+                ClipboardUtils.copyText(viewBinding.fileUrlLabel, R.string.download_log_details_file_url_title));
+        viewBinding.technicalReasonLabel.setOnClickListener(v ->
+                ClipboardUtils.copyText(viewBinding.technicalReasonLabel,
+                        R.string.download_log_details_technical_reason_title));
 
         loadData();
         return dialog.create();
@@ -134,16 +137,16 @@ public class DownloadLogDetailsDialog extends DialogFragment {
         if (!downloadResult.isSuccessful()) {
             message = downloadResult.getReasonDetailed();
         }
-        viewBinding.btnGoToPodcast.setVisibility((isJumpToFeed && feed != null) ? View.VISIBLE : View.GONE);
-        viewBinding.txtvPodcastName.setText(podcastName);
-        viewBinding.llPodcast.setVisibility(podcastName == null ? View.GONE : View.VISIBLE);
-        viewBinding.txtvEpisodeName.setText(episodeName);
-        viewBinding.llEpisode.setVisibility(episodeName == null ? View.GONE : View.VISIBLE);
+        viewBinding.goToPodcastButton.setVisibility((isJumpToFeed && feed != null) ? View.VISIBLE : View.GONE);
+        viewBinding.podcastNameLabel.setText(podcastName);
+        viewBinding.podcastContainer.setVisibility(podcastName == null ? View.GONE : View.VISIBLE);
+        viewBinding.episodeNameLabel.setText(episodeName);
+        viewBinding.episodeContainer.setVisibility(episodeName == null ? View.GONE : View.VISIBLE);
 
         final String humanReadableReason = getString(DownloadErrorLabel.from(downloadResult.getReason()));
-        viewBinding.txtvHumanReadableReasonContent.setText(humanReadableReason);
-        viewBinding.txtvTechnicalReasonContent.setText(message);
-        viewBinding.txtvFileUrlContent.setText(url);
+        viewBinding.humanReadableReasonLabel.setText(humanReadableReason);
+        viewBinding.technicalReasonLabel.setText(message);
+        viewBinding.fileUrlLabel.setText(url);
 
         final String humanReadableReasonTitle = getString(R.string.download_log_details_human_readable_reason_title);
         final String technicalReasonTitle = getString(R.string.download_log_details_technical_reason_title);

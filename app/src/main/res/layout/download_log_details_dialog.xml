@@ -14,7 +14,7 @@
 
         <!-- Podcast header, podcast title, button to jump to podcast -->
         <LinearLayout
-            android:id="@+id/llPodcast"
+            android:id="@+id/podcastContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -26,7 +26,6 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/txtvPodcastTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/feed"
@@ -34,7 +33,7 @@
                     style="@style/TextAppearance.Material3.TitleMedium" />
 
                 <TextView
-                    android:id="@+id/txtvPodcastName"
+                    android:id="@+id/podcastNameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -45,7 +44,7 @@
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGoToPodcast"
+                android:id="@+id/goToPodcastButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="0dp"
@@ -57,14 +56,13 @@
 
         <!-- Episode header, episode title -->
         <LinearLayout
-            android:id="@+id/llEpisode"
+            android:id="@+id/episodeContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="8dp">
 
             <TextView
-                android:id="@+id/txtvEpisodeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/episode"
@@ -72,7 +70,7 @@
                 style="@style/TextAppearance.Material3.TitleMedium" />
 
             <TextView
-                android:id="@+id/txtvEpisodeName"
+                android:id="@+id/episodeNameLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -86,14 +84,13 @@
 
         <!-- Human readable reason for the message/error -->
         <LinearLayout
-            android:id="@+id/llHumanReadableReason"
+            android:id="@+id/humanReadableReasonContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="8dp">
 
             <TextView
-                android:id="@+id/txtvHumanReadableReasonTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/download_log_details_human_readable_reason_title"
@@ -101,7 +98,7 @@
                 style="@style/TextAppearance.Material3.TitleMedium" />
 
             <TextView
-                android:id="@+id/txtvHumanReadableReasonContent"
+                android:id="@+id/humanReadableReasonLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -111,14 +108,13 @@
 
         <!-- Technical details/reason -->
         <LinearLayout
-            android:id="@+id/llTechnicalReason"
+            android:id="@+id/technicalReasonContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="8dp">
 
             <TextView
-                android:id="@+id/txtvTechnicalReasonTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/download_log_details_technical_reason_title"
@@ -126,24 +122,24 @@
                 style="@style/TextAppearance.Material3.TitleMedium" />
 
             <TextView
-                android:id="@+id/txtvTechnicalReasonContent"
+                android:id="@+id/technicalReasonLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
                 tools:text="Http error 404" />
 
         </LinearLayout>
 
         <!-- File URL -->
         <LinearLayout
-            android:id="@+id/llFileUrl"
+            android:id="@+id/fileUrlContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="8dp">
 
             <TextView
-                android:id="@+id/txtvFileUrlTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/download_log_details_file_url_title"
@@ -151,7 +147,7 @@
                 style="@style/TextAppearance.Material3.TitleMedium" />
 
             <TextView
-                android:id="@+id/txtvFileUrlContent"
+                android:id="@+id/fileUrlLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
