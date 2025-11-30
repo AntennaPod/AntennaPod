@@ -52,6 +52,10 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ChapterHolder holder, int position) {
+        if (position < 0 || position >= getItemCount()) {
+            holder.title.setText("Error");
+            return;
+        }
         Chapter sc = getItem(position);
         if (sc == null) {
             holder.title.setText("Error");
@@ -167,12 +171,21 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
     }
 
     public void notifyChapterChanged(int newChapterIndex) {
+        if (newChapterIndex < 0 || newChapterIndex >= getItemCount()) {
+            return;
+        }
         currentChapterIndex = newChapterIndex;
-        currentChapterPosition = getItem(newChapterIndex).getStart();
+        Chapter chapter = getItem(newChapterIndex);
+        if (chapter != null) {
+            currentChapterPosition = chapter.getStart();
+        }
         notifyDataSetChanged();
     }
 
     public void notifyTimeChanged(long timeMs) {
+        if (currentChapterIndex < 0 || currentChapterIndex >= getItemCount()) {
+            return;
+        }
         currentChapterPosition = timeMs;
         // Passing an argument prevents flickering.
         // See EpisodeItemListAdapter.notifyItemChangedCompat.
@@ -180,6 +193,9 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
     }
 
     public Chapter getItem(int position) {
+        if (media == null || media.getChapters() == null || position < 0 || position >= media.getChapters().size()) {
+            return null;
+        }
         return media.getChapters().get(position);
     }
 
