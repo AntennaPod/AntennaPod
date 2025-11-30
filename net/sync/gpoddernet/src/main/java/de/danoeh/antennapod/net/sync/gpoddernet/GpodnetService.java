@@ -52,6 +52,7 @@ public class GpodnetService implements ISyncService {
     private String baseScheme;
     private int basePort;
     private final String baseHost;
+    private final String baseFolder;
     private final String deviceId;
     private String username;
     private String password;
@@ -69,6 +70,7 @@ public class GpodnetService implements ISyncService {
         this.baseHost = hostname.host;
         this.basePort = hostname.port;
         this.baseScheme = hostname.scheme;
+        this.baseFolder = hostname.subfolder;
     }
 
     private void requireLoggedIn() {
@@ -88,7 +90,7 @@ public class GpodnetService implements ISyncService {
         requireLoggedIn();
         try {
             URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/devices/%s.json", username), null, null).toURL();
+                    String.format("%s/api/2/devices/%s.json", baseFolder, username), null, null).toURL();
             Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
             JSONArray devicesArray = new JSONArray(response);
@@ -112,7 +114,7 @@ public class GpodnetService implements ISyncService {
         requireLoggedIn();
         try {
             URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/devices/%s/%s.json", username, deviceId), null, null).toURL();
+                    String.format("%s/api/2/devices/%s/%s.json", baseFolder, username, deviceId), null, null).toURL();
             String content;
             if (caption != null || type != null) {
                 JSONObject jsonContent = new JSONObject();
@@ -153,7 +155,8 @@ public class GpodnetService implements ISyncService {
         requireLoggedIn();
         try {
             URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/subscriptions/%s/%s.json", username, deviceId), null, null).toURL();
+                    String.format("%s/api/2/subscriptions/%s/%s.json", baseFolder, username, deviceId),
+                    null, null).toURL();
 
             final JSONObject requestObject = new JSONObject();
             requestObject.put("add", new JSONArray(added));
@@ -184,7 +187,7 @@ public class GpodnetService implements ISyncService {
     public SubscriptionChanges getSubscriptionChanges(long timestamp) throws GpodnetServiceException {
         requireLoggedIn();
         String params = String.format(Locale.US, "since=%d", timestamp);
-        String path = String.format("/api/2/subscriptions/%s/%s.json", username, deviceId);
+        String path = String.format("%s/api/2/subscriptions/%s/%s.json", baseFolder, username, deviceId);
         try {
             URL url = new URI(baseScheme, null, baseHost, basePort, path, params, null).toURL();
             Request.Builder request = new Request.Builder().url(url);
@@ -229,7 +232,7 @@ public class GpodnetService implements ISyncService {
         try {
             Log.d(TAG, "Uploading partial actions " + from + " to " + to + " of " + episodeActions.size());
             URL url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/episodes/%s.json", username), null, null).toURL();
+                    String.format("%s/api/2/episodes/%s.json", baseFolder, username), null, null).toURL();
 
             final JSONArray list = new JSONArray();
             for (int i = from; i < to; i++) {
@@ -265,7 +268,7 @@ public class GpodnetService implements ISyncService {
     public EpisodeActionChanges getEpisodeActionChanges(long timestamp) throws SyncServiceException {
         requireLoggedIn();
         String params = String.format(Locale.US, "since=%d", timestamp);
-        String path = String.format("/api/2/episodes/%s.json", username);
+        String path = String.format("%s/api/2/episodes/%s.json", baseFolder, username);
         try {
             URL url = new URI(baseScheme, null, baseHost, basePort, path, params, null).toURL();
             Request.Builder request = new Request.Builder().url(url);
@@ -294,7 +297,7 @@ public class GpodnetService implements ISyncService {
         URL url;
         try {
             url = new URI(baseScheme, null, baseHost, basePort,
-                    String.format("/api/2/auth/%s/login.json", username), null, null).toURL();
+                    String.format("%s/api/2/auth/%s/login.json", baseFolder, username), null, null).toURL();
         } catch (MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
