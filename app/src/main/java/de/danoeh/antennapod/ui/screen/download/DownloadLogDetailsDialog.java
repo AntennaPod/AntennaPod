@@ -25,9 +25,8 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
- * Creates a dialog with Feed title (and FeedItem title if possible).
+ * Shows a dialog with Feed title (and FeedItem title if possible).
  * Can show a button to jump to the feed details view.
- * Will take a callback function to call when being dismissed.
  */
 public class DownloadLogDetailsDialog extends DialogFragment {
     public static final String TAG = "DownloadLogDetails";
@@ -53,7 +52,7 @@ public class DownloadLogDetailsDialog extends DialogFragment {
     }
 
     @Override
-    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         downloadResult = (DownloadResult) getArguments().getSerializable(EXTRA_DOWNLOAD_RESULT);
         isJumpToFeed = getArguments().getBoolean(EXTRA_IS_JUMP_TO_FEED, true);
@@ -151,7 +150,7 @@ public class DownloadLogDetailsDialog extends DialogFragment {
         final String humanReadableReasonTitle = getString(R.string.download_log_details_human_readable_reason_title);
         final String technicalReasonTitle = getString(R.string.download_log_details_technical_reason_title);
         final String urlTitle = getString(R.string.download_log_details_file_url_title);
-        clipboardContent =  String.format("%s: \n%s \n\n%s: \n%s \n\n%s: \n%s",
+        clipboardContent = String.format("%s: \n%s \n\n%s: \n%s \n\n%s: \n%s",
                 humanReadableReasonTitle, humanReadableReason, technicalReasonTitle, message, urlTitle, url);
     }
 

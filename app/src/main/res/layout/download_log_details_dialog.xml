@@ -35,8 +35,7 @@
                 <TextView
                     android:id="@+id/podcastNameLabel"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:ellipsize="end"
                     tools:text="Podcast name" />
@@ -72,10 +71,7 @@
             <TextView
                 android:id="@+id/episodeNameLabel"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="middle"
                 tools:text="Episode Name" />
@@ -100,8 +96,7 @@
             <TextView
                 android:id="@+id/humanReadableReasonLabel"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 tools:text="@string/download_error_not_found" />
 
         </LinearLayout>
@@ -124,8 +119,7 @@
             <TextView
                 android:id="@+id/technicalReasonLabel"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 tools:text="Http error 404" />
 
@@ -149,8 +143,7 @@
             <TextView
                 android:id="@+id/fileUrlLabel"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 tools:text="http://example.com/feed.xml" />
 
