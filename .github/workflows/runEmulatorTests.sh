@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o pipefail
+adb logcat -c
 
 runTests() {
     ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest \
@@ -8,4 +9,11 @@ runTests() {
 }
 
 # Retry tests to make them less flaky
-runTests || runTests || runTests
+if runTests || runTests || runTests; then
+    echo "Tests succeeded"
+else
+    echo "Tests FAILED. Dumping logcat:"
+    adb logcat -d > app/build/reports/androidTests/logcat.txt
+    exit 1
+fi
+
