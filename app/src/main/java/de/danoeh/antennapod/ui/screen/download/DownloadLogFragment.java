@@ -12,14 +12,14 @@ import androidx.annotation.Nullable;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.DownloadLogFragmentBinding;
 import de.danoeh.antennapod.event.DownloadLogEvent;
+import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.databinding.DownloadLogFragmentBinding;
-import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class DownloadLogFragment extends BottomSheetDialogFragment
         implements AdapterView.OnItemClickListener, MaterialToolbar.OnMenuItemClickListener {
-    private static final String TAG = "DownloadLogFragment";
+    public static final String TAG = "DownloadLogFragment";
 
     private List<DownloadResult> downloadLog = new ArrayList<>();
     private DownloadLogAdapter adapter;
@@ -86,7 +86,8 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final DownloadResult item = adapter.getItem(position);
         if (item != null) {
-            new DownloadLogDetailsDialog(getContext(), item).show();
+            DownloadLogDetailsDialog.newInstance(item, true)
+                    .show(getParentFragmentManager(), DownloadLogDetailsDialog.TAG);
         }
     }
 
