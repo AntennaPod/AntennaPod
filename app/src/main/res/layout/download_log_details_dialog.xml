@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="?dialogPreferredPadding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Podcast header, podcast title, button to jump to podcast -->
+        <LinearLayout
+            android:id="@+id/podcastContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feed"
+                    android:layout_marginEnd="4dp"
+                    style="@style/TextAppearance.Material3.TitleMedium" />
+
+                <TextView
+                    android:id="@+id/podcastNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    tools:text="Podcast name" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/goToPodcastButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:text="@string/download_log_open_feed"
+                android:layout_marginStart="8dp"
+                style="@style/Widget.Material3.Button.TextButton" />
+
+        </LinearLayout>
+
+        <!-- Episode header, episode title -->
+        <LinearLayout
+            android:id="@+id/episodeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/episode"
+                android:layout_marginEnd="4dp"
+                style="@style/TextAppearance.Material3.TitleMedium" />
+
+            <TextView
+                android:id="@+id/episodeNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="middle"
+                tools:text="Episode Name" />
+
+        </LinearLayout>
+
+        <!-- Human readable reason for the message/error -->
+        <LinearLayout
+            android:id="@+id/humanReadableReasonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_log_details_human_readable_reason_title"
+                android:layout_marginEnd="4dp"
+                style="@style/TextAppearance.Material3.TitleMedium" />
+
+            <TextView
+                android:id="@+id/humanReadableReasonLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/download_error_not_found" />
+
+        </LinearLayout>
+
+        <!-- Technical details/reason -->
+        <LinearLayout
+            android:id="@+id/technicalReasonContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_log_details_technical_reason_title"
+                android:layout_marginEnd="4dp"
+                style="@style/TextAppearance.Material3.TitleMedium" />
+
+            <TextView
+                android:id="@+id/technicalReasonLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                tools:text="Http error 404" />
+
+        </LinearLayout>
+
+        <!-- File URL -->
+        <LinearLayout
+            android:id="@+id/fileUrlContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_log_details_file_url_title"
+                android:layout_marginEnd="4dp"
+                style="@style/TextAppearance.Material3.TitleMedium" />
+
+            <TextView
+                android:id="@+id/fileUrlLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                tools:text="http://example.com/feed.xml" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

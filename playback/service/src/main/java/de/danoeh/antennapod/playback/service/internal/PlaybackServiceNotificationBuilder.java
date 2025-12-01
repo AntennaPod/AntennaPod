@@ -88,11 +88,13 @@ public class PlaybackServiceNotificationBuilder {
                         .submit(iconSize, iconSize)
                         .get();
             } catch (InterruptedException ignore) {
+                Thread.currentThread().interrupt();
                 Log.e(TAG, "Media icon loader was interrupted");
             } catch (Throwable tr) {
                 Log.e(TAG, "Error loading the media icon for the notification", tr);
             }
         } catch (InterruptedException ignore) {
+            Thread.currentThread().interrupt();
             Log.e(TAG, "Media icon loader was interrupted");
         } catch (Throwable tr) {
             Log.e(TAG, "Error loading the media icon for the notification", tr);

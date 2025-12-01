@@ -131,7 +131,7 @@ public class CompletedDownloadsFragment extends Fragment
             return true;
         });
         if (getArguments() != null && getArguments().getBoolean(ARG_SHOW_LOGS, false)) {
-            new DownloadLogFragment().show(getChildFragmentManager(), null);
+            new DownloadLogFragment().show(getChildFragmentManager(), DownloadLogFragment.TAG);
         }
 
         addEmptyView();
@@ -176,7 +176,7 @@ public class CompletedDownloadsFragment extends Fragment
             FeedUpdateManager.getInstance().runOnceOrAsk(requireContext());
             return true;
         } else if (item.getItemId() == R.id.action_download_logs) {
-            new DownloadLogFragment().show(getChildFragmentManager(), null);
+            new DownloadLogFragment().show(getChildFragmentManager(), DownloadLogFragment.TAG);
             return true;
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());

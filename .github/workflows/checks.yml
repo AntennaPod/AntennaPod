@@ -154,7 +154,7 @@ jobs:
         if: failure()
         with:
           name: test-report
-          path: app/build/reports/androidTests/connected/flavors/PLAY/
+          path: app/build/reports/androidTests/
 
   ci-summary:
     name: "CI Summary"
