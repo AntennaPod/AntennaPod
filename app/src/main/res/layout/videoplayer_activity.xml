@@ -23,6 +23,23 @@
         android:indeterminateOnly="true"
         android:visibility="invisible" />
 
+    <FrameLayout
+        android:id="@+id/toolbarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="#90000000">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
+            app:navigationIcon="?homeAsUpIndicator" />
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/controlsContainer"
         android:layout_width="wrap_content"
@@ -104,59 +121,66 @@
 
         </androidx.cardview.widget.CardView>
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/seekBarContainer"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#80000000"
-            android:layoutDirection="ltr"
-            android:paddingTop="8dp">
+            android:layout_height="wrap_content"
+            android:background="#90000000">
 
-            <TextView
-                android:id="@+id/positionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/position_default_label"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layoutDirection="ltr"
+                android:paddingTop="8dp">
 
-            <TextView
-                android:id="@+id/durationLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/position_default_label"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/positionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/position_default_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
-            <SeekBar
-                android:id="@+id/sbPosition"
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/durationLabel"
-                android:layout_toStartOf="@+id/durationLabel"
-                android:layout_toRightOf="@+id/positionLabel"
-                android:layout_toEndOf="@+id/positionLabel"
-                android:layout_centerInParent="true"
-                android:max="500" />
+                <TextView
+                    android:id="@+id/durationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/position_default_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
-        </RelativeLayout>
+                <SeekBar
+                    android:id="@+id/sbPosition"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/durationLabel"
+                    android:layout_toStartOf="@+id/durationLabel"
+                    android:layout_toRightOf="@+id/positionLabel"
+                    android:layout_toEndOf="@+id/positionLabel"
+                    android:layout_centerInParent="true"
+                    android:max="500" />
+
+            </RelativeLayout>
+
+        </FrameLayout>
 
     </LinearLayout>
 

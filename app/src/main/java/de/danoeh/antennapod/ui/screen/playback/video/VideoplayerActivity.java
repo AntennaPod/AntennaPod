@@ -4,7 +4,7 @@ import android.app.PictureInPictureParams;
 import android.app.PictureInPictureUiState;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -33,43 +32,48 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
-import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
-import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.playback.service.PlaybackService;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.ui.common.IntentUtils;
-import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
-import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
-import de.danoeh.antennapod.ui.share.ShareDialog;
-import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
+import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
+import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
+import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
 import de.danoeh.antennapod.ui.screen.playback.MediaPlayerErrorDialog;
 import de.danoeh.antennapod.ui.screen.playback.PlaybackControlsDialog;
 import de.danoeh.antennapod.ui.screen.playback.SleepTimerDialog;
+import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
-import io.reactivex.rxjava3.core.Maybe;
+import de.danoeh.antennapod.ui.share.ShareDialog;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
@@ -82,7 +86,8 @@ import java.util.Collections;
 /**
  * Activity for playing video files.
  */
-public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.OnSeekBarChangeListener {
+public class VideoplayerActivity extends CastEnabledActivity
+        implements SeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     private static final String TAG = "VideoplayerActivity";
 
     /**
@@ -92,11 +97,12 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private boolean videoSurfaceCreated = false;
     private boolean destroyingDueToReload = false;
     private long lastScreenTap = 0;
+    private final Point tapDownPosition = new Point();
+    private int maxInsetBottom = 0; // Size of the bars, even if they are hidden
     private final Handler videoControlsHider = new Handler(Looper.getMainLooper());
     private VideoplayerActivityBinding viewBinding;
     private PlaybackController controller;
     private boolean showTimeLeft = false;
-    private boolean isFavorite = false;
     private boolean switchToAudioOnly = false;
     private Disposable disposable;
     private float prog;
@@ -107,7 +113,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         // has to be called before setting layout content
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        setTheme(R.style.Theme_AntennaPod_VideoPlayer);
+        setTheme(R.style.Theme_AntennaPod_Dark);
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "onCreate()");
@@ -116,8 +123,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         viewBinding = VideoplayerActivityBinding.inflate(LayoutInflater.from(this));
         setContentView(viewBinding.getRoot());
         setupView();
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupPip();
     }
 
@@ -259,7 +264,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
         if (event.isCancelled() || event.wasJustEnabled()) {
-            supportInvalidateOptionsMenu();
+            updateToolbar(null);
         }
     }
 
@@ -289,7 +294,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 .subscribe(
                         result -> {
                             final Playable media = result.first;
-                            final FeedItem item = result.second;
                             if (controller.getStatus() == PlayerStatus.PLAYING
                                     && !controller.isPlayingVideoLocally()) {
                                 Log.d(TAG, "Closing, no longer video");
@@ -301,17 +305,7 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                             showTimeLeft = UserPreferences.shouldShowRemainingTime();
                             onPositionObserverUpdate(
                                     new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
-
-                            if (media != null) {
-                                getSupportActionBar().setSubtitle(media.getEpisodeTitle());
-                                getSupportActionBar().setTitle(media.getFeedTitle());
-                            }
-
-                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
-                            if (isFavorite != isFav) {
-                                isFavorite = isFav;
-                                invalidateOptionsMenu();
-                            }
+                            updateToolbar(media);
                         }, error -> Log.e(TAG, Log.getStackTraceString(error))
                 );
     }
@@ -341,6 +335,15 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             Log.d("timeleft on click", showTimeLeft ? "true" : "false");
         });
 
+        ViewCompat.setOnApplyWindowInsetsListener(viewBinding.videoPlayerContainer, (v, insets) -> {
+            Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            maxInsetBottom = Math.max(maxInsetBottom, systemBarInsets.bottom);
+            int horizontal = Math.max(systemBarInsets.left, systemBarInsets.right);
+            viewBinding.seekBarContainer.setPadding(horizontal, 0, horizontal, maxInsetBottom);
+            viewBinding.toolbarContainer.setPadding(horizontal, systemBarInsets.top, horizontal, 0);
+            return insets;
+        });
+
         viewBinding.sbPosition.setOnSeekBarChangeListener(this);
         viewBinding.rewindButton.setOnClickListener(v -> onRewind());
         viewBinding.rewindButton.setOnLongClickListener(v -> {
@@ -358,7 +361,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         });
         // To suppress touches directly below the slider
         viewBinding.bottomControlsContainer.setOnTouchListener((view, motionEvent) -> true);
-        viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
         viewBinding.videoView.getHolder().addCallback(surfaceHolderCallback);
         viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 
@@ -370,19 +372,33 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         viewBinding.videoPlayerContainer.getViewTreeObserver().addOnGlobalLayoutListener(() ->
                 viewBinding.videoView.setAvailableSize(
                         viewBinding.videoPlayerContainer.getWidth(), viewBinding.videoPlayerContainer.getHeight()));
+
+        viewBinding.toolbar.inflateMenu(R.menu.mediaplayer);
+        requestCastButton(viewBinding.toolbar.getMenu());
+        viewBinding.toolbar.setOnMenuItemClickListener(this);
+        viewBinding.toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(VideoplayerActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private final Runnable hideVideoControls = () -> {
         if (videoControlsShowing) {
             Log.d(TAG, "Hiding video controls");
-            getSupportActionBar().hide();
             hideVideoControls(true);
             videoControlsShowing = false;
         }
     };
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
-        if (event.getAction() != MotionEvent.ACTION_DOWN) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            tapDownPosition.x = (int) event.getX();
+            tapDownPosition.y = (int) event.getY();
+            return true;
+        }
+        if (event.getAction() != MotionEvent.ACTION_UP) {
             return false;
         }
         if (PictureInPictureUtil.isInPictureInPictureMode(this)) {
@@ -399,11 +415,15 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
                 showSkipAnimation(false);
             }
             if (videoControlsShowing) {
-                getSupportActionBar().hide();
                 hideVideoControls(false);
                 videoControlsShowing = false;
             }
             return true;
+        }
+        double moveDistance = Math.sqrt(Math.pow(event.getX() - tapDownPosition.x, 2)
+                + Math.pow(event.getY() - tapDownPosition.y, 2));
+        if (moveDistance > 0.1 * viewBinding.getRoot().getMeasuredHeight()) {
+            return false; // Was a move, not a tap
         }
 
         toggleVideoControlsVisibility();
@@ -471,10 +491,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     private void toggleVideoControlsVisibility() {
         if (videoControlsShowing) {
-            getSupportActionBar().hide();
             hideVideoControls(true);
         } else {
-            getSupportActionBar().show();
             showVideoControls();
         }
         videoControlsShowing = !videoControlsShowing;
@@ -535,10 +553,12 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     private void showVideoControls() {
         viewBinding.bottomControlsContainer.setVisibility(View.VISIBLE);
         viewBinding.controlsContainer.setVisibility(View.VISIBLE);
+        viewBinding.toolbarContainer.setVisibility(View.VISIBLE);
         final Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         if (animation != null) {
             viewBinding.bottomControlsContainer.startAnimation(animation);
             viewBinding.controlsContainer.startAnimation(animation);
+            viewBinding.toolbarContainer.startAnimation(animation);
         }
         viewBinding.videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
@@ -549,15 +569,16 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
             if (animation != null) {
                 viewBinding.bottomControlsContainer.startAnimation(animation);
                 viewBinding.controlsContainer.startAnimation(animation);
+                viewBinding.toolbarContainer.startAnimation(animation);
             }
         }
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        viewBinding.bottomControlsContainer.setFitsSystemWindows(true);
 
         viewBinding.bottomControlsContainer.setVisibility(View.GONE);
         viewBinding.controlsContainer.setVisibility(View.GONE);
+        viewBinding.toolbarContainer.setVisibility(View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -578,6 +599,11 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedItemEvent(FeedItemEvent event) {
+        loadMediaInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         final MaterialAlertDialogBuilder errorDialog = new MaterialAlertDialogBuilder(this);
@@ -588,48 +614,34 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         errorDialog.show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        requestCastButton(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mediaplayer, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        if (controller == null) {
-            return false;
+    private void updateToolbar(Playable media) {
+        if (media != null) {
+            viewBinding.toolbar.setSubtitle(media.getEpisodeTitle());
+            viewBinding.toolbar.setTitle(media.getFeedTitle());
         }
-        Playable media = controller.getMedia();
         boolean isFeedMedia = (media instanceof FeedMedia);
 
+        Menu menu = viewBinding.toolbar.getMenu();
         menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
         if (isFeedMedia) {
             FeedItemMenuHandler.onPrepareMenu(menu, Collections.singletonList(((FeedMedia) media).getItem()));
         }
 
-        menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
-        menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
+        if (controller != null) {
+            menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
+            menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
+            menu.findItem(R.id.audio_controls).setVisible(controller.getAudioTracks().size() >= 2);
+        }
+
         menu.findItem(R.id.player_switch_to_audio_only).setVisible(true);
-        menu.findItem(R.id.audio_controls).setVisible(controller.getAudioTracks().size() >= 2);
         menu.findItem(R.id.playback_speed).setVisible(true);
         menu.findItem(R.id.player_show_chapters).setVisible(true);
-        return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.player_switch_to_audio_only) {
             switchToAudioOnly = true;
-            finish();
-            return true;
-        } else if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(VideoplayerActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP  | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
             finish();
             return true;
         } else if (item.getItemId() == R.id.player_show_chapters) {
@@ -651,12 +663,8 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
         final @Nullable FeedItem feedItem = getFeedItem(media); // some options option requires FeedItem
         if (item.getItemId() == R.id.add_to_favorites_item && feedItem != null) {
             DBWriter.addFavoriteItem(feedItem);
-            isFavorite = true;
-            invalidateOptionsMenu();
         } else if (item.getItemId() == R.id.remove_from_favorites_item && feedItem != null) {
             DBWriter.removeFavoriteItem(feedItem);
-            isFavorite = false;
-            invalidateOptionsMenu();
         } else if (item.getItemId() == R.id.disable_sleeptimer_item
                 || item.getItemId() == R.id.set_sleeptimer_item) {
             new SleepTimerDialog().show(getSupportFragmentManager(), "SleepTimerDialog");
@@ -768,7 +776,6 @@ public class VideoplayerActivity extends CastEnabledActivity implements SeekBar.
 
     private void compatEnterPictureInPicture() {
         if (PictureInPictureUtil.supportsPictureInPicture(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            getSupportActionBar().hide();
             hideVideoControls(false);
             enterPictureInPictureMode();
         }
