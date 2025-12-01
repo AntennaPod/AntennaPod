@@ -170,7 +170,7 @@ public class ChapterUtils {
         } catch (InterruptedIOException e) {
             throw e;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, "Failed to load chapters from URL: " + url, e);
         } finally {
             if (response != null) {
                 response.close();
