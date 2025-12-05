@@ -590,6 +590,8 @@
     <string name="pref_new_episodes_action_title">New episodes action</string>
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
     <string name="episode_information">Episode information</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Default sort order</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Choose the default order for episodes on the podcast screen</string>
 
     <!-- Report bug -->
     <string name="report_bug_title">Report bug</string>
