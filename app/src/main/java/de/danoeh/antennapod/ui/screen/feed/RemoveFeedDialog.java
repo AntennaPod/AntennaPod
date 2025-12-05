@@ -154,7 +154,22 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
 
         disposable = Completable.fromAction(
                 () -> {
-                    for (Feed feed : feeds) {
+                    for (int i = 0; i < feeds.size(); i++) {
+                        Feed feed = feeds.get(i);
+                        final int currentIndex = i + 1;
+                        final int total = feeds.size();
+                        
+                        // Update UI on main thread if fragment is still attached
+                        if (isAdded() && getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                if (binding != null) {
+                                    String progressText = getString(R.string.archiving_podcast_progress,
+                                            currentIndex, total);
+                                    binding.selectionText.setText(progressText);
+                                }
+                            });
+                        }
+                        
                         DBWriter.setFeedState(context, feed, Feed.STATE_ARCHIVED).get();
                     }
                 })
