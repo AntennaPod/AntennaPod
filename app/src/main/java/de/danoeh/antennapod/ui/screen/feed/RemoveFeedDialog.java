@@ -158,7 +158,7 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
                         Feed feed = feeds.get(i);
                         final int currentIndex = i + 1;
                         final int total = feeds.size();
-                        
+
                         // Update UI on main thread if fragment is still attached
                         if (isAdded() && getActivity() != null) {
                             getActivity().runOnUiThread(() -> {
@@ -169,7 +169,7 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
                                 }
                             });
                         }
-                        
+
                         DBWriter.setFeedState(context, feed, Feed.STATE_ARCHIVED).get();
                     }
                 })
