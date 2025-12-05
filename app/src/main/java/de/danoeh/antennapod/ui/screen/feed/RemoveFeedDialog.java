@@ -125,7 +125,9 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
 
         disposable = Completable.fromAction(
                 () -> {
-                    for (Feed feed : feeds) {
+                    for (int i = 0; i < feeds.size(); i++) {
+                        Feed feed = feeds.get(i);
+                        updateProgressText(R.string.deleting_podcast_progress, i + 1, feeds.size());
                         DBWriter.deleteFeed(context, feed.getId()).get();
                     }
                 })
@@ -142,9 +144,45 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
     }
 
     private void onArchiveButtonPressed() {
-        dismiss();
-        for (Feed feed : feeds) {
-            DBWriter.setFeedState(getContext(), feed, Feed.STATE_ARCHIVED);
+        Context context = getContext();
+        if (context == null) {
+            return;
+        }
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.removeButton.setVisibility(View.GONE);
+        binding.archiveButton.setVisibility(View.GONE);
+        binding.cancelButton.setVisibility(View.GONE);
+
+        disposable = Completable.fromAction(
+                () -> {
+                    for (int i = 0; i < feeds.size(); i++) {
+                        Feed feed = feeds.get(i);
+                        updateProgressText(R.string.archiving_podcast_progress, i + 1, feeds.size());
+                        DBWriter.setFeedState(context, feed, Feed.STATE_ARCHIVED).get();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            Log.d(TAG, "Feed(s) archived");
+                            dismiss();
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                            dismiss();
+                        });
+    }
+
+    private void updateProgressText(int stringResId, int currentIndex, int total) {
+        // Update UI on main thread if fragment is still attached
+        if (isAdded() && getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (binding != null) {
+                    String progressText = getString(stringResId, currentIndex, total);
+                    binding.selectionText.setText(progressText);
+                }
+            });
         }
     }
 
