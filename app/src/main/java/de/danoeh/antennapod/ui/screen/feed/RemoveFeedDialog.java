@@ -125,7 +125,9 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
 
         disposable = Completable.fromAction(
                 () -> {
-                    for (Feed feed : feeds) {
+                    for (int i = 0; i < feeds.size(); i++) {
+                        Feed feed = feeds.get(i);
+                        updateProgressText(R.string.deleting_podcast_progress, i + 1, feeds.size());
                         DBWriter.deleteFeed(context, feed.getId()).get();
                     }
                 })
@@ -156,20 +158,7 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
                 () -> {
                     for (int i = 0; i < feeds.size(); i++) {
                         Feed feed = feeds.get(i);
-                        final int currentIndex = i + 1;
-                        final int total = feeds.size();
-
-                        // Update UI on main thread if fragment is still attached
-                        if (isAdded() && getActivity() != null) {
-                            getActivity().runOnUiThread(() -> {
-                                if (binding != null) {
-                                    String progressText = getString(R.string.archiving_podcast_progress,
-                                            currentIndex, total);
-                                    binding.selectionText.setText(progressText);
-                                }
-                            });
-                        }
-
+                        updateProgressText(R.string.archiving_podcast_progress, i + 1, feeds.size());
                         DBWriter.setFeedState(context, feed, Feed.STATE_ARCHIVED).get();
                     }
                 })
@@ -183,6 +172,18 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
                             Log.e(TAG, Log.getStackTraceString(error));
                             dismiss();
                         });
+    }
+
+    private void updateProgressText(int stringResId, int currentIndex, int total) {
+        // Update UI on main thread if fragment is still attached
+        if (isAdded() && getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (binding != null) {
+                    String progressText = getString(stringResId, currentIndex, total);
+                    binding.selectionText.setText(progressText);
+                }
+            });
+        }
     }
 
     private void showRemoveConfirm() {
