@@ -1229,7 +1229,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void disableSleepTimer() {
-        if (sleepTimerActive()) {
+        if (sleepTimer != null) {
             Log.d(TAG, "Disabling sleep timer");
             sleepTimer.stop();
         }
