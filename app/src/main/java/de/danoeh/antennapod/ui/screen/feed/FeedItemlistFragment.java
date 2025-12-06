@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -15,15 +16,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
@@ -67,21 +81,12 @@ import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.FeedSettingsFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Displays a list of FeedItems.
@@ -655,6 +660,16 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     .transform(new FastBlurTransformation())
                     .dontAnimate())
                 .into(viewBinding.imgvBackground);
+        if (TextUtils.isEmpty(feed.getImageUrl())) {
+            try {
+                String encodedTitle =
+                        java.net.URLEncoder.encode(feed.getTitle() != null ? feed.getTitle() : "", "UTF-8");
+                feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownloadUrl()
+                        + Feed.SUFFIX_GENERATIVE_COVER_TITLE + encodedTitle);
+            } catch (Exception e) {
+                feed.setImageUrl(Feed.PREFIX_GENERATIVE_COVER + feed.getDownloadUrl());
+            }
+        }
 
         Glide.with(this)
                 .load(feed.getImageUrl())

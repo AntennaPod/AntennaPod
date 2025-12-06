@@ -24,6 +24,7 @@ public class Feed {
     public static final String TYPE_ATOM1 = "atom";
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
     public static final String PREFIX_GENERATIVE_COVER = "antennapod_generative_cover:";
+    public static final String SUFFIX_GENERATIVE_COVER_TITLE = "#title=";
 
     private long id;
     private String localFileUrl;
