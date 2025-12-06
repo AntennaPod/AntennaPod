@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -701,38 +702,42 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         abandonAudioFocus();
 
-        final Playable currentMedia = media;
-        Playable nextMedia = null;
 
         // we should continue to next episode if we were told to continue and we're allowed to (by sleep timer)
-        shouldContinue &= callback.shouldContinueToNextEpisode();
-
-        if (shouldContinue) {
-            // Load next episode if previous episode was in the queue and if there
-            // is an episode in the queue left.
-            // Start playback immediately if continuous playback is enabled
-            nextMedia = callback.getNextInQueue(currentMedia);
-            if (nextMedia != null) {
-                callback.onPlaybackEnded(nextMedia.getMediaType(), false);
-                // setting media to null signals to playMediaObject() that
-                // we're taking care of post-playback processing
-                media = null;
-                playMediaObject(nextMedia, false, !nextMedia.localFileAvailable(), isPlaying, isPlaying);
-            } else if (wasSkipped) {
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.no_following_in_queue)));
+        boolean shouldContinueFinal = shouldContinue & callback.shouldContinueToNextEpisode();
+        Executors.newSingleThreadExecutor().submit(() -> {
+            final Playable currentMedia = media;
+            Playable nextMedia = null;
+            if (shouldContinue) {
+                // Load next episode if previous episode was in the queue and if there
+                // is an episode in the queue left.
+                // Start playback immediately if continuous playback is enabled
+                nextMedia = callback.getNextInQueue(currentMedia);
+                if (nextMedia != null) {
+                    callback.onPlaybackEnded(nextMedia.getMediaType(), false);
+                    // setting media to null signals to playMediaObject() that
+                    // we're taking care of post-playback processing
+                    media = null;
+                    Playable nextMediaFinal = nextMedia;
+                    new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                        playMediaObject(nextMediaFinal, false, !nextMediaFinal.localFileAvailable(), isPlaying, isPlaying);
+                    });
+                }else if (wasSkipped) {
+                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.no_following_in_queue)));
+                }
             }
-        }
-        if (shouldContinue || toStoppedState) {
-            if (nextMedia == null) {
-                callback.onPlaybackEnded(null, true);
-                stop();
-            }
-            final boolean hasNext = nextMedia != null;
+            if (shouldContinue || toStoppedState) {
+                if (nextMedia == null) {
+                    callback.onPlaybackEnded(null, true);
+                    stop();
+                }
+                final boolean hasNext = nextMedia != null;
 
-            callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, hasNext);
-        } else if (isPlaying) {
-            callback.onPlaybackPause(currentMedia, currentMedia.getPosition());
-        }
+                callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, hasNext);
+            } else if (isPlaying) {
+                callback.onPlaybackPause(currentMedia, currentMedia.getPosition());
+            }
+        });
     }
 
     /**
