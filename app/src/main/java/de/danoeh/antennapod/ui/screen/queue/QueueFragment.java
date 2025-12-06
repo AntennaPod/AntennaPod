@@ -28,6 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
@@ -105,6 +106,8 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     private FloatingSelectMenu floatingSelectMenu;
     private ProgressBar progressBar;
+    private FloatingActionButton btnScrollUp;
+    private FloatingActionButton btnScrollDown;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,6 +180,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         recyclerAdapter.updateDragDropEnabled();
         refreshToolbarState();
         refreshInfoBar();
+        updateScrollButtons();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -487,7 +491,92 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             recyclerAdapter.endSelectMode();
             return true;
         });
+
+        btnScrollUp = root.findViewById(R.id.btn_scroll_up);
+        btnScrollDown = root.findViewById(R.id.btn_scroll_down);
+
+        btnScrollUp.setOnClickListener(v -> scrollToPlayingItem(/*scrollUp=*/true));
+        btnScrollDown.setOnClickListener(v -> scrollToPlayingItem(/*scrollUp=*/false));
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                updateScrollButtons();
+            }
+        });
         return root;
+    }
+
+    private void updateScrollButtons() {
+        if (recyclerView == null || recyclerAdapter == null || queue == null || queue.isEmpty()) {
+            btnScrollUp.setVisibility(View.GONE);
+            btnScrollDown.setVisibility(View.GONE);
+            return;
+        }
+        int playingIndex = -1;
+        for (int i = 0, size = queue.size(); i < size; i++) {
+            FeedItem item = queue.get(i);
+            if (item.getMedia() != null && PlaybackStatus.isPlaying(item.getMedia())) {
+                playingIndex = i;
+                break;
+            }
+        }
+        if (playingIndex < 0) {
+            btnScrollUp.setVisibility(View.GONE);
+            btnScrollDown.setVisibility(View.GONE);
+            return;
+        }
+        LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+        if (lm == null) {
+            btnScrollUp.setVisibility(View.GONE);
+            btnScrollDown.setVisibility(View.GONE);
+            return;
+        }
+        int firstVisible = lm.findFirstVisibleItemPosition();
+        int lastVisible = lm.findLastVisibleItemPosition();
+        if (playingIndex < firstVisible) {
+            btnScrollUp.setVisibility(View.VISIBLE);
+            btnScrollDown.setVisibility(View.GONE);
+        } else if (playingIndex > lastVisible) {
+            btnScrollUp.setVisibility(View.GONE);
+            btnScrollDown.setVisibility(View.VISIBLE);
+        } else {
+            btnScrollUp.setVisibility(View.GONE);
+            btnScrollDown.setVisibility(View.GONE);
+        }
+    }
+
+    // Overload scrollToPlayingItem to support direction
+    public void scrollToPlayingItem(boolean scrollUp) {
+        if (recyclerView == null || recyclerAdapter == null || queue == null || queue.isEmpty()) {
+            return;
+        }
+        int playingIndex = -1;
+        for (int i = 0, size = queue.size(); i < size; i++) {
+            FeedItem item = queue.get(i);
+            if (item.getMedia() != null && PlaybackStatus.isPlaying(item.getMedia())) {
+                playingIndex = i;
+                break;
+            }
+        }
+        if (playingIndex < 0) {
+            return;
+        }
+        final int target = playingIndex;
+        recyclerView.post(() -> {
+            LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+            if (lm == null) {
+                recyclerView.smoothScrollToPosition(target);
+                return;
+            }
+            int firstVisible = lm.findFirstVisibleItemPosition();
+            int lastVisible = lm.findLastVisibleItemPosition();
+            if (scrollUp && target < firstVisible) {
+                recyclerView.smoothScrollToPosition(target);
+            } else if (!scrollUp && target > lastVisible) {
+                recyclerView.smoothScrollToPosition(target);
+            }
+        });
     }
 
     @Override
@@ -556,6 +645,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                         recyclerView.restoreScrollPosition(scrollPosition);
                     }
                     refreshInfoBar();
+                    updateScrollButtons();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
