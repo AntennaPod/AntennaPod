@@ -684,7 +684,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         callback.episodeFinishedPlayback(); // notify that the current episode just finished
 
-        boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
+        final boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
 
         // we're relying on the position stored in the Playable object for post-playback processing
         if (media != null) {
@@ -706,7 +706,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         Executors.newSingleThreadExecutor().submit(() -> {
             final Playable currentMedia = media;
             Playable nextMedia = null;
-            if (shouldContinue) {
+            if (shouldContinueFinal) {
                 // Load next episode if previous episode was in the queue and if there
                 // is an episode in the queue left.
                 // Start playback immediately if continuous playback is enabled
@@ -722,7 +722,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     });
                 }
             }
-            if (shouldContinue || toStoppedState) {
+            if (shouldContinueFinal || toStoppedState) {
                 if (nextMedia == null) {
                     callback.onPlaybackEnded(null, true);
                     stop();
