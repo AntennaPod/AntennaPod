@@ -17,6 +17,7 @@ public interface SleepTimer {
 
     /**
      * Cancels (stops) current sleep timer forever, cannot be restarted.
+     * Doesn't stop playback.
      */
     void stop();
 

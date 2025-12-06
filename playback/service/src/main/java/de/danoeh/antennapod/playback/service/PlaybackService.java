@@ -309,6 +309,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
+        disableSleepTimer();
 
         if (notificationBuilder.getPlayerStatus() == PlayerStatus.PLAYING) {
             notificationBuilder.setPlayerStatus(PlayerStatus.STOPPED);
@@ -1027,7 +1028,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
-    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent<SleepTimer> event) {
+        //we don't have a sleep timer and we received events from one, decide what to do
+        if (!(event.isOver() || event.isCancelled()) && sleepTimer != event.getCallerInstance()) {
+            // terminate the other sleep timer, it's rogue / orphaned
+            event.getCallerInstance().stop();
+        }
+
         if (event.isOver()) {
             updateMediaSession(mediaPlayer.getPlayerStatus());
             mediaPlayer.pause(true, true);

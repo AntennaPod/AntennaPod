@@ -42,7 +42,7 @@ public class ClockSleepTimer implements SleepTimer {
         }
         timeLeft -= timeSinceLastTick;
 
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(this, timeLeft));
         if (timeLeft < NOTIFICATION_THRESHOLD) {
             notifyAboutExpiry();
         }
@@ -96,10 +96,10 @@ public class ClockSleepTimer implements SleepTimer {
         // make sure we've registered for events first
         EventBus.getDefault().register(this);
         final long left = getTimeLeft();
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(left));
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(this, left));
 
         lastTick = System.currentTimeMillis();
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(timeLeft));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(this, timeLeft));
 
         isRunning = true;
     }
@@ -113,7 +113,7 @@ public class ClockSleepTimer implements SleepTimer {
             shakeListener.pause();
         }
         shakeListener = null;
-        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.cancelled());
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.cancelled(this));
     }
 
     protected Context getContext() {
@@ -132,8 +132,8 @@ public class ClockSleepTimer implements SleepTimer {
 
     @Override
     public void reset() {
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled(this));
         updateRemainingTime(initialWaitingTime);
-        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(getTimeLeft()));
+        EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(this, getTimeLeft()));
     }
 }

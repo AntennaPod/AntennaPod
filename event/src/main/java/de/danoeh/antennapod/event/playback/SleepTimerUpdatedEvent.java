@@ -1,23 +1,30 @@
 package de.danoeh.antennapod.event.playback;
 
-public class SleepTimerUpdatedEvent {
+// using SleepTimer instance would drag that class into this module, we use generics instead
+public class SleepTimerUpdatedEvent<T> {
     private static final long CANCELLED = Long.MAX_VALUE;
     private final long timeLeft;
+    private final T instance;
 
-    private SleepTimerUpdatedEvent(long timeLeft) {
+    private SleepTimerUpdatedEvent(T instance, long timeLeft) {
+        this.instance = instance;
         this.timeLeft = timeLeft;
     }
 
-    public static SleepTimerUpdatedEvent justEnabled(long timeLeft) {
-        return new SleepTimerUpdatedEvent(-timeLeft);
+    public static <T> SleepTimerUpdatedEvent<T> justEnabled(T instance, long timeLeft) {
+        return new SleepTimerUpdatedEvent<T>(instance, -timeLeft);
     }
 
-    public static SleepTimerUpdatedEvent updated(long timeLeft) {
-        return new SleepTimerUpdatedEvent(Math.max(0, timeLeft));
+    public static <T> SleepTimerUpdatedEvent<T> updated(T instance, long timeLeft) {
+        return new SleepTimerUpdatedEvent<T>(instance, Math.max(0, timeLeft));
     }
 
-    public static SleepTimerUpdatedEvent cancelled() {
-        return new SleepTimerUpdatedEvent(CANCELLED);
+    public static <T> SleepTimerUpdatedEvent<T> cancelled(T instance) {
+        return new SleepTimerUpdatedEvent<T>(instance, CANCELLED);
+    }
+
+    public T getCallerInstance() {
+        return instance;
     }
 
     public long getTimeLeft() {
