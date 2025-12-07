@@ -1030,8 +1030,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @SuppressWarnings("unused")
     public void sleepTimerUpdate(SleepTimerUpdatedEvent<SleepTimer> event) {
         //we don't have a sleep timer and we received events from one, decide what to do
-        if (!(event.isOver() || event.isCancelled()) && sleepTimer != event.getCallerInstance()) {
+        if (!(event.isOver() || event.isCancelled())
+                && sleepTimer != event.getCallerInstance()
+                && event.getCallerInstance() != null) {
             // terminate the other sleep timer, it's rogue / orphaned
+            Log.d(TAG, "Terminating orphaned sleep timer");
             event.getCallerInstance().stop();
         }
 
