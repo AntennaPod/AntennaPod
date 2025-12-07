@@ -1,23 +1,32 @@
 package de.danoeh.antennapod.event.playback;
 
-public class SleepTimerUpdatedEvent {
+import java.lang.ref.WeakReference;
+
+// using SleepTimer instance would drag that class into this module, we use generics instead
+public class SleepTimerUpdatedEvent<T> {
     private static final long CANCELLED = Long.MAX_VALUE;
     private final long timeLeft;
+    private final WeakReference<T> instance;
 
-    private SleepTimerUpdatedEvent(long timeLeft) {
+    private SleepTimerUpdatedEvent(T instance, long timeLeft) {
+        this.instance = new WeakReference<>(instance);
         this.timeLeft = timeLeft;
     }
 
-    public static SleepTimerUpdatedEvent justEnabled(long timeLeft) {
-        return new SleepTimerUpdatedEvent(-timeLeft);
+    public static <T> SleepTimerUpdatedEvent<T> justEnabled(T instance, long timeLeft) {
+        return new SleepTimerUpdatedEvent<>(instance, -timeLeft);
     }
 
-    public static SleepTimerUpdatedEvent updated(long timeLeft) {
-        return new SleepTimerUpdatedEvent(Math.max(0, timeLeft));
+    public static <T> SleepTimerUpdatedEvent<T> updated(T instance, long timeLeft) {
+        return new SleepTimerUpdatedEvent<>(instance, Math.max(0, timeLeft));
     }
 
-    public static SleepTimerUpdatedEvent cancelled() {
-        return new SleepTimerUpdatedEvent(CANCELLED);
+    public static <T> SleepTimerUpdatedEvent<T> cancelled(T instance) {
+        return new SleepTimerUpdatedEvent<>(instance, CANCELLED);
+    }
+
+    public T getCallerInstance() {
+        return instance.get();
     }
 
     public long getTimeLeft() {
