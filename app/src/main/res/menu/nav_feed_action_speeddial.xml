@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/edit_tags"
+        android:menuCategory="container"
+        android:title="@string/edit_tags"
+        android:icon="@drawable/ic_tag"/>
+    <item
         android:id="@+id/remove_archive_feed"
         android:menuCategory="container"
         android:title="@string/remove_archive_feed_label"
@@ -30,9 +35,4 @@
         android:menuCategory="container"
         android:title="@string/playback_speed"
         android:icon="@drawable/ic_playback_speed"/>
-    <item
-        android:id="@+id/edit_tags"
-        android:menuCategory="container"
-        android:title="@string/edit_tags"
-        android:icon="@drawable/ic_tag"/>
 </menu>
