@@ -6,6 +6,11 @@
         android:title="@string/edit_tags"
         android:icon="@drawable/ic_tag"/>
     <item
+        android:id="@+id/remove_archive_feed"
+        android:menuCategory="container"
+        android:title="@string/remove_archive_feed_label"
+        android:icon="@drawable/ic_delete"/>
+    <item
         android:id="@+id/keep_updated"
         android:menuCategory="container"
         android:title="@string/keep_updated"
@@ -30,9 +35,4 @@
         android:menuCategory="container"
         android:title="@string/playback_speed"
         android:icon="@drawable/ic_playback_speed"/>
-    <item
-        android:id="@+id/remove_archive_feed"
-        android:menuCategory="container"
-        android:title="@string/remove_archive_feed_label"
-        android:icon="@drawable/ic_delete"/>
 </menu>
