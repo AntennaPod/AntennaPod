@@ -416,6 +416,27 @@ public class SubscriptionFragment extends Fragment
                                 }
                             }
                             tagsRecycler.setVisibility(shouldShowTags ? View.VISIBLE : View.GONE);
+                            // Scroll to center the selected tag
+                            int selectedPosition = tagAdapter.getSelectedTagPosition();
+                            if (selectedPosition >= 0) {
+                                tagsRecycler.post(() -> {
+                                    LinearLayoutManager layoutManager = 
+                                            (LinearLayoutManager) tagsRecycler.getLayoutManager();
+                                    if (layoutManager != null) {
+                                        // Calculate offset to center the selected chip
+                                        View selectedView = layoutManager.findViewByPosition(selectedPosition);
+                                        if (selectedView != null) {
+                                            int recyclerWidth = tagsRecycler.getWidth();
+                                            int chipWidth = selectedView.getWidth();
+                                            int offset = (recyclerWidth - chipWidth) / 2;
+                                            layoutManager.scrollToPositionWithOffset(selectedPosition, offset);
+                                        } else {
+                                            // Fallback: just scroll to position if view not laid out yet
+                                            tagsRecycler.smoothScrollToPosition(selectedPosition);
+                                        }
+                                    }
+                                });
+                            }
                         }
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
