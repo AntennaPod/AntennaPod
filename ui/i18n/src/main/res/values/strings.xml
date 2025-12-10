@@ -370,6 +370,7 @@
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
     <string name="error_file_not_found">File not found</string>
     <string name="no_media_label">Item does not contain a media file</string>
+    <string name="no_following_in_queue">This was the last episode in the queue</string>
 
     <!-- Queue operations -->
     <string name="lock_queue">Lock queue</string>
