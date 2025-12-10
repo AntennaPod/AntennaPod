@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceFragmentCompat;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
@@ -16,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.ui.common.Keyboard;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
 import de.danoeh.antennapod.ui.preferences.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.ui.preferences.screen.AutoDownloadPreferencesFragment;
@@ -134,13 +133,7 @@ public class PreferenceActivity extends ToolbarActivity implements SearchPrefere
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 finish();
             } else {
-                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                View view = getCurrentFocus();
-                //If no view currently has focus, create a new one, just so we can grab a window token from it
-                if (view == null) {
-                    view = new View(this);
-                }
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                Keyboard.hide(this);
                 getSupportFragmentManager().popBackStack();
             }
             return true;

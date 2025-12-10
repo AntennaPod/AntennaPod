@@ -23,6 +23,7 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.SimpleChipAdapter;
+import de.danoeh.antennapod.ui.common.Keyboard;
 import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -138,6 +139,8 @@ public class TagSettingsDialog extends DialogFragment {
 
     private void addTag(String name) {
         if (TextUtils.isEmpty(name) || displayedTags.contains(name) || FeedPreferences.TAG_UNTAGGED.equals(name)) {
+            viewBinding.newTagEditText.requestFocus();
+            Keyboard.show(getContext(), viewBinding.newTagEditText);
             return;
         }
         displayedTags.add(name);
