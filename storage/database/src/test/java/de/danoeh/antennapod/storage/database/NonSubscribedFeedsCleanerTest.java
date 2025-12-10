@@ -8,6 +8,8 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -121,6 +123,7 @@ public class NonSubscribedFeedsCleanerTest {
 
         // Initialize database
         PlaybackPreferences.init(context);
+        UserPreferences.init(context);
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
         PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
