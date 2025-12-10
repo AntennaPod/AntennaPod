@@ -12,11 +12,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.glide.GlideApp;
+import de.danoeh.antennapod.ui.common.ImageModel;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
@@ -199,26 +200,20 @@ public abstract class WidgetUpdater {
 
     private static Bitmap loadCover(Context context, int iconSize, Playable media, Transformation<Bitmap> transform) {
         try {
-            return Glide.with(context)
+            ImageModel mediaImageModel = new ImageModel(
+                    media.getImageLocation(),
+                    ImageResourceUtils.getFallbackImageLocation(media),
+                    media.getEpisodeTitle());
+            return GlideApp.with(context)
                     .asBitmap()
-                    .load(media.getImageLocation())
+                    .load(mediaImageModel)
                     .dontAnimate()
                     .transform(transform)
                     .submit(iconSize, iconSize)
                     .get(500, TimeUnit.MILLISECONDS);
-        } catch (Throwable tr1) {
-            try {
-                return Glide.with(context)
-                        .asBitmap()
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
-                        .dontAnimate()
-                        .transform(transform)
-                        .submit(iconSize, iconSize)
-                        .get(500, TimeUnit.MILLISECONDS);
-            } catch (Throwable tr2) {
-                Log.e(TAG, "Error loading the media icon for the widget", tr2);
-                return null;
-            }
+        } catch (Throwable tr) {
+            Log.e(TAG, "Error loading the media icon for the widget", tr);
+            return null;
         }
     }
 

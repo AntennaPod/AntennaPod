@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.glide.GlideApp;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.common.SquareImageView;
 
@@ -66,7 +66,7 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
         holder.actionButton.setVisibility(View.GONE);
         if (position >= data.size()) {
             holder.itemView.setAlpha(0.1f);
-            Glide.with(mainActivityRef.get()).clear(holder.imageView);
+            GlideApp.with(mainActivityRef.get()).clear(holder.imageView);
             holder.imageView.setImageResource(R.color.medium_gray);
             return;
         }
@@ -83,13 +83,7 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
             return false;
         });
 
-        Glide.with(mainActivityRef.get())
-                .load(podcast.getImageUrl())
-                .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .fitCenter()
-                        .dontAnimate())
-                .into(holder.imageView);
+        new CoverLoader(holder.imageView, CoverLoader.fromFeed(podcast)).load();
     }
 
     protected void onClick(Feed feed) {

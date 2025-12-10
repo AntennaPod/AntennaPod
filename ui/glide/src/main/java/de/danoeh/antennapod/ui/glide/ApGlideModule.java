@@ -15,6 +15,8 @@ import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.module.AppGlideModule;
 
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
+import de.danoeh.antennapod.ui.common.ImageModel;
+import de.danoeh.antennapod.ui.common.ErrorImageModel;
 import java.io.InputStream;
 
 import com.bumptech.glide.request.RequestOptions;
@@ -44,8 +46,9 @@ public class ApGlideModule extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
+        registry.prepend(ImageModel.class, InputStream.class, new ImageModelLoader.Factory(context));
+        registry.prepend(ErrorImageModel.class, InputStream.class, new ErrorImageModelLoader.Factory());
         registry.replace(String.class, InputStream.class, new MetadataRetrieverLoader.Factory(context));
-        registry.append(String.class, InputStream.class, new GenerativePlaceholderImageModelLoader.Factory());
         registry.append(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
         registry.append(String.class, InputStream.class, new NoHttpStringLoader.StreamFactory());
 

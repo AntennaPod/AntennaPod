@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import de.danoeh.antennapod.ui.glide.GlideApp;
+import de.danoeh.antennapod.ui.common.ImageModel;
 
 import de.danoeh.antennapod.storage.database.StatisticsItem;
 import java.util.List;
@@ -59,13 +59,9 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
             StatisticsItem statsItem = statisticsData.get(position - 1);
-            Glide.with(context)
-                    .load(statsItem.feed.getImageUrl())
-                    .apply(new RequestOptions()
-                            .placeholder(R.color.light_gray)
-                            .error(R.color.light_gray)
-                            .fitCenter()
-                            .dontAnimate())
+            ImageModel feedImageModel = new ImageModel(statsItem.feed.getImageUrl(), statsItem.feed.getTitle());
+            GlideApp.with(context)
+                    .load(feedImageModel)
                     .into(holder.image);
 
             holder.title.setText(statsItem.feed.getTitle());

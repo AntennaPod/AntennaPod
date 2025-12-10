@@ -8,9 +8,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
-import de.danoeh.antennapod.ui.common.ImagePlaceholder;
+import de.danoeh.antennapod.ui.common.ImageModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +62,10 @@ public class FeedDiscoverAdapter extends BaseAdapter {
         holder.imageView.setContentDescription(podcast.title);
 
         float radius = 8 * context.getResources().getDisplayMetrics().density;
+        ImageModel podcastImageModel = new ImageModel(podcast.imageUrl, podcast.title);
         Glide.with(context)
-                .load(podcast.imageUrl)
-                .apply(new RequestOptions()
-                        .placeholder(ImagePlaceholder.getDrawable(context, radius))
-                        .transform(new FitCenter(), new RoundedCorners((int) radius))
-                        .dontAnimate())
+                .load(podcastImageModel)
+                .transform(new FitCenter(), new RoundedCorners((int) radius))
                 .into(holder.imageView);
 
         return convertView;

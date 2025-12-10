@@ -8,7 +8,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.res.Configuration;
 import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,17 +22,14 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import androidx.fragment.app.Fragment;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
+import de.danoeh.antennapod.ui.common.ImageModel;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.ui.common.DateFormatter;
@@ -281,28 +277,33 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayCoverImage() {
-        RequestOptions options = new RequestOptions()
-                .dontAnimate()
-                .transform(new FitCenter(),
-                        new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
-
-        RequestBuilder<Drawable> cover = Glide.with(this)
-                .load(media.getImageLocation())
-                .error(Glide.with(this)
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
-                        .apply(options))
-                .apply(options);
-
         if (displayedChapterIndex == -1 || media == null || media.getChapters() == null
                 || TextUtils.isEmpty(media.getChapters().get(displayedChapterIndex).getImageUrl())) {
-            cover.into(viewBinding.imgvCover);
+            if (media == null) {
+                new CoverLoader(
+                        viewBinding.imgvCover,
+                        new ImageModel(
+                                null,
+                                null,
+                                "No Media"))
+                        .load();
+            } else {
+                // Regular media cover
+                new CoverLoader(
+                        viewBinding.imgvCover,
+                        new ImageModel(
+                                media.getImageLocation(),
+                                ImageResourceUtils.getFallbackImageLocation(media),
+                                media.getEpisodeTitle()))
+                        .load();
+            }
         } else {
-            Glide.with(this)
-                    .load(EmbeddedChapterImage.getModelFor(media, displayedChapterIndex))
-                    .apply(options)
-                    .thumbnail(cover)
-                    .error(cover)
-                    .into(viewBinding.imgvCover);
+            // Chapter image with media cover as fallback
+            new CoverLoader(viewBinding.imgvCover, new ImageModel(
+                    EmbeddedChapterImage.getModelFor(media, displayedChapterIndex).toString(),
+                    media.getImageLocation(),
+                    media.getChapters().get(displayedChapterIndex).getTitle()))
+                    .load();
         }
     }
 

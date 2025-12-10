@@ -15,15 +15,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
@@ -67,21 +79,12 @@ import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.FeedSettingsFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Displays a list of FeedItems.
@@ -647,23 +650,22 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void loadFeedImage() {
-        Glide.with(this)
-                .load(feed.getImageUrl())
-                .apply(new RequestOptions()
-                    .placeholder(R.color.image_readability_tint)
-                    .error(R.color.image_readability_tint)
-                    .transform(new FastBlurTransformation())
-                    .dontAnimate())
-                .into(viewBinding.imgvBackground);
-
-        Glide.with(this)
-                .load(feed.getImageUrl())
-                .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .fitCenter()
-                    .dontAnimate())
-                .into(viewBinding.header.imgvCover);
+        // Background image with blur transformation using ImageModel
+        new CoverLoader(viewBinding.imgvBackground, CoverLoader.fromFeed(feed))
+                .withRequestOptions(new RequestOptions()
+                        .placeholder(R.color.image_readability_tint)
+                        .error(R.color.image_readability_tint)
+                        .transform(new FastBlurTransformation())
+                        .dontAnimate())
+                .load();
+        // Cover image using same ImageModel directly with GlideApp
+        new CoverLoader(viewBinding.header.imgvCover, CoverLoader.fromFeed(feed))
+                .withRequestOptions(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .fitCenter()
+                        .dontAnimate())
+                .load();
     }
 
     private void loadItems() {
@@ -762,12 +764,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         @Override
         protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             holder.coverHolder.setVisibility(View.VISIBLE);
-            new CoverLoader()
-                    .withUri(holder.getFeedItem().getImageLocation()) // Ignore "Show episode cover" setting
-                    .withFallbackUri(holder.getFeedItem().getFeed().getImageUrl())
-                    .withPlaceholderView(holder.placeholder)
-                    .withCoverView(holder.cover)
-                    .load();
+            new CoverLoader(holder.cover, CoverLoader.fromFeedItem(holder.getFeedItem())).load();
             if (feed.getState() != Feed.STATE_SUBSCRIBED) {
                 holder.secondaryActionButton.setVisibility(View.GONE);
             }
