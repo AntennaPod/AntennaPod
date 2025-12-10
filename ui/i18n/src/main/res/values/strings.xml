@@ -214,6 +214,8 @@
     <string name="share_file_label">Share file</string>
     <string name="feed_delete_explanation_delete">Deleting will remove ALL its episodes including downloads, playback history, and statistics.</string>
     <string name="feed_delete_explanation_archive">Archiving will hide it from the subscription list and avoid it getting updates. Downloads, statistics and playback state are kept.</string>
+    <string name="archiving_podcast_progress">Archiving podcast %1$d of %2$d…</string>
+    <string name="deleting_podcast_progress">Deleting podcast %1$d of %2$d…</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
@@ -588,6 +590,8 @@
     <string name="pref_new_episodes_action_title">New episodes action</string>
     <string name="pref_new_episodes_action_sum">Action to take for new episodes</string>
     <string name="episode_information">Episode information</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Default sort order</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Choose the default order for episodes on the podcast screen</string>
 
     <!-- Report bug -->
     <string name="report_bug_title">Report bug</string>
