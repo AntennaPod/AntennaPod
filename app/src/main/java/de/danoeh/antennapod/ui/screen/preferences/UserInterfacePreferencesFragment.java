@@ -18,6 +18,8 @@ import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.drawer.DrawerPreferencesDialog;
+import de.danoeh.antennapod.ui.screen.subscriptions.EpisodeListGlobalDefaultSortDialog;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
@@ -70,6 +72,12 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
                     showFullNotificationButtonsDialog();
                     return true;
                 });
+        findPreference(UserPreferences.PREF_GLOBAL_DEFAULT_SORTED_ORDER)
+                .setOnPreferenceClickListener((preference -> {
+                    EpisodeListGlobalDefaultSortDialog dialog = EpisodeListGlobalDefaultSortDialog.newInstance();
+                    dialog.show(getChildFragmentManager(), "SortDialog");
+                    return true;
+                }));
         findPreference(PREF_SWIPE)
                 .setOnPreferenceClickListener(preference -> {
                     ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_swipe);
