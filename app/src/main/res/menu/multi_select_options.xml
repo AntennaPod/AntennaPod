@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AppCompatResource">
+
     <item
         android:id="@+id/select_toggle"
         android:title="@string/select_all_label"
-        app:showAsAction="always"/>
+        android:showAsAction="never"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/select_all_above"
+        android:title="@string/select_all_above"
+        android:showAsAction="never"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/select_all_below"
+        android:title="@string/select_all_below"
+        android:showAsAction="never"
+        app:showAsAction="never" />
+
 </menu>
