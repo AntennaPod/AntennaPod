@@ -45,6 +45,18 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
         return selectedTag;
     }
 
+    public int getSelectedTagPosition() {
+        if (selectedTag == null) {
+            return -1;
+        }
+        for (int i = 0; i < tags.size(); i++) {
+            if (tags.get(i).getTitle().equals(selectedTag)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @NonNull
     @Override
     public TagViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

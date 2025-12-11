@@ -814,15 +814,15 @@ public final class DBReader {
         }
         List<NavDrawerData.TagItem> tagsSorted = new ArrayList<>(tags.values());
         Collections.sort(tagsSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
-        if (!untaggedTag.getFeeds().isEmpty()) {
-            tagsSorted.add(0, untaggedTag);
-        }
         // Root tag here means "all feeds", this is different from the nav drawer.
         NavDrawerData.TagItem rootTag = new NavDrawerData.TagItem(FeedPreferences.TAG_ROOT);
         for (Feed feed : feeds) {
             rootTag.addFeed(feed, 0);
         }
         tagsSorted.add(0, rootTag);
+        if (!untaggedTag.getFeeds().isEmpty()) {
+            tagsSorted.add(untaggedTag);
+        }
         return tagsSorted;
     }
 
