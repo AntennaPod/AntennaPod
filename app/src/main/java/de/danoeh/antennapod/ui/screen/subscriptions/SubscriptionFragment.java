@@ -431,8 +431,8 @@ public class SubscriptionFragment extends Fragment
                                             int offset = (recyclerWidth - chipWidth) / 2;
                                             layoutManager.scrollToPositionWithOffset(selectedPosition, offset);
                                         } else {
-                                            // Fallback: just scroll to position if view not laid out yet
-                                            tagsRecycler.smoothScrollToPosition(selectedPosition);
+                                            // Fallback: scroll to position without animation
+                                            tagsRecycler.scrollToPosition(selectedPosition);
                                         }
                                     }
                                 });
