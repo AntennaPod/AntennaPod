@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NegativeSeekBarPreference">
+        <attr name="minValue" format="integer" />
+        <attr name="maxValue" format="integer" />
+        <attr name="defValue" format="integer" />
+    </declare-styleable>
+
+    <attr name="negativeSeekBarPreferenceStyle" format="reference" />
+</resources>
