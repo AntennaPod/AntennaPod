@@ -1,0 +1,36 @@
+name: Create Changelog
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install graphqlclient
+
+      - name: Run getChangelog.py
+        id: get_changelog
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.repository.name }}
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+          BASE: ${{ github.event.inputs.base_ref }}
+          HEAD: ${{ github.event.inputs.head_ref }}
+        run: python getChangelog.py
+
+      - name: Archive changelog as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: changelog
+          path: ${{ steps.get_changelog.outputs.filename }}

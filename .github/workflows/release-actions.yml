@@ -1,0 +1,45 @@
+name: Release Actions
+
+on:
+  release:
+    types:
+      - released
+
+jobs:
+  comment_on_fixed_issues:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Identify previous release tag
+        id: previous_release
+        run: |
+          PREVIOUS_TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1))
+          echo "BASE=$PREVIOUS_TAG" >> $GITHUB_ENV
+
+      - name: Run getChangelog.py
+        id: get_changelog
+        env:
+          BASE: ${{ env.BASE }}
+          HEAD: ${{ github.ref }}
+        run: python getChangelog.py
+
+      - name: Add comments to issues
+        env:
+          PREVIOUS_TAG: ${{ env.BASE }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for issue in ${{ steps.get_changelog.outputs.issues }}; do
+            echo "This issue is now addressed in the $PREVIOUS_TAG release. @AntennaPod/review-replyers, time to inform relevant reviews in Google Play console!" | gh issue comment $issue
+            # TODO: identify again comments in thread which contain the links and include comment link(s) in this comment.
+          done
