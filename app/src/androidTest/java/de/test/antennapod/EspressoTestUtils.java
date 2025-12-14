@@ -11,8 +11,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.espresso.PerformException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.util.HumanReadables;
 import androidx.test.espresso.util.TreeIterables;
@@ -39,6 +37,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -218,13 +217,15 @@ public class EspressoTestUtils {
                         click()));
     }
 
-    public static void openNavDrawer() {
-        onView(isRoot()).perform(waitForView(withId(R.id.drawer_layout), 1000));
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+    public static void clickBottomNavItem(@StringRes int text) {
+        onView(allOf(withText(text),
+                isDescendantOfA(withId(R.id.bottomNavigationView)), isDisplayed())).perform(click());
     }
 
-    public static ViewInteraction onDrawerItem(Matcher<View> viewMatcher) {
-        return onView(allOf(viewMatcher, withId(R.id.txtvTitle)));
+    public static void clickBottomNavOverflow(@StringRes int text) {
+        onView(allOf(withText(R.string.overflow_more),
+                isDescendantOfA(withId(R.id.bottomNavigationView)), isDisplayed())).perform(click());
+        onView(allOf(withText(text), isDisplayed())).perform(click());
     }
 
     public static void tryKillPlaybackService() {
