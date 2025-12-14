@@ -9,6 +9,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
+import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.test.antennapod.EspressoTestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -24,14 +25,10 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
 import static de.test.antennapod.EspressoTestUtils.waitForViewGlobally;
 
-/**
- * User interface tests for MainActivity.
- */
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+public class AddFeedFragmentTest {
 
     private UITestUtils uiTestUtils;
 
@@ -42,6 +39,7 @@ public class MainActivityTest {
     public void setUp() throws IOException {
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
+        EspressoTestUtils.setLaunchScreen(AddFeedFragment.TAG);
 
         activityRule.launchActivity(new Intent());
 
@@ -56,12 +54,10 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testAddFeed() throws Exception {
+    public void testAddFeedByUrl() throws Exception {
         // connect to podcast feed
         uiTestUtils.addHostedFeedData();
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
-        openNavDrawer();
-        onView(withText(R.string.add_feed_label)).perform(click());
         onView(withId(R.id.addViaUrlButton)).perform(scrollTo(), click());
         onView(withId(R.id.textInput)).perform(replaceText(feed.getDownloadUrl()));
         onView(withText(R.string.confirm_label)).perform(scrollTo(), click());
