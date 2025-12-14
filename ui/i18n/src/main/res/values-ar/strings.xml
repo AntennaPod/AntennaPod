@@ -50,7 +50,7 @@
     <string name="home_welcome_title">مرحبًا بك في أنتنابد!</string>
     <string name="home_welcome_text">لم تشترك بأي مسموعيَّة بعد. افتح القائمة لإضافة مسموعيَّات.</string>
     <string name="notification_permission_denied">لقد رفضت السماح بالإشعارات.</string>
-    <string name="configure_home">اضبط شاشة المنزل</string>
+    <string name="configure_home">اضبط الصفحة الرئيسية</string>
     <string name="section_hidden">مخفي</string>
     <!--Main activity-->
   <string name="drawer_open">افتح القائمة</string>
@@ -178,8 +178,8 @@
     <string name="show_info_label">اظهر معلومات</string>
     <string name="show_feed_settings_label">أظهِر إعدادات المسموعيَّة</string>
     <string name="feed_settings_label">إعدادات المسموعيَّة</string>
-    <string name="rename_feed_label">تغيير اسم المسموعيَّة</string>
-    <string name="remove_feed_label">أزل المسموعيَّة</string>
+    <string name="rename_feed_label">غيّر الاسم</string>
+    <string name="remove_feed_label">احذِف</string>
     <string name="share_label">مشاركة</string>
     <string name="share_file_label">مشاركة ملف</string>
     <string name="load_complete_feed">حدِّث كامل المسموعيَّة</string>
@@ -889,4 +889,27 @@
     <string name="echo_hoarder_subtitle_clean">نظيف!</string>
     <string name="echo_thanks_large">شكرًا</string>
     <string name="echo_hoarder_comment_clean">لقد قمت بتشغيل حلقات %1$d%% من اشتراكاتك النشطة البالغ عددها %2$d هذا العام. نراهن أنك تحافظ على مكتبك نظيفًا أيضًا!</string>
+    <plurals name="num_subscriptions">
+        <item quantity="zero">لا اشتراكات</item>
+        <item quantity="one">اشتراك واحد</item>
+        <item quantity="two">اشتراكان</item>
+        <item quantity="few">%d اشتراكات</item>
+        <item quantity="many">%d اشتراكًا</item>
+        <item quantity="other">%d اشتراك</item>
+    </plurals>
+    <string name="archive_feed_label_verb">أرشِف</string>
+    <string name="archive_feed_label_noun">الأرشيف</string>
+    <string name="restore_archive_label">استعِد</string>
+    <string name="remove_archive_feed_label">احذف / أرشِف</string>
+    <string name="feed_delete_explanation_delete">سيؤدي الحذف إلى إزالة جميع حلقاته بما في ذلك التنزيلات، وسجل التشغيل، والإحصائيات.</string>
+    <string name="feed_delete_explanation_archive">ستؤدي الأرشفة إلى إخفاءه من قائمة الاشتراكات وتجنب تحديثه. ستبقى التنزيلات، والإحصائيات، وسجل التشغيل.</string>
+    <string name="please_wait_before_refreshing">انتظر قبل أن تنعش الاشتراكات مرة أخرى.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="zero">لا ينزل أي حلقات.</item>
+        <item quantity="one">ينزل حلقة واحدة.</item>
+        <item quantity="two">ينزل حلقتين.</item>
+        <item quantity="few">ينزل %d حلقات.</item>
+        <item quantity="many">ينزل %d حلقة.</item>
+        <item quantity="other">ينزل %d حلقة.</item>
+    </plurals>
 </resources>

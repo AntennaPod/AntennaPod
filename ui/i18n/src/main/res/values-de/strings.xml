@@ -64,7 +64,7 @@
     <string name="drawer_feed_counter_unplayed">Anzahl nicht abgespielter Episoden</string>
     <string name="drawer_feed_counter_downloaded">Anzahl heruntergeladener Episoden</string>
     <string name="drawer_feed_counter_downloaded_unplayed">Anzahl heruntergeladener und nicht abgespielter Episoden</string>
-    <string name="drawer_feed_counter_none">Keine</string>
+    <string name="drawer_feed_counter_none">Nichts</string>
     <!--Bug report activity-->
   <string name="log_file_share_exception">Keine kompatiblen Apps gefunden</string>
     <string name="export_logs_menu_title">Detaillierte Logs exportieren</string>
@@ -453,8 +453,8 @@
     <string name="antennapod_version">AntennaPod-Version</string>
     <string name="contributors">Beitragende</string>
     <string name="contributors_summary">Jeder kann helfen, AntennaPod besser zu machen – durch Code, Übersetzungen oder durch Unterstützen anderer Nutzer in unserem Forum</string>
-    <string name="developers">Entwickler</string>
-    <string name="translators">Übersetzer</string>
+    <string name="developers">Entwicklung</string>
+    <string name="translators">Übersetzung</string>
     <string name="special_thanks">Besonderen Dank</string>
     <string name="privacy_policy">Datenschutzerklärung</string>
     <string name="licenses">Lizenzen</string>
@@ -886,7 +886,7 @@
     <string name="no_queue_items_inbox_has_items_label">Es sind keine Episoden eingereiht, aber es warten neue Episoden auf dich!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Zum Posteingang gehen</string>
     <string name="auto_download_inbox_category">Automatisches Herunterladen von Episoden aus dem Posteingang</string>
-    <string name="please_wait_before_refreshing">Bitte etwas warten, bevor du die Podcasts erneut aktualisierst.</string>
+    <string name="please_wait_before_refreshing">Bitte warte etwas, bevor du die Podcasts erneut aktualisierst.</string>
     <string name="already_downloaded">Episode wurde bereits heruntergeladen</string>
     <string name="statistics_expected_next_episode_any_time">Jederzeit</string>
     <string name="release_schedule_multiple_per_day">mehrmals täglich</string>
