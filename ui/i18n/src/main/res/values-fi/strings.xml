@@ -16,7 +16,7 @@
     <string name="subscriptions_list_label">Tilausluettelo</string>
     <string name="cancel_download_label">Peruuta lataus</string>
     <string name="playback_history_label">Toistohistoria</string>
-    <string name="years_statistics_label">Vuosia</string>
+    <string name="years_statistics_label">Vuodet</string>
     <string name="notification_pref_fragment">Ilmoitukset</string>
     <!--Google Assistant-->
   <string name="app_action_not_found">Toimintoa \"%1$s\" ei löytynyt</string>
@@ -141,8 +141,8 @@
     <string name="show_info_label">Näytä tiedot</string>
     <string name="show_feed_settings_label">Näytä podcastin asetukset</string>
     <string name="feed_settings_label">Podcastin asetukset</string>
-    <string name="rename_feed_label">Uudelleennimeä podcast</string>
-    <string name="remove_feed_label">Poista podcast</string>
+    <string name="rename_feed_label">Nimeä uudelleen</string>
+    <string name="remove_feed_label">Poista</string>
     <string name="share_label">Jaa</string>
     <string name="share_file_label">Jaa tietodosto</string>
     <string name="load_complete_feed">Päivitä podcast</string>
@@ -462,7 +462,7 @@
     <string name="timer_vibration_label">Värise ennen loppua</string>
     <string name="time_seconds">sekuntia</string>
     <string name="time_minutes">minuuttia</string>
-    <string name="time_hours">tunnit</string>
+    <string name="time_hours">tuntia</string>
     <string name="sleep_timer_enabled_label">Uniajastin asetettu</string>
     <!--Synchronisation-->
   <string name="synchronization_choose_title">Valitse synkronointipalveluntarjoaja</string>
@@ -760,8 +760,8 @@
     <string name="downloads_label_short">Lataukset</string>
     <string name="inbox_label_short">Saapuneet</string>
     <plurals name="echo_queue_hours_waiting">
-        <item quantity="one">tunnit odottamassa jonossasi\n%1$d jaksosta</item>
-        <item quantity="other">tunnit odottamassa jonossasi\n%1$d jaksosta</item>
+        <item quantity="one">tunti odottamassa jonossasi\n%1$d jaksosta</item>
+        <item quantity="other">tuntia odottamassa jonossasi\n%1$d jaksosta</item>
     </plurals>
     <string name="pref_downloads_button_action_title">Toista latausnäytöstä</string>
     <string name="downloads_label_more">Lataukset »</string>
@@ -874,4 +874,33 @@
     <string name="statistics_expected_next_episode_any_time">Milloin vain nyt</string>
     <string name="release_schedule_multiple_per_day">useita kertoja päivässä</string>
     <string name="cover_as_background">Kansi taustana</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d tilaus</item>
+        <item quantity="other">%d tilausta</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arkistoi</string>
+    <string name="archive_feed_label_noun">Arkisto</string>
+    <string name="restore_archive_label">Palauta</string>
+    <string name="remove_archive_feed_label">Poista/arkistoi</string>
+    <string name="feed_delete_explanation_delete">Poistaminen poistaa KAIKKI podcastin jaksot sekä niiden lataukset, toistohistorian ja tilastot.</string>
+    <string name="feed_delete_explanation_archive">Arkistointi piilottaa podcastin tilausluettelosta ja estää sen päivitykset. Lataukset, tilastot ja toistotila säilytetään.</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Ladataan mobiiliyhteydellä seuraava %d minuutti</item>
+        <item quantity="other">Ladataan mobiiliyhteydellä seuraavat %d minuuttia</item>
+    </plurals>
+    <string name="no_archive_head_label">Ei arkistoituja kohteita</string>
+    <string name="no_archive_label">Voit arkistoida podcasteja tilausten päänäytöstä.</string>
+    <string name="tag_untagged">Merkitsemättä</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">aloitettu</item>
+        <item quantity="other">aloitettu</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">yhteensä</item>
+        <item quantity="other">yhteensä</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">ladattu</item>
+        <item quantity="other">ladattu</item>
+    </plurals>
 </resources>

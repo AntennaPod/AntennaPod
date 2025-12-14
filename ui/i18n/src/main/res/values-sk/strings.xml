@@ -819,17 +819,17 @@
     <string name="echo_queue_hours_normal">To je približne %1$s každý deň, kým sa nezačne %2$d. Rok môžete začať čisto, ak preskočíte niekoľko epizód.</string>
     <string name="echo_queue_hours_much">To je približne %1$s každý deň, kým sa nezačne %2$d. Počkať, čože?</string>
     <string name="echo_listened_after_title">Vykonali sme analýzu, kedy sú epizódy vydané a kedy ste ich dokončili. Náš záver?</string>
-    <string name="echo_listened_after_comment_easy">Idete ľahko</string>
+    <string name="echo_listened_after_comment_easy">Ste pohodár</string>
     <string name="echo_listened_after_time">Zvyčajne ste dokončili epizódu %1$s po jej vydaní.</string>
     <string name="echo_listened_after_comment_addict">Ste závislí na podcastoch</string>
     <string name="echo_hoarder_title">Tiež nás zaujímalo: počúvate podcasty, ktoré odoberáte?</string>
-    <string name="echo_hoarder_subtitle_hoarder">Pri pohľade na čísla si myslíme, že ste hromaditeľ</string>
+    <string name="echo_hoarder_subtitle_hoarder">Pri pohľade na čísla si myslíme, že ste zberateľ</string>
     <string name="echo_hoarder_comment_hoarder">Vraví sa, že čísla neklamú. A keďže ste tento rok prehrali iba %1$d%% z vašich %2$d aktívnych odberov, pravdepodobne máme pravdu.</string>
     <string name="echo_hoarder_subtitle_medium">Skontrolujte. Žiadne hromadenie.</string>
     <string name="echo_hoarder_comment_medium">Tento rok ste prehrali epizódy z %1$d%% vašich %2$d aktívnych odberov. Čo tak si znova pozrieť \"%3$s\"?</string>
     <string name="echo_hoarder_subtitle_clean">Čisté!</string>
     <string name="echo_thanks_large">Ďakujeme</string>
-    <string name="echo_thanks_we_are_glad_old">za to, že ste s nami tento rok!\n\nSvoju prvú epizódu ste s nami prehrali v %1$s. Je nám cťou vám odvtedy slúžiť.</string>
+    <string name="echo_thanks_we_are_glad_old">za to, že ste s nami tento rok!\n\nSvoju prvú epizódu ste s nami prehrali v mesiaci %1$s. Je nám cťou vám odvtedy slúžiť.</string>
     <string name="echo_thanks_we_are_glad_new">za to, že ste sa k nám tento rok pridali!\n\nČi už ste prešli z inej aplikácie alebo ste s nami začali svoje podcastové dobrodružstvo: sme radi, že vás máme!</string>
     <string name="echo_thanks_now_favorite">Teraz sa pozrime na vaše obľúbené podcasty…</string>
     <string name="echo_share_heading">Moje obľúbené podcasty</string>
@@ -912,7 +912,7 @@
         <item quantity="other">%d epizód označených ako prehrané.</item>
     </plurals>
     <plurals name="marked_as_unplayed_message">
-        <item quantity="one">%d epizódy označené ako neprehrané.</item>
+        <item quantity="one">%d epizóda označená ako neprehraná.</item>
         <item quantity="few">%d epizódy označené ako neprehrané.</item>
         <item quantity="many">%d epizód označených ako neprehraných.</item>
         <item quantity="other">%d epizód označených ako neprehraných.</item>
