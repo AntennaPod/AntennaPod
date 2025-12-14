@@ -348,7 +348,6 @@ public class MainActivity extends CastEnabledActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
             FeedUpdateManager.getInstance().restartUpdateAlarm(this, true);
-            UserPreferences.setBottomNavigationEnabled(true);
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
