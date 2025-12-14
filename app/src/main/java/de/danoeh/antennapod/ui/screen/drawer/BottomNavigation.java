@@ -11,6 +11,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.ListPopupWindow;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.navigation.NavigationBarView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -40,6 +41,7 @@ public class BottomNavigation {
     public BottomNavigation(BottomNavigationView bottomNavigationView) {
         this.bottomNavigationView = bottomNavigationView;
         this.context = bottomNavigationView.getContext();
+        ViewUtils.doOnApplyWindowInsets(bottomNavigationView, (view, insets, initialPadding) -> insets);
     }
 
     public void buildMenu() {
