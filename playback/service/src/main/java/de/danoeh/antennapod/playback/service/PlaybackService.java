@@ -309,7 +309,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
-        disableSleepTimer();
+        disableSleepTimer();  // try again to disable
 
         if (notificationBuilder.getPlayerStatus() == PlayerStatus.PLAYING) {
             notificationBuilder.setPlayerStatus(PlayerStatus.STOPPED);
