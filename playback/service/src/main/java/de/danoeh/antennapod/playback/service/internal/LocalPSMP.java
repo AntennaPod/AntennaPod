@@ -18,6 +18,8 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.event.settings.CompressorPreferenceChangedEvent;
+import de.danoeh.antennapod.event.settings.EqualizerPreferenceChangedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
@@ -31,6 +33,8 @@ import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,6 +69,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private boolean androidAutoConnected;
     private Observer<Integer> androidAutoConnectionObserver;
 
+    @SuppressWarnings("this-escape")
     public LocalPSMP(@NonNull Context context,
                      @NonNull PlaybackServiceMediaPlayer.PSMPCallback callback) {
         super(context, callback);
@@ -92,6 +97,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 .setOnAudioFocusChangeListener(audioFocusChangeListener)
                 .setWillPauseWhenDucked(true)
                 .build();
+
+        EventBus.getDefault().register(this);
     }
 
     /**
@@ -524,6 +531,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public void shutdown() {
+        EventBus.getDefault().unregister(this);
         if (mediaPlayer != null) {
             try {
                 clearMediaPlayerListeners();
@@ -797,5 +805,20 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     public boolean isCasting() {
         return false;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void compressorPresetChanged(CompressorPreferenceChangedEvent event) {
+        mediaPlayer.changeCompressor(
+                event.isEnabled(),
+                event.getPreGain(),
+                event.getThreshold(),
+                event.getRatio(),
+                event.getPostGain());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void equalizerPresetChanged(EqualizerPreferenceChangedEvent event) {
+        mediaPlayer.changeEqualizer(event.isEnabled(), event.getGains());
     }
 }

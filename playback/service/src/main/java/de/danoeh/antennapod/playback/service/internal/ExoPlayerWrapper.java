@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
+import android.media.audiofx.DynamicsProcessing;
 import android.media.audiofx.LoudnessEnhancer;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -44,12 +46,14 @@ import androidx.media3.extractor.DefaultExtractorsFactory;
 import androidx.media3.extractor.mp3.Mp3Extractor;
 import androidx.media3.ui.DefaultTrackNameProvider;
 import androidx.media3.ui.TrackNameProvider;
+
 import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -65,6 +69,8 @@ import java.util.concurrent.TimeUnit;
 public class ExoPlayerWrapper {
     public static final int BUFFERING_STARTED = -1;
     public static final int BUFFERING_ENDED = -2;
+    static final float[] EQUALIZER_BAND_CUTOFFS = {60, 120, 250, 800, 2000, 4000, 6000, 20000};
+    static final int EQUALIZER_BAND_COUNT = EQUALIZER_BAND_CUTOFFS.length;
     private static final String TAG = "ExoPlayerWrapper";
 
     private final Context context;
@@ -80,6 +86,8 @@ public class ExoPlayerWrapper {
     private SimpleCache simpleCache;
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
+    @Nullable
+    private DynamicsProcessing dynamicsProcessing = null;
 
     ExoPlayerWrapper(Context context) {
         this.context = context;
@@ -156,11 +164,13 @@ public class ExoPlayerWrapper {
             @Override
             public void onAudioSessionIdChanged(int audioSessionId) {
                 initLoudnessEnhancer(audioSessionId);
+                initDynamicsProcessing(audioSessionId);
             }
         });
         simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
                 new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024), new StandaloneDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
+        initDynamicsProcessing(exoPlayer.getAudioSessionId());
     }
 
     public int getCurrentPosition() {
@@ -318,6 +328,16 @@ public class ExoPlayerWrapper {
         return trackNames;
     }
 
+    public synchronized void changeCompressor(
+            boolean enabled, float preGain, float threshold, float ratio, float postGain)  {
+        setAndApplyMbcBandParameters(this.dynamicsProcessing, enabled, preGain, threshold, ratio, postGain);
+    }
+
+    public synchronized void changeEqualizer(
+            boolean enabled, float[] gains) {
+        setAndApplyPostEqualizerParameters(this.dynamicsProcessing, enabled, gains);
+    }
+
     private List<Format> getFormats() {
         List<Format> formats = new ArrayList<>();
         MappingTrackSelector.MappedTrackInfo trackInfo = trackSelector.getCurrentMappedTrackInfo();
@@ -417,5 +437,212 @@ public class ExoPlayerWrapper {
         }
 
         this.loudnessEnhancer = newEnhancer;
+    }
+
+    private boolean shallDynamicsProcessingBeEnabled() {
+        return shallDynamicsProcessingBeEnabled(
+                UserPreferences.isCompressorEnabled(),
+                UserPreferences.isEqualizerEnabled());
+    }
+
+    private boolean shallDynamicsProcessingBeEnabled(boolean isCompressorEnabled, boolean isEqualizerEnabled) {
+        return isCompressorEnabled || isEqualizerEnabled;
+    }
+
+    private void initDynamicsProcessing(int audioSessionId) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return;
+        }
+
+        // Prepare dynamics processing build/config object
+        DynamicsProcessing.Config config = buildDynamicsProcessingConfig();
+        if (config == null) {
+            return;
+        }
+
+        // Set up MBC (multi band compressor) initial config
+        DynamicsProcessing.Mbc mbc = config.getMbcByChannelIndex(0);
+        config.setMbcAllChannelsTo(mbc);
+        DynamicsProcessing.MbcBand mbcBand = mbc.getBand(0);
+        setMbcBandParameters(
+                mbcBand,
+                UserPreferences.isCompressorEnabled(),
+                UserPreferences.getCompressorPreGain(),
+                UserPreferences.getCompressorThreshold(),
+                UserPreferences.getCompressorRatio(),
+                UserPreferences.getCompressorPostGain());
+        applyMbcBand(config, mbcBand);
+
+        // Set up post equalizer initial config
+        boolean isPostEqEnabled = UserPreferences.isEqualizerEnabled();
+        DynamicsProcessing.Eq postEq = config.getPostEqByChannelIndex(0);
+        config.setPostEqAllChannelsTo(postEq);
+        float[] userPreferencesGains = UserPreferences.getEqualizerGains();
+        if (userPreferencesGains.length != EQUALIZER_BAND_COUNT) {
+            Log.e(TAG, "Invalid equalizer preferences band count: " + EQUALIZER_BAND_COUNT + " bands exist, but "
+                    + userPreferencesGains.length + "are set in preferences!");
+            isPostEqEnabled = false;
+        } else if (postEq.getBandCount() != EQUALIZER_BAND_COUNT) {
+            Log.e(TAG, "Invalid post equalizer band count: " + EQUALIZER_BAND_COUNT + " requested, but "
+                    + postEq.getBandCount() + "are available!");
+            isPostEqEnabled = false;
+        }
+        setPostEqualizerParameters(postEq, isPostEqEnabled, userPreferencesGains);
+        applyPostEqualizer(config, postEq);
+
+        // Create DynamicsProcessing object and subobjects and attach to the supplied audioSessionId
+        int priority = 0;
+        boolean enableDynProc = shallDynamicsProcessingBeEnabled();
+        DynamicsProcessing oldDynamicsProcessing = this.dynamicsProcessing;
+        synchronized (this) {
+            this.dynamicsProcessing = new DynamicsProcessing(priority, audioSessionId, config);
+            this.dynamicsProcessing.setEnabled(enableDynProc);
+        }
+
+        if (oldDynamicsProcessing != null) {
+            oldDynamicsProcessing.release();
+        }
+    }
+
+    @Nullable
+    private static DynamicsProcessing.Config buildDynamicsProcessingConfig() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return null;
+        }
+
+        int channelCount = 1;
+        boolean preEqInUse = false;
+        boolean mbcInUse = true;
+        int mbcBandCount = 1;
+        boolean postEqInUse = true;
+        boolean limiterInUse = false;
+        DynamicsProcessing.Config.Builder builder = new DynamicsProcessing.Config.Builder(
+                DynamicsProcessing.VARIANT_FAVOR_FREQUENCY_RESOLUTION,
+                channelCount,
+                preEqInUse, EQUALIZER_BAND_COUNT,
+                mbcInUse, mbcBandCount,
+                postEqInUse, EQUALIZER_BAND_COUNT,
+                limiterInUse);
+        builder.setPreferredFrameDuration(100);
+        return builder.build();
+    }
+
+    private void setMbcBandParameters(
+            DynamicsProcessing.MbcBand mbcBand, boolean enabled,
+            float preGain, float threshold, float ratio, float postGain
+    ) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return;
+        }
+
+        if (enabled) {
+            mbcBand.setAttackTime(5.0f);
+            mbcBand.setReleaseTime(35.0f);
+            mbcBand.setKneeWidth(5.0f);
+            mbcBand.setExpanderRatio(0);
+            mbcBand.setNoiseGateThreshold(-120);
+            mbcBand.setCutoffFrequency(20000);
+
+            mbcBand.setPreGain(preGain);
+            mbcBand.setThreshold(threshold);
+            mbcBand.setRatio(ratio);
+            mbcBand.setPostGain(postGain);
+            mbcBand.setEnabled(true);
+        } else {
+            mbcBand.setEnabled(false);
+            mbcBand.setPreGain(0);
+            mbcBand.setThreshold(-45);
+            mbcBand.setRatio(1);
+            mbcBand.setPostGain(0);
+        }
+    }
+
+    private void applyMbcBand(DynamicsProcessing.Config config, DynamicsProcessing.MbcBand mbcBand) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            config.setMbcBandAllChannelsTo(0, mbcBand);
+        }
+    }
+
+    private void applyMbcBand(DynamicsProcessing dynProc, DynamicsProcessing.MbcBand mbcBand) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            dynProc.setMbcBandAllChannelsTo(0, mbcBand);
+        }
+    }
+
+    private synchronized void setAndApplyMbcBandParameters(
+            DynamicsProcessing dynProc, boolean enabled,
+            float preGain, float threshold, float ratio, float postGain
+    ) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return;
+        }
+        if (dynProc.getChannelCount() < 1) {
+            return;
+        }
+        DynamicsProcessing.Mbc mbc = dynProc.getMbcByChannelIndex(0);
+        if (mbc.getBandCount() < 1) {
+            return;
+        }
+        DynamicsProcessing.MbcBand mbcBand = mbc.getBand(0);
+
+        boolean enableDynProc = shallDynamicsProcessingBeEnabled(enabled, UserPreferences.isEqualizerEnabled());
+        if (!enableDynProc) {
+            dynProc.setEnabled(false);
+        }
+        setMbcBandParameters(mbcBand, enabled, preGain, threshold, ratio, postGain);
+        applyMbcBand(dynProc, mbcBand);
+        if (enableDynProc) {
+            dynProc.setEnabled(true);
+        }
+    }
+
+    private void setPostEqualizerParameters(DynamicsProcessing.Eq postEq, boolean enabled, float[] gains) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return;
+        }
+
+        for (int i = 0; i < EQUALIZER_BAND_COUNT; i++) {
+            DynamicsProcessing.EqBand band = postEq.getBand(i);
+            band.setEnabled(enabled);
+            band.setGain(gains[i]);
+            band.setCutoffFrequency(EQUALIZER_BAND_CUTOFFS[i]);
+        }
+    }
+
+    private void applyPostEqualizer(DynamicsProcessing.Config config, DynamicsProcessing.Eq postEq) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            config.setPostEqAllChannelsTo(postEq);
+        }
+    }
+
+    private void applyPostEqualizer(DynamicsProcessing dynProc, DynamicsProcessing.Eq postEq) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            dynProc.setPostEqAllChannelsTo(postEq);
+        }
+    }
+
+    private synchronized void setAndApplyPostEqualizerParameters(
+            DynamicsProcessing dynProc, boolean enabled, float[] gains
+    ) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return;
+        }
+        if (dynProc.getChannelCount() < 1) {
+            return;
+        }
+        DynamicsProcessing.Eq postEq = dynProc.getPostEqByChannelIndex(0);
+        if (postEq.getBandCount() != EQUALIZER_BAND_COUNT) {
+            return;
+        }
+
+        boolean enableDynProc = shallDynamicsProcessingBeEnabled(UserPreferences.isCompressorEnabled(), enabled);
+        if (!enableDynProc) {
+            dynProc.setEnabled(false);
+        }
+        setPostEqualizerParameters(postEq, enabled, gains);
+        applyPostEqualizer(dynProc, postEq);
+        if (enableDynProc) {
+            dynProc.setEnabled(true);
+        }
     }
 }
