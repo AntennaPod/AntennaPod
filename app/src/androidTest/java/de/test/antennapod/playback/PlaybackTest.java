@@ -37,16 +37,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static de.test.antennapod.EspressoTestUtils.clickBottomNavOverflow;
 import static de.test.antennapod.EspressoTestUtils.clickChildViewWithId;
-import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
-import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.allOf;
@@ -232,8 +229,7 @@ public class PlaybackTest {
     }
 
     protected void startLocalPlayback() {
-        openNavDrawer();
-        onDrawerItem(withText(R.string.episodes_label)).perform(click());
+        clickBottomNavOverflow(R.string.episodes_label);
 
         final List<FeedItem> episodes = DBReader.getEpisodes(0, 10,
                 FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);

@@ -757,7 +757,7 @@ public abstract class UserPreferences {
     }
 
     public static boolean isBottomNavigationEnabled() {
-        return prefs.getBoolean(PREF_BOTTOM_NAVIGATION, false);
+        return prefs.getBoolean(PREF_BOTTOM_NAVIGATION, true);
     }
 
     public static void setBottomNavigationEnabled(boolean enabled) {
