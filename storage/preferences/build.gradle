@@ -13,8 +13,11 @@ android {
 
 dependencies {
     implementation project(':model')
+    implementation project(':event')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.fragment:fragment:$fragmentVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
+
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
 }

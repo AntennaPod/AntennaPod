@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/interruptions">
         <SwitchPreferenceCompat
@@ -22,12 +24,6 @@
                 android:key="prefUnpauseOnBluetoothReconnect"
                 android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
                 android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
-        <SwitchPreferenceCompat
-                android:defaultValue="true"
-                android:enabled="true"
-                android:key="prefPauseForFocusLoss"
-                android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
-                android:title="@string/pref_pausePlaybackForFocusLoss_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_control">
@@ -95,4 +91,154 @@
                 android:summary="@string/pref_skip_keeps_episodes_sum"
                 android:title="@string/pref_skip_keeps_episodes_title"/>
     </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_compressor_title" tools:targetApi="28">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="prefCompressorEnabled"
+            app:summary="@string/pref_compressor_enabled_sum"
+            app:title="@string/pref_compressor_enabled_title"/>
+        <SeekBarPreference
+            app:defaultValue="0"
+            app:min="0"
+            android:max="40"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            app:key="prefCompressorPreGain"
+            app:summary="@string/pref_compressor_pregain_sum"
+            app:title="@string/pref_compressor_pregain_title"/>
+        <SeekBarPreference
+            app:defaultValue="45"
+            app:min="0"
+            android:max="80"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            app:key="prefCompressorThreshold"
+            app:summary="@string/pref_compressor_threshold_sum"
+            app:title="@string/pref_compressor_threshold_title"/>
+        <SeekBarPreference
+            app:defaultValue="5"
+            app:min="1"
+            android:max="40"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            app:key="prefCompressorRatio"
+            app:summary="@string/pref_compressor_ratio_sum"
+            app:title="@string/pref_compressor_ratio_title"/>
+        <SeekBarPreference
+            app:defaultValue="30"
+            app:min="0"
+            android:max="40"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            app:key="prefCompressorPostGain"
+            app:summary="@string/pref_compressor_postgain_sum"
+            app:title="@string/pref_compressor_postgain_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pref_equalizer_title" tools:targetApi="28">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="prefEqualizerEnabled"
+            app:summary="@string/pref_equalizer_enabled_sum"
+            app:title="@string/pref_equalizer_enabled_title"/>
+        <Preference
+            app:isPreferenceVisible="true"
+            app:key="prefEqualizerReset"
+            app:summary="@string/pref_equalizer_reset_sum"
+            app:title="@string/pref_equalizer_reset_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:defValue="0"
+            app:minValue="-60"
+            app:maxValue="60"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="true"
+            app:key="prefEqualizerGainBand1"
+            android:id="@+id/prefEqualizerGainBand1"
+            app:summary="@string/pref_equalizer_gainband1_sum"
+            app:title="@string/pref_equalizer_gainband1_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:defValue="0"
+            app:minValue="-60"
+            app:maxValue="60"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand2"
+            app:key="prefEqualizerGainBand2"
+            app:summary="@string/pref_equalizer_gainband2_sum"
+            app:title="@string/pref_equalizer_gainband2_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:defValue="0"
+            app:minValue="-60"
+            app:maxValue="60"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand3"
+            app:key="prefEqualizerGainBand3"
+            app:summary="@string/pref_equalizer_gainband3_sum"
+            app:title="@string/pref_equalizer_gainband3_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:defValue="0"
+            app:minValue="-60"
+            app:maxValue="60"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand4"
+            app:key="prefEqualizerGainBand4"
+            app:summary="@string/pref_equalizer_gainband4_sum"
+            app:title="@string/pref_equalizer_gainband4_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:defValue="0"
+            app:minValue="-60"
+            app:maxValue="60"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand5"
+            app:key="prefEqualizerGainBand5"
+            app:summary="@string/pref_equalizer_gainband5_sum"
+            app:title="@string/pref_equalizer_gainband5_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:defValue="0"
+            app:minValue="-60"
+            app:maxValue="60"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand6"
+            app:key="prefEqualizerGainBand6"
+            app:summary="@string/pref_equalizer_gainband6_sum"
+            app:title="@string/pref_equalizer_gainband6_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:defValue="0"
+            app:minValue="-60"
+            app:maxValue="60"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand7"
+            app:key="prefEqualizerGainBand7"
+            app:summary="@string/pref_equalizer_gainband7_sum"
+            app:title="@string/pref_equalizer_gainband7_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:defValue="0"
+            app:minValue="-60"
+            app:maxValue="60"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand8"
+            app:key="prefEqualizerGainBand8"
+            app:summary="@string/pref_equalizer_gainband8_sum"
+            app:title="@string/pref_equalizer_gainband8_title"/>
+    </PreferenceCategory>
+
 </PreferenceScreen>

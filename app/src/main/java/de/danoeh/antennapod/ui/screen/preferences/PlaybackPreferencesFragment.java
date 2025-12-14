@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,15 +10,24 @@ import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+
+import org.greenrobot.eventbus.EventBus;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.settings.CompressorPreferenceChangedEvent;
+import de.danoeh.antennapod.event.settings.EqualizerPreferenceChangedEvent;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
 
+import java.util.Locale;
 import java.util.Map;
 
-public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
+public class PlaybackPreferencesFragment
+            extends AnimatedPreferenceFragment
+            implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
     private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
@@ -33,6 +44,62 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
     public void onStart() {
         super.onStart();
         ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.playback_pref);
+        registerToPreferenceChanged();
+    }
+
+    @Override
+    public void onStop() {
+        unregisterFromPreferenceChanged();
+        super.onStop();
+    }
+
+    private void registerToPreferenceChanged() {
+        SharedPreferences sharedPrefs = getPreferenceManager().getSharedPreferences();
+        assert sharedPrefs != null;
+        sharedPrefs.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void unregisterFromPreferenceChanged()  {
+        SharedPreferences sharedPrefs = getPreferenceManager().getSharedPreferences();
+        assert sharedPrefs != null;
+        sharedPrefs.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key == null) {
+            return;
+        }
+
+        if (key.toLowerCase(Locale.ROOT).contains("compressor")) {
+            if (key.equals(UserPreferences.PREF_COMPRESSOR_ENABLED)) {
+                setCompressorPrefsVisibility(UserPreferences.isCompressorEnabled());
+            }
+            postCompressorPrefsChangedEvent();
+        }
+
+        if (key.toLowerCase(Locale.ROOT).contains("equalizer")) {
+            if (key.equals(UserPreferences.PREF_EQUALIZER_ENABLED)) {
+                setEqualizerPrefsVisibility(UserPreferences.isEqualizerEnabled());
+            }
+            postEqualizerPrefsChangedEvent();
+        }
+    }
+
+    private static void postCompressorPrefsChangedEvent() {
+        EventBus.getDefault().post(new CompressorPreferenceChangedEvent(
+                UserPreferences.isCompressorEnabled(),
+                UserPreferences.getCompressorPreGain(),
+                UserPreferences.getCompressorThreshold(),
+                UserPreferences.getCompressorRatio(),
+                UserPreferences.getCompressorPostGain()
+        ));
+    }
+
+    private static void postEqualizerPrefsChangedEvent() {
+        EventBus.getDefault().post(new EqualizerPreferenceChangedEvent(
+                UserPreferences.isEqualizerEnabled(),
+                UserPreferences.getEqualizerGains()
+        ));
     }
 
     private void setupPlaybackScreen() {
@@ -56,6 +123,14 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
         }
 
         buildEnqueueLocationPreference();
+
+        setupDynamicsProcessingEffectPreferences();
+    }
+
+    private void setupDynamicsProcessingEffectPreferences() {
+        setCompressorPrefsVisibility(UserPreferences.isCompressorEnabled());
+        setEqualizerPrefsVisibility(UserPreferences.isEqualizerEnabled());
+        setEqualizerResetActivatedHandler();
     }
 
     private void buildEnqueueLocationPreference() {
@@ -80,6 +155,63 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
             pref.setSummary(res.getString(R.string.pref_enqueue_location_sum, options.get(newValStr)));
             return true;
         });
+    }
+
+    private void setCompressorPrefsVisibility(boolean visible) {
+        requirePreference(UserPreferences.PREF_COMPRESSOR_PRE_GAIN).setVisible(visible);
+        requirePreference(UserPreferences.PREF_COMPRESSOR_THRESHOLD).setVisible(visible);
+        requirePreference(UserPreferences.PREF_COMPRESSOR_RATIO).setVisible(visible);
+        requirePreference(UserPreferences.PREF_COMPRESSOR_POST_GAIN).setVisible(visible);
+    }
+
+    private void setEqualizerPrefsVisibility(boolean visible) {
+        requirePreference(UserPreferences.PREF_EQUALIZER_RESET).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_1).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_2).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_3).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_4).setVisible(false);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_5).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_6).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_7).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_8).setVisible(visible);
+    }
+
+    private void setEqualizerResetActivatedHandler() {
+        requirePreference(UserPreferences.PREF_EQUALIZER_RESET).setOnPreferenceClickListener(pref -> {
+            new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.pref_equalizer_reset_question_title)
+                .setMessage(R.string.pref_equalizer_reset_question_text)
+                .setPositiveButton(R.string.yes, (dialog, which) -> {
+                    resetEqualizerGainsUiAndPrefStoreThenPostEvent();
+                })
+                .setNegativeButton(R.string.no, null)
+                    .show();
+            return true;
+        });
+    }
+
+    private void resetEqualizerGainsUiAndPrefStoreThenPostEvent() {
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_1).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_2).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_3).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_4).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_5).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_6).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_7).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_8).setValue(0);
+
+        SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+        assert prefs != null;
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_1, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_2, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_3, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_4, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_5, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_6, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_7, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_8, 0).apply();
+
+        postEqualizerPrefsChangedEvent();
     }
 
     @NonNull

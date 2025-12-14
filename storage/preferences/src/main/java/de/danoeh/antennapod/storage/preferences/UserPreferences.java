@@ -90,6 +90,21 @@ public abstract class UserPreferences {
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
+    public static final String PREF_COMPRESSOR_ENABLED = "prefCompressorEnabled";
+    public static final String PREF_COMPRESSOR_PRE_GAIN = "prefCompressorPreGain";
+    public static final String PREF_COMPRESSOR_THRESHOLD = "prefCompressorThreshold";
+    public static final String PREF_COMPRESSOR_RATIO = "prefCompressorRatio";
+    public static final String PREF_COMPRESSOR_POST_GAIN = "prefCompressorPostGain";
+    public static final String PREF_EQUALIZER_ENABLED = "prefEqualizerEnabled";
+    public static final String PREF_EQUALIZER_RESET = "prefEqualizerReset";
+    public static final String PREF_EQUALIZER_GAIN_BAND_1 = "prefEqualizerGainBand1";
+    public static final String PREF_EQUALIZER_GAIN_BAND_2 = "prefEqualizerGainBand2";
+    public static final String PREF_EQUALIZER_GAIN_BAND_3 = "prefEqualizerGainBand3";
+    public static final String PREF_EQUALIZER_GAIN_BAND_4 = "prefEqualizerGainBand4";
+    public static final String PREF_EQUALIZER_GAIN_BAND_5 = "prefEqualizerGainBand5";
+    public static final String PREF_EQUALIZER_GAIN_BAND_6 = "prefEqualizerGainBand6";
+    public static final String PREF_EQUALIZER_GAIN_BAND_7 = "prefEqualizerGainBand7";
+    public static final String PREF_EQUALIZER_GAIN_BAND_8 = "prefEqualizerGainBand8";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
@@ -146,7 +161,7 @@ public abstract class UserPreferences {
      * @throws IllegalArgumentException if context is null
      */
     public static void init(@NonNull Context context) {
-        Log.d(TAG, "Creating new instance of UserPreferences");
+        Log.d(TAG, "Initializing static instance of UserPreferences");
 
         UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -774,6 +789,43 @@ public abstract class UserPreferences {
 
     public static void setStreamOverDownload(boolean stream) {
         prefs.edit().putBoolean(PREF_STREAM_OVER_DOWNLOAD, stream).apply();
+    }
+
+    public static boolean isCompressorEnabled() {
+        return prefs.getBoolean(PREF_COMPRESSOR_ENABLED, false);
+    }
+
+    public static float getCompressorPreGain() {
+        return -1.0f * (float) prefs.getInt(PREF_COMPRESSOR_PRE_GAIN, 10);
+    }
+
+    public static float getCompressorThreshold() {
+        return -1.0f * (float) prefs.getInt(PREF_COMPRESSOR_THRESHOLD, 50);
+    }
+
+    public static float getCompressorRatio() {
+        return (float) prefs.getInt(PREF_COMPRESSOR_RATIO, 10);
+    }
+
+    public static float getCompressorPostGain() {
+        return (float) prefs.getInt(PREF_COMPRESSOR_POST_GAIN, 30);
+    }
+
+    public static boolean isEqualizerEnabled() {
+        return prefs.getBoolean(PREF_EQUALIZER_ENABLED, false);
+    }
+
+    public static float[] getEqualizerGains() {
+        return new float[] {
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_1, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_2, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_3, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_4, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_5, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_6, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_7, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_8, 0),
+        };
     }
 
     /**
