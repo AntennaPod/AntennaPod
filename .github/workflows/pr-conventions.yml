@@ -6,14 +6,20 @@ on:
 
 jobs:
   pr-title:
-    name: "Title"
+    name: "Check"
     runs-on: ubuntu-latest
     steps:
-      - name: Prevent issue reference in title
+      - name: Check PR Conventions
         uses: actions/github-script@v7
         with:
           script: |
             const issueRegex = /#\d+/i;
             if (issueRegex.test(context.payload.pull_request.title)) {
-              core.setFailed("Please mention the issue number in the PR description, not in the title. Make sure to write 'closes: #<number>'.");
+              core.setFailed("Please mention the issue number in the PR description, not in the title. Make sure to write 'closes #<number>'.");
+            }
+
+            const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved):?\s+#\d+/i;
+            if (issueRegex.test(context.payload.pull_request.body) && !closingRegex.test(context.payload.pull_request.body)) {
+              core.setFailed("The PR description must contain 'closes #<number>' to link to the issue that it closes.");
+              return;
             }

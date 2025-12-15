@@ -1,12 +1,10 @@
 package de.danoeh.antennapod.ui.preferences.screen.synchronization;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,6 +23,7 @@ import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.net.sync.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.net.sync.gpoddernet.model.GpodnetDevice;
+import de.danoeh.antennapod.ui.common.Keyboard;
 import de.danoeh.antennapod.ui.preferences.R;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
@@ -120,9 +119,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
             login.setEnabled(false);
             progressBar.setVisibility(View.VISIBLE);
             txtvError.setVisibility(View.GONE);
-            InputMethodManager inputManager = (InputMethodManager) getContext()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(login.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            Keyboard.hide(getActivity());
 
             Completable.fromAction(() -> {
                 service.setCredentials(usernameStr, passwordStr);

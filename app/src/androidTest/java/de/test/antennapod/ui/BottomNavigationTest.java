@@ -2,7 +2,6 @@ package de.test.antennapod.ui;
 
 import android.content.Intent;
 import android.os.Build;
-import androidx.annotation.StringRes;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -20,12 +19,12 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static de.test.antennapod.EspressoTestUtils.clickBottomNavItem;
+import static de.test.antennapod.EspressoTestUtils.clickBottomNavOverflow;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assume.assumeTrue;
@@ -56,17 +55,6 @@ public class BottomNavigationTest {
         uiTestUtils.tearDown();
     }
 
-    void clickBottomNavItem(@StringRes int text) {
-        onView(allOf(withText(text),
-                isDescendantOfA(withId(R.id.bottomNavigationView)), isDisplayed())).perform(click());
-    }
-
-    void clickBottomNavOverview(@StringRes int text) {
-        onView(allOf(withText(R.string.overflow_more),
-                isDescendantOfA(withId(R.id.bottomNavigationView)), isDisplayed())).perform(click());
-        onView(allOf(withText(text), isDisplayed())).perform(click());
-    }
-
     @Test
     public void testClickBottomNavigation() throws Exception {
         assumeTrue(Build.VERSION.SDK_INT >= 30); // Unclear why this crashes on old Android versions
@@ -90,19 +78,19 @@ public class BottomNavigationTest {
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.subscriptions_label)), 1000));
 
-        clickBottomNavOverview(R.string.episodes_label);
+        clickBottomNavOverflow(R.string.episodes_label);
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.episodes_label)), 1000));
 
-        clickBottomNavOverview(R.string.downloads_label);
+        clickBottomNavOverflow(R.string.downloads_label);
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.downloads_label)), 1000));
 
-        clickBottomNavOverview(R.string.playback_history_label);
+        clickBottomNavOverflow(R.string.playback_history_label);
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.playback_history_label)), 1000));
 
-        clickBottomNavOverview(R.string.add_feed_label);
+        clickBottomNavOverflow(R.string.add_feed_label);
         onView(isRoot()).perform(waitForView(allOf(isDescendantOfA(withId(R.id.toolbar)),
                 withText(R.string.add_feed_label)), 1000));
     }

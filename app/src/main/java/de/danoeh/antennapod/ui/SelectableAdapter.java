@@ -60,8 +60,8 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 onSelectedItemsUpdated();
-                toggleSelectAllIcon(menu.findItem(R.id.select_toggle), false);
-                return false;
+                toggleSelectAllIcon(menu);
+                return true;
             }
 
             @Override
@@ -70,8 +70,29 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
                     boolean selectAll = selectedIds.size() != getItemCount();
                     shouldSelectLazyLoadedItems = selectAll;
                     setSelected(0, getItemCount(), selectAll);
-                    toggleSelectAllIcon(item, selectAll);
+                    toggleSelectAllIcon(mode.getMenu());
                     onSelectedItemsUpdated();
+                    return true;
+                } else if (item.getItemId() == R.id.select_all_above) {
+                    int firstSelectedPosition = 0;
+                    for (int i = 0; i < getItemCount(); i++) {
+                        if (isSelected(i)) {
+                            firstSelectedPosition = i;
+                            break;
+                        }
+                    }
+                    setSelected(0, firstSelectedPosition, true);
+                    return true;
+                } else if (item.getItemId() == R.id.select_all_below) {
+                    shouldSelectLazyLoadedItems = true;
+                    int lastSelectedPosition = 0;
+                    for (int i = getItemCount() - 1; i >= 0; i--) {
+                        if (isSelected(i)) {
+                            lastSelectedPosition = i;
+                            break;
+                        }
+                    }
+                    setSelected(lastSelectedPosition + 1, getItemCount(), true);
                     return true;
                 }
                 return false;
@@ -158,14 +179,10 @@ public abstract class SelectableAdapter<T extends RecyclerView.ViewHolder> exten
         return selectedIds.size();
     }
 
-    private void toggleSelectAllIcon(MenuItem selectAllItem, boolean allSelected) {
-        if (allSelected) {
-            selectAllItem.setIcon(R.drawable.ic_select_none);
-            selectAllItem.setTitle(R.string.deselect_all_label);
-        } else {
-            selectAllItem.setIcon(R.drawable.ic_select_all);
-            selectAllItem.setTitle(R.string.select_all_label);
-        }
+    private void toggleSelectAllIcon(Menu menu) {
+        boolean allSelected = selectedIds.size() == getItemCount();
+        menu.findItem(R.id.select_toggle).setTitle(allSelected
+                ? R.string.deselect_all_label : R.string.select_all_label);
     }
 
     protected void onSelectedItemsUpdated() {

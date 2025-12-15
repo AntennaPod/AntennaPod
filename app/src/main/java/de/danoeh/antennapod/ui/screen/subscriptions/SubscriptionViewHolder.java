@@ -1,14 +1,10 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
@@ -25,8 +21,8 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
     public final ImageView coverImage;
     public final TextView count;
     public final TextView fallbackTitle;
-    public final FrameLayout selectView;
-    public final CheckBox selectCheckbox;
+    public final ImageView gradient;
+    public final ImageView selectIcon;
     public final CardView card;
     public final View errorIcon;
     public final WeakReference<Activity> mainActivityRef;
@@ -37,19 +33,14 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         coverImage = itemView.findViewById(R.id.coverImage);
         count = itemView.findViewById(R.id.countViewPill);
         fallbackTitle = itemView.findViewById(R.id.fallbackTitleLabel);
-        selectView = itemView.findViewById(R.id.selectContainer);
-        selectCheckbox = itemView.findViewById(R.id.selectCheckBox);
+        gradient = itemView.findViewById(R.id.gradientOverlay);
+        selectIcon = itemView.findViewById(R.id.selectedIcon);
         card = itemView.findViewById(R.id.outerContainer);
         errorIcon = itemView.findViewById(R.id.errorIcon);
         this.mainActivityRef = new WeakReference<>(mainActivity);
     }
 
     public void bind(Feed feed, int columnCount, int counter) {
-        if (selectView != null) {
-            Drawable drawable = AppCompatResources.getDrawable(selectView.getContext(),
-                    R.drawable.ic_checkbox_background);
-            selectView.setBackground(drawable); // Setting this in XML crashes API <= 21
-        }
         title.setText(feed.getTitle());
         fallbackTitle.setText(feed.getTitle());
         coverImage.setContentDescription(feed.getTitle());

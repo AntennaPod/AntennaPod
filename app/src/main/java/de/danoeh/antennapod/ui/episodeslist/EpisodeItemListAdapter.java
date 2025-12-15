@@ -204,27 +204,19 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = mainActivityRef.get().getMenuInflater();
         if (inActionMode()) {
-            inflater.inflate(R.menu.multi_select_context_popup, menu);
-        } else {
-            if (longPressedItem == null) {
-                return;
-            }
-            inflater.inflate(R.menu.feeditemlist_context, menu);
-            menu.setHeaderTitle(longPressedItem.getTitle());
-            FeedItemMenuHandler.onPrepareMenu(menu, Collections.singletonList(longPressedItem), R.id.skip_episode_item);
+            return;
         }
+        if (longPressedItem == null) {
+            return;
+        }
+        inflater.inflate(R.menu.feeditemlist_context, menu);
+        menu.setHeaderTitle(longPressedItem.getTitle());
+        FeedItemMenuHandler.onPrepareMenu(menu, Collections.singletonList(longPressedItem), R.id.skip_episode_item);
     }
 
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.multi_select) {
             startSelectMode(longPressedPosition);
-            return true;
-        } else if (item.getItemId() == R.id.select_all_above) {
-            setSelected(0, longPressedPosition, true);
-            return true;
-        } else if (item.getItemId() == R.id.select_all_below) {
-            shouldSelectLazyLoadedItems = true;
-            setSelected(longPressedPosition + 1, getItemCount(), true);
             return true;
         }
         return false;

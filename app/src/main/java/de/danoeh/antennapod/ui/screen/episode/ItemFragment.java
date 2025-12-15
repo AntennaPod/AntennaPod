@@ -304,9 +304,14 @@ public class ItemFragment extends Fragment {
             actionButton1 = new MarkAsPlayedActionButton(item);
             actionButton2 = new VisitWebsiteActionButton(item);
             viewBinding.noMediaLabel.setVisibility(View.VISIBLE);
+            viewBinding.txtvDuration.setVisibility(View.GONE);
+            viewBinding.separatorIcons.setVisibility(View.GONE);
         } else {
             viewBinding.noMediaLabel.setVisibility(View.GONE);
-            if (media.getDuration() > 0) {
+            boolean hasDuration = media.getDuration() > 0;
+            viewBinding.txtvDuration.setVisibility(hasDuration ? View.VISIBLE : View.GONE);
+            viewBinding.separatorIcons.setVisibility(hasDuration ? View.VISIBLE : View.GONE);
+            if (hasDuration) {
                 viewBinding.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
                 viewBinding.txtvDuration.setContentDescription(
                         Converter.getDurationStringLocalized(getContext(), media.getDuration()));

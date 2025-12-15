@@ -63,6 +63,18 @@
                         android:textColor="#fff"
                         tools:text="@sample/episodes.json/data/title" />
 
+                    <ImageView
+                        android:id="@+id/gradientOverlay"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="top"
+                        android:rotation="180"
+                        android:alpha="0.6"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        app:srcCompat="@drawable/bg_gradient"
+                        app:tint="#000" />
+
                     <TextView
                         android:id="@+id/countViewPill"
                         android:layout_width="wrap_content"
@@ -101,22 +113,17 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/selectContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false">
-
-            <CheckBox
-                android:id="@+id/selectCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:layout_margin="4dp" />
-
-        </FrameLayout>
-
     </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/selectedIcon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="top"
+        android:visibility="gone"
+        android:layout_margin="4dp"
+        android:elevation="2dp"
+        tools:visibility="visible"
+        app:srcCompat="@drawable/circle_unchecked" />
 
 </FrameLayout>

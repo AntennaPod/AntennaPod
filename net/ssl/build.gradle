@@ -16,5 +16,5 @@ dependencies {
 
     playImplementation 'com.google.android.gms:play-services-base:17.5.0'
     // This version should be updated regularly.
-    freeImplementation 'org.conscrypt:conscrypt-android:2.5.2'
+    freeImplementation 'org.conscrypt:conscrypt-android:2.5.3'
 }

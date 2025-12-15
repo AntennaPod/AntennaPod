@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,13 +81,15 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         Feed feed = listItems.get(position);
         holder.bind(feed, columnCount, feedCounters.containsKey(feed.getId()) ? feedCounters.get(feed.getId()) : 0);
         holder.itemView.setOnCreateContextMenuListener(this);
+        int cardMargin = 0;
         if (inActionMode()) {
-            if (holder.selectView != null) {
-                holder.selectCheckbox.setVisibility(View.VISIBLE);
-                holder.selectView.setVisibility(View.VISIBLE);
-                holder.selectCheckbox.setChecked((isSelected(position)));
-                holder.selectCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
-                        -> setSelected(holder.getBindingAdapterPosition(), isChecked));
+            if (holder.selectIcon != null) {
+                holder.selectIcon.setVisibility(View.VISIBLE);
+                holder.gradient.setVisibility(View.VISIBLE);
+                holder.selectIcon.setImageResource(isSelected(position)
+                        ? R.drawable.circle_checked : R.drawable.circle_unchecked);
+                cardMargin = isSelected(position) ? (int) convertDpToPixel(
+                        holder.itemView.getContext(), 12f) : 0;
                 holder.count.setVisibility(View.GONE);
             } else {
                 holder.itemView.setBackgroundResource(android.R.color.transparent);
@@ -97,10 +100,18 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
             }
         } else {
             holder.itemView.setBackgroundResource(android.R.color.transparent);
-            if (holder.selectView != null) {
-                holder.selectCheckbox.setVisibility(View.GONE);
-                holder.selectView.setVisibility(View.GONE);
+            if (holder.selectIcon != null) {
+                holder.selectIcon.setVisibility(View.GONE);
+                holder.gradient.setVisibility(View.GONE);
             }
+        }
+        if (holder.selectIcon != null) {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) holder.card.getLayoutParams();
+            params.leftMargin = cardMargin;
+            params.topMargin = cardMargin;
+            params.rightMargin = cardMargin;
+            params.bottomMargin = cardMargin;
+            holder.card.setLayoutParams(params);
         }
 
         holder.itemView.setOnLongClickListener(v -> {
