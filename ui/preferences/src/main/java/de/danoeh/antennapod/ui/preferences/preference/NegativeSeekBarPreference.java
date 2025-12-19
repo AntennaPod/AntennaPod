@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.preferences.preference;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -20,9 +21,10 @@ import de.danoeh.antennapod.ui.preferences.R;
 // Writing to and reading from persistent storage is overridden, too: This class' value (possibly negative) is used.
 public class NegativeSeekBarPreference extends SeekBarPreference {
 
-    private static final int MAX_VALUE_INIT = 50;
-    private static final int MIN_VALUE_INIT = -50;
-    private static final int DEF_VALUE_INIT = 0;
+    private static final String TAG = "NegativeSeekBarPreferen";
+    private static final int MAX_VALUE_INIT = 47;
+    private static final int MIN_VALUE_INIT = -55;
+    private static final int DEF_VALUE_INIT = 7;
 
     private int maxValue = MAX_VALUE_INIT;
     private int minValue = MIN_VALUE_INIT;
@@ -54,7 +56,8 @@ public class NegativeSeekBarPreference extends SeekBarPreference {
                 maxValue = a.getInt(R.styleable.NegativeSeekBarPreference_maxValue, maxValue);
                 minValue = a.getInt(R.styleable.NegativeSeekBarPreference_minValue, minValue);
                 defValue = a.getInt(R.styleable.NegativeSeekBarPreference_defValue, defValue);
-                a.recycle();
+            } catch (Exception e) {
+                Log.e(TAG, "Error while reading attributes for NegativeSeekBarPreference: " + e.getMessage());
             }
         }
 
