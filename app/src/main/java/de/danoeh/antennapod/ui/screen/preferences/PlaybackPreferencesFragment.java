@@ -169,7 +169,7 @@ public class PlaybackPreferencesFragment
         requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_1).setVisible(visible);
         requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_2).setVisible(visible);
         requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_3).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_4).setVisible(false);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_4).setVisible(visible);
         requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_5).setVisible(visible);
         requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_6).setVisible(visible);
         requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_7).setVisible(visible);
@@ -181,9 +181,8 @@ public class PlaybackPreferencesFragment
             new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.pref_equalizer_reset_question_title)
                 .setMessage(R.string.pref_equalizer_reset_question_text)
-                .setPositiveButton(R.string.yes, (dialog, which) -> {
-                    resetEqualizerGainsUiAndPrefStoreThenPostEvent();
-                })
+                .setPositiveButton(R.string.yes, (dialog, which) ->
+                        resetEqualizerGainsUiAndPrefStoreThenPostEvent())
                 .setNegativeButton(R.string.no, null)
                     .show();
             return true;
