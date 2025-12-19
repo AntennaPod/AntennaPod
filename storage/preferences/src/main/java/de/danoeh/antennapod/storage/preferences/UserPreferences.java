@@ -808,7 +808,7 @@ public abstract class UserPreferences {
     }
 
     public static float getCompressorPostGain() {
-        return (float) prefs.getInt(PREF_COMPRESSOR_POST_GAIN, 10);
+        return (float) prefs.getInt(PREF_COMPRESSOR_POST_GAIN, 20);
     }
 
     public static boolean isEqualizerEnabled() {

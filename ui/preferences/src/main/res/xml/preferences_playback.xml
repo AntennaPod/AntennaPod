@@ -137,7 +137,7 @@
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
             app:maxValue="60"
-            app:defValue="10"
+            app:defValue="20"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:isPreferenceVisible="false"
