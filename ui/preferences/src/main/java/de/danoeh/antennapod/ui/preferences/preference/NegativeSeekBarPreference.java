@@ -20,7 +20,6 @@ import de.danoeh.antennapod.ui.preferences.R;
 // Writing to and reading from persistent storage is overridden, too: This class' value (possibly negative) is used.
 public class NegativeSeekBarPreference extends SeekBarPreference {
 
-    private static final String TAG = "NegativeSeekBarPreference";
     private static final int MAX_VALUE_INIT = 50;
     private static final int MIN_VALUE_INIT = -50;
     private static final int DEF_VALUE_INIT = 0;
@@ -29,6 +28,7 @@ public class NegativeSeekBarPreference extends SeekBarPreference {
     private int minValue = MIN_VALUE_INIT;
     private int defValue = DEF_VALUE_INIT;
 
+    @SuppressWarnings("unused")
     public NegativeSeekBarPreference(@NonNull Context context) {
         this(context, null);
     }
@@ -37,6 +37,7 @@ public class NegativeSeekBarPreference extends SeekBarPreference {
         this(context, attrs, R.attr.seekBarPreferenceStyle, 0);
     }
 
+    @SuppressWarnings("unused")
     public NegativeSeekBarPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
@@ -49,16 +50,17 @@ public class NegativeSeekBarPreference extends SeekBarPreference {
         setShowSeekBarValue(true);
 
         if (attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NegativeSeekBarPreference);
-            maxValue = a.getInt(R.styleable.NegativeSeekBarPreference_maxValue, maxValue);
-            minValue = a.getInt(R.styleable.NegativeSeekBarPreference_minValue, minValue);
-            defValue = a.getInt(R.styleable.NegativeSeekBarPreference_defValue, defValue);
-            a.recycle();
+            try (TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NegativeSeekBarPreference)) {
+                maxValue = a.getInt(R.styleable.NegativeSeekBarPreference_maxValue, maxValue);
+                minValue = a.getInt(R.styleable.NegativeSeekBarPreference_minValue, minValue);
+                defValue = a.getInt(R.styleable.NegativeSeekBarPreference_defValue, defValue);
+                a.recycle();
+            }
         }
 
         super.setMin(0);
-        super.setMax(getRange(maxValue, minValue));
-        super.setDefaultValue(convertToSuperValue(defValue, minValue));
+        super.setMax(getRange());
+        super.setDefaultValue(convertToSuperValue(defValue));
     }
 
     private int getRange() {
@@ -113,25 +115,16 @@ public class NegativeSeekBarPreference extends SeekBarPreference {
 
         if (defaultValue instanceof Integer) {
             defValue = (Integer) defaultValue;
-            super.setDefaultValue(convertToSuperValue(defValue));
+            int defSuperVal = convertToSuperValue(defValue);
+            super.setDefaultValue(defSuperVal);
         } else {
             super.setDefaultValue(defaultValue);
         }
     }
 
-    public void setMinValue(int minValue) {
-        this.minValue = minValue;
-        super.setMax(getRange());
-    }
-
-    public void setMaxValue(int maxValue) {
-        this.maxValue = maxValue;
-        super.setMax(getRange());
-    }
-
     @Override
-    protected boolean persistInt(int value) {
-        int val = convertFromSuperValue(value);
+    protected boolean persistInt(int superValue) {
+        int val = convertFromSuperValue(superValue);
         return super.persistInt(val);
     }
 
@@ -142,17 +135,20 @@ public class NegativeSeekBarPreference extends SeekBarPreference {
     }
 
     @Override
-    protected void onSetInitialValue(Object defaultValue) {
-        if (defaultValue == null) {
-            defaultValue = 0;
+    protected void onSetInitialValue(Object superDefaultValue) {
+        int defaultVal = 0;
+        if (superDefaultValue instanceof Integer) {
+            defaultVal = convertFromSuperValue((Integer)superDefaultValue);
         }
-        int persistedSuperVal = getPersistedInt((Integer) defaultValue);
-        setValue(convertFromSuperValue(persistedSuperVal));
+
+        int persistedSuperVal = getPersistedInt(defaultVal);
+        int persistedVal = convertFromSuperValue(persistedSuperVal);
+        setValue(persistedVal);
     }
 
     // Adapt the shown value
     @Override
-    public void onBindViewHolder(PreferenceViewHolder holder) {
+    public void onBindViewHolder(@NonNull PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
         SeekBar seekBar = (SeekBar) holder.findViewById(androidx.preference.R.id.seekbar);
