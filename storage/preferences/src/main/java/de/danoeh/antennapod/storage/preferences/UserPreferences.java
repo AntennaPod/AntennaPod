@@ -796,19 +796,19 @@ public abstract class UserPreferences {
     }
 
     public static float getCompressorPreGain() {
-        return -1.0f * (float) prefs.getInt(PREF_COMPRESSOR_PRE_GAIN, 10);
+        return (float) prefs.getInt(PREF_COMPRESSOR_PRE_GAIN, 0);
     }
 
     public static float getCompressorThreshold() {
-        return -1.0f * (float) prefs.getInt(PREF_COMPRESSOR_THRESHOLD, 50);
+        return (float) prefs.getInt(PREF_COMPRESSOR_THRESHOLD, -45);
     }
 
     public static float getCompressorRatio() {
-        return (float) prefs.getInt(PREF_COMPRESSOR_RATIO, 10);
+        return (float) prefs.getInt(PREF_COMPRESSOR_RATIO, 5);
     }
 
     public static float getCompressorPostGain() {
-        return (float) prefs.getInt(PREF_COMPRESSOR_POST_GAIN, 30);
+        return (float) prefs.getInt(PREF_COMPRESSOR_POST_GAIN, 10);
     }
 
     public static boolean isEqualizerEnabled() {
@@ -817,9 +817,9 @@ public abstract class UserPreferences {
 
     public static float[] getEqualizerGains() {
         return new float[] {
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_1, 0),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_2, 0),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_3, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_1, -30),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_2, -20),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_3, -10),
                 (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_4, 0),
                 (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_5, 0),
                 (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_6, 0),
