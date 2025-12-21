@@ -603,7 +603,7 @@
     <!--Online feed view-->
   <string name="subscribe_label">הרשמה</string>
     <string name="preview_episodes">תצוגה מקדימה של פרק</string>
-    <string name="state_deleted_not_subscribed">עדיין לא נרשמת לאף הסכת. ניתן להירשם בחינם כדי לגשת אליו בקלות ולשמור על היסטוריית הנגינה שלו.</string>
+    <string name="state_deleted_not_subscribed">עדיין לא נרשמת להסכת הזה. ניתן להירשם בחינם כדי לגשת אליו בקלות ולשמור על היסטוריית הנגינה שלו.</string>
     <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">חזרה</string>
     <string name="rewind_label">חזרה לאחור</string>
@@ -932,4 +932,6 @@
     <string name="feed_delete_explanation_delete">מחיקה תסיר את ﬤﬥ הפרקים כולל ההורדות, היסטוריית הנגינה והסטטיסטיקה.</string>
     <string name="tag_untagged">ללא תיוג</string>
     <string name="feed_delete_explanation_archive">העברה לארכיון תסתיר מרשימת המינויים ותפסיק את קבלת העדכונים. הורדות, סטטיסטיקות ומצב הנגינה יישמרו.</string>
+    <string name="no_archive_head_label">שום דבר לא הועבר לארכיון</string>
+    <string name="no_archive_label">אפשר להעביר הסכתים לארכיון ממסך המינויים הראשי.</string>
 </resources>

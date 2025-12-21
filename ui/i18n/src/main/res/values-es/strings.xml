@@ -932,4 +932,6 @@
     <string name="feed_delete_explanation_delete">La eliminación borrara TODOS sus episodios, incluyendo las descargas, el historial de reproducción y las estadísticas.</string>
     <string name="feed_delete_explanation_archive">El archivado lo ocultará de la lista de suscripciones e impedirá que obtenga actualizaciones. Las descargas, las estadísticas y el estado de reproducción se conservan.</string>
     <string name="tag_untagged">Sin etiquetar</string>
+    <string name="no_archive_head_label">No se ha archivado nada</string>
+    <string name="no_archive_label">Puede archivar los podcasts desde la pantalla de suscripciones principal.</string>
 </resources>

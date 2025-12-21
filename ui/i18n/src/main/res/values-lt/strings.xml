@@ -87,8 +87,8 @@
     <string name="show_info_label">Rodyti informaciją</string>
     <string name="show_feed_settings_label">Rodyti tinklalaidės nustatymus</string>
     <string name="feed_settings_label">Tinklalaidės nustatymai</string>
-    <string name="rename_feed_label">Pervadinti tinklalaidę</string>
-    <string name="remove_feed_label">Pašalinti tinklalaidę</string>
+    <string name="rename_feed_label">Pervadinti</string>
+    <string name="remove_feed_label">Ištrinti</string>
     <string name="share_label">Dalintis</string>
     <string name="load_complete_feed">Atnaujinti visą tinklalaidę</string>
     <string name="multi_select">Pažymėti keletą</string>
@@ -477,7 +477,7 @@
     <string name="discover_powered_by_itunes">Apple Podcasts pasiūlymai</string>
     <string name="discover_confirm">Rodyti pasiūlymus</string>
     <string name="filename">Failo pavadinimas</string>
-    <string name="notification_permission_denied">Jūs atsisakė suteikti leidimą.</string>
+    <string name="notification_permission_denied">Atsisakėte suteikti leidimą.</string>
     <string name="configure_home">Konfigūruoti pagrindinį ekraną</string>
     <string name="section_hidden">Paslėptas</string>
     <string name="remove_history_label">Pašalinti iš istorijos</string>
@@ -552,7 +552,7 @@
     <string name="remove_all_inbox_label">Pašalinti viską iš gautųjų</string>
     <string name="multi_select_started_talkback">Daugkartinio pasirinkimo veiksmai rodomi apačioje</string>
     <string name="refresh_failed_msg">Paskutinis atnaujinimas nepavyko. Bakstelėkite , kad peržiūrėtumėte išsamią informaciją.</string>
-    <string name="add_tag">Pridėti žymą</string>
+    <string name="add_tag">Pridėti žymę</string>
     <string name="toggle_played_label">Keisti atkūrimo būseną</string>
     <string name="remove_inbox_label">Pašalinti iš gaunamųjų laiškų dėžutės</string>
     <string name="show_transcript">Rodyti transkripciją</string>
@@ -653,7 +653,7 @@
     <string name="rating_rate">Įvertinkite AntennaPod</string>
     <string name="fast_forward_label">greitai pirmyn</string>
     <string name="add_preset">Pridėti išankstinį nustatymą</string>
-    <string name="multi_feed_common_tags_info">Rodomos tik bendros visų pasirinktų prenumeratų žymės. Kitos žymos lieka nepaveiktos.</string>
+    <string name="multi_feed_common_tags_info">Rodomos tik bendros visų pasirinktų prenumeratų žymės. Kitos žymės lieka nepaveiktos.</string>
     <string name="episode_filters_label">Epizodo filtras</string>
     <string name="exclude_episodes_shorter_than">Neįtraukti epizodų, trumpesnių nei</string>
     <string name="keep_updated">Laikykitės aktualumo</string>
@@ -748,8 +748,8 @@
         <item quantity="few">Nauji epizodai</item>
         <item quantity="other">Naujų epizodų</item>
     </plurals>
-    <string name="delete_tag_label">Ištrinti etiketę</string>
-    <string name="delete_tag_confirmation">Patvirtinkite, kad norite ištrinti „%1$s“ etiketę.</string>
+    <string name="delete_tag_label">Ištrinti žymę</string>
+    <string name="delete_tag_confirmation">Patvirtinkite, kad norite ištrinti „%1$s“ žymę.</string>
     <plurals name="downloading_episodes_message">
         <item quantity="one">Atsisiunčiamas %d epizodas.</item>
         <item quantity="few">Atsisiunčiami %d epizodai.</item>
@@ -891,4 +891,43 @@
     <string name="statistics_expected_next_episode_any_time">Netrukus</string>
     <string name="release_schedule_multiple_per_day">keliskart per dieną</string>
     <string name="cover_as_background">Viršelis kaip fonas</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d prenumerata</item>
+        <item quantity="few">%d prenumeratos</item>
+        <item quantity="many">%d prenumeratų</item>
+        <item quantity="other">%d prenumeratų</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Archyvuoti</string>
+    <string name="archive_feed_label_noun">Archyvas</string>
+    <string name="restore_archive_label">Atstatyti</string>
+    <string name="remove_archive_feed_label">Ištrinti / archyvuoti</string>
+    <string name="feed_delete_explanation_delete">Ištrynus bus pašalinti VISI jos epizodai, įskaitant atsisiuntimus, atkūrimo istoriją ir statistiką.</string>
+    <string name="feed_delete_explanation_archive">Archyvavus ji neberodoma prenumeratų sąraše ir negaunami atnaujinimai. Išsaugojami atsisiuntimai, statistika ir atkūrimo būsena.</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Atsiunčiama naudojant mobiliųjų duomenų ryšį dar %d minutę</item>
+        <item quantity="few">Atsiunčiama naudojant mobiliųjų duomenų ryšį dar %d minutes</item>
+        <item quantity="many">Atsiunčiama naudojant mobiliųjų duomenų ryšį dar %d minučių</item>
+        <item quantity="other">Atsiunčiama naudojant mobiliųjų duomenų ryšį dar %d minučių</item>
+    </plurals>
+    <string name="no_archive_head_label">Nėra archyvo</string>
+    <string name="no_archive_label">Galite archyvuoti tinklalaides iš pagr. prenumeratų ekrano.</string>
+    <string name="tag_untagged">Nepažymėta</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">pradėtas</item>
+        <item quantity="few">pradėti</item>
+        <item quantity="many">pradėta</item>
+        <item quantity="other">pradėta</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">iš viso</item>
+        <item quantity="few">iš viso</item>
+        <item quantity="many">iš viso</item>
+        <item quantity="other">iš viso</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">atsisiųstas</item>
+        <item quantity="few">atsisiųsti</item>
+        <item quantity="many">atsisiųsta</item>
+        <item quantity="other">atsisiųsta</item>
+    </plurals>
 </resources>
