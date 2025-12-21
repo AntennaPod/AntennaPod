@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.util.Pair;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
@@ -36,7 +35,6 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
         layoutManager.setRecycleChildrenOnDetach(true);
         setLayoutManager(layoutManager);
         setHasFixedSize(true);
-        addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
         setClipToPadding(false);
     }
 
