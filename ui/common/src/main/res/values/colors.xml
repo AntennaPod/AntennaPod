@@ -18,10 +18,16 @@
     <color name="non_square_icon_background">#22777777</color>
     <color name="seek_background_light">#90000000</color>
     <color name="seek_background_dark">#905B5B5B</color>
+    <color name="text_color_secondary_light">#444444</color>
+    <color name="text_color_secondary_dark">#cccccc</color>
+    <color name="color_surface_variant_light">#D3DCE0</color>
+    <color name="color_surface_variant_dark">#2F3B4F</color>
+    <color name="color_secondary_container_light">#A5B8C0</color>
+    <color name="color_secondary_container_dark">#4D5F80</color>
 
     <color name="accent_light">#0078C2</color>
     <color name="accent_dark">#3D8BFF</color>
-    
+
     <color name="gradient_000">#364ff3</color>
     <color name="gradient_025">#2E6FF6</color>
     <color name="gradient_075">#1EB0FC</color>
