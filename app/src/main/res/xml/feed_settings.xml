@@ -65,6 +65,12 @@
         android:summary="@string/global_default"
         android:title="@string/pref_new_episodes_action_title" />
 
+    <SwitchPreferenceCompat
+        android:icon="@drawable/ic_star"
+        android:key="feedPriority"
+        android:summary="@string/feed_priority_summary"
+        android:title="@string/feed_priority_label" />
+
     <PreferenceCategory
         android:key="autoDownloadCategory"
         android:title="@string/auto_download_inbox_category">

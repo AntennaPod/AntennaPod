@@ -122,6 +122,7 @@ public class FeedPreferences implements Serializable {
     private int feedSkipEnding;
     private SkipSilence feedSkipSilence;
     private boolean showEpisodeNotification;
+    private boolean priority;
     private final Set<String> tags = new HashSet<>();
 
     public FeedPreferences(long feedID, AutoDownloadSetting autoDownload, AutoDeleteAction autoDeleteAction,
@@ -129,14 +130,14 @@ public class FeedPreferences implements Serializable {
                            String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
                 new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, SkipSilence.GLOBAL,
-                false, newEpisodesAction, new HashSet<>());
+                false, newEpisodesAction, false, new HashSet<>());
     }
 
     public FeedPreferences(long feedID, AutoDownloadSetting autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
                             String username, String password, @NonNull FeedFilter filter,
                             float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, SkipSilence feedSkipSilence,
-                            boolean showEpisodeNotification, NewEpisodesAction newEpisodesAction,
+                            boolean showEpisodeNotification, NewEpisodesAction newEpisodesAction, boolean priority,
                             Set<String> tags) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
@@ -152,6 +153,7 @@ public class FeedPreferences implements Serializable {
         this.feedSkipSilence = feedSkipSilence;
         this.showEpisodeNotification = showEpisodeNotification;
         this.newEpisodesAction = newEpisodesAction;
+        this.priority = priority;
         this.tags.addAll(tags);
     }
 
@@ -320,5 +322,13 @@ public class FeedPreferences implements Serializable {
 
     public void setShowEpisodeNotification(boolean showEpisodeNotification) {
         this.showEpisodeNotification = showEpisodeNotification;
+    }
+
+    public boolean getPriority() {
+        return priority;
+    }
+
+    public void setPriority(boolean priority) {
+        this.priority = priority;
     }
 }

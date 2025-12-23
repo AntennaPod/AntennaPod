@@ -29,6 +29,36 @@ public class ItemEnqueuePositionCalculator {
      *
      * @param curQueue           the queue to which the item is to be inserted
      * @param currentPlaying     the currently playing media
+     * @param item               the item to be inserted
+     */
+    public int calcPosition(@NonNull List<FeedItem> curQueue,
+                            @Nullable Playable currentPlaying, @NonNull FeedItem item) {
+        if (item.getFeed() != null && item.getFeed().getPreferences() != null
+                && item.getFeed().getPreferences().getPriority()) {
+            return getPositionForPriorityItem(curQueue);
+        }
+        return calcPosition(curQueue, currentPlaying);
+    }
+
+    private int getPositionForPriorityItem(List<FeedItem> curQueue) {
+        int position = 0;
+        for (FeedItem queueItem : curQueue) {
+            if (queueItem.getFeed() != null
+                    && queueItem.getFeed().getPreferences() != null
+                    && queueItem.getFeed().getPreferences().getPriority()) {
+                position++;
+            } else {
+                break;
+            }
+        }
+        return getPositionOfFirstNonDownloadingItem(position, curQueue);
+    }
+
+    /**
+     * Determine the position (0-based) that the item(s) should be inserted to the named queue.
+     *
+     * @param curQueue           the queue to which the item is to be inserted
+     * @param currentPlaying     the currently playing media
      */
     public int calcPosition(@NonNull List<FeedItem> curQueue, @Nullable Playable currentPlaying) {
         switch (enqueueLocation) {

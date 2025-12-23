@@ -1009,4 +1009,6 @@
 
     <string name="echo_share_heading">My favorite podcasts</string>
     <string name="echo_share">My year %d in podcasts. #AntennaPodEcho</string>
+    <string name="feed_priority_label">Priority podcast</string>
+    <string name="feed_priority_summary">Episodes are added to the top of the queue</string>
 </resources>
