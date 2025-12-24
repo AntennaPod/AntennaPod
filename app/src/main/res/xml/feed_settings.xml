@@ -1,73 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="feedSettingsScreen">
 
-    <SwitchPreferenceCompat
-        android:icon="@drawable/ic_refresh"
-        android:key="keepUpdated"
-        android:summary="@string/keep_updated_summary"
-        android:title="@string/keep_updated" />
+    <PreferenceCategory
+        android:title="@string/pref_display">
 
-    <SwitchPreferenceCompat
-        android:defaultValue="false"
-        android:dependency="keepUpdated"
-        android:icon="@drawable/ic_notifications"
-        android:key="episodeNotification"
-        android:summary="@string/episode_notification_summary"
-        android:title="@string/episode_notification" />
+        <Preference
+            android:icon="@drawable/ic_rename"
+            android:key="rename"
+            android:title="@string/rename_feed_label" />
 
-    <Preference
-        android:icon="@drawable/ic_key"
-        android:key="authentication"
-        android:summary="@string/authentication_descr"
-        android:title="@string/authentication_label" />
+        <Preference
+            android:icon="@drawable/ic_tag"
+            android:key="tags"
+            android:summary="@string/feed_tags_summary"
+            android:title="@string/feed_tags_label" />
 
-    <Preference
-        android:icon="@drawable/ic_tag"
-        android:key="tags"
-        android:summary="@string/feed_tags_summary"
-        android:title="@string/feed_tags_label" />
-
-    <Preference
-        android:icon="@drawable/ic_playback_speed"
-        android:key="feedPlaybackSpeed"
-        android:summary="@string/pref_feed_playback_speed_sum"
-        android:title="@string/playback_speed" />
-
-    <Preference
-        android:icon="@drawable/ic_skip_24dp"
-        android:key="feedAutoSkip"
-        android:summary="@string/pref_feed_skip_sum"
-        android:title="@string/pref_feed_skip" />
-
-    <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
-        android:entries="@array/spnAutoDeleteItems"
-        android:entryValues="@array/spnAutoDeleteValues"
-        android:icon="@drawable/ic_delete"
-        android:key="autoDelete"
-        android:summary="@string/global_default"
-        android:title="@string/pref_auto_delete_playback_title" />
-
-    <de.danoeh.antennapod.ui.screen.feed.preferences.VolumeAdaptationPreference
-        android:defaultValue="off"
-        android:entries="@array/spnVolumeAdaptationItems"
-        android:entryValues="@array/spnVolumeAdaptationValues"
-        android:icon="@drawable/ic_volume_adaption"
-        android:key="volumeReduction"
-        android:summary="@string/feed_volume_adaptation_summary"
-        android:title="@string/feed_volume_adapdation" />
-
-    <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
-        android:entries="@array/feedNewEpisodesActionItems"
-        android:entryValues="@array/feedNewEpisodesActionValues"
-        android:icon="@drawable/ic_feed"
-        android:key="feedNewEpisodesAction"
-        android:summary="@string/global_default"
-        android:title="@string/pref_new_episodes_action_title" />
+    </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="autoDownloadCategory"
-        android:title="@string/auto_download_inbox_category">
+        android:title="@string/playback_pref">
+
+        <Preference
+            android:icon="@drawable/ic_playback_speed"
+            android:key="feedPlaybackSpeed"
+            android:summary="@string/pref_feed_playback_speed_sum"
+            android:title="@string/playback_speed" />
+
+        <Preference
+            android:icon="@drawable/ic_skip_24dp"
+            android:key="feedAutoSkip"
+            android:summary="@string/pref_feed_skip_sum"
+            android:title="@string/pref_feed_skip" />
+
+        <de.danoeh.antennapod.ui.screen.feed.preferences.VolumeAdaptationPreference
+            android:defaultValue="off"
+            android:entries="@array/spnVolumeAdaptationItems"
+            android:entryValues="@array/spnVolumeAdaptationValues"
+            android:icon="@drawable/ic_volume_adaption"
+            android:key="volumeReduction"
+            android:summary="@string/feed_volume_adaptation_summary"
+            android:title="@string/feed_volume_adapdation" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/automation">
+
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_refresh"
+            android:key="keepUpdated"
+            android:summary="@string/keep_updated_summary"
+            android:title="@string/keep_updated" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:dependency="keepUpdated"
+            android:icon="@drawable/ic_notifications"
+            android:key="episodeNotification"
+            android:summary="@string/episode_notification_summary"
+            android:title="@string/episode_notification" />
+
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+            android:entries="@array/spnAutoDeleteItems"
+            android:entryValues="@array/spnAutoDeleteValues"
+            android:icon="@drawable/ic_delete"
+            android:key="autoDelete"
+            android:summary="@string/global_default"
+            android:title="@string/pref_auto_delete_playback_title" />
+
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+            android:entries="@array/feedNewEpisodesActionItems"
+            android:entryValues="@array/feedNewEpisodesActionValues"
+            android:icon="@drawable/ic_feed"
+            android:key="feedNewEpisodesAction"
+            android:summary="@string/global_default"
+            android:title="@string/pref_new_episodes_action_title" />
 
         <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
             android:entries="@array/spnEnableAutoDownloadItems"
@@ -80,5 +89,18 @@
             android:key="episodeFilter"
             android:summary="@string/episode_filters_description"
             android:title="@string/episode_filters_label" />
+
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_advanced">
+
+        <Preference
+            android:key="authentication"
+            android:icon="@drawable/ic_key"
+            android:summary="@string/authentication_descr"
+            android:title="@string/authentication_label" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

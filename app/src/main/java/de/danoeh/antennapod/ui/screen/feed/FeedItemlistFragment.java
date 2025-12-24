@@ -284,7 +284,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed.getState() == Feed.STATE_NOT_SUBSCRIBED) {
             viewBinding.toolbar.getMenu().findItem(R.id.sort_items).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.refresh_item).setVisible(false);
-            viewBinding.toolbar.getMenu().findItem(R.id.rename_item).setVisible(false);
             viewBinding.toolbar.getMenu().findItem(R.id.action_search).setVisible(false);
         } else if (feed.getState() == Feed.STATE_ARCHIVED) {
             viewBinding.toolbar.getMenu().findItem(R.id.sort_items).setVisible(false);

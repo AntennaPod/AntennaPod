@@ -607,6 +607,8 @@
     <string name="report_bug_crash_log_message">Created: %1$s.</string>
     <string name="report_bug_forum_title">Forum</string>
     <string name="report_bug_github_title">GitHub</string>
+    <string name="pref_advanced">Advanced</string>
+    <string name="pref_display">Display</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>
@@ -808,7 +810,6 @@
     <string name="tag_all">All</string>
     <string name="tag_untagged">Untagged</string>
     <string name="multi_feed_common_tags_info">Only common tags from all selected subscriptions are shown. Other tags stay unaffected.</string>
-    <string name="auto_download_inbox_category">Automatically download episodes from the inbox</string>
     <string name="episode_filters_label">Episode filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>
     <string name="add_term">Add term</string>
