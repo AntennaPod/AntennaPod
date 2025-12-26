@@ -903,4 +903,6 @@
     <string name="statistics_expected_next_episode_any_time">Her an olabilir</string>
     <string name="release_schedule_multiple_per_day">günde birkaç kez</string>
     <string name="cover_as_background">Arka plan olarak kapak</string>
+    <string name="no_archive_head_label">Arşivlenmiş yok</string>
+    <string name="no_archive_label">Podcast\'leri ana abonelik ekranında arşivleyebilirsiniz.</string>
 </resources>

@@ -30,7 +30,7 @@
     <string name="change_setting">更改</string>
     <string name="individual_subscription">单独订阅</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">包括刚刚标记为已播放的单集时长‌</string>
+  <string name="statistics_include_marked">包括刚刚标记为已播放的单集时长</string>
     <string name="statistics_speed_not_counted">注意：播放速度不在考虑范围之内。</string>
     <string name="statistics_from">从</string>
     <string name="statistics_to">到</string>
@@ -59,10 +59,10 @@
     <string name="drawer_feed_order_unplayed_episodes">按计数排序</string>
     <string name="drawer_feed_order_alphabetical">按字母顺序排序</string>
     <string name="drawer_feed_order_last_update">按发布日期排序</string>
-    <string name="drawer_feed_order_most_played">按已播放单集数量排序‌</string>
+    <string name="drawer_feed_order_most_played">按已播放单集数量排序</string>
     <string name="drawer_feed_counter_inbox">收件箱中的单集数量</string>
     <string name="drawer_feed_counter_unplayed">未播放单集数量</string>
-    <string name="drawer_feed_counter_downloaded">已下载单集数量‌</string>
+    <string name="drawer_feed_counter_downloaded">已下载单集数量</string>
     <string name="drawer_feed_counter_downloaded_unplayed">已下载未播放单集数量</string>
     <string name="drawer_feed_counter_none">无</string>
     <!--Bug report activity-->
@@ -280,7 +280,7 @@
     <string name="no_log_downloads_head_label">没有下载日志</string>
     <string name="no_log_downloads_label">可用时下载日志会出现在这里。</string>
     <string name="no_history_head_label">无历史记录</string>
-    <string name="no_history_label">收听完单集后，该单集将在此处显示‌。</string>
+    <string name="no_history_label">收听完单集后，该单集将在此处显示。</string>
     <string name="no_all_episodes_head_label">无单集</string>
     <string name="no_all_episodes_label">添加播客时，其单集将在此处显示。</string>
     <string name="no_all_episodes_filtered_label">尝试清除筛选条件以查看更多单集。</string>
@@ -327,9 +327,9 @@
     <string name="pref_auto_local_delete_dialog_body">请注意，对于本地文件夹，此操作会从 AntennaPod 中移除单集，并从设备存储中删除媒体文件。无法通过 AntennaPod 再次下载。是否启用自动删除？</string>
     <string name="pref_smart_mark_as_played_sum">即使单集仍有特定秒数的播放时长未完成，仍将其标记为已播放</string>
     <string name="pref_smart_mark_as_played_title">智能标记为已播放</string>
-    <string name="pref_skip_keeps_episodes_sum">跳过单集时保留该单集‌</string>
+    <string name="pref_skip_keeps_episodes_sum">跳过单集时保留该单集</string>
     <string name="pref_skip_keeps_episodes_title">保留跳过的单集</string>
-    <string name="pref_favorite_keeps_episodes_sum">标记单集为收藏时保留‌该单集</string>
+    <string name="pref_favorite_keeps_episodes_sum">标记单集为收藏时保留该单集</string>
     <string name="pref_favorite_keeps_episodes_title">保留收藏的单集</string>
     <string name="playback_pref">播放</string>
     <string name="playback_pref_sum">耳机控制、跳过间隔、队列</string>
@@ -367,11 +367,11 @@
     <string name="pref_automatic_download_title">自动下载</string>
     <string name="pref_automatic_download_sum">配置单集的自动下载</string>
     <string name="pref_automatic_download_on_battery_title">未充电时下载</string>
-    <string name="pref_automatic_download_on_battery_sum">允许设备未充电时自动下载‌</string>
+    <string name="pref_automatic_download_on_battery_sum">允许设备未充电时自动下载</string>
     <string name="pref_episode_cache_title">单集限制</string>
     <string name="pref_episode_cache_summary">如果达到此数值，自动下载将停止</string>
     <string name="pref_episode_cover_title">使用单集封面</string>
-    <string name="pref_episode_cover_summary">启用后，如果可用，在列表中使用单集专属封面‌。未启用，应用将始终使用播客封面图片。</string>
+    <string name="pref_episode_cover_summary">启用后，如果可用，在列表中使用单集专属封面。未启用，应用将始终使用播客封面图片。</string>
     <string name="pref_show_remain_time_title">显示剩余时长</string>
     <string name="pref_show_remain_time_summary">启用后显示单集剩余时长。未启用则显示单集总时长。</string>
     <string name="pref_theme_title_automatic">自动</string>
@@ -399,7 +399,7 @@
     <string name="pref_compact_notification_buttons_dialog_error_exact">你必须不多不少地选中两个项目</string>
     <string name="pref_full_notification_buttons_title">设置通知按钮</string>
     <string name="pref_full_notification_buttons_sum">更改播放通知的按钮</string>
-    <string name="pref_enqueue_location_title">加入队列位置‌</string>
+    <string name="pref_enqueue_location_title">加入队列位置</string>
     <string name="pref_enqueue_location_sum">将单集添加到：%1$s</string>
     <string name="enqueue_location_back">末尾</string>
     <string name="enqueue_location_front">开头</string>
@@ -471,9 +471,9 @@
     <string name="html">HTML</string>
     <string name="html_export_summary">向朋友展示您的订阅</string>
     <string name="opml_export_summary">将订阅转移到其他播客应用</string>
-    <string name="opml_import_summary">从其他播客应用导入订阅‌</string>
+    <string name="opml_import_summary">从其他播客应用导入订阅</string>
     <string name="database_export_summary">将订阅、已听单集和队列转移到其他设备的 AntennaPod</string>
-    <string name="database_import_summary">从其他设备导入 AntennaPod 数据库‌</string>
+    <string name="database_import_summary">从其他设备导入 AntennaPod 数据库</string>
     <string name="opml_import_label">OPML 导入</string>
     <string name="opml_add_podcast_label">导入播客列表（OPML）</string>
     <string name="opml_reader_error">读取文件时出错。请确保您已选择有效的 OPML 文件。</string>
@@ -485,7 +485,7 @@
     <string name="database_export_label">数据库导出</string>
     <string name="automatic_database_export_label">自动数据库导出</string>
     <string name="automatic_database_export_summary">每 3 天创建 AntennaPod 数据库的备份。仅保留最近的 5 个备份。</string>
-    <string name="automatic_database_export_error">自动数据库备份过程中出错‌</string>
+    <string name="automatic_database_export_error">自动数据库备份过程中出错</string>
     <string name="database_import_label">数据库导入</string>
     <string name="database_import_warning">导入数据库将替换当前所有订阅和播放记录。您应该将当前数据库导出为备份。是否要替换？</string>
     <string name="please_wait">请稍候…</string>
@@ -765,7 +765,7 @@
     <string name="delete_tag_confirmation">请确认您要删除标签“%1$s”。</string>
     <string name="download_error_unsupported_type_html_manual">您输入的地址是网站地址，而不是播客 RSS 地址。</string>
     <string name="pref_automatic_download_global_description">自动从收件箱下载单集。可针对每个播客单独设置。</string>
-    <string name="pref_automatic_download_queue_title">下载队列中的单集‌</string>
+    <string name="pref_automatic_download_queue_title">下载队列中的单集</string>
     <string name="pref_automatic_download_queue_description">自动下载队列中的单集</string>
     <string name="episode_lists">单集列表</string>
     <string name="pref_downloads_button_action_title">从下载屏幕播放</string>
@@ -810,7 +810,7 @@
     <string name="echo_hoarder_comment_hoarder">数字不撒谎。考虑到今年您的 %2$d 个活动订阅中仅 %1$d%% 已播放，我们的结论或许是对的。</string>
     <string name="overflow_more">更多</string>
     <string name="preference_search_clear_input">清除</string>
-    <string name="feed_new_episodes_action_summary_autodownload">自动下载已启用。单集将添加到收件箱，下载完成后移动到队列‌。</string>
+    <string name="feed_new_episodes_action_summary_autodownload">自动下载已启用。单集将添加到收件箱，下载完成后移动到队列。</string>
     <string name="visit_social_interact_label">显示评论</string>
     <string name="rss_address">RSS 地址</string>
     <plurals name="downloading_episodes_message">

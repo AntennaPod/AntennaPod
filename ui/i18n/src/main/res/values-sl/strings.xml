@@ -777,4 +777,31 @@
         <item quantity="other">%d dni</item>
     </plurals>
     <string name="delete_tag_confirmation">Prosimo potrdite izbris oznake \"%1$s\".</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d naročnina</item>
+        <item quantity="two">%d naročnini</item>
+        <item quantity="few">%d naročnine</item>
+        <item quantity="other">%d naročnin</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arhiviraj</string>
+    <string name="archive_feed_label_noun">Arhiv</string>
+    <string name="restore_archive_label">Obnovi</string>
+    <string name="remove_archive_feed_label">Izbriši / arhiviraj</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Prenašam %d epizodo.</item>
+        <item quantity="two">Prenašam %d epizodi.</item>
+        <item quantity="few">Prenašam %d epizode.</item>
+        <item quantity="other">Prenašam %d epizod.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d prenešena epizoda izbrisana.</item>
+        <item quantity="two">%d prenešeni epizodi izbrisani.</item>
+        <item quantity="few">%d prenešene epizode izbrisane.</item>
+        <item quantity="other">%d prenešenih epizod izbrisanih.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Odstranjeno iz prejetih</string>
+    <string name="mark_as_played_label">Označi kot predvajano</string>
+    <string name="mark_as_unplayed_label">Označi kot nepredvajano</string>
+    <string name="transcript_follow_audio_label">Sledi zvoku</string>
+    <string name="visit_social_interact_confirm_dialog_title">Zapuščate AntennaPod</string>
 </resources>

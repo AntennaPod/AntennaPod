@@ -838,7 +838,7 @@
     <string name="pref_automatic_download_queue_description">Télécharger automatiquement les épisodes dans la liste de lecture</string>
     <string name="episode_lists">Listes d\'épisodes</string>
     <string name="pref_downloads_button_action_title">Lecture dans l\'écran des téléchargements</string>
-    <string name="pref_downloads_button_action_sum">Afficher le bouton de lecture au lieu de celui pour supprimer dans l\'écran des téléchargements</string>
+    <string name="pref_downloads_button_action_sum">Afficher le bouton de lecture au lieu du bouton supprimer dans l\'écran des téléchargements</string>
     <string name="statistics_time_total">total</string>
     <string name="statistics_time_played">d\'écoute</string>
     <string name="notification_channel_refreshing">Mise à jour des podcasts</string>

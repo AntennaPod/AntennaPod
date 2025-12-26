@@ -154,8 +154,8 @@
     <string name="show_info_label">Pokaż informacje</string>
     <string name="show_feed_settings_label">Pokaż ustawienia podcastu</string>
     <string name="feed_settings_label">Ustawienia podcastu</string>
-    <string name="rename_feed_label">Zmień nazwę podcastu</string>
-    <string name="remove_feed_label">Usuń podcast</string>
+    <string name="rename_feed_label">Zmień nazwę</string>
+    <string name="remove_feed_label">Usuń</string>
     <string name="share_label">Udostępnij</string>
     <string name="share_file_label">Udostępnij plik</string>
     <string name="load_complete_feed">Odśwież cały podcast</string>
@@ -307,8 +307,8 @@
     <string name="synchronization_sum">Synchronizuj z innymi urządzeniami</string>
     <string name="automation">Automatyzacja</string>
     <string name="download_pref_details">Szczegóły</string>
-    <string name="import_export_pref">Import/Eksport</string>
-    <string name="import_export_search_keywords">backup, restore, kopia, kopia zapasowa, przywracanie, przywróć</string>
+    <string name="import_export_pref">Kopia zapasowa i przywracanie</string>
+    <string name="import_export_search_keywords">import, eksport</string>
     <string name="theming">Motywy</string>
     <string name="external_elements">Elementy zewnętrzne</string>
     <string name="interruptions">Przerwy</string>
@@ -318,7 +318,7 @@
     <string name="preference_search_no_results">Brak wyników</string>
     <string name="preference_search_clear_history">Wyczyść historię</string>
     <string name="pref_episode_cleanup_summary">Odcinki, spełniające warunki do usunięcia jeżeli Automatyczne Pobieranie potrzebuje miejsca na nowe odcinki</string>
-    <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>
+    <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub urządzeń Bluetooth</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Wznów odtwarzanie po przywróceniu połączenia Bluetooth</string>
     <string name="pref_hardware_forward_button_title">Przycisk \'do przodu\'</string>
@@ -375,7 +375,7 @@
     <string name="pref_black_theme_message">Używaj prawdziwej czerni w ciemnym motywie</string>
     <string name="pref_tinted_theme_title">Dynamiczne kolory</string>
     <string name="pref_tinted_theme_message">Dostosuj kolory na podstawie tapety</string>
-    <string name="pref_nav_drawer_feed_counter_title">Ustaw licznik subskrypcji</string>
+    <string name="pref_nav_drawer_feed_counter_title">Licznik</string>
     <string name="pref_automatic_download_title">Automatyczne pobieranie</string>
     <string name="pref_automatic_download_sum">Skonfiguruj automatyczne pobieranie odcinków</string>
     <string name="pref_automatic_download_on_battery_title">Pobieraj, gdy nie ładuje</string>
@@ -524,7 +524,7 @@
     <string name="synchronization_summary_unchoosen">Możesz wybrać synchronizację subskrypcji i stanu odtwarzania odcinków z pomocą kilku dostawców</string>
     <string name="dialog_choose_sync_service_title">Wybierz dostawcę synchronizacji</string>
     <string name="gpodnet_description">Gpodder.net to serwis open-source do synchronizacji podcastów, który możesz zainstalować na własnym serwerze. Gpodder.net nie jest powiązany z projektem AntennaPod.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync to open-source aplikacja Nextcloudu, którą możesz łatwo zainstalować na swój serwer. Aplikacja nie jest powiązana z projektem AntennaPod.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync to aplikacja Nextcloud typu open-source, którą możesz łatwo zainstalować na swój serwer. Aplikacja nie jest powiązana z projektem AntennaPod.</string>
     <string name="synchronization_host_explanation">Możesz wybrać swój własny serwer do synchronizacji. Po zidentyfikowaniu preferowanego serwera synchronizacji, wpisz tutaj jego adres.</string>
     <string name="synchronization_host_label">Adres serwera</string>
     <string name="proceed_to_login_butLabel">Przejdź do logowania</string>
@@ -593,7 +593,7 @@
     <string name="authentication_descr">Zmień swoją nazwę użytkownika oraz hasło dla tego podcastu i jego odcinków</string>
     <string name="feed_tags_label">Tagi</string>
     <string name="feed_tags_summary">Zmień tagi tego podcastu, żeby lepiej zorganizować swoje subskrypcje</string>
-    <string name="feed_folders_include_root">Pokaż ten kanał na liście głównej</string>
+    <string name="feed_folders_include_root">Pokaż ten kanał powyżej tagów (tylko nawigacja boczna)</string>
     <string name="episode_filters_label">Filtr odcinków</string>
     <string name="episode_filters_description">Wykaz terminów używanych aby zdecydować, czy odcinek powinien być włączony lub wyłączony podczas automatycznego pobierania</string>
     <string name="add_term">Dodaj termin</string>
@@ -772,7 +772,7 @@
         <item quantity="other">%d dni po zakończeniu</item>
     </plurals>
     <string name="episode_download_failed">Pobieranie odcinka nie powiodło się</string>
-    <string name="nextcloud_login_error_generic">Nie udało się zalogować do twojego Nextclouda.\n\n- Sprawdź swoje połączenie internetowe.\n- Upewnij się, że używasz poprawnego adresu serwera.\n- Upewnij się, że wtyczka gpoddersync jest zainstalowana na twoim serwerze Nextcloud.</string>
+    <string name="nextcloud_login_error_generic">Nie udało się zalogować do twojego Nextclouda.\n\n- Sprawdź swoje połączenie internetowe.\n- Upewnij się, że używasz poprawnego adresu serwera.\n- Upewnij się, że wtyczka Gpodder Sync jest zainstalowana na twoim serwerze Nextcloud.</string>
     <string name="home_continue_empty_text">Możesz dodawać odcinki poprzez pobieranie ich lub długie przytrzymanie ich i zaznaczenie \"Dodaj do kolejki\".</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Rozmiar %d odcinka na urządzeniu</item>
@@ -918,4 +918,48 @@
     <string name="feed_delete_explanation_delete">Usunięcie WSZYSTKICH odcinków, w tym pobranych plików, historii odtwarzania i statystyk.</string>
     <string name="feed_delete_explanation_archive">Archiwizacja spowoduje ukrycie go na liście subskrypcji i uniknięcie jego aktualizacji. Pobrane pliki, statystyki i stan odtwarzania zostaną zachowane.</string>
     <string name="please_wait_before_refreshing">Odczekaj chwilę przed ponownym odświeżeniem podcastów.</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">%d odcinek oznaczony jako odtworzony.</item>
+        <item quantity="few">%d odcinki oznaczone jako odtworzone.</item>
+        <item quantity="many">%d odcinków oznaczonych jako odtworzone.</item>
+        <item quantity="other">%d odcinków oznaczonych jako odtworzone.</item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">%d odcinek oznaczony jako nieodtworzony.</item>
+        <item quantity="few">%d odcinki oznaczone jako nieodtworzone.</item>
+        <item quantity="many">%d odcinków oznaczonych jako nieodtworzone.</item>
+        <item quantity="other">%d odcinków oznaczonych jako nieodtworzone.</item>
+    </plurals>
+    <string name="delete_local_feed_confirmation_dialog_message">Kasowanie usuwa odcinek z AntennaPod i usuwa plik z pamięci urządzenia. Nie można go ponownie pobrać za pomocą AntennaPod.</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Pobieranie za pomocą danych mobilnych przez następną %d minutę</item>
+        <item quantity="few">Pobieranie za pomocą danych mobilnych przez następne %d minuty</item>
+        <item quantity="many">Pobieranie za pomocą danych mobilnych przez następne %d minut</item>
+        <item quantity="other">Pobieranie za pomocą danych mobilnych przez następne %d minut</item>
+    </plurals>
+    <string name="already_downloaded">Odcinek jest już pobrany</string>
+    <string name="tag_all">Wszystkie</string>
+    <string name="tag_untagged">Nieoznaczone tagiem</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">rozpoczęty</item>
+        <item quantity="few">rozpoczęte</item>
+        <item quantity="many">rozpoczętych</item>
+        <item quantity="other">rozpoczętych</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">w sumie</item>
+        <item quantity="few">w sumie</item>
+        <item quantity="many">w sumie</item>
+        <item quantity="other">w sumie</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">pobrany</item>
+        <item quantity="few">pobrane</item>
+        <item quantity="many">pobranych</item>
+        <item quantity="other">pobranych</item>
+    </plurals>
+    <string name="statistics_expected_next_episode_any_time">W każdej chwili</string>
+    <string name="release_schedule_multiple_per_day">Harmonogramy wydań podcastu</string>
+    <string name="cover_as_background">Okładka jako tło</string>
+    <string name="echo_thanks_we_are_glad_old">za bycie z nami w tym roku!\n\nTwój pierwszy odcinek w tym roku został odtworzony %1$s. To dla nas zaszczyt służyć Ci od tego czasu.</string>
 </resources>

@@ -100,6 +100,7 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/is_inbox_label"
+                    app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_inbox" />
 
                 <ImageView
@@ -107,6 +108,7 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/media_type_video_label"
+                    app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_videocam" />
 
                 <ImageView
@@ -114,6 +116,7 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/is_favorite_label"
+                    app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_star" />
 
                 <ImageView
@@ -121,6 +124,7 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/in_queue_label"
+                    app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_playlist_play" />
 
                 <TextView

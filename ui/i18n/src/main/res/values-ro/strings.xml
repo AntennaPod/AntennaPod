@@ -850,4 +850,20 @@
     <string name="echo_hoarder_subtitle_medium">Verificăm. Nu există nici-o colecție fără sens aici.</string>
     <string name="echo_thanks_we_are_glad_old">pentru că ne-ai ales pe noi în acest an!\n\nAi redat primul episod cu noi în %1$s. A fost o onoare să te servim de atunci și până acum.</string>
     <string name="echo_thanks_now_favorite">Acum să aruncăm o privire asupra podcasturilor tale favorite…</string>
+    <string name="feed_new_episodes_action_summary_autodownload">Descărcările automate sunt active. Episoadele sunt adăugate în inbox după care sunt mutate în folderul coadă după descărcare.</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d abonament</item>
+        <item quantity="few">%d abonamente</item>
+        <item quantity="other">%d de abonamente</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arhivare</string>
+    <string name="archive_feed_label_noun">Arhivă</string>
+    <string name="restore_archive_label">Restabilire</string>
+    <string name="remove_archive_feed_label">Șterge / arhivează</string>
+    <string name="feed_delete_explanation_delete">Ștergerea va elimina TOATE episoadele, inclusiv descărcările, istoricul redărilor și statisticile.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Se descarcă %d episod.</item>
+        <item quantity="few">Se descarcă %d episoade.</item>
+        <item quantity="other">Se descarcă %d de episoade.</item>
+    </plurals>
 </resources>
