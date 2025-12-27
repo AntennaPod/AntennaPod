@@ -97,32 +97,32 @@
 
                 <ImageView
                     android:id="@+id/statusInbox"
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
+                    android:layout_width="12sp"
+                    android:layout_height="12sp"
                     android:contentDescription="@string/is_inbox_label"
                     app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_inbox" />
 
                 <ImageView
                     android:id="@+id/ivIsVideo"
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
+                    android:layout_width="12sp"
+                    android:layout_height="12sp"
                     android:contentDescription="@string/media_type_video_label"
                     app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_videocam" />
 
                 <ImageView
                     android:id="@+id/isFavorite"
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
+                    android:layout_width="12sp"
+                    android:layout_height="12sp"
                     android:contentDescription="@string/is_favorite_label"
                     app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_star" />
 
                 <ImageView
                     android:id="@+id/ivInPlaylist"
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
+                    android:layout_width="12sp"
+                    android:layout_height="12sp"
                     android:contentDescription="@string/in_queue_label"
                     app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_playlist_play" />
