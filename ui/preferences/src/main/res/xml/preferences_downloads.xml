@@ -7,6 +7,11 @@
         android:title="@string/choose_data_directory"
         android:key="prefChooseDataDir"/>
 
+    <Preference
+        android:title="@string/relocate_media_files"
+        android:summary="@string/relocate_media_files_summary"
+        android:key="prefRelocateMedia"/>
+
     <PreferenceCategory android:title="@string/automation">
         <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
             android:entryValues="@array/feed_refresh_interval_values"

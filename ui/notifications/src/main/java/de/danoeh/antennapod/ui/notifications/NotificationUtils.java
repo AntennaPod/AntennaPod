@@ -19,6 +19,7 @@ public class NotificationUtils {
     public static final String CHANNEL_ID_DOWNLOAD_ERROR = "error";
     public static final String CHANNEL_ID_SYNC_ERROR = "sync_error";
     public static final String CHANNEL_ID_EPISODE_NOTIFICATIONS = "episode_notifications";
+    public static final String CHANNEL_ID_RELOCATION = "media_relocation";
 
     public static final String GROUP_ID_ERRORS = "group_errors";
     public static final String GROUP_ID_NEWS = "group_news";
@@ -38,7 +39,8 @@ public class NotificationUtils {
                 createChannelPlaying(context),
                 createChannelError(context),
                 createChannelSyncError(context),
-                createChannelEpisodeNotification(context));
+                createChannelEpisodeNotification(context),
+                createChannelRelocation(context));
         mNotificationManager.createNotificationChannelsCompat(channels);
     }
 
@@ -124,6 +126,15 @@ public class NotificationUtils {
     private static NotificationChannelGroupCompat createGroupNews(final Context c) {
         return new NotificationChannelGroupCompat.Builder(GROUP_ID_NEWS)
                 .setName(c.getString(R.string.notification_group_news))
+                .build();
+    }
+
+    private static NotificationChannelCompat createChannelRelocation(final Context c) {
+        return new NotificationChannelCompat.Builder(
+                        CHANNEL_ID_RELOCATION, NotificationManagerCompat.IMPORTANCE_LOW)
+                .setName(c.getString(R.string.relocation_channel_name))
+                .setDescription(c.getString(R.string.relocation_channel_description))
+                .setShowBadge(false)
                 .build();
     }
 }
