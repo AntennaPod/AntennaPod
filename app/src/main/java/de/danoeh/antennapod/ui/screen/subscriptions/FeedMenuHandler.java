@@ -88,8 +88,6 @@ public abstract class FeedMenuHandler {
         } else if (menuItemId == R.id.edit_tags) {
             TagSettingsDialog.newInstance(Collections.singletonList(selectedFeed.getPreferences()))
                     .show(fragment.getChildFragmentManager(), TagSettingsDialog.TAG);
-        } else if (menuItemId == R.id.rename_item) {
-            new RenameFeedDialog(fragment.getActivity(), selectedFeed).show();
         } else if (menuItemId == R.id.remove_archive_feed || menuItemId == R.id.remove_restore_feed) {
             new RemoveFeedDialog(Collections.singletonList(selectedFeed))
                     .show(fragment.getChildFragmentManager(), null);
