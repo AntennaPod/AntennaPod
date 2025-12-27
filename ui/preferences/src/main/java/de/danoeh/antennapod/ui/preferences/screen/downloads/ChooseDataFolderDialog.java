@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.preferences.screen.downloads;
 import android.content.Context;
 
 import android.view.View;
+import android.widget.CheckBox;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.util.Consumer;
@@ -12,9 +13,17 @@ import de.danoeh.antennapod.ui.preferences.R;
 
 public class ChooseDataFolderDialog {
 
-    public static void showDialog(final Context context, Consumer<String> handlerFunc) {
+    public static void showDialog(final Context context, Consumer<MoveRequest> handlerFunc) {
 
         View content = View.inflate(context, R.layout.choose_data_folder_dialog, null);
+        CheckBox moveFilesCheckbox = content.findViewById(R.id.checkbox_move_files);
+        CheckBox forceMoveCheckbox = content.findViewById(R.id.checkbox_force_move);
+        
+        // Enable/disable force move checkbox based on move files checkbox
+        forceMoveCheckbox.setEnabled(moveFilesCheckbox.isChecked());
+        moveFilesCheckbox.setOnCheckedChangeListener((buttonView, isChecked) ->
+                forceMoveCheckbox.setEnabled(isChecked));
+        
         AlertDialog dialog = new MaterialAlertDialogBuilder(context)
                 .setView(content)
                 .setTitle(R.string.choose_data_directory)
@@ -25,7 +34,8 @@ public class ChooseDataFolderDialog {
 
         DataFolderAdapter adapter = new DataFolderAdapter(context, path -> {
             dialog.dismiss();
-            handlerFunc.accept(path);
+            handlerFunc.accept(new MoveRequest(path, moveFilesCheckbox.isChecked(),
+                    forceMoveCheckbox.isChecked() && moveFilesCheckbox.isChecked()));
         });
         ((RecyclerView) content.findViewById(R.id.recyclerView)).setAdapter(adapter);
 
