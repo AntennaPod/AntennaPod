@@ -12,9 +12,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -24,15 +28,14 @@ import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.ui.common.GenerativeUrlBuilder;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 import de.danoeh.antennapod.ui.screen.playback.PlayButton;
-import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity.
@@ -197,18 +200,14 @@ public class ExternalPlayerFragment extends Fragment {
         feedName.setText(media.getFeedTitle());
         onPositionObserverUpdate(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
 
-        RequestOptions options = new RequestOptions()
-                .placeholder(R.color.light_gray)
-                .error(R.color.light_gray)
+        CoverLoader.with(imgvCover,
+                        new GenerativeUrlBuilder(
+                                ImageResourceUtils.getEpisodeListImageLocation(media),
+                                ImageResourceUtils.getFallbackImageLocation(media),
+                                media.getFeedTitle(),
+                                media.getFeedDownloadUrl()))
+                .centerCrop()
                 .fitCenter()
-                .dontAnimate();
-
-        Glide.with(this)
-                .load(ImageResourceUtils.getEpisodeListImageLocation(media))
-                .error(Glide.with(this)
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
-                        .apply(options))
-                .apply(options)
                 .into(imgvCover);
 
         if (controller != null && controller.isPlayingVideoLocally()) {

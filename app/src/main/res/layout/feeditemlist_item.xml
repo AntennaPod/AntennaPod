@@ -56,17 +56,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/txtvPlaceholder"
-                    android:layout_width="@dimen/thumbnail_length_queue_item"
-                    android:layout_height="@dimen/thumbnail_length_queue_item"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:background="@color/light_gray"
-                    android:maxLines="3"
-                    android:padding="2dp"
-                    android:ellipsize="end" />
-
                 <ImageView
                     android:id="@+id/imgvCover"
                     android:layout_width="@dimen/thumbnail_length_queue_item"
@@ -100,7 +89,6 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/is_inbox_label"
-                    app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_inbox" />
 
                 <ImageView
@@ -108,7 +96,6 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/media_type_video_label"
-                    app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_videocam" />
 
                 <ImageView
@@ -116,7 +103,6 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/is_favorite_label"
-                    app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_star" />
 
                 <ImageView
@@ -124,7 +110,6 @@
                     android:layout_width="14sp"
                     android:layout_height="14sp"
                     android:contentDescription="@string/in_queue_label"
-                    app:tint="?attr/colorOnSurfaceVariant"
                     app:srcCompat="@drawable/ic_playlist_play" />
 
                 <TextView

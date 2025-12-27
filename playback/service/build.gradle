@@ -24,6 +24,7 @@ dependencies {
     implementation project(':ui:notifications')
     implementation project(':ui:widget')
     implementation project(':ui:chapters')
+    implementation project(':ui:glide')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.car.app:app:1.4.0-rc02"

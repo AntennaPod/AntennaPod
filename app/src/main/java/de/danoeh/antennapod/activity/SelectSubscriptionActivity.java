@@ -2,35 +2,36 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.ui.common.ThemeSwitcher;
-import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.databinding.SubscriptionSelectionActivityBinding;
 import de.danoeh.antennapod.model.feed.Feed;
-import io.reactivex.rxjava3.core.Observable;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.ui.CoverLoaderHelper;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.common.ThemeSwitcher;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -99,25 +100,20 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
 
     private void getBitmapFromUrl(Feed feed) {
         int iconSize = (int) (128 * getResources().getDisplayMetrics().density);
-        Glide.with(this)
-                .asBitmap()
-                .load(feed.getImageUrl())
-                .apply(RequestOptions.overrideOf(iconSize, iconSize))
-                .listener(new RequestListener<Bitmap>() {
+        CoverLoader.with(this, 
+                new RequestOptions().override(iconSize, iconSize),
+                CoverLoaderHelper.fromFeed(feed))
+                .into(new CustomTarget<Bitmap>() {
                     @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
-                                                Target<Bitmap> target, boolean isFirstResource) {
-                        addShortcut(feed, null);
-                        return true;
+                    public void onResourceReady(@NonNull Bitmap resource,
+                                                @Nullable Transition<? super Bitmap> transition) {
+                        addShortcut(feed, resource);
                     }
 
                     @Override
-                    public boolean onResourceReady(Bitmap resource, Object model,
-                            Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                        addShortcut(feed, resource);
-                        return true;
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
                     }
-                }).submit();
+                });
     }
 
     private void loadSubscriptions() {

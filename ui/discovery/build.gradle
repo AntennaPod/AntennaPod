@@ -15,6 +15,7 @@ dependencies {
     implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
+    implementation project(':ui:glide')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

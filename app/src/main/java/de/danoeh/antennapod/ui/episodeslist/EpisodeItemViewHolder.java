@@ -15,26 +15,27 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.elevation.SurfaceColors;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.actionbutton.ItemActionButton;
-import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.ui.common.DateFormatter;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.net.common.NetworkUtils;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.playback.service.PlaybackStatus;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.CoverLoaderHelper;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 
 /**
  * Holds the view which shows FeedItems.
@@ -44,7 +45,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     private final View container;
     public final ImageView dragHandle;
-    public final TextView placeholder;
     public final ImageView cover;
     private final TextView title;
     private final TextView pubDate;
@@ -71,7 +71,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         this.activity = activity;
         container = itemView.findViewById(R.id.container);
         dragHandle = itemView.findViewById(R.id.drag_handle);
-        placeholder = itemView.findViewById(R.id.txtvPlaceholder);
         cover = itemView.findViewById(R.id.imgvCover);
         title = itemView.findViewById(R.id.txtvTitle);
         if (Build.VERSION.SDK_INT >= 23) {
@@ -97,7 +96,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(FeedItem item) {
         this.item = item;
-        placeholder.setText(item.getFeed().getTitle());
         title.setText(item.getTitle());
         if (item.isPlayed()) {
             leftPadding.setContentDescription(item.getTitle() + ". " + activity.getString(R.string.is_played));
@@ -128,12 +126,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (coverHolder.getVisibility() == View.VISIBLE) {
-            new CoverLoader()
-                    .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
-                    .withFallbackUri(item.getFeed().getImageUrl())
-                    .withPlaceholderView(placeholder)
-                    .withCoverView(cover)
-                    .load();
+            CoverLoader.with(cover, CoverLoaderHelper.fromFeedItem(item)).into(cover);
         }
     }
 
@@ -222,13 +215,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         dragHandle.setVisibility(View.GONE);
         size.setText("");
         itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
-        placeholder.setText("");
         if (coverHolder.getVisibility() == View.VISIBLE) {
-            new CoverLoader()
-                    .withResource(R.color.medium_gray)
-                    .withPlaceholderView(placeholder)
-                    .withCoverView(cover)
-                    .load();
+            Glide.with(cover).clear(cover);
         }
     }
 

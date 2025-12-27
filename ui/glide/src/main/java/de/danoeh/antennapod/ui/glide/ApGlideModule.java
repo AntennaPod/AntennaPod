@@ -13,12 +13,13 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
-import java.io.InputStream;
-
-import com.bumptech.glide.request.RequestOptions;
-import java.nio.ByteBuffer;
+import de.danoeh.antennapod.ui.common.FallbackImageData;
 
 /**
  * {@see com.bumptech.glide.integration.okhttp.OkHttpGlideModule}
@@ -44,6 +45,7 @@ public class ApGlideModule extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
+        registry.prepend(FallbackImageData.class, InputStream.class, new FallbackImageModelLoader.Factory());
         registry.replace(String.class, InputStream.class, new MetadataRetrieverLoader.Factory(context));
         registry.append(String.class, InputStream.class, new GenerativePlaceholderImageModelLoader.Factory());
         registry.append(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
