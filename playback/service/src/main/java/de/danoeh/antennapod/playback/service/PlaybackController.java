@@ -481,4 +481,11 @@ public abstract class PlaybackController {
     public boolean isStreaming() {
         return playbackService != null && playbackService.isStreaming();
     }
+
+    public boolean isSleepTimerEndingThisEpisode(int remainingTime) {
+        if (sleepTimerActive()) {
+            return playbackService.isSleepTimerEndingThisEpisode(remainingTime);
+        }
+        return false;
+    }
 }
