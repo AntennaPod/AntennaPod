@@ -23,6 +23,8 @@ import de.danoeh.antennapod.ui.screen.preferences.PreferenceListDialog;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceSwitchDialog;
 import org.greenrobot.eventbus.EventBus;
 
+import de.danoeh.antennapod.ui.share.ShareUtils;
+
 public class FeedMultiSelectActionHandler {
     private static final String TAG = "FeedSelectHandler";
     private final FragmentActivity activity;
@@ -34,6 +36,9 @@ public class FeedMultiSelectActionHandler {
     }
 
     public void handleAction(int id) {
+        if (selectedItems.isEmpty()) {
+            return;
+        }
         if (id == R.id.remove_archive_feed || id == R.id.remove_restore_feed) {
             new RemoveFeedDialog(selectedItems).show(activity.getSupportFragmentManager(), null);
         } else if (id == R.id.notify_new_episodes) {
@@ -48,6 +53,10 @@ public class FeedMultiSelectActionHandler {
             playbackSpeedPrefHandler();
         } else if (id == R.id.edit_tags) {
             editFeedPrefTags();
+        } else if (id == R.id.share_feed) {
+            if (!selectedItems.get(0).isLocalFeed()) {
+                ShareUtils.shareFeedLink(activity, selectedItems.get(0));
+            }
         } else {
             Log.e(TAG, "Unrecognized speed dial action item. Do nothing. id=" + id);
         }

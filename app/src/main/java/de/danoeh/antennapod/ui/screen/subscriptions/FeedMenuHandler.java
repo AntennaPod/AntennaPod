@@ -36,25 +36,21 @@ public abstract class FeedMenuHandler {
         if (menu == null || selectedItems == null || selectedItems.isEmpty() || selectedItems.get(0) == null) {
             return false;
         }
-        boolean allNotSubscribed = true;
+        boolean allSubscribed = true;
         boolean allArchived = true;
         for (Feed feed : selectedItems) {
-            if (feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
-                allNotSubscribed = false;
+            if (feed.getState() != Feed.STATE_SUBSCRIBED) {
+                allSubscribed = false;
             }
             if (feed.getState() != Feed.STATE_ARCHIVED) {
                 allArchived = false;
             }
         }
-        if (allNotSubscribed) {
-            setItemVisibility(menu, R.id.remove_archive_feed, false);
-            setItemVisibility(menu, R.id.remove_all_inbox_item, false);
-        }
-        setItemVisibility(menu, R.id.remove_archive_feed, !allArchived);
+        setItemVisibility(menu, R.id.remove_all_inbox_item, allSubscribed);
+        setItemVisibility(menu, R.id.remove_archive_feed, !allArchived && allSubscribed);
         setItemVisibility(menu, R.id.remove_restore_feed, allArchived);
-        if (selectedItems.size() != 1 || selectedItems.get(0).isLocalFeed()) {
-            setItemVisibility(menu, R.id.share_feed, false);
-        }
+        boolean singleNonLocalFeedSelected = selectedItems.size() == 1 && !selectedItems.get(0).isLocalFeed();
+        setItemVisibility(menu, R.id.share_feed, singleNonLocalFeedSelected);
         return true;
     }
 
