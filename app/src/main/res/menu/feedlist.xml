@@ -64,4 +64,13 @@
         custom:showAsAction="collapseActionView">
     </item>
 
+    <item
+        android:id="@+id/remove_restore_feed"
+        android:icon="@drawable/ic_delete"
+        android:menuCategory="container"
+        android:title="@string/remove_restore_feed_label"
+        android:visible="false"
+        custom:showAsAction="collapseActionView">
+    </item>
+
 </menu>

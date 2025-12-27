@@ -168,6 +168,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             menu.setHeaderTitle(contextPressedItem.asFeed().getTitle());
             inflater.inflate(R.menu.nav_feed_context, menu);
             // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+            FeedMenuHandler.onPrepareMenu(menu, Collections.singletonList(contextPressedItem.asFeed()));
         } else if (FeedPreferences.TAG_UNTAGGED.equals(contextPressedItem.asTag().getTitle())) {
             return;
         } else {
@@ -193,7 +194,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private boolean onFeedContextMenuClicked(Feed feed, MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.remove_archive_feed) {
+        if (itemId == R.id.remove_archive_feed || itemId == R.id.remove_restore_feed) {
             new RemoveFeedDialogClose(Collections.singletonList(feed)).show(getParentFragmentManager(), null);
             return true;
         }

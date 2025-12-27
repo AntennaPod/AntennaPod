@@ -34,7 +34,7 @@ public class FeedMultiSelectActionHandler {
     }
 
     public void handleAction(int id) {
-        if (id == R.id.remove_archive_feed) {
+        if (id == R.id.remove_archive_feed || id == R.id.remove_restore_feed) {
             new RemoveFeedDialog(selectedItems).show(activity.getSupportFragmentManager(), null);
         } else if (id == R.id.notify_new_episodes) {
             notifyNewEpisodesPrefHandler();
