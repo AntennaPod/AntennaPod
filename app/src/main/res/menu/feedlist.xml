@@ -50,12 +50,6 @@
         android:icon="@drawable/ic_check"/>
 
     <item
-        android:id="@+id/rename_item"
-        android:menuCategory="container"
-        android:title="@string/rename_feed_label"
-        custom:showAsAction="never" />
-
-    <item
         android:id="@+id/remove_archive_feed"
         android:icon="@drawable/ic_delete"
         android:menuCategory="container"
