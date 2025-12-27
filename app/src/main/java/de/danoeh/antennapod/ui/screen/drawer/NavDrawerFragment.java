@@ -198,7 +198,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             new RemoveFeedDialogClose(Collections.singletonList(feed)).show(getParentFragmentManager(), null);
             return true;
         }
-        if (FeedMenuHandler.onMenuItemClicked(this, itemId, feed, null)) {
+        if (FeedMenuHandler.onMenuItemClicked(this, itemId, feed)) {
             return true;
         }
         return super.onContextItemSelected(item);
