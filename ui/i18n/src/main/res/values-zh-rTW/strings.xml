@@ -408,8 +408,6 @@
     <string name="pref_smart_mark_as_played_disabled">停用</string>
     <string name="documentation_support">文件與支援資訊</string>
     <string name="visit_user_forum">使用者論壇</string>
-    <string name="bug_report_title">回報錯誤</string>
-    <string name="open_bug_tracker">開啟錯誤追蹤</string>
     <string name="copy_to_clipboard">複製到剪貼簿</string>
     <string name="copied_to_clipboard">已複製到剪貼簿</string>
     <string name="pref_proxy_title">代理伺服器</string>
@@ -876,4 +874,38 @@
     <string name="cover_as_background">封面作為背景</string>
     <string name="no_archive_head_label">無封存內容</string>
     <string name="no_archive_label">你可以在主要的訂閱頁面中封存 Podcast 節目。</string>
+    <string name="general_expand_button">展開</string>
+    <string name="general_collapse_button">收合</string>
+    <string name="archiving_podcast_progress">正在歸檔第 %1$d 個 Podcast，共 %2$d 個…</string>
+    <string name="deleting_podcast_progress">正在刪除第 %1$d 個 Podcast，共 %2$d 個…</string>
+    <string name="download_log_details_human_readable_reason_title">狀態</string>
+    <string name="download_log_details_technical_reason_title">技術細節</string>
+    <string name="download_log_details_file_url_title">檔案 URL</string>
+    <string name="download_log_open_feed">打開</string>
+    <string name="no_following_in_queue">這是清單中的最後一集</string>
+    <string name="episode">單集</string>
+    <string name="feed">Podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">預設排序</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">選擇 Podcast 頁面單集的預設順序</string>
+    <string name="report_bug_title">回報錯誤</string>
+    <string name="report_bug_message">很遺憾聽到有些功能無法正常運作，我們希望能得到您的幫助來改進 AntennaPod。請查看我們的論壇或 GitHub，看看該問題是否已經被回報，如果沒有，請告訴我們以進行後續調查。</string>
+    <string name="report_bug_device_info_title">裝置</string>
+    <string name="report_bug_attrib_app_version">應用版本</string>
+    <string name="report_bug_attrib_android_version">Android 版本</string>
+    <string name="report_bug_attrib_device_name">裝置名稱</string>
+    <string name="report_bug_crash_log_title">崩潰紀錄</string>
+    <string name="report_bug_crash_log_message">已建立：%1$s。</string>
+    <string name="report_bug_forum_title">論壇</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">單集</string>
+    <string name="sleep_timer_without_continuous_playback">停用連續播放</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">更改小時數</string>
+    <string name="sleep_timer_without_continuous_playback_message">不想一律自動開啟一集節目的睡眠定時器，您可在設定中停用「連續播放」。</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="other">連續播放已停用，目前的單集僅剩下 %1$d 分鐘</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">設定中已停用連續播放功能，每集結束時將停止播放。</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="other">您的清單中僅剩下 %1$d 集</item>
+    </plurals>
 </resources>

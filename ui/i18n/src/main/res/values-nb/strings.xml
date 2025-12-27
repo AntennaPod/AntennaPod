@@ -393,8 +393,6 @@
     <string name="pref_smart_mark_as_played_disabled">Deaktivert</string>
     <string name="documentation_support">Dokumentasjon og støtte</string>
     <string name="visit_user_forum">Brukerforum</string>
-    <string name="bug_report_title">Rapporter feil</string>
-    <string name="open_bug_tracker">Åpne feilsporing</string>
     <string name="copy_to_clipboard">Kopier til utklippstavle</string>
     <string name="copied_to_clipboard">Kopiert til utklippstavlen</string>
     <string name="pref_proxy_title">Mellomtjener</string>

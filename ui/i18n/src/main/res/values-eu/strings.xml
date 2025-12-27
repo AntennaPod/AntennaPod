@@ -393,8 +393,6 @@
     <string name="pref_smart_mark_as_played_disabled">Desgaitua</string>
     <string name="documentation_support">Dokumentazioa eta laguntza</string>
     <string name="visit_user_forum">Erabiltzaileen foroa</string>
-    <string name="bug_report_title">Jakinarazi errorea</string>
-    <string name="open_bug_tracker">Ireki erroreen bilatzailea</string>
     <string name="copy_to_clipboard">Kopiatu arbelean</string>
     <string name="copied_to_clipboard">Arbelean kopiatu da</string>
     <string name="pref_proxy_title">Proxy</string>

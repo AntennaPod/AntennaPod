@@ -295,8 +295,6 @@
     <string name="enqueue_location_after_current">Setelah episode saat ini</string>
     <string name="pref_smart_mark_as_played_disabled">Dinonaktifkan</string>
     <string name="visit_user_forum">Forum Pengguna</string>
-    <string name="bug_report_title">Laporkan kutu</string>
-    <string name="open_bug_tracker">Buka pelacak kutu</string>
     <string name="copy_to_clipboard">Salin ke papan klip</string>
     <string name="copied_to_clipboard">Tersalin ke papan klip</string>
     <string name="pref_proxy_title">Proksi</string>

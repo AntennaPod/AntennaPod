@@ -393,8 +393,6 @@
     <string name="pref_smart_mark_as_played_disabled">Uitgeschakeld</string>
     <string name="documentation_support">Documentatie &amp; hulp</string>
     <string name="visit_user_forum">Gebruikersforum</string>
-    <string name="bug_report_title">Bug melden</string>
-    <string name="open_bug_tracker">Bugtracker openen</string>
     <string name="copy_to_clipboard">Kopiëren naar klembord</string>
     <string name="copied_to_clipboard">Gekopieerd naar het klembord</string>
     <string name="pref_proxy_title">Proxy</string>

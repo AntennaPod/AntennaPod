@@ -238,8 +238,6 @@
     <string name="enqueue_location_after_current">Po dabartinio epizodo</string>
     <string name="pref_smart_mark_as_played_disabled">Išjungtas</string>
     <string name="visit_user_forum">Naudotojų forumas</string>
-    <string name="bug_report_title">Pranešti apie klaidą</string>
-    <string name="open_bug_tracker">Atverti klaidų sekimo sistemą</string>
     <string name="copy_to_clipboard">Kopijuoti į iškarpinę</string>
     <string name="copied_to_clipboard">Nukopijuotas į iškarpinę</string>
     <string name="pref_proxy_title">Įgaliotasis serveris</string>

@@ -417,8 +417,6 @@
     <string name="pref_smart_mark_as_played_disabled">Devre dışı</string>
     <string name="documentation_support">Dökümantasyon &amp; destek</string>
     <string name="visit_user_forum">Kullanıcı forumu</string>
-    <string name="bug_report_title">Hata bildir</string>
-    <string name="open_bug_tracker">Hata bildirimi takibi aç</string>
     <string name="copy_to_clipboard">Kopyala</string>
     <string name="copied_to_clipboard">Kopyaladı</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -834,7 +832,7 @@
     <string name="echo_hoarder_comment_hoarder">Rakamlar yalan söylemez derler. Ve bu yıl %2$d aktif aboneliğinin yalnızca %1$d%% oynatıldı, yani muhtemelen haklıyız.</string>
     <string name="echo_hoarder_subtitle_medium">Kontrol edildi. Burada istifçilik yok.</string>
     <string name="echo_thanks_we_are_glad_old">bu yılı bizimle geçirdiğin için!\n\nBizimle ilk bölümünü %1$s tarihinde oynattın. O günden beri sana hizmet etmek bir onurdu.</string>
-    <string name="echo_thanks_large">Teşellürler</string>
+    <string name="echo_thanks_large">Teşekkürler</string>
     <string name="echo_thanks_now_favorite">Şimdi en sevdiğin podcastlere bir göz atalım…</string>
     <string name="echo_share_heading">En sevdiğim podcastler</string>
     <string name="echo_share">Podcastlerde %d yılım. #AntennaPodEcho</string>
