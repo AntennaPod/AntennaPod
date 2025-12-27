@@ -12,29 +12,30 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.storage.database.NavDrawerData;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.common.ImagePlaceholder;
-import de.danoeh.antennapod.ui.screen.InboxFragment;
-import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
-import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 
 import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.storage.database.NavDrawerData;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.CoverLoaderHelper;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
+import de.danoeh.antennapod.ui.screen.InboxFragment;
+import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
+import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 
 /**
  * BaseAdapter for the navigation drawer
@@ -250,16 +251,10 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             return;
         }
 
-        float radius = 4 * context.getResources().getDisplayMetrics().density;
-        Glide.with(context)
-                .load(feed.getImageUrl())
-                .apply(new RequestOptions()
-                    .placeholder(ImagePlaceholder.getDrawable(context, radius))
-                    .error(ImagePlaceholder.getDrawable(context, radius))
-                    .transform(new FitCenter(),
-                            new RoundedCorners((int) radius))
-                    .dontAnimate())
-                .into(holder.image);
+        CoverLoader.with(holder.image,
+                        4f,
+                        CoverLoaderHelper.fromFeed(feed))
+                  .into(holder.image);
 
         holder.failure.setVisibility(feed.hasLastUpdateFailed() ? View.VISIBLE : View.GONE);
     }

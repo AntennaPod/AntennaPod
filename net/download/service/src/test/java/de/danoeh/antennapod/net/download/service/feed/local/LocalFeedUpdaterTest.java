@@ -9,12 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import org.junit.After;
@@ -74,6 +77,10 @@ public class LocalFeedUpdaterTest {
         SynchronizationSettings.init(context);
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
 
+        // Mock SynchronizationQueue
+        SynchronizationQueue mockQueue = Mockito.mock(SynchronizationQueue.class);
+        SynchronizationQueue.setInstance(mockQueue);
+
         // Initialize database
         PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
@@ -88,6 +95,7 @@ public class LocalFeedUpdaterTest {
 
     @After
     public void tearDown() {
+        SynchronizationQueue.setInstance(null);
         DBWriter.tearDownTests();
         PodDBAdapter.tearDownTests();
     }
@@ -258,6 +266,9 @@ public class LocalFeedUpdaterTest {
 
             // call method to test
             Feed feed = new Feed(FEED_URL, null);
+            feed.setPreferences(new FeedPreferences(0, FeedPreferences.AutoDownloadSetting.GLOBAL,
+                    FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+                    FeedPreferences.NewEpisodesAction.GLOBAL, null, null));
             try {
                 LocalFeedUpdater.tryUpdateFeed(feed, context, null, null);
             } catch (IOException e) {

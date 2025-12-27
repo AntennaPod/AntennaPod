@@ -13,25 +13,27 @@ import android.os.Build;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.KeyEvent;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.NotificationCompat;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.ArrayList;
+
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.MediaButtonReceiver;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.ui.common.GenerativeUrlBuilder;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-import de.danoeh.antennapod.playback.base.PlayerStatus;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class PlaybackServiceNotificationBuilder {
     private static final String TAG = "PlaybackSrvNotification";
@@ -71,28 +73,17 @@ public class PlaybackServiceNotificationBuilder {
 
     public void loadIcon() {
         int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
-        final RequestOptions options = new RequestOptions().centerCrop();
         try {
-            icon = Glide.with(context)
-                    .asBitmap()
-                    .load(playable.getImageLocation())
-                    .apply(options)
+            icon = CoverLoader.with(context,
+                            new GenerativeUrlBuilder(
+                                    playable.getImageLocation(),
+                                    ImageResourceUtils.getFallbackImageLocation(playable),
+                                    playable.getFeedTitle(),
+                                    playable.getFeedDownloadUrl()))
+                    .centerCrop()
                     .submit(iconSize, iconSize)
                     .get();
-        } catch (ExecutionException e) {
-            try {
-                icon = Glide.with(context)
-                        .asBitmap()
-                        .load(ImageResourceUtils.getFallbackImageLocation(playable))
-                        .apply(options)
-                        .submit(iconSize, iconSize)
-                        .get();
-            } catch (InterruptedException ignore) {
-                Thread.currentThread().interrupt();
-                Log.e(TAG, "Media icon loader was interrupted");
-            } catch (Throwable tr) {
-                Log.e(TAG, "Error loading the media icon for the notification", tr);
-            }
+
         } catch (InterruptedException ignore) {
             Thread.currentThread().interrupt();
             Log.e(TAG, "Media icon loader was interrupted");

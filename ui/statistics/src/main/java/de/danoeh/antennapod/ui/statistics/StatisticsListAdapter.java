@@ -1,19 +1,20 @@
 package de.danoeh.antennapod.ui.statistics;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import de.danoeh.antennapod.storage.database.StatisticsItem;
-import java.util.List;
+import de.danoeh.antennapod.ui.common.GenerativeUrlBuilder;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 
 /**
  * Parent Adapter for the playback and download statistics list.
@@ -59,13 +60,16 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
             StatisticsItem statsItem = statisticsData.get(position - 1);
-            Glide.with(context)
-                    .load(statsItem.feed.getImageUrl())
-                    .apply(new RequestOptions()
-                            .placeholder(R.color.light_gray)
-                            .error(R.color.light_gray)
-                            .fitCenter()
-                            .dontAnimate())
+
+            CoverLoader.with(context,
+                            new GenerativeUrlBuilder(
+                                    statsItem.feed.getImageUrl(),
+                                    statsItem.feed.getTitle(),
+                                    statsItem.feed.getDownloadUrl(),
+                                    statsItem.feed.getType() != null)
+                            )
+                    .fitCenter()
+                    .dontAnimate()
                     .into(holder.image);
 
             holder.title.setText(statsItem.feed.getTitle());

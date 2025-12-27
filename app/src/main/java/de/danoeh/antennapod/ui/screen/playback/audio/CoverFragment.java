@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.ui.screen.playback.audio;
 
+import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
+import static android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -17,44 +20,47 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.event.MessageEvent;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
-import de.danoeh.antennapod.ui.chapters.ChapterUtils;
-import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
-import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.ui.common.DateFormatter;
-import de.danoeh.antennapod.databinding.CoverFragmentBinding;
-import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.model.feed.Chapter;
-import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
-import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
-import static android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.CoverFragmentBinding;
+import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.chapters.ChapterUtils;
+import de.danoeh.antennapod.ui.common.DateFormatter;
+import de.danoeh.antennapod.ui.common.GenerativeUrlBuilder;
+import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
+import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * Displays the cover and the title of a FeedItem.
@@ -286,14 +292,19 @@ public class CoverFragment extends Fragment {
                 .transform(new FitCenter(),
                         new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
 
-        RequestBuilder<Drawable> cover = Glide.with(this)
-                .load(media.getImageLocation())
-                .error(Glide.with(this)
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
-                        .apply(options))
-                .apply(options);
+        RequestBuilder<Drawable> cover = CoverLoader.with(
+                viewBinding.imgvCover,
+                Drawable.class,
+                16f,
+                null,
+                new GenerativeUrlBuilder(
+                        media.getImageLocation(),
+                        ImageResourceUtils.getFallbackImageLocation(media),
+                        media.getEpisodeTitle(),
+                        media.getFeedDownloadUrl(),
+                        false));
 
-        if (displayedChapterIndex == -1 || media == null || media.getChapters() == null
+        if (displayedChapterIndex == -1 || media.getChapters() == null
                 || TextUtils.isEmpty(media.getChapters().get(displayedChapterIndex).getImageUrl())) {
             cover.into(viewBinding.imgvCover);
         } else {

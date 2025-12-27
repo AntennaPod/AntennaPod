@@ -340,6 +340,14 @@ public class FeedMedia implements Playable {
     }
 
     @Override
+    public String getFeedDownloadUrl() {
+        if (item == null || item.getFeed() == null) {
+            return null;
+        }
+        return item.getFeed().getDownloadUrl();
+    }
+
+    @Override
     public Object getIdentifier() {
         return id;
     }

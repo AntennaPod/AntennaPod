@@ -37,6 +37,11 @@ public interface Playable extends Parcelable, Serializable {
     String getFeedTitle();
 
     /**
+     * Returns the download URL of the feed this Playable belongs to.
+     */
+    String getFeedDownloadUrl();
+
+    /**
      * Returns the published date
      */
     Date getPubDate();

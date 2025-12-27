@@ -1,28 +1,31 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
-import de.danoeh.antennapod.ui.common.SquareImageView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import androidx.annotation.Nullable;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.CoverLoaderHelper;
+import de.danoeh.antennapod.ui.common.SquareImageView;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
+import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 
 public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFeedListAdapter.Holder>
         implements View.OnCreateContextMenuListener  {
@@ -84,12 +87,8 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
             return false;
         });
 
-        Glide.with(mainActivityRef.get())
-                .load(podcast.getImageUrl())
-                .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .fitCenter()
-                        .dontAnimate())
+        CoverLoader
+                .with(holder.imageView, CoverLoaderHelper.fromFeed(podcast))
                 .into(holder.imageView);
     }
 

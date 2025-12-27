@@ -144,6 +144,11 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
+    public String getFeedDownloadUrl() {
+        return feedUrl;
+    }
+
+    @Override
     public Object getIdentifier() {
         return itemIdentifier + "@" + feedUrl;
     }

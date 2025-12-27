@@ -15,15 +15,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
@@ -46,7 +58,7 @@ import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.CoverLoader;
+import de.danoeh.antennapod.ui.CoverLoaderHelper;
 import de.danoeh.antennapod.ui.FeedItemFilterDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.TransitionEffect;
@@ -59,6 +71,7 @@ import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.ui.episodeslist.MoreContentListFooterUtil;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogDetailsDialog;
@@ -67,21 +80,12 @@ import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.FeedSettingsFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Displays a list of FeedItems.
@@ -643,22 +647,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void loadFeedImage() {
-        Glide.with(this)
-                .load(feed.getImageUrl())
-                .apply(new RequestOptions()
-                    .placeholder(R.color.image_readability_tint)
-                    .error(R.color.image_readability_tint)
-                    .transform(new FastBlurTransformation())
-                    .dontAnimate())
+        CoverLoader.with(viewBinding.imgvBackground,
+                        new RequestOptions().transform(new FastBlurTransformation()),
+                        CoverLoaderHelper.fromFeed(feed, true))
                 .into(viewBinding.imgvBackground);
-
-        Glide.with(this)
-                .load(feed.getImageUrl())
-                .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .fitCenter()
-                    .dontAnimate())
+        CoverLoader.with(viewBinding.header.imgvCover,
+                        CoverLoaderHelper.fromFeed(feed))
                 .into(viewBinding.header.imgvCover);
     }
 
@@ -758,12 +752,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         @Override
         protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             holder.coverHolder.setVisibility(View.VISIBLE);
-            new CoverLoader()
-                    .withUri(holder.getFeedItem().getImageLocation()) // Ignore "Show episode cover" setting
-                    .withFallbackUri(holder.getFeedItem().getFeed().getImageUrl())
-                    .withPlaceholderView(holder.placeholder)
-                    .withCoverView(holder.cover)
-                    .load();
+            CoverLoader.with(holder.cover,
+                            CoverLoaderHelper.fromFeedItem(holder.getFeedItem()))
+                    .into(holder.cover);
             if (feed.getState() != Feed.STATE_SUBSCRIBED) {
                 holder.secondaryActionButton.setVisibility(View.GONE);
             }

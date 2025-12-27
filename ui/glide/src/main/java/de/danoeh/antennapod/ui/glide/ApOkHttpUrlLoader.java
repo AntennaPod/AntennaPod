@@ -2,14 +2,20 @@ package de.danoeh.antennapod.ui.glide;
 
 import android.content.ContentResolver;
 import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
@@ -20,9 +26,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * {@see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader}.

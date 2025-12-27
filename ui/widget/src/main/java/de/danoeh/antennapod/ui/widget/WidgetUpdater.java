@@ -12,11 +12,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.common.GenerativeUrlBuilder;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
@@ -30,6 +30,7 @@ import de.danoeh.antennapod.ui.appstartintent.PlaybackSpeedActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 /**
@@ -199,26 +200,19 @@ public abstract class WidgetUpdater {
 
     private static Bitmap loadCover(Context context, int iconSize, Playable media, Transformation<Bitmap> transform) {
         try {
-            return Glide.with(context)
-                    .asBitmap()
-                    .load(media.getImageLocation())
+            return CoverLoader.with(context,
+                            new GenerativeUrlBuilder(
+                                    media.getImageLocation(),
+                                    ImageResourceUtils.getFallbackImageLocation(media),
+                                    media.getEpisodeTitle(),
+                                    media.getFeedDownloadUrl()))
                     .dontAnimate()
                     .transform(transform)
                     .submit(iconSize, iconSize)
                     .get(500, TimeUnit.MILLISECONDS);
-        } catch (Throwable tr1) {
-            try {
-                return Glide.with(context)
-                        .asBitmap()
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
-                        .dontAnimate()
-                        .transform(transform)
-                        .submit(iconSize, iconSize)
-                        .get(500, TimeUnit.MILLISECONDS);
-            } catch (Throwable tr2) {
-                Log.e(TAG, "Error loading the media icon for the widget", tr2);
-                return null;
-            }
+        } catch (Throwable tr) {
+            Log.e(TAG, "Error loading the media icon for the widget", tr);
+            return null;
         }
     }
 

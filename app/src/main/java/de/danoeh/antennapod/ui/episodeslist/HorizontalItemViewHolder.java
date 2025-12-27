@@ -7,21 +7,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.actionbutton.ItemActionButton;
-import de.danoeh.antennapod.ui.common.DateFormatter;
-import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.playback.service.PlaybackStatus;
+import de.danoeh.antennapod.ui.CoverLoaderHelper;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.SquareImageView;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 
 public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
     public final CardView card;
@@ -56,11 +58,10 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
 
         card.setAlpha(1.0f);
         card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.colorSurfaceContainer));
-        new CoverLoader()
-                .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
-                .withFallbackUri(item.getFeed().getImageUrl())
-                .withCoverView(cover)
-                .load();
+        CoverLoader.with(
+                        cover,
+                        CoverLoaderHelper.fromFeedItem(item))
+                .into(cover);
         title.setText(item.getTitle());
         date.setText(DateFormatter.formatAbbrev(activity, item.getPubDate()));
         date.setContentDescription(DateFormatter.formatForAccessibility(item.getPubDate()));
@@ -100,10 +101,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bindDummy() {
         card.setAlpha(0.1f);
-        new CoverLoader()
-                .withResource(android.R.color.transparent)
-                .withCoverView(cover)
-                .load();
+        cover.setImageResource(android.R.color.transparent);
         title.setText("████ █████");
         date.setText("███");
         secondaryActionIcon.setImageDrawable(null);

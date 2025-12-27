@@ -12,11 +12,12 @@ import android.view.View;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.common.GenerativeUrlBuilder;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 import de.danoeh.antennapod.ui.echo.EchoConfig;
 import de.danoeh.antennapod.ui.echo.R;
 import de.danoeh.antennapod.ui.echo.background.FinalShareBackground;
@@ -104,9 +105,13 @@ public class FinalShareScreen extends EchoScreen {
                         try {
                             final int size = SHARE_SIZE / 3;
                             final int radius = (i == 0) ? (size / 16) : (size / 8);
-                            cover = new BitmapDrawable(context.getResources(), Glide.with(context)
-                                    .asBitmap()
-                                    .load(statisticsData.feedTime.get(i).feed.getImageUrl())
+                            cover = new BitmapDrawable(context.getResources(),
+                                    CoverLoader.with(context,
+                                                    new GenerativeUrlBuilder(
+                                                            statisticsData.feedTime.get(i).feed.getImageUrl(),
+                                                            statisticsData.feedTime.get(i).feed.getTitle(),
+                                                            statisticsData.feedTime.get(i).feed.getDownloadUrl(),
+                                                            statisticsData.feedTime.get(i).feed.getType() != null))
                                     .apply(new RequestOptions()
                                             .fitCenter()
                                             .transform(new RoundedCorners(radius)))

@@ -8,9 +8,27 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.documentfile.provider.DocumentFile;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.input.CountingInputStream;
+import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
+import de.danoeh.antennapod.model.download.DownloadError;
+import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.net.download.service.R;
+import de.danoeh.antennapod.parser.feed.util.DateUtils;
+import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
+import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
+import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
+import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentMetadataReader;
+import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -26,26 +44,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-import androidx.annotation.VisibleForTesting;
-import androidx.documentfile.provider.DocumentFile;
-import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
-import de.danoeh.antennapod.model.download.DownloadResult;
-import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.net.download.service.R;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
-import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.parser.feed.util.DateUtils;
-import de.danoeh.antennapod.model.download.DownloadError;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
-import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
-import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
-import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
-import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentMetadataReader;
-import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.input.CountingInputStream;
 
 public class LocalFeedUpdater {
     private static final String TAG = "LocalFeedUpdater";
