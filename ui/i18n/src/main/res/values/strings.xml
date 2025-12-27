@@ -209,12 +209,14 @@
     <string name="archive_feed_label_noun">Archive</string>
     <string name="restore_archive_label">Restore</string>
     <string name="remove_archive_feed_label">Delete / archive</string>
+    <string name="remove_restore_feed_label">Delete / restore</string>
     <string name="remove_feed_label">Delete</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
     <string name="feed_delete_explanation_delete">Deleting will remove ALL its episodes including downloads, playback history, and statistics.</string>
     <string name="feed_delete_explanation_archive">Archiving will hide it from the subscription list and avoid it getting updates. Downloads, statistics and playback state are kept.</string>
     <string name="archiving_podcast_progress">Archiving podcast %1$d of %2$d…</string>
+    <string name="restoring_podcast_progress">Restoring podcast %1$d of %2$d…</string>
     <string name="deleting_podcast_progress">Deleting podcast %1$d of %2$d…</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
