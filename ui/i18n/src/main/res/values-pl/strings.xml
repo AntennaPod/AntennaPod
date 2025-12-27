@@ -417,8 +417,6 @@
     <string name="pref_smart_mark_as_played_disabled">Wyłączone</string>
     <string name="documentation_support">Dokumentacja i wsparcie</string>
     <string name="visit_user_forum">Forum użytkowników</string>
-    <string name="bug_report_title">Zgłoś błąd</string>
-    <string name="open_bug_tracker">Otwórz bugtracker</string>
     <string name="copy_to_clipboard">Kopiuj do schowka</string>
     <string name="copied_to_clipboard">Skopiowano do schowka</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -851,7 +849,7 @@
     <string name="visit_social_interact_label">Pokaż komentarze</string>
     <string name="rss_address">Adres RSS</string>
     <string name="feed_new_episodes_action_summary_autodownload">Automatyczne pobieranie zostało włączone. Odcinki zostaną dodane do skrzynki odbiorczej, a następnie, gdy zostaną pobrane, zostaną przeniesione do kolejki.</string>
-    <string name="echo_queue_title_many">Wiąż masz sporo do zrobienia w tym roku. Masz</string>
+    <string name="echo_queue_title_many">Wciąż masz sporo do zrobienia w tym roku. Masz</string>
     <string name="echo_hoarder_subtitle_medium">Sprawdzone. Nie ma tutaj gromadzenia.</string>
     <string name="echo_hoarder_comment_medium">W tym roku obejrzałeś odcinki z %1$d%% Twoich %2$d aktywnych subskrypcji. Może warto znów zobaczyć „%3$s”?</string>
     <string name="echo_hoarder_comment_clean">W tym roku obejrzałeś odcinki z %1$d%% swoich %2$d aktywnych subskrypcji. Założymy się, że masz też porządek na biurku!</string>
@@ -961,5 +959,5 @@
     <string name="statistics_expected_next_episode_any_time">W każdej chwili</string>
     <string name="release_schedule_multiple_per_day">Harmonogramy wydań podcastu</string>
     <string name="cover_as_background">Okładka jako tło</string>
-    <string name="echo_thanks_we_are_glad_old">za bycie z nami w tym roku!\n\nTwój pierwszy odcinek w tym roku został odtworzony %1$s. To dla nas zaszczyt służyć Ci od tego czasu.</string>
+    <string name="echo_thanks_we_are_glad_old">za bycie z nami w tym roku!\n\nTwój pierwszy odcinek został odtworzony %1$s. To dla nas zaszczyt służyć Ci od tego czasu.</string>
 </resources>

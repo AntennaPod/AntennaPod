@@ -395,8 +395,6 @@
     <string name="pref_smart_mark_as_played_disabled">Diweredekaet</string>
     <string name="documentation_support">Teuliadur ha skoazell</string>
     <string name="visit_user_forum">Forom an implijerien</string>
-    <string name="bug_report_title">Danevellañ ur beug</string>
-    <string name="open_bug_tracker">Digeriñ heulier ar beugoù</string>
     <string name="copy_to_clipboard">Eilañ er golver</string>
     <string name="copied_to_clipboard">Eilet er golver</string>
     <string name="pref_proxy_title">Proksi</string>

@@ -394,8 +394,6 @@
     <string name="pref_smart_mark_as_played_disabled">Letiltva</string>
     <string name="documentation_support">Dokumentáció és támogatás</string>
     <string name="visit_user_forum">Felhasználói fórum</string>
-    <string name="bug_report_title">Hibajelentés</string>
-    <string name="open_bug_tracker">Hibakövető megnyitása</string>
     <string name="copy_to_clipboard">Másolás vágólapra</string>
     <string name="copied_to_clipboard">Vágólapra másolva</string>
     <string name="pref_proxy_title">Proxy</string>

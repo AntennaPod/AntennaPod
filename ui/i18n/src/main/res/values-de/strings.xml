@@ -231,8 +231,8 @@
     <string name="download_error_request_error">Anfragefehler</string>
     <string name="download_error_db_access">Datenbank-Zugriffsfehler</string>
     <plurals name="downloads_left">
-        <item quantity="one">%d Download übrig</item>
-        <item quantity="other">%d Downloads übrig</item>
+        <item quantity="one">%d Download verbleibend</item>
+        <item quantity="other">%d Downloads verbleibend</item>
     </plurals>
     <string name="download_notification_title_feeds">Aktualisiere Podcasts</string>
     <string name="download_notification_title_episodes">Lade Episoden herunter</string>
@@ -271,12 +271,12 @@
     <string name="date">Datum</string>
     <string name="duration">Dauer</string>
     <string name="episode_title">Episodentitel</string>
-    <string name="feed_title">Podcast-Name</string>
+    <string name="feed_title">Podcastname</string>
     <string name="random">Zufällig</string>
     <string name="smart_shuffle">Schlaues Mischen</string>
     <string name="size">Größe</string>
     <string name="clear_queue_confirmation_msg">Bitte bestätige, dass du ALLE Episoden aus der Warteschlange entfernen möchtest.</string>
-    <string name="time_left_label">"Zeit übrig: "</string>
+    <string name="time_left_label">"Verbleibende Zeit: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Voreinstellungen</string>
     <string name="preset_already_exists">%1$.2fx ist bereits als Voreinstellung gespeichert.</string>
@@ -285,7 +285,7 @@
     <string name="no_items_label">Du kannst Episoden hinzufügen, indem du sie herunterlädst oder sie lange antippst und „Zur Warteschlange hinzufügen“ auswählst.</string>
     <string name="no_shownotes_label">Episode hat keine Shownotes.</string>
     <string name="no_comp_downloads_head_label">Keine heruntergeladenen Episoden</string>
-    <string name="no_comp_downloads_label">Du kannst Episoden auf der Podcast-Seite herunterladen.</string>
+    <string name="no_comp_downloads_label">Du kannst Episoden auf der Podcastseite herunterladen.</string>
     <string name="no_log_downloads_head_label">Keine Downloadhistorie</string>
     <string name="no_log_downloads_label">Die Downloadhistorie erscheint hier, sobald eine Episode heruntergeladen wurde.</string>
     <string name="no_history_head_label">Kein Verlauf</string>
@@ -334,7 +334,7 @@
     <string name="pref_auto_local_delete_title">Automat. Löschen aus lokalen Ordnern</string>
     <string name="pref_auto_local_delete_sum">Lokale Ordner in die automatische Löschfunktion einbeziehen</string>
     <string name="pref_auto_local_delete_dialog_body">Beachte, dass bei lokalen Ordnern die Episoden aus AntennaPod entfernt und die zugehörigen Mediendateien aus dem Gerätespeicher gelöscht werden. Sie können dann nicht mehr über AntennaPod heruntergeladen werden. Automatisches Löschen aktivieren?</string>
-    <string name="pref_smart_mark_as_played_sum">Episoden als abgespielt markieren, auch wenn weniger als eine bestimmte Anzahl von Sekunden an Restspielzeit übrig ist</string>
+    <string name="pref_smart_mark_as_played_sum">Episoden als abgespielt markieren, auch wenn weniger als eine bestimmte Anzahl von Sekunden an Restspielzeit verbleibt</string>
     <string name="pref_smart_mark_as_played_title">Intelligentes „als abgespielt markieren“</string>
     <string name="pref_skip_keeps_episodes_sum">Episoden behalten, wenn sie übersprungen werden</string>
     <string name="pref_skip_keeps_episodes_title">Übersprungene Episoden behalten</string>
@@ -359,7 +359,7 @@
     <string name="pref_unpauseOnHeadsetReconnect_title">Kopfhörer wieder eingesteckt</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth wieder verbunden</string>
     <string name="pref_stream_over_download_title">Streaming bevorzugen</string>
-    <string name="pref_stream_over_download_sum">Stream-Button anstatt Download-Button in Listen anzeigen</string>
+    <string name="pref_stream_over_download_sum">Streamen- anstatt Download-Button in Listen anzeigen</string>
     <string name="pref_mobileUpdate_title">Mobile Aktualisierungen</string>
     <string name="pref_mobileUpdate_sum">Auswählen, was über mobile Daten erlaubt sein soll</string>
     <string name="pref_mobileUpdate_refresh">Podcasts aktualisieren</string>
@@ -406,8 +406,8 @@
     <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
     <string name="pref_persistNotify_sum">Bedienelemente in der Benachrichtigungsleiste und auf dem Sperrbildschirm anzeigen, während die Wiedergabe pausiert ist</string>
     <string name="pref_compact_notification_buttons_dialog_error_exact">Du musst genau zwei Einträge auswählen</string>
-    <string name="pref_full_notification_buttons_title">Benachrichtigungs-Buttons einstellen</string>
-    <string name="pref_full_notification_buttons_sum">Ändere die Buttons von der Wiedergabe-Benachrichtigung</string>
+    <string name="pref_full_notification_buttons_title">Benachrichtigungsbuttons einstellen</string>
+    <string name="pref_full_notification_buttons_sum">Ändere die Buttons von der Wiedergabebenachrichtigung</string>
     <string name="pref_enqueue_location_title">Position beim Einreihen</string>
     <string name="pref_enqueue_location_sum">Episoden hinzufügen: %1$s</string>
     <string name="enqueue_location_back">Hinten</string>
@@ -417,8 +417,6 @@
     <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
     <string name="documentation_support">Dokumentation und Support</string>
     <string name="visit_user_forum">Benutzerforum</string>
-    <string name="bug_report_title">Fehler melden</string>
-    <string name="open_bug_tracker">Bug-Tracker öffnen</string>
     <string name="copy_to_clipboard">In die Zwischenablage kopieren</string>
     <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -447,7 +445,7 @@
     <string name="pref_show_subscription_title">Titel anzeigen</string>
     <string name="pref_new_episodes_action_title">Aktion für neue Episoden</string>
     <string name="pref_new_episodes_action_sum">Aktion, die ausgeführt wird, wenn neue Episoden erscheinen</string>
-    <string name="episode_information">Episoden-Information</string>
+    <string name="episode_information">Episodeninformation</string>
     <!--About screen-->
   <string name="about_pref">Über</string>
     <string name="antennapod_version">AntennaPod-Version</string>
@@ -507,7 +505,7 @@
     <string name="favorites_export_label">Favoriten exportieren</string>
     <string name="favorites_export_summary">Favoriten in einer Datei speichern</string>
     <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Timer einstellen</string>
+  <string name="set_sleeptimer_label">Schlummerfunktion einstellen</string>
     <string name="disable_sleeptimer_label">Schlummerfunktion deaktivieren</string>
     <string name="extend_sleep_timer_label">+%d min</string>
     <string name="sleep_timer_always">Immer</string>
@@ -833,8 +831,8 @@
     <string name="pref_automatic_download_queue_title">Warteschlange herunterladen</string>
     <string name="pref_automatic_download_queue_description">Automatisches Herunterladen von Episoden in der Warteschlange</string>
     <string name="episode_lists">Episodenlisten</string>
-    <string name="pref_downloads_button_action_title">Vom Download-Bildschirm aus abspielen</string>
-    <string name="pref_downloads_button_action_sum">Wiedergabe- anstelle des Lösch-Buttons auf dem Download-Bildschirm anzeigen</string>
+    <string name="pref_downloads_button_action_title">Vom Downloadbildschirm aus abspielen</string>
+    <string name="pref_downloads_button_action_sum">Wiedergabe- anstelle des Löschen-Buttons auf dem Downloadbildschirm anzeigen</string>
     <string name="download_error_unsupported_type_html_manual">Du hast eine Website-Adresse eingegeben, keine Podcast-RSS-Adresse.</string>
     <string name="overflow_more">Mehr</string>
     <string name="preference_search_clear_input">Leeren</string>
@@ -900,9 +898,45 @@
         <item quantity="one">%d Abonnement</item>
         <item quantity="other">%d Abonnements</item>
     </plurals>
-    <string name="feed_delete_explanation_delete">Durch das Löschen werden ALLE Episoden einschließlich Downloads, Wiedergabeverlauf und Statistiken entfernt.</string>
-    <string name="feed_delete_explanation_archive">Durch das Archivieren wird es aus der Abonnementliste ausgeblendet und erhält keine Aktualisierungen mehr. Downloads, Statistiken und der Abspielstatus bleiben erhalten.</string>
+    <string name="feed_delete_explanation_delete">Durch das Löschen wird das Abonnement einschließlich Episoden, Downloads, Wiedergabeverlauf und Statistiken entfernt.</string>
+    <string name="feed_delete_explanation_archive">Durch das Archivieren wird das Abonnement aus der Liste ausgeblendet und es wird nicht mehr nach neuen Episoden gesucht. Downloads, Statistiken und Abspielstatus bleiben erhalten.</string>
     <string name="tag_untagged">Ohne Tags</string>
     <string name="no_archive_head_label">Nichts archiviert</string>
     <string name="no_archive_label">Du kannst Podcasts über den Hauptbildschirm für Abonnements archivieren.</string>
+    <string name="general_expand_button">Erweitern</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="report_bug_device_info_title">Gerät</string>
+    <string name="report_bug_attrib_app_version">App-Version</string>
+    <string name="report_bug_attrib_android_version">Android-Version</string>
+    <string name="report_bug_attrib_device_name">Gerätename</string>
+    <string name="report_bug_crash_log_title">Absturzprotokoll</string>
+    <string name="report_bug_crash_log_message">Erstellt: %1$s.</string>
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_title">Fehler melden</string>
+    <string name="general_collapse_button">Einklappen</string>
+    <string name="archiving_podcast_progress">Podcast %1$d von %2$d wird archiviert …</string>
+    <string name="deleting_podcast_progress">Podcast %1$d von %2$d wird gelöscht …</string>
+    <string name="download_log_details_human_readable_reason_title">Status</string>
+    <string name="download_log_details_technical_reason_title">Technische Details</string>
+    <string name="download_log_details_file_url_title">Datei-URL</string>
+    <string name="download_log_open_feed">Öffnen</string>
+    <string name="no_following_in_queue">Dies war die letzte Episode in der Warteschlange</string>
+    <string name="episode">Episode</string>
+    <string name="feed">Podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Standardsortierreihenfolge</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Die Standardreihenfolge für Episoden auf dem Podcastbildschirm auswählen</string>
+    <string name="report_bug_message">Es tut uns leid, dass etwas nicht funktioniert. Wir würden uns über deine Hilfe zur Verbesserung von AntennaPod freuen. Bitte schaue in unserem Forum oder auf GitHub nach, ob das Problem bereits gemeldet wurde. Wenn nicht, teile es uns bitte mit, damit wir der Sache nachgehen können.</string>
+    <string name="sleep_timer_episodes_label">Episoden</string>
+    <string name="sleep_timer_without_continuous_playback">Kontinuierliche Wiedergabe deaktivieren</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Stunden ändern</string>
+    <string name="sleep_timer_without_continuous_playback_message">Anstatt die Schlummerfunktion immer automatisch für eine Episode zu aktivieren, deaktiviere bitte stattdessen die „kontinuierliche Wiedergabe“ in den Einstellungen.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Kontinuierliche Wiedergabe ist deaktiviert und die aktuelle Episode dauert nur noch %1$d Minute</item>
+        <item quantity="other">Kontinuierliche Wiedergabe ist deaktiviert und die aktuelle Episode dauert nur noch %1$d Minuten</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Kontinuierliche Wiedergabe ist in den Einstellungen deaktiviert. Die Wiedergabe wird immer am Ende der Episode beendet.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Es ist nur noch %1$d Folge in der Warteschlange vorhanden</item>
+        <item quantity="other">Es sind nur noch %1$d Folgen in der Warteschlange vorhanden</item>
+    </plurals>
 </resources>

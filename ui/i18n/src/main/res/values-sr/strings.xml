@@ -307,8 +307,6 @@
     <string name="pref_smart_mark_as_played_disabled">Онемогућено</string>
     <string name="documentation_support">Документација и подршка</string>
     <string name="visit_user_forum">Кориснички форум</string>
-    <string name="bug_report_title">Пријави грешку</string>
-    <string name="open_bug_tracker">Отвори пратиоца грешака</string>
     <string name="copy_to_clipboard">Копирај у привремену меморију</string>
     <string name="copied_to_clipboard">Копирано у привремену меморију</string>
     <string name="pref_proxy_title">Прокси</string>

@@ -387,8 +387,6 @@
     <string name="pref_smart_mark_as_played_disabled">사용 안 함</string>
     <string name="documentation_support">문서 및 지원</string>
     <string name="visit_user_forum">사용자 포럼</string>
-    <string name="bug_report_title">문제점 보고</string>
-    <string name="open_bug_tracker">버그 추적 사이트 열기</string>
     <string name="copy_to_clipboard">클립보드로 복사</string>
     <string name="copied_to_clipboard">클립보드에 복사함</string>
     <string name="pref_proxy_title">프록시</string>

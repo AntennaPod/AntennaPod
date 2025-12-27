@@ -170,8 +170,6 @@
     <string name="enqueue_location_front">Al comienzu</string>
     <string name="enqueue_location_after_current">Darréu del episodiu actual</string>
     <string name="visit_user_forum">Foru de discutiniu</string>
-    <string name="bug_report_title">Informar d\'un fallu</string>
-    <string name="open_bug_tracker">Abrir el rastrexador de fallos</string>
     <string name="copy_to_clipboard">Copiar al cartafueyu</string>
     <string name="copied_to_clipboard">Copióse al cartafueyu</string>
     <string name="pref_proxy_title">Proxy</string>
