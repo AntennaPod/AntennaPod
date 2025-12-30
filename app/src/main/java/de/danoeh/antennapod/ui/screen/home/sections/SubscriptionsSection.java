@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.ui.screen.subscriptions.FeedMenuHandler;
 import de.danoeh.antennapod.ui.screen.subscriptions.HorizontalFeedListAdapter;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -52,6 +53,7 @@ public class SubscriptionsSection extends HomeSection {
                                             ContextMenu.ContextMenuInfo contextMenuInfo) {
                 super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
                 MenuItemUtils.setOnClickListeners(contextMenu, SubscriptionsSection.this::onContextItemSelected);
+                FeedMenuHandler.onPrepareMenu(contextMenu, Collections.singletonList(getLongPressedItem()));
             }
         };
         listAdapter.setDummyViews(NUM_FEEDS);

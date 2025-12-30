@@ -148,6 +148,14 @@ public class SubscriptionFragment extends Fragment
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 super.onCreateContextMenu(menu, v, menuInfo);
                 MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onContextItemSelected);
+                FeedMenuHandler.onPrepareMenu(menu, Collections.singletonList(getLongPressedItem()));
+            }
+
+            @Override
+            protected void onSelectedItemsUpdated() {
+                super.onSelectedItemsUpdated();
+                FeedMenuHandler.onPrepareMenu(floatingSelectMenu.getMenu(), getSelectedItems());
+                floatingSelectMenu.updateItemVisibility();
             }
         };
         setColumnNumber(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));

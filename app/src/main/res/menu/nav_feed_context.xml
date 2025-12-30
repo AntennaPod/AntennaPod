@@ -12,14 +12,14 @@
         android:title="@string/edit_tags" />
 
     <item
-        android:id="@+id/rename_item"
-        android:menuCategory="container"
-        android:title="@string/rename_feed_label" />
-
-    <item
         android:id="@+id/remove_archive_feed"
         android:menuCategory="container"
         android:title="@string/remove_archive_feed_label" />
+
+    <item
+        android:id="@+id/remove_restore_feed"
+        android:menuCategory="container"
+        android:title="@string/remove_restore_feed_label" />
 
     <item
         android:id="@+id/share_feed"

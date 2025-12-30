@@ -178,6 +178,10 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         return false;
     }
 
+    public Feed getLongPressedItem() {
+        return listItems.get(longPressedPosition);
+    }
+
     public List<Feed> getSelectedItems() {
         List<Feed> items = new ArrayList<>();
         for (int i = 0; i < getItemCount(); i++) {
