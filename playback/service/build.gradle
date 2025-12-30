@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+    implementation project(':system')
     implementation project(':event')
     implementation project(':model')
     implementation project(':net:common')
@@ -25,6 +26,7 @@ dependencies {
     implementation project(':ui:widget')
     implementation project(':ui:chapters')
 
+
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.car.app:app:1.4.0-rc02"
     implementation "androidx.core:core:$coreVersion"
@@ -38,6 +40,10 @@ dependencies {
     implementation "org.greenrobot:eventbus:$eventbusVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+
+    implementation "org.apache.commons:commons-text:1.15.0"
+    implementation "org.jdom:jdom2:2.0.6.1"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"

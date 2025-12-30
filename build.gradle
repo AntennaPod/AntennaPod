@@ -1,5 +1,5 @@
 buildscript {
-    ext.agpVersion = "8.11.0"
+    ext.agpVersion = '8.13.2'
 }
 plugins {
     id 'com.android.application' version "$agpVersion" apply false

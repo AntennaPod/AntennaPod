@@ -442,6 +442,7 @@
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
     <string name="playback_control">Playback control</string>
+    <string name="playback_sonos">Playback Sonos</string>
     <string name="reassign_hardware_buttons">Reassign hardware buttons</string>
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
@@ -541,6 +542,8 @@
     <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
     <string name="pref_fast_forward">Fast-forward skip time</string>
     <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast-forward button is clicked</string>
+    <string name="pref_sonos">Identify Sonos Device</string>
+    <string name="pref_sonos_sum">Detect and Select Sonos Device</string>
     <string name="pref_rewind">Rewind skip time</string>
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
     <string name="pref_expandNotify_title">High notification priority</string>

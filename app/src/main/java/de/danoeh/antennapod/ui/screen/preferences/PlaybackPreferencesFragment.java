@@ -8,18 +8,23 @@ import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
+import de.danoeh.antennapod.ui.screen.feed.preferences.SonosDevicePreferenceDialog;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
     private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
+    private static final String PREF_SONOS_PLAYBACK_DEVICE = "prefSonosPlaybackDevice";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -48,6 +53,10 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
         });
         findPreference(PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER).setOnPreferenceClickListener(preference -> {
             SkipPreferenceDialog.showSkipPreference(activity, SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, null);
+            return true;
+        });
+        findPreference(PREF_SONOS_PLAYBACK_DEVICE).setOnPreferenceClickListener(preference -> {
+            activity.runOnUiThread(() -> SonosDevicePreferenceDialog.showSonosPreference(activity,null));
             return true;
         });
         if (Build.VERSION.SDK_INT >= 31) {

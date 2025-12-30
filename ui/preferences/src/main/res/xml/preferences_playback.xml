@@ -30,6 +30,13 @@
                 android:title="@string/pref_pausePlaybackForFocusLoss_title"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/playback_sonos">
+        <Preference
+            android:key="prefSonosPlaybackDevice"
+            android:summary="@string/pref_sonos_sum"
+            android:title="@string/pref_sonos"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/playback_control">
         <Preference
                 android:key="prefPlaybackFastForwardDeltaLauncher"

@@ -5,10 +5,14 @@ apply from: "../common.gradle"
 
 android {
     namespace "de.danoeh.antennapod.system"
+    namespace "com.github.kilianB"
 }
 
 dependencies {
     implementation project(":storage:preferences")
 
     implementation "commons-io:commons-io:$commonsioVersion"
+    implementation "org.apache.commons:commons-text:1.15.0"
+    implementation "org.jdom:jdom2:2.0.6.1"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 }

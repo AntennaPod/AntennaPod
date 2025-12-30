@@ -94,6 +94,8 @@ public abstract class UserPreferences {
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_ENQUEUE_LOCATION = "prefEnqueueLocation";
+
+    public static final String PREF_SONOS_DEVICE = "prefSonosDevice";
     public static final String PREF_UPDATE_INTERVAL_MINUTES = "prefAutoUpdateIntervall";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
@@ -601,6 +603,11 @@ public abstract class UserPreferences {
     public static boolean isQueueLocked() {
         return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
     }
+
+    public static void setSonosDevice(String device_name) {
+        prefs.edit().putString(PREF_SONOS_DEVICE, device_name).apply();
+    }
+
 
     public static void setFastForwardSecs(int secs) {
         prefs.edit().putInt(PREF_FAST_FORWARD_SECS, secs).apply();
