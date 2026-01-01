@@ -335,9 +335,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return true;
         }
 
-        Runnable showRemovedAllSnackbar = () -> EventBus.getDefault().post(
-                new MessageEvent(getString(R.string.removed_all_inbox_msg)));
-        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed, showRemovedAllSnackbar);
+        return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed);
     }
 
     public static class RemoveFeedDialogClose extends RemoveFeedDialog {
