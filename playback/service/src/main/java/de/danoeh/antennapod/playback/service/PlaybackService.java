@@ -1144,6 +1144,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
         if (mediaType == null) {
+            EventBus.getDefault().post(new PlayerStatusEvent());
             sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_PLAYBACK_END, 0);
         } else {
             sendNotificationBroadcast(PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD,

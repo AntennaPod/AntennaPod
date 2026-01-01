@@ -453,8 +453,6 @@
     <string name="pref_smart_mark_as_played_disabled">معطل</string>
     <string name="documentation_support">المساعدة والدعم</string>
     <string name="visit_user_forum">منتدى المستخدم</string>
-    <string name="bug_report_title">بلغ عن خطأ بالتطبيق</string>
-    <string name="open_bug_tracker">إفتح نظام تتبع الأخطاء</string>
     <string name="copy_to_clipboard">انسخ للحافظة</string>
     <string name="copied_to_clipboard">نسخت للحافظة</string>
     <string name="pref_proxy_title">خادم بروكسي</string>
