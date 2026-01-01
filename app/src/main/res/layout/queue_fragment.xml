@@ -62,4 +62,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_scroll_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:contentDescription="@string/scroll_up"
+        app:srcCompat="@drawable/ic_arrow_up" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_scroll_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:contentDescription="@string/scroll_down"
+        app:srcCompat="@drawable/ic_arrow_down" />
+
 </RelativeLayout>
