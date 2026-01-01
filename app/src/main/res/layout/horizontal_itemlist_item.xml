@@ -55,7 +55,7 @@
                             android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
                             android:layout_margin="4dp"
-                            android:padding="3dp"
+                            android:padding="4dp"
                             app:srcCompat="@drawable/bg_circle" />
 
                         <de.danoeh.antennapod.ui.common.CircularProgressBar
@@ -64,7 +64,7 @@
                             android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
                             android:layout_margin="4dp"
-                            app:foregroundColor="?attr/colorOnPrimary" />
+                            app:foregroundColor="?attr/colorPrimary" />
 
                         <ImageView
                             android:id="@+id/secondaryActionIcon"

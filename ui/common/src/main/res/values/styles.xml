@@ -13,7 +13,7 @@
         <item name="background_color">@color/background_light</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar</item>
         <item name="background_elevated">@color/background_elevated_light</item>
-        <item name="action_icon_color">?attr/colorPrimaryDark</item>
+        <item name="action_icon_color">@color/black</item>
         <item name="android:textAllCaps">false</item>
         <item name="seek_background">@color/seek_background_light</item>
         <item name="dragview_background">@drawable/ic_drag_lighttheme</item>
@@ -275,9 +275,11 @@
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@style/TextAppearance.Material3.TitleSmall">
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@style/TextAppearance.Material3.BodyLarge">
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
+        <item name="lineHeight">20sp</item>
+        <item name="android:lineHeight" tools:targetApi="p">20sp</item>
     </style>
 
     <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@style/TextAppearance.Material3.LabelSmall">
