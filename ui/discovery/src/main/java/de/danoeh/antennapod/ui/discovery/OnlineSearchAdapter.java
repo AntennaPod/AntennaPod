@@ -1,24 +1,22 @@
 package de.danoeh.antennapod.ui.discovery;
 
 import android.content.Context;
-import android.widget.ArrayAdapter;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import androidx.annotation.NonNull;
 
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
-import de.danoeh.antennapod.ui.common.ImagePlaceholder;
+import de.danoeh.antennapod.ui.common.GenerativeUrlBuilder;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
 
 public class OnlineSearchAdapter extends ArrayAdapter<PodcastSearchResult> {
     /**
@@ -77,15 +75,12 @@ public class OnlineSearchAdapter extends ArrayAdapter<PodcastSearchResult> {
             viewHolder.authorView.setVisibility(View.GONE);
         }
 
-        float radius = 4 * context.getResources().getDisplayMetrics().density;
-        Glide.with(context)
-                .load(podcast.imageUrl)
-                .apply(new RequestOptions()
-                    .placeholder(ImagePlaceholder.getDrawable(context, radius))
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .transform(new FitCenter(),
-                            new RoundedCorners((int) radius))
-                    .dontAnimate())
+        CoverLoader.with(context,
+                        4f,
+                        new RequestOptions()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .dontAnimate(),
+                        new GenerativeUrlBuilder(podcast.imageUrl, podcast.title, podcast.feedUrl))
                 .into(viewHolder.coverView);
 
         //Feed the grid view

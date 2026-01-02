@@ -46,23 +46,6 @@
                         squareImageView:direction="width"
                         tools:src="@tools:sample/avatars" />
 
-                    <TextView
-                        android:id="@+id/fallbackTitleLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/coverImage"
-                        android:layout_alignLeft="@+id/coverImage"
-                        android:layout_alignTop="@+id/coverImage"
-                        android:layout_alignEnd="@+id/coverImage"
-                        android:layout_alignRight="@+id/coverImage"
-                        android:layout_alignBottom="@+id/coverImage"
-                        android:background="@color/feed_text_bg"
-                        android:gravity="center"
-                        android:ellipsize="end"
-                        android:padding="6dp"
-                        android:textColor="#fff"
-                        tools:text="@sample/episodes.json/data/title" />
-
                     <ImageView
                         android:id="@+id/gradientOverlay"
                         android:layout_width="match_parent"

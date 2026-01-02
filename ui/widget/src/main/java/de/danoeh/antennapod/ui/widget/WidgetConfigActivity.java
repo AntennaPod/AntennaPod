@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,15 +14,18 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
+
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.load.Transformation;
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.ui.common.ToolbarActivity;
-import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.Locale;
+
+import de.danoeh.antennapod.ui.common.GenerativeUrlBuilder;
+import de.danoeh.antennapod.ui.common.ToolbarActivity;
+import de.danoeh.antennapod.ui.glide.CoverLoader;
+import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 
 public class WidgetConfigActivity extends ToolbarActivity {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -144,13 +148,15 @@ public class WidgetConfigActivity extends ToolbarActivity {
         }
     }
 
-    private void loadCover(int viewId, Transformation<android.graphics.Bitmap> transform) {
+    @SuppressWarnings("unchecked")
+    private void loadCover(int viewId, Transformation<Bitmap> transform) {
         ImageView target = findViewById(viewId);
-        Glide.with(this)
-                .asBitmap()
-                .load(Feed.PREFIX_GENERATIVE_COVER)
-                .dontAnimate()
-                .transform(new FitCenter(), transform)
+
+        CoverLoader.with(target,
+                        new RequestOptions()
+                                .dontAnimate()
+                                .transform(new FitCenter(), (Transformation<Bitmap>) transform),
+                        new GenerativeUrlBuilder(null, "Widget Preview", null))
                 .into(target);
     }
 

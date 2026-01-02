@@ -17,7 +17,7 @@
 
         <ImageView
             android:id="@+id/imgvCover"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/external_player_height"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
