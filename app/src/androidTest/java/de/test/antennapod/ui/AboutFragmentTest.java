@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -26,7 +25,7 @@ public class AboutFragmentTest {
     @Test
     public void testAboutNavigation() {
         activityTestRule.launchActivity(new Intent());
-        onView(withText(R.string.about_pref)).perform(click());
+        clickPreference(R.string.about_pref);
         onView(withText(R.string.about_pref)).check(matches(isDisplayed()));
         onView(withText(R.string.contributors)).check(matches(isDisplayed()));
         onView(withText(R.string.licenses)).check(matches(isDisplayed()));
@@ -35,7 +34,7 @@ public class AboutFragmentTest {
     @Test
     public void testContributors() {
         activityTestRule.launchActivity(new Intent());
-        onView(withText(R.string.about_pref)).perform(click());
+        clickPreference(R.string.about_pref);
         clickPreference(R.string.contributors);
         onView(withText(R.string.contributors)).check(matches(isDisplayed()));
     }
@@ -43,7 +42,7 @@ public class AboutFragmentTest {
     @Test
     public void testLicenses() {
         activityTestRule.launchActivity(new Intent());
-        onView(withText(R.string.about_pref)).perform(click());
+        clickPreference(R.string.about_pref);
         clickPreference(R.string.licenses);
         onView(withText(R.string.licenses)).check(matches(isDisplayed()));
     }
@@ -51,7 +50,7 @@ public class AboutFragmentTest {
     @Test
     public void testPrivacyPolicy() {
         activityTestRule.launchActivity(new Intent());
-        onView(withText(R.string.about_pref)).perform(click());
+        clickPreference(R.string.about_pref);
         onView(withText(R.string.privacy_policy)).check(matches(isDisplayed()));
     }
 }
