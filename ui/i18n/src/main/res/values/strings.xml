@@ -544,6 +544,8 @@
     <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast-forward button is clicked</string>
     <string name="pref_sonos">Identify Sonos Device</string>
     <string name="pref_sonos_sum">Detect and Select Sonos Device</string>
+    <string name="pref_sonosPlaybackEnabled_sum">Enable playback on selected Sonos device</string>
+    <string name="pref_sonosPlaybackEnabled_title">Enable Sonos Playback</string>
     <string name="pref_rewind">Rewind skip time</string>
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
     <string name="pref_expandNotify_title">High notification priority</string>

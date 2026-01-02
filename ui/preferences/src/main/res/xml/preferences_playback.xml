@@ -35,6 +35,12 @@
             android:key="prefSonosPlaybackDevice"
             android:summary="@string/pref_sonos_sum"
             android:title="@string/pref_sonos"/>
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="prefSonosPlaybackEnabled"
+            android:summary="@string/pref_sonosPlaybackEnabled_sum"
+            android:title="@string/pref_sonosPlaybackEnabled_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_control">

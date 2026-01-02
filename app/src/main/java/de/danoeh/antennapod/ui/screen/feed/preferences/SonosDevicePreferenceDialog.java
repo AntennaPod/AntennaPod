@@ -20,7 +20,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.system.utils.SonosSystem;
 
 /**
- * Shows the dialog that allows setting the skip time.
+ * Shows the dialog that allows setting the Sonos device.
  */
 public class SonosDevicePreferenceDialog {
     public static void showSonosPreference(Activity activity, TextView textView) {

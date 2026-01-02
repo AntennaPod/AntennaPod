@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
-import de.danoeh.antennapod.model.feed.FeedOrder;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -30,6 +29,7 @@ import java.util.Set;
 
 import de.danoeh.antennapod.model.download.ProxyConfig;
 import de.danoeh.antennapod.model.feed.FeedCounter;
+import de.danoeh.antennapod.model.feed.FeedOrder;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
@@ -96,6 +96,8 @@ public abstract class UserPreferences {
     public static final String PREF_ENQUEUE_LOCATION = "prefEnqueueLocation";
 
     public static final String PREF_SONOS_DEVICE = "prefSonosDevice";
+    public static final String PREF_ENABLE_SONOS_DEVICE_PLAYBACK = "prefSonosPlaybackEnabled";
+
     public static final String PREF_UPDATE_INTERVAL_MINUTES = "prefAutoUpdateIntervall";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
@@ -608,6 +610,7 @@ public abstract class UserPreferences {
         prefs.edit().putString(PREF_SONOS_DEVICE, device_name).apply();
     }
 
+    public static boolean isSonosPlaybackEnabled() { return prefs.getBoolean(PREF_ENABLE_SONOS_DEVICE_PLAYBACK, false); }
 
     public static void setFastForwardSecs(int secs) {
         prefs.edit().putInt(PREF_FAST_FORWARD_SECS, secs).apply();

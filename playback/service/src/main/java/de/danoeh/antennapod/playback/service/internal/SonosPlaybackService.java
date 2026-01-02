@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
@@ -54,6 +55,7 @@ import de.danoeh.antennapod.system.utils.SonosSystem;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 
 public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
+    private static final String TAG = "SonosPlaybackService";
     private volatile Playable media;
     private volatile boolean stream;
     private volatile MediaType mediaType;
@@ -67,7 +69,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
     private CountDownLatch seekLatch;
     private volatile PlayerStatus statusBeforeSeeking;
     private boolean registeredCallback;
-    protected SonosPlaybackService(@NonNull Context context, @NonNull PSMPCallback callback) {
+    public SonosPlaybackService(@NonNull Context context, @NonNull PSMPCallback callback) {
         super(context, callback);
         registeredCallback = false;
         audioFocusCanceller = new Handler(Looper.getMainLooper());
@@ -95,7 +97,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
     private final AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(final int focusChange) {
-            if(SonosSystem.selectedDevice.isPresent()) {
+            if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
                 SonosDevice device = SonosSystem.selectedDevice.get();
 
                 if (isShutDown) {
@@ -157,13 +159,13 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
         try {
             playMediaObject(media, false, stream, startWhenPrepared, prepareImmediately);
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw e;
+            Log.d(TAG, "Sonos Playback Enabled and Sonos Device not Present or Assigned");
+            EventBus.getDefault().postSticky(new PlayerErrorEvent("Sonos Playback Enabled and Sonos Device not Present or Assigned"));
         }
     }
 
     private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
 
             if (media != null) {
@@ -335,12 +337,22 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
                     }
                     catch(IOException | SonosControllerException e) {
                         setPlayerStatus(PlayerStatus.ERROR, playable);
-                        e.printStackTrace();
+                        final String errMessage = "Sonos I/O Exception";
+                        Log.d(TAG, errMessage);
+                        EventBus.getDefault().postSticky(new PlayerErrorEvent(errMessage));
+                        throw new IOException(errMessage);
                     }
                 } else if (media.getLocalFileUrl() != null && new File(media.getLocalFileUrl()).canRead()) {
-                    throw new IOException("Local files are not supported at this time " + media.getLocalFileUrl());
+                    final String errMessage = "Local files are not supported at this time " + media.getLocalFileUrl();
+                    Log.d(TAG, errMessage);
+                    EventBus.getDefault().postSticky(new PlayerErrorEvent(errMessage));
+                    throw new IOException(errMessage);
+
                 } else {
-                    throw new IOException("Unable to read local file " + media.getLocalFileUrl());
+                    final String errMessage = "Unable to read local file " + media.getLocalFileUrl();
+                    Log.d(TAG, errMessage);
+                    EventBus.getDefault().postSticky(new PlayerErrorEvent(errMessage));
+                    throw new IOException(errMessage);
                 }
 
                 if (!androidAutoConnected) {
@@ -363,7 +375,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public void resume() {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
 
             if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
@@ -399,7 +411,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public void pause(boolean abandonFocus, boolean reinit) {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             releaseWifiLockIfNecessary();
             SonosDevice device = SonosSystem.selectedDevice.get();
 
@@ -425,11 +437,14 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
     }
 
     private void onPrepared(final boolean startWhenPrepared) {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
 
             if (playerStatus != PlayerStatus.PREPARING) {
-                throw new IllegalStateException("Player is not in PREPARING state");
+                final String errMessage = "Player is not in PREPARING state";
+                Log.d(TAG, errMessage);
+                EventBus.getDefault().postSticky(new PlayerErrorEvent(errMessage));
+                throw new IllegalStateException(errMessage);
             }
 
             // TODO this call has no effect!
@@ -466,7 +481,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public void reinit() {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             releaseWifiLockIfNecessary();
             SonosDevice device = SonosSystem.selectedDevice.get();
 
@@ -487,7 +502,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
             endPlayback(true, true, true, true);
             return;
         }
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
 
             if (playerStatus == PlayerStatus.PLAYING
@@ -545,7 +560,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
-            if(SonosSystem.selectedDevice.isPresent()) {
+            if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
                 SonosDevice device = SonosSystem.selectedDevice.get();
                 TrackInfo ti = null;
                 try {
@@ -591,7 +606,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public void setVolume(float volumeLeft, float volumeRight) {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
 
             Playable playable = getPlayable();
@@ -626,7 +641,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public void shutdown() {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
 
             try {
@@ -671,7 +686,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public List<String> getAudioTracks() {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
             Vector<String> ret = new Vector<String>();
             final int queue_track_count = 10;
@@ -693,7 +708,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public void setAudioTrack(int track) {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
             try {
                 device.playFromQueue(track);
@@ -707,7 +722,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public int getSelectedAudioTrack() {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
             int rc = -1;
             try {
@@ -725,7 +740,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     protected void endPlayback(boolean hasEnded, boolean wasSkipped, boolean shouldContinue, boolean toStoppedState) {
-        if(SonosSystem.selectedDevice.isPresent()) {
+        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
             SonosDevice device = SonosSystem.selectedDevice.get();
 
             releaseWifiLockIfNecessary();

@@ -54,22 +54,6 @@ import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 import androidx.media.utils.MediaConstants;
 
-import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
-import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
-import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
-import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
-import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
-import de.danoeh.antennapod.playback.service.internal.PlaybackServiceNotificationBuilder;
-import de.danoeh.antennapod.playback.service.internal.PlaybackServiceStateManager;
-import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager;
-import de.danoeh.antennapod.playback.service.internal.PlaybackVolumeUpdater;
-import de.danoeh.antennapod.model.playback.TimerValue;
-import de.danoeh.antennapod.playback.service.internal.WearMediaSession;
-import de.danoeh.antennapod.storage.preferences.SleepTimerType;
-import de.danoeh.antennapod.ui.notifications.NotificationUtils;
-import de.danoeh.antennapod.ui.widget.WidgetUpdater;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -81,15 +65,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.playback.service.internal.SleepTimer;
-import de.danoeh.antennapod.ui.common.IntentUtils;
-import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
@@ -105,17 +83,41 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.model.playback.TimerValue;
+import de.danoeh.antennapod.net.common.NetworkUtils;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.base.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.cast.CastPsmp;
 import de.danoeh.antennapod.playback.cast.CastStateListener;
+import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
+import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
+import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
+import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
+import de.danoeh.antennapod.playback.service.internal.PlaybackServiceNotificationBuilder;
+import de.danoeh.antennapod.playback.service.internal.PlaybackServiceStateManager;
+import de.danoeh.antennapod.playback.service.internal.PlaybackServiceTaskManager;
+import de.danoeh.antennapod.playback.service.internal.PlaybackVolumeUpdater;
+import de.danoeh.antennapod.playback.service.internal.SleepTimer;
+import de.danoeh.antennapod.playback.service.internal.SonosPlaybackService;
+import de.danoeh.antennapod.playback.service.internal.WearMediaSession;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.system.utils.SonosSystem;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
+import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.notifications.NotificationUtils;
+import de.danoeh.antennapod.ui.widget.WidgetUpdater;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -291,19 +293,40 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     void recreateMediaPlayer() {
         Playable media = null;
         boolean wasPlaying = false;
-        if (mediaPlayer != null) {
-            media = mediaPlayer.getPlayable();
-            wasPlaying = mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING;
-            mediaPlayer.pause(true, false);
-            mediaPlayer.shutdown();
+        if(UserPreferences.isSonosPlaybackEnabled()) {
+            if(!SonosSystem.selectedDevice.isPresent()) {
+                Log.d(TAG, "Sonos Playback Enabled and Sonos Device not Present or Assigned");
+                EventBus.getDefault().postSticky(new PlayerErrorEvent("Sonos Playback Enabled and Sonos Device not Present or Assigned"));
+            }
+
+            if(mediaPlayer != null) {
+                media = mediaPlayer.getPlayable();
+                wasPlaying = mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING;
+                mediaPlayer.pause(true, false);
+                mediaPlayer.shutdown();
+                mediaPlayer = new SonosPlaybackService(this, mediaPlayerCallback);
+            }
+            else {
+                mediaPlayer = new SonosPlaybackService(this, mediaPlayerCallback);
+            }
         }
-        mediaPlayer = CastPsmp.getInstanceIfConnected(this, mediaPlayerCallback);
-        if (mediaPlayer == null) {
-            mediaPlayer = new LocalPSMP(this, mediaPlayerCallback); // Cast not supported or not connected
+        else {
+            if (mediaPlayer != null) {
+                media = mediaPlayer.getPlayable();
+                wasPlaying = mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING;
+                mediaPlayer.pause(true, false);
+                mediaPlayer.shutdown();
+            }
+            mediaPlayer = CastPsmp.getInstanceIfConnected(this, mediaPlayerCallback);
+            if (mediaPlayer == null) {
+                mediaPlayer = new LocalPSMP(this, mediaPlayerCallback); // Cast not supported or not connected
+            }
         }
+
         if (media != null) {
             mediaPlayer.playMediaObject(media, !media.localFileAvailable(), wasPlaying, true);
         }
+
         isCasting = mediaPlayer.isCasting();
         updateMediaSession(mediaPlayer.getPlayerStatus());
     }
