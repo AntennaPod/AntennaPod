@@ -417,8 +417,6 @@
     <string name="pref_smart_mark_as_played_disabled">Απενεργοποιημένο</string>
     <string name="documentation_support">Εγχειρίδια &amp; υποστήριξη</string>
     <string name="visit_user_forum">Φόρουμ χρηστών</string>
-    <string name="bug_report_title">Αναφορά σφάλματος</string>
-    <string name="open_bug_tracker">Ανοίξτε τον ιχνηλάτη σφαλμάτων</string>
     <string name="copy_to_clipboard">Αντιγραφή στο πρόχειρο</string>
     <string name="copied_to_clipboard">Αντιγράφηκε στο πρόχειρο</string>
     <string name="pref_proxy_title">Διαμεσολάβηση</string>

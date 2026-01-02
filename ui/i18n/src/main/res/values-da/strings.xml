@@ -417,8 +417,6 @@
     <string name="pref_smart_mark_as_played_disabled">Slået fra</string>
     <string name="documentation_support">Dokumentation &amp; support</string>
     <string name="visit_user_forum">Brugerforum</string>
-    <string name="bug_report_title">Rapportér fejl i appen</string>
-    <string name="open_bug_tracker">Åbn programfejlsdatabase</string>
     <string name="copy_to_clipboard">Kopier til udklipsholder</string>
     <string name="copied_to_clipboard">Kopieret til udklipsholder</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -884,8 +882,8 @@
     <string name="archive_feed_label_noun">Arkiv</string>
     <string name="restore_archive_label">Gendan</string>
     <string name="remove_archive_feed_label">Slet / arkivér</string>
-    <string name="feed_delete_explanation_delete">Sletning vil fjerne ALLE afsnit, herunder overførsler, afspilningshistorik og statistik.</string>
-    <string name="feed_delete_explanation_archive">Arkivering skjuler den fra abonnementslisten og forhindrer, at den modtager opdateringer. Overførsler, statistikker og afspilningsstatus bevares.</string>
+    <string name="feed_delete_explanation_delete">Sletning fjerner abonnementet, herunder alle dets afsnit, overførsler, afspilningshistorik og statistikker.</string>
+    <string name="feed_delete_explanation_archive">Arkivering skjuler abonnementet fra listen og stopper med at søge efter nye afsnit. Overførsler, statistik og afspilningsstatus bevares.</string>
     <string name="tag_untagged">Uden etikette</string>
     <plurals name="mobile_download_notice">
         <item quantity="one">Overfører via mobildataforbindelse i det næste %d minut</item>
@@ -904,5 +902,41 @@
     <plurals name="statistics_episodes_downloaded">
         <item quantity="one">overført</item>
         <item quantity="other">overført</item>
+    </plurals>
+    <string name="general_expand_button">Udvid</string>
+    <string name="general_collapse_button">Fold sammen</string>
+    <string name="archiving_podcast_progress">Arkiverer podcast %1$d af %2$d…</string>
+    <string name="deleting_podcast_progress">Sletter podcast %1$d af %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Status</string>
+    <string name="download_log_details_technical_reason_title">Tekniske detaljer</string>
+    <string name="download_log_details_file_url_title">Fil-URL</string>
+    <string name="download_log_open_feed">Åbn</string>
+    <string name="no_following_in_queue">Dette var det sidste afsnit i køen</string>
+    <string name="episode">Afsnit</string>
+    <string name="feed">Podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Standard sorteringsrækfølge</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Vælg standardrækkefølgen for afsnit på podcast-skærmen</string>
+    <string name="report_bug_title">Anmeld fejl</string>
+    <string name="report_bug_message">Vi er kede af at høre, at noget ikke fungerer. Vi vil meget gerne have din hjælp til at forbedre AntennaPod. Tjek vores forum eller GitHub for at se, om problemet allerede er blevet rapporteret. Hvis ikke, så lad os det vide, og vi vil undersøge det.</string>
+    <string name="report_bug_device_info_title">Enhed</string>
+    <string name="report_bug_attrib_app_version">App-version</string>
+    <string name="report_bug_attrib_android_version">Android-version</string>
+    <string name="report_bug_attrib_device_name">Enhedsnavn</string>
+    <string name="report_bug_crash_log_title">Nedbrudslog</string>
+    <string name="report_bug_crash_log_message">Oprettet: %1$s.</string>
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">afsnit</string>
+    <string name="sleep_timer_without_continuous_playback">Deaktiver kontinuerlig afspilning</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Ændr timer</string>
+    <string name="sleep_timer_without_continuous_playback_message">I stedet for altid automatisk at aktivere søvntimeren med et afsnit, skal du i stedet deaktivere \"kontinuerlig afspilning\" i indstillingerne.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Kontinuerlig afspilning er deaktiveret, og det aktuelle afsnit har kun %1$d minut tilbage</item>
+        <item quantity="other">Kontinuerlig afspilning er deaktiveret, og det aktuelle afsnit har kun %1$d minutter tilbage</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Kontinuerlig afspilning er deaktiveret i indstillingerne. Stopper altid ved afslutningen af afsnittet.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Der er kun %1$d afsnit tilbage i din kø</item>
+        <item quantity="other">Der er kun %1$d afsnit tilbage i din kø</item>
     </plurals>
 </resources>

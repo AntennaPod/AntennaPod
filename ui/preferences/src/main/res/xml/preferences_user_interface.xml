@@ -66,6 +66,7 @@
         <SwitchPreferenceCompat
                 android:title="@string/bottom_navigation"
                 android:summary="@string/bottom_navigation_summary"
+                android:defaultValue="true"
                 android:key="prefBottomNavigation" />
         <Preference
                 android:key="prefHiddenDrawerItems"

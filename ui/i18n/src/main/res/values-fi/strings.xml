@@ -374,8 +374,6 @@
     <string name="pref_smart_mark_as_played_disabled">Poissa käytöstä</string>
     <string name="documentation_support">Dokumentaatio ja tuki</string>
     <string name="visit_user_forum">Käyttäjäfoorumi</string>
-    <string name="bug_report_title">Ilmoita virheestä</string>
-    <string name="open_bug_tracker">Avaa virheseuranta</string>
     <string name="copy_to_clipboard">Kopioi leikepöydälle</string>
     <string name="copied_to_clipboard">Kopioitiin leikepöydälle</string>
     <string name="pref_proxy_title">Proxy</string>

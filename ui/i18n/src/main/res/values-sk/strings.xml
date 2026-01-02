@@ -427,8 +427,6 @@
     <string name="pref_smart_mark_as_played_disabled">Vypnuté</string>
     <string name="documentation_support">Dokumentácia a podpora</string>
     <string name="visit_user_forum">Užívateľské fórum</string>
-    <string name="bug_report_title">Nahlásiť chybu</string>
-    <string name="open_bug_tracker">Otvoriť systém pre sledovanie a hlásenie chýb</string>
     <string name="copy_to_clipboard">Skopírovať do schránky</string>
     <string name="copied_to_clipboard">Skopírované do schránky</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -903,8 +901,8 @@
     <string name="archive_feed_label_noun">Archív</string>
     <string name="restore_archive_label">Obnoviť</string>
     <string name="remove_archive_feed_label">Odstrániť/archivovať</string>
-    <string name="feed_delete_explanation_delete">Odstránením sa zmažú VŠETKY epizódy vrátane stiahnutých súborov, histórie prehrávania a štatistík.</string>
-    <string name="feed_delete_explanation_archive">Archivovaním sa skryje zoznam odberov a nebudete dostávať aktualizácie. Stiahnuté súbory, štatistiky a stav prehrávania zostanú.</string>
+    <string name="feed_delete_explanation_delete">Odstránenie zmaže odber vrátane všetkých jeho epizód, stiahnutých súborov, histórie prehrávania a štatistík.</string>
+    <string name="feed_delete_explanation_archive">Archivácia skryje odber zo zoznamu a zastaví vyhľadávanie nových epizód. Stiahnuté súbory, štatistiky a stav prehrávania zostanú.</string>
     <plurals name="marked_as_played_message">
         <item quantity="one">%d epizóda označená ako prehraná.</item>
         <item quantity="few">%d epizódy označené ako prehrané.</item>
@@ -942,4 +940,7 @@
         <item quantity="many">stiahnutých</item>
         <item quantity="other">stiahnutých</item>
     </plurals>
+    <string name="archiving_podcast_progress">Archivovanie podcastu %1$d z %2$d…</string>
+    <string name="general_collapse_button">Zbaliť</string>
+    <string name="general_expand_button">Rozbaliť</string>
 </resources>

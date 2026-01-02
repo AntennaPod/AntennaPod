@@ -435,8 +435,6 @@
     <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
     <string name="documentation_support">Документація та підтримка</string>
     <string name="visit_user_forum">Форум користувачів</string>
-    <string name="bug_report_title">Повідомити про помилку</string>
-    <string name="open_bug_tracker">Відкрити трекер помилок</string>
     <string name="copy_to_clipboard">Копіювати</string>
     <string name="copied_to_clipboard">Скопійовано</string>
     <string name="pref_proxy_title">Проксі</string>
@@ -934,8 +932,8 @@
     <string name="archive_feed_label_noun">Архів</string>
     <string name="restore_archive_label">Відновити</string>
     <string name="remove_archive_feed_label">Видалити / архівувати</string>
-    <string name="feed_delete_explanation_delete">Видалення призведе до вилучення ВСІХ епізодів, включаючи завантаження, історію відтворення та статистику.</string>
-    <string name="feed_delete_explanation_archive">Архівування приховає його зі списку підписок і запобігатиме отриманню оновлень. Завантаження, статистика та стан відтворення зберігаються.</string>
+    <string name="feed_delete_explanation_delete">Видалення видаляє підписку, включаючи всі її епізоди, завантаження, історію відтворення та статистику.</string>
+    <string name="feed_delete_explanation_archive">Архівування приховує підписку зі списку та припиняє пошук нових епізодів. Завантаження, статистика та стан відтворення зберігаються.</string>
     <string name="tag_untagged">Без тегів</string>
     <plurals name="mobile_download_notice">
         <item quantity="one">Завантаження через мобільне з’єднання даних протягом наступної %d хвилина</item>
@@ -962,5 +960,45 @@
         <item quantity="few">завантаженні</item>
         <item quantity="many">завантаженні</item>
         <item quantity="other">завантаженні</item>
+    </plurals>
+    <string name="general_expand_button">Розгорнути</string>
+    <string name="general_collapse_button">Згорнути</string>
+    <string name="archiving_podcast_progress">Архівування подкасту %1$d з %2$d…</string>
+    <string name="deleting_podcast_progress">Видалення подкасту %1$d з %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Статус</string>
+    <string name="download_log_details_technical_reason_title">Технічні деталі</string>
+    <string name="download_log_details_file_url_title">URL-адреса файлу</string>
+    <string name="download_log_open_feed">Відкрити</string>
+    <string name="no_following_in_queue">Це був останній епізод у черзі</string>
+    <string name="episode">Епізод</string>
+    <string name="feed">Подкаст</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Порядок сортування за замовчуванням</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Виберіть порядок епізодів за замовчуванням на екрані подкастів</string>
+    <string name="report_bug_title">Повідомити про помилку</string>
+    <string name="report_bug_message">Шкода, що щось не працює. Ми будемо раді вашій допомозі у покращенні AntennaPod. Будь ласка, перевірте наш форум або GitHub, щоб дізнатися, чи про цю проблему вже повідомлялося. Якщо ні, повідомте нас, і ми розглянемо це питання.</string>
+    <string name="report_bug_device_info_title">Пристрій</string>
+    <string name="report_bug_attrib_app_version">Версія програми</string>
+    <string name="report_bug_attrib_android_version">Версія для Android</string>
+    <string name="report_bug_attrib_device_name">Назва Пристрою</string>
+    <string name="report_bug_crash_log_title">Журнал аварійного завершення роботи</string>
+    <string name="report_bug_crash_log_message">Створено: %1$s.</string>
+    <string name="report_bug_forum_title">Форум</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">епізоди</string>
+    <string name="sleep_timer_without_continuous_playback">Вимкнути безперервне відтворення</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Змінити години</string>
+    <string name="sleep_timer_without_continuous_playback_message">Замість того, щоб завжди автоматично вмикати таймер сну з одним епізодом, будь ласка, вимкніть \"безперервне відтворення\" в налаштуваннях.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Безперервне відтворення вимкнено, і до кінця поточного епізоду залишилося лише %1$d хвилина</item>
+        <item quantity="few">Безперервне відтворення вимкнено, і до кінця поточного епізоду залишилося лише %1$d хвилини</item>
+        <item quantity="many">Безперервне відтворення вимкнено, і до кінця поточного епізоду залишилося лише %1$d хвилин</item>
+        <item quantity="other">Безперервне відтворення вимкнено, і до кінця поточного епізоду залишилося лише %1$d хвилин</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Безперервне відтворення вимкнено в налаштуваннях. Завжди зупиняється в кінці епізоду.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">У вашій черзі залишився лише %1$d епізод</item>
+        <item quantity="few">У вашій черзі залишилося лише %1$d епізодів</item>
+        <item quantity="many">У вашій черзі залишилося лише %1$d епізод</item>
+        <item quantity="other">У вашій черзі залишилося лише %1$d епізод</item>
     </plurals>
 </resources>

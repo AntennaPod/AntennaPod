@@ -426,8 +426,6 @@
     <string name="pref_smart_mark_as_played_disabled">Deshabilitado</string>
     <string name="documentation_support">Documentación &amp; Asistencia</string>
     <string name="visit_user_forum">Foro de usuarios</string>
-    <string name="bug_report_title">Reportar error</string>
-    <string name="open_bug_tracker">Abrir bug tracker</string>
     <string name="copy_to_clipboard">Copiar al portapapeles</string>
     <string name="copied_to_clipboard">Copiado al portapapeles</string>
     <string name="pref_proxy_title">Proxy</string>

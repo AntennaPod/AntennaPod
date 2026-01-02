@@ -435,8 +435,6 @@
     <string name="pref_smart_mark_as_played_disabled">Отключено</string>
     <string name="documentation_support">Документация и поддержка</string>
     <string name="visit_user_forum">Форум пользователей</string>
-    <string name="bug_report_title">Сообщить об ошибке</string>
-    <string name="open_bug_tracker">Перейти в систему отслеживания ошибок</string>
     <string name="copy_to_clipboard">Скопировать в буфер</string>
     <string name="copied_to_clipboard">Скопировано в буфер</string>
     <string name="pref_proxy_title">Прокси</string>

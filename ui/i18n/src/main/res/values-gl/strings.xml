@@ -417,8 +417,6 @@
     <string name="pref_smart_mark_as_played_disabled">Desactivado</string>
     <string name="documentation_support">Documentación &amp; axuda</string>
     <string name="visit_user_forum">Foro de usuarias</string>
-    <string name="bug_report_title">Informar de fallo</string>
-    <string name="open_bug_tracker">Abrir seguimento de fallos</string>
     <string name="copy_to_clipboard">Copiar ó portapapeis</string>
     <string name="copied_to_clipboard">Copiado ó portapapeis</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -884,8 +882,8 @@
     <string name="archive_feed_label_noun">Arquivo</string>
     <string name="restore_archive_label">Restablecer</string>
     <string name="remove_archive_feed_label">Eliminar / arquivar</string>
-    <string name="feed_delete_explanation_delete">Eliminar vas eliminar TODOS os seus episodios incluíndo as descargas, historial de reprodución e estatísticas.</string>
-    <string name="feed_delete_explanation_archive">Arquivar o podcast no aparecerá na lista de subscricións e non se actualizará. Vanse manter as descargas, estatísticas e estados de reprodución.</string>
+    <string name="feed_delete_explanation_delete">A eliminación retira a subscrición incluíndo todos os seus episodios, descargas, historial de reprodución e estatísticas.</string>
+    <string name="feed_delete_explanation_archive">Ao arquivar ocultas a subscrición na lista e deixas de buscar novos episodios. Emporiso, as descargas, estatísticas e historial de reprodución consérvanse.</string>
     <string name="tag_untagged">Sen etiquetar</string>
     <plurals name="mobile_download_notice">
         <item quantity="one">Descargar usando datos do móbil no próximo %d minuto</item>
@@ -904,5 +902,41 @@
     <plurals name="statistics_episodes_downloaded">
         <item quantity="one">descargado</item>
         <item quantity="other">descargados</item>
+    </plurals>
+    <string name="general_expand_button">Despregar</string>
+    <string name="general_collapse_button">Pregar</string>
+    <string name="archiving_podcast_progress">Arquivando podcast %1$d de %2$d…</string>
+    <string name="deleting_podcast_progress">Eliminando podcast %1$d de %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Estado</string>
+    <string name="download_log_details_technical_reason_title">Detalles técnicos</string>
+    <string name="download_log_details_file_url_title">URL do ficheiro</string>
+    <string name="download_log_open_feed">Abrir</string>
+    <string name="no_following_in_queue">Este era o último episodio na cola</string>
+    <string name="episode">Episodio</string>
+    <string name="feed">Podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Orde por defecto</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Elixe a orde por defecto para os episodios na pantalla dos podcast</string>
+    <string name="report_bug_title">Informar dun problema</string>
+    <string name="report_bug_message">Lamentamos que algo non funcione ben. Agradecemos que nos axudes a mellorar AntennaPod. Mira no foro ou en GitHub se xa alguén informou sobre esta incidencia. Se non é así fáinolo saber e investigaremos o asunto.</string>
+    <string name="report_bug_device_info_title">Dispositivo</string>
+    <string name="report_bug_attrib_app_version">Versión da app</string>
+    <string name="report_bug_attrib_android_version">Versión de Android</string>
+    <string name="report_bug_attrib_device_name">Nome do dispositivo</string>
+    <string name="report_bug_crash_log_title">Rexistro do fallo</string>
+    <string name="report_bug_crash_log_message">Creado: %1$s.</string>
+    <string name="report_bug_forum_title">Foro</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">episodios</string>
+    <string name="sleep_timer_without_continuous_playback">Desactivar reprodución contínua</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Cambiar horas</string>
+    <string name="sleep_timer_without_continuous_playback_message">No lugar de activar sempre o temporizador para un episodio, por favor desactiva «reprodución contínua» nos axustes.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Está desactivada a reprodución contínua e ao episodio actual só que lle queda %1$d minuto</item>
+        <item quantity="other">Está desactivada a reprodución contínua e ao episodio actual só que lle quedan %1$d minutos</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">A reprodución contínua está desactivada nos axustes. Vaise deter sempre ao finalizar un episodio.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Só queda %1$d episodio na cola</item>
+        <item quantity="other">Só quedan %1$d episodios na cola</item>
     </plurals>
 </resources>

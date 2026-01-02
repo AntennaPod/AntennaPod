@@ -417,8 +417,6 @@
     <string name="pref_smart_mark_as_played_disabled">Avaktiverad</string>
     <string name="documentation_support">Dokumentation &amp; support</string>
     <string name="visit_user_forum">Användarforum</string>
-    <string name="bug_report_title">Rapportera bugg</string>
-    <string name="open_bug_tracker">Öppna buggtrackern</string>
     <string name="copy_to_clipboard">Kopiera till urklipp</string>
     <string name="copied_to_clipboard">Kopierat till urklipp</string>
     <string name="pref_proxy_title">Proxy</string>

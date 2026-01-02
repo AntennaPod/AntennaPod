@@ -92,8 +92,8 @@
     <string name="error_label">שגיאה</string>
     <string name="error_msg_prefix">אירעה שגיאה:</string>
     <string name="refresh_label">רענון</string>
-    <string name="chapters_label">פרקים</string>
-    <string name="no_chapters_label">אין מקטעים</string>
+    <string name="chapters_label">קטעים</string>
+    <string name="no_chapters_label">אין קטעים</string>
     <string name="chapter_duration">משך: %1$s</string>
     <string name="description_label">תיאור</string>
     <string name="shownotes_label">הערות הפרק</string>
@@ -426,8 +426,6 @@
     <string name="pref_smart_mark_as_played_disabled">מושבת</string>
     <string name="documentation_support">תיעוד ותמיכה</string>
     <string name="visit_user_forum">פורום המשתמשים</string>
-    <string name="bug_report_title">דיווח על תקלה</string>
-    <string name="open_bug_tracker">פתיחת מערכת מעקב התקלות</string>
     <string name="copy_to_clipboard">העתקה ללוח הגזירים</string>
     <string name="copied_to_clipboard">הועתק ללוח הגזירים</string>
     <string name="pref_proxy_title">מתווך</string>
@@ -934,4 +932,42 @@
     <string name="feed_delete_explanation_archive">העברה לארכיון תסתיר מרשימת המינויים ותפסיק את קבלת העדכונים. הורדות, סטטיסטיקות ומצב הנגינה יישמרו.</string>
     <string name="no_archive_head_label">שום דבר לא הועבר לארכיון</string>
     <string name="no_archive_label">אפשר להעביר הסכתים לארכיון ממסך המינויים הראשי.</string>
+    <string name="report_bug_attrib_android_version">גרסת Android</string>
+    <string name="report_bug_attrib_device_name">שם המכשיר</string>
+    <string name="report_bug_crash_log_title">יומן קריסה</string>
+    <string name="report_bug_crash_log_message">יצירה: %1$s.</string>
+    <string name="report_bug_forum_title">פורום</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="general_expand_button">הרחבה</string>
+    <string name="general_collapse_button">צמצום</string>
+    <string name="archiving_podcast_progress">הסכת %1$d מתוך %2$d מועבר לארכיון…</string>
+    <string name="deleting_podcast_progress">הסכת %1$d מתוך %2$d נמחק…</string>
+    <string name="download_log_details_human_readable_reason_title">מצב</string>
+    <string name="download_log_details_technical_reason_title">פרטים טכניים</string>
+    <string name="download_log_details_file_url_title">כתובת הקובץ</string>
+    <string name="download_log_open_feed">פתיחה</string>
+    <string name="no_following_in_queue">זה היה הפרק האחרון בתור</string>
+    <string name="episode">פרק</string>
+    <string name="feed">הסכת</string>
+    <string name="pref_global_default_episode_list_sort_order_title">סדר מיון כברירת מחדל</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">נא לבחור את סדר ברירת המחדל לסידור הפרקים במסך ההסכת</string>
+    <string name="report_bug_title">דיווח על תקלה</string>
+    <string name="report_bug_message">מבאס לשמוע שמשהו לא עובד. נשמח לקבל את עזרתך בשיפור אנטנה־פּוֹד. נא לבקר בפורום או ב־GitHub שלנו כדי לראות אם התקלה הזאת כבר דווחה. אם לא, לדווח לנו ואנו נחקור את הנושא.</string>
+    <string name="report_bug_device_info_title">מכשיר</string>
+    <string name="report_bug_attrib_app_version">גרסת יישומון</string>
+    <string name="sleep_timer_episodes_label">פרקים</string>
+    <string name="sleep_timer_without_continuous_playback">כיבוי נגינה רציפה</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">החלפת שעות</string>
+    <string name="sleep_timer_without_continuous_playback_message">במקום להפעיל את מתזמן השינה על פרק אחד אוטומטית, נא לכבות במקום את „נגינה רציפה” בהגדרות.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">נגינה רציפה כבויה ולפרק הנוכחי נותרה דקה</item>
+        <item quantity="two">נגינה רציפה כבויה ולפרק הנוכחי נותרו שתי דקות</item>
+        <item quantity="other">נגינה רציפה כבויה ולפרק הנוכחי נותרו %1$d דקות</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">נגינה רציפה כבויה בהגדרות. תמיד לעצור בסוף הפרק.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">נותר רק פרק בתור שלך</item>
+        <item quantity="two">נותרו רק שני פרקים בתור שלך</item>
+        <item quantity="other">נותרו רק %1$d פרקים בתור שלך</item>
+    </plurals>
 </resources>

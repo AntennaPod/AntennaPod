@@ -427,8 +427,6 @@
     <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
     <string name="documentation_support">Documentation &amp; support</string>
     <string name="visit_user_forum">Forum des utilisateurs</string>
-    <string name="bug_report_title">Signaler un bug</string>
-    <string name="open_bug_tracker">Ouvrir le suivi des bugs</string>
     <string name="copy_to_clipboard">Copier dans le presse-papier</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -805,8 +803,8 @@
     <string name="echo_queue_title_many">Et vous avez de la réserve pour finir l\'année avec</string>
     <plurals name="echo_queue_hours_waiting">
         <item quantity="one">heures pour finir votre liste de lecture\nd\'%1$d seul épisode</item>
-        <item quantity="many">heures finir votre liste de lecture\nde %1$d épisodes</item>
-        <item quantity="other">heures finir votre liste de lecture\nde %1$d épisodes</item>
+        <item quantity="many">heures pour finir votre liste de lecture\nde %1$d épisodes</item>
+        <item quantity="other">heures pour finir votre liste de lecture\nde %1$d épisodes</item>
     </plurals>
     <string name="echo_queue_hours_clean">C\'est %1$s tous les jours avant que %2$d ne commence.</string>
     <string name="echo_queue_hours_normal">C\'est environ %1$s tous les jours avant que %2$d ne commence. Pour arriver à vider votre liste des épisodes vont devoir être sautés.</string>
@@ -929,10 +927,48 @@
     <string name="archive_feed_label_verb">Archiver</string>
     <string name="archive_feed_label_noun">Archives</string>
     <string name="remove_archive_feed_label">Supprimer / Archiver</string>
-    <string name="feed_delete_explanation_delete">Supprimer efface TOUS les épisodes téléchargés, l\'historique de lecture et les statistiques.</string>
-    <string name="feed_delete_explanation_archive">Archiver cache le podcast de la liste des abonnements et désactive les mises à jour. Les téléchargements, l\'historique de lecture et les statistiques restent disponibles.</string>
+    <string name="feed_delete_explanation_delete">Supprimer efface le podcast avec tous ses épisodes, ses téléchargements, son historique de lecture et ses statistiques.</string>
+    <string name="feed_delete_explanation_archive">Archiver cache le podcast de la liste des abonnements et désactive sa mise à jour. Ses téléchargements, son historique de lecture et ses statistiques sont conservés.</string>
     <string name="tag_untagged">Sans tag</string>
     <string name="restore_archive_label">Désarchiver</string>
     <string name="no_archive_head_label">Aucune archive</string>
     <string name="no_archive_label">Vous pouvez archiver des podcasts depuis l\'écran des abonnements.</string>
+    <string name="general_expand_button">Afficher plus</string>
+    <string name="general_collapse_button">Réduire</string>
+    <string name="archiving_podcast_progress">Archivage du podcast %1$d sur %2$d…</string>
+    <string name="deleting_podcast_progress">Suppression du podcast %1$d sur %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Statut</string>
+    <string name="download_log_details_technical_reason_title">Détails techniques</string>
+    <string name="download_log_details_file_url_title">Lien du flux</string>
+    <string name="download_log_open_feed">Ouvrir</string>
+    <string name="no_following_in_queue">Il s\'agissait du dernier épisode de la liste de lecture</string>
+    <string name="episode">Épisode</string>
+    <string name="feed">Podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Tri par défaut</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Choisir le tri par défaut des épisodes dans l\'écran de détail d\'un podcast</string>
+    <string name="report_bug_title">Signaler un bug</string>
+    <string name="report_bug_message">Désolé si quelque chose ne marche pas. Nous apprécions votre aide pour améliorer AntennaPod. Vérifier sur notre forum ou GitHub si le problème est déjà connu. Si il ne l\'est pas, faites le nous savoir et nous le prendrons en compte.</string>
+    <string name="report_bug_device_info_title">Appareil</string>
+    <string name="report_bug_attrib_app_version">Version de l\'application</string>
+    <string name="report_bug_attrib_android_version">Version Android</string>
+    <string name="report_bug_attrib_device_name">Nom de l\'appareil</string>
+    <string name="report_bug_crash_log_title">Rapport d\'erreur</string>
+    <string name="report_bug_crash_log_message">Créé : %1$s.</string>
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">épisodes</string>
+    <string name="sleep_timer_without_continuous_playback">Désactiver la lecture continue</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Changer les heures</string>
+    <string name="sleep_timer_without_continuous_playback_message">Au lieu de toujours activé le minuteur pour s\'arrêter après un épisode, désactivez la lecture continue dans les préférences.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">La lecture continue est désactivée et il ne reste qu\'%1$d minute pour l\'épisode en cours</item>
+        <item quantity="many">La lecture continue est désactivée et il ne reste qu\'%1$d minutes pour l\'épisode en cours</item>
+        <item quantity="other">La lecture continue est désactivée et il ne reste qu\'%1$d minutes pour l\'épisode en cours</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">La lecture continue est désactivée dans les préférences. La lecture s\'arrête toujours à la fin d\'un épisode.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Il reste seulement %1$d épisode dans la liste de lecture</item>
+        <item quantity="many">Il reste seulement %1$d épisodes dans la liste de lecture</item>
+        <item quantity="other">Il reste seulement %1$d épisodes dans la liste de lecture</item>
+    </plurals>
 </resources>

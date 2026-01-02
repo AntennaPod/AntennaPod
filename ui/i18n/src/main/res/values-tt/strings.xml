@@ -48,7 +48,6 @@
     <string name="preference_search_clear_history">Тарихны чистарту</string>
     <string name="feed_refresh_never">Беркайчан да</string>
     <string name="pref_episode_cache_unlimited">Чикләүсез</string>
-    <string name="bug_report_title">Хата турында хәбәр итү</string>
     <string name="copy_to_clipboard">Алмашу буферына күчереп алу</string>
     <string name="copied_to_clipboard">Алмашу буферына күчермәләнде</string>
     <string name="pref_proxy_title">Прокси</string>

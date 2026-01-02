@@ -416,8 +416,6 @@
     <string name="pref_smart_mark_as_played_disabled">Dezactivat</string>
     <string name="documentation_support">Documentație &amp; suport</string>
     <string name="visit_user_forum">Forumul utilizatorilor</string>
-    <string name="bug_report_title">Raportează o problemă</string>
-    <string name="open_bug_tracker">Deschide trackerul de errori</string>
     <string name="copy_to_clipboard">Copiază</string>
     <string name="copied_to_clipboard">Copiat în clipboard</string>
     <string name="pref_proxy_title">Proxy</string>

@@ -655,13 +655,16 @@ public class MainActivity extends CastEnabledActivity {
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         Snackbar snackbar;
-        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
+            if (findViewById(R.id.bottomNavigationView).getVisibility() == View.VISIBLE) {
+                snackbar.setAnchorView(findViewById(R.id.bottomNavigationView));
+            }
+        } else {
             snackbar = Snackbar.make(findViewById(R.id.main_content_view), event.message, Snackbar.LENGTH_LONG);
             if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
                 snackbar.setAnchorView(findViewById(R.id.audioplayerFragment));
             }
-        } else {
-            snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_LONG);
         }
         snackbar.show();
 

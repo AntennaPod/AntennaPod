@@ -145,6 +145,11 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    SleepTimerPreferences.setLastTimer(String.valueOf(getSelectedSleepTime()));
+                } catch (NumberFormatException ignore) {
+                    // Ignore silently and just not save it
+                }
                 final SleepTimerType sleepType = SleepTimerType.fromIndex(position);
                 SleepTimerPreferences.setSleepTimerType(sleepType);
                 // this callback is called even when the spinner is first initialized
@@ -154,12 +159,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
                     if (isSleepTimerConfiguredForMostOfTheDay()) {
                         viewBinding.autoEnableCheckbox.setChecked(false);
                     }
-                    // change suggested value back to default value for sleep type
-                    if (sleepType == SleepTimerType.EPISODES) {
-                        viewBinding.timeEditText.setText(SleepTimerPreferences.DEFAULT_SLEEP_TIMER_EPISODES);
-                    } else {
-                        viewBinding.timeEditText.setText(SleepTimerPreferences.DEFAULT_SLEEP_TIMER_MINUTES);
-                    }
+                    viewBinding.timeEditText.setText(SleepTimerPreferences.lastTimerValue());
                 }
                 sleepTimerTypeInitialized = true;
                 refreshUiState();

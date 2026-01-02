@@ -57,7 +57,7 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
             HorizontalFeedListAdapter adapter = (HorizontalFeedListAdapter) viewBinding.recyclerView.getAdapter();
             Feed selectedFeed = adapter.getLongPressedItem();
             return selectedFeed != null
-                    && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeed, () -> { });
+                    && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeed);
         }
         FeedItem longPressedItem;
         if (viewBinding.recyclerView.getAdapter() instanceof EpisodeItemListAdapter) {

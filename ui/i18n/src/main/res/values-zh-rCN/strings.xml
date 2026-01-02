@@ -345,7 +345,7 @@
     <string name="feed_every_12_hours">每 12 小时</string>
     <string name="feed_every_24_hours">每 1 天</string>
     <string name="feed_every_72_hours">每 3 天</string>
-    <string name="pref_followQueue_title">持续播放</string>
+    <string name="pref_followQueue_title">连续播放</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">耳机或蓝牙断开</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">耳机重连</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">蓝牙重连</string>
@@ -408,8 +408,6 @@
     <string name="pref_smart_mark_as_played_disabled">已禁用</string>
     <string name="documentation_support">文档和支持</string>
     <string name="visit_user_forum">用户论坛</string>
-    <string name="bug_report_title">报告错误</string>
-    <string name="open_bug_tracker">打开错误跟踪器</string>
     <string name="copy_to_clipboard">复制到剪贴板</string>
     <string name="copied_to_clipboard">已复制到剪贴板</string>
     <string name="pref_proxy_title">代理</string>
@@ -417,7 +415,7 @@
     <string name="pref_no_browser_found">未找到网络浏览器。</string>
     <string name="pref_enqueue_downloaded_title">添加已下载单集到队列</string>
     <string name="pref_enqueue_downloaded_summary">将已下载单集添加到队列</string>
-    <string name="pref_skip_silence_title">跳过静音部分</string>
+    <string name="pref_skip_silence_title">跳过音频中的无声片段</string>
     <string name="behavior">行为</string>
     <string name="pref_default_page">默认页面</string>
     <string name="pref_default_page_sum">启动 AntennaPod 时打开的页面</string>
@@ -448,8 +446,8 @@
     <string name="translators">译者</string>
     <string name="special_thanks">特别感谢</string>
     <string name="privacy_policy">隐私政策</string>
-    <string name="licenses">许可证</string>
-    <string name="licenses_summary">AntennaPod使用其他伟大的软件</string>
+    <string name="licenses">许可</string>
+    <string name="licenses_summary">AntennaPod 还使用了其他优秀的软件</string>
     <!--Search-->
   <string name="search_status_no_results">未找到任何结果</string>
     <string name="type_to_search">输入要搜索的查询</string>
@@ -568,7 +566,7 @@
     <string name="pref_pausePlaybackForFocusLoss_sum">当其他应用想要播放声音时，暂停播放而非降低音量</string>
     <string name="pref_pausePlaybackForFocusLoss_title">中断暂停</string>
     <!--Rating dialog-->
-  <string name="rating_tagline">自 %1$s 以来，你累计播放的播客节目时长达 %2$s %3$d %4$s 小时。</string>
+  <string name="rating_tagline">自 %1$s 起，您累计播放 %2$s%3$d%4$s 小时的播客。</string>
     <string name="rating_contribute_label">想加入吗？无论你是要翻译、支持、设计还是写代码，我们都欢迎！</string>
     <string name="rating_contribute_button">如何作出贡献</string>
     <string name="rating_volunteers_label">AntennaPod 由志愿者在闲暇时间开发。留下好评分享您的感激之情。</string>
@@ -774,22 +772,22 @@
     <string name="statistics_time_played">已播放</string>
     <string name="notification_channel_refreshing">正在刷新播客</string>
     <string name="notification_channel_refreshing_description">检查新单集时显示。</string>
-    <string name="echo_home_header">纵览该年</string>
+    <string name="echo_home_header">年度回顾</string>
     <string name="echo_home_subtitle">过去一年您最常收听的播客和统计数据。这些数据仅在您的手机上。</string>
-    <string name="echo_intro_your_year">你的播客</string>
-    <string name="echo_intro_in_podcasts">年度数据</string>
+    <string name="echo_intro_your_year">您的</string>
+    <string name="echo_intro_in_podcasts">播客年度报告</string>
     <string name="echo_hours_this_year">这一年您播放了</string>
     <plurals name="echo_hours_podcasts">
         <item quantity="other">小时的单集\n来自 %1$d 个播客</item>
     </plurals>
-    <string name="echo_intro_locally">私密地在你的手机上生成</string>
-    <string name="echo_queue_title_clean">你已经准备好开始崭新的一年。你有</string>
-    <string name="echo_queue_title_many">你今年仍有相当多的节目没听过。你有</string>
+    <string name="echo_intro_locally">本报告在您的手机上私密生成</string>
+    <string name="echo_queue_title_clean">您已经准备好开启全新一年的收听计划。您有</string>
+    <string name="echo_queue_title_many">您今年还有很多内容待收听。您有</string>
     <plurals name="echo_queue_hours_waiting">
-        <item quantity="other">小时的播客音频在队列中待收听，\n这些音频来自 %1$d 个单集</item>
+        <item quantity="other">小时内容在队列中待收听，\n这些内容来自 %1$d 个单集</item>
     </plurals>
-    <string name="echo_queue_hours_normal">这相当于大约每天 %1$s，直到 %2$d 开始。如果您跳过几个单集便可无负担地开启新一年。</string>
-    <string name="echo_queue_hours_much">这相当于大约每天 %1$s，直至 %2$d 开始。等等，我没看错吧？</string>
+    <string name="echo_queue_hours_normal">这相当于每天收听约 %1$s，直到 %2$d 即可听完。如果您跳过几个单集便可开启全新一年的收听计划。</string>
+    <string name="echo_queue_hours_much">这相当于每天收听约 %1$s，直到 %2$d 即可听完。等等，我没看错吧？</string>
     <string name="echo_listened_after_title">我们已经对单集何时发布以及您何时听完它们进行了一些分析。看看我们的结论？</string>
     <string name="echo_listened_after_comment_easy">您悠闲自得，不慌不忙</string>
     <string name="echo_listened_after_time">您通常在一个单集发布 %1$s 后听完它。</string>
@@ -806,7 +804,7 @@
     <string name="echo_thanks_now_favorite">现在，让我们看看您收藏的播客…</string>
     <string name="echo_share_heading">我收藏的播客</string>
     <string name="echo_share">我的 %d 年播客之旅回顾。#AntennaPodEcho</string>
-    <string name="echo_queue_hours_clean">这相当于每天大约 %1$s，直至 %2$d 开始。</string>
+    <string name="echo_queue_hours_clean">这相当于每天收听约 %1$s，直到 %2$d 即可听完。</string>
     <string name="echo_hoarder_comment_hoarder">数字不撒谎。考虑到今年您的 %2$d 个活动订阅中仅 %1$d%% 已播放，我们的结论或许是对的。</string>
     <string name="overflow_more">更多</string>
     <string name="preference_search_clear_input">清除</string>
@@ -864,8 +862,42 @@
     <string name="restore_archive_label">恢复</string>
     <string name="remove_archive_feed_label">删除/归档</string>
     <string name="tag_untagged">无标签</string>
-    <string name="feed_delete_explanation_delete">删除操作将移除其所有单集，包括下载内容、播放记录和统计数据。</string>
-    <string name="feed_delete_explanation_archive">归档操作会将其从订阅列表中隐藏并避免获取更新。下载内容、统计数据和播放状态将保留。</string>
+    <string name="feed_delete_explanation_delete">删除操作会移除订阅，包括所有单集、下载内容、播放记录和统计数据。</string>
+    <string name="feed_delete_explanation_archive">归档操作会将订阅从列表中隐藏并停止查找新单集。下载内容、统计数据和播放状态将保留。</string>
     <string name="no_archive_head_label">无归档内容</string>
     <string name="no_archive_label">您可以从主订阅屏幕归档播客。</string>
+    <string name="general_expand_button">展开</string>
+    <string name="general_collapse_button">收起</string>
+    <string name="archiving_podcast_progress">正在归档第 %1$d 个播客，共 %2$d 个…</string>
+    <string name="deleting_podcast_progress">正在删除第 %1$d 个播客，共 %2$d 个…</string>
+    <string name="download_log_details_human_readable_reason_title">状态</string>
+    <string name="download_log_details_technical_reason_title">技术详情</string>
+    <string name="download_log_details_file_url_title">文件 URL</string>
+    <string name="download_log_open_feed">打开</string>
+    <string name="no_following_in_queue">这是队列中的最后一个单集</string>
+    <string name="episode">单集</string>
+    <string name="feed">播客</string>
+    <string name="pref_global_default_episode_list_sort_order_title">默认排序</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">选择播客页面单集的默认排序</string>
+    <string name="report_bug_title">报告错误</string>
+    <string name="report_bug_message">很抱歉您遇到了问题。我们非常希望您能帮助我们改进 AntennaPod。请查看我们的论坛或 GitHub，看看是否已经有人报告过该问题。如果没有，请告诉我们，我们会进行调查。</string>
+    <string name="report_bug_device_info_title">设备</string>
+    <string name="report_bug_attrib_app_version">应用版本</string>
+    <string name="report_bug_attrib_android_version">Android 版本</string>
+    <string name="report_bug_attrib_device_name">设备名称</string>
+    <string name="report_bug_crash_log_title">崩溃日志</string>
+    <string name="report_bug_crash_log_message">已创建：%1$s。</string>
+    <string name="report_bug_forum_title">论坛</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">单集</string>
+    <string name="sleep_timer_without_continuous_playback">禁用连续播放</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">更改小时数</string>
+    <string name="sleep_timer_without_continuous_playback_message">请在设置中禁用“连续播放”，而非播放单集时始终自动启用睡眠定时器。</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="other">连续播放已禁用，当前单集仅剩 %1$d 分钟</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">设置中已禁用连续播放功能。始终在单集结束后自动停止播放。</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="other">您的队列中仅剩 %1$d 个单集</item>
+    </plurals>
 </resources>

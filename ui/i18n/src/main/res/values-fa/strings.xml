@@ -393,8 +393,6 @@
     <string name="pref_smart_mark_as_played_disabled">غیرفعال</string>
     <string name="documentation_support">مستندات و پشتیبانی</string>
     <string name="visit_user_forum">تالار گفتمان کاربر</string>
-    <string name="bug_report_title">گزارش مشکل</string>
-    <string name="open_bug_tracker">باز کردن ردیاب اشکال</string>
     <string name="copy_to_clipboard">کپی به کلیپ بورد</string>
     <string name="copied_to_clipboard">در کلیپ بورد کپی شد</string>
     <string name="pref_proxy_title">پروکسی</string>
@@ -900,9 +898,45 @@
     <string name="archive_feed_label_noun">بایگانی</string>
     <string name="restore_archive_label">بازگردانی</string>
     <string name="remove_archive_feed_label">حذف یا بایگانی</string>
-    <string name="feed_delete_explanation_delete">حذف کردن تمامی قسمت‌هایش از جمله بارگیری‌ها، تاریخچهٔ پخش و آمارها را برخواهد داشت.</string>
-    <string name="feed_delete_explanation_archive">بایگانی کردن از سیاههٔ اشتراک‌ها نهفته و جلوی به‌روز شدنش را خواهد گرفت. بارگیری‌ها، آکارها و وضعیت پخش نگه داشته خواهد شد.</string>
+    <string name="feed_delete_explanation_delete">حذف کردن اشتراک تمامی قسمت‌ها، بارگیری‌ها، تاریخچهٔ پخش و آمارهایش را برمی‌دارد.</string>
+    <string name="feed_delete_explanation_archive">بایگانی کردن اشتراک را از سیاهه نهفته و گشتن به دنبال قسمت‌های جدید را متوقّف می‌کند. بارگیری‌ها، آمارها و وضعیت پخش نگه داشته خواهد شد.</string>
     <string name="tag_untagged">برچسب نخورده</string>
     <string name="no_archive_head_label">هیچ چیزی بایگانی نشده</string>
     <string name="no_archive_label">می توانید پادپخش‌ها را از صفحهٔ اشتراک اصلی بایگانی کنید.</string>
+    <string name="general_expand_button">گسترش</string>
+    <string name="general_collapse_button">جمع کردن</string>
+    <string name="download_log_details_human_readable_reason_title">وضعیت</string>
+    <string name="download_log_open_feed">گشودن</string>
+    <string name="episode">قسمت</string>
+    <string name="feed">پادپخش</string>
+    <string name="report_bug_device_info_title">افزاره</string>
+    <string name="report_bug_forum_title">انجمن</string>
+    <string name="report_bug_github_title">گیت‌هاب</string>
+    <string name="sleep_timer_episodes_label">قسمت</string>
+    <string name="download_log_details_technical_reason_title">جزییات فنی</string>
+    <string name="download_log_details_file_url_title">نشانی پرونده</string>
+    <string name="report_bug_title">گزارش اشکال</string>
+    <string name="report_bug_attrib_app_version">نگارش کاره</string>
+    <string name="report_bug_attrib_android_version">نگارش اندروید</string>
+    <string name="report_bug_attrib_device_name">نام افزاره</string>
+    <string name="report_bug_crash_log_title">گزارش فروپاشی</string>
+    <string name="report_bug_crash_log_message">ایجاد شده: %1$s.</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">تغییر ساعت‌ها</string>
+    <string name="pref_global_default_episode_list_sort_order_title">ترتیب چینش پیش‌گزیده</string>
+    <string name="sleep_timer_without_continuous_playback">از کار انداختن پخش ادامه دار</string>
+    <string name="archiving_podcast_progress">بایگانی کردن پادپخش %1$d از %2$d…</string>
+    <string name="deleting_podcast_progress">حذف کردن پادپخش %1$d از %2$d…</string>
+    <string name="no_following_in_queue">آخرین قسمت در صف بود</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">گزینش ترتیب پیش‌گزیدهٔ قسمت‌ها روی صفحهٔ پادپخش</string>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">پخش ادامه دار در تنظیمات از کار افتاده. همواره در پایان قسمت‌ها متوقّف می‌شود.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">تنها %1$d قسمت در صفتان مانده</item>
+        <item quantity="other">تنها %1$d قسمت در صفتان مانده</item>
+    </plurals>
+    <string name="report_bug_message">متآسفیم که می‌شنویم چیزی کار نمی‌کند. سپاس از یاریتان در بهبود آنتناپاد. لطفا‌ً انجمن یا گیت‌هابمان را برای بررسی گزارش مشابه دیده و در صورت نبود به ما گزارش دهید تا بررسیش کنیم.</string>
+    <string name="sleep_timer_without_continuous_playback_message">از کار انداختن «پخش ادامه‌دار» در تنظیمات به‌جای به کار انداختن هربارهٔ زمان‌سنج خواب با یک قسمت.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">پخش ادامه‌دار از کار افتاده و از قسمت کنونی تنها %1$d دقیقه مانده</item>
+        <item quantity="other">پخش ادامه‌دار از کار افتاده و از قسمت کنونی تنها %1$d دقیقه مانده</item>
+    </plurals>
 </resources>

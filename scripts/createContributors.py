@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-import pycountry
-import requests
-import configparser
-import os
+import pycountry, requests, os, glob, subprocess
 
 contributorsFile = open("CONTRIBUTORS.md", "w")
 
@@ -38,51 +35,58 @@ while hasMore:
 csvFile.close()
 
 ###### Translators #####
-config = configparser.ConfigParser()
-config.read(os.path.expanduser("~") + '/.transifexrc')
-if 'https://www.transifex.com' in config and config['https://www.transifex.com']['username'] == 'api':
-    TRANSIFEX_TOKEN = config['https://www.transifex.com']['token']
-else:
-    TRANSIFEX_TOKEN = ""
 
-languages = dict()
+path = "ui/i18n/src/main/res"
 
-nextPage = 'https://rest.api.transifex.com/team_memberships?filter[organization]=o:antennapod'
-while nextPage is not None:
-    print("Loading " + nextPage)
-    r = requests.get(nextPage,
-            headers={'Authorization': 'Bearer ' + TRANSIFEX_TOKEN,
-                    'Accept': 'application/vnd.api+json'})
-    for item in r.json()['data']:
-        language = item['relationships']['language']['data']['id']
-        user = item['relationships']['user']['data']['id']
-        if not language in languages:
-            langCode = language.replace('l:', '')
-            try:
-                langName = pycountry.languages.lookup(langCode).name
-            except:
-                try:
-                    langName = pycountry.languages.lookup(
-                        langCode.split('_')[0]).name + ' (' + langCode + ')'
-                except:
-                    langName = code
-                    print('\033[91mLanguage code not found:' + langCode + '\033[0m')
-            languages[language] = {'name': langName, 'translators': []}
-        languages[language]['translators'].append(user.replace('u:', ''))
-    nextPage = r.json()['links']['next']
+# Map Android codes to display names when pycountry fails or region matters
+ANDROID_LANG_FIXES = {
+    "pt-rbr": "Portuguese (Brazil)",
+    "pt-rpt": "Portuguese (Portugal)",
+    "kn-rin": "Kannada (India)",
+    "zh-rcn": "Chinese (Simplified)",
+    "zh-rtw": "Chinese (Traditional)",
+    "in": "Indonesian",
+    "iw": "Hebrew",
+    "ji": "Yiddish",
+    "sw": "Swahili",
+    "el": "Modern Greek",
+}
+def lang_name(code):
+    code = code.lower()
+    if code in ANDROID_LANG_FIXES:
+        return ANDROID_LANG_FIXES[code]
+    norm = code.replace('-r','_')
+    try:
+        base = norm.split('_')[0]
+        name = pycountry.languages.lookup(base).name
+        return name + (f" ({norm})" if '_' in norm else "")
+    except:
+        return code
 
-languages = list(languages.values())
-languages.sort(key=lambda x : x['name'].lower())
-
+files = sorted(
+    glob.glob(f"{path}/values-*/strings.xml"),
+    key=lambda f: lang_name(f.split("values-")[1].split("/")[0]).lower())
+contributorsFile.write('\n\n# Translators\n\n| Language | Translators |\n| :-- | :-- |\n')
 csvFile = open("ui/preferences/src/main/assets/translators.csv", "w")
-contributorsFile.write('\n\n# Translators\n\n')
-contributorsFile.write('| Language | Translators |\n| :-- | :-- |\n')
-for language in languages:
-    translators = sorted(language['translators'], key=str.lower)
-    langName = language['name']
-    joinedTranslators = ', '.join(translators).replace(';', '')
-    contributorsFile.write('| ' + langName + ' | ' + joinedTranslators + ' |\n')
-    csvFile.write(langName + ';' + joinedTranslators + '\n')
+
+for f in files:
+    code = f.split("values-")[1].split("/")[0]
+    hashes = {l.split()[0] for l in subprocess.check_output(["git", "blame", f]).decode().splitlines()}
+    names = set()
+    for h in hashes:
+        for l in subprocess.check_output(["git", "show", h]).decode().splitlines():
+            if not f"Translator: {code} by" in l:
+                continue
+            n = l.split("by",1)[1].split("<")[0].replace('"','').strip()
+            if n in ("ByteHamster", "Anonymous"):
+                continue
+            names.add(n)
+    translators = ", ".join(sorted(names)) or "Anonymous"
+    lang = lang_name(code)
+    contributorsFile.write(f"| {lang} | {translators} |\n")
+    csvFile.write(f"{lang};{translators}\n")
+    print(f"{lang}: {translators}")
+
 csvFile.close()
 contributorsFile.close()
 

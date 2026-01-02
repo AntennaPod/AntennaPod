@@ -13,7 +13,8 @@ public class SleepTimerPreferences {
     private static final String TAG = "SleepTimerPreferences";
 
     public static final String PREF_NAME = "SleepTimerDialog";
-    private static final String PREF_VALUE = "LastValue";
+    private static final String PREF_VALUE_MINUTES = "LastValue";
+    private static final String PREF_VALUE_EPISODES = "LastValueEpisodes";
 
     private static final String PREF_TIMER_TYPE = "sleepTimerType";
     private static final String PREF_VIBRATE = "Vibrate";
@@ -22,8 +23,6 @@ public class SleepTimerPreferences {
     private static final String PREF_AUTO_ENABLE_FROM = "AutoEnableFrom";
     private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
 
-    public static final String DEFAULT_SLEEP_TIMER_MINUTES = "15";
-    public static final String DEFAULT_SLEEP_TIMER_EPISODES = "1";
     private static final int DEFAULT_TIMER_TYPE = 0;
     private static final int DEFAULT_AUTO_ENABLE_FROM = 22;
     private static final int DEFAULT_AUTO_ENABLE_TO = 6;
@@ -41,11 +40,16 @@ public class SleepTimerPreferences {
     }
 
     public static void setLastTimer(String value) {
-        prefs.edit().putString(PREF_VALUE, value).apply();
+        prefs.edit().putString(getSleepTimerType() == SleepTimerType.CLOCK
+                ? PREF_VALUE_MINUTES : PREF_VALUE_EPISODES, value).apply();
     }
 
     public static String lastTimerValue() {
-        return prefs.getString(PREF_VALUE, DEFAULT_SLEEP_TIMER_MINUTES);
+        if (getSleepTimerType() == SleepTimerType.CLOCK) {
+            return prefs.getString(PREF_VALUE_MINUTES, "15");
+        } else {
+            return prefs.getString(PREF_VALUE_EPISODES, "1");
+        }
     }
 
     public static long timerMillisOrEpisodes() {

@@ -426,8 +426,6 @@
     <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
     <string name="documentation_support">Documentazione &amp; supporto</string>
     <string name="visit_user_forum">Forum utenti</string>
-    <string name="bug_report_title">Segnala un problema</string>
-    <string name="open_bug_tracker">Apri il bug tracker</string>
     <string name="copy_to_clipboard">Copia negli appunti</string>
     <string name="copied_to_clipboard">Copiato negli appunti</string>
     <string name="pref_proxy_title">Proxy</string>
@@ -516,7 +514,7 @@
     <string name="favorites_export_label">Esporta preferiti</string>
     <string name="favorites_export_summary">Esporta preferiti su file</string>
     <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Imposta timer</string>
+  <string name="set_sleeptimer_label">Imposta timer di spegnimento</string>
     <string name="disable_sleeptimer_label">Disabilita il timer di spegnimento</string>
     <string name="extend_sleep_timer_label">+%d min</string>
     <string name="sleep_timer_always">Sempre</string>
@@ -934,4 +932,42 @@
     <string name="tag_untagged">Senza tag</string>
     <string name="no_archive_label">È possibile archiviare i podcast dalla schermata principale delle iscrizioni.</string>
     <string name="no_archive_head_label">Niente archiviato</string>
+    <string name="general_expand_button">Espandi</string>
+    <string name="general_collapse_button">Comprimi</string>
+    <string name="archiving_podcast_progress">Archiviando podcast %1$d di %2$d…</string>
+    <string name="deleting_podcast_progress">Eliminando podcast %1$d di %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Stato</string>
+    <string name="download_log_details_technical_reason_title">Dettagli tecnici</string>
+    <string name="download_log_details_file_url_title">URL del file</string>
+    <string name="download_log_open_feed">Apri</string>
+    <string name="no_following_in_queue">Questo era l\'ultimo episodio in coda</string>
+    <string name="episode">Episodio</string>
+    <string name="feed">Podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Criterio di ordinazione predefinito</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Scegli il criterio di ordinazione degli episodi predefinito per la schermata del podcast</string>
+    <string name="report_bug_title">Segnala bug</string>
+    <string name="report_bug_message">Ci spiace che qualcosa non funzioni a dovere. Saremmo grati che ci aiutassi a migliorare AntennaPod. Controlla se il problema è già stato segnalato sul forum o su GitHub. Se non è questo il caso, faccelo sapere e verificheremo.</string>
+    <string name="report_bug_device_info_title">Dispositivo</string>
+    <string name="report_bug_attrib_app_version">Versione dell\'app</string>
+    <string name="report_bug_attrib_android_version">Versione di Android</string>
+    <string name="report_bug_attrib_device_name">Nome del dispositivo</string>
+    <string name="report_bug_crash_log_title">Registro di crash</string>
+    <string name="report_bug_crash_log_message">Creato: %1$s.</string>
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">episodi</string>
+    <string name="sleep_timer_without_continuous_playback">Disabilita la riproduzione continua</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Modifica l\'orario</string>
+    <string name="sleep_timer_without_continuous_playback_message">Anziché abilitare sempre automaticamente il timer di spegnimento con un episodio, disabilita la riproduzione continua nelle impostazioni.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">La riproduzione continua è disabilitata e all\'episodio attuale rimane solo %1$d minuto</item>
+        <item quantity="many">La riproduzione continua è disabilitata e all\'episodio attuale rimangono solo %1$d di minuti</item>
+        <item quantity="other">La riproduzione continua è disabilitata e all\'episodio attuale rimangono solo %1$d minuti</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">La riproduzione continua è disabilitata nelle impostazioni. La riproduzione si interrompe sempre alla fine di un episodio.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Rimane solo %1$d episodio nella tua coda</item>
+        <item quantity="many">Rimangono solo %1$d di episodi nella tua coda</item>
+        <item quantity="other">Rimangono solo %1$d episodi nella tua coda</item>
+    </plurals>
 </resources>

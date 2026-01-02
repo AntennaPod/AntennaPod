@@ -393,8 +393,6 @@
     <string name="pref_smart_mark_as_played_disabled">Välja lülitatud</string>
     <string name="documentation_support">Dokumentatsioon &amp; tugi</string>
     <string name="visit_user_forum">Kasutajate foorum</string>
-    <string name="bug_report_title">Raporteeri veast</string>
-    <string name="open_bug_tracker">Ava vigade loetelu</string>
     <string name="copy_to_clipboard">Kopeeri lõikelauale</string>
     <string name="copied_to_clipboard">Kopeeritud lõikelauale</string>
     <string name="pref_proxy_title">Vaheserver</string>
