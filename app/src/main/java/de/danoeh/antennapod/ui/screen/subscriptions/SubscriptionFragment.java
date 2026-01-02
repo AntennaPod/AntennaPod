@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
@@ -17,10 +20,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -39,19 +52,11 @@ import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
-import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -76,8 +81,8 @@ public class SubscriptionFragment extends Fragment
 
     private RecyclerView subscriptionRecycler;
     private SubscriptionsRecyclerAdapter subscriptionAdapter;
-    private RecyclerView tagsRecycler;
-    private SubscriptionTagAdapter tagAdapter;
+    private Spinner tagsSpinner;
+    private SubscriptionTagSpinnerAdapter tagSpinnerAdapter;
     private EmptyViewHandler emptyView;
     private View feedsFilteredMsg;
     private MaterialToolbar toolbar;
@@ -96,6 +101,8 @@ public class SubscriptionFragment extends Fragment
     private RecyclerView.ItemDecoration itemDecoration;
     private List<Feed> feeds;
     private int stateToShow = Feed.STATE_SUBSCRIBED;
+    private boolean isUserSelecting = false;
+    private boolean hasInitializedSpinner = false;
 
     public static SubscriptionFragment newInstance(int state) {
         SubscriptionFragment fragment = new SubscriptionFragment();
@@ -203,29 +210,23 @@ public class SubscriptionFragment extends Fragment
             return true;
         });
 
-        tagsRecycler = root.findViewById(R.id.tags_recycler);
-        tagsRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        tagsRecycler.addItemDecoration(new ItemOffsetDecoration(getContext(), 4, 0));
-        registerForContextMenu(tagsRecycler);
-        tagAdapter = new SubscriptionTagAdapter(getActivity()) {
+        tagsSpinner = root.findViewById(R.id.tags_spinner);
+        tagSpinnerAdapter = new SubscriptionTagSpinnerAdapter(getContext());
+        tagsSpinner.setAdapter(tagSpinnerAdapter);
+        tagsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                super.onCreateContextMenu(menu, v, menuInfo);
-                MenuItemUtils.setOnClickListeners(menu, SubscriptionFragment.this::onTagContextItemSelected);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isUserSelecting) {
+                    String selectedTag = tagSpinnerAdapter.getTagAtPosition(position);
+                    setSelectedTag(selectedTag);
+                    loadSubscriptionsAndTags();
+                }
             }
 
             @Override
-            protected void onTagClick(NavDrawerData.TagItem tag) {
-                tagAdapter.setSelectedTag(tag.getTitle());
-                loadSubscriptionsAndTags();
+            public void onNothingSelected(AdapterView<?> parent) {
             }
-        };
-        if (stateToShow == Feed.STATE_SUBSCRIBED) {
-            tagAdapter.setSelectedTag(prefs.getString(PREF_LAST_TAG, FeedPreferences.TAG_ROOT));
-        } else {
-            tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
-        }
-        tagsRecycler.setAdapter(tagAdapter);
+        });
         return root;
     }
 
@@ -346,7 +347,7 @@ public class SubscriptionFragment extends Fragment
         super.onPause();
         scrollPosition = getScrollPosition();
         if (stateToShow == Feed.STATE_SUBSCRIBED) {
-            prefs.edit().putString(PREF_LAST_TAG, tagAdapter.getSelectedTag()).apply();
+            prefs.edit().putString(PREF_LAST_TAG, getSelectedTag()).apply();
         }
     }
 
@@ -374,27 +375,27 @@ public class SubscriptionFragment extends Fragment
                             NavDrawerData navDrawerData = DBReader.getNavDrawerData(filter,
                                     UserPreferences.getFeedOrder(), UserPreferences.getFeedCounterSetting(),
                                     stateToShow);
-                            List<NavDrawerData.TagItem> tags = DBReader.getAllTags(stateToShow);
-                            return new Pair<>(navDrawerData, tags);
+                            return new Pair<>(navDrawerData, navDrawerData.tags);
                         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
                         List<Feed> openedFolderFeeds = Collections.emptyList();
-                        if (FeedPreferences.TAG_ROOT.equals(tagAdapter.getSelectedTag())) {
+                        String selectedTag = getSelectedTag();
+                        if (FeedPreferences.TAG_ROOT.equals(selectedTag)) {
                             openedFolderFeeds = result.first.feeds;
                         } else {
                             boolean tagExists = false;
                             for (NavDrawerData.TagItem tag : result.first.tags) { // Filtered list
-                                if (tag.getTitle().equals(tagAdapter.getSelectedTag())) {
+                                if (tag.getTitle().equals(selectedTag)) {
                                     openedFolderFeeds = tag.getFeeds();
                                     tagExists = true;
                                     break;
                                 }
                             }
                             if (!tagExists) {
-                                tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
+                                setSelectedTag(FeedPreferences.TAG_ROOT);
                                 openedFolderFeeds = result.first.feeds;
                             }
                         }
@@ -411,36 +412,23 @@ public class SubscriptionFragment extends Fragment
                             restoreScrollPosition(scrollPosition);
                         }
                         emptyView.updateVisibility();
-                        shouldShowTags = false;
-                        if (tagAdapter != null) {
-                            tagAdapter.setTags(result.second);
-                            for (NavDrawerData.TagItem tag : result.second) {
-                                if (!FeedPreferences.TAG_ROOT.equals(tag.getTitle())
-                                        && !FeedPreferences.TAG_UNTAGGED.equals(tag.getTitle())) {
-                                    shouldShowTags = true;
-                                    break;
-                                }
+                        if (tagSpinnerAdapter != null) {
+                            tagSpinnerAdapter.setTags(result.second, result.first.feedCounters);
+                            // Always show spinner if we have tags (including just All/Untagged)
+                            boolean shouldShowTags = result.second != null && result.second.size() > 0;
+                            tagsSpinner.setVisibility(shouldShowTags ? View.VISIBLE : View.GONE);
+
+                            String tagToSelect = stateToShow == Feed.STATE_SUBSCRIBED
+                                    ? prefs.getString(PREF_LAST_TAG, FeedPreferences.TAG_ROOT)
+                                    : FeedPreferences.TAG_ROOT;
+                            int position = tagSpinnerAdapter.getPositionForTag(tagToSelect);
+                            // Only set selection on first load
+                            if (!hasInitializedSpinner) {
+                                hasInitializedSpinner = true;
+                                isUserSelecting = false;
+                                tagsSpinner.setSelection(position);
+                                isUserSelecting = true;
                             }
-                            tagsRecycler.setVisibility(shouldShowTags ? View.VISIBLE : View.GONE);
-                            // Scroll to center the selected tag
-                            tagsRecycler.post(() -> {
-                                int selectedPosition = tagAdapter.getSelectedTagPosition();
-                                if (selectedPosition < 0) {
-                                    return;
-                                }
-                                LinearLayoutManager layoutManager =
-                                        (LinearLayoutManager) tagsRecycler.getLayoutManager();
-                                // Calculate offset to center the selected chip
-                                View selectedView = layoutManager.findViewByPosition(selectedPosition);
-                                if (selectedView != null) {
-                                    int recyclerWidth = tagsRecycler.getWidth();
-                                    int chipWidth = selectedView.getWidth();
-                                    int offset = (recyclerWidth - chipWidth) / 2;
-                                    layoutManager.scrollToPositionWithOffset(selectedPosition, offset);
-                                } else {
-                                    tagsRecycler.scrollToPosition(selectedPosition);
-                                }
-                            });
                         }
                     }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
@@ -463,21 +451,31 @@ public class SubscriptionFragment extends Fragment
     }
 
     private boolean onTagContextItemSelected(MenuItem item) {
-        NavDrawerData.TagItem selectedTag = tagAdapter.getLongPressedItem();
-        if (selectedTag == null) {
-            return false;
-        }
-        return TagMenuHandler.onMenuItemClicked(this, selectedTag, item, tagAdapter);
+        return false;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
+        String currentSelection = tagSpinnerAdapter != null && tagsSpinner.getSelectedItemPosition() >= 0
+                ? tagSpinnerAdapter.getTagAtPosition(tagsSpinner.getSelectedItemPosition())
+                : FeedPreferences.TAG_ROOT;
         loadSubscriptionsAndTags();
+        // Restore user's selection after reload
+        if (!FeedPreferences.TAG_ROOT.equals(currentSelection)) {
+            setSelectedTag(currentSelection);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        String currentSelection = tagSpinnerAdapter != null && tagsSpinner.getSelectedItemPosition() >= 0
+                ? tagSpinnerAdapter.getTagAtPosition(tagsSpinner.getSelectedItemPosition())
+                : FeedPreferences.TAG_ROOT;
         loadSubscriptionsAndTags();
+        // Restore user's selection after reload
+        if (!FeedPreferences.TAG_ROOT.equals(currentSelection)) {
+            setSelectedTag(currentSelection);
+        }
     }
 
     private void setCollapsingToolbarFlags(int flags) {
@@ -490,7 +488,7 @@ public class SubscriptionFragment extends Fragment
     public void onEndSelectMode() {
         floatingSelectMenu.setVisibility(View.GONE);
         subscriptionAddButton.setVisibility(View.VISIBLE);
-        tagsRecycler.setVisibility(shouldShowTags ? View.VISIBLE : View.GONE);
+        tagsSpinner.setVisibility(tagSpinnerAdapter.getCount() > 1 ? View.VISIBLE : View.GONE);
         updateFilterVisibility();
         setCollapsingToolbarFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                 | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
@@ -501,7 +499,7 @@ public class SubscriptionFragment extends Fragment
     public void onStartSelectMode() {
         floatingSelectMenu.setVisibility(View.VISIBLE);
         subscriptionAddButton.setVisibility(View.GONE);
-        tagsRecycler.setVisibility(shouldShowTags ? View.INVISIBLE : View.GONE);
+        tagsSpinner.setVisibility(tagSpinnerAdapter.getCount() > 1 ? View.INVISIBLE : View.GONE);
         updateFilterVisibility();
         setCollapsingToolbarFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                 | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
@@ -521,5 +519,19 @@ public class SubscriptionFragment extends Fragment
         }
         LinearLayoutManager layoutManager = (LinearLayoutManager) subscriptionRecycler.getLayoutManager();
         layoutManager.scrollToPositionWithOffset(scrollPosition.first, scrollPosition.second);
+    }
+
+    private String getSelectedTag() {
+        if (tagsSpinner.getSelectedItem() != null) {
+            return ((NavDrawerData.TagItem) tagsSpinner.getSelectedItem()).getTitle();
+        }
+        return FeedPreferences.TAG_ROOT;
+    }
+
+    private void setSelectedTag(String tag) {
+        int position = tagSpinnerAdapter.getPositionForTag(tag);
+        isUserSelecting = false; // Reset flag before programmatic selection
+        tagsSpinner.setSelection(position);
+        isUserSelecting = true; // Enable user selection after programmatic selection
     }
 }
