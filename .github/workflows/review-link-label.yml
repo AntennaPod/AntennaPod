@@ -1,0 +1,15 @@
+name: Label issues with comments containing review links
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  add_label:
+    name: Add label
+    if: ${{ contains(github.event.comment.body, 'https://play.google.com/apps/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod&reviewid=') || contains(github.event.comment.body, 'https://play.google.com/console/u/0/developers/8008695526664634386/app/4974638472012894302/user-feedback/review-details?reviewId=') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: 'Needs: Review reply'
