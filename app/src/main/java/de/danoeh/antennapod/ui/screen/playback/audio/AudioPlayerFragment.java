@@ -23,19 +23,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
-import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
-import de.danoeh.antennapod.ui.chapters.ChapterUtils;
-import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
-import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
-import de.danoeh.antennapod.ui.screen.playback.MediaPlayerErrorDialog;
-import de.danoeh.antennapod.ui.screen.playback.PlayButton;
-import de.danoeh.antennapod.ui.screen.playback.SleepTimerDialog;
-import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
-import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -47,8 +34,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.ui.common.Converter;
-import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
 import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -57,15 +42,31 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
-import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import io.reactivex.rxjava3.core.Maybe;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.chapters.ChapterUtils;
+import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
+import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
+import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
+import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
+import de.danoeh.antennapod.ui.screen.playback.MediaPlayerErrorDialog;
+import de.danoeh.antennapod.ui.screen.playback.PlayButton;
+import de.danoeh.antennapod.ui.screen.playback.SleepTimerDialog;
+import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
+import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -361,7 +362,6 @@ public class AudioPlayerFragment extends Fragment implements
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());
-        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
         @Nullable Playable media = controller.getMedia();
         if (media != null) {
             currentChapterIndex = Chapter.getAfterPosition(media.getChapters(), currentPosition);
@@ -374,15 +374,34 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         txtvPosition.setContentDescription(getString(R.string.position,
                 Converter.getDurationStringLocalized(getContext(), currentPosition)));
-        showTimeLeft = UserPreferences.shouldShowRemainingTime();
+
+        int remainingTime = converter.convert(Math.max(event.getDuration() - event.getPosition(), 0));
+        final boolean endingThisEpisode = controller.isSleepTimerEndingThisEpisode(remainingTime);
+
+        showTimeLeft = UserPreferences.shouldShowRemainingTime() || controller.sleepTimerActive();
+        final String endingSymbol = endingThisEpisode ? "⏲" : "-";
+
         if (showTimeLeft) {
+            int remainingSleepTime = Math.toIntExact(controller.getSleepTimerTimeLeft().getMillisValue());
+            if (remainingSleepTime > 0) {
+                remainingTime = Math.min(remainingSleepTime, remainingTime);
+            }
+
             txtvLength.setContentDescription(getString(R.string.remaining_time,
                     Converter.getDurationStringLocalized(getContext(), remainingTime)));
-            txtvLength.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
+            txtvLength.setText(((remainingTime > 0) ? endingSymbol : "")
+                    + Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setContentDescription(getString(R.string.chapter_duration,
                     Converter.getDurationStringLocalized(getContext(), duration)));
             txtvLength.setText(Converter.getDurationStringLong(duration));
+        }
+        if (controller.sleepTimerActive()) {
+            txtvLength.setTextColor(
+                    ThemeUtils.getColorFromAttr(requireContext(), android.R.attr.colorActivatedHighlight));
+        } else {
+            txtvLength.setTextColor(
+                    ThemeUtils.getColorFromAttr(requireContext(), android.R.attr.textColorSecondary));
         }
 
         if (!sbPosition.isPressed()) {
