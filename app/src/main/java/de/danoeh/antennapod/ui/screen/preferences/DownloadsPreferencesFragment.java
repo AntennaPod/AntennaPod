@@ -3,8 +3,12 @@ package de.danoeh.antennapod.ui.screen.preferences;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.preference.PreferenceManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.storage.databasemaintenanceservice.MediaRelocationWorker;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.preferences.screen.downloads.ChooseDataFolderDialog;
@@ -18,6 +22,7 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
     private static final String PREF_SCREEN_AUTO_DELETE = "prefAutoDeleteScreen";
     private static final String PREF_PROXY = "prefProxy";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
+    private static final String PREF_RELOCATE_MEDIA = "prefRelocateMedia";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -66,6 +71,10 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
             });
             return true;
         });
+        findPreference(PREF_RELOCATE_MEDIA).setOnPreferenceClickListener(preference -> {
+            showRelocateMediaDialog();
+            return true;
+        });
         setDataFolderText();
     }
 
@@ -74,6 +83,22 @@ public class DownloadsPreferencesFragment extends AnimatedPreferenceFragment
         if (f != null) {
             findPreference(PREF_CHOOSE_DATA_DIR).setSummary(f.getAbsolutePath());
         }
+    }
+
+    private void showRelocateMediaDialog() {
+        new MaterialAlertDialogBuilder(getContext())
+                .setTitle(R.string.relocate_media_dialog_title)
+                .setMessage(R.string.relocate_media_dialog_message)
+                .setPositiveButton(R.string.relocate_media_button, (dialog, which) -> startMediaRelocation())
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
+    }
+
+    private void startMediaRelocation() {
+        MediaRelocationWorker.enqueue(getContext());
+        // Show toast or snackbar to indicate process started
+        android.widget.Toast.makeText(getContext(), R.string.relocating_media_progress,
+                android.widget.Toast.LENGTH_SHORT).show();
     }
 
     @Override

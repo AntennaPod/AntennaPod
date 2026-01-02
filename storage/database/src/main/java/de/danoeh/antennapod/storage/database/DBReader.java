@@ -549,6 +549,31 @@ public final class DBReader {
         }
     }
 
+    public static List<FeedMedia> getAllMediaWithLocalFileUrl() {
+        List<FeedMedia> result = new ArrayList<>();
+        int offset = 0;
+        final int pageSize = 20;
+        
+        while (true) {
+            List<FeedItem> batch = getEpisodes(offset, pageSize, 
+                new FeedItemFilter(FeedItemFilter.unfiltered()), SortOrder.DATE_NEW_OLD);
+            
+            if (batch.isEmpty()) {
+                break;
+            }
+            
+            for (FeedItem item : batch) {
+                if (item.getMedia() != null && item.getMedia().getLocalFileUrl() != null) {
+                    result.add(item.getMedia());
+                }
+            }
+            
+            offset += pageSize;
+        }
+        
+        return result;
+    }
+
     public static List<FeedItem> getFeedItemsWithUrl(List<String> urls) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

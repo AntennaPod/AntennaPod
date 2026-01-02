@@ -43,7 +43,9 @@ public class PlayActionButton extends ItemActionButton {
         if (!media.fileExists()) {
             Log.i(TAG, "Missing episode. Will update the database now.");
             media.setDownloaded(false, 0);
-            media.setLocalFileUrl(null);
+            // do not delete the setLocalFileUrl. I could be temporary not available
+            // e.g. remove the sd card, try to play, insert sd card again: media.setLocalFileUrl(null);
+            // to be able to recover it, we need the filename in the database
             DBWriter.setFeedMedia(media);
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));

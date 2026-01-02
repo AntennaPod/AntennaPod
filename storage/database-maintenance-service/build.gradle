@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+    implementation project(':model')
     implementation project(':storage:database')
     implementation project(':ui:notifications')
 
