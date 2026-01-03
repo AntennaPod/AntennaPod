@@ -299,7 +299,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         Feed selectedFeedItem  = adapterFeeds.getLongPressedItem();
         if (selectedFeedItem != null
-                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem, () -> { })) {
+                && FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedFeedItem)) {
             return true;
         }
         FeedItem selectedItem = adapter.getLongPressedItem();

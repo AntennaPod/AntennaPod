@@ -416,8 +416,6 @@
     <string name="pref_smart_mark_as_played_disabled">Desactivat</string>
     <string name="documentation_support">Documentació i suport</string>
     <string name="visit_user_forum">Fòrum d\'usuaris</string>
-    <string name="bug_report_title">Informa d\'un bug</string>
-    <string name="open_bug_tracker">Obri rastrejador de bugs</string>
     <string name="copy_to_clipboard">Còpia al porta-retalls</string>
     <string name="copied_to_clipboard">Copiat al porta-retalls</string>
     <string name="pref_proxy_title">Servidor intermediari</string>

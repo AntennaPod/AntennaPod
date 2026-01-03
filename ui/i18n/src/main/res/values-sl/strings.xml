@@ -397,8 +397,6 @@
     <string name="pref_smart_mark_as_played_disabled">Onemogočeno</string>
     <string name="documentation_support">Dokumentacija in podpora</string>
     <string name="visit_user_forum">Uporabniški forum</string>
-    <string name="bug_report_title">Prijavi hrošča</string>
-    <string name="open_bug_tracker">Odprite sledilnik hroščev</string>
     <string name="copy_to_clipboard">Kopiraj v odložišče</string>
     <string name="copied_to_clipboard">Kopirano v odložišče</string>
     <string name="pref_proxy_title">Proxy</string>

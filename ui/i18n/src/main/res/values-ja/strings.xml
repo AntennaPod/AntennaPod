@@ -386,8 +386,6 @@
     <string name="pref_smart_mark_as_played_disabled">無効</string>
     <string name="documentation_support">ドキュメントとサポート</string>
     <string name="visit_user_forum">ユーザーフォーラム</string>
-    <string name="bug_report_title">バグを報告</string>
-    <string name="open_bug_tracker">バグトラッカーを開く</string>
     <string name="copy_to_clipboard">クリップボードにコピー</string>
     <string name="copied_to_clipboard">クリップボードにコピーしました</string>
     <string name="pref_proxy_title">プロキシ</string>
