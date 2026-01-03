@@ -46,7 +46,7 @@ public class LicensesFragment extends ListFragment {
 
         licensesLoader = Single.create((SingleOnSubscribe<ArrayList<LicenseItem>>) emitter -> {
             licenses.clear();
-            InputStream stream = getContext().getAssets().open("licenses.xml");
+            try (InputStream stream = getContext().getAssets().open("licenses.xml")) {
             DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             NodeList libraryList = docBuilder.parse(stream).getElementsByTagName("library");
             for (int i = 0; i < libraryList.getLength(); i++) {
@@ -61,6 +61,9 @@ public class LicensesFragment extends ListFragment {
                         lib.getNamedItem("licenseText").getTextContent()));
             }
             emitter.onSuccess(licenses);
+	    } catch (Exception e) {
+		    emitter.onError(e);
+	    }
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -100,9 +103,8 @@ public class LicensesFragment extends ListFragment {
     }
 
     private void showLicenseText(String licenseTextFile) {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open(licenseTextFile), "UTF-8"));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    getContext().getAssets().open(licenseTextFile), "UTF-8"))) {
             StringBuilder licenseText = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
