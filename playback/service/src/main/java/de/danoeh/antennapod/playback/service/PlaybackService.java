@@ -314,6 +314,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Service is about to be destroyed");
         disableSleepTimer();
 
+        // Only release media session if playback is stopped and notification is not visible
+        PlayerStatus status = mediaPlayer != null ? mediaPlayer.getPlayerStatus() : null;
+        if (status != PlayerStatus.PLAYING && status != PlayerStatus.PAUSED && status != PlayerStatus.PREPARED) {
+            Log.d(TAG, "Releasing media session as playback is stopped and notification is not visible");
+            if (mediaSession != null) {
+                mediaSession.release();
+                mediaSession = null;
+            }
+        } else {
+            Log.d(TAG, "Not releasing media session as playback is ongoing or paused");
+        }
+
         if (notificationBuilder.getPlayerStatus() == PlayerStatus.PLAYING) {
             notificationBuilder.setPlayerStatus(PlayerStatus.STOPPED);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -522,13 +534,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "OnStartCommand called");
 
-        stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
+        // Always (re)activate the media session if needed
+        recreateMediaSessionIfNeeded();
+
+        // Always (re)show the notification if playback is ongoing or paused
+        PlayerStatus status = mediaPlayer != null ? mediaPlayer.getPlayerStatus() : null;
+        if (status == PlayerStatus.PLAYING || status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
+            Log.d(TAG, "Ensuring notification is visible and service is foreground");
+            stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
+        }
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(R.id.notification_streaming_confirmation);
 
         if ((flags & Service.START_FLAG_REDELIVERY) != 0 || intent == null) {
-            Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
-            stateManager.stopForeground(true);
+            Log.d(TAG, "onStartCommand is a redelivered intent, ensuring notification and session are restored.");
+            // Do not stopForeground here, just ensure notification and session are up
             return Service.START_NOT_STICKY;
         }
 
@@ -1599,10 +1619,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (state != -1) {
                     if (state == UNPLUGGED) {
                         Log.d(TAG, "Headset was unplugged during playback.");
-                    } else if (state == PLUGGED) {
+                      } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
                         unpauseIfPauseOnDisconnect(false);
-                    }
+                      }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
                 }
