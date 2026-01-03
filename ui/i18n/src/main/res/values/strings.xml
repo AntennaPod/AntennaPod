@@ -30,6 +30,15 @@
     <string name="subscriptions_label_short">Subscriptions</string>
     <string name="subscriptions_list_label">Subscriptions list</string>
     <string name="cancel_download_label">Cancel download</string>
+    <string name="move_existing_files">Move existing downloaded files to new location</string>
+    <string name="force_move_insufficient_space">Move files even if insufficient space on destination</string>
+    <string name="move_files_dialog_title">Move Files</string>
+    <string name="move_files_dialog_message">This will move all downloaded files to the new location. This may take some time.</string>
+    <string name="move_files_button">Move</string>
+    <string name="migration_failed">Migration failed. Please check available storage space.</string>
+
+
+
     <string name="playback_history_label">Playback history</string>
     <string name="playback_history_label_short">History</string>
     <string name="years_statistics_label">Years</string>

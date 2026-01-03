@@ -239,7 +239,7 @@ public class PlaybackTest {
 
         FeedMedia media = episodes.get(0).getMedia();
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
-                () -> media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+                () -> media != null && media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
     }
 
     /**
