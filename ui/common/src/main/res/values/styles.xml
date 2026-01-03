@@ -276,15 +276,13 @@
     </style>
 
     <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@style/TextAppearance.Material3.BodyLarge">
-        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
         <item name="lineHeight">20sp</item>
         <item name="android:lineHeight" tools:targetApi="p">20sp</item>
     </style>
 
-    <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@style/TextAppearance.Material3.BodyMedium">
-        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    <style name="AntennaPod.TextView.ListItemSecondaryTitle" parent="@style/TextAppearance.Material3.LabelSmall">
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
