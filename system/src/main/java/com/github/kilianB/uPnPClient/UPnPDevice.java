@@ -1,5 +1,15 @@
 package com.github.kilianB.uPnPClient;
 
+import com.github.kilianB.DaemonThread;
+import com.github.kilianB.NetworkUtil;
+import com.github.kilianB.StringUtil;
+import com.github.kilianB.sonos.ParserHelper;
+
+import org.apache.commons.text.StringEscapeUtils;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,21 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
-
-import org.apache.commons.text.StringEscapeUtils;
-import org.jdom2.Document;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-
-import com.github.kilianB.DaemonThread;
-import com.github.kilianB.DaemonThreadFactory;
-import com.github.kilianB.NetworkUtil;
-import com.github.kilianB.StringUtil;
-import com.github.kilianB.sonos.ParserHelper;
 
 /**
  * A UPnPDevice represents a single physical device. The class is used to
@@ -100,7 +97,6 @@ public class UPnPDevice {
 		// Register shutdown hook to gracefully close socket connections and unsubscribe
 		// from UPnP Events
 		Runtime.getRuntime().addShutdownHook(handleShutdown);
-
 	}
 
 	/**

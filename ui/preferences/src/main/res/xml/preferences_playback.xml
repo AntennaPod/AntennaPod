@@ -37,7 +37,7 @@
             android:title="@string/pref_sonos"/>
         <SwitchPreferenceCompat
             android:defaultValue="false"
-            android:enabled="false"
+            android:enabled="true"
             android:key="prefSonosPlaybackEnabled"
             android:summary="@string/pref_sonosPlaybackEnabled_sum"
             android:title="@string/pref_sonosPlaybackEnabled_title"/>

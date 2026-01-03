@@ -481,7 +481,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
     @Override
     public void reinit() {
-        if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
+        if(UserPreferences.isSonosPlaybackEnabled() && SonosSystem.selectedDevice.isPresent()) {
             releaseWifiLockIfNecessary();
             SonosDevice device = SonosSystem.selectedDevice.get();
 
@@ -560,7 +560,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
-            if(SonosSystem.selectedDevice.isPresent() && UserPreferences.isSonosPlaybackEnabled()) {
+            if(UserPreferences.isSonosPlaybackEnabled() && SonosSystem.selectedDevice.isPresent()) {
                 SonosDevice device = SonosSystem.selectedDevice.get();
                 TrackInfo ti = null;
                 try {

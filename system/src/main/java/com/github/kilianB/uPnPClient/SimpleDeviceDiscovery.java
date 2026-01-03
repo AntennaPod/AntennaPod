@@ -88,7 +88,13 @@ public class SimpleDeviceDiscovery {
 		DatagramSocket udpSocket = new DatagramSocket();
 		// devices
 		udpSocket.setSoTimeout(timeout * 1000);
-		udpSocket.send(discoveryRequest);
+        try {
+            udpSocket.send(discoveryRequest);
+        }
+        catch(IOException ioexception) {
+            ioexception.printStackTrace();
+            throw ioexception;
+        }
 
 		// Work with response
 		long startTime = System.currentTimeMillis();
@@ -101,6 +107,7 @@ public class SimpleDeviceDiscovery {
 			try {
 				udpSocket.receive(incommingPacket);
 			} catch (SocketTimeoutException timeouted) {
+                timeouted.printStackTrace();
 				break;
 			}
 
