@@ -146,10 +146,6 @@ public class BottomNavigation {
     public void onItemSelected(@IdRes int itemId) {
     }
 
-    // Called when an already-selected bottom nav item is pressed again.
-    public void onItemReselected(@IdRes int itemId) {
-    }
-
     public void hide() {
         bottomNavigationView.setVisibility(View.GONE);
     }
