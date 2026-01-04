@@ -26,25 +26,25 @@ public class TranslatorsFragment extends ListFragment {
         getListView().setSelector(android.R.color.transparent);
 
         translatorsLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
-            ArrayList<SimpleIconListAdapter.ListItem> translators = new ArrayList<>();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("translators.csv"), "UTF-8"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] info = line.split(";");
-                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null));
-            }
-            emitter.onSuccess(translators);
-		    } catch (Exception e) {
-			    emitter.onError(e);
-		    }
-        })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(
-                translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),
-                error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
-        );
+                    ArrayList<SimpleIconListAdapter.ListItem> translators = new ArrayList<>();
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                            getContext().getAssets().open("translators.csv"), "UTF-8"))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            String[] info = line.split(";");
+                            translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null));
+                        }
+                        emitter.onSuccess(translators);
+                    } catch (Exception e) {
+                        emitter.onError(e);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),
+                        error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
+                );
 
     }
 
