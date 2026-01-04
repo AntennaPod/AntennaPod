@@ -1,5 +1,4 @@
 <resources>
-    <string name="scroll_up">Scroll to playing item (up)</string>
-    <string name="scroll_down">Scroll to playing item (down)</string>
+    <string name="scroll_to_playing_item">Scroll to playing item</string>
 </resources>
 

@@ -71,7 +71,7 @@
         android:layout_marginBottom="24dp"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
-        android:contentDescription="@string/scroll_up"
+        android:contentDescription="@string/scroll_to_playing_item"
         app:srcCompat="@drawable/ic_arrow_up" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -83,7 +83,7 @@
         android:layout_marginBottom="24dp"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
-        android:contentDescription="@string/scroll_down"
+        android:contentDescription="@string/scroll_to_playing_item"
         app:srcCompat="@drawable/ic_arrow_down" />
 
 </RelativeLayout>
