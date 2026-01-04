@@ -30,25 +30,25 @@ public class SpecialThanksFragment extends ListFragment {
         getListView().setDivider(null);
 
         translatorsLoader = Single.create((SingleOnSubscribe<ArrayList<SpecialMemberItem>>) emitter -> {
-                    specialMembers.clear();
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                            getContext().getAssets().open("special_thanks.csv"), "UTF-8"))) {
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            String[] info = line.split(";");
-                            specialMembers.add(new SpecialMemberItem(info[0], info[1], info[2], info[3]));
-                        }
-                        emitter.onSuccess(specialMembers);
-                    } catch (Exception e) {
-                        emitter.onError(e);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),
-                        error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
-                );
+            specialMembers.clear();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    getContext().getAssets().open("special_thanks.csv"), "UTF-8"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] info = line.split(";");
+                    specialMembers.add(new SpecialMemberItem(info[0], info[1], info[2], info[3]));
+                }
+                emitter.onSuccess(specialMembers);
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+                translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),
+                error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
+        );
     }
 
     private static class SpecialMemberItem extends SimpleIconListAdapter.ListItem {

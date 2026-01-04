@@ -45,33 +45,32 @@ public class LicensesFragment extends ListFragment {
         getListView().setDivider(null);
 
         licensesLoader = Single.create((SingleOnSubscribe<ArrayList<LicenseItem>>) emitter -> {
-                    licenses.clear();
-                    try (InputStream stream = getContext().getAssets().open("licenses.xml")) {
-                        DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                        NodeList libraryList = docBuilder.parse(stream).getElementsByTagName("library");
-                        for (int i = 0; i < libraryList.getLength(); i++) {
-                            NamedNodeMap lib = libraryList.item(i).getAttributes();
-                            licenses.add(new LicenseItem(
-                                    lib.getNamedItem("name").getTextContent(),
-                                    String.format("By %s, %s license",
-                                            lib.getNamedItem("author").getTextContent(),
-                                            lib.getNamedItem("license").getTextContent()),
-                                    null,
-                                    lib.getNamedItem("website").getTextContent(),
-                                    lib.getNamedItem("licenseText").getTextContent()));
-                        }
-                        emitter.onSuccess(licenses);
-                    } catch (Exception e) {
-                        emitter.onError(e);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        developers -> setListAdapter(new SimpleIconListAdapter<LicenseItem>(getContext(), developers)),
-                        error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
-                );
-
+            licenses.clear();
+            try (InputStream stream = getContext().getAssets().open("licenses.xml")) {
+                DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                NodeList libraryList = docBuilder.parse(stream).getElementsByTagName("library");
+                for (int i = 0; i < libraryList.getLength(); i++) {
+                    NamedNodeMap lib = libraryList.item(i).getAttributes();
+                    licenses.add(new LicenseItem(
+                            lib.getNamedItem("name").getTextContent(),
+                            String.format("By %s, %s license",
+                            lib.getNamedItem("author").getTextContent(),
+                            lib.getNamedItem("license").getTextContent()),
+                            null,
+                            lib.getNamedItem("website").getTextContent(),
+                            lib.getNamedItem("licenseText").getTextContent()));
+                }
+                emitter.onSuccess(licenses);
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+                developers -> setListAdapter(new SimpleIconListAdapter<LicenseItem>(getContext(), developers)),
+                error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
+        );
     }
 
     private static class LicenseItem extends SimpleIconListAdapter.ListItem {
