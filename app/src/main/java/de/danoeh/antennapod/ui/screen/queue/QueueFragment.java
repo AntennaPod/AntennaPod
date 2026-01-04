@@ -571,9 +571,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             }
             int firstVisible = lm.findFirstVisibleItemPosition();
             int lastVisible = lm.findLastVisibleItemPosition();
-            if (scrollUp && target < firstVisible) {
-                recyclerView.smoothScrollToPosition(target);
-            } else if (!scrollUp && target > lastVisible) {
+            if (target < firstVisible || target > lastVisible) {
                 recyclerView.smoothScrollToPosition(target);
             }
         });
