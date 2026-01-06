@@ -83,10 +83,19 @@
                 box-shadow: none;
                 text-align: left;
             }
+            .cropped-img {
+                width: 70px;
+                height: 100px;
+                object-fit: cover;
+                object-position: center;
+            }
+            .wrapped-white-space {
+                white-space: pre-wrap;
+            }
         </style>
     </head>
     <body>
-        <img src="https://antennapod.org/assets/img/antennapod-logo.png" style="width: 70px; height: 100px; object-fit: cover; object-position: center;"/><span style="white-space: pre-wrap;">  </span>
+        <img src="https://antennapod.org/assets/img/antennapod-logo.png" class="cropped-img"/><span class="wrapped-white-space"> </span>
         <h1>AntennaPod {TITLE}</h1>
         <ul>
             {FEEDS}
