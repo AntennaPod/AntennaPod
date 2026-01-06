@@ -16,10 +16,21 @@ jobs:
             const issueRegex = /#\d+/i;
             if (issueRegex.test(context.payload.pull_request.title)) {
               core.setFailed("Please mention the issue number in the PR description, not in the title. Make sure to write 'closes #<number>'.");
+              return;
             }
 
-            const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved):?\s+#\d+/i;
+            const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\s+#\d+/i;
             if (issueRegex.test(context.payload.pull_request.body) && !closingRegex.test(context.payload.pull_request.body)) {
               core.setFailed("The PR description must contain 'closes #<number>' to link to the issue that it closes.");
+              return;
+            }
+
+            const bodyLines = (context.payload.pull_request.body || "").split(/\r?\n/);
+            const checklistIndex = bodyLines.map(l => l.includes("https://antennapod.org")).lastIndexOf(true);
+            if (checklistIndex === -1) {
+              core.setFailed("It looks like you did not follow the PR template. The checklist from the template is missing or incomplete.");
+              return;
+            } else if (bodyLines.length - checklistIndex - 1 > 5) {
+              core.setFailed("It looks like you did not follow the PR template. Please add your description above the checklist, not below.");
               return;
             }
