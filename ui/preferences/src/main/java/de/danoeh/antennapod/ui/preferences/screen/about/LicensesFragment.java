@@ -54,8 +54,8 @@ public class LicensesFragment extends ListFragment {
                     licenses.add(new LicenseItem(
                             lib.getNamedItem("name").getTextContent(),
                             String.format("By %s, %s license",
-                            lib.getNamedItem("author").getTextContent(),
-                            lib.getNamedItem("license").getTextContent()),
+                                    lib.getNamedItem("author").getTextContent(),
+                                    lib.getNamedItem("license").getTextContent()),
                             null,
                             lib.getNamedItem("website").getTextContent(),
                             lib.getNamedItem("licenseText").getTextContent()));
