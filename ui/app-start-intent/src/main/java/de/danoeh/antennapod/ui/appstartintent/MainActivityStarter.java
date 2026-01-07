@@ -28,6 +28,7 @@ public class MainActivityStarter {
         this.context = context;
         intent = new Intent(INTENT);
         intent.setPackage(context.getPackageName());
+        intent.putExtra(EXTRA_CLEAR_BACK_STACK, false);
     }
 
     public Intent getIntent() {
