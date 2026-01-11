@@ -58,13 +58,17 @@ public class FeedDiscoverAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
 
-
         final PodcastSearchResult podcast = getItem(position);
         holder.imageView.setContentDescription(podcast.title);
+        String imageUrl = podcast.imageUrl;
+        if (context.getSharedPreferences("MainActivityPrefs", Context.MODE_PRIVATE)
+                .getBoolean("screenshot_mode", false)) {
+            imageUrl = "https://picsum.photos/400/400?random=" + position;
+        }
 
         float radius = 8 * context.getResources().getDisplayMetrics().density;
         Glide.with(context)
-                .load(podcast.imageUrl)
+                .load(imageUrl)
                 .apply(new RequestOptions()
                         .placeholder(ImagePlaceholder.getDrawable(context, radius))
                         .transform(new FitCenter(), new RoundedCorners((int) radius))

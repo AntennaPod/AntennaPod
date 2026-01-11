@@ -680,7 +680,7 @@ public class MainActivity extends CastEnabledActivity {
             long feedId = intent.getLongExtra(MainActivityStarter.EXTRA_FEED_ID, 0);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (feedId > 0) {
-                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, true)) {
                     loadFeedFragmentById(feedId, args);
                 } else {
                     loadChildFragment(FeedItemlistFragment.newInstance(feedId));
@@ -691,7 +691,7 @@ public class MainActivity extends CastEnabledActivity {
             String tag = intent.getStringExtra(MainActivityStarter.EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (tag != null) {
-                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, false)) {
+                if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, true)) {
                     loadFragment(tag, null);
                 } else {
                     loadChildFragment(createFragmentInstance(tag, args), TransitionEffect.NONE, tag);

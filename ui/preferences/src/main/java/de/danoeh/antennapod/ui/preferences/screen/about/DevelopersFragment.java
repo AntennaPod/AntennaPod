@@ -30,15 +30,18 @@ public class DevelopersFragment extends ListFragment {
 
         developersLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
             developers.clear();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("developers.csv"), "UTF-8"));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] info = line.split(";");
-                developers.add(new SimpleIconListAdapter.ListItem(info[0], info[2],
-                        "https://avatars2.githubusercontent.com/u/" + info[1] + "?s=60&v=4"));
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    getContext().getAssets().open("developers.csv"), "UTF-8"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] info = line.split(";");
+                    developers.add(new SimpleIconListAdapter.ListItem(info[0], info[2],
+                            "https://avatars2.githubusercontent.com/u/" + info[1] + "?s=60&v=4"));
+                }
+                emitter.onSuccess(developers);
+            } catch (Exception e) {
+                emitter.onError(e);
             }
-            emitter.onSuccess(developers);
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
