@@ -867,6 +867,8 @@
     <string name="search_fyyd_label">Search fyyd</string>
     <string name="add_podcast_by_url">Add podcast by RSS address</string>
     <string name="rss_address">RSS address</string>
+    <string name="rss_address_empty">Please provide a RSS address</string>
+    <string name="rss_address_not_url">The RSS address you entered is not a valid URL.</string>
     <string name="discover">Discover</string>
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>

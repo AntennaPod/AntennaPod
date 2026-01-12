@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import androidx.core.widget.NestedScrollView;
@@ -46,6 +49,7 @@ import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
@@ -145,10 +149,24 @@ public class AddFeedFragment extends Fragment {
             }
         }
         builder.setView(dialogBinding.getRoot());
-        builder.setPositiveButton(R.string.confirm_label,
-                (dialog, which) -> addUrl(dialogBinding.textInput.getText().toString()));
+        builder.setPositiveButton(R.string.confirm_label, null);
         builder.setNegativeButton(R.string.cancel_label, null);
-        builder.show();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((view) -> {
+            Editable inputText = dialogBinding.textInput.getText();
+            if (StringUtils.isBlank(inputText)) {
+                dialogBinding.textInput.setError(getText(R.string.rss_address_empty));
+                return;
+            }
+            if (!inputText.toString().matches(Patterns.WEB_URL.pattern())) {
+                dialogBinding.textInput.setError(getText(R.string.rss_address_not_url));
+                return;
+            }
+            addUrl(inputText.toString());
+            alertDialog.dismiss();
+        });
     }
 
     private void addUrl(String url) {
