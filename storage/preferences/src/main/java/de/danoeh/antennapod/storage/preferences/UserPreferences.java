@@ -606,8 +606,12 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
     }
 
-    public static void setSonosDevice(String device_name) {
-        prefs.edit().putString(PREF_SONOS_DEVICE, device_name).apply();
+    public static void setSonosDevice(String device_ip_address) {
+        prefs.edit().putString(PREF_SONOS_DEVICE, device_ip_address).apply();
+    }
+
+    public static String getSonosDevice() {
+        return prefs.getString(PREF_SONOS_DEVICE, "");
     }
 
     public static boolean isSonosPlaybackEnabled() { return prefs.getBoolean(PREF_ENABLE_SONOS_DEVICE_PLAYBACK, false); }

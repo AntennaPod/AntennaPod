@@ -4,6 +4,7 @@ import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -19,12 +20,14 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.os.Vibrator;
 import android.service.quicksettings.TileService;
 import android.support.v4.media.MediaBrowserCompat;
@@ -107,7 +110,6 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.system.utils.SonosSystem;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
@@ -259,6 +261,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
         recreateMediaSessionIfNeeded();
+
         castStateListener = new CastStateListener(this) {
             @Override
             public void onSessionStartedOrEnded() {
@@ -290,24 +293,69 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         setSessionToken(mediaSession.getSessionToken());
     }
 
+    private class SendSonosPlaybackJob extends AsyncTask<String, Void, String> {
+
+        public SonosPlaybackService player;
+        public PlaybackServiceMediaPlayer.PSMPCallback cb;
+        private Context context;
+        private String ip_address;
+        private Object lock;
+        public SendSonosPlaybackJob(Context context, PlaybackServiceMediaPlayer.PSMPCallback player, String ipaddr, Object lock) {
+            cb = player;
+            this.context = context;
+            ip_address = ipaddr;
+            this.lock = lock;
+        }
+
+        @Override
+        protected String doInBackground(String[] params) {
+            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
+
+            // do above Server call here
+            synchronized (lock) {
+                player = new SonosPlaybackService(context, cb, ip_address);
+                lock.notify();
+            }
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String message) {
+            //process message
+        }
+    }
+
     void recreateMediaPlayer() {
         Playable media = null;
         boolean wasPlaying = false;
         if(UserPreferences.isSonosPlaybackEnabled()) {
-            if(!SonosSystem.selectedDevice.isPresent()) {
-                Log.d(TAG, "Sonos Playback Enabled and Sonos Device not Present or Assigned");
-                EventBus.getDefault().postSticky(new PlayerErrorEvent("Sonos Playback Enabled and Sonos Device not Present or Assigned"));
-            }
-
             if(mediaPlayer != null) {
                 media = mediaPlayer.getPlayable();
                 wasPlaying = mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING;
                 mediaPlayer.pause(true, false);
                 mediaPlayer.shutdown();
-                mediaPlayer = new SonosPlaybackService(this, mediaPlayerCallback);
             }
-            else {
-                mediaPlayer = new SonosPlaybackService(this, mediaPlayerCallback);
+            mediaPlayer = CastPsmp.getInstanceIfConnected(this, mediaPlayerCallback);
+            if (mediaPlayer == null) {
+                String ip_address = UserPreferences.getSonosDevice();
+                if(ip_address.isEmpty()) {
+                    Log.d(TAG, "Sonos Playback Enabled and Sonos Device not Present or Assigned");
+                    EventBus.getDefault().postSticky(new PlayerErrorEvent("Sonos Playback Enabled and Sonos Device not Present or Assigned"));
+                }
+
+                //Activity activity = SonosPlaybackService.getActivity(this);
+                Object lock = new Object();
+                SendSonosPlaybackJob job = new SendSonosPlaybackJob(this, mediaPlayerCallback, ip_address, lock);
+                synchronized (lock) {
+                    job.execute(ip_address);
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                mediaPlayer = job.player;
             }
         }
         else {

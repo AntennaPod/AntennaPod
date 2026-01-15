@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.ui.screen.feed.preferences;
 
 import android.app.Activity;
-import android.os.StrictMode;
+import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.github.kilianB.exception.SonosControllerException;
 import com.github.kilianB.sonos.SonosDevice;
-import com.github.kilianB.sonos.SonosDiscovery;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,6 +20,7 @@ import java.util.Vector;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.playback.service.internal.SonosPlaybackService;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.system.utils.SonosSystem;
 
@@ -32,27 +32,18 @@ public class SonosDevicePreferenceDialog {
     public static void showSonosPreference(Activity activity, TextView textView) {
         int checked = 0;
         Vector<String> choices = new Vector<String>();
-        Vector<SonosDevice> finalDevices = new Vector<SonosDevice>();
+        List<SonosDevice> finalDevices = SonosPlaybackService.discover((Context)activity);
 
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run () {
-                StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
-
-                try {
-                    List<SonosDevice> discovered_devices = SonosDiscovery.discover();
-                    for (int i = 0; i < discovered_devices.size(); i++) {
-                        SonosDevice dev = discovered_devices.get(i);
-                        choices.add(dev.getDeviceName());
-                        finalDevices.add(dev);
-                    }
-                } catch (IOException | SonosControllerException io) {
-                    Log.d(TAG, "Sonos Playback Enabled and Sonos Device not Present or Assigned");
-                    EventBus.getDefault().postSticky(new PlayerErrorEvent("Sonos Playback Enabled and Sonos Device not Present or Assigned"));
-                    io.printStackTrace();
-                }
+        try {
+            for (int i = 0; i < finalDevices.size(); i++) {
+                SonosDevice dev = finalDevices.get(i);
+                choices.add(dev.getDeviceName());
             }
-        });
+        } catch (IOException | SonosControllerException io) {
+            Log.d(TAG, "Sonos Playback Enabled and Sonos Device not Present or Assigned");
+            EventBus.getDefault().postSticky(new PlayerErrorEvent("Sonos Playback Enabled and Sonos Device not Present or Assigned"));
+            io.printStackTrace();
+        }
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
         builder.setTitle("Select Sonos Device");
@@ -69,8 +60,8 @@ public class SonosDevicePreferenceDialog {
                 if(finalDevices != null) {
                     SonosDevice finalDevice = finalDevices.get(choice);
                     SonosSystem.selectedDevice = Optional.of(finalDevice);
+                    UserPreferences.setSonosDevice(finalDevice.getIpAddress());
                 }
-                UserPreferences.setSonosDevice(sonosDeviceName);
                 if (textView != null) {
                     textView.setText(sonosDeviceName);
                 }
