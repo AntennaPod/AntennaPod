@@ -49,7 +49,6 @@ import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
@@ -156,12 +155,8 @@ public class AddFeedFragment extends Fragment {
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((view) -> {
             Editable inputText = dialogBinding.textInput.getText();
-            if (StringUtils.isBlank(inputText)) {
-                dialogBinding.textInput.setError(getText(R.string.rss_address_empty));
-                return;
-            }
             if (!inputText.toString().matches(Patterns.WEB_URL.pattern())) {
-                dialogBinding.textInput.setError(getText(R.string.rss_address_not_url));
+                dialogBinding.textInputLayout.setError(getText(R.string.rss_address_invalid));
                 return;
             }
             addUrl(inputText.toString());
