@@ -47,4 +47,15 @@ public class MetadataReaderTest {
         reader.readInputStream();
         assertEquals("2021.08.13", reader.getComment());
     }
+
+    @Test
+    public void testRealFileFfmpegComment() throws IOException, ID3ReaderException {
+        // "ffmpeg -i in.mp3 -c copy out.mp3" converts the COMM frame to a TXXX frame with description "comment"
+        CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
+                .getResource("ffmpeg-txxx-comment.mp3").openStream());
+        Id3MetadataReader reader = new Id3MetadataReader(inputStream);
+        reader.readInputStream();
+        assertEquals("This is the comment", reader.getComment());
+    }
+
 }

@@ -11,6 +11,8 @@ import java.io.IOException;
  */
 public class Id3MetadataReader extends ID3Reader {
     public static final String FRAME_ID_COMMENT = "COMM";
+    public static final String FRAME_ID_CUSTOM_TEXT = "TXXX";
+    public static final String CUSTOM_TEXT_COMMENT = "comment";
 
     private String comment = null;
 
@@ -28,6 +30,14 @@ public class Id3MetadataReader extends ID3Reader {
             String longDescription = readEncodedString(encoding,
                     (int) (frameHeader.getSize() - (getPosition() - frameStart)));
             comment = shortDescription.length() > longDescription.length() ? shortDescription : longDescription;
+        } else if (FRAME_ID_CUSTOM_TEXT.equals(frameHeader.getId())) {
+            long frameStart = getPosition();
+            int encoding = readByte();
+            String description = readEncodedString(encoding, frameHeader.getSize() - 1);
+            String value = readEncodedString(encoding, (int) (frameHeader.getSize() - (getPosition() - frameStart)));
+            if (CUSTOM_TEXT_COMMENT.equals(description)) {
+                comment = value;
+            }
         } else {
             super.readFrame(frameHeader);
         }
