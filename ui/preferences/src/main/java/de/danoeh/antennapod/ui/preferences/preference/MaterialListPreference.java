@@ -17,6 +17,9 @@ public class MaterialListPreference extends ListPreference {
 
     @Override
     protected void onClick() {
+        if (getOnPreferenceClickListener() != null && getOnPreferenceClickListener().onPreferenceClick(this)) {
+            return;
+        }
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(getTitle());
         builder.setIcon(getDialogIcon());
