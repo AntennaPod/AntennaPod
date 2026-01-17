@@ -64,7 +64,7 @@
                             android:layout_height="48dp"
                             android:layout_gravity="bottom|end"
                             android:layout_margin="4dp"
-                            app:foregroundColor="?attr/colorPrimary" />
+                            app:foregroundColor="?attr/colorOnPrimary" />
 
                         <ImageView
                             android:id="@+id/secondaryActionIcon"

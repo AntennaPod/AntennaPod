@@ -18,7 +18,6 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
-        app:tint="?attr/colorAccent"
         tools:ignore="ContentDescription"
         tools:src="@sample/secondaryaction" />
 
@@ -27,6 +26,6 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        app:foregroundColor="?attr/colorAccent" />
+        app:foregroundColor="?attr/action_icon_color" />
 
 </FrameLayout>
