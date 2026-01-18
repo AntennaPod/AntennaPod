@@ -760,29 +760,6 @@ public class PodDBAdapter {
         }
     }
 
-    /**
-     * Sets the 'read' attribute of the item.
-     *
-     * @param read    must be one of FeedItem.PLAYED, FeedItem.NEW, FeedItem.UNPLAYED
-     * @param itemIds items to change the value of
-     */
-    public void setFeedItemRead(int read, long... itemIds) {
-        try {
-            db.beginTransactionNonExclusive();
-            ContentValues values = new ContentValues();
-            for (long id : itemIds) {
-                values.clear();
-                values.put(KEY_READ, read);
-                db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(id)});
-            }
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-        } finally {
-            db.endTransaction();
-        }
-    }
-
     private void setChapters(FeedItem item) {
         ContentValues values = new ContentValues();
         for (Chapter chapter : item.getChapters()) {

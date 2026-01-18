@@ -77,19 +77,19 @@ public class EpisodeMultiSelectActionHandler {
                 markUnplayed.add(episode.getId());
             }
         }
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, markUnplayed.toArray());
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false,  markUnplayed.toArray());
         showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size());
     }
 
     private void markedCheckedPlayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
-        DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
+        DBWriter.markItemPlayed(FeedItem.PLAYED, true, checkedIds);
         showMessage(R.plurals.marked_as_played_message, checkedIds.length);
     }
 
     private void markedCheckedUnplayed(List<FeedItem> items) {
         long[] checkedIds = getSelectedIds(items);
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, checkedIds);
         showMessage(R.plurals.marked_as_unplayed_message, checkedIds.length);
     }
 

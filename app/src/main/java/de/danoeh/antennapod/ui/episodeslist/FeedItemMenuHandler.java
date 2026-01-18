@@ -270,7 +270,7 @@ public class FeedItemMenuHandler {
         Log.d(TAG, "markReadWithUndo(" + item.getId() + ")");
         // we're marking it as unplayed since the user didn't actually play it
         // but they don't want it considered 'NEW' anymore
-        DBWriter.markItemPlayed(playState, item.getId());
+        DBWriter.markItemPlayed(playState, false, item.getId());
 
         final Handler h = new Handler(fragment.requireContext().getMainLooper());
         final Runnable r = () -> {
@@ -310,7 +310,7 @@ public class FeedItemMenuHandler {
         if (showSnackbar) {
             EventBus.getDefault().post(new MessageEvent(message,
                     context -> {
-                        DBWriter.markItemPlayed(item.getPlayState(), item.getId());
+                        DBWriter.markItemPlayed(item.getPlayState(), false, item.getId());
                         // don't forget to cancel the thing that's going to remove the media
                         h.removeCallbacks(r);
                     }, fragment.getString(R.string.undo)));
