@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -191,32 +192,11 @@ public class FeedItemMenuHandler {
         } else if (menuItemId == R.id.remove_inbox_item) {
             removeNewFlagWithUndo(fragment, selectedItem);
         } else if (menuItemId == R.id.mark_read_item) {
-            selectedItem.setPlayed(true);
-            DBWriter.markItemPlayed(FeedItem.PLAYED, true, selectedItem);
-            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED
-                    && SynchronizationSettings.isProviderConnected()) {
-                FeedMedia media = selectedItem.getMedia();
-                // not all items have media, Gpodder only cares about those that do
-                if (media != null) {
-                    EpisodeAction actionPlay = new EpisodeAction.Builder(selectedItem, EpisodeAction.PLAY)
-                            .currentTimestamp()
-                            .started(media.getDuration() / 1000)
-                            .position(media.getDuration() / 1000)
-                            .total(media.getDuration() / 1000)
-                            .build();
-                    SynchronizationQueue.getInstance().enqueueEpisodeAction(actionPlay);
-                }
-            }
+            new EpisodeMultiSelectActionHandler(fragment.getActivity(), R.id.mark_read_item)
+                    .handleAction(Collections.singletonList(selectedItem));
         } else if (menuItemId == R.id.mark_unread_item) {
-            selectedItem.setPlayed(false);
-            DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, selectedItem);
-            if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null
-                    && selectedItem.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
-                SynchronizationQueue.getInstance().enqueueEpisodeAction(
-                        new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
-                            .currentTimestamp()
-                            .build());
-            }
+            new EpisodeMultiSelectActionHandler(fragment.getActivity(), R.id.mark_unread_item)
+                    .handleAction(Collections.singletonList(selectedItem));
         } else if (menuItemId == R.id.add_to_queue_item) {
             DBWriter.addQueueItem(context, selectedItem);
         } else if (menuItemId == R.id.remove_from_queue_item) {
