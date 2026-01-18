@@ -182,6 +182,16 @@
         </activity>
 
         <activity
+            android:name=".ui.screen.playback.video.Media3VideoPlayerActivity"
+            android:theme="@style/Theme.AntennaPod.Dark"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="de.danoeh.antennapod.intents.VIDEO_PLAYER_MEDIA3" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".ui.screen.onlinefeedview.OnlineFeedViewActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AntennaPod.Splash.Translucent"

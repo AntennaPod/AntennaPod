@@ -31,6 +31,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.media:media:$mediaVersion"
     implementation "androidx.media3:media3-exoplayer:$media3Version"
+    implementation "androidx.media3:media3-session:$media3Version"
     implementation "androidx.media3:media3-ui:$media3Version"
 
     implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
