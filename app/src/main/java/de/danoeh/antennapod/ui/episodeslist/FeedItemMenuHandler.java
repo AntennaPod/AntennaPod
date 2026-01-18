@@ -192,7 +192,7 @@ public class FeedItemMenuHandler {
             removeNewFlagWithUndo(fragment, selectedItem);
         } else if (menuItemId == R.id.mark_read_item) {
             selectedItem.setPlayed(true);
-            DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
+            DBWriter.markItemPlayed(FeedItem.PLAYED, true, selectedItem);
             if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED
                     && SynchronizationSettings.isProviderConnected()) {
                 FeedMedia media = selectedItem.getMedia();
@@ -209,7 +209,7 @@ public class FeedItemMenuHandler {
             }
         } else if (menuItemId == R.id.mark_unread_item) {
             selectedItem.setPlayed(false);
-            DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
+            DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, selectedItem);
             if (!selectedItem.getFeed().isLocalFeed() && selectedItem.getMedia() != null
                     && selectedItem.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueEpisodeAction(
@@ -231,7 +231,7 @@ public class FeedItemMenuHandler {
                 PlaybackPreferences.writeNoMediaPlaying();
                 IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
-            DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
+            DBWriter.markItemPlayed(FeedItem.UNPLAYED, true, selectedItem);
         } else if (menuItemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
         } else if (menuItemId == R.id.open_social_interact_url) {

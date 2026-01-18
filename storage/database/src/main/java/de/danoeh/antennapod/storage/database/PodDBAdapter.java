@@ -729,23 +729,29 @@ public class PodDBAdapter {
         return item.getId();
     }
 
-    public void setFeedItemRead(FeedItem item, int played, boolean resetMediaPosition) {
+    /**
+     * Sets the 'read' attribute of the item.
+     *
+     * @param played             New read status of items. See @FeedItem
+     * @param resetMediaPosition Should the postition of the media item be reset?
+     * @param items              Array of items to upgrade
+     */
+    public void setFeedItemRead(int played, boolean resetMediaPosition, FeedItem... items) {
         try {
             db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
-
-            values.put(KEY_READ, played);
-            db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(item.getId())});
-            item.setPlayed(played == FeedItem.PLAYED);
-
-            if (resetMediaPosition && item.hasMedia()) {
+            for (FeedItem item : items) {
                 values.clear();
-                values.put(KEY_POSITION, 0);
-                db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
-                        new String[]{String.valueOf(item.getMedia().getId())});
-                item.getMedia().setPosition(0);
-            }
+                values.put(KEY_READ, played);
+                db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(item.getId())});
 
+                if (resetMediaPosition && item.hasMedia()) {
+                    values.clear();
+                    values.put(KEY_POSITION, 0);
+                    db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
+                            new String[]{String.valueOf(item.getMedia().getId())});
+                }
+            }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             Log.e(TAG, Log.getStackTraceString(e));

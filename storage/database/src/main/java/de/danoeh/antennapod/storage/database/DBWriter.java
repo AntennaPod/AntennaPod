@@ -679,17 +679,17 @@ public class DBWriter {
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.
      *
-     * @param item               The FeedItem object
      * @param played             New value of the 'read'-attribute one of FeedItem.PLAYED,
      *                           FeedItem.NEW, FeedItem.UNPLAYED
      * @param resetMediaPosition true if this method should also reset the position of the FeedItem's FeedMedia object.
+     * @param items               The FeedItem objects to be updated
      */
     @NonNull
-    public static Future<?> markItemPlayed(FeedItem item, int played, boolean resetMediaPosition) {
+    public static Future<?> markItemPlayed(int played, boolean resetMediaPosition, FeedItem... items ) {
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setFeedItemRead(item, played, resetMediaPosition);
+            adapter.setFeedItemRead( played, resetMediaPosition, items);
             adapter.close();
 
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
