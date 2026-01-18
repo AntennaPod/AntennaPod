@@ -9,17 +9,19 @@ import de.danoeh.antennapod.model.playback.Playable;
 public class MediaItemAdapter {
     public static MediaItem fromPlayable(Playable playable) {
         String uriString =  playable.getStreamUrl() != null ? playable.getStreamUrl() : playable.getLocalFileUrl();
+        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+        metadataBuilder.setTitle(playable.getEpisodeTitle());
         String mediaId = "0";
         if (playable instanceof FeedMedia) {
-            mediaId = String.valueOf(((FeedMedia) playable).getId());
+            FeedMedia feedMedia = (FeedMedia) playable;
+            mediaId = String.valueOf(feedMedia.getId());
+            metadataBuilder.setArtist(feedMedia.getFeedTitle());
+            metadataBuilder.setArtworkUri(Uri.parse(feedMedia.getImageLocation()));
         }
-        MediaMetadata metadata = new MediaMetadata.Builder()
-                .setTitle(playable.getEpisodeTitle())
-                .build();
         return new MediaItem.Builder()
                 .setUri(uriString != null ? Uri.parse(uriString) : null)
                 .setMediaId(mediaId)
-                .setMediaMetadata(metadata)
+                .setMediaMetadata(metadataBuilder.build())
                 .build();
     }
 }

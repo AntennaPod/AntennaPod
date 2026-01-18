@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.playback.service;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.media3.common.C;
@@ -18,15 +16,21 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 
+import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Media3PlaybackService extends MediaSessionService {
     private static final String TAG = "M3PlaybackService";
@@ -35,8 +39,9 @@ public class Media3PlaybackService extends MediaSessionService {
     private ExoPlayer player;
     private MediaSession mediaSession;
     private Playable currentPlayable;
-    private final Handler handler = new Handler(Looper.getMainLooper());
     private Disposable mediaLoaderDisposable;
+    private Disposable positionObserverDisposable;
+    private long lastPositionSaveTime = 0;
 
     @Override
     public void onCreate() {
@@ -93,15 +98,36 @@ public class Media3PlaybackService extends MediaSessionService {
         }
     };
 
-    private final Runnable positionSaver = new Runnable() {
-        @Override
-        public void run() {
-            saveCurrentPosition();
-            if (player != null && player.isPlaying()) {
-                handler.postDelayed(this, POSITION_SAVE_INTERVAL_MS);
-            }
+    private void setupPositionObserver() {
+        if (positionObserverDisposable != null) {
+            positionObserverDisposable.dispose();
         }
-    };
+
+        positionObserverDisposable = Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(number -> {
+                    if (currentPlayable != null && player != null) {
+                        int position = (int) player.getCurrentPosition();
+                        int duration = (int) player.getDuration();
+                        if (duration > 0) {
+                            EventBus.getDefault().post(new PlaybackPositionEvent(position, duration));
+
+                            long currentTime = System.currentTimeMillis();
+                            if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
+                                saveCurrentPosition();
+                                lastPositionSaveTime = currentTime;
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void cancelPositionObserver() {
+        if (positionObserverDisposable != null) {
+            positionObserverDisposable.dispose();
+            positionObserverDisposable = null;
+        }
+    }
 
     private final Player.Listener playerListener = new Player.Listener() {
         @Override
@@ -109,26 +135,40 @@ public class Media3PlaybackService extends MediaSessionService {
             if (playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED) {
                 saveCurrentPosition();
             }
+            EventBus.getDefault().post(new PlayerStatusEvent());
         }
 
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
+            PlaybackService.isRunning = isPlaying;
             if (isPlaying) {
-                handler.removeCallbacks(positionSaver);
-                handler.post(positionSaver);
+                lastPositionSaveTime = System.currentTimeMillis();
+                setupPositionObserver();
             } else {
-                handler.removeCallbacks(positionSaver);
+                cancelPositionObserver();
                 saveCurrentPosition();
             }
+            updatePlaybackPreferences();
+            EventBus.getDefault().post(new PlayerStatusEvent());
         }
     };
 
-    private void saveCurrentPosition() {
-        if (currentPlayable != null && player != null) {
-            int position = (int) player.getCurrentPosition();
-            long timestamp = System.currentTimeMillis();
-            PlayableUtils.saveCurrentPosition(currentPlayable, position, timestamp);
+    private void updatePlaybackPreferences() {
+        if (currentPlayable == null || player == null) {
+            return;
         }
+        PlaybackPreferences.writeMediaPlaying(currentPlayable);
+        int status = player.isPlaying() ? PlaybackPreferences.PLAYER_STATUS_PLAYING : PlaybackPreferences.PLAYER_STATUS_PAUSED;
+        PlaybackPreferences.setCurrentPlayerStatus(status);
+    }
+
+    private void saveCurrentPosition() {
+        if (currentPlayable == null || player == null) {
+            return;
+        }
+        int position = (int) player.getCurrentPosition();
+        long timestamp = System.currentTimeMillis();
+        PlayableUtils.saveCurrentPosition(currentPlayable, position, timestamp);
     }
 
     @Nullable
@@ -145,7 +185,8 @@ public class Media3PlaybackService extends MediaSessionService {
 
     @Override
     public void onDestroy() {
-        handler.removeCallbacks(positionSaver);
+        PlaybackService.isRunning = false;
+        cancelPositionObserver();
         if (mediaLoaderDisposable != null) {
             mediaLoaderDisposable.dispose();
             mediaLoaderDisposable = null;

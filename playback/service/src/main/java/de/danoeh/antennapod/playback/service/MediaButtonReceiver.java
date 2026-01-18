@@ -6,6 +6,7 @@ import android.content.Intent;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
+import de.danoeh.antennapod.playback.base.BuildConfig;
 
 /**
  * Receives media button events.
@@ -23,7 +24,7 @@ public class MediaButtonReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Received intent");
-        if (intent == null || intent.getExtras() == null) {
+        if (intent == null || intent.getExtras() == null || BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
             return;
         }
         KeyEvent event = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);

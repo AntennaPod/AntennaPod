@@ -56,6 +56,7 @@ import androidx.media.utils.MediaConstants;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
@@ -237,6 +238,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Service created.");
+        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+            throw new IllegalStateException("Media3PlaybackService should be used instead of PlaybackService");
+        }
         isRunning = true;
 
         stateManager = new PlaybackServiceStateManager(this);
