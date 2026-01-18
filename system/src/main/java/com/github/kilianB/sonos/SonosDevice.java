@@ -1006,11 +1006,11 @@ public class SonosDevice {
 	public boolean registerSonosEventListener(SonosEventListener eventHandler) {
 
 		if (!sonosEventHandlers.contains(eventHandler)) {
-			boolean sucess = sonosEventHandlers.add(eventHandler);
+			boolean success = sonosEventHandlers.add(eventHandler);
 			if (!uPnPSubscribed) {
 				subscribeToUPnPEvents();
 			}
-			return sucess;
+			return success;
 		} else {
 			LOGGER.fine(MessageFormat.format("Event listener {0} already registered", eventHandler));
 			return false;

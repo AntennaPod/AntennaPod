@@ -293,6 +293,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         setSessionToken(mediaSession.getSessionToken());
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class SendSonosPlaybackJob extends AsyncTask<String, Void, String> {
 
         public SonosPlaybackService player;
@@ -307,6 +308,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             this.lock = lock;
         }
 
+        @NonNull
         @Override
         protected String doInBackground(String[] params) {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.LAX);
@@ -347,8 +349,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Object lock = new Object();
                 SendSonosPlaybackJob job = new SendSonosPlaybackJob(this, mediaPlayerCallback, ip_address, lock);
                 synchronized (lock) {
-                    job.execute(ip_address);
                     try {
+                        job.execute(ip_address);
                         lock.wait();
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);

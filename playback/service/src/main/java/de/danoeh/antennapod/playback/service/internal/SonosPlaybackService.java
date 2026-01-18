@@ -73,7 +73,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
     private CountDownLatch seekLatch;
     private volatile PlayerStatus statusBeforeSeeking;
     private boolean registeredCallback;
-
+    private volatile Pair<Integer, Integer> videoSize;
     private SonosDevice device;
 
     public SonosPlaybackService(@NonNull Context context, @NonNull PlaybackServiceMediaPlayer.PSMPCallback callback, String device_ip_address) {
@@ -220,8 +220,6 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
     }
 
     private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        media = playable;
-
         if (media != null) {
             if (!forceReset && media.getIdentifier().equals(playable.getIdentifier())
                     && playerStatus == PlayerStatus.PLAYING) {
@@ -247,12 +245,14 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
                     callback.onPostPlayback(oldMedia, false, false, true);
                 }
 
-                // PlayerStatus.INDETERMINATE breaks things
-                setPlayerStatus(PlayerStatus.INITIALIZING, null);
+                setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
         }
+
+        this.media = playable;
         this.stream = stream;
-        mediaType = media.getMediaType();
+        this.mediaType = media.getMediaType();
+        this.videoSize = null;
         SonosPlaybackService.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         if (!registeredCallback) {
