@@ -16,10 +16,10 @@ import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfa
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
+
 import org.greenrobot.eventbus.EventBus;
 
 public class EpisodeMultiSelectActionHandler {
@@ -38,7 +38,7 @@ public class EpisodeMultiSelectActionHandler {
             queueChecked(items);
         } else if (actionId == R.id.remove_from_queue_item) {
             removeFromQueueChecked(items);
-        }  else if (actionId == R.id.remove_inbox_item) {
+        } else if (actionId == R.id.remove_inbox_item) {
             removeFromInboxChecked(items);
         } else if (actionId == R.id.mark_read_item) {
             markedCheckedPlayed(items);
@@ -76,13 +76,13 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void removeFromInboxChecked(List<FeedItem> items) {
-        List<FeedItem> markUnplayed = new ArrayList<FeedItem>();
+        List<FeedItem> markUnplayed = new ArrayList<>();
         for (FeedItem episode : items) {
             if (episode.isNew()) {
                 markUnplayed.add(episode);
             }
         }
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false,  markUnplayed.toArray(new FeedItem[0]));
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, markUnplayed.toArray(new FeedItem[0]));
         showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size());
     }
 
