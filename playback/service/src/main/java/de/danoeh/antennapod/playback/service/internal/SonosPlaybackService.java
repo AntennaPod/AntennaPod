@@ -255,6 +255,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
         this.videoSize = null;
         SonosPlaybackService.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
+/*
         if (!registeredCallback) {
             device.registerSonosEventListener(new SonosEventListener() {
                 @Override
@@ -366,7 +367,7 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
 
             registeredCallback = true;
         }
-
+*/
         try {
             callback.ensureMediaInfoLoaded(media);
             callback.onMediaChanged(false);
@@ -383,9 +384,11 @@ public class SonosPlaybackService extends PlaybackServiceMediaPlayer {
                         playable.getImageLocation() // album_art_uri
                 );
 
+                setPlayerStatus(PlayerStatus.INITIALIZED, playable);
+                
                 try {
                     device.playUri(url, trackMeta);
-                    setPlayerStatus(PlayerStatus.INITIALIZING, playable);
+                    setPlayerStatus(PlayerStatus.PLAYING, playable);
                 } catch (IOException | SonosControllerException e) {
                     setPlayerStatus(PlayerStatus.ERROR, playable);
                     final String errMessage = "Sonos I/O Exception";
