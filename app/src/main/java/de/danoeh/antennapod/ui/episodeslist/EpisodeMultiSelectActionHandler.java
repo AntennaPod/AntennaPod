@@ -76,13 +76,13 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void removeFromInboxChecked(List<FeedItem> items) {
-        LongList markUnplayed = new LongList();
+        List<FeedItem> markUnplayed = new ArrayList<FeedItem>();
         for (FeedItem episode : items) {
             if (episode.isNew()) {
-                markUnplayed.add(episode.getId());
+                markUnplayed.add(episode);
             }
         }
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false,  markUnplayed.toArray());
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false,  markUnplayed.toArray(new FeedItem[0]));
         showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size());
     }
 
@@ -121,7 +121,6 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         showMessage(R.plurals.marked_as_unplayed_message, items.size());
-
     }
 
     private void downloadChecked(List<FeedItem> items) {

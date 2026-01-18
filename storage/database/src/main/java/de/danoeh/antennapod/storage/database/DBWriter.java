@@ -360,7 +360,7 @@ public class DBWriter {
                     EventBus.getDefault().post(QueueEvent.added(item, index));
                     EventBus.getDefault().post(FeedItemEvent.updated(item));
                     if (item.isNew()) {
-                        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, item.getId());
+                        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, item);
                     }
                 }
             }
@@ -387,7 +387,7 @@ public class DBWriter {
             adapter.open();
             final List<FeedItem> queue = DBReader.getQueue();
 
-            LongList markAsUnplayedIds = new LongList();
+            List<FeedItem>  markAsUnplayed = new ArrayList<>();
             List<QueueEvent> events = new ArrayList<>();
             List<FeedItem> updatedItems = new ArrayList<>();
             ItemEnqueuePositionCalculator positionCalculator =
@@ -406,7 +406,7 @@ public class DBWriter {
                 item.addTag(FeedItem.TAG_QUEUE);
                 updatedItems.add(item);
                 if (item.isNew()) {
-                    markAsUnplayedIds.add(item.getId());
+                    markAsUnplayed.add(item);
                 }
                 insertPosition++;
             }
@@ -417,8 +417,8 @@ public class DBWriter {
                     EventBus.getDefault().post(event);
                 }
                 EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
-                if (markAsUnplayedIds.size() > 0) {
-                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, markAsUnplayedIds.toArray());
+                if (markAsUnplayed.size() > 0) {
+                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, markAsUnplayed.toArray(new FeedItem[0]));
                 }
             }
             adapter.close();
@@ -641,35 +641,6 @@ public class DBWriter {
             adapter.resetPagedFeedPage(feed);
             adapter.close();
         });
-    }
-
-    /**
-     * Sets the 'read'-attribute of all specified FeedItems
-     *
-     * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
-     *                FeedItem.UNPLAYED
-     * @param itemIds IDs of the FeedItems.
-     */
-    public static Future<?> markItemPlayed(final int played, final long... itemIds) {
-        return markItemPlayed(played, true, itemIds);
-    }
-
-    /**
-     * Sets the 'read'-attribute of a FeedItem to the specified value.
-     *
-     * @param played             New value of the 'read'-attribute one of FeedItem.PLAYED,
-     *                           FeedItem.NEW, FeedItem.UNPLAYED
-     * @param resetMediaPosition true if this method should also reset the position of the FeedItem's FeedMedia object.
-     * @param itemIds            The FeedItem ids to be updated
-     */
-    public static Future<?> markItemPlayed(final int played, boolean resetMediaPosition,
-                                           final long... itemIds) {
-        final FeedItem[] items = new FeedItem[itemIds.length];
-        for (int i = 0; i < itemIds.length; i++) {
-            items[i] = DBReader.getFeedItem(itemIds[i]);
-        }
-
-        return markItemPlayed(played, resetMediaPosition, items);
     }
 
     /**
