@@ -95,6 +95,10 @@ public class ClockSleepTimer implements SleepTimer {
         this.initialWaitingTime = initialWaitingTime;
         this.timeLeft = initialWaitingTime;
 
+        // mark the sleep timer as active before firing the events
+        // the event processors may immediately check if the sleep timer is active
+        isRunning = true;
+
         // make sure we've registered for events first
         EventBus.getDefault().register(this);
         final TimerValue left = getTimeLeft();
@@ -103,7 +107,6 @@ public class ClockSleepTimer implements SleepTimer {
         lastTick = System.currentTimeMillis();
         EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(left));
 
-        isRunning = true;
     }
 
     @Override
