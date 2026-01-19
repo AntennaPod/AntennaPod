@@ -153,18 +153,18 @@ public class ID3Reader {
     @SuppressWarnings("CharsetObjectCanBeUsed")
     String readEncodedString(int encoding, int max) throws IOException {
         if (encoding == ENCODING_UTF16_WITH_BOM || encoding == ENCODING_UTF16_WITHOUT_BOM) {
-            return readEncodedString2(Charset.forName("UTF-16"), max);
+            return readEncodedString2char(Charset.forName("UTF-16"), max);
         } else if (encoding == ENCODING_UTF8) {
-            return readEncodedString2(Charset.forName("UTF-8"), max);
+            return readEncodedString1char(Charset.forName("UTF-8"), max);
         } else {
-            return readEncodedString1(Charset.forName("ISO-8859-1"), max);
+            return readEncodedString1char(Charset.forName("ISO-8859-1"), max);
         }
     }
 
     /**
      * Reads chars where the encoding uses 1 char per symbol.
      */
-    private String readEncodedString1(Charset charset, int max) throws IOException {
+    private String readEncodedString1char(Charset charset, int max) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         int bytesRead = 0;
         while (bytesRead < max) {
@@ -181,7 +181,7 @@ public class ID3Reader {
     /**
      * Reads chars where the encoding uses 2 chars per symbol.
      */
-    private String readEncodedString2(Charset charset, int max) throws IOException {
+    private String readEncodedString2char(Charset charset, int max) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         int bytesRead = 0;
         boolean foundEnd = false;

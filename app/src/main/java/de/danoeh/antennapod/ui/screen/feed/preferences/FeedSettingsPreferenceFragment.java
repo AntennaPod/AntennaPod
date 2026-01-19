@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.PlaybackSpeedFeedSettingDialogBinding;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -213,6 +214,14 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
             EventBus.getDefault().post(new VolumeAdaptionChangedEvent(newSetting, feed.getId()));
             return false;
         });
+        findPreference(PREF_NEW_EPISODES_ACTION).setOnPreferenceClickListener(preference -> {
+            boolean isAutoDownload = feed.getPreferences().isAutoDownload(UserPreferences.isEnableAutodownloadGlobal());
+            if (isAutoDownload && !feed.isLocalFeed()) {
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.feed_new_episodes_action_snackbar)));
+                return true;
+            }
+            return false;
+        });
         findPreference(PREF_NEW_EPISODES_ACTION).setOnPreferenceChangeListener((preference, newValue) -> {
             int code = Integer.parseInt((String) newValue);
             feedPreferences.setNewEpisodesAction(FeedPreferences.NewEpisodesAction.fromCode(code));
@@ -284,7 +293,6 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         ListPreference newEpisodesAction = findPreference(PREF_NEW_EPISODES_ACTION);
         boolean isAutoDownload = feed.getPreferences().isAutoDownload(UserPreferences.isEnableAutodownloadGlobal());
         if (isAutoDownload && !feed.isLocalFeed()) {
-            newEpisodesAction.setEnabled(false);
             newEpisodesAction.setSummary(R.string.feed_new_episodes_action_summary_autodownload);
             return;
         }
