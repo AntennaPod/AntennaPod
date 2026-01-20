@@ -25,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.common.Keyboard;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,8 +86,10 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         controller.init();
         EventBus.getDefault().register(this);
 
-        disposable = Single.fromCallable(() ->
-                        DBReader.getRemainingQueueSize(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+        disposable = Single.fromCallable(() -> {
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            return DBReader.getRemainingQueueSize(media.getItemId());
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> currentQueueSize = result);

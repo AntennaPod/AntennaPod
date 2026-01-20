@@ -170,6 +170,8 @@
     <string name="feed_new_episodes_action_nothing">Nothing</string>
     <string name="feed_new_episodes_action_summary_autodownload">Automatic download enabled.
         Episodes are added to the inbox and then moved to the queue once downloaded.</string>
+    <string name="feed_new_episodes_action_snackbar">Cannot be changed when automatic download is
+        enabled.</string>
     <string name="episode_cleanup_never">Never</string>
     <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
@@ -222,18 +224,18 @@
     <string name="archive_feed_label_verb">Archive</string>
     <string name="archive_feed_label_noun">Archive</string>
     <string name="restore_archive_label">Restore</string>
-    <string name="remove_archive_feed_label">Delete / archive</string>
-    <string name="remove_restore_feed_label">Delete / restore</string>
-    <string name="remove_feed_label">Delete</string>
+    <string name="remove_archive_feed_label">Unsubscribe / archive</string>
+    <string name="remove_restore_feed_label">Unsubscribe / restore</string>
+    <string name="remove_feed_label">Unsubscribe</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
-    <string name="feed_delete_explanation_delete">Deleting will remove ALL its episodes including
-        downloads, playback history, and statistics.</string>
-    <string name="feed_delete_explanation_archive">Archiving will hide it from the subscription list
-        and avoid it getting updates. Downloads, statistics and playback state are kept.</string>
+    <string name="feed_delete_explanation_delete">Unsubscribing removes the subscription including
+        all its episodes, downloads, playback history, and statistics.</string>
+    <string name="feed_delete_explanation_archive">Archiving hides the subscription from the list
+        and stops looking for new episodes. Downloads, statistics and playback state are kept.</string>
     <string name="archiving_podcast_progress">Archiving podcast %1$d of %2$d…</string>
     <string name="restoring_podcast_progress">Restoring podcast %1$d of %2$d…</string>
-    <string name="deleting_podcast_progress">Deleting podcast %1$d of %2$d…</string>
+    <string name="deleting_podcast_progress">Unsubscribing from podcast %1$d of %2$d…</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
@@ -1001,6 +1003,7 @@
     <string name="search_fyyd_label">Search fyyd</string>
     <string name="add_podcast_by_url">Add podcast by RSS address</string>
     <string name="rss_address">RSS address</string>
+    <string name="rss_address_invalid">The RSS address you entered is not valid.</string>
     <string name="discover">Discover</string>
     <string name="discover_hide">Hide</string>
     <string name="discover_is_hidden">You selected to hide suggestions.</string>
