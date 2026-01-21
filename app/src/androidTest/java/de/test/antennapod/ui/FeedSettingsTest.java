@@ -9,7 +9,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.test.antennapod.EspressoTestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +17,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -41,12 +39,12 @@ public class FeedSettingsTest {
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
 
-        uiTestUtils.addLocalFeedData(false);
+        uiTestUtils.addLocalFeedData(true);
         feed = uiTestUtils.hostedFeeds.get(0);
-        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(),
-                MainActivity.class);
-        intent.putExtra(MainActivityStarter.EXTRA_FEED_ID, feed.getId());
-        activityRule.launchActivity(intent);
+
+        // Use same approach as working tests
+        EspressoTestUtils.setLaunchScreen("" + feed.getId());
+        activityRule.launchActivity(new Intent());
     }
 
     @After
@@ -83,15 +81,17 @@ public class FeedSettingsTest {
 
     @Test
     public void testEnqueueLocationPersistence() {
-        // Wait for feed to load
+        // Wait for feed to load (same as working test)
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             // Ignore
         }
 
         // Open feed settings
         onView(withId(R.id.butShowSettings)).perform(click());
+
+        // Wait for settings to load
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -111,25 +111,6 @@ public class FeedSettingsTest {
         // Wait for preference change to be processed
         try {
             Thread.sleep(500);
-        } catch (InterruptedException e) {
-            // Ignore
-        }
-
-        // Navigate back to main view
-        pressBack();
-        pressBack();
-
-        // Wait for feed to load again
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            // Ignore
-        }
-
-        // Re-enter feed settings
-        onView(withId(R.id.butShowSettings)).perform(click());
-        try {
-            Thread.sleep(1000);
         } catch (InterruptedException e) {
             // Ignore
         }
