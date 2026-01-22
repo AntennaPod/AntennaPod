@@ -18,10 +18,13 @@ import com.google.common.util.concurrent.SettableFuture;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -41,6 +44,7 @@ public class Media3PlaybackService extends MediaSessionService {
     private Playable currentPlayable;
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
+    private Disposable queueLoaderDisposable;
     private long lastPositionSaveTime = 0;
 
     @Override
@@ -135,6 +139,9 @@ public class Media3PlaybackService extends MediaSessionService {
             if (playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED) {
                 saveCurrentPosition();
             }
+            if (playbackState == Player.STATE_ENDED && currentPlayable instanceof FeedMedia) {
+                startNextInQueue(((FeedMedia) currentPlayable).getItem());
+            }
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
 
@@ -191,6 +198,10 @@ public class Media3PlaybackService extends MediaSessionService {
             mediaLoaderDisposable.dispose();
             mediaLoaderDisposable = null;
         }
+        if (queueLoaderDisposable != null) {
+            queueLoaderDisposable.dispose();
+            queueLoaderDisposable = null;
+        }
         saveCurrentPosition();
         if (player != null) {
             player.removeListener(playerListener);
@@ -200,5 +211,38 @@ public class Media3PlaybackService extends MediaSessionService {
             mediaSession.release();
         }
         super.onDestroy();
+    }
+
+    /**
+     * Loads the next item, and starts it if continuous playback is enabled.
+     */
+    private void startNextInQueue(FeedItem item) {
+        if (queueLoaderDisposable != null) {
+            queueLoaderDisposable.dispose();
+        }
+        if (item == null) {
+            return;
+        }
+        queueLoaderDisposable = Single.fromCallable(() -> {
+                    FeedItem nextItem = DBReader.getNextInQueue(item);
+                    return nextItem != null && nextItem.getMedia() != null ? nextItem.getMedia() : null;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        nextMedia -> {
+                            if (nextMedia != null) {
+                                currentPlayable = nextMedia;
+                                MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
+                                player.setMediaItem(mediaItem);
+                                player.seekTo(nextMedia.getPosition());
+                                player.prepare();
+                                if (UserPreferences.isFollowQueue()) {
+                                    player.play();
+                                }
+                            }
+                        },
+                        error -> Log.e(TAG, "Failed to load next queue item", error)
+                );
     }
 }
