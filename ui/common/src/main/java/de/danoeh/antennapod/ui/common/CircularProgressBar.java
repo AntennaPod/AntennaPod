@@ -75,8 +75,8 @@ public class CircularProgressBar extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float padding = getHeight() * 0.07f;
-        paintBackground.setStrokeWidth(getHeight() * 0.02f);
+        float padding = getHeight() * 0.08f;
+        paintBackground.setStrokeWidth(getHeight() * 0.03f);
         paintBackground.setPathEffect(isIndeterminate ? DASHED : null);
         paintProgress.setStrokeWidth(padding);
         bounds.set(padding, padding, getWidth() - padding, getHeight() - padding);

@@ -93,7 +93,7 @@ public class FeedDatabaseWriterTest {
         feed = FeedDatabaseWriter.updateFeed(context, feed, false);
         DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
                 SortOrder.EPISODE_TITLE_A_Z, 0, Integer.MAX_VALUE);
-        DBWriter.markItemPlayed(feed.getItems().get(2), FeedItem.PLAYED, false).get();
+        DBWriter.markItemPlayed(FeedItem.PLAYED, false, feed.getItems().get(2)).get();
 
         Feed updatedFeed = createFeed();
         updatedFeed.setId(feed.getId());

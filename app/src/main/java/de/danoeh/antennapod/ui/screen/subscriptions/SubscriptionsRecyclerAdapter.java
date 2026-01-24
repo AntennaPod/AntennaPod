@@ -112,8 +112,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
         });
         holder.itemView.setOnClickListener(v -> {
             if (inActionMode()) {
-                setSelected(holder.getBindingAdapterPosition(), !isSelected(holder.getBindingAdapterPosition()));
-                notifyItemChanged(holder.getBindingAdapterPosition());
+                toggleSelection(holder.getBindingAdapterPosition());
             } else {
                 Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
                 mainActivityRef.get().loadChildFragment(fragment);

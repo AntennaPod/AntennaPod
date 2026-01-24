@@ -10,11 +10,16 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
+import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
+
 import org.greenrobot.eventbus.EventBus;
 
 public class EpisodeMultiSelectActionHandler {
@@ -33,7 +38,7 @@ public class EpisodeMultiSelectActionHandler {
             queueChecked(items);
         } else if (actionId == R.id.remove_from_queue_item) {
             removeFromQueueChecked(items);
-        }  else if (actionId == R.id.remove_inbox_item) {
+        } else if (actionId == R.id.remove_inbox_item) {
             removeFromInboxChecked(items);
         } else if (actionId == R.id.mark_read_item) {
             markedCheckedPlayed(items);
@@ -71,26 +76,51 @@ public class EpisodeMultiSelectActionHandler {
     }
 
     private void removeFromInboxChecked(List<FeedItem> items) {
-        LongList markUnplayed = new LongList();
+        List<FeedItem> markUnplayed = new ArrayList<>();
         for (FeedItem episode : items) {
             if (episode.isNew()) {
-                markUnplayed.add(episode.getId());
+                markUnplayed.add(episode);
             }
         }
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, markUnplayed.toArray());
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, markUnplayed.toArray(new FeedItem[0]));
         showMessage(R.plurals.removed_from_inbox_batch_label, markUnplayed.size());
     }
 
     private void markedCheckedPlayed(List<FeedItem> items) {
-        long[] checkedIds = getSelectedIds(items);
-        DBWriter.markItemPlayed(FeedItem.PLAYED, checkedIds);
-        showMessage(R.plurals.marked_as_played_message, checkedIds.length);
+        for (FeedItem item : items) {
+            item.setPlayed(true);
+            DBWriter.markItemPlayed(FeedItem.PLAYED, true, item);
+            if (!item.getFeed().isLocalFeed() && item.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED
+                    && SynchronizationSettings.isProviderConnected()) {
+                FeedMedia media = item.getMedia();
+                // not all items have media, Gpodder only cares about those that do
+                if (media != null) {
+                    EpisodeAction actionPlay = new EpisodeAction.Builder(item, EpisodeAction.PLAY)
+                            .currentTimestamp()
+                            .started(media.getDuration() / 1000)
+                            .position(media.getDuration() / 1000)
+                            .total(media.getDuration() / 1000)
+                            .build();
+                    SynchronizationQueue.getInstance().enqueueEpisodeAction(actionPlay);
+                }
+            }
+        }
+        showMessage(R.plurals.marked_as_played_message, items.size());
     }
 
     private void markedCheckedUnplayed(List<FeedItem> items) {
-        long[] checkedIds = getSelectedIds(items);
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, checkedIds);
-        showMessage(R.plurals.marked_as_unplayed_message, checkedIds.length);
+        for (FeedItem item : items) {
+            item.setPlayed(false);
+            DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, item);
+            if (!item.getFeed().isLocalFeed() && item.getMedia() != null
+                    && item.getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
+                SynchronizationQueue.getInstance().enqueueEpisodeAction(
+                        new EpisodeAction.Builder(item, EpisodeAction.NEW)
+                                .currentTimestamp()
+                                .build());
+            }
+        }
+        showMessage(R.plurals.marked_as_unplayed_message, items.size());
     }
 
     private void downloadChecked(List<FeedItem> items) {
