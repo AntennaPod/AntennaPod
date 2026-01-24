@@ -137,13 +137,13 @@ public class EqualizerCompressorWrapper {
     public void compressorPresetChanged(CompressorPreferenceChangedEvent event) {
         setAndApplyMbcBandParameters(
                 this.dynamicsProcessing,
-                event.isEnabled(),
-                event.getThreshold(),
-                event.getRatio(),
-                event.getAttackTime(),
-                event.getReleaseTime(),
-                event.getNoiseGateThreshold(),
-                event.getPostGain());
+                event.enabled(),
+                event.threshold(),
+                event.ratio(),
+                event.attackTime(),
+                event.releaseTime(),
+                event.noiseGateThreshold(),
+                event.postGain());
     }
 
     private synchronized void setAndApplyMbcBandParameters(
@@ -244,8 +244,8 @@ public class EqualizerCompressorWrapper {
     public void equalizerPresetChanged(EqualizerPreferenceChangedEvent event) {
         setAndApplyPostEqualizerParameters(
                 this.dynamicsProcessing,
-                event.isEnabled(),
-                event.getGains());
+                event.enabled(),
+                event.gains());
     }
 
     private synchronized void setAndApplyPostEqualizerParameters(
