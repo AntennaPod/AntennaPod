@@ -100,14 +100,16 @@ public abstract class UserPreferences {
     public static final String PREF_COMPRESSOR_POST_GAIN = "prefCompressorPostGain";
     public static final String PREF_EQUALIZER_ENABLED = "prefEqualizerEnabled";
     public static final String PREF_EQUALIZER_RESET = "prefEqualizerReset";
-    public static final String PREF_EQUALIZER_GAIN_BAND_1 = "prefEqualizerGainBand1";
-    public static final String PREF_EQUALIZER_GAIN_BAND_2 = "prefEqualizerGainBand2";
-    public static final String PREF_EQUALIZER_GAIN_BAND_3 = "prefEqualizerGainBand3";
-    public static final String PREF_EQUALIZER_GAIN_BAND_4 = "prefEqualizerGainBand4";
-    public static final String PREF_EQUALIZER_GAIN_BAND_5 = "prefEqualizerGainBand5";
-    public static final String PREF_EQUALIZER_GAIN_BAND_6 = "prefEqualizerGainBand6";
-    public static final String PREF_EQUALIZER_GAIN_BAND_7 = "prefEqualizerGainBand7";
-    public static final String PREF_EQUALIZER_GAIN_BAND_8 = "prefEqualizerGainBand8";
+    public static final String PREF_EQUALIZER_GAIN_BAND_01 = "prefEqualizerGainBand01";
+    public static final String PREF_EQUALIZER_GAIN_BAND_02 = "prefEqualizerGainBand02";
+    public static final String PREF_EQUALIZER_GAIN_BAND_03 = "prefEqualizerGainBand03";
+    public static final String PREF_EQUALIZER_GAIN_BAND_04 = "prefEqualizerGainBand04";
+    public static final String PREF_EQUALIZER_GAIN_BAND_05 = "prefEqualizerGainBand05";
+    public static final String PREF_EQUALIZER_GAIN_BAND_06 = "prefEqualizerGainBand06";
+    public static final String PREF_EQUALIZER_GAIN_BAND_07 = "prefEqualizerGainBand07";
+    public static final String PREF_EQUALIZER_GAIN_BAND_08 = "prefEqualizerGainBand08";
+    public static final String PREF_EQUALIZER_GAIN_BAND_09 = "prefEqualizerGainBand09";
+    public static final String PREF_EQUALIZER_GAIN_BAND_10 = "prefEqualizerGainBand10";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
@@ -828,14 +830,16 @@ public abstract class UserPreferences {
 
     public static float[] getEqualizerGains() {
         return new float[] {
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_1, -30),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_2, -20),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_3, -10),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_4, 0),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_5, 0),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_6, 0),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_7, 0),
-                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_8, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_01, -20),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_02, -10),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_03, -5),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_04, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_05, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_06, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_07, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_08, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_09, 0),
+                (float) prefs.getInt(PREF_EQUALIZER_GAIN_BAND_10, 0),
         };
     }
 

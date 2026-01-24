@@ -69,7 +69,7 @@ import java.util.concurrent.TimeUnit;
 public class ExoPlayerWrapper {
     public static final int BUFFERING_STARTED = -1;
     public static final int BUFFERING_ENDED = -2;
-    static final float[] EQUALIZER_BAND_CUTOFFS = {60, 120, 250, 800, 2000, 4000, 6000, 20000};
+    static final float[] EQUALIZER_BAND_CUTOFFS = {100, 230, 430, 775, 1750, 4250, 8500, 13000, 15000, 20000};
     static final int EQUALIZER_BAND_COUNT = EQUALIZER_BAND_CUTOFFS.length;
     private static final String TAG = "ExoPlayerWrapper";
 

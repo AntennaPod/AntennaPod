@@ -206,14 +206,16 @@ public class PlaybackPreferencesFragment
 
     private void setEqualizerPrefsVisibility(boolean visible) {
         requirePreference(UserPreferences.PREF_EQUALIZER_RESET).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_1).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_2).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_3).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_4).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_5).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_6).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_7).setVisible(visible);
-        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_8).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_01).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_02).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_03).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_04).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_05).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_06).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_07).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_08).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_09).setVisible(visible);
+        requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_10).setVisible(visible);
     }
 
     private void setEqualizerResetActivatedHandler() {
@@ -230,25 +232,29 @@ public class PlaybackPreferencesFragment
     }
 
     private void resetEqualizerGainsUiAndPrefStoreThenPostEvent() {
-        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_1).setValue(0);
-        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_2).setValue(0);
-        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_3).setValue(0);
-        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_4).setValue(0);
-        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_5).setValue(0);
-        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_6).setValue(0);
-        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_7).setValue(0);
-        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_8).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_01).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_02).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_03).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_04).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_05).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_06).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_07).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_08).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_09).setValue(0);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_EQUALIZER_GAIN_BAND_10).setValue(0);
 
         SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
         assert prefs != null;
-        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_1, 0).apply();
-        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_2, 0).apply();
-        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_3, 0).apply();
-        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_4, 0).apply();
-        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_5, 0).apply();
-        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_6, 0).apply();
-        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_7, 0).apply();
-        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_8, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_01, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_02, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_03, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_04, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_05, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_06, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_07, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_08, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_09, 0).apply();
+        prefs.edit().putInt(UserPreferences.PREF_EQUALIZER_GAIN_BAND_10, 0).apply();
 
         postEqualizerPrefsChangedEvent();
     }

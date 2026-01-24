@@ -185,25 +185,14 @@
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
             app:maxValue="60"
-            app:defValue="-30"
-            app:seekBarIncrement="1"
-            app:showSeekBarValue="true"
-            app:isPreferenceVisible="true"
-            app:key="prefEqualizerGainBand1"
-            android:id="@+id/prefEqualizerGainBand1"
-            app:summary="@string/pref_equalizer_gain_band1_sum"
-            app:title="@string/pref_equalizer_gain_band1_title"/>
-        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
-            app:minValue="-60"
-            app:maxValue="60"
             app:defValue="-20"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
-            app:isPreferenceVisible="false"
-            android:id="@+id/prefEqualizerGainBand2"
-            app:key="prefEqualizerGainBand2"
-            app:summary="@string/pref_equalizer_gain_band2_sum"
-            app:title="@string/pref_equalizer_gain_band2_title"/>
+            app:isPreferenceVisible="true"
+            app:key="prefEqualizerGainBand01"
+            android:id="@+id/prefEqualizerGainBand01"
+            app:summary="@string/pref_equalizer_gain_band01_sum"
+            app:title="@string/pref_equalizer_gain_band01_title"/>
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
             app:maxValue="60"
@@ -211,10 +200,21 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:isPreferenceVisible="false"
-            android:id="@+id/prefEqualizerGainBand3"
-            app:key="prefEqualizerGainBand3"
-            app:summary="@string/pref_equalizer_gain_band3_sum"
-            app:title="@string/pref_equalizer_gain_band3_title"/>
+            android:id="@+id/prefEqualizerGainBand02"
+            app:key="prefEqualizerGainBand02"
+            app:summary="@string/pref_equalizer_gain_band02_sum"
+            app:title="@string/pref_equalizer_gain_band02_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:minValue="-60"
+            app:maxValue="60"
+            app:defValue="-5"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand03"
+            app:key="prefEqualizerGainBand03"
+            app:summary="@string/pref_equalizer_gain_band03_sum"
+            app:title="@string/pref_equalizer_gain_band03_title"/>
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
             app:maxValue="60"
@@ -222,10 +222,10 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:isPreferenceVisible="false"
-            android:id="@+id/prefEqualizerGainBand4"
-            app:key="prefEqualizerGainBand4"
-            app:summary="@string/pref_equalizer_gain_band4_sum"
-            app:title="@string/pref_equalizer_gain_band4_title"/>
+            android:id="@+id/prefEqualizerGainBand04"
+            app:key="prefEqualizerGainBand04"
+            app:summary="@string/pref_equalizer_gain_band04_sum"
+            app:title="@string/pref_equalizer_gain_band04_title"/>
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
             app:maxValue="60"
@@ -233,10 +233,10 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:isPreferenceVisible="false"
-            android:id="@+id/prefEqualizerGainBand5"
-            app:key="prefEqualizerGainBand5"
-            app:summary="@string/pref_equalizer_gain_band5_sum"
-            app:title="@string/pref_equalizer_gain_band5_title"/>
+            android:id="@+id/prefEqualizerGainBand05"
+            app:key="prefEqualizerGainBand05"
+            app:summary="@string/pref_equalizer_gain_band05_sum"
+            app:title="@string/pref_equalizer_gain_band05_title"/>
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
             app:maxValue="60"
@@ -244,10 +244,10 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:isPreferenceVisible="false"
-            android:id="@+id/prefEqualizerGainBand6"
-            app:key="prefEqualizerGainBand6"
-            app:summary="@string/pref_equalizer_gain_band6_sum"
-            app:title="@string/pref_equalizer_gain_band6_title"/>
+            android:id="@+id/prefEqualizerGainBand06"
+            app:key="prefEqualizerGainBand06"
+            app:summary="@string/pref_equalizer_gain_band06_sum"
+            app:title="@string/pref_equalizer_gain_band06_title"/>
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
             app:maxValue="60"
@@ -255,10 +255,10 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:isPreferenceVisible="false"
-            android:id="@+id/prefEqualizerGainBand7"
-            app:key="prefEqualizerGainBand7"
-            app:summary="@string/pref_equalizer_gain_band7_sum"
-            app:title="@string/pref_equalizer_gain_band7_title"/>
+            android:id="@+id/prefEqualizerGainBand07"
+            app:key="prefEqualizerGainBand07"
+            app:summary="@string/pref_equalizer_gain_band07_sum"
+            app:title="@string/pref_equalizer_gain_band07_title"/>
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
             app:maxValue="60"
@@ -266,10 +266,32 @@
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:isPreferenceVisible="false"
-            android:id="@+id/prefEqualizerGainBand8"
-            app:key="prefEqualizerGainBand8"
-            app:summary="@string/pref_equalizer_gain_band8_sum"
-            app:title="@string/pref_equalizer_gain_band8_title"/>
+            android:id="@+id/prefEqualizerGainBand08"
+            app:key="prefEqualizerGainBand08"
+            app:summary="@string/pref_equalizer_gain_band08_sum"
+            app:title="@string/pref_equalizer_gain_band08_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:minValue="-60"
+            app:maxValue="60"
+            app:defValue="0"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand09"
+            app:key="prefEqualizerGainBand09"
+            app:summary="@string/pref_equalizer_gain_band09_sum"
+            app:title="@string/pref_equalizer_gain_band09_title"/>
+        <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
+            app:minValue="-60"
+            app:maxValue="60"
+            app:defValue="0"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:isPreferenceVisible="false"
+            android:id="@+id/prefEqualizerGainBand10"
+            app:key="prefEqualizerGainBand10"
+            app:summary="@string/pref_equalizer_gain_band10_sum"
+            app:title="@string/pref_equalizer_gain_band10_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
