@@ -11,12 +11,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
 public class PlaybackControlsDialog extends DialogFragment {
-    private PlaybackController controller;
     private AlertDialog dialog;
 
     public static PlaybackControlsDialog newInstance() {
@@ -33,20 +36,19 @@ public class PlaybackControlsDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        controller = new PlaybackController(getActivity()) {
-            @Override
-            public void loadMediaInfo() {
-                setupAudioTracks();
-            }
-        };
-        controller.init();
+        EventBus.getDefault().register(this);
+        setupAudioTracks();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        controller.release();
-        controller = null;
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusEvent(PlayerStatusEvent event) {
+        setupAudioTracks();
     }
 
     @NonNull
@@ -60,19 +62,24 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
 
     private void setupAudioTracks() {
-        List<String> audioTracks = controller.getAudioTracks();
-        int selectedAudioTrack = controller.getSelectedAudioTrack();
         final Button butAudioTracks = dialog.findViewById(R.id.audio_tracks);
-        if (audioTracks.size() < 2 || selectedAudioTrack < 0) {
-            butAudioTracks.setVisibility(View.GONE);
-            return;
-        }
-
-        butAudioTracks.setVisibility(View.VISIBLE);
-        butAudioTracks.setText(audioTracks.get(selectedAudioTrack));
+        PlaybackController.bindToService(getActivity(), playbackService -> {
+            List<String> audioTracks = playbackService.getAudioTracks();
+            int selectedAudioTrack = playbackService.getSelectedAudioTrack();
+            if (audioTracks.size() < 2 || selectedAudioTrack < 0) {
+                butAudioTracks.setVisibility(View.GONE);
+                return;
+            }
+            butAudioTracks.setVisibility(View.VISIBLE);
+            butAudioTracks.setText(audioTracks.get(selectedAudioTrack));
+        });
         butAudioTracks.setOnClickListener(v -> {
-            controller.setAudioTrack((selectedAudioTrack + 1) % audioTracks.size());
-            new Handler(Looper.getMainLooper()).postDelayed(this::setupAudioTracks, 500);
+            PlaybackController.bindToService(getActivity(), playbackService -> {
+                List<String> audioTracks = playbackService.getAudioTracks();
+                int selectedAudioTrack = playbackService.getSelectedAudioTrack();
+                playbackService.setAudioTrack((selectedAudioTrack + 1) % audioTracks.size());
+                new Handler(Looper.getMainLooper()).postDelayed(this::setupAudioTracks, 500);
+            });
         });
     }
 }
