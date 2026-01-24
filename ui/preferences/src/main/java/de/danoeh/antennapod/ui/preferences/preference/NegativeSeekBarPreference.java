@@ -21,7 +21,7 @@ import de.danoeh.antennapod.ui.preferences.R;
 // Writing to and reading from persistent storage is overridden, too: This class' value (possibly negative) is used.
 public class NegativeSeekBarPreference extends SeekBarPreference {
 
-    private static final String TAG = "NegativeSeekBarPreference";
+    private static final String TAG = "NegativeSeekBarPref";
     private static final int MAX_VALUE_INIT = 47;
     private static final int MIN_VALUE_INIT = -55;
     private static final int DEF_VALUE_INIT = 7;
