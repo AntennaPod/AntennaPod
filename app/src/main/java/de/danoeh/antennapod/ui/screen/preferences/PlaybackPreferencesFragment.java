@@ -199,7 +199,7 @@ public class PlaybackPreferencesFragment
         prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_ATTACK_TIME, 5).apply();
         prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_RELEASE_TIME, 40).apply();
         prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_NOISE_GATE_THRESHOLD, -90).apply();
-        prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_POST_GAIN, 15).apply();
+        prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_POST_GAIN, 20).apply();
 
         postCompressorPrefsChangedEvent();
     }

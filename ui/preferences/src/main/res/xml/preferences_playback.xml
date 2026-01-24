@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/interruptions">
@@ -161,8 +161,8 @@
             app:title="@string/pref_compressor_noise_gate_threshold_title"/>
         <de.danoeh.antennapod.ui.preferences.preference.NegativeSeekBarPreference
             app:minValue="-60"
-            app:maxValue="60"
-            app:defValue="15"
+            app:maxValue="100"
+            app:defValue="20"
             app:seekBarIncrement="1"
             app:showSeekBarValue="true"
             app:isPreferenceVisible="false"
