@@ -224,9 +224,9 @@ public class Media3PlaybackService extends MediaSessionService {
             return;
         }
         queueLoaderDisposable = Single.fromCallable(() -> {
-                    FeedItem nextItem = DBReader.getNextInQueue(item);
-                    return nextItem != null && nextItem.getMedia() != null ? nextItem.getMedia() : null;
-                })
+            FeedItem nextItem = DBReader.getNextInQueue(item);
+            return nextItem != null && nextItem.getMedia() != null ? nextItem.getMedia() : null;
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

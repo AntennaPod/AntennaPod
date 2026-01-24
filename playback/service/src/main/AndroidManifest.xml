@@ -18,13 +18,13 @@
 
         <service android:name="de.danoeh.antennapod.playback.service.PlaybackService"
             android:label="@string/app_name"
-            android:enabled="true"
+            android:enabled="${oldServiceEnabled}"
             android:exported="true"
             android:foregroundServiceType="mediaPlayback"
             tools:ignore="ExportedService">
 
             <intent-filter>
-                <!--<action android:name="android.media.browse.MediaBrowserService"/>-->
+                <action android:name="android.media.browse.MediaBrowserService"/>
                 <action android:name="de.danoeh.antennapod.intents.PLAYBACK_SERVICE" />
             </intent-filter>
         </service>
@@ -42,7 +42,7 @@
 
         <service
             android:name="de.danoeh.antennapod.playback.service.QuickSettingsTileService"
-            android:enabled="true"
+            android:enabled="${newServiceEnabled}"
             android:exported="true"
             android:label="@string/app_name"
             android:icon="@drawable/ic_notification"
