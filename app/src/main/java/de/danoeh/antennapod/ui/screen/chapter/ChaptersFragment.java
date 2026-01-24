@@ -19,12 +19,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -37,7 +40,6 @@ import org.greenrobot.eventbus.ThreadMode;
 public class ChaptersFragment extends AppCompatDialogFragment {
     public static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
-    private PlaybackController controller;
     private Disposable disposable;
     private int focusedChapter = -1;
     private Playable media;
@@ -76,11 +78,13 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                 layoutManager.getOrientation()));
 
         adapter = new ChaptersListAdapter(getActivity(), pos -> {
-            if (controller.getStatus() != PlayerStatus.PLAYING) {
-                controller.playPause();
-            }
             Chapter chapter = adapter.getItem(pos);
-            controller.seekTo((int) chapter.getStart());
+            PlaybackController.bindToService(getActivity(), playbackService -> {
+                if (playbackService.getStatus() != PlayerStatus.PLAYING) {
+                    playbackService.resume();
+                }
+                playbackService.seekTo((int) chapter.getStart());
+            });
             updateChapterSelection(pos, true);
         });
         recyclerView.setAdapter(adapter);
@@ -97,13 +101,6 @@ public class ChaptersFragment extends AppCompatDialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        controller = new PlaybackController(getActivity()) {
-            @Override
-            public void loadMediaInfo() {
-                ChaptersFragment.this.loadMediaInfo(false);
-            }
-        };
-        controller.init();
         EventBus.getDefault().register(this);
         loadMediaInfo(false);
     }
@@ -115,22 +112,25 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        controller.release();
-        controller = null;
         EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusEvent(PlayerStatusEvent event) {
+        loadMediaInfo(false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        updateChapterSelection(getCurrentChapter(media), false);
+        updateChapterSelection(getCurrentChapter(media, event.getPosition()), false);
         adapter.notifyTimeChanged(event.getPosition());
     }
 
-    private int getCurrentChapter(Playable media) {
-        if (controller == null || media == null) {
+    private int getCurrentChapter(Playable media, int position) {
+        if (media == null) {
             return -1;
         }
-        return Chapter.getAfterPosition(media.getChapters(), controller.getPosition());
+        return Chapter.getAfterPosition(media.getChapters(), position);
     }
 
     private void loadMediaInfo(boolean forceRefresh) {
@@ -138,7 +138,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
             disposable.dispose();
         }
         disposable = Maybe.create(emitter -> {
-            Playable media = controller.getMedia();
+            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media != null) {
                 ChapterUtils.loadChapters(media, getContext(), forceRefresh);
                 emitter.onSuccess(media);
@@ -170,7 +170,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                 && !TextUtils.isEmpty(((FeedMedia) media).getItem().getPodcastIndexChapterUrl())) {
             ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
         }
-        int positionOfCurrentChapter = getCurrentChapter(media);
+        int positionOfCurrentChapter = getCurrentChapter(media, media.getPosition());
         updateChapterSelection(positionOfCurrentChapter, true);
     }
 
