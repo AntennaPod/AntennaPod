@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
-import de.danoeh.antennapod.model.feed.FeedOrder;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -30,6 +29,7 @@ import java.util.Set;
 
 import de.danoeh.antennapod.model.download.ProxyConfig;
 import de.danoeh.antennapod.model.feed.FeedCounter;
+import de.danoeh.antennapod.model.feed.FeedOrder;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
@@ -91,9 +91,12 @@ public abstract class UserPreferences {
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
     public static final String PREF_COMPRESSOR_ENABLED = "prefCompressorEnabled";
-    public static final String PREF_COMPRESSOR_PRE_GAIN = "prefCompressorPreGain";
+    public static final String PREF_COMPRESSOR_RESET = "prefCompressorReset";
     public static final String PREF_COMPRESSOR_THRESHOLD = "prefCompressorThreshold";
     public static final String PREF_COMPRESSOR_RATIO = "prefCompressorRatio";
+    public static final String PREF_COMPRESSOR_ATTACK_TIME = "prefCompressorAttackTime";
+    public static final String PREF_COMPRESSOR_RELEASE_TIME = "prefCompressorReleaseTime";
+    public static final String PREF_COMPRESSOR_NOISE_GATE_THRESHOLD = "prefCompressorNoiseGateThreshold";
     public static final String PREF_COMPRESSOR_POST_GAIN = "prefCompressorPostGain";
     public static final String PREF_EQUALIZER_ENABLED = "prefEqualizerEnabled";
     public static final String PREF_EQUALIZER_RESET = "prefEqualizerReset";
@@ -795,20 +798,28 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_COMPRESSOR_ENABLED, false);
     }
 
-    public static float getCompressorPreGain() {
-        return (float) prefs.getInt(PREF_COMPRESSOR_PRE_GAIN, 0);
-    }
-
     public static float getCompressorThreshold() {
-        return (float) prefs.getInt(PREF_COMPRESSOR_THRESHOLD, -45);
+        return (float) prefs.getInt(PREF_COMPRESSOR_THRESHOLD, -50);
     }
 
     public static float getCompressorRatio() {
         return (float) prefs.getInt(PREF_COMPRESSOR_RATIO, 5);
     }
 
+    public static float getCompressorAttackTime() {
+        return (float) prefs.getInt(PREF_COMPRESSOR_ATTACK_TIME, 5);
+    }
+
+    public static float getCompressorReleaseTime() {
+        return (float) prefs.getInt(PREF_COMPRESSOR_RELEASE_TIME, 40);
+    }
+
+    public static float getCompressorNoiseGateThreshold() {
+        return (float) prefs.getInt(PREF_COMPRESSOR_NOISE_GATE_THRESHOLD, -90);
+    }
+
     public static float getCompressorPostGain() {
-        return (float) prefs.getInt(PREF_COMPRESSOR_POST_GAIN, 20);
+        return (float) prefs.getInt(PREF_COMPRESSOR_POST_GAIN, 15);
     }
 
     public static boolean isEqualizerEnabled() {

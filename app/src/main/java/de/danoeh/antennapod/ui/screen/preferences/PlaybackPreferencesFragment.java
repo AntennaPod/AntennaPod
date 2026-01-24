@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-
-import org.greenrobot.eventbus.EventBus;
+import androidx.preference.SeekBarPreference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.settings.CompressorPreferenceChangedEvent;
@@ -22,8 +21,9 @@ import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
 
-import java.util.Locale;
 import java.util.Map;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class PlaybackPreferencesFragment
             extends AnimatedPreferenceFragment
@@ -70,14 +70,14 @@ public class PlaybackPreferencesFragment
             return;
         }
 
-        if (key.toLowerCase(Locale.ROOT).contains("compressor")) {
+        if (key.contains("prefCompressor")) {
             if (key.equals(UserPreferences.PREF_COMPRESSOR_ENABLED)) {
                 setCompressorPrefsVisibility(UserPreferences.isCompressorEnabled());
             }
             postCompressorPrefsChangedEvent();
         }
 
-        if (key.toLowerCase(Locale.ROOT).contains("equalizer")) {
+        if (key.contains("prefEqualizer")) {
             if (key.equals(UserPreferences.PREF_EQUALIZER_ENABLED)) {
                 setEqualizerPrefsVisibility(UserPreferences.isEqualizerEnabled());
             }
@@ -88,9 +88,11 @@ public class PlaybackPreferencesFragment
     private static void postCompressorPrefsChangedEvent() {
         EventBus.getDefault().post(new CompressorPreferenceChangedEvent(
                 UserPreferences.isCompressorEnabled(),
-                UserPreferences.getCompressorPreGain(),
                 UserPreferences.getCompressorThreshold(),
                 UserPreferences.getCompressorRatio(),
+                UserPreferences.getCompressorAttackTime(),
+                UserPreferences.getCompressorReleaseTime(),
+                UserPreferences.getCompressorNoiseGateThreshold(),
                 UserPreferences.getCompressorPostGain()
         ));
     }
@@ -129,6 +131,7 @@ public class PlaybackPreferencesFragment
 
     private void setupDynamicsProcessingEffectPreferences() {
         setCompressorPrefsVisibility(UserPreferences.isCompressorEnabled());
+        setCompressorResetActivatedHandler();
         setEqualizerPrefsVisibility(UserPreferences.isEqualizerEnabled());
         setEqualizerResetActivatedHandler();
     }
@@ -158,10 +161,47 @@ public class PlaybackPreferencesFragment
     }
 
     private void setCompressorPrefsVisibility(boolean visible) {
-        requirePreference(UserPreferences.PREF_COMPRESSOR_PRE_GAIN).setVisible(visible);
+        requirePreference(UserPreferences.PREF_COMPRESSOR_RESET).setVisible(visible);
         requirePreference(UserPreferences.PREF_COMPRESSOR_THRESHOLD).setVisible(visible);
         requirePreference(UserPreferences.PREF_COMPRESSOR_RATIO).setVisible(visible);
+        requirePreference(UserPreferences.PREF_COMPRESSOR_ATTACK_TIME).setVisible(visible);
+        requirePreference(UserPreferences.PREF_COMPRESSOR_RELEASE_TIME).setVisible(visible);
+        requirePreference(UserPreferences.PREF_COMPRESSOR_NOISE_GATE_THRESHOLD).setVisible(visible);
         requirePreference(UserPreferences.PREF_COMPRESSOR_POST_GAIN).setVisible(visible);
+    }
+
+    private void setCompressorResetActivatedHandler() {
+        requirePreference(UserPreferences.PREF_COMPRESSOR_RESET).setOnPreferenceClickListener(pref -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle(R.string.pref_compressor_reset_question_title)
+                    .setMessage(R.string.pref_compressor_reset_question_text)
+                    .setPositiveButton(R.string.yes, (dialog, which) ->
+                            resetCompressorUiAndPrefStoreThenPostEvent())
+                    .setNegativeButton(R.string.no, null)
+                    .show();
+            return true;
+        });
+    }
+
+    private void resetCompressorUiAndPrefStoreThenPostEvent() {
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_COMPRESSOR_THRESHOLD).setValue(-50);
+        this.<SeekBarPreference>requirePreference(UserPreferences.PREF_COMPRESSOR_RATIO).setValue(5);
+        this.<SeekBarPreference>requirePreference(UserPreferences.PREF_COMPRESSOR_ATTACK_TIME).setValue(5);
+        this.<SeekBarPreference>requirePreference(UserPreferences.PREF_COMPRESSOR_RELEASE_TIME).setValue(40);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_COMPRESSOR_NOISE_GATE_THRESHOLD)
+                .setValue(-90);
+        this.<NegativeSeekBarPreference>requirePreference(UserPreferences.PREF_COMPRESSOR_POST_GAIN).setValue(15);
+
+        SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+        assert prefs != null;
+        prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_THRESHOLD, -50).apply();
+        prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_RATIO, 5).apply();
+        prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_ATTACK_TIME, 5).apply();
+        prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_RELEASE_TIME, 40).apply();
+        prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_NOISE_GATE_THRESHOLD, -90).apply();
+        prefs.edit().putInt(UserPreferences.PREF_COMPRESSOR_POST_GAIN, 15).apply();
+
+        postCompressorPrefsChangedEvent();
     }
 
     private void setEqualizerPrefsVisibility(boolean visible) {

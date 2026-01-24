@@ -21,7 +21,7 @@ import de.danoeh.antennapod.ui.preferences.R;
 // Writing to and reading from persistent storage is overridden, too: This class' value (possibly negative) is used.
 public class NegativeSeekBarPreference extends SeekBarPreference {
 
-    private static final String TAG = "NegativeSeekBarPreferen";
+    private static final String TAG = "NegativeSeekBarPreference";
     private static final int MAX_VALUE_INIT = 47;
     private static final int MIN_VALUE_INIT = -55;
     private static final int DEF_VALUE_INIT = 7;
@@ -141,7 +141,7 @@ public class NegativeSeekBarPreference extends SeekBarPreference {
     protected void onSetInitialValue(Object superDefaultValue) {
         int defaultVal = 0;
         if (superDefaultValue instanceof Integer) {
-            defaultVal = convertFromSuperValue((Integer)superDefaultValue);
+            defaultVal = convertFromSuperValue((Integer) superDefaultValue);
         }
 
         int persistedSuperVal = getPersistedInt(defaultVal);

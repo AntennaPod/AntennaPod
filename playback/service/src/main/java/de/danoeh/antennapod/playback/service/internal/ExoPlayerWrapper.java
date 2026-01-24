@@ -329,8 +329,10 @@ public class ExoPlayerWrapper {
     }
 
     public synchronized void changeCompressor(
-            boolean enabled, float preGain, float threshold, float ratio, float postGain)  {
-        setAndApplyMbcBandParameters(this.dynamicsProcessing, enabled, preGain, threshold, ratio, postGain);
+            boolean enabled, float threshold,
+            float ratio, float attackTime, float releaseTime, float noiseGateThreshold, float postGain)  {
+        setAndApplyMbcBandParameters(this.dynamicsProcessing, enabled,
+                threshold, ratio, attackTime, releaseTime, noiseGateThreshold, postGain);
     }
 
     public synchronized void changeEqualizer(
@@ -467,9 +469,11 @@ public class ExoPlayerWrapper {
         setMbcBandParameters(
                 mbcBand,
                 UserPreferences.isCompressorEnabled(),
-                UserPreferences.getCompressorPreGain(),
                 UserPreferences.getCompressorThreshold(),
                 UserPreferences.getCompressorRatio(),
+                UserPreferences.getCompressorAttackTime(),
+                UserPreferences.getCompressorReleaseTime(),
+                UserPreferences.getCompressorNoiseGateThreshold(),
                 UserPreferences.getCompressorPostGain());
         applyMbcBand(config, mbcBand);
 
@@ -498,6 +502,7 @@ public class ExoPlayerWrapper {
             this.dynamicsProcessing = new DynamicsProcessing(priority, audioSessionId, config);
             this.dynamicsProcessing.setEnabled(enableDynProc);
         }
+        Log.i(TAG, "DynamicsProcessing Enabled=" + this.dynamicsProcessing.getEnabled());
 
         if (oldDynamicsProcessing != null) {
             oldDynamicsProcessing.release();
@@ -523,64 +528,84 @@ public class ExoPlayerWrapper {
                 mbcInUse, mbcBandCount,
                 postEqInUse, EQUALIZER_BAND_COUNT,
                 limiterInUse);
-        builder.setPreferredFrameDuration(100);
+        builder.setPreferredFrameDuration(25);
         return builder.build();
     }
 
     private void setMbcBandParameters(
             DynamicsProcessing.MbcBand mbcBand, boolean enabled,
-            float preGain, float threshold, float ratio, float postGain
+            float threshold, float ratio, float attackTime, float releaseTime, float noiseGateThreshold, float postGain
     ) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             return;
         }
 
         if (enabled) {
-            mbcBand.setAttackTime(5.0f);
-            mbcBand.setReleaseTime(35.0f);
-            mbcBand.setKneeWidth(5.0f);
-            mbcBand.setExpanderRatio(0);
-            mbcBand.setNoiseGateThreshold(-120);
+            mbcBand.setPreGain(0);
+            mbcBand.setExpanderRatio(20);
             mbcBand.setCutoffFrequency(20000);
 
-            mbcBand.setPreGain(preGain);
             mbcBand.setThreshold(threshold);
             mbcBand.setRatio(ratio);
+            mbcBand.setAttackTime(attackTime);
+            mbcBand.setReleaseTime(releaseTime);
+            mbcBand.setNoiseGateThreshold(noiseGateThreshold);
             mbcBand.setPostGain(postGain);
+
             mbcBand.setEnabled(true);
         } else {
             mbcBand.setEnabled(false);
-            mbcBand.setPreGain(0);
+
             mbcBand.setThreshold(-45);
             mbcBand.setRatio(1);
+            mbcBand.setAttackTime(3.0f);
+            mbcBand.setReleaseTime(80.0f);
+            mbcBand.setNoiseGateThreshold(-90);
             mbcBand.setPostGain(0);
         }
     }
 
     private void applyMbcBand(DynamicsProcessing.Config config, DynamicsProcessing.MbcBand mbcBand) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            logMbcBandParameters("applyMbcBand(config, mbcBand)", mbcBand);
             config.setMbcBandAllChannelsTo(0, mbcBand);
         }
     }
 
     private void applyMbcBand(DynamicsProcessing dynProc, DynamicsProcessing.MbcBand mbcBand) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            logMbcBandParameters("applyMbcBand(dynProc, mbcBand)", mbcBand);
             dynProc.setMbcBandAllChannelsTo(0, mbcBand);
+        }
+    }
+
+    private void logMbcBandParameters(String funcName, DynamicsProcessing.MbcBand mbcBand) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            Log.d(TAG, funcName + " Enabled=" + mbcBand.isEnabled()
+                    + " AttackTime=" + mbcBand.getAttackTime() + " ReleaseTime=" + mbcBand.getReleaseTime()
+                    + " PreGain=" + mbcBand.getPreGain() + " PostGain=" + mbcBand.getPostGain()
+                    + " Threshold=" + mbcBand.getThreshold() + " Ratio=" + mbcBand.getRatio()
+                    + " KneeWidth=" + mbcBand.getKneeWidth() + " CutoffFrequency=" + mbcBand.getCutoffFrequency()
+                    + " NoiseGateThreshold=" + mbcBand.getNoiseGateThreshold()
+                    + " ExpanderRatio=" + mbcBand.getExpanderRatio());
         }
     }
 
     private synchronized void setAndApplyMbcBandParameters(
             DynamicsProcessing dynProc, boolean enabled,
-            float preGain, float threshold, float ratio, float postGain
+            float threshold, float ratio, float attackTime, float releaseTime, float noiseGateThreshold, float postGain
     ) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             return;
         }
         if (dynProc.getChannelCount() < 1) {
+            Log.e(TAG, "No channel found to apply MbcBandParameters! "
+                    + "(getChannelCount()=" + dynProc.getChannelCount() + ")");
             return;
         }
         DynamicsProcessing.Mbc mbc = dynProc.getMbcByChannelIndex(0);
         if (mbc.getBandCount() < 1) {
+            Log.e(TAG, "No band found to apply MbcBandParameters! (getBandCount()=" + mbc.getBandCount() + ")");
             return;
         }
         DynamicsProcessing.MbcBand mbcBand = mbc.getBand(0);
@@ -589,10 +614,11 @@ public class ExoPlayerWrapper {
         if (!enableDynProc) {
             dynProc.setEnabled(false);
         }
-        setMbcBandParameters(mbcBand, enabled, preGain, threshold, ratio, postGain);
+        setMbcBandParameters(mbcBand, enabled, threshold, ratio, attackTime, releaseTime, noiseGateThreshold, postGain);
         applyMbcBand(dynProc, mbcBand);
         if (enableDynProc) {
             dynProc.setEnabled(true);
+            Log.i(TAG, "Dynamics Processing enabled=" + dynProc.getEnabled());
         }
     }
 

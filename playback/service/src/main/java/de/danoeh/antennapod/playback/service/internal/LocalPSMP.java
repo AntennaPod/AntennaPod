@@ -808,16 +808,20 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void compressorPresetChanged(CompressorPreferenceChangedEvent event) {
         mediaPlayer.changeCompressor(
                 event.isEnabled(),
-                event.getPreGain(),
                 event.getThreshold(),
                 event.getRatio(),
+                event.getAttackTime(),
+                event.getReleaseTime(),
+                event.getNoiseGateThreshold(),
                 event.getPostGain());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void equalizerPresetChanged(EqualizerPreferenceChangedEvent event) {
         mediaPlayer.changeEqualizer(event.isEnabled(), event.getGains());
     }
