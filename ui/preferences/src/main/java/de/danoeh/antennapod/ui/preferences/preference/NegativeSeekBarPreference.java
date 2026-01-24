@@ -22,9 +22,9 @@ import de.danoeh.antennapod.ui.preferences.R;
 public class NegativeSeekBarPreference extends SeekBarPreference {
 
     private static final String TAG = "NegativeSeekBarPref";
-    private static final int MAX_VALUE_INIT = 47;
-    private static final int MIN_VALUE_INIT = -55;
-    private static final int DEF_VALUE_INIT = 7;
+    private static final int MAX_VALUE_INIT = 50;
+    private static final int MIN_VALUE_INIT = -50;
+    private static final int DEF_VALUE_INIT = 0;
 
     private int maxValue = MAX_VALUE_INIT;
     private int minValue = MIN_VALUE_INIT;
