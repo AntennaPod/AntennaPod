@@ -80,7 +80,7 @@ public class CoverFragment extends Fragment {
             if (PlaybackService.isRunning
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                 getContext().sendBroadcast(MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_PAUSE));
-            } else {
+            } else if (media != null) {
                 new PlaybackServiceStarter(getContext(), media)
                         .callEvenIfRunning(true)
                         .start();

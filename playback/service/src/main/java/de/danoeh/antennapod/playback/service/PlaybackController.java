@@ -488,6 +488,7 @@ public abstract class PlaybackController {
             return;
         }
         activity.bindService(new Intent(activity, PlaybackService.class), new ServiceConnection() {
+            @Override
             public void onServiceConnected(ComponentName className, IBinder service) {
                 if (service instanceof PlaybackService.LocalBinder) {
                     consumer.accept(((PlaybackService.LocalBinder) service).getService());
