@@ -978,7 +978,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
             }
-            playable.onPlaybackPause(getApplicationContext());
         }
 
         @Override
@@ -1183,11 +1182,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (!(playable instanceof FeedMedia)) {
             Log.d(TAG, "Not doing post-playback processing: media not of type FeedMedia");
-            if (ended) {
-                playable.onPlaybackCompleted(getApplicationContext());
-            } else {
-                playable.onPlaybackPause(getApplicationContext());
-            }
             return;
         }
         FeedMedia media = (FeedMedia) playable;
@@ -1205,14 +1199,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             autoSkipped = true;
         }
 
-        if (ended || almostEnded) {
-            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, true);
-            media.onPlaybackCompleted(getApplicationContext());
-        } else {
-            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
-            media.onPlaybackPause(getApplicationContext());
-        }
-
+        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, ended || almostEnded);
         if (item != null) {
             if (ended || almostEnded
                     || autoSkipped

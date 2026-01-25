@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.model.playback;
 
-import android.content.Context;
 import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
@@ -108,22 +107,6 @@ public interface Playable extends Parcelable, Serializable {
      * Position held by this Playable should be set accurately before a call to this method is made.
      */
     void onPlaybackStart();
-
-    /**
-     * This method should be called every time playback pauses or stops on this object,
-     * including just before a seeking operation is performed, after which a call to
-     * {@link #onPlaybackStart()} should be made. If playback completes, calling this method is not
-     * necessary, as long as a call to {@link #onPlaybackCompleted(Context)} is made.
-     * <p/>
-     * Position held by this Playable should be set accurately before a call to this method is made.
-     */
-    void onPlaybackPause(Context context);
-
-    /**
-     * This method should be called when playback completes for this object.
-     * @param context
-     */
-    void onPlaybackCompleted(Context context);
 
     /**
      * Returns an integer that must be unique among all Playable classes. The

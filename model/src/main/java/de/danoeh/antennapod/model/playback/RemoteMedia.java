@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.model.playback;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
@@ -200,16 +199,6 @@ public class RemoteMedia implements Playable {
 
     @Override
     public void onPlaybackStart() {
-        // no-op
-    }
-
-    @Override
-    public void onPlaybackPause(Context context) {
-        // no-op
-    }
-
-    @Override
-    public void onPlaybackCompleted(Context context) {
         // no-op
     }
 
