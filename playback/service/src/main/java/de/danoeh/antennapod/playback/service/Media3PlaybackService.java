@@ -21,8 +21,10 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -41,12 +43,13 @@ public class Media3PlaybackService extends MediaSessionService {
 
     private ExoPlayer player;
     private MediaSession mediaSession;
-    private Playable currentPlayable;
+    private FeedMedia currentPlayable;
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
     private long lastPositionSaveTime = 0;
 
+    @UnstableApi
     @Override
     public void onCreate() {
         super.onCreate();
@@ -133,14 +136,16 @@ public class Media3PlaybackService extends MediaSessionService {
         }
     }
 
+    @UnstableApi
     private final Player.Listener playerListener = new Player.Listener() {
         @Override
         public void onPlaybackStateChanged(int playbackState) {
             if (playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED) {
                 saveCurrentPosition();
             }
-            if (playbackState == Player.STATE_ENDED && currentPlayable instanceof FeedMedia) {
-                startNextInQueue(((FeedMedia) currentPlayable).getItem());
+            if (playbackState == Player.STATE_ENDED) {
+                onPlaybackEnd(currentPlayable);
+                startNextInQueue(currentPlayable.getItem());
             }
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
@@ -149,11 +154,16 @@ public class Media3PlaybackService extends MediaSessionService {
         public void onIsPlayingChanged(boolean isPlaying) {
             PlaybackService.isRunning = isPlaying;
             if (isPlaying) {
+                if (currentPlayable != null && player != null) {
+                    currentPlayable.setPosition((int) player.getCurrentPosition());
+                    currentPlayable.onPlaybackStart();
+                }
                 lastPositionSaveTime = System.currentTimeMillis();
                 setupPositionObserver();
             } else {
                 cancelPositionObserver();
                 saveCurrentPosition();
+                SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
             }
             updatePlaybackPreferences();
             EventBus.getDefault().post(new PlayerStatusEvent());
@@ -178,6 +188,28 @@ public class Media3PlaybackService extends MediaSessionService {
         PlayableUtils.saveCurrentPosition(currentPlayable, position, timestamp);
     }
 
+    private void onPlaybackEnd(FeedMedia media) {
+        if (media == null) {
+            return;
+        }
+
+        FeedItem item = media.getItem();
+        int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
+        boolean almostEnded = media.getDuration() > 0
+                && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
+
+        if (almostEnded) {
+            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, true);
+            if (item != null) {
+                DBWriter.markItemPlayed(FeedItem.PLAYED, true, item);
+                DBWriter.removeQueueItem(this, true, item);
+            }
+            DBWriter.addItemToPlaybackHistory(media);
+        } else {
+            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
+        }
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -190,6 +222,7 @@ public class Media3PlaybackService extends MediaSessionService {
         return mediaSession;
     }
 
+    @UnstableApi
     @Override
     public void onDestroy() {
         PlaybackService.isRunning = false;
@@ -216,6 +249,7 @@ public class Media3PlaybackService extends MediaSessionService {
     /**
      * Loads the next item, and starts it if continuous playback is enabled.
      */
+    @UnstableApi
     private void startNextInQueue(FeedItem item) {
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
