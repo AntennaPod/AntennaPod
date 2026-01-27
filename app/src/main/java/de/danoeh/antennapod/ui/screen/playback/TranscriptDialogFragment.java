@@ -24,12 +24,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TranscriptDialogBinding;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.transcript.TranscriptUtils;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -43,7 +47,6 @@ public class TranscriptDialogFragment extends DialogFragment
         implements TranscriptAdapter.SegmentClickListener {
     public static final String TAG = "TranscriptFragment";
     private TranscriptDialogBinding viewBinding;
-    private PlaybackController controller;
     private Disposable disposable;
     private Playable media;
     private Transcript transcript;
@@ -123,11 +126,16 @@ public class TranscriptDialogFragment extends DialogFragment
             long endTime = segment.getEndTime();
 
             scrollToPosition(pos);
-            if (!(controller.getPosition() >= startTime && controller.getPosition() <= endTime)) {
-                controller.seekTo((int) startTime);
-            } else {
-                controller.playPause();
-            }
+            PlaybackController.bindToService(getActivity(), playbackService -> {
+                if (!(playbackService.getCurrentPosition() >= startTime
+                        && playbackService.getCurrentPosition() <= endTime)) {
+                    playbackService.seekTo((int) startTime);
+                } else if (playbackService.getStatus() == PlayerStatus.PLAYING) {
+                    playbackService.pause(false, false);
+                } else {
+                    playbackService.resume();
+                }
+            });
             adapter.notifyItemChanged(pos);
             viewBinding.followAudioCheckbox.setChecked(true);
         }
@@ -144,14 +152,12 @@ public class TranscriptDialogFragment extends DialogFragment
     @Override
     public void onStart() {
         super.onStart();
-        controller = new PlaybackController(getActivity()) {
-            @Override
-            public void loadMediaInfo() {
-                TranscriptDialogFragment.this.loadMediaInfo(false);
-            }
-        };
-        controller.init();
         EventBus.getDefault().register(this);
+        loadMediaInfo(false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusEvent(PlayerStatusEvent event) {
         loadMediaInfo(false);
     }
 
@@ -169,7 +175,7 @@ public class TranscriptDialogFragment extends DialogFragment
             disposable.dispose();
         }
         disposable = Maybe.create(emitter -> {
-            Playable media = controller.getMedia();
+            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media instanceof FeedMedia) {
                 this.media = media;
 
@@ -241,8 +247,6 @@ public class TranscriptDialogFragment extends DialogFragment
         if (disposable != null) {
             disposable.dispose();
         }
-        controller.release();
-        controller = null;
         EventBus.getDefault().unregister(this);
     }
 

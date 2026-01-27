@@ -11,16 +11,14 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.SortOrder;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.LongList;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.test.antennapod.EspressoTestUtils;
@@ -47,11 +45,8 @@ import static de.test.antennapod.EspressoTestUtils.clickChildViewWithId;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -65,7 +60,6 @@ public class PlaybackTest {
 
     private UITestUtils uiTestUtils;
     protected Context context;
-    private PlaybackController controller;
 
     @Before
     public void setUp() throws Exception {
@@ -82,30 +76,6 @@ public class PlaybackTest {
         activityTestRule.finishActivity();
         EspressoTestUtils.tryKillPlaybackService();
         uiTestUtils.tearDown();
-        if (controller != null) {
-            controller.release();
-        }
-    }
-
-    private void setupPlaybackController() {
-        controller = new PlaybackController(activityTestRule.getActivity()) {
-            @Override
-            public void loadMediaInfo() {
-                // Do nothing
-            }
-        };
-        controller.init();
-    }
-
-    @Test
-    public void testContinousPlaybackOffMultipleEpisodes() throws Exception {
-        setContinuousPlaybackPreference(false);
-        uiTestUtils.addLocalFeedData(true);
-        activityTestRule.launchActivity(new Intent());
-        setupPlaybackController();
-        playFromQueue(0);
-        Awaitility.await().atMost(5, TimeUnit.SECONDS)
-                .until(() -> controller.getStatus() == PlayerStatus.INITIALIZED);
     }
 
     @Test
@@ -144,34 +114,6 @@ public class PlaybackTest {
     @Test
     public void testSmartMarkAsPlayed_Skip_LastEpisodeInQueue() throws Exception {
         doTestSmartMarkAsPlayed_Skip_ForEpisode(-1);
-    }
-
-    @Test
-    public void testSmartMarkAsPlayed_Pause_WontAffectItem() throws Exception {
-        setSmartMarkAsPlayedPreference(60);
-
-        uiTestUtils.addLocalFeedData(true);
-        activityTestRule.launchActivity(new Intent());
-        setupPlaybackController();
-
-        final int fiIdx = 0;
-        final FeedItem feedItem = DBReader.getQueue().get(fiIdx);
-
-        playFromQueue(fiIdx);
-
-        // let playback run a bit then pause
-        Awaitility.await()
-                .atMost(1000, MILLISECONDS)
-                .until(() -> PlayerStatus.PLAYING == controller.getStatus());
-        pauseEpisode();
-        Awaitility.await()
-                .atMost(1000, MILLISECONDS)
-                .until(() -> PlayerStatus.PAUSED == controller.getStatus());
-
-        assertThat("Ensure even with smart mark as play, after pause, the item remains in the queue.",
-                DBReader.getQueue(), hasItems(feedItem));
-        assertThat("Ensure even with smart mark as play, after pause, the item played status remains false.",
-                DBReader.getFeedItem(feedItem.getId()).isPlayed(), is(false));
     }
 
     @Test

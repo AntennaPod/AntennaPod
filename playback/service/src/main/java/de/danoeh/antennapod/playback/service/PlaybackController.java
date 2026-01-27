@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
+import androidx.core.util.Consumer;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
@@ -480,5 +481,28 @@ public abstract class PlaybackController {
 
     public boolean isStreaming() {
         return playbackService != null && playbackService.isStreaming();
+    }
+
+    public static void bindToService(Activity activity, Consumer<PlaybackService> consumer) {
+        if (!PlaybackService.isRunning) {
+            return;
+        }
+        activity.bindService(new Intent(activity, PlaybackService.class), new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName className, IBinder service) {
+                if (service instanceof PlaybackService.LocalBinder) {
+                    consumer.accept(((PlaybackService.LocalBinder) service).getService());
+                }
+                try {
+                    activity.unbindService(this);
+                } catch (IllegalArgumentException e) {
+                    // Ignore
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+            }
+        }, 0);
     }
 }

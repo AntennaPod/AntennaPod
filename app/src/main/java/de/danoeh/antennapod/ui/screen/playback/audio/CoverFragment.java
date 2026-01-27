@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +31,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
@@ -62,7 +69,6 @@ import static android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
 public class CoverFragment extends Fragment {
     private static final String TAG = "CoverFragment";
     private CoverFragmentBinding viewBinding;
-    private PlaybackController controller;
     private Disposable disposable;
     private int displayedChapterIndex = -1;
     private Playable media;
@@ -70,7 +76,16 @@ public class CoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewBinding = CoverFragmentBinding.inflate(inflater);
-        viewBinding.imgvCover.setOnClickListener(v -> onPlayPause());
+        viewBinding.imgvCover.setOnClickListener(v -> {
+            if (PlaybackService.isRunning
+                    && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
+                getContext().sendBroadcast(MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_PAUSE));
+            } else if (media != null) {
+                new PlaybackServiceStarter(getContext(), media)
+                        .callEvenIfRunning(true)
+                        .start();
+            }
+        });
         viewBinding.openDescription.setOnClickListener(view -> ((AudioPlayerFragment) requireParentFragment())
                 .scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true));
         ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
@@ -95,7 +110,7 @@ public class CoverFragment extends Fragment {
             disposable.dispose();
         }
         disposable = Maybe.<Playable>create(emitter -> {
-            Playable media = controller.getMedia();
+            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media != null) {
                 if (includingChapters) {
                     ChapterUtils.loadChapters(media, getContext(), false);
@@ -218,41 +233,37 @@ public class CoverFragment extends Fragment {
     private void seekToPrevChapter() {
         Chapter curr = getCurrentChapter();
 
-        if (controller == null || curr == null || displayedChapterIndex == -1) {
+        if (curr == null || displayedChapterIndex == -1) {
             return;
         }
 
-        if (displayedChapterIndex < 1) {
-            controller.seekTo(0);
-        } else if ((controller.getPosition() - 10000 * controller.getCurrentPlaybackSpeedMultiplier())
-                < curr.getStart()) {
-            refreshChapterData(displayedChapterIndex - 1);
-            controller.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart());
-        } else {
-            controller.seekTo((int) curr.getStart());
-        }
+        PlaybackController.bindToService(getActivity(), playbackService -> {
+            if (displayedChapterIndex < 1) {
+                playbackService.seekTo(0);
+            } else if ((playbackService.getCurrentPosition() - 10000 * playbackService.getCurrentPlaybackSpeed())
+                    < curr.getStart()) {
+                refreshChapterData(displayedChapterIndex - 1);
+                playbackService.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart());
+            } else {
+                playbackService.seekTo((int) curr.getStart());
+            }
+        });
     }
 
     private void seekToNextChapter() {
-        if (controller == null || media == null || media.getChapters() == null
+        if (media == null || media.getChapters() == null
                 || displayedChapterIndex == -1 || displayedChapterIndex + 1 >= media.getChapters().size()) {
             return;
         }
 
         refreshChapterData(displayedChapterIndex + 1);
-        controller.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart());
+        PlaybackController.bindToService(getActivity(), playbackService ->
+                playbackService.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart()));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        controller = new PlaybackController(getActivity()) {
-            @Override
-            public void loadMediaInfo() {
-                CoverFragment.this.loadMediaInfo(false);
-            }
-        };
-        controller.init();
         loadMediaInfo(false);
         EventBus.getDefault().register(this);
     }
@@ -264,9 +275,12 @@ public class CoverFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        controller.release();
-        controller = null;
         EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusEvent(PlayerStatusEvent event) {
+        loadMediaInfo(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -332,13 +346,6 @@ public class CoverFragment extends Fragment {
         } else {
             viewBinding.coverFragmentTextContainer.addView(viewBinding.episodeDetails);
         }
-    }
-
-    void onPlayPause() {
-        if (controller == null) {
-            return;
-        }
-        controller.playPause();
     }
 
     private boolean copyText(String text) {
