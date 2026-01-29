@@ -1,21 +1,24 @@
 package de.danoeh.antennapod.playback.service;
 
+import android.util.Log;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.media.utils.MediaConstants;
 import androidx.media3.common.C;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.Player;
-import androidx.media3.common.util.Log;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.CommandButton;
 import androidx.media3.session.DefaultMediaNotificationProvider;
+import androidx.media3.session.LibraryResult;
+import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
-import androidx.media3.session.MediaSessionService;
 import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionCommands;
 import androidx.media3.session.SessionResult;
@@ -27,6 +30,7 @@ import com.google.common.util.concurrent.SettableFuture;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
@@ -35,6 +39,7 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -43,10 +48,11 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Media3PlaybackService extends MediaSessionService {
+public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
     private static final long POSITION_SAVE_INTERVAL_MS = 5000;
     private final SessionCommand SESSION_COMMAND_REWIND
@@ -61,7 +67,7 @@ public class Media3PlaybackService extends MediaSessionService {
             = new SessionCommand("next_chapter", Bundle.EMPTY);
 
     private Player player;
-    private MediaSession mediaSession;
+    private MediaLibrarySession mediaSession;
     private FeedMedia currentPlayable;
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
@@ -94,18 +100,19 @@ public class Media3PlaybackService extends MediaSessionService {
             }
         };
         player.addListener(playerListener);
-        mediaSession = new MediaSession.Builder(this, player)
-                .setCallback(callback)
+        mediaSession = new MediaLibraryService.MediaLibrarySession.Builder(this, player, callback)
+                .setSessionActivity(new MainActivityStarter(this).withOpenPlayer().getPendingIntent())
                 .build();
     }
 
-    MediaSession.Callback callback = new MediaSession.Callback() {
+    MediaLibrarySession.Callback callback = new MediaLibrarySession.Callback() {
         @Override
         @NonNull
         @UnstableApi
         public MediaSession.ConnectionResult onConnect(@NonNull MediaSession session,
                                                        @NonNull MediaSession.ControllerInfo controller) {
-            SessionCommands sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
+            SessionCommands sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_AND_LIBRARY_COMMANDS
+                    .buildUpon()
                     .add(SESSION_COMMAND_REWIND)
                     .add(SESSION_COMMAND_FAST_FORWARD)
                     .add(SESSION_COMMAND_PLAYBACK_SPEED)
@@ -164,6 +171,9 @@ public class Media3PlaybackService extends MediaSessionService {
         public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onSetMediaItems(
                 @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller,
                 @NonNull List<MediaItem> mediaItems, int startIndex, long startPositionMs) {
+            // Uncomment to make playing from search work
+            //return MediaLibrarySession.Callback.super.onSetMediaItems(mediaSession, controller, mediaItems, startIndex, startPositionMs);
+
             int index = startIndex == C.INDEX_UNSET ? 0 : startIndex;
             MediaSession.MediaItemsWithStartPosition fallbackResult =
                     new MediaSession.MediaItemsWithStartPosition(mediaItems, index, startPositionMs);
@@ -190,7 +200,8 @@ public class Media3PlaybackService extends MediaSessionService {
                                 currentPlayable = media;
                                 MediaSession.MediaItemsWithStartPosition result =
                                         new MediaSession.MediaItemsWithStartPosition(mediaItems, index,
-                                                media.getPosition() > 0 ? media.getPosition() : startPositionMs);
+                                                media.getPosition() > 0 ? media.getPosition() :
+                                                        (startPositionMs > 0 ? startPositionMs : 0));
                                 future.set(result);
                             },
                             error -> {
@@ -199,6 +210,155 @@ public class Media3PlaybackService extends MediaSessionService {
                             }
                     );
             return future;
+        }
+
+        @Override
+        public ListenableFuture<List<MediaItem>> onAddMediaItems(MediaSession mediaSession,
+                MediaSession.ControllerInfo controller, List<MediaItem> mediaItems) {
+
+            if (mediaItems.isEmpty()) {
+                return Futures.immediateFuture(Collections.emptyList());
+            }
+            long mediaId;
+            try {
+                mediaId = Long.parseLong(mediaItems.get(0).mediaId);
+            } catch (NumberFormatException e) {
+                return Futures.immediateFuture(Collections.emptyList());
+            }
+
+            if (mediaLoaderDisposable != null) {
+                mediaLoaderDisposable.dispose();
+            }
+            SettableFuture<List<MediaItem>> future = SettableFuture.create();
+            mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            media -> {
+                                currentPlayable = media;
+                                future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(media)));
+                            },
+                            error -> {
+                                Log.e(TAG, "Failed to load media with id " + mediaId, error);
+                                future.set(Collections.emptyList());
+                            }
+                    );
+            return future;
+        }
+
+        @UnstableApi
+        @Override
+        @NonNull
+        public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
+                @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
+            SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
+            mediaLoaderDisposable = Single.fromCallable(() ->
+                            DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            media -> {
+                                currentPlayable = media;
+                                MediaSession.MediaItemsWithStartPosition result =
+                                        new MediaSession.MediaItemsWithStartPosition(
+                                                Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
+                                                0, media.getPosition());
+                                future.set(result);
+                            },
+                            future::setException
+                    );
+            return future;
+        }
+
+        @Override
+        @NonNull
+        @UnstableApi
+        public ListenableFuture<LibraryResult<MediaItem>> onGetLibraryRoot(
+                @NonNull MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
+                @Nullable MediaLibraryService.LibraryParams params) {
+            Bundle rootExtras = new Bundle();
+            rootExtras.putBoolean(MediaConstants.BROWSER_SERVICE_EXTRAS_KEY_SEARCH_SUPPORTED, true);
+            rootExtras.putBoolean(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, true);
+            rootExtras.putBoolean(MediaConstants.BROWSER_SERVICE_EXTRAS_KEY_SEARCH_SUPPORTED, true);
+            LibraryParams libraryParams = new LibraryParams.Builder().setExtras(rootExtras).build();
+
+            if ("com.google.android.googlequicksearchbox".equals(browser.getPackageName())) {
+                // Android Auto for you screen
+            }
+            MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+            metadataBuilder.setTitle("AntennaPod");
+            metadataBuilder.setIsBrowsable(true);
+            metadataBuilder.setIsPlayable(false);
+            MediaItem rootItem = new MediaItem.Builder()
+                    .setMediaId("rootaaa")
+                    .setMediaMetadata(metadataBuilder.build())
+                    .build();
+            return Futures.immediateFuture(LibraryResult.ofItem(rootItem, libraryParams));
+        }
+
+        @Override
+        public ListenableFuture<LibraryResult<MediaItem>> onGetItem(MediaLibrarySession session,
+                                                                    MediaSession.ControllerInfo browser, String mediaId) {
+            Log.d("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaa onGetItem: mediaId=" + mediaId);
+            return MediaLibrarySession.Callback.super.onGetItem(session, browser, mediaId);
+        }
+
+        @Override
+        @NonNull
+        public ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> onGetChildren(
+                @NonNull MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
+                @NonNull String parentId, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
+            Log.d("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaa onGetChildren: parentId=" + parentId);
+            SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
+            mediaLoaderDisposable = Single.fromCallable(DBReader::getQueue)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            queue -> {
+                                ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
+                                for (FeedItem item : queue) {
+                                    itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
+                                }
+                                ImmutableList<MediaItem> items = itemsBuilder.build();
+                                LibraryResult<ImmutableList<MediaItem>> result =
+                                        LibraryResult.ofItemList(items, params);
+                                future.set(result);
+                            },
+                            future::setException
+                    );
+            return future;
+        }
+
+        @Override
+        @NonNull
+        public ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> onGetSearchResult(
+                @NonNull MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
+                @NonNull String query, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
+            SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
+            mediaLoaderDisposable = Single.fromCallable(() ->
+                            DBReader.searchFeedItems(0, query, Feed.STATE_SUBSCRIBED))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            queue -> {
+                                ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
+                                for (FeedItem item : queue) {
+                                    itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
+                                }
+                                ImmutableList<MediaItem> items = itemsBuilder.build();
+                                future.set(LibraryResult.ofItemList(items, params));
+                            },
+                            future::setException
+                    );
+            return future;
+        }
+
+        @Override
+        @NonNull
+        public ListenableFuture<LibraryResult<Void>> onSearch(@NonNull MediaLibrarySession session,
+                @NonNull MediaSession.ControllerInfo browser, @NonNull String query,
+                @Nullable MediaLibraryService.LibraryParams params) {
+            return Futures.immediateFuture(LibraryResult.ofVoid());
         }
     };
 
@@ -315,7 +475,7 @@ public class Media3PlaybackService extends MediaSessionService {
 
     @Nullable
     @Override
-    public MediaSession onGetSession(@NonNull MediaSession.ControllerInfo controllerInfo) {
+    public MediaLibrarySession onGetSession(@NonNull MediaSession.ControllerInfo controllerInfo) {
         return mediaSession;
     }
 

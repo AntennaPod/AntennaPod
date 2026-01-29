@@ -11,11 +11,14 @@ public class MediaItemAdapter {
         String uriString =  playable.getStreamUrl() != null ? playable.getStreamUrl() : playable.getLocalFileUrl();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(playable.getEpisodeTitle());
+        metadataBuilder.setIsPlayable(true);
+        metadataBuilder.setIsBrowsable(true);
+        metadataBuilder.setMediaType(MediaMetadata.MEDIA_TYPE_PODCAST_EPISODE);
         String mediaId = "0";
         if (playable instanceof FeedMedia) {
             FeedMedia feedMedia = (FeedMedia) playable;
             mediaId = String.valueOf(feedMedia.getId());
-            metadataBuilder.setArtist(feedMedia.getFeedTitle());
+            metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
             metadataBuilder.setArtworkUri(Uri.parse(feedMedia.getImageLocation()));
         }
         return new MediaItem.Builder()
