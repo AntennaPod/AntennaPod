@@ -37,11 +37,16 @@ import java.util.List;
 
 public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLibrarySession.Callback {
     private static final String TAG = "M3SessionCallback";
-    protected final SessionCommand SESSION_COMMAND_REWIND = new SessionCommand("rewind", Bundle.EMPTY);
-    protected final SessionCommand SESSION_COMMAND_FAST_FORWARD = new SessionCommand("fast_forward", Bundle.EMPTY);
-    protected final SessionCommand SESSION_COMMAND_PLAYBACK_SPEED = new SessionCommand("playback_speed", Bundle.EMPTY);
-    protected final SessionCommand SESSION_COMMAND_SKIP_TO_NEXT = new SessionCommand("skip_to_next", Bundle.EMPTY);
-    protected final SessionCommand SESSION_COMMAND_NEXT_CHAPTER = new SessionCommand("next_chapter", Bundle.EMPTY);
+    protected static final SessionCommand SESSION_COMMAND_REWIND
+            = new SessionCommand("rewind", Bundle.EMPTY);
+    protected static final SessionCommand SESSION_COMMAND_FAST_FORWARD
+            = new SessionCommand("fast_forward", Bundle.EMPTY);
+    protected static final SessionCommand SESSION_COMMAND_PLAYBACK_SPEED
+            = new SessionCommand("playback_speed", Bundle.EMPTY);
+    protected static final SessionCommand SESSION_COMMAND_SKIP_TO_NEXT
+            = new SessionCommand("skip_to_next", Bundle.EMPTY);
+    protected static final SessionCommand SESSION_COMMAND_NEXT_CHAPTER
+            = new SessionCommand("next_chapter", Bundle.EMPTY);
 
     private final Context context;
     private Disposable mediaLoaderDisposable;

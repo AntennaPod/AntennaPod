@@ -211,14 +211,14 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
-                                    currentPlayable = media;
-                                    if (player.isPlaying()) {
-                                        currentPlayable.setPosition((int) player.getCurrentPosition());
-                                        currentPlayable.onPlaybackStart();
-                                    }
-                                    updatePlaybackPreferences();
-                                    EventBus.getDefault().post(new PlayerStatusEvent());
-                                },
+                            currentPlayable = media;
+                            if (player.isPlaying()) {
+                                currentPlayable.setPosition((int) player.getCurrentPosition());
+                                currentPlayable.onPlaybackStart();
+                            }
+                            updatePlaybackPreferences();
+                            EventBus.getDefault().post(new PlayerStatusEvent());
+                        },
                                 Throwable::printStackTrace);
 
             }
@@ -334,9 +334,9 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         queueLoaderDisposable = Single.fromCallable(() -> {
-                    FeedItem nextItem = DBReader.getNextInQueue(item);
-                    return nextItem != null && nextItem.getMedia() != null ? nextItem.getMedia() : null;
-                })
+            FeedItem nextItem = DBReader.getNextInQueue(item);
+            return nextItem != null && nextItem.getMedia() != null ? nextItem.getMedia() : null;
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
