@@ -197,7 +197,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             media -> {
-                                currentPlayable = media;
                                 MediaSession.MediaItemsWithStartPosition result =
                                         new MediaSession.MediaItemsWithStartPosition(mediaItems, index,
                                                 media.getPosition() > 0 ? media.getPosition() :
@@ -235,7 +234,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             media -> {
-                                currentPlayable = media;
                                 future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(media)));
                             },
                             error -> {
@@ -258,7 +256,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             media -> {
-                                currentPlayable = media;
                                 MediaSession.MediaItemsWithStartPosition result =
                                         new MediaSession.MediaItemsWithStartPosition(
                                                 Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
@@ -393,10 +390,37 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
+    private void ensureCurrentMediaLoaded() {
+        try {
+            long mediaId = Long.parseLong(player.getCurrentMediaItem().mediaId);
+            if (currentPlayable == null || currentPlayable.getId() != mediaId) {
+                if (mediaLoaderDisposable != null) {
+                    mediaLoaderDisposable.dispose();
+                }
+                mediaLoaderDisposable = Single.fromCallable(() ->
+                                DBReader.getFeedMedia(mediaId))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(media -> {
+                            currentPlayable = media;
+                            if (player.isPlaying()) {
+                                currentPlayable.setPosition((int) player.getCurrentPosition());
+                                currentPlayable.onPlaybackStart();
+                            }
+                            },
+                                Throwable::printStackTrace);
+
+            }
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "Invalid media ID: " + player.getCurrentMediaItem().mediaId, e);
+        }
+    }
+
     @UnstableApi
     private final Player.Listener playerListener = new Player.Listener() {
         @Override
         public void onPlaybackStateChanged(int playbackState) {
+            PlaybackService.isRunning = playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED;
             if (playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED) {
                 saveCurrentPosition();
             }
@@ -404,17 +428,13 @@ public class Media3PlaybackService extends MediaLibraryService {
                 onPlaybackEnd(currentPlayable);
                 startNextInQueue(currentPlayable.getItem());
             }
+            ensureCurrentMediaLoaded();
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
 
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
-            PlaybackService.isRunning = isPlaying;
             if (isPlaying) {
-                if (currentPlayable != null && player != null) {
-                    currentPlayable.setPosition((int) player.getCurrentPosition());
-                    currentPlayable.onPlaybackStart();
-                }
                 lastPositionSaveTime = System.currentTimeMillis();
                 setupPositionObserver();
             } else {
@@ -423,6 +443,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
             }
             updatePlaybackPreferences();
+            ensureCurrentMediaLoaded();
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
     };
@@ -438,6 +459,13 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     private void saveCurrentPosition() {
         if (currentPlayable == null || player == null) {
+            return;
+        }
+        try {
+            if (currentPlayable.getId() != Long.parseLong(player.getCurrentMediaItem().mediaId)) {
+                return;
+            }
+        } catch (NumberFormatException e) {
             return;
         }
         int position = (int) player.getCurrentPosition();
