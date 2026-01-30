@@ -216,6 +216,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                                         currentPlayable.setPosition((int) player.getCurrentPosition());
                                         currentPlayable.onPlaybackStart();
                                     }
+                                    updatePlaybackPreferences();
+                                    EventBus.getDefault().post(new PlayerStatusEvent());
                                 },
                                 Throwable::printStackTrace);
 
@@ -230,7 +232,8 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         PlaybackPreferences.writeMediaPlaying(currentPlayable);
-        int status = player.isPlaying() ? PlaybackPreferences.PLAYER_STATUS_PLAYING : PlaybackPreferences.PLAYER_STATUS_PAUSED;
+        int status = player.isPlaying() ? PlaybackPreferences.PLAYER_STATUS_PLAYING
+                : PlaybackPreferences.PLAYER_STATUS_PAUSED;
         PlaybackPreferences.setCurrentPlayerStatus(status);
     }
 

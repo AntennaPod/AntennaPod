@@ -147,8 +147,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onSetMediaItems(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller,
             @NonNull List<MediaItem> mediaItems, int startIndex, long startPositionMs) {
-        // Uncomment to make playing from search work
-        //return MediaLibrarySession.Callback.super.onSetMediaItems(mediaSession, controller, mediaItems, startIndex, startPositionMs);
+        // Uncomment to make playing from search work but position restoration not
+        // return MediaLibrarySession.Callback.super.onSetMediaItems(
+        //     mediaSession, controller, mediaItems, startIndex, startPositionMs);
 
         int index = startIndex == C.INDEX_UNSET ? 0 : startIndex;
         MediaSession.MediaItemsWithStartPosition fallbackResult =
