@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.media3.common.AudioAttributes;
+import androidx.media3.common.C;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
@@ -64,6 +66,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         Player basePlayer = new ExoPlayer.Builder(this)
                 .setSeekBackIncrementMs(UserPreferences.getRewindSecs() * 1000L)
                 .setSeekForwardIncrementMs(UserPreferences.getFastForwardSecs() * 1000L)
+                .setAudioAttributes(new AudioAttributes.Builder()
+                        .setUsage(C.USAGE_MEDIA)
+                        .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
+                        .build(), true)
                 .build();
         player = new ForwardingPlayer(basePlayer) {
             @Override
