@@ -256,6 +256,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<MediaItem>> onGetLibraryRoot(
             @NonNull MediaLibraryService.MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
             @Nullable MediaLibraryService.LibraryParams params) {
+        Log.d(TAG, "onGetLibraryRoot called - clientPackageName=" + browser.getPackageName() + ", params=" + params);
         Bundle rootExtras = new Bundle();
         rootExtras.putBoolean(MediaConstants.BROWSER_SERVICE_EXTRAS_KEY_SEARCH_SUPPORTED, true);
         rootExtras.putBoolean(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE, true);
@@ -264,6 +265,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .setExtras(rootExtras).build();
 
         if ("com.google.android.googlequicksearchbox".equals(browser.getPackageName())) {
+            Log.d(TAG, "onGetLibraryRoot: Detected Android Auto package");
             // Android Auto for you screen
         }
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
@@ -274,6 +276,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .setMediaId("rootaaa")
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
+        Log.d(TAG, "onGetLibraryRoot returning root with mediaId=rootaaa, isBrowsable=true");
         return Futures.immediateFuture(LibraryResult.ofItem(rootItem, libraryParams));
     }
 
@@ -282,7 +285,22 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<MediaItem>> onGetItem(
             @NonNull MediaLibraryService.MediaLibrarySession session,
             @NonNull MediaSession.ControllerInfo browser, @NonNull String mediaId) {
-        Log.d("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaa onGetItem: mediaId=" + mediaId);
+        Log.d(TAG, "onGetItem: mediaId=" + mediaId);
+
+        // If requesting the root item, return it directly
+        if (mediaId.equals("rootaaa")) {
+            Log.d(TAG, "onGetItem: Returning root item");
+            MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+            metadataBuilder.setTitle("AntennaPod");
+            metadataBuilder.setIsBrowsable(true);
+            metadataBuilder.setIsPlayable(false);
+            MediaItem rootItem = new MediaItem.Builder()
+                    .setMediaId("rootaaa")
+                    .setMediaMetadata(metadataBuilder.build())
+                    .build();
+            return Futures.immediateFuture(LibraryResult.ofItem(rootItem, null));
+        }
+
         return MediaLibraryService.MediaLibrarySession.Callback.super.onGetItem(session, browser, mediaId);
     }
 
@@ -291,7 +309,23 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> onGetChildren(
             @NonNull MediaLibraryService.MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
             @NonNull String parentId, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
-        Log.d("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaa onGetChildren: parentId=" + parentId);
+        Log.d(TAG, "onGetChildren: parentId=" + parentId + ", page=" + page + ", pageSize=" + pageSize);
+
+        // If requesting children of the root, return menu items
+        if (parentId.equals("rootaaa")) {
+            Log.d(TAG, "onGetChildren: Returning root menu items");
+            ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
+
+            // Add browsable menu items
+            itemsBuilder.add(createBrowsableMediaItem("queue", "Queue", null));
+            itemsBuilder.add(createBrowsableMediaItem("subscriptions", "Subscriptions", null));
+            itemsBuilder.add(createBrowsableMediaItem("downloads", "Downloads", null));
+
+            ImmutableList<MediaItem> items = itemsBuilder.build();
+            return Futures.immediateFuture(LibraryResult.ofItemList(items, params));
+        }
+
+        // Default: return the queue (for backward compatibility)
         SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
         mediaLoaderDisposable = Single.fromCallable(DBReader::getQueue)
                 .subscribeOn(Schedulers.io())
@@ -300,7 +334,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         queue -> {
                             ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
                             for (FeedItem item : queue) {
-                                itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
+                                if (item.getMedia() != null) {
+                                    itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
+                                }
                             }
                             ImmutableList<MediaItem> items = itemsBuilder.build();
                             LibraryResult<ImmutableList<MediaItem>> result =
@@ -310,6 +346,20 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         future::setException
                 );
         return future;
+    }
+
+    private MediaItem createBrowsableMediaItem(String mediaId, String title, @Nullable String description) {
+        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+        metadataBuilder.setTitle(title);
+        if (description != null) {
+            metadataBuilder.setDescription(description);
+        }
+        metadataBuilder.setIsBrowsable(true);
+        metadataBuilder.setIsPlayable(false);
+        return new MediaItem.Builder()
+                .setMediaId(mediaId)
+                .setMediaMetadata(metadataBuilder.build())
+                .build();
     }
 
     @Override

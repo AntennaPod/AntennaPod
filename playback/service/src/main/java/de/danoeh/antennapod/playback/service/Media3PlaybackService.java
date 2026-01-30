@@ -206,6 +206,9 @@ public class Media3PlaybackService extends MediaLibraryService {
     }
 
     private void ensureCurrentMediaLoaded() {
+        if (player.getCurrentMediaItem() == null) {
+            return;
+        }
         try {
             long mediaId = Long.parseLong(player.getCurrentMediaItem().mediaId);
             if (currentPlayable == null || currentPlayable.getId() != mediaId) {

@@ -61,6 +61,7 @@
             android:name="de.danoeh.antennapod.playback.service.Media3PlaybackService"
             android:enabled="${newServiceEnabled}"
             android:exported="true"
+            android:label="@string/app_name"
             android:foregroundServiceType="mediaPlayback"
             tools:ignore="ExportedService">
             <intent-filter>
