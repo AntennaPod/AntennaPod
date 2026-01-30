@@ -8,7 +8,6 @@ import de.danoeh.antennapod.model.playback.Playable;
 
 public class MediaItemAdapter {
     public static MediaItem fromPlayable(Playable playable) {
-        String uriString =  playable.getStreamUrl() != null ? playable.getStreamUrl() : playable.getLocalFileUrl();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(playable.getEpisodeTitle());
         metadataBuilder.setIsPlayable(true);
@@ -21,6 +20,7 @@ public class MediaItemAdapter {
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
             metadataBuilder.setArtworkUri(Uri.parse(feedMedia.getImageLocation()));
         }
+        String uriString = playable.localFileAvailable() ? playable.getLocalFileUrl() : playable.getStreamUrl();
         return new MediaItem.Builder()
                 .setUri(uriString != null ? Uri.parse(uriString) : null)
                 .setMediaId(mediaId)
