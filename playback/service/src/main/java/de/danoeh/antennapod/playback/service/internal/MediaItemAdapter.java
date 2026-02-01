@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.playback.service;
+package de.danoeh.antennapod.playback.service.internal;
 
 import android.net.Uri;
 import androidx.media3.common.MediaItem;
