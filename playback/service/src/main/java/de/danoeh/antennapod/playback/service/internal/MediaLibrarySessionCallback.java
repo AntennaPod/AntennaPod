@@ -1,18 +1,14 @@
 package de.danoeh.antennapod.playback.service.internal;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.media.utils.MediaConstants;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
-import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.session.CommandButton;
@@ -28,7 +24,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.service.R;
@@ -271,7 +266,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<MediaItem>> onGetItem(
             @NonNull MediaLibraryService.MediaLibrarySession session,
             @NonNull MediaSession.ControllerInfo browser, @NonNull String mediaId) {
-        if (BROWSABLE_MEDIA_IDS.contains(mediaId) || mediaId.startsWith("FeedId:")) {
+        if (BROWSABLE_MEDIA_IDS.contains(mediaId) || mediaId.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
             SettableFuture<LibraryResult<MediaItem>> future = SettableFuture.create();
             mediaLoaderDisposable = Single.fromCallable(() -> createBrowsableMediaItem(mediaId))
                     .subscribeOn(Schedulers.io())
@@ -302,14 +297,13 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                             future::setException);
             return future;
         } else if (MEDIA_ID_SUBSCRIPTIONS.equals(parentId)) {
-            mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedList())
+            mediaLoaderDisposable = Single.fromCallable(DBReader::getFeedList)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .subscribe(items -> {
-                                ImmutableList.Builder builder = new ImmutableList.Builder();
+                                ImmutableList.Builder<MediaItem> builder = new ImmutableList.Builder<>();
                                 for (Feed feed : items) {
-                                    builder.add(createBrowsableMediaItem("FeedId:" + feed.getId(),
-                                            feed.getTitle(), R.drawable.ic_feed_black, null));
+                                    builder.add(MediaItemAdapter.fromFeed(feed));
                                 }
                                 future.set(LibraryResult.ofItemList(builder.build(), params));
                             },
@@ -317,7 +311,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             return future;
         } else { // Episodes lists
             mediaLoaderDisposable = Single.fromCallable(() -> {
-                        if (parentId.startsWith("FeedId:")) {
+                        if (parentId.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
                             long feedId = Long.parseLong(parentId.split(":")[1]);
                             return DBReader.getFeed(feedId, true, 0, MAX_ITEMS_PER_LIST).getItems();
                         }
@@ -338,7 +332,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     })
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
-                    .subscribe(items -> future.set(createItemListResult(items, params)),
+                    .subscribe(items -> future.set(LibraryResult.ofItemList(
+                                    MediaItemAdapter.fromItemList(items), params)),
                             future::setException);
         }
         return future;
@@ -354,7 +349,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         DBReader.searchFeedItems(0, query, Feed.STATE_SUBSCRIBED))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(items -> future.set(createItemListResult(items, params)),
+                .subscribe(items -> future.set(LibraryResult.ofItemList(
+                                MediaItemAdapter.fromItemList(items), params)),
                         future::setException);
         return future;
     }
@@ -368,71 +364,38 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private MediaItem createBrowsableMediaItem(String id) {
-        if (id.startsWith("FeedId:")) {
+        if (id.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
             long feedId = Long.parseLong(id.split(":")[1]);
             Feed feed = DBReader.getFeed(feedId, false, 0, 0);
-            return createBrowsableMediaItem(id, feed.getTitle(), R.drawable.ic_notification, null);
+            return MediaItemAdapter.fromFeed(feed);
         }
         switch (id) {
             case MEDIA_ID_ROOT:
-                return createBrowsableMediaItem(MEDIA_ID_ROOT,
+                return MediaItemAdapter.from(context, MEDIA_ID_ROOT,
                         context.getString(R.string.app_name), R.drawable.ic_notification, null);
             case MEDIA_ID_QUEUE: {
                 int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED));
-                return createBrowsableMediaItem(MEDIA_ID_QUEUE,
+                return MediaItemAdapter.from(context, MEDIA_ID_QUEUE,
                         context.getString(R.string.queue_label), R.drawable.ic_playlist_play_black,
                         context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
             }
             case MEDIA_ID_DOWNLOADS: {
                 int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
-                return createBrowsableMediaItem(MEDIA_ID_DOWNLOADS,
+                return MediaItemAdapter.from(context, MEDIA_ID_DOWNLOADS,
                         context.getString(R.string.downloads_label), R.drawable.ic_download_black,
                         context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
             }
             case MEDIA_ID_EPISODES: {
                 int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter());
-                return createBrowsableMediaItem(MEDIA_ID_EPISODES,
+                return MediaItemAdapter.from(context, MEDIA_ID_EPISODES,
                         context.getString(R.string.episodes_label), R.drawable.ic_feed_black,
                         context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
             }
             case MEDIA_ID_SUBSCRIPTIONS:
-                return createBrowsableMediaItem(MEDIA_ID_SUBSCRIPTIONS,
+                return MediaItemAdapter.from(context, MEDIA_ID_SUBSCRIPTIONS,
                         context.getString(R.string.subscriptions_label), R.drawable.ic_subscriptions_black, null);
             default:
                 throw new IllegalArgumentException("ID not known: " + id);
         }
-    }
-
-    private MediaItem createBrowsableMediaItem(String id, String title,
-                                               @DrawableRes int iconResId, @Nullable String subtitle) {
-        Uri iconUri = new Uri.Builder()
-                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-                .authority(context.getResources().getResourcePackageName(iconResId))
-                .appendPath(context.getResources().getResourceTypeName(iconResId))
-                .appendPath(context.getResources().getResourceEntryName(iconResId))
-                .build();
-
-        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
-        metadataBuilder.setTitle(title);
-        metadataBuilder.setArtworkUri(iconUri);
-        if (subtitle != null) {
-            metadataBuilder.setSubtitle(subtitle);
-        }
-        metadataBuilder.setIsBrowsable(true);
-        metadataBuilder.setIsPlayable(false);
-        return new MediaItem.Builder()
-                .setMediaId(id)
-                .setMediaMetadata(metadataBuilder.build())
-                .build();
-    }
-
-    private LibraryResult<ImmutableList<MediaItem>> createItemListResult(List<FeedItem> feedItems,
-                                                 @Nullable MediaLibraryService.LibraryParams params) {
-        ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
-        for (FeedItem item : feedItems) {
-            itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
-        }
-        ImmutableList<MediaItem> items = itemsBuilder.build();
-        return LibraryResult.ofItemList(items, params);
     }
 }

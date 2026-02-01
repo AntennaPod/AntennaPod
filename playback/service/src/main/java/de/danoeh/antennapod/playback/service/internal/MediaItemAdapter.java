@@ -1,12 +1,25 @@
 package de.danoeh.antennapod.playback.service.internal;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
+import androidx.media3.session.LibraryResult;
+import androidx.media3.session.MediaLibraryService;
+import com.google.common.collect.ImmutableList;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 
+import java.util.List;
+
 public class MediaItemAdapter {
+    public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
+
     public static MediaItem fromPlayable(Playable playable) {
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(playable.getEpisodeTitle());
@@ -26,5 +39,50 @@ public class MediaItemAdapter {
                 .setMediaId(mediaId)
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
+    }
+
+
+    public static MediaItem fromFeed(Feed feed) {
+        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+        metadataBuilder.setTitle(feed.getTitle());
+        metadataBuilder.setArtworkUri(Uri.parse(feed.getImageUrl()));
+        metadataBuilder.setSubtitle(feed.getAuthor());
+        metadataBuilder.setIsBrowsable(true);
+        metadataBuilder.setIsPlayable(false);
+        return new MediaItem.Builder()
+                .setMediaId(MEDIA_ID_FEED_PREFIX + feed.getId())
+                .setMediaMetadata(metadataBuilder.build())
+                .build();
+    }
+
+    public static MediaItem from(Context context, String id, String title,
+                                      @DrawableRes int iconResId, @Nullable String subtitle) {
+        Uri iconUri = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(context.getResources().getResourcePackageName(iconResId))
+                .appendPath(context.getResources().getResourceTypeName(iconResId))
+                .appendPath(context.getResources().getResourceEntryName(iconResId))
+                .build();
+
+        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+        metadataBuilder.setTitle(title);
+        metadataBuilder.setArtworkUri(iconUri);
+        if (subtitle != null) {
+            metadataBuilder.setSubtitle(subtitle);
+        }
+        metadataBuilder.setIsBrowsable(true);
+        metadataBuilder.setIsPlayable(false);
+        return new MediaItem.Builder()
+                .setMediaId(id)
+                .setMediaMetadata(metadataBuilder.build())
+                .build();
+    }
+
+    public static ImmutableList<MediaItem> fromItemList(List<FeedItem> feedItems) {
+        ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
+        for (FeedItem item : feedItems) {
+            itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
+        }
+        return itemsBuilder.build();
     }
 }
