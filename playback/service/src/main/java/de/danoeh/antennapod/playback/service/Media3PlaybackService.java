@@ -252,7 +252,8 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         try {
-            if (currentPlayable.getId() != Long.parseLong(player.getCurrentMediaItem().mediaId)) {
+            if (player.getCurrentMediaItem() == null
+                    || currentPlayable.getId() != Long.parseLong(player.getCurrentMediaItem().mediaId)) {
                 return;
             }
         } catch (NumberFormatException e) {

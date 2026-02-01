@@ -8,12 +8,14 @@ import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.media.utils.MediaConstants;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
+import androidx.media3.common.util.Util;
 import androidx.media3.session.CommandButton;
 import androidx.media3.session.LibraryResult;
 import androidx.media3.session.MediaLibraryService;
@@ -29,12 +31,12 @@ import com.google.common.util.concurrent.SettableFuture;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.service.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -169,42 +171,28 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onSetMediaItems(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller,
             @NonNull List<MediaItem> mediaItems, int startIndex, long startPositionMs) {
-        // Uncomment to make playing from search work but position restoration not
-        // return MediaLibrarySession.Callback.super.onSetMediaItems(
-        //     mediaSession, controller, mediaItems, startIndex, startPositionMs);
-
         int index = startIndex == C.INDEX_UNSET ? 0 : startIndex;
-        MediaSession.MediaItemsWithStartPosition fallbackResult =
-                new MediaSession.MediaItemsWithStartPosition(mediaItems, index, startPositionMs);
-
         if (mediaItems.isEmpty()) {
-            return Futures.immediateFuture(fallbackResult);
-        }
-        long mediaId;
-        try {
-            mediaId = Long.parseLong(mediaItems.get(index).mediaId);
-        } catch (NumberFormatException e) {
-            return Futures.immediateFuture(fallbackResult);
-        }
-
-        if (mediaLoaderDisposable != null) {
-            mediaLoaderDisposable.dispose();
+            return Futures.immediateFuture(new MediaSession.MediaItemsWithStartPosition(
+                    mediaItems, index, startPositionMs));
         }
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-        mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
+        mediaLoaderDisposable = Single.fromCallable(() -> {
+                    List<MediaItem> updatedItems = onAddMediaItems(mediaSession, controller, mediaItems).get();
+                    long mediaId = Long.parseLong(updatedItems.get(index).mediaId);
+                    FeedMedia mediaDetails = DBReader.getFeedMedia(mediaId);
+                    return new Pair<>(updatedItems, mediaDetails);
+                })
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        media -> {
-                            MediaSession.MediaItemsWithStartPosition result =
-                                    new MediaSession.MediaItemsWithStartPosition(mediaItems, index,
-                                            media.getPosition() > 0 ? media.getPosition() :
-                                                    (startPositionMs > 0 ? startPositionMs : 0));
-                            future.set(result);
-                        },
+                .observeOn(Schedulers.io())
+                .subscribe(result ->
+                                future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index,
+                                        result.second.getPosition() > 0 ? result.second.getPosition() :
+                                                (startPositionMs > 0 ? startPositionMs : 0))),
                         error -> {
-                            Log.e(TAG, "Failed to load media with id " + mediaId, error);
-                            future.set(fallbackResult);
+                            Log.e(TAG, "Failed to load media", error);
+                            future.set(new MediaSession.MediaItemsWithStartPosition(
+                                    mediaItems, index, startPositionMs));
                         }
                 );
         return future;
@@ -225,13 +213,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             return Futures.immediateFuture(Collections.emptyList());
         }
 
-        if (mediaLoaderDisposable != null) {
-            mediaLoaderDisposable.dispose();
-        }
         SettableFuture<List<MediaItem>> future = SettableFuture.create();
         mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(
                         media -> future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(media))),
                         error -> {
@@ -251,7 +236,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         mediaLoaderDisposable = Single.fromCallable(() ->
                         DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(
                         media -> {
                             MediaSession.MediaItemsWithStartPosition result =
