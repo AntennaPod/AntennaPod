@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.playback.service;
+package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -29,6 +29,8 @@ import com.google.common.util.concurrent.SettableFuture;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.playback.service.MediaItemAdapter;
+import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
