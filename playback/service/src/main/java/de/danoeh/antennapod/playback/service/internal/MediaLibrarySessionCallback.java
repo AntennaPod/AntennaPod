@@ -34,7 +34,6 @@ import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -193,7 +192,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
         mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(
                         media -> {
                             MediaSession.MediaItemsWithStartPosition result =
@@ -231,7 +230,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         SettableFuture<List<MediaItem>> future = SettableFuture.create();
         mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(
                         media -> future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(media))),
                         error -> {
@@ -251,7 +250,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         mediaLoaderDisposable = Single.fromCallable(() ->
                         DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(
                         media -> {
                             MediaSession.MediaItemsWithStartPosition result =
