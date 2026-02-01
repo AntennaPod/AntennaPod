@@ -288,7 +288,13 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull MediaLibraryService.MediaLibrarySession session,
             @NonNull MediaSession.ControllerInfo browser, @NonNull String mediaId) {
         if (BROWSABLE_MEDIA_IDS.contains(mediaId)) {
-            return Futures.immediateFuture(LibraryResult.ofItem( createBrowsableMediaItem(mediaId), null));
+            SettableFuture<LibraryResult<MediaItem>> future = SettableFuture.create();
+            mediaLoaderDisposable = Single.fromCallable(() -> createBrowsableMediaItem(mediaId))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe(item -> future.set(LibraryResult.ofItem(item, null)),
+                            future::setException);
+            return future;
         }
         return MediaLibraryService.MediaLibrarySession.Callback.super.onGetItem(session, browser, mediaId);
     }
@@ -299,13 +305,19 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull MediaLibraryService.MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
             @NonNull String parentId, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
         if (MEDIA_ID_ROOT.equals(parentId)) {
-            ImmutableList<MediaItem> items = ImmutableList.of(
-                    createBrowsableMediaItem(MEDIA_ID_QUEUE),
-                    createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
-                    createBrowsableMediaItem(MEDIA_ID_EPISODES),
-                    createBrowsableMediaItem(MEDIA_ID_SUBSCRIPTIONS));
-            return Futures.immediateFuture(LibraryResult.ofItemList(items, params));
+            SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
+            mediaLoaderDisposable = Single.fromCallable(() -> ImmutableList.of(
+                            createBrowsableMediaItem(MEDIA_ID_QUEUE),
+                            createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
+                            createBrowsableMediaItem(MEDIA_ID_EPISODES),
+                            createBrowsableMediaItem(MEDIA_ID_SUBSCRIPTIONS)))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe(items -> future.set(LibraryResult.ofItemList(items, params)),
+                            future::setException);
+            return future;
         }
+
         SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
         mediaLoaderDisposable = Single.fromCallable(() -> {
             switch (parentId) {
@@ -353,23 +365,38 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private MediaItem createBrowsableMediaItem(String id) {
-        return switch (id) {
-            case MEDIA_ID_ROOT -> createBrowsableMediaItem(
+        switch (id) {
+            case MEDIA_ID_ROOT:
+                return createBrowsableMediaItem(
                     MEDIA_ID_ROOT, R.string.app_name, R.drawable.ic_notification, null);
-            case MEDIA_ID_QUEUE -> createBrowsableMediaItem(
-                    MEDIA_ID_QUEUE, R.string.queue_label, R.drawable.ic_playlist_play_black, null);
-            case MEDIA_ID_DOWNLOADS -> createBrowsableMediaItem(
-                    MEDIA_ID_DOWNLOADS, R.string.downloads_label, R.drawable.ic_download_black, null);
-            case MEDIA_ID_EPISODES -> createBrowsableMediaItem(
-                    MEDIA_ID_EPISODES, R.string.episodes_label, R.drawable.ic_feed_black, null);
-            case MEDIA_ID_SUBSCRIPTIONS -> createBrowsableMediaItem(
+            case MEDIA_ID_QUEUE: {
+                int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED));
+                return createBrowsableMediaItem(
+                        MEDIA_ID_QUEUE, R.string.queue_label, R.drawable.ic_playlist_play_black,
+                        context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
+            }
+            case MEDIA_ID_DOWNLOADS: {
+                int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
+                return createBrowsableMediaItem(
+                        MEDIA_ID_DOWNLOADS, R.string.downloads_label, R.drawable.ic_download_black,
+                        context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
+            }
+            case MEDIA_ID_EPISODES: {
+                int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter());
+                return createBrowsableMediaItem(
+                        MEDIA_ID_EPISODES, R.string.episodes_label, R.drawable.ic_feed_black,
+                        context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
+            }
+            case MEDIA_ID_SUBSCRIPTIONS:
+                return createBrowsableMediaItem(
                     MEDIA_ID_SUBSCRIPTIONS, R.string.subscriptions_label, R.drawable.ic_subscriptions_black, null);
-            default -> throw new IllegalArgumentException("ID not known: " + id);
-        };
+            default:
+                throw new IllegalArgumentException("ID not known: " + id);
+        }
     }
 
     private MediaItem createBrowsableMediaItem(String id, @StringRes int titleResId,
-                                               @DrawableRes int iconResId, @Nullable String description) {
+                                               @DrawableRes int iconResId, @Nullable String subtitle) {
         Uri iconUri = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
                 .authority(context.getResources().getResourcePackageName(iconResId))
@@ -380,8 +407,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(context.getString(titleResId));
         metadataBuilder.setArtworkUri(iconUri);
-        if (description != null) {
-            metadataBuilder.setDescription(description);
+        if (subtitle != null) {
+            metadataBuilder.setSubtitle(subtitle);
         }
         metadataBuilder.setIsBrowsable(true);
         metadataBuilder.setIsPlayable(false);

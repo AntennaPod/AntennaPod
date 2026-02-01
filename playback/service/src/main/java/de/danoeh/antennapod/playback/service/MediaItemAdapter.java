@@ -11,7 +11,7 @@ public class MediaItemAdapter {
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(playable.getEpisodeTitle());
         metadataBuilder.setIsPlayable(true);
-        metadataBuilder.setIsBrowsable(true);
+        metadataBuilder.setIsBrowsable(false);
         metadataBuilder.setMediaType(MediaMetadata.MEDIA_TYPE_PODCAST_EPISODE);
         String mediaId = "0";
         if (playable instanceof FeedMedia) {
