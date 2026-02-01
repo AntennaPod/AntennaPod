@@ -121,7 +121,6 @@ public class Media3PlaybackService extends MediaLibraryService {
     private final Player.Listener playerListener = new Player.Listener() {
         @Override
         public void onPlaybackStateChanged(int playbackState) {
-            PlaybackService.isRunning = playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED;
             if (playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED) {
                 saveCurrentPosition();
             }
@@ -131,12 +130,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                 onPlaybackEnd(media);
                 startNextInQueue(media.getItem());
             }
-            ensureCurrentMediaLoaded();
-            EventBus.getDefault().post(new PlayerStatusEvent());
         }
 
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
+            PlaybackService.isRunning = isPlaying;
             if (isPlaying) {
                 lastPositionSaveTime = System.currentTimeMillis();
                 setupPositionObserver();
@@ -146,6 +144,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                 SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
             }
             updatePlaybackPreferences();
+            EventBus.getDefault().post(new PlayerStatusEvent());
+        }
+
+        @Override
+        public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
             ensureCurrentMediaLoaded();
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
@@ -389,12 +392,12 @@ public class Media3PlaybackService extends MediaLibraryService {
                             if (nextMedia != null) {
                                 currentPlayable = nextMedia;
                                 MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
+                                PlaybackPreferences.writeMediaPlaying(nextMedia);
+                                player.setPlayWhenReady(UserPreferences.isFollowQueue());
                                 player.setMediaItem(mediaItem);
                                 player.seekTo(nextMedia.getPosition());
                                 player.prepare();
-                                if (UserPreferences.isFollowQueue()) {
-                                    player.play();
-                                }
+                                ensureCurrentMediaLoaded();
                             }
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error)
