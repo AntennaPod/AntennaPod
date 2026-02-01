@@ -8,8 +8,10 @@ import androidx.media3.common.AudioAttributes;
 import androidx.media3.common.C;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
+import androidx.media3.datasource.HttpDataSource;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.DefaultMediaNotificationProvider;
 import androidx.media3.session.MediaLibraryService;
@@ -18,11 +20,13 @@ import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
@@ -144,6 +148,31 @@ public class Media3PlaybackService extends MediaLibraryService {
             updatePlaybackPreferences();
             ensureCurrentMediaLoaded();
             EventBus.getDefault().post(new PlayerStatusEvent());
+        }
+
+        @Override
+        public void onPlayerError(PlaybackException error) {
+            if (NetworkUtils.wasDownloadBlocked(error)) {
+                EventBus.getDefault().post(new PlayerErrorEvent(getString(R.string.download_error_blocked)));
+            } else {
+                Throwable cause = error.getCause();
+                if (cause instanceof HttpDataSource.HttpDataSourceException) {
+                    if (cause.getCause() != null) {
+                        cause = cause.getCause();
+                    }
+                }
+                if (cause != null && "Source error".equals(cause.getMessage())) {
+                    cause = cause.getCause();
+                }
+                if (cause != null && cause.getMessage() != null) {
+                    EventBus.getDefault().post(new PlayerErrorEvent(cause.getMessage()));
+                } else if (error.getMessage() != null && cause != null) {
+                    EventBus.getDefault().post(new PlayerErrorEvent(
+                            error.getMessage() + ": " + cause.getClass().getSimpleName()));
+                } else {
+                    EventBus.getDefault().post(new PlayerErrorEvent(null));
+                }
+            }
         }
     };
 
