@@ -8,7 +8,6 @@ import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.media.utils.MediaConstants;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
@@ -287,7 +286,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<MediaItem>> onGetItem(
             @NonNull MediaLibraryService.MediaLibrarySession session,
             @NonNull MediaSession.ControllerInfo browser, @NonNull String mediaId) {
-        if (BROWSABLE_MEDIA_IDS.contains(mediaId)) {
+        if (BROWSABLE_MEDIA_IDS.contains(mediaId) || mediaId.startsWith("FeedId:")) {
             SettableFuture<LibraryResult<MediaItem>> future = SettableFuture.create();
             mediaLoaderDisposable = Single.fromCallable(() -> createBrowsableMediaItem(mediaId))
                     .subscribeOn(Schedulers.io())
@@ -304,8 +303,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> onGetChildren(
             @NonNull MediaLibraryService.MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
             @NonNull String parentId, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
+        SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
+
         if (MEDIA_ID_ROOT.equals(parentId)) {
-            SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
             mediaLoaderDisposable = Single.fromCallable(() -> ImmutableList.of(
                             createBrowsableMediaItem(MEDIA_ID_QUEUE),
                             createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
@@ -316,28 +316,46 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     .subscribe(items -> future.set(LibraryResult.ofItemList(items, params)),
                             future::setException);
             return future;
+        } else if (MEDIA_ID_SUBSCRIPTIONS.equals(parentId)) {
+            mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedList())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe(items -> {
+                                ImmutableList.Builder builder = new ImmutableList.Builder();
+                                for (Feed feed : items) {
+                                    builder.add(createBrowsableMediaItem("FeedId:" + feed.getId(),
+                                            feed.getTitle(), R.drawable.ic_feed_black, null));
+                                }
+                                future.set(LibraryResult.ofItemList(builder.build(), params));
+                            },
+                            future::setException);
+            return future;
+        } else { // Episodes lists
+            mediaLoaderDisposable = Single.fromCallable(() -> {
+                        if (parentId.startsWith("FeedId:")) {
+                            long feedId = Long.parseLong(parentId.split(":")[1]);
+                            return DBReader.getFeed(feedId, true, 0, MAX_ITEMS_PER_LIST).getItems();
+                        }
+                        switch (parentId) {
+                            case MEDIA_ID_QUEUE:
+                                return DBReader.getQueue();
+                            case MEDIA_ID_DOWNLOADS:
+                                return DBReader.getEpisodes(0, MAX_ITEMS_PER_LIST,
+                                        new FeedItemFilter(FeedItemFilter.DOWNLOADED),
+                                        UserPreferences.getDownloadsSortedOrder());
+                            case MEDIA_ID_EPISODES:
+                                return DBReader.getEpisodes(0, MAX_ITEMS_PER_LIST,
+                                        new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes()),
+                                        UserPreferences.getAllEpisodesSortOrder());
+                            default:
+                                throw new IllegalArgumentException("Unknown parentId: " + parentId);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe(items -> future.set(createItemListResult(items, params)),
+                            future::setException);
         }
-
-        SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
-        mediaLoaderDisposable = Single.fromCallable(() -> {
-            switch (parentId) {
-                case MEDIA_ID_QUEUE:
-                    return DBReader.getQueue();
-                case MEDIA_ID_DOWNLOADS:
-                    return DBReader.getEpisodes(0, MAX_ITEMS_PER_LIST,
-                        new FeedItemFilter(FeedItemFilter.DOWNLOADED), UserPreferences.getDownloadsSortedOrder());
-                case MEDIA_ID_EPISODES:
-                    return DBReader.getEpisodes(0, MAX_ITEMS_PER_LIST,
-                                new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes()),
-                                UserPreferences.getAllEpisodesSortOrder());
-                default:
-                    throw new IllegalArgumentException("Unknown parentId: " + parentId);
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(items -> future.set(createItemListResult(items, params)),
-                        future::setException);
         return future;
     }
 
@@ -365,37 +383,42 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private MediaItem createBrowsableMediaItem(String id) {
+        if (id.startsWith("FeedId:")) {
+            long feedId = Long.parseLong(id.split(":")[1]);
+            Feed feed = DBReader.getFeed(feedId, false, 0, 0);
+            return createBrowsableMediaItem(id, feed.getTitle(), R.drawable.ic_notification, null);
+        }
         switch (id) {
             case MEDIA_ID_ROOT:
-                return createBrowsableMediaItem(
-                    MEDIA_ID_ROOT, R.string.app_name, R.drawable.ic_notification, null);
+                return createBrowsableMediaItem(MEDIA_ID_ROOT,
+                        context.getString(R.string.app_name), R.drawable.ic_notification, null);
             case MEDIA_ID_QUEUE: {
                 int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.QUEUED));
-                return createBrowsableMediaItem(
-                        MEDIA_ID_QUEUE, R.string.queue_label, R.drawable.ic_playlist_play_black,
+                return createBrowsableMediaItem(MEDIA_ID_QUEUE,
+                        context.getString(R.string.queue_label), R.drawable.ic_playlist_play_black,
                         context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
             }
             case MEDIA_ID_DOWNLOADS: {
                 int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
-                return createBrowsableMediaItem(
-                        MEDIA_ID_DOWNLOADS, R.string.downloads_label, R.drawable.ic_download_black,
+                return createBrowsableMediaItem(MEDIA_ID_DOWNLOADS,
+                        context.getString(R.string.downloads_label), R.drawable.ic_download_black,
                         context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
             }
             case MEDIA_ID_EPISODES: {
                 int numEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter());
-                return createBrowsableMediaItem(
-                        MEDIA_ID_EPISODES, R.string.episodes_label, R.drawable.ic_feed_black,
+                return createBrowsableMediaItem(MEDIA_ID_EPISODES,
+                        context.getString(R.string.episodes_label), R.drawable.ic_feed_black,
                         context.getResources().getQuantityString(R.plurals.num_episodes, numEpisodes, numEpisodes));
             }
             case MEDIA_ID_SUBSCRIPTIONS:
-                return createBrowsableMediaItem(
-                    MEDIA_ID_SUBSCRIPTIONS, R.string.subscriptions_label, R.drawable.ic_subscriptions_black, null);
+                return createBrowsableMediaItem(MEDIA_ID_SUBSCRIPTIONS,
+                        context.getString(R.string.subscriptions_label), R.drawable.ic_subscriptions_black, null);
             default:
                 throw new IllegalArgumentException("ID not known: " + id);
         }
     }
 
-    private MediaItem createBrowsableMediaItem(String id, @StringRes int titleResId,
+    private MediaItem createBrowsableMediaItem(String id, String title,
                                                @DrawableRes int iconResId, @Nullable String subtitle) {
         Uri iconUri = new Uri.Builder()
                 .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
@@ -405,7 +428,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .build();
 
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
-        metadataBuilder.setTitle(context.getString(titleResId));
+        metadataBuilder.setTitle(title);
         metadataBuilder.setArtworkUri(iconUri);
         if (subtitle != null) {
             metadataBuilder.setSubtitle(subtitle);
