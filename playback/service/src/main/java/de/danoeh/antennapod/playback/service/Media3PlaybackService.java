@@ -228,6 +228,9 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 currentPlayable.setPosition((int) player.getCurrentPosition());
                                 currentPlayable.onPlaybackStart();
                             }
+                            if (!currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
+                                DBWriter.addQueueItem(this, currentPlayable.getItem());
+                            }
                             updatePlaybackPreferences();
                             EventBus.getDefault().post(new PlayerStatusEvent());
                         },
