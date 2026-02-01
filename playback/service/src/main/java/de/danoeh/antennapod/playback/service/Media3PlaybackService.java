@@ -122,8 +122,10 @@ public class Media3PlaybackService extends MediaLibraryService {
                 saveCurrentPosition();
             }
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
-                onPlaybackEnd(currentPlayable);
-                startNextInQueue(currentPlayable.getItem());
+                FeedMedia media = currentPlayable;
+                currentPlayable = null; // To avoid position updater saving position after we already reset it
+                onPlaybackEnd(media);
+                startNextInQueue(media.getItem());
             }
             ensureCurrentMediaLoaded();
             EventBus.getDefault().post(new PlayerStatusEvent());
