@@ -43,6 +43,12 @@
                 android:key="prefPlaybackSpeedLauncher"
                 android:summary="@string/pref_playback_speed_sum"
                 android:title="@string/playback_speed"/>
+        <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
+                android:defaultValue="normal"
+                android:entries="@array/skip_silence_intensity_entries"
+                android:entryValues="@array/skip_silence_intensity_values"
+                android:key="prefSkipSilenceIntensity"
+                android:title="@string/pref_skip_silence_intensity_title" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/reassign_hardware_buttons">

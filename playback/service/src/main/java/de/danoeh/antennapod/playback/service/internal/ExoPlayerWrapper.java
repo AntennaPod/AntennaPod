@@ -39,6 +39,7 @@ import androidx.media3.exoplayer.trackselection.DefaultTrackSelector;
 import androidx.media3.exoplayer.trackselection.ExoTrackSelection;
 import androidx.media3.exoplayer.trackselection.MappingTrackSelector;
 import androidx.media3.exoplayer.trackselection.TrackSelectionArray;
+import androidx.media3.exoplayer.audio.SilenceSkippingAudioProcessor;
 
 import androidx.media3.extractor.DefaultExtractorsFactory;
 import androidx.media3.extractor.mp3.Mp3Extractor;
@@ -50,6 +51,7 @@ import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -80,6 +82,7 @@ public class ExoPlayerWrapper {
     private SimpleCache simpleCache;
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
+    private SilenceSkippingAudioProcessor silenceSkippingAudioProcessor;
 
     ExoPlayerWrapper(Context context) {
         this.context = context;
@@ -101,7 +104,9 @@ public class ExoPlayerWrapper {
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         loadControl.setBackBuffer((int) TimeUnit.MINUTES.toMillis(5), true);
         trackSelector = new DefaultTrackSelector(context);
-        exoPlayer = new ExoPlayer.Builder(context, new DefaultRenderersFactory(context))
+        silenceSkippingAudioProcessor = createSilenceSkippingAudioProcessor();
+        exoPlayer = new ExoPlayer.Builder(context,
+                new AntennaPodRenderersFactory(context, silenceSkippingAudioProcessor))
                 .setTrackSelector(trackSelector)
                 .setLoadControl(loadControl.build())
                 .build();
@@ -161,6 +166,33 @@ public class ExoPlayerWrapper {
         simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
                 new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024), new StandaloneDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
+    }
+
+    private SilenceSkippingAudioProcessor createSilenceSkippingAudioProcessor() {
+        UserPreferences.SkipSilenceIntensity intensity = UserPreferences.getSkipSilenceIntensity();
+        long minimumSilenceDurationUs = SilenceSkippingAudioProcessor.DEFAULT_MINIMUM_SILENCE_DURATION_US;
+        long paddingSilenceUs = SilenceSkippingAudioProcessor.DEFAULT_PADDING_SILENCE_US;
+
+        switch (intensity) {
+            case NORMAL:
+                // no-op
+                break;
+            case MILD:
+                minimumSilenceDurationUs = Math.max(1, minimumSilenceDurationUs * 2);
+                paddingSilenceUs = Math.max(1, paddingSilenceUs * 2);
+                break;
+            case AGGRESSIVE:
+                minimumSilenceDurationUs = Math.max(1, minimumSilenceDurationUs / 2);
+                paddingSilenceUs = Math.max(1, paddingSilenceUs / 2);
+                break;
+            default:
+                break;
+        }
+
+        return new SilenceSkippingAudioProcessor(
+                minimumSilenceDurationUs,
+                Math.min(paddingSilenceUs, minimumSilenceDurationUs),
+                SilenceSkippingAudioProcessor.DEFAULT_SILENCE_THRESHOLD_LEVEL);
     }
 
     public int getCurrentPosition() {

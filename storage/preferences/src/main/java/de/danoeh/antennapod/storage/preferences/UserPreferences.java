@@ -119,6 +119,7 @@ public abstract class UserPreferences {
     // Mediaplayer
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
+    public static final String PREF_PLAYBACK_SKIP_SILENCE_INTENSITY = "prefSkipSilenceIntensity";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
@@ -156,6 +157,27 @@ public abstract class UserPreferences {
 
     public enum ThemePreference {
         LIGHT, DARK, BLACK, SYSTEM
+    }
+
+    public enum SkipSilenceIntensity {
+        MILD("mild"),
+        NORMAL("normal"),
+        AGGRESSIVE("aggressive");
+
+        public final String value;
+
+        SkipSilenceIntensity(String value) {
+            this.value = value;
+        }
+
+        public static SkipSilenceIntensity fromValue(String value) {
+            for (SkipSilenceIntensity intensity : values()) {
+                if (intensity.value.equals(value)) {
+                    return intensity;
+                }
+            }
+            return NORMAL;
+        }
     }
 
     public static void setTheme(ThemePreference theme) {
@@ -446,6 +468,11 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
     }
 
+    public static SkipSilenceIntensity getSkipSilenceIntensity() {
+        String value = prefs.getString(PREF_PLAYBACK_SKIP_SILENCE_INTENSITY, SkipSilenceIntensity.NORMAL.value);
+        return SkipSilenceIntensity.fromValue(value);
+    }
+
     public static List<Float> getPlaybackSpeedArray() {
         return readPlaybackSpeedArray(prefs.getString(PREF_PLAYBACK_SPEED_ARRAY, null));
     }
@@ -616,6 +643,13 @@ public abstract class UserPreferences {
 
     public static void setSkipSilence(boolean skipSilence) {
         prefs.edit().putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence).apply();
+    }
+
+    public static void setSkipSilenceIntensity(SkipSilenceIntensity intensity) {
+        if (intensity == null) {
+            return;
+        }
+        prefs.edit().putString(PREF_PLAYBACK_SKIP_SILENCE_INTENSITY, intensity.value).apply();
     }
 
     public static void setPlaybackSpeedArray(List<Float> speeds) {
