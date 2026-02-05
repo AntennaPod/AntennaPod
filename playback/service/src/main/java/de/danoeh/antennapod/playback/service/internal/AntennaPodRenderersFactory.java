@@ -11,6 +11,8 @@ import androidx.media3.exoplayer.audio.SilenceSkippingAudioProcessor;
 import androidx.media3.exoplayer.audio.AudioSink;
 import androidx.media3.exoplayer.audio.DefaultAudioSink;
 
+import java.util.Objects;
+
 @OptIn(markerClass = UnstableApi.class)
 final class AntennaPodRenderersFactory extends DefaultRenderersFactory {
     private final SilenceSkippingAudioProcessor silenceSkippingAudioProcessor;
