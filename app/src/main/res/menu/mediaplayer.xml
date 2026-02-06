@@ -18,6 +18,7 @@
     <item
         android:id="@+id/disable_sleeptimer_item"
         android:icon="@drawable/ic_sleep_off"
+        android:visible="false"
         custom:showAsAction="always"
         android:title="@string/sleep_timer_label">
     </item>
