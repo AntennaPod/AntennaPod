@@ -125,7 +125,6 @@ public class AudioPlayerFragment extends Fragment implements
                 .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
                 .commit();
 
-        ImageButton butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
         txtvPlaybackSpeed = root.findViewById(R.id.txtvPlaybackSpeed);
         sbPosition = root.findViewById(R.id.sbPosition);
         txtvPosition = root.findViewById(R.id.txtvPosition);
@@ -142,6 +141,7 @@ public class AudioPlayerFragment extends Fragment implements
 
         setupLengthTextView();
         setupControlButtons();
+        final ImageButton butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
         butPlaybackSpeed.setOnClickListener(v -> new VariableSpeedDialog().show(getChildFragmentManager(), null));
         sbPosition.setOnSeekBarChangeListener(this);
 
