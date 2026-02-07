@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.media3.session.MediaController;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -49,6 +50,7 @@ import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.common.Converter;
@@ -186,10 +188,15 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void setupControlButtons() {
-        butRev.setOnClickListener(v ->
+        butRev.setOnClickListener(v -> {
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                PlaybackController.bindToMedia3Service(getContext(), MediaController::seekBack);
+            } else {
                 PlaybackController.bindToService(getActivity(), playbackService ->
                         playbackService.seekTo(playbackService.getCurrentPosition()
-                                - UserPreferences.getRewindSecs() * 1000)));
+                                - UserPreferences.getRewindSecs() * 1000));
+            }
+        });
         butRev.setOnLongClickListener(v -> {
             SkipPreferenceDialog.showSkipPreference(getContext(),
                     SkipPreferenceDialog.SkipDirection.SKIP_REWIND, txtvRev);
@@ -198,25 +205,40 @@ public class AudioPlayerFragment extends Fragment implements
         butPlay.setOnClickListener(v -> {
             if (PlaybackService.isRunning
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                getActivity().sendBroadcast(
-                        MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_PAUSE));
+                if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                    PlaybackController.bindToMedia3Service(getContext(), MediaController::pause);
+                } else {
+                    getActivity().sendBroadcast(
+                            MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_PAUSE));
+                }
             } else {
                 new PlaybackServiceStarter(getContext(), currentMedia)
                         .callEvenIfRunning(true)
                         .start();
             }
         });
-        butFF.setOnClickListener(v ->
+        butFF.setOnClickListener(v -> {
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                PlaybackController.bindToMedia3Service(getContext(), MediaController::seekForward);
+            } else {
                 PlaybackController.bindToService(getActivity(), playbackService ->
                         playbackService.seekTo(playbackService.getCurrentPosition()
-                                + UserPreferences.getFastForwardSecs() * 1000)));
+                                + UserPreferences.getFastForwardSecs() * 1000));
+            }
+        });
         butFF.setOnLongClickListener(v -> {
             SkipPreferenceDialog.showSkipPreference(getContext(),
                     SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, txtvFF);
             return false;
         });
-        butSkip.setOnClickListener(v -> getActivity().sendBroadcast(
-                MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_NEXT)));
+        butSkip.setOnClickListener(v -> {
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                PlaybackController.bindToMedia3Service(getContext(), MediaController::seekToNextMediaItem);
+            } else {
+                getActivity().sendBroadcast(
+                        MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_NEXT));
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -410,8 +432,13 @@ public class AudioPlayerFragment extends Fragment implements
                     position = (int) currentMedia.getChapters().get(currentChapterIndex).getStart();
                     seekedToChapterStart = true;
                     final int positionFinal = position;
-                    PlaybackController.bindToService(getActivity(), playbackService ->
-                             playbackService.seekTo(positionFinal));
+                    if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                        PlaybackController.bindToMedia3Service(getContext(), controller ->
+                                controller.seekTo(positionFinal));
+                    } else {
+                        PlaybackController.bindToService(getActivity(), playbackService ->
+                                playbackService.seekTo(positionFinal));
+                    }
                     sbPosition.highlightCurrentChapter();
                 }
                 txtvSeek.setText(currentMedia.getChapters().get(newChapterIndex).getTitle()
@@ -440,8 +467,13 @@ public class AudioPlayerFragment extends Fragment implements
             seekedToChapterStart = false;
         } else if (currentMedia != null) {
             final float prog = seekBar.getProgress() / ((float) seekBar.getMax());
-            PlaybackController.bindToService(getActivity(), playbackService ->
-                    playbackService.seekTo((int) (playbackService.getDuration() * prog)));
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                PlaybackController.bindToMedia3Service(getContext(), controller ->
+                        controller.seekTo((long) (controller.getDuration() * prog)));
+            } else {
+                PlaybackController.bindToService(getActivity(), playbackService ->
+                        playbackService.seekTo((int) (playbackService.getDuration() * prog)));
+            }
         }
         cardViewSeek.setScaleX(1f);
         cardViewSeek.setScaleY(1f);
