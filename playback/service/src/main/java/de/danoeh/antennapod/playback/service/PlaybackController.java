@@ -40,7 +40,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
-import androidx.core.util.Consumer;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -525,6 +524,7 @@ public abstract class PlaybackController {
             try {
                 MediaController controller = controllerFuture.get();
                 consumer.accept(controller);
+                controller.release();
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
