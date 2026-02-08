@@ -103,38 +103,35 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private ImmutableList<CommandButton> buildCustomLayout() {
         ImmutableList.Builder<CommandButton> buttons = ImmutableList.builder();
 
-        buttons.add(new CommandButton.Builder()
+        buttons.add(new CommandButton.Builder(CommandButton.ICON_REWIND)
                 .setSessionCommand(SESSION_COMMAND_REWIND)
-                .setIconResId(R.drawable.ic_notification_fast_rewind)
                 .setDisplayName(context.getString(R.string.rewind_label))
                 .build());
 
-        buttons.add(new CommandButton.Builder()
+        buttons.add(new CommandButton.Builder(CommandButton.ICON_FAST_FORWARD)
                 .setSessionCommand(SESSION_COMMAND_FAST_FORWARD)
-                .setIconResId(R.drawable.ic_notification_fast_forward)
                 .setDisplayName(context.getString(R.string.fast_forward_label))
                 .build());
 
         if (UserPreferences.showPlaybackSpeedOnFullNotification()) {
-            buttons.add(new CommandButton.Builder()
+            buttons.add(new CommandButton.Builder(CommandButton.ICON_UNDEFINED)
                     .setSessionCommand(SESSION_COMMAND_PLAYBACK_SPEED)
-                    .setIconResId(R.drawable.ic_notification_playback_speed)
+                    .setCustomIconResId(R.drawable.ic_notification_playback_speed)
                     .setDisplayName(context.getString(R.string.playback_speed))
                     .build());
         }
 
         if (UserPreferences.showNextChapterOnFullNotification()) {
-            buttons.add(new CommandButton.Builder()
+            buttons.add(new CommandButton.Builder(CommandButton.ICON_UNDEFINED)
                     .setSessionCommand(SESSION_COMMAND_NEXT_CHAPTER)
-                    .setIconResId(R.drawable.ic_notification_next_chapter)
+                    .setCustomIconResId(R.drawable.ic_notification_next_chapter)
                     .setDisplayName(context.getString(R.string.next_chapter))
                     .build());
         }
 
         if (UserPreferences.showSkipOnFullNotification()) {
-            buttons.add(new CommandButton.Builder()
+            buttons.add(new CommandButton.Builder(CommandButton.ICON_NEXT)
                     .setSessionCommand(SESSION_COMMAND_SKIP_TO_NEXT)
-                    .setIconResId(R.drawable.ic_notification_skip)
                     .setDisplayName(context.getString(R.string.skip_episode_label))
                     .build());
         }
@@ -255,7 +252,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .setExtras(rootExtras).build();
         if ("com.google.android.googlequicksearchbox".equals(browser.getPackageName())) {
             // Android Auto "for you" screen
-            return Futures.immediateFuture(LibraryResult.ofItem(createBrowsableMediaItem(MEDIA_ID_CURRENT), libraryParams));
+            return Futures.immediateFuture(LibraryResult.ofItem(
+                    createBrowsableMediaItem(MEDIA_ID_CURRENT), libraryParams));
         }
         return Futures.immediateFuture(LibraryResult.ofItem(createBrowsableMediaItem(MEDIA_ID_ROOT), libraryParams));
     }
@@ -283,72 +281,68 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull String parentId, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
         SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
 
-        if (MEDIA_ID_ROOT.equals(parentId)) {
-            disposables.add(Single.fromCallable(() -> ImmutableList.of(
-                            createBrowsableMediaItem(MEDIA_ID_QUEUE),
-                            createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
-                            createBrowsableMediaItem(MEDIA_ID_EPISODES),
-                            createBrowsableMediaItem(MEDIA_ID_SUBSCRIPTIONS)))
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(items -> future.set(LibraryResult.ofItemList(items, params)),
-                            future::setException));
-            return future;
-        } else if (MEDIA_ID_SUBSCRIPTIONS.equals(parentId)) {
-            disposables.add(Single.fromCallable(DBReader::getFeedList)
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(
-                            items -> {
-                                ImmutableList.Builder<MediaItem> builder = new ImmutableList.Builder<>();
-                                for (Feed feed : items) {
-                                    builder.add(MediaItemAdapter.fromFeed(feed));
+        switch (parentId) {
+            case MEDIA_ID_ROOT:
+                disposables.add(Single.fromCallable(() -> ImmutableList.of(
+                                createBrowsableMediaItem(MEDIA_ID_QUEUE),
+                                createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
+                                createBrowsableMediaItem(MEDIA_ID_EPISODES),
+                                createBrowsableMediaItem(MEDIA_ID_SUBSCRIPTIONS)))
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(items -> future.set(LibraryResult.ofItemList(items, params)),
+                                future::setException));
+                return future;
+            case MEDIA_ID_SUBSCRIPTIONS:
+                disposables.add(Single.fromCallable(DBReader::getFeedList)
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(
+                                items -> {
+                                    ImmutableList.Builder<MediaItem> builder = new ImmutableList.Builder<>();
+                                    for (Feed feed : items) {
+                                        builder.add(MediaItemAdapter.fromFeed(feed));
+                                    }
+                                    future.set(LibraryResult.ofItemList(builder.build(), params));
+                                },
+                                future::setException));
+                return future;
+            case MEDIA_ID_CURRENT:
+                disposables.add(Single.fromCallable(() ->
+                                DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(
+                                media -> {
+                                    future.set(LibraryResult.ofItemList(
+                                            ImmutableList.of(MediaItemAdapter.fromPlayable(media)), params));
+                                },
+                                error -> {
+                                    Log.e(TAG, "Failed to load currently playing media", error);
+                                    future.set(LibraryResult.ofItemList(ImmutableList.of(), params));
                                 }
-                                future.set(LibraryResult.ofItemList(builder.build(), params));
-                            },
-                            future::setException));
-            return future;
-        } else if (MEDIA_ID_CURRENT.equals(parentId)) {
-            disposables.add(Single.fromCallable(() ->
-                            DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(
-                            media -> {
-                                future.set(LibraryResult.ofItemList(
-                                        ImmutableList.of(MediaItemAdapter.fromPlayable(media)), params));
-                            },
-                            error -> {
-                                Log.e(TAG, "Failed to load currently playing media", error);
-                                future.set(LibraryResult.ofItemList(ImmutableList.of(), params));
-                            }
-                    ));
-            return future;
-        } else { // Episodes lists
-            disposables.add(Single.fromCallable(
-                    () -> {
-                        if (parentId.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
-                            long feedId = Long.parseLong(parentId.split(":")[1]);
-                            return DBReader.getFeed(feedId, true, page * pageSize, pageSize).getItems();
-                        }
-                        switch (parentId) {
-                            case MEDIA_ID_QUEUE:
-                                return DBReader.getQueue();
-                            case MEDIA_ID_DOWNLOADS:
-                                return DBReader.getEpisodes(page * pageSize, pageSize,
-                                        new FeedItemFilter(FeedItemFilter.DOWNLOADED),
-                                        UserPreferences.getDownloadsSortedOrder());
-                            case MEDIA_ID_EPISODES:
-                                return DBReader.getEpisodes(page * pageSize, pageSize,
-                                        new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes()),
-                                        UserPreferences.getAllEpisodesSortOrder());
-                            default:
-                                throw new IllegalArgumentException("Unknown parentId: " + parentId);
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                    MediaItemAdapter.fromItemList(items), params)),
-                            future::setException));
+                        ));
+                return future;
+            default: // Episodes lists
+                disposables.add(Single.fromCallable(() -> {
+                    if (parentId.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
+                        long feedId = Long.parseLong(parentId.split(":")[1]);
+                        return DBReader.getFeed(feedId, true, page * pageSize, pageSize).getItems();
+                    }
+                    return switch (parentId) {
+                        case MEDIA_ID_QUEUE -> DBReader.getQueue();
+                        case MEDIA_ID_DOWNLOADS -> DBReader.getEpisodes(page * pageSize, pageSize,
+                                new FeedItemFilter(FeedItemFilter.DOWNLOADED),
+                                UserPreferences.getDownloadsSortedOrder());
+                        case MEDIA_ID_EPISODES -> DBReader.getEpisodes(page * pageSize, pageSize,
+                                new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes()),
+                                UserPreferences.getAllEpisodesSortOrder());
+                        default -> throw new IllegalArgumentException("Unknown parentId: " + parentId);
+                    };
+                })
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(items -> future.set(LibraryResult.ofItemList(
+                                        MediaItemAdapter.fromItemList(items), params)),
+                                future::setException));
+                return future;
         }
-        return future;
     }
 
     @Override

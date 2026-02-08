@@ -164,7 +164,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
 
         @Override
-        public void onPlayerError(PlaybackException error) {
+        public void onPlayerError(@NonNull PlaybackException error) {
             if (NetworkUtils.wasDownloadBlocked(error)) {
                 EventBus.getDefault().post(new PlayerErrorEvent(getString(R.string.download_error_blocked)));
             } else {

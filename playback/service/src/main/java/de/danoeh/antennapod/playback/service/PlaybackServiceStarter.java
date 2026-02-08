@@ -33,8 +33,7 @@ public class PlaybackServiceStarter {
     }
 
     public Intent getIntent() {
-        Intent launchIntent = new Intent(context,
-                BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE ? Media3PlaybackService.class : PlaybackService.class);
+        Intent launchIntent = new Intent(context, PlaybackService.class);
         launchIntent.putExtra(PlaybackServiceInterface.EXTRA_PLAYABLE, (Parcelable) media);
         launchIntent.putExtra(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, shouldStreamThisTime);
         return launchIntent;
