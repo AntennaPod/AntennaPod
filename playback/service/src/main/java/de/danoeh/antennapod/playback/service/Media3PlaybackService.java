@@ -151,7 +151,9 @@ public class Media3PlaybackService extends MediaLibraryService {
             } else {
                 cancelPositionObserver();
                 saveCurrentPosition();
-                SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
+                if (currentPlayable != null) {
+                    SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
+                }
             }
             updatePlaybackPreferences();
             EventBus.getDefault().post(new PlayerStatusEvent());
