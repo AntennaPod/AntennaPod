@@ -23,6 +23,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -36,6 +37,7 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -86,6 +88,13 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
                         .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
                         .build();
+            }
+
+            @Override
+            public void setPlaybackSpeed(float speed) {
+                super.setPlaybackSpeed(speed);
+                PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
+                EventBus.getDefault().post(new SpeedChangedEvent(speed));
             }
         };
         player.addListener(playerListener);
@@ -261,9 +270,12 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 currentPlayable.setPosition((int) player.getCurrentPosition());
                                 currentPlayable.onPlaybackStart();
                             }
-                            if (!currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
+                            if (currentPlayable.getItem() != null
+                                    && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
                                 DBWriter.addQueueItem(this, currentPlayable.getItem());
                             }
+                            float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
+                            player.setPlaybackSpeed(speed);
                             updatePlaybackPreferences();
                             EventBus.getDefault().post(new PlayerStatusEvent());
                         },
