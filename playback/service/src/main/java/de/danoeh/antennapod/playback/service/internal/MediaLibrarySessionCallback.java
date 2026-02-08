@@ -45,8 +45,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final String MEDIA_ID_DOWNLOADS = "downloads";
     private static final String MEDIA_ID_EPISODES = "episodes";
     private static final String MEDIA_ID_SUBSCRIPTIONS = "subscriptions";
+    private static final String MEDIA_ID_CURRENT = "current";
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
-            MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES, MEDIA_ID_SUBSCRIPTIONS);
+            MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
+            MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CURRENT);
 
     protected static final SessionCommand SESSION_COMMAND_REWIND
             = new SessionCommand("rewind", Bundle.EMPTY);
@@ -252,7 +254,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         final MediaLibraryService.LibraryParams libraryParams = new MediaLibraryService.LibraryParams.Builder()
                 .setExtras(rootExtras).build();
         if ("com.google.android.googlequicksearchbox".equals(browser.getPackageName())) {
-            // TODO: Special handling for Android Auto "for you" screen
+            // Android Auto "for you" screen
+            return Futures.immediateFuture(LibraryResult.ofItem(createBrowsableMediaItem(MEDIA_ID_CURRENT), libraryParams));
         }
         return Futures.immediateFuture(LibraryResult.ofItem(createBrowsableMediaItem(MEDIA_ID_ROOT), libraryParams));
     }
@@ -302,6 +305,21 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                 future.set(LibraryResult.ofItemList(builder.build(), params));
                             },
                             future::setException));
+            return future;
+        } else if (MEDIA_ID_CURRENT.equals(parentId)) {
+            disposables.add(Single.fromCallable(() ->
+                            DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(
+                            media -> {
+                                future.set(LibraryResult.ofItemList(
+                                        ImmutableList.of(MediaItemAdapter.fromPlayable(media)), params));
+                            },
+                            error -> {
+                                Log.e(TAG, "Failed to load currently playing media", error);
+                                future.set(LibraryResult.ofItemList(ImmutableList.of(), params));
+                            }
+                    ));
             return future;
         } else { // Episodes lists
             disposables.add(Single.fromCallable(
@@ -388,6 +406,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             case MEDIA_ID_SUBSCRIPTIONS:
                 return MediaItemAdapter.from(context, MEDIA_ID_SUBSCRIPTIONS,
                         context.getString(R.string.subscriptions_label), R.drawable.ic_subscriptions_black, null);
+            case MEDIA_ID_CURRENT:
+                return MediaItemAdapter.from(context, MEDIA_ID_CURRENT,
+                        context.getString(R.string.current_playing_episode), R.drawable.ic_play_48dp_black, null);
             default:
                 throw new IllegalArgumentException("ID not known: " + id);
         }
