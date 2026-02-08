@@ -226,21 +226,23 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         positionObserverDisposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(number -> {
-                    if (currentPlayable != null && player != null) {
-                        int position = (int) player.getCurrentPosition();
-                        int duration = (int) player.getDuration();
-                        if (duration > 0) {
-                            EventBus.getDefault().post(new PlaybackPositionEvent(position, duration));
-
-                            long currentTime = System.currentTimeMillis();
-                            if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
-                                saveCurrentPosition();
-                                lastPositionSaveTime = currentTime;
+                .subscribe(
+                        ignored -> {
+                            if (currentPlayable != null && player != null) {
+                                long position = player.getCurrentPosition();
+                                long duration = player.getDuration();
+                                if (duration > 0) {
+                                    EventBus.getDefault().post(
+                                            new PlaybackPositionEvent((int) position, (int) duration));
+                                    long currentTime = System.currentTimeMillis();
+                                    if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
+                                        saveCurrentPosition();
+                                        lastPositionSaveTime = currentTime;
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
+                        }, error -> Log.e(TAG, "Position observer error", error)
+                );
     }
 
     private void cancelPositionObserver() {
@@ -251,7 +253,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     }
 
     private void ensureCurrentMediaLoaded() {
-        if (player.getCurrentMediaItem() == null) {
+        if (player == null || player.getCurrentMediaItem() == null) {
             return;
         }
         try {
@@ -266,7 +268,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
                             currentPlayable = media;
-                            if (player.isPlaying()) {
+                            if (player != null && player.isPlaying()) {
                                 currentPlayable.setPosition((int) player.getCurrentPosition());
                                 currentPlayable.onPlaybackStart();
                             }
@@ -275,15 +277,18 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 DBWriter.addQueueItem(this, currentPlayable.getItem());
                             }
                             float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
-                            player.setPlaybackSpeed(speed);
+                            if (player != null) {
+                                player.setPlaybackSpeed(speed);
+                            }
                             updatePlaybackPreferences();
                             EventBus.getDefault().post(new PlayerStatusEvent());
                         },
-                                Throwable::printStackTrace);
+                                error -> Log.e(TAG, "Failed to load current media", error));
 
             }
         } catch (NumberFormatException e) {
-            Log.e(TAG, "Invalid media ID: " + player.getCurrentMediaItem().mediaId, e);
+            Log.e(TAG, "Invalid media ID: " + (player != null && player.getCurrentMediaItem() != null
+                    ? player.getCurrentMediaItem().mediaId : "null"), e);
         }
     }
 
@@ -309,9 +314,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         } catch (NumberFormatException e) {
             return;
         }
-        int position = (int) player.getCurrentPosition();
+        long position = player.getCurrentPosition();
         long timestamp = System.currentTimeMillis();
-        PlayableUtils.saveCurrentPosition(currentPlayable, position, timestamp);
+        PlayableUtils.saveCurrentPosition(currentPlayable, (int) position, timestamp);
     }
 
     private void onPlaybackEnd(FeedMedia media) {
