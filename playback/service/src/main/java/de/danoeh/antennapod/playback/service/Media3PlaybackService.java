@@ -270,10 +270,10 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
                             currentPlayable = media;
-                            if (player != null && player.isPlaying()) {
+                            if (player != null) {
                                 currentPlayable.setPosition((int) player.getCurrentPosition());
-                                currentPlayable.onPlaybackStart();
                             }
+                            currentPlayable.onPlaybackStart();
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
                                 DBWriter.addQueueItem(this, currentPlayable.getItem());
@@ -411,13 +411,13 @@ public class Media3PlaybackService extends MediaLibraryService {
                         nextMedia -> {
                             if (nextMedia != null) {
                                 currentPlayable = nextMedia;
+                                currentPlayable.onPlaybackStart();
                                 MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
                                 PlaybackPreferences.writeMediaPlaying(nextMedia);
                                 player.setPlayWhenReady(UserPreferences.isFollowQueue());
                                 player.setMediaItem(mediaItem);
                                 player.seekTo(nextMedia.getPosition());
                                 player.prepare();
-                                ensureCurrentMediaLoaded();
                             }
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error)
