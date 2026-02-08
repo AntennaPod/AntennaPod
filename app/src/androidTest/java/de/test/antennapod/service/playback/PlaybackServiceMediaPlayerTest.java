@@ -51,7 +51,7 @@ import static org.junit.Assume.assumeTrue;
  * Test class for LocalPSMP
  */
 @MediumTest
-@Ignore
+@Ignore("Tests the old playback service that is disabled with Gradle flags")
 public class PlaybackServiceMediaPlayerTest {
     private static final String TAG = "PsmpTest";
     private static final String PLAYABLE_DEST_URL = "psmptestfile.mp3";
