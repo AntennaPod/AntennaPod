@@ -11,6 +11,7 @@
     <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update subscriptions</string>
     <string name="statistics_label">Statistics</string>
+    <string name="password">Password</string>
     <string name="add_feed_label">Add podcast</string>
     <string name="add_feed_label_short">Add</string>
     <string name="episodes_label">Episodes</string>
@@ -736,6 +737,7 @@
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
+    <string name="wrong_password">Wrong password</string>
     <string name="synchronization_login_butLabel">Log in</string>
     <string name="synchronization_selectDevice_explanation">Please select the device that you created on the synchronization server or create a new one.</string>
     <string name="gpodnetauth_device_name">Device name</string>
