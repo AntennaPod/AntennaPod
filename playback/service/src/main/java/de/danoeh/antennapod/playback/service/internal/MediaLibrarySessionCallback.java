@@ -284,6 +284,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         switch (parentId) {
             case MEDIA_ID_ROOT:
                 disposables.add(Single.fromCallable(() -> ImmutableList.of(
+                                createBrowsableMediaItem(MEDIA_ID_CURRENT),
                                 createBrowsableMediaItem(MEDIA_ID_QUEUE),
                                 createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
                                 createBrowsableMediaItem(MEDIA_ID_EPISODES),
@@ -299,7 +300,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                 items -> {
                                     ImmutableList.Builder<MediaItem> builder = new ImmutableList.Builder<>();
                                     for (Feed feed : items) {
-                                        builder.add(MediaItemAdapter.fromFeed(feed));
+                                        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+                                            builder.add(MediaItemAdapter.fromFeed(feed));
+                                        }
                                     }
                                     future.set(LibraryResult.ofItemList(builder.build(), params));
                                 },

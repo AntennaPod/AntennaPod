@@ -29,7 +29,9 @@ public class MediaItemAdapter {
             FeedMedia feedMedia = (FeedMedia) playable;
             mediaId = String.valueOf(feedMedia.getId());
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
-            metadataBuilder.setArtworkUri(Uri.parse(feedMedia.getImageLocation()));
+            if (feedMedia.getImageLocation() != null && feedMedia.getImageLocation().startsWith("http")) {
+                metadataBuilder.setArtworkUri(Uri.parse(feedMedia.getImageLocation()));
+            }
         }
         String uriString = playable.localFileAvailable() ? playable.getLocalFileUrl() : playable.getStreamUrl();
         return new MediaItem.Builder()
@@ -43,7 +45,9 @@ public class MediaItemAdapter {
     public static MediaItem fromFeed(Feed feed) {
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(feed.getTitle());
-        metadataBuilder.setArtworkUri(Uri.parse(feed.getImageUrl()));
+        if (feed.getImageUrl() != null && feed.getImageUrl().startsWith("http")) {
+            metadataBuilder.setArtworkUri(Uri.parse(feed.getImageUrl()));
+        }
         metadataBuilder.setSubtitle(feed.getAuthor());
         metadataBuilder.setIsBrowsable(true);
         metadataBuilder.setIsPlayable(false);
@@ -79,7 +83,9 @@ public class MediaItemAdapter {
     public static ImmutableList<MediaItem> fromItemList(List<FeedItem> feedItems) {
         ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
         for (FeedItem item : feedItems) {
-            itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
+            if (item.getMedia() != null) {
+                itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
+            }
         }
         return itemsBuilder.build();
     }
