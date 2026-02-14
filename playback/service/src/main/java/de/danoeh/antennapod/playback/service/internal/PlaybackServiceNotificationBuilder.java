@@ -169,8 +169,8 @@ public class PlaybackServiceNotificationBuilder {
 
     private PendingIntent getPlayerActivityPendingIntent() {
         return PendingIntent.getActivity(context, R.id.pending_intent_player_activity,
-                PlaybackService.getPlayerActivityIntent(context), PendingIntent.FLAG_UPDATE_CURRENT
-                        | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                PlaybackService.getPlayerActivityIntent(context),
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private void addActions(NotificationCompat.Builder notification, MediaSessionCompat.Token mediaSessionToken,
@@ -243,8 +243,8 @@ public class PlaybackServiceNotificationBuilder {
             return PendingIntent.getForegroundService(context, requestCode, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
-            return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
-                    | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+            return PendingIntent.getService(context, requestCode, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         }
     }
 
@@ -257,8 +257,8 @@ public class PlaybackServiceNotificationBuilder {
             return PendingIntent.getForegroundService(context, requestCode, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
-            return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT
-                    | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+            return PendingIntent.getService(context, requestCode, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         }
     }
 

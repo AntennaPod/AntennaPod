@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.appstartintent;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.view.KeyEvent;
 
 public abstract class MediaButtonStarter {
@@ -19,6 +18,6 @@ public abstract class MediaButtonStarter {
 
     public static PendingIntent createPendingIntent(Context context, int eventCode) {
         return PendingIntent.getBroadcast(context, eventCode, createIntent(context, eventCode),
-                (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                PendingIntent.FLAG_IMMUTABLE);
     }
 }

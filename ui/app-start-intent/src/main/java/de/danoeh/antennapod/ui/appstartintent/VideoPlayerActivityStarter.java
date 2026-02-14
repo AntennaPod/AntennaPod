@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.appstartintent;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 /**
  * Launches the video player activity of the app with specific arguments.
@@ -28,7 +27,7 @@ public class VideoPlayerActivityStarter {
 
     public PendingIntent getPendingIntent() {
         return PendingIntent.getActivity(context, R.id.pending_intent_video_player, getIntent(),
-                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     public void start() {

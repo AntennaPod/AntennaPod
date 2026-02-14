@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -246,13 +245,13 @@ public class EpisodeDownloadWorker extends Worker {
     private PendingIntent getDownloadLogsIntent(Context context) {
         Intent intent = new MainActivityStarter(context).withDownloadLogsOpen().getIntent();
         return PendingIntent.getActivity(context, R.id.pending_intent_download_service_report, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private PendingIntent getDownloadsIntent(Context context) {
         Intent intent = new MainActivityStarter(context).withFragmentLoaded("DownloadsFragment").getIntent();
         return PendingIntent.getActivity(context, R.id.pending_intent_download_service_notification, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private void sendErrorNotification(String title) {

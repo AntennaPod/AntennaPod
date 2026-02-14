@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.drawer;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.view.ContextMenu;
 import android.view.InputDevice;
 import android.view.LayoutInflater;
@@ -169,12 +168,10 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             holder.itemView.setOnClickListener(v -> itemAccess.onItemClick(position));
             holder.itemView.setOnLongClickListener(v -> itemAccess.onItemLongClick(position));
             holder.itemView.setOnTouchListener((v, e) -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (e.isFromSource(InputDevice.SOURCE_MOUSE)
-                            && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
-                        itemAccess.onItemLongClick(position);
-                        return false;
-                    }
+                if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                        && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                    itemAccess.onItemLongClick(position);
+                    return false;
                 }
                 return false;
             });

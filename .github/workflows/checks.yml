@@ -108,11 +108,11 @@ jobs:
     strategy:
       matrix:
         version:
-          - api-level: 21
+          - api-level: 23
             target: default
           - api-level: 30
             target: aosp_atd
-          - api-level: 34
+          - api-level: 35
             target: aosp_atd
     steps:
       - name: Remove unused packages to save space
