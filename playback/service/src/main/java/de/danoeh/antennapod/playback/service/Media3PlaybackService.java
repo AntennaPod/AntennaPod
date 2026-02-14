@@ -31,7 +31,8 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
-import de.danoeh.antennapod.playback.service.internal.MediaItemAdapter;
+import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
+import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -81,7 +82,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
                         .build(), true)
                 .build();
-        player = new ForwardingPlayer(basePlayer) {
+        Player maybeCastPlayer = CastPlayerWrapper.wrap(basePlayer, this);
+        player = new ForwardingPlayer(maybeCastPlayer) {
             @Override
             @NonNull
             public Player.Commands getAvailableCommands() {

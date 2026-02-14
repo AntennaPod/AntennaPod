@@ -1,8 +1,9 @@
-package de.danoeh.antennapod.playback.service.internal;
+package de.danoeh.antennapod.playback.base;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.media3.common.MediaItem;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class MediaItemAdapter {
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
+    public static final String KEY_STREAM_URL = "stream_url";
 
     public static MediaItem fromPlayable(Playable playable) {
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
@@ -33,9 +35,12 @@ public class MediaItemAdapter {
                 metadataBuilder.setArtworkUri(Uri.parse(feedMedia.getImageLocation()));
             }
         }
-        String uriString = playable.localFileAvailable() ? playable.getLocalFileUrl() : playable.getStreamUrl();
+        Bundle extras = new Bundle();
+        extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
+        metadataBuilder.setExtras(extras);
+        String localPlaybackUri = playable.localFileAvailable() ? playable.getLocalFileUrl() : playable.getStreamUrl();
         return new MediaItem.Builder()
-                .setUri(uriString != null ? Uri.parse(uriString) : null)
+                .setUri(localPlaybackUri != null ? Uri.parse(localPlaybackUri) : null)
                 .setMediaId(mediaId)
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
