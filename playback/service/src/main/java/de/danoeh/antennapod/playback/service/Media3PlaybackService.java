@@ -11,6 +11,7 @@ import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
+import androidx.media3.common.util.Util;
 import androidx.media3.datasource.HttpDataSource;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.DefaultMediaNotificationProvider;
@@ -22,6 +23,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
@@ -131,6 +133,13 @@ public class Media3PlaybackService extends MediaLibraryService {
     private final Player.Listener playerListener = new Player.Listener() {
         @Override
         public void onPlaybackStateChanged(int playbackState) {
+            if (playbackState == Player.STATE_BUFFERING) {
+                EventBus.getDefault().post(BufferUpdateEvent.started());
+                PlaybackService.isRunning = true; // Immediately show as playing
+                updatePlaybackPreferences();
+            } else {
+                EventBus.getDefault().post(BufferUpdateEvent.ended());
+            }
             if (playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED) {
                 saveCurrentPosition();
             }
@@ -140,12 +149,13 @@ public class Media3PlaybackService extends MediaLibraryService {
                 onPlaybackEnd(media);
                 startNextInQueue(media.getItem());
             }
+            EventBus.getDefault().post(new PlayerStatusEvent());
         }
 
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
-            PlaybackService.isRunning = isPlaying;
-            if (isPlaying) {
+            PlaybackService.isRunning = !Util.shouldShowPlayButton(player);
+            if (PlaybackService.isRunning) {
                 lastPositionSaveTime = System.currentTimeMillis();
                 setupPositionObserver();
             } else {
@@ -299,8 +309,8 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         PlaybackPreferences.writeMediaPlaying(currentPlayable);
-        int status = player.isPlaying() ? PlaybackPreferences.PLAYER_STATUS_PLAYING
-                : PlaybackPreferences.PLAYER_STATUS_PAUSED;
+        int status = Util.shouldShowPlayButton(player) ? PlaybackPreferences.PLAYER_STATUS_PAUSED
+                : PlaybackPreferences.PLAYER_STATUS_PLAYING;
         PlaybackPreferences.setCurrentPlayerStatus(status);
     }
 
