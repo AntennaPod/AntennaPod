@@ -10,7 +10,8 @@ public abstract class MediaButtonStarter {
 
     public static Intent createIntent(Context context, int eventCode) {
         KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
-        Intent startingIntent = new Intent(INTENT);
+        Intent startingIntent = new Intent(BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE
+                ? Intent.ACTION_MEDIA_BUTTON : INTENT);
         startingIntent.setPackage(context.getPackageName());
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
         return startingIntent;
