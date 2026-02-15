@@ -229,7 +229,8 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             String oldPassword = dialogBinding.textInput.getText().toString();
             if (ParentalControlPassword.verifyPassword(requireContext(), oldPassword)) {
                 ParentalControlPassword.clearPassword(requireContext());
-                Toast.makeText(requireContext(), R.string.pref_parental_control_password_cleared, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.pref_parental_control_password_cleared, Toast.LENGTH_SHORT)
+                        .show();
                 alertDialog.dismiss();
             } else {
                 dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
