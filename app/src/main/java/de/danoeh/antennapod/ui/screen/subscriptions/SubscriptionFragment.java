@@ -37,6 +37,7 @@ import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
+import de.danoeh.antennapod.storage.preferences.ParentalControlPassword;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
@@ -70,7 +71,6 @@ public class SubscriptionFragment extends Fragment
     private static final String PREF_LAST_TAG = "last_tag";
     private static final String KEY_UP_ARROW = "up_arrow";
     private static final String ARGUMENT_STATE = "state";
-    private static final String ADD_FEED_PASSWORD = "nurfuererwachsene";
 
     private static final int MIN_NUM_COLUMNS = 1;
     private static final int[] COLUMN_CHECKBOX_IDS = {
@@ -238,6 +238,15 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void showPasswordDialog() {
+        // If no password is set, go directly to add feed
+        if (!ParentalControlPassword.isPasswordSet(requireContext())) {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
+            }
+            return;
+        }
+
+        // Password is set, show dialog to verify
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle(R.string.add_feed_label);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
@@ -251,7 +260,7 @@ public class SubscriptionFragment extends Fragment
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((buttonView) -> {
             String enteredPassword = dialogBinding.textInput.getText().toString();
-            if (ADD_FEED_PASSWORD.equals(enteredPassword)) {
+            if (ParentalControlPassword.verifyPassword(requireContext(), enteredPassword)) {
                 alertDialog.dismiss();
                 if (getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
