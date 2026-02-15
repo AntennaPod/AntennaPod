@@ -2,13 +2,13 @@ package de.danoeh.antennapod.storage.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 import android.util.Log;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Base64;
 
 /**
  * Manages the parental control password with secure hashing.
@@ -41,7 +41,7 @@ public class ParentalControlPassword {
         }
 
         try {
-            byte[] salt = Base64.getDecoder().decode(storedSalt);
+            byte[] salt = Base64.decode(storedSalt, Base64.NO_WRAP);
             String computedHash = hashPassword(password, salt);
             return storedHash.equals(computedHash);
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class ParentalControlPassword {
         try {
             byte[] salt = generateSalt();
             String hash = hashPassword(password, salt);
-            String saltBase64 = Base64.getEncoder().encodeToString(salt);
+            String saltBase64 = Base64.encodeToString(salt, Base64.NO_WRAP);
 
             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
             prefs.edit()
@@ -101,7 +101,7 @@ public class ParentalControlPassword {
                 hash = digest.digest(hash);
             }
 
-            return Base64.getEncoder().encodeToString(hash);
+            return Base64.encodeToString(hash, Base64.NO_WRAP);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-256 algorithm not available", e);
         }
