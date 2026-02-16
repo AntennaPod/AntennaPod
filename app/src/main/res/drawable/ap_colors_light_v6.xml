@@ -1,0 +1,11 @@
+<resources>
+    <color name="autoplay_toggle_track">#809A9A9A</color>
+
+    <color name="autoplay_toggle_off_circle">#404040</color>
+    <color name="autoplay_toggle_off_glyph">#FFFFFF</color>
+    <color name="autoplay_toggle_off_circle_stroke">#FFFFFF</color>
+
+    <color name="autoplay_toggle_on_circle">#FFFFFF</color>
+    <color name="autoplay_toggle_on_glyph">#404040</color>
+    <color name="autoplay_toggle_on_circle_stroke">#404040</color>
+</resources>
