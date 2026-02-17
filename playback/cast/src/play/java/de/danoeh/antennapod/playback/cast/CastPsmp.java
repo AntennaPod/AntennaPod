@@ -2,6 +2,8 @@ package de.danoeh.antennapod.playback.cast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
@@ -50,6 +52,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     private volatile int remoteState;
     private final CastContext castContext;
     private final RemoteMediaClient remoteMediaClient;
+    private final Handler gapHandler;
 
     private final AtomicBoolean isBuffering;
 
@@ -82,6 +85,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
         startWhenPrepared = new AtomicBoolean(false);
         isBuffering = new AtomicBoolean(false);
         remoteState = MediaStatus.PLAYER_STATE_UNKNOWN;
+        gapHandler = new Handler(Looper.getMainLooper());
     }
 
     private final RemoteMediaClient.Callback remoteMediaClientCallback = new RemoteMediaClient.Callback() {
@@ -455,6 +459,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
 
     @Override
     public void shutdown() {
+        gapHandler.removeCallbacksAndMessages(null);
         remoteMediaClient.unregisterCallback(remoteMediaClientCallback);
     }
 
@@ -503,6 +508,7 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     protected void endPlayback(boolean hasEnded, boolean wasSkipped, boolean shouldContinue,
                                     boolean toStoppedState) {
         Log.d(TAG, "endPlayback() called");
+        gapHandler.removeCallbacksAndMessages(null);
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
         if (playerStatus != PlayerStatus.INDETERMINATE) {
             setPlayerStatus(PlayerStatus.INDETERMINATE, media);
@@ -532,7 +538,10 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                 callback.onPlaybackEnded(nextMedia.getMediaType(), !playNextEpisode);
                 // setting media to null signals to playMediaObject() that we're taking care of post-playback processing
                 media = null;
-                playMediaObject(nextMedia, false, true, playNextEpisode, playNextEpisode);
+                final boolean playAutomatically = playNextEpisode;
+                final Playable nextToPlay = nextMedia;
+                gapHandler.postDelayed(() -> playMediaObject(nextToPlay, false, true,
+                        playAutomatically, playAutomatically), 2000);
             }
         }
         if (shouldContinue || toStoppedState) {

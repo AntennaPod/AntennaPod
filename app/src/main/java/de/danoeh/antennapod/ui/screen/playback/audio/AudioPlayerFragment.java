@@ -12,6 +12,10 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -29,6 +33,7 @@ import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
@@ -60,6 +65,7 @@ import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
+import de.danoeh.antennapod.event.AutoplayStateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
@@ -68,6 +74,7 @@ import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -97,6 +104,7 @@ public class AudioPlayerFragment extends Fragment implements
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
+    private ImageButton butAutoplay;
     private MaterialToolbar toolbar;
     private ProgressBar progressIndicator;
     private CardView cardViewSeek;
@@ -107,6 +115,8 @@ public class AudioPlayerFragment extends Fragment implements
     private boolean showTimeLeft;
     private boolean seekedToChapterStart = false;
     private int currentChapterIndex = -1;
+    private boolean autoplayEnabled;
+    private static final String DEBUG_LOG_FILE = "autoplay_debug.log";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -137,6 +147,8 @@ public class AudioPlayerFragment extends Fragment implements
         butFF = root.findViewById(R.id.butFF);
         txtvFF = root.findViewById(R.id.txtvFF);
         butSkip = root.findViewById(R.id.butSkip);
+        butAutoplay = root.findViewById(R.id.butAutoplay);
+        butAutoplay.bringToFront();
         progressIndicator = root.findViewById(R.id.progLoading);
         cardViewSeek = root.findViewById(R.id.cardViewSeek);
         txtvSeek = root.findViewById(R.id.txtvSeek);
@@ -145,6 +157,7 @@ public class AudioPlayerFragment extends Fragment implements
         setupControlButtons();
         final ImageButton butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
         butPlaybackSpeed.setOnClickListener(v -> new VariableSpeedDialog().show(getChildFragmentManager(), null));
+        butAutoplay.setOnClickListener(v -> toggleAutoplay());
         sbPosition.setOnSeekBarChangeListener(this);
 
         pager = root.findViewById(R.id.pager);
@@ -304,6 +317,10 @@ public class AudioPlayerFragment extends Fragment implements
 
     private void updateUi() {
         if (currentMedia == null) {
+            if (butAutoplay != null) {
+                butAutoplay.setVisibility(View.GONE);
+            }
+            logDebug("updateUi: no currentMedia; hiding toggle");
             return;
         }
         updatePosition(new PlaybackPositionEvent(currentMedia.getPosition(), currentMedia.getDuration()));
@@ -313,6 +330,8 @@ public class AudioPlayerFragment extends Fragment implements
         boolean isPlaying = PlaybackService.isRunning
                 && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING;
         butPlay.setIsShowPlay(!isPlaying);
+        logDebug("updateUi: media=" + currentMedia.getEpisodeTitle() + ", isPlaying=" + isPlaying);
+        updateAutoplayToggle();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -587,4 +606,115 @@ public class AudioPlayerFragment extends Fragment implements
     public void scrollToPage(int page) {
         scrollToPage(page, false);
     }
+
+    private void updateAutoplayToggle() {
+        if (butAutoplay == null) {
+            return;
+        }
+        Feed feed = getFeedForCurrentMedia();
+        boolean showToggle = shouldShowAutoplayToggle(feed);
+        butAutoplay.setVisibility(showToggle ? View.VISIBLE : View.GONE);
+        logDebug("updateAutoplayToggle: showToggle=" + showToggle
+            + ", autoMode=" + PlaybackPreferences.getAutoAdvanceMode()
+            + ", feed=" + (feed != null ? feed.getId() : "null"));
+        if (!showToggle || feed == null || feed.getPreferences() == null) {
+            postAutoplayStateEvent(false, showToggle);
+            logDebug("updateAutoplayToggle: visibility=" + butAutoplay.getVisibility()
+                + ", isShown=" + butAutoplay.isShown());
+            return;
+        }
+        autoplayEnabled = feed.getPreferences().isAutoPlay();
+        postAutoplayStateEvent(autoplayEnabled, true);
+        butAutoplay.setSelected(autoplayEnabled);
+        butAutoplay.setContentDescription(getString(autoplayEnabled
+                ? R.string.autoplay_toggle_on
+                : R.string.autoplay_toggle_off));
+        logDebug("updateAutoplayToggle: feedPrefAutoPlay=" + autoplayEnabled
+            + ", expectedIcon=" + (autoplayEnabled ? "play-circle" : "pause-circle"));
+        logDebug("updateAutoplayToggle: visibility=" + butAutoplay.getVisibility()
+            + ", isShown=" + butAutoplay.isShown());
+    }
+
+    private void postAutoplayStateEvent(boolean enabled, boolean toggleVisible) {
+        if (!(currentMedia instanceof FeedMedia)) {
+            return;
+        }
+        long mediaId = ((FeedMedia) currentMedia).getId();
+        AutoplayStateEvent event = new AutoplayStateEvent(mediaId, enabled, toggleVisible);
+        logDebug("postAutoplayStateEvent " + event.toString());
+        EventBus.getDefault().post(event);
+    }
+
+    private boolean shouldShowAutoplayToggle(@Nullable Feed feed) {
+        boolean podcastMode = PlaybackPreferences.getAutoAdvanceMode() == PlaybackPreferences.AUTO_ADVANCE_PODCAST;
+        boolean result = currentMedia instanceof FeedMedia
+            && feed != null
+            && podcastMode;
+        logDebug("shouldShowAutoplayToggle: feed=" + (feed != null ? feed.getId() : "null")
+            + ", autoMode=" + PlaybackPreferences.getAutoAdvanceMode()
+            + ", result=" + result);
+        return result;
+    }
+
+    private void toggleAutoplay() {
+        Feed feed = getFeedForCurrentMedia();
+        FeedPreferences preferences = feed != null ? feed.getPreferences() : null;
+        if (preferences == null) {
+            logDebug("toggleAutoplay: preferences null; feed=" + (feed != null ? feed.getId() : "null"));
+            return;
+        }
+        boolean newValue = !preferences.isAutoPlay();
+        preferences.setAutoPlay(newValue);
+        DBWriter.setFeedPreferences(preferences);
+        autoplayEnabled = newValue;
+        logDebug("toggleAutoplay: newValue=" + newValue + ", feed=" + feed.getId());
+        updateAutoplayToggle();
+    }
+
+    @Nullable
+    private Feed getFeedForCurrentMedia() {
+        if (!(currentMedia instanceof FeedMedia)) {
+            logDebug("getFeedForCurrentMedia: currentMedia not FeedMedia");
+            return null;
+        }
+        FeedMedia feedMedia = (FeedMedia) currentMedia;
+        FeedItem feedItem = feedMedia.getItem();
+        if (feedItem == null) {
+            feedItem = DBReader.getFeedItem(feedMedia.getItemId());
+            feedMedia.setItem(feedItem);
+            logDebug("getFeedForCurrentMedia: reloaded FeedItem id=" + feedMedia.getItemId()
+                    + " -> " + (feedItem != null ? feedItem.getId() : "null"));
+        }
+        if (feedItem == null) {
+            logDebug("getFeedForCurrentMedia: feedItem still null");
+            return null;
+        }
+        Feed feed = feedItem.getFeed();
+        if (feed == null || feed.getPreferences() == null) {
+            feed = DBReader.getFeed(feedItem.getFeedId(), false, 0, Integer.MAX_VALUE);
+            if (feed != null) {
+                feedItem.setFeed(feed);
+            }
+            logDebug("getFeedForCurrentMedia: fetched feed id="
+                    + (feed != null ? feed.getId() : "null") + ", prefsNull="
+                    + (feed == null || feed.getPreferences() == null));
+        }
+        return feed;
+    }
+
+    private void logDebug(String message) {
+        Log.d(TAG, message);
+        if (getContext() == null) {
+            return;
+        }
+        try {
+            File logFile = new File(getContext().getExternalFilesDir(null), DEBUG_LOG_FILE);
+            try (FileWriter writer = new FileWriter(logFile, true)) {
+                writer.write(System.currentTimeMillis() + ": " + message + "\n");
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "logDebug write failed", e);
+        }
+    }
+
 }

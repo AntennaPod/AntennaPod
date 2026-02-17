@@ -84,15 +84,17 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
         beforeBindViewHolder(holder, pos);
 
         FeedItem item = episodes.get(pos);
+    holder.setQueueContext(isQueueContext());
         holder.bind(item);
 
         holder.itemView.setOnClickListener(v -> {
             if (!inActionMode()) {
+                final boolean queueContext = isQueueContext();
                 if (mainActivityRef.get() instanceof MainActivity) {
                     ((MainActivity) mainActivityRef.get())
-                            .loadChildFragment(ItemPagerFragment.newInstance(episodes, item));
+                            .loadChildFragment(ItemPagerFragment.newInstance(episodes, item, queueContext));
                 } else {
-                    ItemPagerFragment fragment = ItemPagerFragment.newInstance(episodes, item);
+                    ItemPagerFragment fragment = ItemPagerFragment.newInstance(episodes, item, queueContext);
                     mainActivityRef.get().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragmentContainer, fragment, "Items")
@@ -140,6 +142,10 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
     }
 
     protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+    }
+
+    protected boolean isQueueContext() {
+        return false;
     }
 
     @Override

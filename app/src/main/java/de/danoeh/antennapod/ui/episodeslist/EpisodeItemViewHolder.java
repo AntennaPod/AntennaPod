@@ -64,6 +64,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     private final Activity activity;
     private FeedItem item;
+    private boolean queueContext;
 
     public EpisodeItemViewHolder(Activity activity, ViewGroup parent) {
         super(LayoutInflater.from(activity).inflate(R.layout.feeditemlist_item, parent, false));
@@ -108,7 +109,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
         container.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
 
-        ItemActionButton actionButton = ItemActionButton.forItem(item);
+        ItemActionButton actionButton = ItemActionButton.forItem(item, queueContext);
         actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
         secondaryActionButton.setFocusable(false);
 
@@ -227,6 +228,10 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
                     .withCoverView(cover)
                     .load();
         }
+    }
+
+    public void setQueueContext(boolean queueContext) {
+        this.queueContext = queueContext;
     }
 
     private void updateDuration(PlaybackPositionEvent event) {

@@ -14,6 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -47,6 +51,8 @@ import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.storage.databasemaintenanceservice.DatabaseMaintenanceWorker;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -70,6 +76,8 @@ import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
+import de.danoeh.antennapod.event.AutoplayStateEvent;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.ui.screen.playback.audio.AudioPlayerFragment;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
@@ -110,6 +118,11 @@ public class MainActivity extends CastEnabledActivity {
     private final RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
+    private TextView devStateHeader;
+    private int devHeaderBaseTopPadding = 0;
+    private @Nullable Boolean lastAutoplayEnabled;
+    private long lastAutoplayMediaId = PlaybackPreferences.NO_MEDIA_PLAYING;
+    private boolean lastAutoplayVisible = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +136,17 @@ public class MainActivity extends CastEnabledActivity {
         setContentView(R.layout.main);
         recycledViewPool.setMaxRecycledViews(R.id.view_type_episode_item, 25);
         checkFirstLaunch();
+
+        devStateHeader = findViewById(R.id.dev_state_header);
+        if (devStateHeader != null) {
+            devHeaderBaseTopPadding = devStateHeader.getPaddingTop();
+            if (BuildConfig.DEV_DIAGNOSTICS) {
+                devStateHeader.setVisibility(View.VISIBLE);
+                updateDevStateHeader();
+            } else {
+                devStateHeader.setVisibility(View.GONE);
+            }
+        }
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
@@ -358,6 +382,12 @@ public class MainActivity extends CastEnabledActivity {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        updateDevStateHeader();
+    }
+
     public LockableBottomSheetBehavior<FragmentContainerView> getBottomSheet() {
         return sheetBehavior;
     }
@@ -394,6 +424,12 @@ public class MainActivity extends CastEnabledActivity {
         playerView.setLayoutParams(playerParams);
         RelativeLayout playerContent = findViewById(R.id.playerContent);
         playerContent.setPadding(systemBarInsets.left, systemBarInsets.top, systemBarInsets.right, 0);
+
+        if (devStateHeader != null) {
+            int paddedTop = devHeaderBaseTopPadding + systemBarInsets.top;
+            devStateHeader.setPadding(devStateHeader.getPaddingLeft(), paddedTop,
+                    devStateHeader.getPaddingRight(), devStateHeader.getPaddingBottom());
+        }
     }
 
     public RecyclerView.RecycledViewPool getRecycledViewPool() {
@@ -480,6 +516,8 @@ public class MainActivity extends CastEnabledActivity {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             drawerLayout.closeDrawer(navDrawer);
         }
+
+        updateDevStateHeader();
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition, String navigationTag) {
@@ -504,6 +542,8 @@ public class MainActivity extends CastEnabledActivity {
                 .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
+
+        updateDevStateHeader();
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
@@ -672,6 +712,35 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusEvent(PlayerStatusEvent event) {
+        updateDevStateHeader();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAutoplayStateEvent(AutoplayStateEvent event) {
+        lastAutoplayEnabled = event.getAutoplayEnabled();
+        lastAutoplayMediaId = event.getMediaId();
+        lastAutoplayVisible = event.isToggleVisible();
+        logAutoplayDebug("MainActivity received " + event.toString());
+        updateDevStateHeader();
+    }
+
+    private void logAutoplayDebug(String message) {
+        if (!BuildConfig.DEBUG) {
+            return;
+        }
+        Log.d(TAG, message);
+        try {
+            File logFile = new File(getApplicationContext().getExternalFilesDir(null), "autoplay_debug.log");
+            try (FileWriter writer = new FileWriter(logFile, true)) {
+                writer.write(System.currentTimeMillis() + ": [MainActivity] " + message + "\n");
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "logAutoplayDebug write failed", e);
+        }
+    }
+
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
@@ -825,5 +894,74 @@ public class MainActivity extends CastEnabledActivity {
             return true;
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    private void updateDevStateHeader() {
+        if (!BuildConfig.DEV_DIAGNOSTICS || devStateHeader == null) {
+            return;
+        }
+
+        String module = resolveCurrentModule();
+        String contextCode = resolveContextCode();
+        String streamId = resolveStreamId();
+        String queueToggle = resolveQueueToggleState();
+
+        String autoToggleState = resolveAutoToggleStateFromCache();
+        setDevStateHeaderText(module, contextCode, streamId, autoToggleState, queueToggle);
+        logAutoplayDebug("DevHeader updated T=" + autoToggleState + " module=" + module
+            + " context=" + contextCode + " stream=" + streamId + " QT=" + queueToggle
+            + " lastEvent=" + (lastAutoplayEnabled != null ? lastAutoplayEnabled : "null")
+            + " lastVisible=" + lastAutoplayVisible + " lastMediaId=" + lastAutoplayMediaId);
+    }
+
+    public void refreshDevStateHeader() {
+        updateDevStateHeader();
+    }
+
+    private String resolveCurrentModule() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_content_view);
+        if (fragment != null) {
+            return fragment.getClass().getSimpleName();
+        }
+        return "Unknown";
+    }
+
+    private String resolveContextCode() {
+        int mode = PlaybackPreferences.getAutoAdvanceMode();
+        return mode == PlaybackPreferences.AUTO_ADVANCE_QUEUE ? "Q" : "P";
+    }
+
+    private String resolveStreamId() {
+        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+        if (mediaId == PlaybackPreferences.NO_MEDIA_PLAYING) {
+            return "None";
+        }
+        return String.valueOf(mediaId);
+    }
+
+    private String resolveAutoToggleStateFromCache() {
+        if (lastAutoplayEnabled != null) {
+            if (!lastAutoplayVisible) {
+                return "N/A";
+            }
+            return lastAutoplayEnabled ? "ON" : "OFF";
+        }
+
+        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+        if (mediaId == PlaybackPreferences.NO_MEDIA_PLAYING) {
+            return "OFF";
+        }
+        return "UNK";
+    }
+
+    private void setDevStateHeaderText(String module, String contextCode, String streamId,
+                                       String autoToggleState, String queueToggle) {
+        String summary = "M:" + module + " C:" + contextCode + " S:" + streamId
+                + " T:" + autoToggleState + " QT:" + queueToggle;
+        devStateHeader.setText(summary);
+    }
+
+    private String resolveQueueToggleState() {
+        return UserPreferences.isFollowQueue() ? "ON" : "OFF";
     }
 }

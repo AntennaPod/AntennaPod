@@ -24,8 +24,8 @@ public class DownloadActionButton extends ItemActionButton {
     private static int bypassCellularNetworkType = 0;
     private static long bypassCellularNetworkWarningTimer = 0;
 
-    public DownloadActionButton(FeedItem item) {
-        super(item);
+    public DownloadActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override

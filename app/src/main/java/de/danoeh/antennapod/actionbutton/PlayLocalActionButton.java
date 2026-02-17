@@ -9,11 +9,12 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 
 public class PlayLocalActionButton extends ItemActionButton {
 
-    public PlayLocalActionButton(FeedItem item) {
-        super(item);
+    public PlayLocalActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override
@@ -35,8 +36,14 @@ public class PlayLocalActionButton extends ItemActionButton {
             return;
         }
 
+        logPlaybackDebug(context, "PlayLocalActionButton onClick queueContext=" + isQueueContext()
+                + ", itemId=" + item.getId() + ", mediaId=" + media.getId());
+
         new PlaybackServiceStarter(context, media)
                 .callEvenIfRunning(true)
+            .setAutoAdvanceMode(isQueueContext()
+                ? PlaybackPreferences.AUTO_ADVANCE_QUEUE
+                : PlaybackPreferences.AUTO_ADVANCE_PODCAST)
                 .start();
 
         if (media.getMediaType() == MediaType.VIDEO) {

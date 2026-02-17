@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="autoplay_toggle_track">#CC5F5F5F</color>
+    <color name="autoplay_toggle_off_circle">#000000</color>
+    <color name="autoplay_toggle_off_glyph">#FFFFFF</color>
+    <color name="autoplay_toggle_off_circle_stroke">#FFFFFF</color>
+    <color name="autoplay_toggle_on_circle">#FFFFFF</color>
+    <color name="autoplay_toggle_on_glyph">#000000</color>
+    <color name="autoplay_toggle_on_circle_stroke">#000000</color>
+</resources>

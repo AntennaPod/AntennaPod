@@ -342,6 +342,10 @@ public abstract class PlaybackServiceMediaPlayer {
 
         boolean shouldContinueToNextEpisode();
 
+        default boolean shouldAutoplayNext(@NonNull Playable currentMedia) {
+            return false;
+        }
+
         void onMediaChanged(boolean reloadUI);
 
         void onPostPlayback(@NonNull Playable media, boolean ended, boolean skipped, boolean playingNext);

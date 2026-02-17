@@ -24,5 +24,16 @@
             android:icon="@drawable/ic_info"
             android:summary="@string/licenses_summary"
             android:title="@string/licenses"/>
+    <Preference
+            android:key="about_fork_notice"
+            android:icon="@drawable/ic_info"
+            android:title="@string/fork_notice_title"
+            android:summary="@string/fork_notice_summary"/>
+
+    <Preference
+            android:key="about_upstream"
+            android:icon="@drawable/ic_info"
+            android:summary="@string/fork_notice_upstream"
+            android:title="@string/fork_notice_upstream_title"/>
 
 </PreferenceScreen>

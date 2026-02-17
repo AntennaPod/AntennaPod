@@ -15,8 +15,8 @@ import de.danoeh.antennapod.ui.view.LocalDeleteModal;
 
 public class DeleteActionButton extends ItemActionButton {
 
-    public DeleteActionButton(FeedItem item) {
-        super(item);
+    public DeleteActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override

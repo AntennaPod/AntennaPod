@@ -11,8 +11,8 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 
 public class MarkAsPlayedActionButton extends ItemActionButton {
 
-    public MarkAsPlayedActionButton(FeedItem item) {
-        super(item);
+    public MarkAsPlayedActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override

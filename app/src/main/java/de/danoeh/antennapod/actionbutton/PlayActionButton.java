@@ -8,6 +8,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -18,8 +19,8 @@ import org.greenrobot.eventbus.EventBus;
 public class PlayActionButton extends ItemActionButton {
     private static final String TAG = "PlayActionButton";
 
-    public PlayActionButton(FeedItem item) {
-        super(item);
+    public PlayActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override
@@ -40,6 +41,8 @@ public class PlayActionButton extends ItemActionButton {
         if (media == null) {
             return;
         }
+        logPlaybackDebug(context, "PlayActionButton onClick queueContext=" + isQueueContext()
+                + ", itemId=" + item.getId() + ", mediaId=" + media.getId());
         if (!media.fileExists()) {
             Log.i(TAG, "Missing episode. Will update the database now.");
             media.setDownloaded(false, 0);
@@ -51,6 +54,9 @@ public class PlayActionButton extends ItemActionButton {
         }
         new PlaybackServiceStarter(context, media)
                 .callEvenIfRunning(true)
+            .setAutoAdvanceMode(isQueueContext()
+                ? PlaybackPreferences.AUTO_ADVANCE_QUEUE
+                : PlaybackPreferences.AUTO_ADVANCE_PODCAST)
                 .start();
 
         if (media.getMediaType() == MediaType.VIDEO) {

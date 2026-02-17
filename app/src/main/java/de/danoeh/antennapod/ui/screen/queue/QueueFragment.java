@@ -65,6 +65,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
@@ -115,6 +116,15 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         super.onStart();
         loadItems();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PlaybackPreferences.setAutoAdvanceMode(PlaybackPreferences.AUTO_ADVANCE_QUEUE);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).refreshDevStateHeader();
+        }
     }
 
     @Override

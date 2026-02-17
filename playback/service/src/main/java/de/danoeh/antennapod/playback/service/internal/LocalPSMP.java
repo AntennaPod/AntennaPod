@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.FileWriter;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -59,6 +60,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private volatile Pair<Integer, Integer> videoSize;
     private final AudioFocusRequestCompat audioFocusRequest;
     private final Handler audioFocusCanceller;
+    private final Handler gapHandler;
     private boolean isShutDown = false;
     private CountDownLatch seekLatch;
     private LiveData<Integer> androidAutoConnectionState;
@@ -71,6 +73,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.startWhenPrepared = new AtomicBoolean(false);
         audioFocusCanceller = new Handler(Looper.getMainLooper());
+        gapHandler = new Handler(Looper.getMainLooper());
         mediaPlayer = null;
         statusBeforeSeeking = null;
         pausedBecauseOfTransientAudiofocusLoss = false;
@@ -541,6 +544,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         isShutDown = true;
         abandonAudioFocus();
         releaseWifiLockIfNecessary();
+        gapHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -681,7 +685,13 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     protected void endPlayback(final boolean hasEnded, final boolean wasSkipped,
                                     boolean shouldContinue, final boolean toStoppedState) {
+        gapHandler.removeCallbacksAndMessages(null);
         releaseWifiLockIfNecessary();
+
+        String endSummary = "endPlayback hasEnded=" + hasEnded + " wasSkipped=" + wasSkipped
+            + " shouldContinue=" + shouldContinue + " status=" + playerStatus;
+        Log.d(TAG, endSummary);
+        fileLog(endSummary);
 
         callback.episodeFinishedPlayback(); // notify that the current episode just finished
 
@@ -706,18 +716,28 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         // we should continue to next episode if we were told to continue and we're allowed to (by sleep timer)
         shouldContinue &= callback.shouldContinueToNextEpisode();
+        Log.d(TAG, "endPlayback post-shouldContinue=" + shouldContinue);
+        fileLog("endPlayback post-shouldContinue=" + shouldContinue);
 
         if (shouldContinue) {
             // Load next episode if previous episode was in the queue and if there
             // is an episode in the queue left.
             // Start playback immediately if continuous playback is enabled
             nextMedia = callback.getNextInQueue(currentMedia);
+            String nextSummary = "endPlayback nextMedia="
+                    + (nextMedia != null ? nextMedia.getEpisodeTitle() : "<none>");
+            Log.d(TAG, nextSummary);
+            fileLog(nextSummary);
             if (nextMedia != null) {
                 callback.onPlaybackEnded(nextMedia.getMediaType(), false);
                 // setting media to null signals to playMediaObject() that
                 // we're taking care of post-playback processing
                 media = null;
-                playMediaObject(nextMedia, false, !nextMedia.localFileAvailable(), isPlaying, isPlaying);
+                final Playable nextToPlay = nextMedia;
+                final boolean streamNext = !nextMedia.localFileAvailable();
+                final boolean playImmediately = isPlaying;
+                gapHandler.postDelayed(() -> playMediaObject(nextToPlay, false,
+                        streamNext, playImmediately, playImmediately), 2000);
             } else if (wasSkipped) {
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.no_following_in_queue)));
             }
@@ -760,7 +780,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         if (mp == null || media == null) {
             return;
         }
-        mp.setOnCompletionListener(() -> endPlayback(true, false, true, true));
+        mp.setOnCompletionListener(() -> {
+            fileLog("onCompletionListener fired for " + (media != null ? media.getEpisodeTitle() : "<none>"));
+            endPlayback(true, false, true, true);
+        });
         mp.setOnSeekCompleteListener(this::genericSeekCompleteListener);
         mp.setOnBufferingUpdateListener(percent -> {
             if (percent == ExoPlayerWrapper.BUFFERING_STARTED) {
@@ -772,6 +795,17 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             }
         });
         mp.setOnErrorListener(message -> EventBus.getDefault().postSticky(new PlayerErrorEvent(message)));
+    }
+
+    private void fileLog(String message) {
+        try {
+            File logFile = new File(context.getExternalFilesDir(null), "autoplay_debug.log");
+            try (FileWriter writer = new FileWriter(logFile, true)) {
+                writer.write(System.currentTimeMillis() + ": " + message + "\n");
+            }
+        } catch (IOException ignore) {
+            // best-effort logging only
+        }
     }
 
     private void clearMediaPlayerListeners() {

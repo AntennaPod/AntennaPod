@@ -64,6 +64,12 @@ public abstract class PlaybackPreferences {
     private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE
             = "de.danoeh.antennapod.preferences.temporarySkipSilence";
 
+    private static final String PREF_AUTO_ADVANCE_MODE
+            = "de.danoeh.antennapod.preferences.autoAdvanceMode";
+
+    public static final int AUTO_ADVANCE_QUEUE = 0;
+    public static final int AUTO_ADVANCE_PODCAST = 1;
+
     /**
      * Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing.
      */
@@ -131,6 +137,14 @@ public abstract class PlaybackPreferences {
         editor.apply();
     }
 
+    public static void setAutoAdvanceMode(int mode) {
+        prefs.edit().putInt(PREF_AUTO_ADVANCE_MODE, mode).apply();
+    }
+
+    public static int getAutoAdvanceMode() {
+        return prefs.getInt(PREF_AUTO_ADVANCE_MODE, AUTO_ADVANCE_QUEUE);
+    }
+
     public static void writeMediaPlaying(Playable playable) {
         Log.d(TAG, "Writing playback preferences");
         SharedPreferences.Editor editor = prefs.edit();
@@ -171,4 +185,5 @@ public abstract class PlaybackPreferences {
         editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE);
         editor.apply();
     }
+
 }

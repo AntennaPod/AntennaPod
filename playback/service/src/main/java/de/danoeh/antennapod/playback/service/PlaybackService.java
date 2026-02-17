@@ -40,6 +40,9 @@ import android.view.SurfaceHolder;
 import android.view.ViewConfiguration;
 import android.webkit.URLUtil;
 import android.widget.Toast;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -80,6 +83,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -174,6 +178,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private String autoSkippedFeedMediaId = null;
     private String positionJustResetAfterPlayback = null;
+    private int autoAdvanceMode = PlaybackPreferences.AUTO_ADVANCE_QUEUE;
     private int clickCount = 0;
     private final Handler clickHandler = new Handler(Looper.getMainLooper());
 
@@ -242,6 +247,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             throw new IllegalStateException("Media3PlaybackService should be used instead of PlaybackService");
         }
         isRunning = true;
+        autoAdvanceMode = PlaybackPreferences.getAutoAdvanceMode();
 
         stateManager = new PlaybackServiceStateManager(this);
         notificationBuilder = new PlaybackServiceNotificationBuilder(this);
@@ -562,6 +568,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         } else if (playable != null) {
             stateManager.validStartCommandWasReceived();
+            if (intent.hasExtra(PlaybackServiceInterface.EXTRA_AUTO_ADVANCE_MODE)) {
+                autoAdvanceMode = intent.getIntExtra(PlaybackServiceInterface.EXTRA_AUTO_ADVANCE_MODE,
+                        PlaybackPreferences.AUTO_ADVANCE_QUEUE);
+                PlaybackPreferences.setAutoAdvanceMode(autoAdvanceMode);
+            } else {
+                autoAdvanceMode = PlaybackPreferences.getAutoAdvanceMode();
+            }
+            logDebug("onStartCommand playable autoAdvanceMode=" + autoAdvanceMode
+                + ", playable=" + (playable != null ? playable.getEpisodeTitle() : "null"));
             boolean allowStreamThisTime = intent.getBooleanExtra(
                     PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, false);
             boolean allowStreamAlways = intent.getBooleanExtra(
@@ -849,6 +864,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private final PlaybackServiceMediaPlayer.PSMPCallback mediaPlayerCallback = new PlaybackServiceMediaPlayer.PSMPCallback() {
         @Override
         public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            logDebug("statusChanged status=" + newInfo.getPlayerStatus()
+                    + " playable=" + (newInfo.getPlayable() != null ? newInfo.getPlayable().getEpisodeTitle() : "<null>")
+                    + " oldStatus=" + newInfo.getOldPlayerStatus());
             if (mediaPlayer != null) {
                 currentMediaType = mediaPlayer.getCurrentMediaType();
             } else {
@@ -995,6 +1013,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
+        public boolean shouldAutoplayNext(@NonNull Playable currentMedia) {
+            return false;
+        }
+
+        @Override
         public void episodeFinishedPlayback() {
             PlaybackService.this.episodeFinishedPlayback();
         }
@@ -1008,6 +1031,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+            logDebug("PSMPCallback.onPlaybackEnded mediaType=" + mediaType + " stopPlaying=" + stopPlaying
+                    + " playable=" + (getPlayable() != null ? getPlayable().getEpisodeTitle() : "<none>"));
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
 
@@ -1026,6 +1051,31 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaPlayer.pause(true, false);
         }
         stateManager.stopService();
+        String userMessage = mapToUserMessage(event.getMessage());
+        if (!TextUtils.isEmpty(userMessage)) {
+            EventBus.getDefault().post(new MessageEvent(userMessage));
+        }
+    }
+
+    private String mapToUserMessage(String raw) {
+        if (!NetworkUtils.networkAvailable()) {
+            return getString(R.string.error_no_network_playback);
+        }
+        if (TextUtils.isEmpty(raw)) {
+            return getString(R.string.error_playback_generic);
+        }
+        String lower = raw.toLowerCase(Locale.US);
+        if (lower.contains("timeout") || lower.contains("timed out")) {
+            return getString(R.string.error_connection_timeout);
+        }
+        if (lower.contains("unknownhost") || lower.contains("unknown host")
+                || lower.contains("unable to resolve") || lower.contains("host") || lower.contains("unreachable")) {
+            return getString(R.string.error_unreachable_host);
+        }
+        if (lower.contains("reset by peer") || lower.contains("connection closed") || lower.contains("broken pipe")) {
+            return getString(R.string.error_stream_dropped);
+        }
+        return getString(R.string.error_playback_generic_with_reason, raw);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1067,51 +1117,148 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private Playable getNextInQueue(final Playable currentMedia) {
+        logDebug("getNextInQueue()");
         if (!(currentMedia instanceof FeedMedia)) {
-            Log.d(TAG, "getNextInQueue(), but playable not an instance of FeedMedia, so not proceeding");
+            logDebug("getNextInQueue(), but playable not an instance of FeedMedia, so not proceeding");
             PlaybackPreferences.writeNoMediaPlaying();
             return null;
         }
-        Log.d(TAG, "getNextInQueue()");
         FeedMedia media = (FeedMedia) currentMedia;
         if (media.getItem() == null) {
             media.setItem(DBReader.getFeedItem(media.getItemId()));
         }
         FeedItem item = media.getItem();
         if (item == null) {
-            Log.w(TAG, "getNextInQueue() with FeedMedia object whose FeedItem is null");
-            PlaybackPreferences.writeNoMediaPlaying();
-            return null;
-        }
-        FeedItem nextItem;
-        nextItem = DBReader.getNextInQueue(item);
-
-        if (nextItem == null || nextItem.getMedia() == null) {
+            logDebug("getNextInQueue() with FeedMedia object whose FeedItem is null");
             PlaybackPreferences.writeNoMediaPlaying();
             return null;
         }
 
-        // continue playback if user has enabled continuous playback
-        // OR they enabled an episode sleep timer and there are still episodes left to play
-        final boolean continuousPlayback = UserPreferences.isFollowQueue() && shouldContinueToNextEpisode();
+        boolean followQueue = UserPreferences.isFollowQueue();
+        boolean currentInQueue = item.isTagged(FeedItem.TAG_QUEUE);
+        boolean queueMode = autoAdvanceMode == PlaybackPreferences.AUTO_ADVANCE_QUEUE;
+        boolean podcastMode = autoAdvanceMode == PlaybackPreferences.AUTO_ADVANCE_PODCAST;
+        boolean sleepOk = shouldContinueToNextEpisode();
+        boolean feedAuto = item.getFeed() != null
+            && item.getFeed().getPreferences() != null
+            && item.getFeed().getPreferences().isAutoPlay();
 
-        if (!continuousPlayback) {
-            Log.d(TAG, "getNextInQueue(), but follow queue is not enabled.");
-            PlaybackPreferences.writeMediaPlaying(nextItem.getMedia());
-            updateNotificationAndMediaSession(nextItem.getMedia());
-            return null;
-        }
+        logDebug("getNextInQueue flags followQueue=" + followQueue
+                + " currentInQueue=" + currentInQueue
+                + " autoMode=" + autoAdvanceMode
+                + " sleepOk=" + sleepOk
+            + " queueMode=" + queueMode
+            + " podcastMode=" + podcastMode
+            + " feedAuto=" + feedAuto
+            + " mediaId=" + media.getId()
+            + " feedId=" + (item.getFeed() != null ? item.getFeed().getId() : -1));
 
-        if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()
-                && UserPreferences.isFollowQueue() && !nextItem.getFeed().isLocalFeed()) {
-            displayStreamingNotAllowedNotification(
-                    new PlaybackServiceStarter(this, nextItem.getMedia())
-                            .getIntent());
+        if (!sleepOk) {
+            logDebug("Auto-advance stopped: sleep timer vetoed continuation");
             PlaybackPreferences.writeNoMediaPlaying();
-            stateManager.stopService();
             return null;
         }
-        return nextItem.getMedia();
+
+        if (queueMode) {
+            if (!followQueue || !currentInQueue) {
+                logDebug("Queue mode active but followQueue=" + followQueue + " currentInQueue=" + currentInQueue
+                        + " => stopping auto-advance");
+                PlaybackPreferences.writeNoMediaPlaying();
+                return null;
+            }
+            FeedItem nextItem = DBReader.getNextInQueue(item);
+            logDebug("queue-mode nextItem=" + (nextItem != null ? nextItem.getTitle() : "<none>"));
+            if (nextItem == null || nextItem.getMedia() == null) {
+                PlaybackPreferences.writeNoMediaPlaying();
+                return null;
+            }
+            FeedMedia nextMedia = nextItem.getMedia();
+            if (!nextMedia.localFileAvailable() && !NetworkUtils.isStreamingAllowed()
+                    && !nextItem.getFeed().isLocalFeed()) {
+                logDebug("Queue-mode blocked: streaming not allowed for next item");
+                displayStreamingNotAllowedNotification(
+                        new PlaybackServiceStarter(this, nextMedia).getIntent());
+                PlaybackPreferences.writeNoMediaPlaying();
+                stateManager.stopService();
+                return null;
+            }
+            logDebug("Queue-mode returning next media " + nextMedia.getEpisodeTitle());
+            return nextMedia;
+        }
+
+        if (podcastMode) {
+            Feed feed = item.getFeed();
+            if (feed == null || feed.getPreferences() == null || !feed.getPreferences().isAutoPlay()) {
+                logDebug("Podcast mode: autoplay disabled or feed missing -> stop auto-advance");
+                PlaybackPreferences.writeNoMediaPlaying();
+                return null;
+            }
+            FeedItem nextFeedItem = getNextFeedItem(item);
+            if (nextFeedItem == null || nextFeedItem.getMedia() == null) {
+                logDebug("Podcast mode: no next feed item");
+                PlaybackPreferences.writeNoMediaPlaying();
+                return null;
+            }
+            FeedMedia nextMedia = nextFeedItem.getMedia();
+            if (!nextMedia.localFileAvailable() && !NetworkUtils.isStreamingAllowed()
+                    && !nextFeedItem.getFeed().isLocalFeed()) {
+                logDebug("Podcast mode blocked: streaming not allowed for next item");
+                displayStreamingNotAllowedNotification(
+                        new PlaybackServiceStarter(this, nextMedia).getIntent());
+                PlaybackPreferences.writeNoMediaPlaying();
+                stateManager.stopService();
+                return null;
+            }
+            logDebug("Podcast mode returning next media id=" + nextFeedItem.getId()
+                    + " title=" + nextFeedItem.getTitle());
+            return nextMedia;
+        }
+
+        logDebug("Auto-advance stopped: unknown autoAdvanceMode=" + autoAdvanceMode);
+        PlaybackPreferences.writeNoMediaPlaying();
+        return null;
+    }
+
+    @Nullable
+    private FeedItem getNextFeedItem(@NonNull FeedItem currentItem) {
+        Feed feed = currentItem.getFeed();
+        if (feed == null || feed.getPreferences() == null || feed.getItems() == null || feed.getItems().isEmpty()) {
+            feed = DBReader.getFeed(currentItem.getFeedId(), false, 0, Integer.MAX_VALUE);
+        }
+        if (feed == null || feed.getPreferences() == null) {
+            Log.d(TAG, "getNextFeedItem: feed or prefs null -> stop auto-advance");
+            return null;
+        }
+        if (!feed.getPreferences().isAutoPlay()) {
+            Log.d(TAG, "getNextFeedItem: autoplay disabled for feed=" + feed.getId());
+            return null;
+        }
+
+        List<FeedItem> items = feed.getItems();
+        if (items == null || items.isEmpty()) {
+            FeedItemFilter filter = feed.getItemFilter() != null
+                    ? feed.getItemFilter() : FeedItemFilter.unfiltered();
+            items = DBReader.getFeedItemList(feed, filter, feed.getSortOrder(), 0, Integer.MAX_VALUE);
+            feed.setItems(items);
+        }
+        if (items == null || items.isEmpty()) {
+            Log.d(TAG, "getNextFeedItem: no items for feed=" + feed.getId());
+            return null;
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getId() == currentItem.getId()) {
+                if (i + 1 < items.size()) {
+                    Log.d(TAG, "getNextFeedItem: next item index=" + (i + 1) + " of " + items.size()
+                            + " for feed=" + feed.getId());
+                    return items.get(i + 1);
+                }
+                Log.d(TAG, "getNextFeedItem: reached last item for feed=" + feed.getId());
+                return null;
+            }
+        }
+        Log.d(TAG, "getNextFeedItem: current item not found in feed list feed=" + feed.getId());
+        return null;
     }
 
     private void episodeFinishedPlayback() {
@@ -1125,17 +1272,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * @return True if we can proceed to the next episode (might be blocked by other things), or not
      */
     private boolean shouldContinueToNextEpisode() {
-        if (sleepTimer != null) {
-            return sleepTimer.shouldContinueToNextEpisode();
-        }
-        return true; // always allow when no sleep timer is active
+        boolean result = sleepTimer == null || sleepTimer.shouldContinueToNextEpisode();
+        logDebug("shouldContinueToNextEpisode result=" + result + " sleepTimer=" + (sleepTimer != null));
+        return result; // always allow when no sleep timer is active
     }
 
     /**
      * Set of instructions to be performed when playback ends.
      */
     private void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
-        Log.d(TAG, "Playback ended");
+        String title = getPlayable() != null ? getPlayable().getEpisodeTitle() : "<none>";
+        logDebug("Playback ended: stopPlaying=" + stopPlaying + " title=" + title
+            + " autoAdvanceMode=" + autoAdvanceMode + " followQueue=" + UserPreferences.isFollowQueue());
         PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSettings();
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
@@ -2069,4 +2217,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
         }
     };
+
+    private void logDebug(String message) {
+        if (!BuildConfig.DEBUG) {
+            return;
+        }
+        Log.d(TAG, message);
+        try {
+            File logFile = new File(getApplicationContext().getExternalFilesDir(null), "autoplay_debug.log");
+            try (FileWriter writer = new FileWriter(logFile, true)) {
+                writer.write(System.currentTimeMillis() + ": " + message + "\n");
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "logDebug write failed", e);
+        }
+    }
 }

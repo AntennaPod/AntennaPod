@@ -115,4 +115,12 @@ public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCa
         }
         return originalCallback.shouldContinueToNextEpisode();
     }
+
+    @Override
+    public boolean shouldAutoplayNext(@NonNull Playable currentMedia) {
+        if (isCancelled) {
+            return false;
+        }
+        return originalCallback.shouldAutoplayNext(currentMedia);
+    }
 }

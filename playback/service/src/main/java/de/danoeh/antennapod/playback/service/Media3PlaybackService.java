@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.playback.service;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.media3.common.AudioAttributes;
@@ -21,6 +24,8 @@ import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import de.danoeh.antennapod.playback.service.BuildConfig;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
@@ -29,6 +34,8 @@ import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.service.internal.MediaItemAdapter;
@@ -48,7 +55,11 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class Media3PlaybackService extends MediaLibraryService {
@@ -61,15 +72,20 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
+    private Disposable completionDisposable;
     private long lastPositionSaveTime = 0;
+    private final Handler gapHandler = new Handler(Looper.getMainLooper());
 
     @UnstableApi
     @Override
     public void onCreate() {
         super.onCreate();
-        DefaultMediaNotificationProvider notificationProvider
-                = new DefaultMediaNotificationProvider(this, session -> R.id.notification_playing,
-                NotificationUtils.CHANNEL_ID_PLAYING, R.string.notification_channel_playing);
+        DefaultMediaNotificationProvider notificationProvider = new DefaultMediaNotificationProvider(
+            this,
+            session -> R.id.notification_playing,
+            NotificationUtils.CHANNEL_ID_PLAYING,
+            R.string.notification_channel_playing
+        );
         notificationProvider.setSmallIcon(R.drawable.ic_notification);
         setMediaNotificationProvider(notificationProvider);
 
@@ -146,8 +162,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
                 FeedMedia media = currentPlayable;
                 currentPlayable = null; // To avoid position updater saving position after we already reset it
-                onPlaybackEnd(media);
-                startNextInQueue(media.getItem());
+                gapHandler.postDelayed(() -> startNextAfterCompletion(media), 2000);
             }
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
@@ -179,6 +194,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         public void onPlayerError(@NonNull PlaybackException error) {
             if (NetworkUtils.wasDownloadBlocked(error)) {
                 EventBus.getDefault().post(new PlayerErrorEvent(getString(R.string.download_error_blocked)));
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.download_error_blocked)));
             } else {
                 Throwable cause = error.getCause();
                 if (cause instanceof HttpDataSource.HttpDataSourceException) {
@@ -191,11 +207,23 @@ public class Media3PlaybackService extends MediaLibraryService {
                 }
                 if (cause != null && cause.getMessage() != null) {
                     EventBus.getDefault().post(new PlayerErrorEvent(cause.getMessage()));
+                    String friendly = mapToUserMessage(cause.getMessage());
+                    if (!TextUtils.isEmpty(friendly)) {
+                        EventBus.getDefault().post(new MessageEvent(friendly));
+                    }
                 } else if (error.getMessage() != null && cause != null) {
                     EventBus.getDefault().post(new PlayerErrorEvent(
                             error.getMessage() + ": " + cause.getClass().getSimpleName()));
+                    String friendly = mapToUserMessage(error.getMessage());
+                    if (!TextUtils.isEmpty(friendly)) {
+                        EventBus.getDefault().post(new MessageEvent(friendly));
+                    }
                 } else {
                     EventBus.getDefault().post(new PlayerErrorEvent(null));
+                    String friendly = mapToUserMessage(error.getMessage());
+                    if (!TextUtils.isEmpty(friendly)) {
+                        EventBus.getDefault().post(new MessageEvent(friendly));
+                    }
                 }
             }
         }
@@ -220,6 +248,11 @@ public class Media3PlaybackService extends MediaLibraryService {
             queueLoaderDisposable.dispose();
             queueLoaderDisposable = null;
         }
+        if (completionDisposable != null) {
+            completionDisposable.dispose();
+            completionDisposable = null;
+        }
+        gapHandler.removeCallbacksAndMessages(null);
         saveCurrentPosition();
         if (player != null) {
             player.removeListener(playerListener);
@@ -353,6 +386,47 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
+    /**
+     * Handles end-of-playback: first decide on the next item while the finished item is still in the queue,
+     * then perform cleanup/removal of the finished item, and finally start the next if available.
+     */
+    @UnstableApi
+    private void startNextAfterCompletion(FeedMedia finishedMedia) {
+        FeedItem finishedItem = finishedMedia != null ? finishedMedia.getItem() : null;
+        if (completionDisposable != null) {
+            completionDisposable.dispose();
+        }
+
+        // If we lost the item context, just finish cleanup and stop.
+        if (finishedItem == null) {
+            onPlaybackEnd(finishedMedia);
+            return;
+        }
+
+        completionDisposable = Single.fromCallable(() -> resolveNextPlayable(finishedItem))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(nextMedia -> {
+                            onPlaybackEnd(finishedMedia);
+                            if (nextMedia == null || player == null) {
+                                return;
+                            }
+                            currentPlayable = nextMedia;
+                            currentPlayable.onPlaybackStart();
+                            MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
+                            PlaybackPreferences.writeMediaPlaying(nextMedia);
+                            boolean playWhenReady = shouldAutoStart(nextMedia, finishedItem);
+                            player.setPlayWhenReady(playWhenReady);
+                            player.setMediaItem(mediaItem);
+                            player.seekTo(nextMedia.getPosition());
+                            player.prepare();
+                        }, error -> {
+                            Log.e(TAG, "Failed to resolve next playable after completion", error);
+                            onPlaybackEnd(finishedMedia);
+                        }
+                );
+    }
+
     private void setNextPlaybackSpeed() {
         if (player == null) {
             return;
@@ -412,8 +486,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         queueLoaderDisposable = Single.fromCallable(() -> {
-            FeedItem nextItem = DBReader.getNextInQueue(item);
-            return nextItem != null && nextItem.getMedia() != null ? nextItem.getMedia() : null;
+            return resolveNextPlayable(item);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -424,7 +497,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 currentPlayable.onPlaybackStart();
                                 MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
                                 PlaybackPreferences.writeMediaPlaying(nextMedia);
-                                player.setPlayWhenReady(UserPreferences.isFollowQueue());
+                                boolean playWhenReady = shouldAutoStart(nextMedia, item);
+                                player.setPlayWhenReady(playWhenReady);
                                 player.setMediaItem(mediaItem);
                                 player.seekTo(nextMedia.getPosition());
                                 player.prepare();
@@ -432,5 +506,181 @@ public class Media3PlaybackService extends MediaLibraryService {
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error)
                 );
+    }
+
+    private FeedMedia resolveNextPlayable(FeedItem currentItem) {
+        if (currentItem == null) {
+            return null;
+        }
+        int autoAdvanceMode = PlaybackPreferences.getAutoAdvanceMode();
+        boolean followQueue = UserPreferences.isFollowQueue();
+        boolean queueMode = autoAdvanceMode == PlaybackPreferences.AUTO_ADVANCE_QUEUE;
+        boolean podcastMode = autoAdvanceMode == PlaybackPreferences.AUTO_ADVANCE_PODCAST;
+        boolean currentInQueue = currentItem.isTagged(FeedItem.TAG_QUEUE);
+
+        // Always refresh feed to pick up the latest preferences (e.g., autoplay toggle changes).
+        Feed feed = DBReader.getFeed(currentItem.getFeedId(), false, 0, Integer.MAX_VALUE);
+        if (feed != null) {
+            currentItem.setFeed(feed);
+        }
+        boolean feedAuto = feed != null
+            && feed.getPreferences() != null
+            && feed.getPreferences().isAutoPlay();
+
+        logDebug("resolveNextPlayable autoMode=" + autoAdvanceMode + " followQueue=" + followQueue
+            + " currentInQueue=" + currentInQueue + " queueMode=" + queueMode
+            + " podcastMode=" + podcastMode + " feedAuto=" + feedAuto
+            + " currentItem=" + currentItem.getId());
+
+        if (queueMode) {
+            // Respect the latest continuous playback pref (followQueue) when advancing in queue mode.
+            followQueue = UserPreferences.isFollowQueue();
+            if (!followQueue || !currentInQueue) {
+                logDebug("resolveNextPlayable stop: queueMode but followQueue=" + followQueue
+                        + " currentInQueue=" + currentInQueue);
+                return null;
+            }
+            FeedItem nextItem = DBReader.getNextInQueue(currentItem);
+            logDebug("resolveNextPlayable queueMode nextItem=" + (nextItem != null ? nextItem.getId() : "null"));
+            if (nextItem == null) {
+                List<FeedItem> queue = DBReader.getQueue();
+                int size = queue != null ? queue.size() : 0;
+                logDebug("resolveNextPlayable queueMode fallback queueSize=" + size);
+                if (size == 0) {
+                    return null;
+                }
+                int currentIndex = -1;
+                for (int i = 0; i < size; i++) {
+                    if (queue.get(i).getId() == currentItem.getId()) {
+                        currentIndex = i;
+                        break;
+                    }
+                }
+                if (currentIndex >= 0 && currentIndex + 1 < size) {
+                    nextItem = queue.get(currentIndex + 1);
+                    logDebug("resolveNextPlayable queueMode fallbackAfterCurrent nextItem=" + nextItem.getId());
+                } else if (currentIndex == -1) {
+                    nextItem = queue.get(0);
+                    logDebug("resolveNextPlayable queueMode fallbackStart nextItem=" + nextItem.getId());
+                } else {
+                    return null;
+                }
+            }
+            if (nextItem == null || nextItem.getMedia() == null) {
+                return null;
+            }
+            if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()
+                    && !nextItem.getFeed().isLocalFeed()) {
+                logDebug("resolveNextPlayable queueMode streaming blocked nextItem=" + nextItem.getId());
+                postStreamingBlocked();
+                return null;
+            }
+            return nextItem.getMedia();
+        }
+
+        if (podcastMode) {
+            // Reuse refreshed feed (may have been reloaded above)
+            if (feed == null || feed.getPreferences() == null || !feed.getPreferences().isAutoPlay()) {
+                logDebug("resolveNextPlayable stop: podcastMode feed missing or autoplay off feed="
+                        + (feed != null ? feed.getId() : "null"));
+                return null;
+            }
+            FeedItem nextFeedItem = getNextFeedItem(currentItem);
+            logDebug("resolveNextPlayable podcastMode nextItem=" + (nextFeedItem != null ? nextFeedItem.getId() : "null"));
+            if (nextFeedItem == null || nextFeedItem.getMedia() == null) {
+                return null;
+            }
+            FeedMedia media = nextFeedItem.getMedia();
+            if (!media.localFileAvailable() && !NetworkUtils.isStreamingAllowed()
+                    && !nextFeedItem.getFeed().isLocalFeed()) {
+                logDebug("resolveNextPlayable podcastMode streaming blocked nextItem=" + nextFeedItem.getId());
+                postStreamingBlocked();
+                return null;
+            }
+            return media;
+        }
+
+        return null;
+    }
+
+    private boolean shouldAutoStart(FeedMedia nextMedia, FeedItem currentItem) {
+        int autoAdvanceMode = PlaybackPreferences.getAutoAdvanceMode();
+        boolean queueMode = autoAdvanceMode == PlaybackPreferences.AUTO_ADVANCE_QUEUE;
+        boolean currentInQueue = currentItem != null && currentItem.isTagged(FeedItem.TAG_QUEUE);
+        boolean followQueue = UserPreferences.isFollowQueue();
+        // Queue-centric playback should only auto-start when the user prefers following the queue.
+        return queueMode && currentInQueue ? followQueue : true;
+    }
+
+    private void postStreamingBlocked() {
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.confirm_mobile_streaming_notification_message)));
+    }
+
+    private void logDebug(String message) {
+        if (!BuildConfig.DEBUG) {
+            return;
+        }
+        Log.d(TAG, message);
+        try {
+            File logFile = new File(getApplicationContext().getExternalFilesDir(null), "autoplay_debug.log");
+            try (FileWriter writer = new FileWriter(logFile, true)) {
+                writer.write(System.currentTimeMillis() + ": [Media3] " + message + "\n");
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "logDebug write failed", e);
+        }
+    }
+
+    private String mapToUserMessage(String raw) {
+        if (!NetworkUtils.networkAvailable()) {
+            return getString(R.string.error_no_network_playback);
+        }
+        if (TextUtils.isEmpty(raw)) {
+            return getString(R.string.error_playback_generic);
+        }
+        String lower = raw.toLowerCase(Locale.US);
+        if (lower.contains("timeout") || lower.contains("timed out")) {
+            return getString(R.string.error_connection_timeout);
+        }
+        if (lower.contains("unknownhost") || lower.contains("unknown host")
+                || lower.contains("unable to resolve") || lower.contains("host") || lower.contains("unreachable")) {
+            return getString(R.string.error_unreachable_host);
+        }
+        if (lower.contains("reset by peer") || lower.contains("connection closed") || lower.contains("broken pipe")) {
+            return getString(R.string.error_stream_dropped);
+        }
+        return getString(R.string.error_playback_generic_with_reason, raw);
+    }
+
+    @Nullable
+    private FeedItem getNextFeedItem(@NonNull FeedItem currentItem) {
+        Feed feed = currentItem.getFeed();
+        if (feed == null || feed.getPreferences() == null || feed.getItems() == null || feed.getItems().isEmpty()) {
+            feed = DBReader.getFeed(currentItem.getFeedId(), false, 0, Integer.MAX_VALUE);
+        }
+        if (feed == null || feed.getPreferences() == null || !feed.getPreferences().isAutoPlay()) {
+            return null;
+        }
+
+        List<FeedItem> items = feed.getItems();
+        if (items == null || items.isEmpty()) {
+            FeedItemFilter filter = feed.getItemFilter() != null
+                    ? feed.getItemFilter() : FeedItemFilter.unfiltered();
+            items = DBReader.getFeedItemList(feed, filter, feed.getSortOrder(), 0, Integer.MAX_VALUE);
+            feed.setItems(items);
+        }
+        if (items == null || items.isEmpty()) {
+            return null;
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getId() == currentItem.getId()) {
+                if (i + 1 < items.size()) {
+                    return items.get(i + 1);
+                }
+                return null;
+            }
+        }
+        return null;
     }
 }

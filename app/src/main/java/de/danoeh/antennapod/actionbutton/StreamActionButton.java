@@ -11,14 +11,15 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.ui.StreamingConfirmationDialog;
 
 public class StreamActionButton extends ItemActionButton {
 
-    public StreamActionButton(FeedItem item) {
-        super(item);
+    public StreamActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override
@@ -45,8 +46,13 @@ public class StreamActionButton extends ItemActionButton {
             new StreamingConfirmationDialog(context, media).show();
             return;
         }
+        logPlaybackDebug(context, "StreamActionButton onClick queueContext=" + isQueueContext()
+            + ", itemId=" + item.getId() + ", mediaId=" + media.getId());
         new PlaybackServiceStarter(context, media)
                 .callEvenIfRunning(true)
+                .setAutoAdvanceMode(isQueueContext()
+                        ? PlaybackPreferences.AUTO_ADVANCE_QUEUE
+                        : PlaybackPreferences.AUTO_ADVANCE_PODCAST)
                 .start();
 
         if (media.getMediaType() == MediaType.VIDEO) {

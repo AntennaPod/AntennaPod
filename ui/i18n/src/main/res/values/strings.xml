@@ -8,7 +8,7 @@
     <string name="general_collapse_button">Collapse</string>
 
     <!-- Activity and fragment titles -->
-    <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
+    <string name="provider_authority" translatable="false">org.unieng.antennapod.experimental.provider</string>
     <string name="feed_update_receiver_name">Update subscriptions</string>
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add podcast</string>
@@ -82,6 +82,14 @@
     <string name="inbox_label_more">Inbox »</string>
     <string name="downloads_label_more">Downloads »</string>
     <string name="subscriptions_label_more">Subscriptions »</string>
+
+    <!-- Playback error messaging -->
+    <string name="error_no_network_playback">Playback stopped: no network connection.</string>
+    <string name="error_connection_timeout">Playback stopped: connection timed out. Check Wi-Fi or mobile data.</string>
+    <string name="error_unreachable_host">Playback stopped: could not reach the server. Check your connection.</string>
+    <string name="error_stream_dropped">Playback stopped: stream dropped. Try again or check your signal.</string>
+    <string name="error_playback_generic">Playback stopped due to an error.</string>
+    <string name="error_playback_generic_with_reason">Playback stopped: %1$s</string>
 
     <!-- Download Statistics fragment -->
     <plurals name="total_size_downloaded_podcasts">
@@ -299,6 +307,8 @@
     <string name="visit_social_interact_confirm_dialog_title">You are leaving AntennaPod</string>
     <string name="visit_social_interact_confirm_dialog_message">Please make sure that you trust the website \"%1$s\".</string>
     <string name="skip_episode_label">Skip episode</string>
+    <string name="autoplay_toggle_on">Disable autoplay for this podcast</string>
+    <string name="autoplay_toggle_off">Enable autoplay for this podcast</string>
     <string name="reset_playback_position_label">Reset playback position</string>
     <string name="no_items_selected_message">No items selected</string>
     <string name="delete_local_feed_confirmation_dialog_message">Deleting removes the episode from AntennaPod and deletes the media file from your device storage. It cannot be downloaded again through AntennaPod.</string>
@@ -613,7 +623,7 @@
 
     <!-- About screen -->
     <string name="about_pref">About</string>
-    <string name="antennapod_version">AntennaPod version</string>
+    <string name="antennapod_version">AntennaPod experimental (unofficial fork)</string>
     <string name="contributors">Contributors</string>
     <string name="contributors_summary">Everyone can help to make AntennaPod better - with code, translations or by helping users in our forum</string>
     <string name="developers">Developers</string>
@@ -622,6 +632,24 @@
     <string name="privacy_policy">Privacy policy</string>
     <string name="licenses">Licenses</string>
     <string name="licenses_summary">AntennaPod uses other great software</string>
+    <string name="fork_notice_title">Unofficial beta build</string>
+    <string name="fork_notice_summary">Maintainer: unieng99. Based on the AntennaPod upstream project (GPL-3.0). This fork is provided as-is, no support or issue handling. All upstream copyrights preserved.</string>
+    <string name="fork_notice_upstream_title">Upstream project</string>
+    <string name="fork_notice_upstream">https://antennapod.org/</string>
+    <string name="about_build_channel">Build channel</string>
+    <string name="about_build_type">Build type</string>
+    <string name="about_flavor">Product flavor</string>
+    <string name="about_commit_hash">Commit</string>
+    <string name="about_package_id">Package ID</string>
+    <string name="about_copy_version">Copy version info</string>
+    <string name="about_acknowledgements">Acknowledgements</string>
+    <string name="about_acknowledgements_body">Credits, attributions, and upstream licensing are linked below.</string>
+    <string name="about_links">More links</string>
+    <string name="about_open_contributors">View contributors</string>
+    <string name="about_open_licenses">View licenses</string>
+    <string name="about_open_privacy">View privacy policy</string>
+    <string name="about_open_upstream">Visit upstream project</string>
+    <string name="about_version_format">%1$s (%2$s)</string>
 
     <!-- Search -->
     <string name="search_status_no_results">No results were found</string>

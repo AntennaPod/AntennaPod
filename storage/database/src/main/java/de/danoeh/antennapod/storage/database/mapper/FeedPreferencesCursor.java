@@ -33,6 +33,7 @@ public class FeedPreferencesCursor extends CursorWrapper {
     private final int indexEpisodeNotification;
     private final int indexNewEpisodesAction;
     private final int indexTags;
+    private final int indexAutoPlay;
 
     public FeedPreferencesCursor(Cursor cursor) {
         super(cursor);
@@ -53,6 +54,7 @@ public class FeedPreferencesCursor extends CursorWrapper {
         indexEpisodeNotification = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_EPISODE_NOTIFICATION);
         indexNewEpisodesAction = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_NEW_EPISODES_ACTION);
         indexTags = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_TAGS);
+        indexAutoPlay = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED_AUTOPLAY);
     }
 
     /**
@@ -80,6 +82,7 @@ public class FeedPreferencesCursor extends CursorWrapper {
                 FeedPreferences.SkipSilence.fromCode(getInt(indexFeedSkipSilence)),
                 getInt(indexEpisodeNotification) > 0,
                 FeedPreferences.NewEpisodesAction.fromCode(getInt(indexNewEpisodesAction)),
+                getInt(indexAutoPlay) > 0,
                 new HashSet<>(Arrays.asList(tagsString.split(FeedPreferences.TAG_SEPARATOR))));
     }
 }

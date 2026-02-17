@@ -41,6 +41,7 @@ import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -111,6 +112,15 @@ public class SubscriptionFragment extends Fragment
         prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         if (getArguments() != null) {
             stateToShow = getArguments().getInt(ARGUMENT_STATE, Feed.STATE_SUBSCRIBED);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PlaybackPreferences.setAutoAdvanceMode(PlaybackPreferences.AUTO_ADVANCE_PODCAST);
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).refreshDevStateHeader();
         }
     }
 

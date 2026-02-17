@@ -40,6 +40,7 @@ import java.util.List;
 public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMenuItemClickListener {
     private static final String ARG_FEEDITEMS = "feeditems";
     private static final String ARG_FEEDITEM_POS = "feeditem_pos";
+    private static final String ARG_QUEUE_CONTEXT = "queue_context";
     private static final String KEY_PAGER_ID = "pager_id";
     private ViewPager2 pager;
 
@@ -49,6 +50,11 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
      * @return The ItemFragment instance
      */
     public static ItemPagerFragment newInstance(List<FeedItem> allItems, FeedItem currentItem) {
+        return newInstance(allItems, currentItem, false);
+    }
+
+    public static ItemPagerFragment newInstance(List<FeedItem> allItems, FeedItem currentItem,
+                                                boolean queueContext) {
         int position = 0;
         long[] ids = new long[allItems.size()];
         for (int i = 0; i < allItems.size(); i++) {
@@ -61,6 +67,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         Bundle args = new Bundle();
         args.putLongArray(ARG_FEEDITEMS, ids);
         args.putInt(ARG_FEEDITEM_POS, position);
+        args.putBoolean(ARG_QUEUE_CONTEXT, queueContext);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,6 +76,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
     private FeedItem item;
     private Disposable disposable;
     private MaterialToolbar toolbar;
+    private boolean queueContext;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -83,6 +91,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
 
         feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
         final int feedItemPos = Math.max(0, getArguments().getInt(ARG_FEEDITEM_POS));
+        queueContext = getArguments().getBoolean(ARG_QUEUE_CONTEXT, false);
 
         pager = layout.findViewById(R.id.pager);
         // FragmentStatePagerAdapter documentation:
@@ -197,7 +206,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            return ItemFragment.newInstance(feedItems[position]);
+            return ItemFragment.newInstance(feedItems[position], queueContext);
         }
 
         @Override

@@ -74,6 +74,11 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
     }
 
     @Override
+    protected boolean isQueueContext() {
+        return true;
+    }
+
+    @Override
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.queue_context, menu);

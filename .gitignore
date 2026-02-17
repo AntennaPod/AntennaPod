@@ -45,3 +45,67 @@ libs
 gradle.properties
 *.keystore
 *.p12
+
+# ---- Secrets / credentials ----
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+google-services.json
+firebase-service-account*.json
+service-account*.json
+play-store-credentials*.json
+fastlane/metadata/android/*/changelogs/private-*
+app/myfork-release.keystore
+
+# ---- Local configs ----
+local.properties
+gradle.properties
+*.properties.local
+config.local.*
+secrets/
+private/
+tmp-private/
+
+# ---- IDE / OS noise ----
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# ---- Build outputs ----
+**/build/
+out/
+bin/
+gen/
+target/
+archives/
+
+# personal confidential files
+my-notes/
+client-data/
+*.kdbx
+
+*.pem
+*.p12
+*.key
+*.kdbx
+.env
+.env.*
+*.jks
+*.keystore
+google-services.json
+firebase-service-account*.json
+service-account*.json   
+play-store-credentials*.json
+local.properties
+gradle.properties
+*.properties.local
+config.local.*
+secrets/
+private/
+tmp-private/

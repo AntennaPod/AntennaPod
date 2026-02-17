@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected = autoplay ON => show play icon -->
+    <item android:drawable="@drawable/ic_autoplay_toggle_on" android:state_selected="true" />
+    <!-- Default = autoplay OFF => show pause icon -->
+    <item android:drawable="@drawable/ic_autoplay_toggle_off" />
+</selector>

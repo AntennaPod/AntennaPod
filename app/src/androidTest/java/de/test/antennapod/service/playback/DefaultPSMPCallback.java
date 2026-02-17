@@ -65,4 +65,9 @@ public class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallb
     public boolean shouldContinueToNextEpisode() {
         return false;
     }
+
+    @Override
+    public boolean shouldAutoplayNext(@NonNull Playable currentMedia) {
+        return false;
+    }
 }

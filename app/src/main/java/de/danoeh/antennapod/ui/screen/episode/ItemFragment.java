@@ -78,6 +78,7 @@ public class ItemFragment extends Fragment {
 
     private static final String TAG = "ItemFragment";
     private static final String ARG_FEEDITEM = "feeditem";
+    private static final String ARG_QUEUE_CONTEXT = "queue_context";
 
     /**
      * Creates a new instance of an ItemFragment
@@ -86,9 +87,14 @@ public class ItemFragment extends Fragment {
      * @return The ItemFragment instance
      */
     public static ItemFragment newInstance(long feeditem) {
+        return newInstance(feeditem, false);
+    }
+
+    public static ItemFragment newInstance(long feeditem, boolean queueContext) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_FEEDITEM, feeditem);
+        args.putBoolean(ARG_QUEUE_CONTEXT, queueContext);
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,6 +103,7 @@ public class ItemFragment extends Fragment {
     private long itemId;
     private FeedItem item;
     private String webviewData;
+    private boolean queueContext;
 
     private ItemActionButton actionButton1;
     private ItemActionButton actionButton2;
@@ -107,6 +114,7 @@ public class ItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         itemId = getArguments().getLong(ARG_FEEDITEM);
+        queueContext = getArguments().getBoolean(ARG_QUEUE_CONTEXT, false);
     }
 
     @Override
@@ -300,8 +308,8 @@ public class ItemFragment extends Fragment {
         }
         FeedMedia media = item.getMedia();
         if (media == null) {
-            actionButton1 = new MarkAsPlayedActionButton(item);
-            actionButton2 = new VisitWebsiteActionButton(item);
+            actionButton1 = new MarkAsPlayedActionButton(item, queueContext);
+            actionButton2 = new VisitWebsiteActionButton(item, queueContext);
             viewBinding.noMediaLabel.setVisibility(View.VISIBLE);
             viewBinding.txtvDuration.setVisibility(View.GONE);
             viewBinding.separatorIcons.setVisibility(View.GONE);
@@ -316,20 +324,20 @@ public class ItemFragment extends Fragment {
                         Converter.getDurationStringLocalized(getContext(), media.getDuration()));
             }
             if (PlaybackStatus.isCurrentlyPlaying(media)) {
-                actionButton1 = new PauseActionButton(item);
+                actionButton1 = new PauseActionButton(item, queueContext);
             } else if (item.getFeed().isLocalFeed()) {
-                actionButton1 = new PlayLocalActionButton(item);
+                actionButton1 = new PlayLocalActionButton(item, queueContext);
             } else if (media.isDownloaded()) {
-                actionButton1 = new PlayActionButton(item);
+                actionButton1 = new PlayActionButton(item, queueContext);
             } else {
-                actionButton1 = new StreamActionButton(item);
+                actionButton1 = new StreamActionButton(item, queueContext);
             }
             if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownloadUrl())) {
-                actionButton2 = new CancelDownloadActionButton(item);
+                actionButton2 = new CancelDownloadActionButton(item, queueContext);
             } else if (!media.isDownloaded()) {
-                actionButton2 = new DownloadActionButton(item);
+                actionButton2 = new DownloadActionButton(item, queueContext);
             } else {
-                actionButton2 = new DeleteActionButton(item);
+                actionButton2 = new DeleteActionButton(item, queueContext);
             }
         }
 

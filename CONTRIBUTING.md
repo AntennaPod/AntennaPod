@@ -1,3 +1,5 @@
+> Fork note: This unofficial fork (maintainer @unieng99) is a proof-of-concept for an autoplay toggle. Issues and PRs on this fork are not accepted; please file upstream at https://github.com/AntennaPod/AntennaPod.
+
 How to report a bug
 -------------------
 - Before anything else, please make sure you are on the latest version, the bug you are experiencing may have been fixed already!

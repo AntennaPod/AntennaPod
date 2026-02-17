@@ -10,8 +10,8 @@ import de.danoeh.antennapod.ui.common.IntentUtils;
 
 public class VisitWebsiteActionButton extends ItemActionButton {
 
-    public VisitWebsiteActionButton(FeedItem item) {
-        super(item);
+    public VisitWebsiteActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override

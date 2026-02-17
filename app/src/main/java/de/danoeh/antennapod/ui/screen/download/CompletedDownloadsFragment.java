@@ -372,7 +372,7 @@ public class CompletedDownloadsFragment extends Fragment
             if (!inActionMode()) {
                 if (holder.getFeedItem().isDownloaded()
                         && !UserPreferences.shouldDownloadsButtonActionPlay()) {
-                    DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
+                    DeleteActionButton actionButton = new DeleteActionButton(getItem(pos), false);
                     actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
                 }
             }

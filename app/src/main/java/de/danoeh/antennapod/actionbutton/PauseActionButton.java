@@ -14,8 +14,8 @@ import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 
 public class PauseActionButton extends ItemActionButton {
 
-    public PauseActionButton(FeedItem item) {
-        super(item);
+    public PauseActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override

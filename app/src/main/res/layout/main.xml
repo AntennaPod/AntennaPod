@@ -10,6 +10,26 @@
     tools:ignore="InconsistentLayout"
     tools:viewBindingIgnore="true">
 
+    <TextView
+        android:id="@+id/dev_state_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:textColor="#ff1744"
+        android:textSize="10sp"
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tools:text="M:HomeFragment C:Q S:12345 T:AUTO" />
+
     <!-- InconsistentLayout: Tablet layout does not have a drawer -->
     <!-- viewBindingIgnore: Configurations for main.xml must
             agree on the root element's ID -->

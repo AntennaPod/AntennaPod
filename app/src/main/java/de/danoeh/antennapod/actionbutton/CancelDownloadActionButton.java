@@ -12,8 +12,8 @@ import de.danoeh.antennapod.storage.database.DBWriter;
 
 public class CancelDownloadActionButton extends ItemActionButton {
 
-    public CancelDownloadActionButton(FeedItem item) {
-        super(item);
+    public CancelDownloadActionButton(FeedItem item, boolean queueContext) {
+        super(item, queueContext);
     }
 
     @Override
