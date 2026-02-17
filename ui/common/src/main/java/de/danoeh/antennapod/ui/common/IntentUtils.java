@@ -48,18 +48,4 @@ public abstract class IntentUtils {
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
-
-    public static String getLocalizedWebsiteLink(Context context) {
-        try (InputStream is = context.getAssets().open("website-languages.txt")) {
-            String[] languages = IOUtils.toString(is, StandardCharsets.UTF_8.name()).split("\n");
-            String deviceLanguage = Locale.getDefault().getLanguage();
-            if (ArrayUtils.contains(languages, deviceLanguage) && !"en".equals(deviceLanguage)) {
-                return "https://antennapod.org/" + deviceLanguage;
-            } else {
-                return "https://antennapod.org";
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
