@@ -36,7 +36,7 @@ project.ext {
     //Tests
     awaitilityVersion = "3.1.6"
     junitVersion = "4.13"
-    robolectricVersion = "4.14"
+    robolectricVersion = "4.16"
     espressoVersion = "3.5.0"
     runnerVersion = "1.5.0"
     rulesVersion = "1.5.0"
