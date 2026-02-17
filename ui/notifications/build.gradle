@@ -4,6 +4,12 @@ plugins {
 apply from: "../../common.gradle"
 
 android {
+    lint {
+        targetSdk 35
+    }
+    testOptions {
+        targetSdk 35
+    }
     namespace "de.danoeh.antennapod.ui.notifications"
 
     defaultConfig {

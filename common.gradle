@@ -18,7 +18,7 @@ android {
 
     buildTypes {
         release {
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard.cfg"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg"
             resValue "string", "app_name", "AntennaPod experimental"
         }
         debug {
@@ -58,6 +58,7 @@ android {
     buildFeatures {
         viewBinding true
         buildConfig true
+        resValues true
     }
 }
 
@@ -87,7 +88,7 @@ gradle.projectsEvaluated {
 apply plugin: 'com.github.spotbugs'
 
 spotbugs {
-    toolVersion = '4.2.3'
+    toolVersion = '4.8.6'
     effort = 'max'
     reportLevel = 'medium'
     excludeFilter = rootProject.file('config/spotbugs/exclude.xml')

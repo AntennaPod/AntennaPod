@@ -474,7 +474,7 @@
     <string name="button_action_rewind">Rewind</string>
     <string name="button_action_skip_episode">Skip episode</string>
     <string name="button_action_restart_episode">Restart episode</string>
-    <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
+    <string name="pref_followQueue_sum">During playback, episodes will auto-advance in order of the user defined queue or user sorted feed episode list.</string>
     <string name="pref_auto_delete_playback_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_playback_title">Delete after playing</string>
     <string name="pref_auto_delete_title">Automatic deletion</string>

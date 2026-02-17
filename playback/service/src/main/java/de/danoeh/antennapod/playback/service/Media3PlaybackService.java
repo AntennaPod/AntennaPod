@@ -523,13 +523,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (feed != null) {
             currentItem.setFeed(feed);
         }
-        boolean feedAuto = feed != null
-            && feed.getPreferences() != null
-            && feed.getPreferences().isAutoPlay();
-
         logDebug("resolveNextPlayable autoMode=" + autoAdvanceMode + " followQueue=" + followQueue
             + " currentInQueue=" + currentInQueue + " queueMode=" + queueMode
-            + " podcastMode=" + podcastMode + " feedAuto=" + feedAuto
+            + " podcastMode=" + podcastMode
             + " currentItem=" + currentItem.getId());
 
         if (queueMode) {
@@ -579,10 +575,8 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
 
         if (podcastMode) {
-            // Reuse refreshed feed (may have been reloaded above)
-            if (feed == null || feed.getPreferences() == null || !feed.getPreferences().isAutoPlay()) {
-                logDebug("resolveNextPlayable stop: podcastMode feed missing or autoplay off feed="
-                        + (feed != null ? feed.getId() : "null"));
+            if (!followQueue) {
+                logDebug("resolveNextPlayable stop: podcastMode but continuous playback OFF");
                 return null;
             }
             FeedItem nextFeedItem = getNextFeedItem(currentItem);
@@ -608,8 +602,11 @@ public class Media3PlaybackService extends MediaLibraryService {
         boolean queueMode = autoAdvanceMode == PlaybackPreferences.AUTO_ADVANCE_QUEUE;
         boolean currentInQueue = currentItem != null && currentItem.isTagged(FeedItem.TAG_QUEUE);
         boolean followQueue = UserPreferences.isFollowQueue();
-        // Queue-centric playback should only auto-start when the user prefers following the queue.
-        return queueMode && currentInQueue ? followQueue : true;
+        if (!followQueue) {
+            return false;
+        }
+        // Queue-centric playback should only auto-start when the current item belongs to the queue.
+        return !queueMode || currentInQueue;
     }
 
     private void postStreamingBlocked() {
@@ -655,10 +652,10 @@ public class Media3PlaybackService extends MediaLibraryService {
     @Nullable
     private FeedItem getNextFeedItem(@NonNull FeedItem currentItem) {
         Feed feed = currentItem.getFeed();
-        if (feed == null || feed.getPreferences() == null || feed.getItems() == null || feed.getItems().isEmpty()) {
+        if (feed == null || feed.getItems() == null || feed.getItems().isEmpty()) {
             feed = DBReader.getFeed(currentItem.getFeedId(), false, 0, Integer.MAX_VALUE);
         }
-        if (feed == null || feed.getPreferences() == null || !feed.getPreferences().isAutoPlay()) {
+        if (feed == null) {
             return null;
         }
 

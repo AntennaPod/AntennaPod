@@ -1139,9 +1139,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         boolean queueMode = autoAdvanceMode == PlaybackPreferences.AUTO_ADVANCE_QUEUE;
         boolean podcastMode = autoAdvanceMode == PlaybackPreferences.AUTO_ADVANCE_PODCAST;
         boolean sleepOk = shouldContinueToNextEpisode();
-        boolean feedAuto = item.getFeed() != null
-            && item.getFeed().getPreferences() != null
-            && item.getFeed().getPreferences().isAutoPlay();
 
         logDebug("getNextInQueue flags followQueue=" + followQueue
                 + " currentInQueue=" + currentInQueue
@@ -1149,7 +1146,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 + " sleepOk=" + sleepOk
             + " queueMode=" + queueMode
             + " podcastMode=" + podcastMode
-            + " feedAuto=" + feedAuto
             + " mediaId=" + media.getId()
             + " feedId=" + (item.getFeed() != null ? item.getFeed().getId() : -1));
 
@@ -1187,12 +1183,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (podcastMode) {
-            Feed feed = item.getFeed();
-            if (feed == null || feed.getPreferences() == null || !feed.getPreferences().isAutoPlay()) {
-                logDebug("Podcast mode: autoplay disabled or feed missing -> stop auto-advance");
+            if (!followQueue) {
+                logDebug("Podcast mode: continuous playback disabled -> stop auto-advance");
                 PlaybackPreferences.writeNoMediaPlaying();
                 return null;
             }
+            Feed feed = item.getFeed();
             FeedItem nextFeedItem = getNextFeedItem(item);
             if (nextFeedItem == null || nextFeedItem.getMedia() == null) {
                 logDebug("Podcast mode: no next feed item");
@@ -1222,15 +1218,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @Nullable
     private FeedItem getNextFeedItem(@NonNull FeedItem currentItem) {
         Feed feed = currentItem.getFeed();
-        if (feed == null || feed.getPreferences() == null || feed.getItems() == null || feed.getItems().isEmpty()) {
+        if (feed == null || feed.getItems() == null || feed.getItems().isEmpty()) {
             feed = DBReader.getFeed(currentItem.getFeedId(), false, 0, Integer.MAX_VALUE);
         }
-        if (feed == null || feed.getPreferences() == null) {
-            Log.d(TAG, "getNextFeedItem: feed or prefs null -> stop auto-advance");
-            return null;
-        }
-        if (!feed.getPreferences().isAutoPlay()) {
-            Log.d(TAG, "getNextFeedItem: autoplay disabled for feed=" + feed.getId());
+        if (feed == null) {
+            Log.d(TAG, "getNextFeedItem: feed null -> stop auto-advance");
             return null;
         }
 

@@ -1,10 +1,10 @@
 buildscript {
-    ext.agpVersion = "8.11.0"
+    ext.agpVersion = '9.0.1'
 }
 plugins {
     id 'com.android.application' version "$agpVersion" apply false
     id 'com.android.library' version "$agpVersion" apply false
-    id 'com.github.spotbugs' version '4.8.0' apply false
+    id 'com.github.spotbugs' version '6.0.9' apply false
     id 'checkstyle'
 }
 

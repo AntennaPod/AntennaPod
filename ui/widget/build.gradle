@@ -5,6 +5,9 @@ apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
 android {
+    testOptions {
+        targetSdk 35
+    }
     namespace "de.danoeh.antennapod.ui.widget"
 
     defaultConfig {
@@ -13,6 +16,7 @@ android {
     }
 
     lint {
+        targetSdk 35
         disable "IconMissingDensityFolder"
     }
 }

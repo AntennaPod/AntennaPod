@@ -1,11 +1,19 @@
 plugins {
     id("com.android.library")
-    id("java-test-fixtures")
 }
 apply from: "../../../common.gradle"
 apply from: "../../../playFlavor.gradle"
 
 android {
+    lint {
+        targetSdk 35
+    }
+    testOptions {
+        targetSdk 35
+    }
+    testFixtures {
+        enable = true
+    }
     namespace "de.danoeh.antennapod.net.download.service"
 }
 

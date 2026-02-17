@@ -4,9 +4,13 @@ plugins {
 apply from: "../common.gradle"
 
 android {
+    testOptions {
+        targetSdk 35
+    }
     namespace "de.danoeh.antennapod.model"
 
     lint {
+        targetSdk 35
         disable 'ParcelClassLoader'
     }
 }

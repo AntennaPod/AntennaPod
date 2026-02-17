@@ -76,7 +76,6 @@ import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
-import de.danoeh.antennapod.event.AutoplayStateEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.ui.screen.playback.audio.AudioPlayerFragment;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
@@ -120,9 +119,6 @@ public class MainActivity extends CastEnabledActivity {
     private Insets systemBarInsets = Insets.NONE;
     private TextView devStateHeader;
     private int devHeaderBaseTopPadding = 0;
-    private @Nullable Boolean lastAutoplayEnabled;
-    private long lastAutoplayMediaId = PlaybackPreferences.NO_MEDIA_PLAYING;
-    private boolean lastAutoplayVisible = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -717,15 +713,6 @@ public class MainActivity extends CastEnabledActivity {
         updateDevStateHeader();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAutoplayStateEvent(AutoplayStateEvent event) {
-        lastAutoplayEnabled = event.getAutoplayEnabled();
-        lastAutoplayMediaId = event.getMediaId();
-        lastAutoplayVisible = event.isToggleVisible();
-        logAutoplayDebug("MainActivity received " + event.toString());
-        updateDevStateHeader();
-    }
-
     private void logAutoplayDebug(String message) {
         if (!BuildConfig.DEBUG) {
             return;
@@ -904,14 +891,11 @@ public class MainActivity extends CastEnabledActivity {
         String module = resolveCurrentModule();
         String contextCode = resolveContextCode();
         String streamId = resolveStreamId();
-        String queueToggle = resolveQueueToggleState();
+        String mergedToggle = resolveMergedToggleState();
 
-        String autoToggleState = resolveAutoToggleStateFromCache();
-        setDevStateHeaderText(module, contextCode, streamId, autoToggleState, queueToggle);
-        logAutoplayDebug("DevHeader updated T=" + autoToggleState + " module=" + module
-            + " context=" + contextCode + " stream=" + streamId + " QT=" + queueToggle
-            + " lastEvent=" + (lastAutoplayEnabled != null ? lastAutoplayEnabled : "null")
-            + " lastVisible=" + lastAutoplayVisible + " lastMediaId=" + lastAutoplayMediaId);
+        setDevStateHeaderText(module, contextCode, streamId, mergedToggle);
+        logAutoplayDebug("DevHeader updated MT=" + mergedToggle + " module=" + module
+            + " context=" + contextCode + " stream=" + streamId);
     }
 
     public void refreshDevStateHeader() {
@@ -939,29 +923,14 @@ public class MainActivity extends CastEnabledActivity {
         return String.valueOf(mediaId);
     }
 
-    private String resolveAutoToggleStateFromCache() {
-        if (lastAutoplayEnabled != null) {
-            if (!lastAutoplayVisible) {
-                return "N/A";
-            }
-            return lastAutoplayEnabled ? "ON" : "OFF";
-        }
-
-        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
-        if (mediaId == PlaybackPreferences.NO_MEDIA_PLAYING) {
-            return "OFF";
-        }
-        return "UNK";
+    private String resolveMergedToggleState() {
+        return UserPreferences.isFollowQueue() ? "ON" : "OFF";
     }
 
     private void setDevStateHeaderText(String module, String contextCode, String streamId,
-                                       String autoToggleState, String queueToggle) {
+                                       String mergedToggle) {
         String summary = "M:" + module + " C:" + contextCode + " S:" + streamId
-                + " T:" + autoToggleState + " QT:" + queueToggle;
+                + " MT:" + mergedToggle;
         devStateHeader.setText(summary);
-    }
-
-    private String resolveQueueToggleState() {
-        return UserPreferences.isFollowQueue() ? "ON" : "OFF";
     }
 }

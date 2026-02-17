@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="42dp"
-    android:height="42dp"
+    android:width="24dp"
+    android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
 
-    <group android:pivotX="12" android:pivotY="12" android:scaleX="1" android:scaleY="1">
+    <path
+        android:fillColor="?attr/action_icon_color"
+        android:pathData="M9,7 L9,17 L17,12 Z" />
 
-        <path
-            android:fillColor="@color/autoplay_toggle_track"
-            android:pathData="M7.75,8.25 H16.25 A3.75,3.75 0 0 1 20.0,12.0 A3.75,3.75 0 0 1 16.25,15.75 H7.75 A3.75,3.75 0 0 1 4.0,12.0 A3.75,3.75 0 0 1 7.75,8.25 Z"/>
-
-        <path
-            android:fillColor="@color/autoplay_toggle_on_circle"
-            android:strokeColor="@color/autoplay_toggle_on_circle_stroke"
-            android:strokeWidth="1.0"
-            android:pathData="M15.65,12.0 m-5.25,0 a5.25,5.25 0 1,0 10.5,0 a5.25,5.25 0 1,0 -10.5,0"/>
-
-        <path
-            android:fillColor="@color/autoplay_toggle_on_glyph"
-            android:pathData="M13.620000000000001,8.6 L13.620000000000001,15.4 L19.42,12.0 Z"/>
-    </group>
 </vector>

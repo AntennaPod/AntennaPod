@@ -5,6 +5,12 @@ apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
 
 android {
+    lint {
+        targetSdk 35
+    }
+    testOptions {
+        targetSdk 35
+    }
     namespace "de.danoeh.antennapod.storage.databasemaintenanceservice"
 }
 
