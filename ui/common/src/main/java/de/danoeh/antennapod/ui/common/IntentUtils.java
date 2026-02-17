@@ -8,14 +8,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class IntentUtils {
     private static final String TAG = "IntentUtils";
