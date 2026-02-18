@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.BuildConfig;
-import de.danoeh.antennapod.playback.service.internal.MediaItemAdapter;
+import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import android.util.Log;
 import java.io.File;
