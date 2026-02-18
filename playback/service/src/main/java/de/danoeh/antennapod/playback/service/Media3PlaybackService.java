@@ -115,11 +115,9 @@ public class Media3PlaybackService extends MediaLibraryService {
             @Override
             @NonNull
             public Player.Commands getAvailableCommands() {
-                return super.getAvailableCommands()
-                        .buildUpon()
-                        .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
-                        .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
-                        .build();
+                // Expose previous-item commands so car head units and Bluetooth remotes
+                // can trigger skip-back actions.
+                return super.getAvailableCommands();
             }
 
             @Override

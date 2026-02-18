@@ -92,10 +92,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_SLEEP_TIMER_EXTEND)
                 .build();
         Player.Commands playerCommands = new Player.Commands.Builder()
-                .addAllCommands()
-                .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
-                .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
-                .build();
+            .addAllCommands()
+            .build();
         return new MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
                 .setCustomLayout(buildCustomLayout())

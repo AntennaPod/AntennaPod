@@ -2,12 +2,14 @@ package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreferenceCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
@@ -50,9 +52,34 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
             SkipPreferenceDialog.showSkipPreference(activity, SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, null);
             return true;
         });
-        if (Build.VERSION.SDK_INT >= 31) {
-            findPreference(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT).setVisible(false);
-            findPreference(UserPreferences.PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT).setVisible(false);
+        // Keep the Bluetooth/car auto-resume toggle visible on all API levels.
+        Preference btResume = findPreference(UserPreferences.PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT);
+        if (btResume == null) {
+            // Fallback: if the preference was stripped by resource merging, add it programmatically.
+            SwitchPreferenceCompat pref = new SwitchPreferenceCompat(requireContext());
+            pref.setKey(UserPreferences.PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT);
+            pref.setTitle(R.string.pref_unpauseOnBluetoothReconnect_title);
+            pref.setSummary(R.string.pref_unpauseOnBluetoothReconnect_sum);
+            pref.setDefaultValue(false);
+            pref.setDependency(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT);
+
+            PreferenceScreen screen = getPreferenceScreen();
+            PreferenceCategory targetCategory = null;
+            if (screen != null && screen.getPreferenceCount() > 0) {
+                Preference maybeCategory = screen.getPreference(0);
+                if (maybeCategory instanceof PreferenceCategory) {
+                    targetCategory = (PreferenceCategory) maybeCategory;
+                }
+            }
+            if (targetCategory != null) {
+                targetCategory.addPreference(pref);
+            } else if (screen != null) {
+                screen.addPreference(pref);
+            }
+            btResume = pref;
+        }
+        if (btResume != null) {
+            btResume.setVisible(true);
         }
 
         buildEnqueueLocationPreference();
