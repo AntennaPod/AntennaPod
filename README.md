@@ -25,22 +25,6 @@
 - You may need to uninstall the official app because signatures differ.
 - Back up your data before switching between builds or signing keys.
 
-## Building and signing locally
-
-Release builds require a keystore. To avoid leaking secrets, prefer using the standard debug keystore when sharing artifacts from this fork:
-
-```bash
-./gradlew assembleRelease \
-  -PreleaseStoreFile=$HOME/.android/debug.keystore \
-  -PreleaseStorePassword=android \
-  -PreleaseKeyAlias=androiddebugkey \
-  -PreleaseKeyPassword=android
-```
-
-- Output: `app/build/outputs/apk/release/app-release.apk`
-- Keep real signing keys **out of the repo and out of commits**. Store credentials in local property files that are **gitignored** or inject them via environment variables/CI secret stores. Never commit keystores or passwords.
-- GitHub Releases should be created from locally signed APKs; avoid putting signing secrets in CI logs or workflows.
-
 ## License
 
 AntennaPod is licensed under the GNU General Public License (GPL-3.0). See LICENSE for details.
