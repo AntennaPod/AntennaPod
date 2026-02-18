@@ -5,6 +5,7 @@ import java.io.InputStream;
 public class VorbisCommentMetadataReader extends VorbisCommentReader {
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_COMMENT = "comment";
+    private static final String KEY_SYNOPSIS = "synopsis";
 
     private String description = null;
 
@@ -19,7 +20,7 @@ public class VorbisCommentMetadataReader extends VorbisCommentReader {
 
     @Override
     public void onContentVectorValue(String key, String value) {
-        if (KEY_DESCRIPTION.equals(key) || KEY_COMMENT.equals(key)) {
+        if (KEY_DESCRIPTION.equals(key) || KEY_COMMENT.equals(key) || KEY_SYNOPSIS.equals(key)) {
             if (description == null || value.length() > description.length()) {
                 description = value;
             }
