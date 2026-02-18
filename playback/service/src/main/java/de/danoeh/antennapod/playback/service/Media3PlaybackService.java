@@ -31,6 +31,7 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -41,9 +42,14 @@ import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.service.internal.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
+import de.danoeh.antennapod.playback.service.internal.SleepTimer;
+import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
+import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -54,6 +60,8 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -73,6 +81,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
     private Disposable completionDisposable;
+    private SleepTimer sleepTimer;
     private long lastPositionSaveTime = 0;
     private final Handler gapHandler = new Handler(Looper.getMainLooper());
 
@@ -80,6 +89,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     @Override
     public void onCreate() {
         super.onCreate();
+        EventBus.getDefault().register(this);
         DefaultMediaNotificationProvider notificationProvider = new DefaultMediaNotificationProvider(
             this,
             session -> R.id.notification_playing,
@@ -139,6 +149,20 @@ public class Media3PlaybackService extends MediaLibraryService {
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             } else if (customCommand.customAction.equals(SESSION_COMMAND_NEXT_CHAPTER.customAction)) {
                 seekToNextChapter();
+                return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+            } else if (customCommand.customAction.equals(MediaLibrarySessionCallback.SESSION_COMMAND_SLEEP_TIMER_SET.customAction)) {
+                long timerValue = args.getLong(PlaybackController.MEDIA3_SLEEP_TIMER_VALUE_KEY, 0);
+                if (timerValue > 0) {
+                    setSleepTimer(timerValue);
+                    return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+                }
+                return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_ERROR_BAD_VALUE));
+            } else if (customCommand.customAction.equals(MediaLibrarySessionCallback.SESSION_COMMAND_SLEEP_TIMER_DISABLE.customAction)) {
+                disableSleepTimer();
+                return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+            } else if (customCommand.customAction.equals(MediaLibrarySessionCallback.SESSION_COMMAND_SLEEP_TIMER_EXTEND.customAction)) {
+                long extendValue = args.getLong(PlaybackController.MEDIA3_SLEEP_TIMER_VALUE_KEY, 0);
+                extendSleepTimer(extendValue);
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             }
             return super.onCustomCommand(session, controller, customCommand, args);
@@ -240,6 +264,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     public void onDestroy() {
         PlaybackService.isRunning = false;
         cancelPositionObserver();
+        EventBus.getDefault().unregister(this);
         if (mediaLoaderDisposable != null) {
             mediaLoaderDisposable.dispose();
             mediaLoaderDisposable = null;
@@ -294,6 +319,57 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (positionObserverDisposable != null) {
             positionObserverDisposable.dispose();
             positionObserverDisposable = null;
+        }
+    }
+
+    private void setSleepTimer(long waitingTime) {
+        Log.d(TAG, "Setting sleep timer (media3) to " + waitingTime);
+        if (waitingTime <= 0) {
+            return;
+        }
+        if (sleepTimer != null && sleepTimer.isActive()) {
+            sleepTimer.updateRemainingTime(waitingTime);
+            return;
+        }
+        sleepTimer = SleepTimerPreferences.getSleepTimerType() == SleepTimerType.CLOCK
+                ? new ClockSleepTimer(getApplicationContext())
+                : new EpisodeSleepTimer(getApplicationContext());
+        sleepTimer.start(waitingTime);
+    }
+
+    private void extendSleepTimer(long extendTime) {
+        if (sleepTimer == null || !sleepTimer.isActive()) {
+            return;
+        }
+        long millisLeft = sleepTimer.getTimeLeft().getMillisValue();
+        sleepTimer.updateRemainingTime(millisLeft + extendTime);
+    }
+
+    private void disableSleepTimer() {
+        if (sleepTimer != null) {
+            sleepTimer.stop();
+            sleepTimer = null;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void sleepTimerUpdate(SleepTimerUpdatedEvent event) {
+        if (player == null) {
+            return;
+        }
+        if (event.isOver()) {
+            player.pause();
+            player.setVolume(1.0f);
+            long newPosition = player.getCurrentPosition() - SleepTimer.NOTIFICATION_THRESHOLD / 2;
+            player.seekTo(Math.max(newPosition, 0));
+        } else if (event.getMillisTimeLeft() < SleepTimer.NOTIFICATION_THRESHOLD) {
+            final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
+            int idx = Math.max(0, Math.min(multiplicators.length - 1,
+                    (int) (event.getMillisTimeLeft() / 1000)));
+            player.setVolume(multiplicators[idx]);
+        } else if (event.isCancelled()) {
+            player.setVolume(1.0f);
         }
     }
 

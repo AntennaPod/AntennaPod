@@ -13,6 +13,7 @@ bin/
 gen/
 target/
 build/
+archive/
 **/*.project
 **/*.classpath
 
@@ -39,12 +40,19 @@ contributers.py
 captures
 # other
 *.odg#
-proguard
-libs
+# ##### flagged: keep ProGuard/R8 configs visible for reproducible builds
+#proguard
+# ##### flagged: keep bundled local libs (JAR/AAR) visible if required to build
+#libs
 *.DS_Store
-gradle.properties
+# ##### flagged: tracked gradle.properties should remain visible to avoid missing build defaults
+#gradle.properties
 *.keystore
 *.p12
+Screenshot_*.png
+*.log
+*.jks
+crash.txt
 
 # ---- Secrets / credentials ----
 .env
@@ -54,7 +62,8 @@ gradle.properties
 *.p12
 *.jks
 *.keystore
-google-services.json
+# ##### flagged: build may expect a placeholder google-services.json; keep visible for public builds
+#google-services.json
 firebase-service-account*.json
 service-account*.json
 play-store-credentials*.json
@@ -63,7 +72,8 @@ app/myfork-release.keystore
 
 # ---- Local configs ----
 local.properties
-gradle.properties
+# ##### flagged: tracked gradle.properties should remain visible to avoid missing build defaults
+#gradle.properties
 *.properties.local
 config.local.*
 secrets/
@@ -98,12 +108,13 @@ client-data/
 .env.*
 *.jks
 *.keystore
-google-services.json
+# ##### flagged: build may expect a placeholder google-services.json; keep visible for public builds
+#google-services.json
 firebase-service-account*.json
 service-account*.json   
 play-store-credentials*.json
 local.properties
-gradle.properties
+#gradle.properties
 *.properties.local
 config.local.*
 secrets/

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.util.Pair;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
 import androidx.media3.session.MediaController;
+import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionToken;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
@@ -49,6 +51,13 @@ import java.util.concurrent.ExecutionException;
 public abstract class PlaybackController {
 
     private static final String TAG = "PlaybackController";
+        public static final String MEDIA3_SLEEP_TIMER_VALUE_KEY = "sleep_timer_value";
+        public static final SessionCommand SESSION_COMMAND_SLEEP_TIMER_SET
+            = new SessionCommand("sleep_timer_set", Bundle.EMPTY);
+        public static final SessionCommand SESSION_COMMAND_SLEEP_TIMER_DISABLE
+            = new SessionCommand("sleep_timer_disable", Bundle.EMPTY);
+        public static final SessionCommand SESSION_COMMAND_SLEEP_TIMER_EXTEND
+            = new SessionCommand("sleep_timer_extend", Bundle.EMPTY);
 
     private final Activity activity;
     private PlaybackService playbackService;
@@ -342,11 +351,12 @@ public abstract class PlaybackController {
     public int getDuration() {
         if (playbackService != null) {
             return playbackService.getDuration();
-        } else if (getMedia() != null) {
-            return getMedia().getDuration();
-        } else {
-            return Playable.INVALID_TIME;
         }
+        return Playable.INVALID_TIME;
+    }
+
+    public boolean isServiceConnected() {
+        return playbackService != null;
     }
 
     public Playable getMedia() {

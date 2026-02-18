@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.media3.session.SessionCommand;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -40,6 +41,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TimeDialogBinding;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -220,19 +222,28 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
             showTimeRangeDialog(getContext(), from, to);
         });
         viewBinding.disableSleeptimerButton.setOnClickListener(v -> {
-            if (controller != null) {
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                sendMedia3SleepCommand(PlaybackController.SESSION_COMMAND_SLEEP_TIMER_DISABLE, 0);
+            } else if (controller != null) {
                 controller.disableSleepTimer();
             }
         });
         viewBinding.setSleeptimerButton.setOnClickListener(v -> {
-            if (!PlaybackService.isRunning
-                    || (controller != null && controller.getStatus() != PlayerStatus.PLAYING)) {
+            final boolean connected = controller != null && controller.isServiceConnected();
+            final PlayerStatus status = controller != null ? controller.getStatus() : PlayerStatus.STOPPED;
+            final boolean serviceRunning = PlaybackService.isRunning;
+            final boolean playbackLikely = serviceRunning || connected || status != PlayerStatus.STOPPED;
+            // Avoid false negatives: allow when service is running or controller has any state other than STOPPED.
+            if (!playbackLikely) {
                 Snackbar.make(viewBinding.getRoot(), R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
                 return;
             }
             try {
                 SleepTimerPreferences.setLastTimer("" + getSelectedSleepTime());
-                if (controller != null) {
+                if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                    sendMedia3SleepCommand(PlaybackController.SESSION_COMMAND_SLEEP_TIMER_SET,
+                            SleepTimerPreferences.timerMillisOrEpisodes());
+                } else if (controller != null) {
                     controller.setSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 }
                 Keyboard.hide(getActivity());
@@ -329,21 +340,27 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
                 }
             } else {
                 // for time sleep timers check if the selected value exceeds the remaining play time in the episode
-                final int remaining = controller != null ? controller.getDuration() - controller.getPosition() :
-                        Integer.MAX_VALUE;
-                final long timer = TimeUnit.MINUTES.toMillis(selectedSleepTime);
-                if ((timer > remaining) && !UserPreferences.isFollowQueue()) {
-                    final int remainingMinutes = Math.toIntExact(TimeUnit.MILLISECONDS.toMinutes(remaining));
-                    viewBinding.sleepTimerHintText
-                            .setText(getResources().getQuantityString(
-                                    R.plurals.timer_exceeds_remaining_time_while_continuous_playback_disabled,
-                                    remainingMinutes,
-                                    remainingMinutes
-                            ));
-                    viewBinding.sleepTimerHintText.setVisibility(View.VISIBLE);
+                boolean serviceConnected = controller != null && controller.isServiceConnected();
+                // Only compute remaining time if we have a live service connection; otherwise skip to avoid
+                // blocking the main thread with DB access via controller fallbacks.
+                if (serviceConnected) {
+                    final int remaining = controller.getDuration() - controller.getPosition();
+                    final long timer = TimeUnit.MINUTES.toMillis(selectedSleepTime);
+                    if ((timer > remaining) && !UserPreferences.isFollowQueue()) {
+                        final int remainingMinutes = Math.toIntExact(TimeUnit.MILLISECONDS.toMinutes(remaining));
+                        viewBinding.sleepTimerHintText
+                                .setText(getResources().getQuantityString(
+                                        R.plurals.timer_exceeds_remaining_time_while_continuous_playback_disabled,
+                                        remainingMinutes,
+                                        remainingMinutes
+                                ));
+                        viewBinding.sleepTimerHintText.setVisibility(View.VISIBLE);
+                    } else {
+                        // don't show it at all
+                        viewBinding.sleepTimerHintText.setVisibility(View.GONE); // could maybe show duration in minutes
+                    }
                 } else {
-                    // don't show it at all
-                    viewBinding.sleepTimerHintText.setVisibility(View.GONE); // could maybe show duration in minutes
+                    viewBinding.sleepTimerHintText.setVisibility(View.GONE);
                 }
             }
         }
@@ -379,9 +396,19 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
     void setupExtendButton(TextView button, String text, int extendValue) {
         button.setText(text);
         button.setOnClickListener(v -> {
-            if (controller != null) {
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                sendMedia3SleepCommand(PlaybackController.SESSION_COMMAND_SLEEP_TIMER_EXTEND, extendValue);
+            } else if (controller != null) {
                 controller.extendSleepTimer(extendValue);
             }
+        });
+    }
+
+    private void sendMedia3SleepCommand(SessionCommand command, long value) {
+        PlaybackController.bindToMedia3Service(requireContext().getApplicationContext(), mediaController -> {
+            Bundle args = new Bundle();
+            args.putLong(PlaybackController.MEDIA3_SLEEP_TIMER_VALUE_KEY, value);
+            mediaController.sendCustomCommand(command, args);
         });
     }
 

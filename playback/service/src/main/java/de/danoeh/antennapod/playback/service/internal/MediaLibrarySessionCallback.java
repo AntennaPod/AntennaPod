@@ -60,6 +60,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("skip_to_next", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_NEXT_CHAPTER
             = new SessionCommand("next_chapter", Bundle.EMPTY);
+        public static final SessionCommand SESSION_COMMAND_SLEEP_TIMER_SET
+            = new SessionCommand("sleep_timer_set", Bundle.EMPTY);
+        public static final SessionCommand SESSION_COMMAND_SLEEP_TIMER_DISABLE
+            = new SessionCommand("sleep_timer_disable", Bundle.EMPTY);
+        public static final SessionCommand SESSION_COMMAND_SLEEP_TIMER_EXTEND
+            = new SessionCommand("sleep_timer_extend", Bundle.EMPTY);
 
     private final Context context;
     private final CompositeDisposable disposables = new CompositeDisposable();
@@ -80,6 +86,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_PLAYBACK_SPEED)
                 .add(SESSION_COMMAND_SKIP_TO_NEXT)
                 .add(SESSION_COMMAND_NEXT_CHAPTER)
+                .add(SESSION_COMMAND_SLEEP_TIMER_SET)
+                .add(SESSION_COMMAND_SLEEP_TIMER_DISABLE)
+                .add(SESSION_COMMAND_SLEEP_TIMER_EXTEND)
                 .build();
         Player.Commands playerCommands = new Player.Commands.Builder()
                 .addAllCommands()
