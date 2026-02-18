@@ -33,6 +33,9 @@ public abstract class CastEnabledActivity extends AppCompatActivity {
         if (!canCast) {
             return;
         }
+        if (menu.findItem(R.id.media_route_menu_item) != null) {
+            return; // Already added
+        }
         getMenuInflater().inflate(R.menu.cast_button, menu);
         CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
     }

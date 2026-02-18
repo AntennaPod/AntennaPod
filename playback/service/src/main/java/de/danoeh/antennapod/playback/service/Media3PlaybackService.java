@@ -39,7 +39,9 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
-import de.danoeh.antennapod.playback.service.internal.MediaItemAdapter;
+import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
+import de.danoeh.antennapod.playback.base.MediaItemAdapter;
+import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.playback.service.internal.SleepTimer;
@@ -54,6 +56,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
+import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -107,7 +110,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
                         .build(), true)
                 .build();
-        player = new ForwardingPlayer(basePlayer) {
+        Player maybeCastPlayer = CastPlayerWrapper.wrap(basePlayer, this);
+        player = new ForwardingPlayer(maybeCastPlayer) {
             @Override
             @NonNull
             public Player.Commands getAvailableCommands() {
@@ -204,6 +208,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                     SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
                 }
             }
+            WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
+                    PlaybackService.isRunning ? PlayerStatus.PLAYING : PlayerStatus.PAUSED,
+                    (int) player.getContentPosition(), (int) player.getDuration(),
+                    player.getPlaybackParameters().speed);
+            WidgetUpdater.updateWidget(Media3PlaybackService.this, widgetState);
             updatePlaybackPreferences();
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
@@ -298,17 +307,22 @@ public class Media3PlaybackService extends MediaLibraryService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         ignored -> {
-                            if (currentPlayable != null && player != null) {
-                                long position = player.getCurrentPosition();
-                                long duration = player.getDuration();
-                                if (duration > 0) {
-                                    EventBus.getDefault().post(
-                                            new PlaybackPositionEvent((int) position, (int) duration));
-                                    long currentTime = System.currentTimeMillis();
-                                    if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
-                                        saveCurrentPosition();
-                                        lastPositionSaveTime = currentTime;
-                                    }
+                            if (currentPlayable == null || player == null) {
+                                return;
+                            }
+                            long position = player.getCurrentPosition();
+                            long duration = player.getDuration();
+                            if (duration > 0) {
+                                EventBus.getDefault().post(
+                                        new PlaybackPositionEvent((int) position, (int) duration));
+                                WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
+                                        Util.shouldShowPlayButton(player) ? PlayerStatus.PAUSED : PlayerStatus.PLAYING,
+                                        (int) position, (int) duration, player.getPlaybackParameters().speed);
+                                WidgetUpdater.updateWidget(this, widgetState);
+                                long currentTime = System.currentTimeMillis();
+                                if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
+                                    saveCurrentPosition();
+                                    lastPositionSaveTime = currentTime;
                                 }
                             }
                         }, error -> Log.e(TAG, "Position observer error", error)
