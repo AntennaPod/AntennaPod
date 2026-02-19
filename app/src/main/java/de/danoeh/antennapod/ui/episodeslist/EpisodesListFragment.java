@@ -37,6 +37,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
+import de.danoeh.antennapod.ui.common.RefreshActionViewController;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
@@ -76,6 +77,7 @@ public abstract class EpisodesListFragment extends Fragment
     protected MaterialToolbar toolbar;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected SwipeActions swipeActions;
+    private RefreshActionViewController refreshActionViewController;
     private ProgressBar progressBar;
     @NonNull
     protected List<FeedItem> episodes = new ArrayList<>();
@@ -147,6 +149,8 @@ public abstract class EpisodesListFragment extends Fragment
         View root = inflater.inflate(R.layout.episodes_list_fragment, container, false);
         txtvInformation = root.findViewById(R.id.txtvInformation);
         toolbar = root.findViewById(R.id.toolbar);
+        refreshActionViewController = RefreshActionViewController.attach(toolbar.getMenu(), R.id.refresh_item,
+            getContext(), () -> FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
         toolbar.setOnMenuItemClickListener(this);
         toolbar.setOnLongClickListener(v -> {
             recyclerView.scrollToPosition(5);
@@ -308,6 +312,10 @@ public abstract class EpisodesListFragment extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (refreshActionViewController != null) {
+            refreshActionViewController.clear();
+            refreshActionViewController = null;
+        }
         listAdapter.endSelectMode();
     }
 
@@ -444,6 +452,9 @@ public abstract class EpisodesListFragment extends Fragment
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedUpdateRunningEvent event) {
         swipeRefreshLayout.setRefreshing(event.isFeedUpdateRunning);
+        if (refreshActionViewController != null) {
+            refreshActionViewController.setRefreshing(event.isFeedUpdateRunning);
+        }
     }
 
     @Override

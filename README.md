@@ -1,6 +1,6 @@
 # AntennaPod (Unofficial fork)
 
-> **Unofficial, unsupported fork – unified continuous playback**
+> **Unofficial, unsupported fork – unified continuous playback, improved car integration**
 >
 > Maintained by **@unieng99**. Not affiliated with or endorsed by the upstream [AntennaPod](https://github.com/AntennaPod/AntennaPod) project.
 
@@ -12,7 +12,6 @@
 - **Feed-based continuous playback:** Triggered when you start playback from the **Subscriptions** tab. Example use cases include binge listening to podcasts, and sequential playback of audiobook/lecture series.
 - **Support:** Distributed **as-is** with **no support**. Issues/PRs may be closed without action.
 - **Upstream etiquette:** Please **do not** contact the upstream project about this fork or its APKs. The upstream maintainers did not author, review, or support these changes.
-- **Current beta tag:** `v0.00.20-beta1` (experimental build only)
 
 ## What changed (fork highlights)
 
