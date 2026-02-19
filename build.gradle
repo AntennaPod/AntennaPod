@@ -42,6 +42,41 @@ project.ext {
     rulesVersion = "1.5.0"
     testCoreVersion = "1.5.0"
     mockitoVersion = "5.15.2"
+
+    // Shared short git SHA for BuildConfig/metadata consumers
+    gitShaShort = {
+        String v = ""
+        try {
+            File headFile = new File(rootDir, ".git/HEAD")
+            if (headFile.exists()) {
+                def headContent = headFile.text.trim()
+                if (headContent.startsWith("ref:")) {
+                    def refPath = headContent.substring(4).trim()
+                    File refFile = new File(rootDir, ".git/${refPath}")
+                    if (refFile.exists()) {
+                        v = refFile.text.trim()
+                    } else {
+                        File packedRefs = new File(rootDir, ".git/packed-refs")
+                        if (packedRefs.exists()) {
+                            packedRefs.eachLine { line ->
+                                if (!line.startsWith("#") && line.endsWith(refPath)) {
+                                    v = line.split(" ")[0].trim()
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    v = headContent
+                }
+            }
+        } catch (Exception ignored) {
+            v = ""
+        }
+        if (v.length() > 10) {
+            v = v.substring(0, 10)
+        }
+        return v.isEmpty() ? "unknown" : v
+    }.call()
 }
 
 checkstyle {

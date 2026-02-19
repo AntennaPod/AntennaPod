@@ -246,4 +246,32 @@ eval "set -- $(
         tr '\n' ' '
     )" '"$@"'
 
-exec "$JAVACMD" "$@"
+"$JAVACMD" "$@"
+_gradle_exit_code=$?
+if [ $_gradle_exit_code -eq 0 ]; then
+    _gradle_git_sha=$(git rev-parse --short HEAD 2>/dev/null || true)
+    if [ -z "$_gradle_git_sha" ] && [ -f "$APP_HOME/.git/HEAD" ]; then
+        _head_content=$(cat "$APP_HOME/.git/HEAD")
+        case "$_head_content" in
+            ref:*)
+                _ref_path=${_head_content#ref: }
+                _ref_file="$APP_HOME/.git/$_ref_path"
+                if [ -f "$_ref_file" ]; then
+                    _gradle_git_sha=$(cat "$_ref_file")
+                elif [ -f "$APP_HOME/.git/packed-refs" ]; then
+                    _gradle_git_sha=$(grep "$_ref_path" "$APP_HOME/.git/packed-refs" | grep -v '^#' | awk '{print $1}' | head -n 1)
+                fi
+                ;;
+            *)
+                _gradle_git_sha=$_head_content
+                ;;
+        esac
+    fi
+    if [ -n "$_gradle_git_sha" ]; then
+        _gradle_git_sha=${_gradle_git_sha:0:10}
+    else
+        _gradle_git_sha=unknown
+    fi
+    printf 'Gradle build completed at commit %s\n' "${_gradle_git_sha}"
+fi
+exit $_gradle_exit_code
