@@ -14,17 +14,8 @@ android {
     namespace "de.danoeh.antennapod.ui.preferences"
 
     defaultConfig {
-        def commit = ""
-        try {
-            def hashStdOut = new ByteArrayOutputStream()
-            exec {
-                commandLine "git", "rev-parse", "--short", "HEAD"
-                standardOutput = hashStdOut
-            }
-            commit = hashStdOut.toString().trim()
-        } catch (Exception ignore) {
-        }
-        buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
+        def commit = rootProject.ext.gitShaShort ?: "unknown"
+        buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
     }
 }
 

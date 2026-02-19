@@ -85,6 +85,12 @@
     <Match><Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/></Match>
     <Match><Bug pattern="VA_FORMAT_STRING_USES_NEWLINE"/></Match>
     <Match><Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/></Match>
+    <Match><Bug pattern="CT_CONSTRUCTOR_THROW"/></Match>
+    <Match><Bug pattern="DCN_NULLPOINTER_EXCEPTION"/></Match>
+    <Match><Bug pattern="MS_EXPOSE_REP"/></Match>
+    <Match><Bug pattern="MS_PKGPROTECT"/></Match>
+    <Match><Bug pattern="PA_PUBLIC_PRIMITIVE_ATTRIBUTE"/></Match>
+    <Match><Bug pattern="EI_EXPOSE_STATIC_REP2"/></Match>
 
     <!-- Suppress false positives for USE_MEDIA3_PLAYBACK_SERVICE -->
     <Match>

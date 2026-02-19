@@ -5,6 +5,53 @@ plugins {
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
 
+// Git/build metadata helpers used for BuildConfig and generated artifacts
+def gitShortSha = { rootProject.ext.gitShaShort ?: "unknown" }
+
+def gitBranch = {
+    def out = new ByteArrayOutputStream()
+    try {
+        exec {
+            commandLine "git", "rev-parse", "--abbrev-ref", "HEAD"
+            standardOutput = out
+            errorOutput = new ByteArrayOutputStream()
+        }
+    } catch (Exception ignore) {
+    }
+    def v = out.toString().trim()
+    return v.isEmpty() ? "unknown" : v
+}
+
+def buildTimestampUtc = {
+    def tz = TimeZone.getTimeZone("UTC")
+    def df = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    df.setTimeZone(tz)
+    return df.format(new Date())
+}
+
+def latestCommitLog = {
+    def out = new ByteArrayOutputStream()
+    try {
+        exec {
+            commandLine "git", "log", "-1", "--pretty=format:%h %s (%an, %ad)", "--date=short"
+            standardOutput = out
+            errorOutput = new ByteArrayOutputStream()
+        }
+    } catch (Exception ignore) {
+    }
+    def v = out.toString().trim()
+    return v.isEmpty() ? "unknown commit" : v
+}
+
+def metadataAssetDir = file("${buildDir}/generated/metadataAsset")
+def unquote = { String s ->
+    if (s == null) return ""
+    if (s.startsWith('"') && s.endsWith('"') && s.length() >= 2) {
+        return s.substring(1, s.length() - 1)
+    }
+    return s
+}
+
 android {
     namespace "de.danoeh.antennapod"
 
@@ -15,6 +62,11 @@ android {
         // "1.2.3"          -> 1020395
         versionCode 3110116
         versionName "0.00.21-beta1"
+
+        buildConfigField "String", "GIT_SHA", '"' + gitShortSha() + '"'
+        buildConfigField "String", "GIT_BRANCH", '"' + gitBranch() + '"'
+        buildConfigField "String", "BUILD_TIME_UTC", '"' + buildTimestampUtc() + '"'
+        buildConfigField "String", "COMPILER_VERSION", '"' + org.gradle.util.GradleVersion.current().getVersion() + '"'
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -60,7 +112,79 @@ android {
     androidResources {
         additionalParameters += ["--no-version-vectors"]
     }
+
+    sourceSets {
+        main {
+            assets.srcDir metadataAssetDir
+        }
+    }
 }
+
+// Write build metadata to a file for downstream consumers (outside of packaged assets)
+tasks.register("writeBuildMetadata") {
+    def outFile = file("${buildDir}/outputs/metadata/build-info.txt")
+    def cfg = android.defaultConfig
+    def versionCodeVal = cfg.versionCode
+    def versionNameVal = cfg.versionName
+    def gitShaVal = unquote(cfg.buildConfigFields.get("GIT_SHA").value)
+    def gitBranchVal = unquote(cfg.buildConfigFields.get("GIT_BRANCH").value)
+    def buildTimeVal = unquote(cfg.buildConfigFields.get("BUILD_TIME_UTC").value)
+    def compilerVal = unquote(cfg.buildConfigFields.get("COMPILER_VERSION").value)
+    outputs.file(outFile)
+    outputs.upToDateWhen { false }
+    doLast {
+        outFile.parentFile.mkdirs()
+        outFile.text = """
+versionCode=${versionCodeVal}
+versionName=${versionNameVal}
+gitSha=${gitShaVal}
+gitBranch=${gitBranchVal}
+buildTimeUtc=${buildTimeVal}
+compilerGradle=${compilerVal}
+latestCommit=${latestCommitLog()}
+""".stripIndent().trim() + System.lineSeparator()
+    }
+}
+
+// Append latest commit info to a build changelog artifact per build
+tasks.register("appendBuildChangelog") {
+    def logFile = file("${buildDir}/outputs/metadata/changelog.txt")
+    outputs.file(logFile)
+    outputs.upToDateWhen { false }
+    doLast {
+        logFile.parentFile.mkdirs()
+        logFile << (latestCommitLog() + System.lineSeparator())
+    }
+}
+
+// Generate an asset packaged into the APK/AAB with build metadata
+tasks.register("generateBuildMetaAsset") {
+    def cfg = android.defaultConfig
+    def versionCodeVal = cfg.versionCode
+    def versionNameVal = cfg.versionName
+    def gitShaVal = unquote(cfg.buildConfigFields.get("GIT_SHA").value)
+    def gitBranchVal = unquote(cfg.buildConfigFields.get("GIT_BRANCH").value)
+    def buildTimeVal = unquote(cfg.buildConfigFields.get("BUILD_TIME_UTC").value)
+    def compilerVal = unquote(cfg.buildConfigFields.get("COMPILER_VERSION").value)
+    outputs.dir(metadataAssetDir)
+    outputs.upToDateWhen { false }
+    doLast {
+        metadataAssetDir.mkdirs()
+        new File(metadataAssetDir, "build-metadata.txt").text = """
+versionCode=${versionCodeVal}
+versionName=${versionNameVal}
+gitSha=${gitShaVal}
+gitBranch=${gitBranchVal}
+buildTimeUtc=${buildTimeVal}
+compilerGradle=${compilerVal}
+latestCommit=${latestCommitLog()}
+""".stripIndent().trim() + System.lineSeparator()
+    }
+}
+
+preBuild.dependsOn(tasks.named("writeBuildMetadata"))
+preBuild.dependsOn(tasks.named("appendBuildChangelog"))
+preBuild.dependsOn(tasks.named("generateBuildMetaAsset"))
 
 dependencies {
     implementation project(":event")

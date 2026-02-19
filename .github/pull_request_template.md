@@ -8,7 +8,7 @@
   You can tick the boxes below by placing an x inside the brackets like this: [x]
 -->
 - [ ] I have read the contribution guidelines: https://github.com/AntennaPod/AntennaPod/blob/develop/CONTRIBUTING.md#submit-a-pull-request
-- [ ] I have performed a self-review of my code
+- [ ] I have performed a self-review of my code, going through my changes line by line and carefully considering why this line change is necessary
 - [ ] I have run the automated code checks using `./gradlew checkstyle spotbugsPlayDebug spotbugsDebug :app:lintPlayDebug`
 - [ ] My code follows the style guidelines of the AntennaPod project: https://antennapod.org/contribute/develop/app/code-style 
 - [ ] I have mentioned the corresponding issue and the relevant keyword (e.g., "Closes: #xy") in the description (see https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)

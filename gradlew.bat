@@ -22,7 +22,7 @@
 @rem ##########################################################################
 
 @rem Set local scope for the variables with windows NT shell
-if "%OS%"=="Windows_NT" setlocal
+if "%OS%"=="Windows_NT" setlocal EnableDelayedExpansion
 
 set DIRNAME=%~dp0
 if "%DIRNAME%"=="" set DIRNAME=.
@@ -76,16 +76,37 @@ set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
 
 :end
 @rem End local scope for the variables with windows NT shell
-if %ERRORLEVEL% equ 0 goto mainEnd
+set EXIT_CODE=%ERRORLEVEL%
+if %EXIT_CODE% equ 0 (
+	for /f "delims=" %%G in ('git rev-parse --short HEAD 2^>NUL') do set "GIT_SHA=%%G"
+	if "!GIT_SHA!"=="" if exist "%APP_HOME%\.git\HEAD" (
+		set /p "HEAD_CONTENT="<"%APP_HOME%\.git\HEAD"
+		if /i "!HEAD_CONTENT:~0,4!"=="ref:" (
+			set "REF_PATH=!HEAD_CONTENT:~5!"
+			if exist "%APP_HOME%\.git\!REF_PATH!" (
+				set /p "GIT_SHA="<"%APP_HOME%\.git\!REF_PATH!"
+			) else if exist "%APP_HOME%\.git\packed-refs" (
+				for /f "usebackq tokens=1" %%R in (`findstr /R /C:"[0-9a-f][0-9a-f]* !REF_PATH!" "%APP_HOME%\.git\packed-refs"`) do set "GIT_SHA=%%R"
+			)
+		) else (
+			set "GIT_SHA=!HEAD_CONTENT!"
+		)
+	)
+	if "!GIT_SHA!"=="" set "GIT_SHA=unknown"
+	goto reportSuccess
+)
 
 :fail
 rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
 rem the _cmd.exe /c_ return code!
-set EXIT_CODE=%ERRORLEVEL%
 if %EXIT_CODE% equ 0 set EXIT_CODE=1
 if not ""=="%GRADLE_EXIT_CONSOLE%" exit %EXIT_CODE%
 exit /b %EXIT_CODE%
 
+:reportSuccess
+if not defined GIT_SHA set "GIT_SHA=unknown"
+set "GIT_SHA=!GIT_SHA:~0,10!"
+echo Gradle build completed at commit !GIT_SHA!
 :mainEnd
 if "%OS%"=="Windows_NT" endlocal
 
