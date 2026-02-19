@@ -26,11 +26,15 @@ public class MediaItemAdapter {
         metadataBuilder.setIsPlayable(true);
         metadataBuilder.setIsBrowsable(false);
         metadataBuilder.setMediaType(MediaMetadata.MEDIA_TYPE_PODCAST_EPISODE);
+        metadataBuilder.setArtist(playable.getFeedTitle());
+        metadataBuilder.setAlbumTitle(playable.getFeedTitle());
         String mediaId = "0";
         if (playable instanceof FeedMedia) {
             FeedMedia feedMedia = (FeedMedia) playable;
             mediaId = String.valueOf(feedMedia.getId());
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
+            metadataBuilder.setArtist(feedMedia.getFeedTitle());
+            metadataBuilder.setAlbumTitle(feedMedia.getFeedTitle());
             if (feedMedia.getImageLocation() != null && feedMedia.getImageLocation().startsWith("http")) {
                 metadataBuilder.setArtworkUri(Uri.parse(feedMedia.getImageLocation()));
             }

@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.core.util.Pair;
+import android.content.Intent;
+import android.view.KeyEvent;
 import androidx.media.utils.MediaConstants;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
@@ -67,6 +69,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("sleep_timer_disable", Bundle.EMPTY);
         public static final SessionCommand SESSION_COMMAND_SLEEP_TIMER_EXTEND
             = new SessionCommand("sleep_timer_extend", Bundle.EMPTY);
+
+    private static final long SEEK_BUTTON_STEP_MS = 10_000L; // 10 seconds for steering wheel buttons
 
     private final Context context;
     private final CompositeDisposable disposables = new CompositeDisposable();
@@ -162,6 +166,51 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         }
         return Futures.immediateFuture(new SessionResult(SessionError.ERROR_NOT_SUPPORTED));
+    }
+
+    @Override
+    @UnstableApi
+    public boolean onMediaButtonEvent(@NonNull MediaSession session,
+                                      @NonNull MediaSession.ControllerInfo controller,
+                                      @NonNull Intent intent) {
+        KeyEvent event = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+        if (event == null || event.getAction() != KeyEvent.ACTION_DOWN) {
+            return false;
+        }
+
+        Player player = session.getPlayer();
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+                seekBy(player, SEEK_BUTTON_STEP_MS);
+                return true; // Treat car "next" as +10s jump
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                seekBy(player, -SEEK_BUTTON_STEP_MS);
+                return true; // Treat car "previous" as -10s jump
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+            case KeyEvent.KEYCODE_MEDIA_STEP_FORWARD:
+            case KeyEvent.KEYCODE_MEDIA_SKIP_FORWARD:
+                player.seekForward();
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+            case KeyEvent.KEYCODE_MEDIA_STEP_BACKWARD:
+            case KeyEvent.KEYCODE_MEDIA_SKIP_BACKWARD:
+                player.seekBack();
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void seekBy(@NonNull Player player, long deltaMs) {
+        long position = player.getCurrentPosition();
+        long duration = player.getDuration();
+        long target = position + deltaMs;
+        if (target < 0) {
+            target = 0;
+        } else if (duration != C.TIME_UNSET && target > duration) {
+            target = duration;
+        }
+        player.seekTo(target);
     }
 
     @Override

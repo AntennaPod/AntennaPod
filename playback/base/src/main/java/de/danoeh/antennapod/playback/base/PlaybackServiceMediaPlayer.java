@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import androidx.annotation.NonNull;
+import android.os.Build;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -274,7 +275,11 @@ public abstract class PlaybackServiceMediaPlayer {
         if (shouldLockWifi()) {
             if (wifiLock == null) {
                 wifiLock = ((WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE))
-                        .createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
+                        .createWifiLock(
+                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+                                ? WifiManager.WIFI_MODE_FULL_HIGH_PERF
+                                : WifiManager.WIFI_MODE_FULL,
+                            TAG);
                 wifiLock.setReferenceCounted(false);
             }
             wifiLock.acquire();
