@@ -26,6 +26,7 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -42,13 +43,14 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
-import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
+import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Maybe;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
@@ -425,7 +427,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (item == null) {
             return;
         }
-        queueLoaderDisposable = Single.fromCallable(() -> {
+        queueLoaderDisposable = Maybe.fromCallable(() -> {
             FeedItem nextItem = DBReader.getNextInQueue(item);
             return nextItem != null && nextItem.getMedia() != null ? nextItem.getMedia() : null;
         })
@@ -444,7 +446,13 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 player.prepare();
                             }
                         },
-                        error -> Log.e(TAG, "Failed to load next queue item", error)
+                        error -> Log.e(TAG, "Failed to load next queue item", error),
+                        () ->  {
+                            player.stop();
+                            player.clearMediaItems();
+                            PlaybackPreferences.writeNoMediaPlaying();
+                            EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                        }
                 );
     }
 }
