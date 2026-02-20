@@ -183,7 +183,6 @@
 
         <activity
             android:name=".ui.screen.playback.video.Media3VideoPlayerActivity"
-            android:theme="@style/Theme.AntennaPod.Dark"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:supportsPictureInPicture="true"
             android:screenOrientation="sensorLandscape"
