@@ -112,7 +112,7 @@ jobs:
             target: default
           - api-level: 30
             target: aosp_atd
-          - api-level: 35
+          - api-level: 36
             target: aosp_atd
     steps:
       - name: Remove unused packages to save space

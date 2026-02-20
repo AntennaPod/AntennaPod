@@ -10,6 +10,8 @@ android {
 dependencies {
     implementation project(':model')
 
+    implementation "androidx.media3:media3-exoplayer:$media3Version"
+    implementation "androidx.media3:media3-session:$media3Version"
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
 
     testImplementation "junit:junit:$junitVersion"

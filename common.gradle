@@ -1,9 +1,9 @@
 android {
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         minSdk 23
-        targetSdk 35
+        targetSdk 36
 
         vectorDrawables.useSupportLibrary true
         vectorDrawables.generatedDensities = []
@@ -36,8 +36,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     testOptions {
@@ -87,7 +87,7 @@ gradle.projectsEvaluated {
 apply plugin: 'com.github.spotbugs'
 
 spotbugs {
-    toolVersion = '4.2.3'
+    toolVersion = '4.8.6'
     effort = 'max'
     reportLevel = 'medium'
     excludeFilter = rootProject.file('config/spotbugs/exclude.xml')
