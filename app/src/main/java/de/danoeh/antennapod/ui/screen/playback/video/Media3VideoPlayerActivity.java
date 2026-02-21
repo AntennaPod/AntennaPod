@@ -2,10 +2,12 @@ package de.danoeh.antennapod.ui.screen.playback.video;
 
 import android.app.PictureInPictureParams;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Rational;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,16 +21,42 @@ import androidx.media3.session.SessionToken;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.Media3VideoPlayerActivityBinding;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.service.Media3PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
+import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
+import de.danoeh.antennapod.ui.screen.playback.SleepTimerDialog;
+import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
+import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
+import de.danoeh.antennapod.ui.screen.playback.PlaybackControlsDialog;
+import de.danoeh.antennapod.ui.share.ShareDialog;
+import de.danoeh.antennapod.event.FavoritesEvent;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-public class Media3VideoPlayerActivity extends AppCompatActivity {
+public class Media3VideoPlayerActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
     private static final String TAG = "M3VideoPlayerActivity";
     private Media3VideoPlayerActivityBinding viewBinding;
     private MediaController mediaController;
     private ListenableFuture<MediaController> controllerFuture;
+    private FeedMedia currentMedia;
+    private Disposable mediaLoadDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +80,16 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
     private void setupControlsView() {
         Toolbar toolbar = viewBinding.controlsView.getToolbar();
         toolbar.inflateMenu(R.menu.mediaplayer);
+        toolbar.setOnMenuItemClickListener(this);
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(Media3VideoPlayerActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        });
+        toolbar.getMenu().findItem(R.id.player_switch_to_audio_only).setVisible(true);
+        toolbar.getMenu().findItem(R.id.playback_speed).setVisible(true);
+        toolbar.getMenu().findItem(R.id.player_show_chapters).setVisible(true);
 
         viewBinding.controlsView.setListener(new VideoPlayerControlsView.ControlsListener() {
             @Override
@@ -146,6 +184,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        EventBus.getDefault().register(this);
         SessionToken sessionToken = new SessionToken(this,
                 new ComponentName(this, Media3PlaybackService.class));
         controllerFuture = new MediaController.Builder(this, sessionToken).buildAsync();
@@ -163,6 +202,11 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        if (mediaLoadDisposable != null) {
+            mediaLoadDisposable.dispose();
+        }
         viewBinding.playerView.setPlayer(null);
         if (mediaController != null) {
             mediaController.release();
@@ -173,7 +217,6 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
             controllerFuture = null;
         }
         viewBinding.controlsView.cancelAutoHide();
-        super.onStop();
     }
 
     @Override
@@ -195,6 +238,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
                 } else {
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
+                loadMediaInfo();
             }
 
             @Override
@@ -207,5 +251,81 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
                 }
             }
         });
+        loadMediaInfo();
+    }
+
+    private void loadMediaInfo() {
+        if (mediaLoadDisposable != null) {
+            mediaLoadDisposable.dispose();
+        }
+        mediaLoadDisposable = Maybe.fromCallable(() -> DBReader.getFeedMedia(
+                        PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> {
+                    currentMedia = media;
+                    FeedItemMenuHandler.onPrepareMenu(viewBinding.controlsView.getToolbar().getMenu(),
+                             Collections.singletonList(currentMedia.getItem()));
+                });
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.player_switch_to_audio_only) {
+            finish();
+            return true;
+        } else if (item.getItemId() == R.id.player_show_chapters) {
+            new ChaptersFragment().show(getSupportFragmentManager(), ChaptersFragment.TAG);
+            return true;
+        } else if (item.getItemId() == R.id.transcript_item) {
+            new TranscriptDialogFragment().show(getSupportFragmentManager(), TranscriptDialogFragment.TAG);
+            return true;
+        } else if (item.getItemId() == R.id.disable_sleeptimer_item
+                || item.getItemId() == R.id.set_sleeptimer_item) {
+            new SleepTimerDialog().show(getSupportFragmentManager(), "SleepTimerDialog");
+            return true;
+        } else if (item.getItemId() == R.id.audio_controls) {
+            PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
+            dialog.show(getSupportFragmentManager(), "playback_controls");
+            return true;
+        } else if (item.getItemId() == R.id.playback_speed) {
+            new VariableSpeedDialog().show(getSupportFragmentManager(), null);
+            return true;
+        }
+
+        if (currentMedia == null) {
+            return false;
+        }
+
+        if (item.getItemId() == R.id.add_to_favorites_item) {
+            DBWriter.addFavoriteItem(currentMedia.getItem());
+        } else if (item.getItemId() == R.id.remove_from_favorites_item) {
+            DBWriter.removeFavoriteItem(currentMedia.getItem());
+        } else if (item.getItemId() == R.id.open_feed_item) {
+            new MainActivityStarter(this).withOpenFeed(currentMedia.getItem().getFeedId())
+                    .withClearTop().start();
+        } else if (item.getItemId() == R.id.visit_website_item) {
+            IntentUtils.openInBrowser(this, getWebsiteLinkWithFallback(currentMedia));
+        } else if (item.getItemId() == R.id.share_item) {
+            ShareDialog.newInstance(currentMedia.getItem()).show(getSupportFragmentManager(), "ShareDialog");
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void favoritesChanged(FavoritesEvent event) {
+        loadMediaInfo();
+    }
+
+    private static String getWebsiteLinkWithFallback(FeedMedia media) {
+        if (media == null) {
+            return null;
+        } else if (StringUtils.isNotBlank(media.getWebsiteLink())) {
+            return media.getWebsiteLink();
+        } else  {
+            return media.getItem().getFeed().getLink();
+        }
     }
 }
