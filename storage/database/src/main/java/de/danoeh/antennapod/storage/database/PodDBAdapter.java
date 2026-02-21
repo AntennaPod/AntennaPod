@@ -576,7 +576,7 @@ public class PodDBAdapter {
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
-            Log.e(TAG, "setFeedMediaPlaybackInformation: ID of media was 0");
+            Log.e(TAG, "setMediaDownloadInformation: ID of media was 0");
         }
     }
 
