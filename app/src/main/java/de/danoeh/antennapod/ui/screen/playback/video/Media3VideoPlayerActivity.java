@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Rational;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -97,7 +98,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
     }
 
     private void setupPictureInPicture() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT < 26) {
             return;
         }
 
@@ -107,16 +108,18 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
             int videoWidth = mediaController.getVideoSize().width;
             int videoHeight = mediaController.getVideoSize().height;
             if (videoWidth > 0 && videoHeight > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    android.util.Rational aspectRatio = new android.util.Rational(videoWidth, videoHeight);
+                if (Build.VERSION.SDK_INT >= 33) {
+                    Rational aspectRatio = new Rational(videoWidth, videoHeight);
                     builder.setAspectRatio(aspectRatio);
                 }
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT >= 31) {
             builder.setAutoEnterEnabled(true);
-            builder.setSourceRectHint(viewBinding.playerView.getClipBounds());
+            if (viewBinding.playerView.getClipBounds() != null) {
+                builder.setSourceRectHint(viewBinding.playerView.getClipBounds());
+            }
         }
 
         setPictureInPictureParams(builder.build());
@@ -125,7 +128,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity {
     @Override
     public void onUserLeaveHint() {
         super.onUserLeaveHint();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+        if (Build.VERSION.SDK_INT >= 26
                 && PictureInPictureUtil.supportsPictureInPicture(this)
                 && !PictureInPictureUtil.isInPictureInPictureMode(this)) {
             viewBinding.controlsView.hideControls(false);

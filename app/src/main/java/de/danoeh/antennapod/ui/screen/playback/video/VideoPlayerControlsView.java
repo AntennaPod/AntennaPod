@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.VideoPlayerControlsBinding;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
@@ -83,6 +84,7 @@ public class VideoPlayerControlsView extends FrameLayout {
 
     @Override
     protected void onDetachedFromWindow() {
+        cancelAutoHide();
         EventBus.getDefault().unregister(this);
         super.onDetachedFromWindow();
     }
@@ -136,6 +138,7 @@ public class VideoPlayerControlsView extends FrameLayout {
 
         binding.durationLabel.setOnClickListener(v -> {
             UserPreferences.setShowRemainTimeSetting(!UserPreferences.shouldShowRemainingTime());
+            resetAutoHide();
         });
 
         binding.bottomControlsContainer.setOnTouchListener((view, motionEvent) -> true);
@@ -206,7 +209,7 @@ public class VideoPlayerControlsView extends FrameLayout {
         int currentPosition = converter.convert(positionMs);
         int duration = converter.convert(durationMs);
 
-        if (currentPosition == -1 || duration == -1) {
+        if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
             return;
         }
 
