@@ -529,6 +529,7 @@ public class PodDBAdapter {
 
     /**
      * Inserts or updates a media entry
+     * Use carefully to avoid overwriting properties with stale data.
      *
      * @return the id of the entry
      */
@@ -559,6 +560,24 @@ public class PodDBAdapter {
                     new String[]{String.valueOf(media.getId())});
         }
         return media.getId();
+    }
+
+    /**
+     * Update download state related properties of the feed media.
+     */
+    public void setMediaDownloadInformation(FeedMedia media) {
+        if (media.getId() != 0) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_SIZE, media.getSize());
+            values.put(KEY_FILE_URL, media.getLocalFileUrl());
+            values.put(KEY_DOWNLOAD_URL, media.getDownloadUrl());
+            values.put(KEY_DOWNLOAD_DATE, media.getDownloadDate());
+            values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
+            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
+                    new String[]{String.valueOf(media.getId())});
+        } else {
+            Log.e(TAG, "setMediaDownloadInformation: ID of media was 0");
+        }
     }
 
     public void setFeedMediaPlaybackInformation(FeedMedia media) {

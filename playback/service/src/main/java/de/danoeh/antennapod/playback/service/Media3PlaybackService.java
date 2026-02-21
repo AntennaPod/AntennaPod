@@ -30,6 +30,7 @@ import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
@@ -357,15 +358,23 @@ public class Media3PlaybackService extends MediaLibraryService {
         boolean almostEnded = media.getDuration() > 0
                 && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
 
+        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, almostEnded);
         if (almostEnded) {
-            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, true);
             if (item != null) {
                 DBWriter.markItemPlayed(FeedItem.PLAYED, true, item);
                 DBWriter.removeQueueItem(this, true, item);
+                FeedPreferences.AutoDeleteAction action =
+                        item.getFeed().getPreferences().getCurrentAutoDelete();
+                boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
+                        && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
+                boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
+                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL && autoDeleteEnabledGlobally);
+                if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
+                        || !UserPreferences.shouldFavoriteKeepEpisode())) {
+                    DBWriter.deleteFeedMediaOfItem(this, media);
+                }
             }
             DBWriter.addItemToPlaybackHistory(media);
-        } else {
-            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
         }
     }
 
