@@ -148,7 +148,7 @@ public class EpisodeDownloadWorker extends Worker {
         if (dest.exists()) {
             media.setLocalFileUrl(request.getDestination());
             try {
-                DBWriter.setFeedMedia(media).get();
+                DBWriter.setMediaDownloadInformation(media).get();
             } catch (Exception e) {
                 Log.e(TAG, "ExecutionException in writeFileUrl: " + e.getMessage());
             }

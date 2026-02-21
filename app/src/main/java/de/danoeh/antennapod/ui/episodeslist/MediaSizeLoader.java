@@ -70,7 +70,7 @@ public abstract class MediaSizeLoader {
                 media.setSize(size);
             }
             emitter.onSuccess(size);
-            DBWriter.setFeedMedia(media);
+            DBWriter.setMediaDownloadInformation(media);
         })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread());

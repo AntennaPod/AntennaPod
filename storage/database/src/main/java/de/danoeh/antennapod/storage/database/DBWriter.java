@@ -146,7 +146,7 @@ public class DBWriter {
             media.setHasEmbeddedPicture(false);
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            adapter.setMedia(media);
+            adapter.setMediaDownloadInformation(media);
             adapter.close();
         }
 
@@ -733,6 +733,7 @@ public class DBWriter {
     /**
      * Saves a FeedMedia object in the database. This method will save all attributes of the FeedMedia object. The
      * contents of FeedComponent-attributes (e.g. the FeedMedia's 'item'-attribute) will not be saved.
+     * Use carefully to avoid overwriting properties with stale data.
      *
      * @param media The FeedMedia object.
      */
@@ -741,6 +742,20 @@ public class DBWriter {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setMedia(media);
+            adapter.close();
+        });
+    }
+
+    /**
+     * Saves the downloaded file url and download state of a FeedMedia object
+     *
+     * @param media The FeedMedia object.
+     */
+    public static Future<?> setMediaDownloadInformation(final FeedMedia media) {
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setMediaDownloadInformation(media);
             adapter.close();
         });
     }
