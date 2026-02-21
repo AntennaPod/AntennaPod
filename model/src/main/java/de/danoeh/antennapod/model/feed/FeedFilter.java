@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings({ "unused", "serial" })
 public class FeedFilter implements Serializable {
     private final String includeFilter;
     private final String excludeFilter;
@@ -19,7 +20,7 @@ public class FeedFilter implements Serializable {
     public FeedFilter(String includeFilter, String excludeFilter, int minimalDuration) {
         // We're storing the strings and not the parsed terms because
         // 1. It's easier to show the user exactly what they typed in this way
-        //    (we don't have to recreate it)
+        // (we don't have to recreate it)
         // 2. We don't know if we'll actually be asked to parse anything anyways.
         this.includeFilter = includeFilter;
         this.excludeFilter = excludeFilter;
@@ -33,11 +34,13 @@ public class FeedFilter implements Serializable {
     /**
      * Parses the text in to a list of single words or quoted strings.
      * Example: "One "Two Three"" returns ["One", "Two Three"]
+     * 
      * @param filter string to parse in to terms
      * @return list of terms
      */
     private List<String> parseTerms(String filter) {
-        // from http://stackoverflow.com/questions/7804335/split-string-on-spaces-in-java-except-if-between-quotes-i-e-treat-hello-wor
+        // from
+        // http://stackoverflow.com/questions/7804335/split-string-on-spaces-in-java-except-if-between-quotes-i-e-treat-hello-wor
         List<String> list = new ArrayList<>();
         Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(filter);
         while (m.find()) {

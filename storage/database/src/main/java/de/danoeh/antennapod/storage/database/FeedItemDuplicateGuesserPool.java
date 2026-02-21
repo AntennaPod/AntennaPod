@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class FeedItemDuplicateGuesserPool {
     private final Map<String, List<FeedItem>> normalizedTitles = new HashMap<>();
     private final Map<String, FeedItem> downloadUrls = new HashMap<>();

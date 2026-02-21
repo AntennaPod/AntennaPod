@@ -20,6 +20,7 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -63,7 +64,7 @@ public class ShareDialogTest {
     @Test
     public void testShareDialogDisplayed() {
         onView(withText(R.string.share_label)).perform(click());
-        onView(allOf(isDisplayed(), withText(R.string.share_label)));
+        onView(allOf(isDisplayed(), withText(R.string.share_label))).check(matches(isDisplayed()));
     }
 
 }

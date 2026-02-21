@@ -56,7 +56,8 @@ import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 /**
  * Provides methods for writing data to AntennaPod's database.
  * In general, DBWriter-methods will be executed on an internal ExecutorService.
- * Some methods return a Future-object which the caller can use for waiting for the method's completion. The returned Future's
+ * Some methods return a Future-object which the caller can use for waiting for
+ * the method's completion. The returned Future's
  * will NOT contain any results.
  */
 public class DBWriter {
@@ -78,11 +79,13 @@ public class DBWriter {
     }
 
     /**
-     * Wait until all threads are finished to avoid the "Illegal connection pointer" error of
+     * Wait until all threads are finished to avoid the "Illegal connection pointer"
+     * error of
      * Robolectric. Call this method only for unit tests.
      */
     public static void tearDownTests() {
-        // dbExec is single-threaded FIFO, so if a newly submitted task runs, all previous tasks must have finished
+        // dbExec is single-threaded FIFO, so if a newly submitted task runs, all
+        // previous tasks must have finished
         final Semaphore available = new Semaphore(1, true);
         try {
             available.acquire();
@@ -103,7 +106,7 @@ public class DBWriter {
      * @param context A context that is used for opening a database connection.
      */
     public static Future<?> deleteFeedMediaOfItem(@NonNull final Context context,
-                                                  final FeedMedia media) {
+            final FeedMedia media) {
         return runOnDbThread(() -> {
             if (media == null) {
                 return;
@@ -162,8 +165,8 @@ public class DBWriter {
             if (media.getItem().getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueEpisodeAction(
                         new EpisodeAction.Builder(media.getItem(), EpisodeAction.DELETE)
-                            .currentTimestamp()
-                            .build());
+                                .currentTimestamp()
+                                .build());
             }
 
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
@@ -172,7 +175,8 @@ public class DBWriter {
     }
 
     /**
-     * Deletes a Feed and all downloaded files of its components like images and downloaded episodes.
+     * Deletes a Feed and all downloaded files of its components like images and
+     * downloaded episodes.
      *
      * @param context A context that is used for opening a database connection.
      * @param feedId  ID of the Feed that should be deleted.
@@ -248,8 +252,10 @@ public class DBWriter {
             EventBus.getDefault().post(QueueEvent.irreversibleRemoved(item));
         }
 
-        // we assume we also removed download log entries for the feed or its media files.
-        // especially important if download or refresh failed, as the user should not be able
+        // we assume we also removed download log entries for the feed or its media
+        // files.
+        // especially important if download or refresh failed, as the user should not be
+        // able
         // to retry these
         EventBus.getDefault().post(DownloadLogEvent.listUpdated());
 
@@ -288,8 +294,10 @@ public class DBWriter {
     }
 
     /**
-     * Adds a FeedMedia object to the playback history. A FeedMedia object is in the playback history if
-     * its playback completion date is set to a non-null value. This method will set the playback completion date to the
+     * Adds a FeedMedia object to the playback history. A FeedMedia object is in the
+     * playback history if
+     * its playback completion date is set to a non-null value. This method will set
+     * the playback completion date to the
      * current date regardless of the current value.
      *
      * @param media FeedMedia that should be added to the playback history.
@@ -299,12 +307,14 @@ public class DBWriter {
     }
 
     /**
-     * Adds a FeedMedia object to the playback history. A FeedMedia object is in the playback history if
-     * its playback completion date is set to a non-null value. This method will set the playback completion date to the
+     * Adds a FeedMedia object to the playback history. A FeedMedia object is in the
+     * playback history if
+     * its playback completion date is set to a non-null value. This method will set
+     * the playback completion date to the
      * current date regardless of the current value.
      *
      * @param media FeedMedia that should be added to the playback history.
-     * @param date LastPlayedTimeHistory for <code>media</code>
+     * @param date  LastPlayedTimeHistory for <code>media</code>
      */
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
         return runOnDbThread(() -> {
@@ -337,12 +347,14 @@ public class DBWriter {
     }
 
     /**
-     * Inserts a FeedItem in the queue at the specified index. The 'read'-attribute of the FeedItem will be set to
-     * true. If the FeedItem is already in the queue, the queue will not be modified.
+     * Inserts a FeedItem in the queue at the specified index. The 'read'-attribute
+     * of the FeedItem will be set to
+     * true. If the FeedItem is already in the queue, the queue will not be
+     * modified.
      *
-     * @param context             A context that is used for opening a database connection.
-     * @param itemId              ID of the FeedItem that should be added to the queue.
-     * @param index               Destination index. Must be in range 0..queue.size()
+     * @param context A context that is used for opening a database connection.
+     * @param itemId  ID of the FeedItem that should be added to the queue.
+     * @param index   Destination index. Must be in range 0..queue.size()
      * @throws IndexOutOfBoundsException if index < 0 || index >= queue.size()
      */
     public static Future<?> addQueueItemAt(final Context context, final long itemId, final int index) {
@@ -371,11 +383,13 @@ public class DBWriter {
     }
 
     /**
-     * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
-     * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
+     * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all
+     * items will be set to true.
+     * If a FeedItem is already in the queue, the FeedItem will not change its
+     * position in the queue.
      *
-     * @param context  A context that is used for opening a database connection.
-     * @param items    FeedItem objects that should be added to the queue.
+     * @param context A context that is used for opening a database connection.
+     * @param items   FeedItem objects that should be added to the queue.
      */
     public static Future<?> addQueueItem(final Context context, final FeedItem... items) {
         return runOnDbThread(() -> {
@@ -387,11 +401,11 @@ public class DBWriter {
             adapter.open();
             final List<FeedItem> queue = DBReader.getQueue();
 
-            List<FeedItem>  markAsUnplayed = new ArrayList<>();
+            List<FeedItem> markAsUnplayed = new ArrayList<>();
             List<QueueEvent> events = new ArrayList<>();
             List<FeedItem> updatedItems = new ArrayList<>();
-            ItemEnqueuePositionCalculator positionCalculator =
-                    new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
+            ItemEnqueuePositionCalculator positionCalculator = new ItemEnqueuePositionCalculator(
+                    FeedPreferences.EnqueueLocation.valueOf(UserPreferences.getEnqueueLocation().name()));
             Playable currentlyPlaying = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
             for (FeedItem item : items) {
@@ -400,8 +414,40 @@ public class DBWriter {
                 } else if (!item.hasMedia()) {
                     continue;
                 }
-                queue.add(insertPosition, item);
-                events.add(QueueEvent.added(item, insertPosition));
+                // Determine effective enqueue location: per-feed overrides global setting.
+                FeedPreferences.EnqueueLocation effectiveLocation = FeedPreferences.EnqueueLocation
+                        .valueOf(UserPreferences.getEnqueueLocation().name());
+                try {
+                    if (item.getFeed() != null && item.getFeed().getPreferences() != null) {
+                        FeedPreferences.EnqueueLocation feedLoc = item.getFeed().getPreferences().getEnqueueLocation();
+                        if (feedLoc != null && feedLoc != FeedPreferences.EnqueueLocation.GLOBAL) {
+                            switch (feedLoc) {
+                                case BACK:
+                                    effectiveLocation = FeedPreferences.EnqueueLocation.BACK;
+                                    break;
+                                case FRONT:
+                                    effectiveLocation = FeedPreferences.EnqueueLocation.FRONT;
+                                    break;
+                                case AFTER_CURRENTLY_PLAYING:
+                                    effectiveLocation = FeedPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
+                                    break;
+                                case RANDOM:
+                                    effectiveLocation = FeedPreferences.EnqueueLocation.RANDOM;
+                                    break;
+                                default:
+                                    // Keep global setting
+                                    break;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    // Fall back to global setting
+                }
+                ItemEnqueuePositionCalculator feedPositionCalculator = new ItemEnqueuePositionCalculator(
+                        effectiveLocation);
+                int feedInsertPosition = feedPositionCalculator.calcPosition(queue, currentlyPlaying);
+                queue.add(feedInsertPosition, item);
+                events.add(QueueEvent.added(item, feedInsertPosition));
 
                 item.addTag(FeedItem.TAG_QUEUE);
                 updatedItems.add(item);
@@ -431,7 +477,8 @@ public class DBWriter {
      * If the queue is not in keep sorted mode, nothing happens.
      *
      * @param queue  The queue to be sorted.
-     * @param events Replaces the events by a single SORT event if the list has to be sorted automatically.
+     * @param events Replaces the events by a single SORT event if the list has to
+     *               be sorted automatically.
      */
     private static void applySortOrder(List<FeedItem> queue, List<QueueEvent> events) {
         if (!UserPreferences.isQueueKeepSorted()) {
@@ -470,23 +517,25 @@ public class DBWriter {
     /**
      * Removes a FeedItem object from the queue.
      *
-     * @param context             A context that is used for opening a database connection.
-     * @param performAutoDownload true if an auto-download process should be started after the operation.
+     * @param context             A context that is used for opening a database
+     *                            connection.
+     * @param performAutoDownload true if an auto-download process should be started
+     *                            after the operation.
      * @param item                FeedItem that should be removed.
      */
     public static Future<?> removeQueueItem(final Context context,
-                                            final boolean performAutoDownload, final FeedItem item) {
+            final boolean performAutoDownload, final FeedItem item) {
         return runOnDbThread(() -> removeQueueItemSynchronous(context, performAutoDownload, item.getId()));
     }
 
     public static Future<?> removeQueueItem(final Context context, final boolean performAutoDownload,
-                                            final long... itemIds) {
+            final long... itemIds) {
         return runOnDbThread(() -> removeQueueItemSynchronous(context, performAutoDownload, itemIds));
     }
 
     private static void removeQueueItemSynchronous(final Context context,
-                                                   final boolean performAutoDownload,
-                                                   final long... itemIds) {
+            final boolean performAutoDownload,
+            final long... itemIds) {
         if (itemIds.length < 1) {
             return;
         }
@@ -565,9 +614,12 @@ public class DBWriter {
      *
      * @param from            Source index. Must be in range 0..queue.size()-1.
      * @param to              Destination index. Must be in range 0..queue.size()-1.
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     *                        false if the caller wants to avoid unexpected updates of the GUI.
-     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
+     * @param broadcastUpdate true if this operation should trigger a
+     *                        QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates
+     *                        of the GUI.
+     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from
+     *                                   < 0 || from >= queue.size())
      */
     public static Future<?> moveQueueItem(final int from, final int to, final boolean broadcastUpdate) {
         return runOnDbThread(() -> {
@@ -629,7 +681,7 @@ public class DBWriter {
                 EventBus.getDefault().post(event);
             }
         } else {
-            Log.w(TAG, "moveToTop: " + moveToTop +  " - Queue was not modified.");
+            Log.w(TAG, "moveToTop: " + moveToTop + " - Queue was not modified.");
         }
         adapter.close();
     }
@@ -646,9 +698,11 @@ public class DBWriter {
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.
      *
-     * @param played             New value of the 'read'-attribute one of FeedItem.PLAYED,
+     * @param played             New value of the 'read'-attribute one of
+     *                           FeedItem.PLAYED,
      *                           FeedItem.NEW, FeedItem.UNPLAYED
-     * @param resetMediaPosition true if this method should also reset the position of the FeedItem's FeedMedia object.
+     * @param resetMediaPosition true if this method should also reset the position
+     *                           of the FeedItem's FeedMedia object.
      * @param items              The FeedItem objects to be updated
      */
     @NonNull
@@ -664,7 +718,8 @@ public class DBWriter {
     }
 
     /**
-     * Sets the 'read'-attribute of all NEW FeedItems of a specific Feed to UNPLAYED.
+     * Sets the 'read'-attribute of all NEW FeedItems of a specific Feed to
+     * UNPLAYED.
      *
      * @param feedId ID of the Feed.
      */
@@ -731,8 +786,10 @@ public class DBWriter {
     }
 
     /**
-     * Saves a FeedMedia object in the database. This method will save all attributes of the FeedMedia object. The
-     * contents of FeedComponent-attributes (e.g. the FeedMedia's 'item'-attribute) will not be saved.
+     * Saves a FeedMedia object in the database. This method will save all
+     * attributes of the FeedMedia object. The
+     * contents of FeedComponent-attributes (e.g. the FeedMedia's 'item'-attribute)
+     * will not be saved.
      *
      * @param media The FeedMedia object.
      */
@@ -746,7 +803,8 @@ public class DBWriter {
     }
 
     /**
-     * Saves the 'position', 'duration' and 'last played time' attributes of a FeedMedia object
+     * Saves the 'position', 'duration' and 'last played time' attributes of a
+     * FeedMedia object
      *
      * @param media The FeedMedia object.
      */
@@ -760,7 +818,8 @@ public class DBWriter {
     }
 
     /**
-     * Saves a FeedItem object in the database. This method will save all attributes of the FeedItem object including
+     * Saves a FeedItem object in the database. This method will save all attributes
+     * of the FeedItem object including
      * the content of FeedComponent-attributes.
      *
      * @param item The FeedItem object.
@@ -789,7 +848,8 @@ public class DBWriter {
     }
 
     /**
-     * Saves a FeedPreferences object in the database. The Feed ID of the FeedPreferences-object MUST NOT be 0.
+     * Saves a FeedPreferences object in the database. The Feed ID of the
+     * FeedPreferences-object MUST NOT be 0.
      *
      * @param preferences The FeedPreferences object.
      */
@@ -823,7 +883,7 @@ public class DBWriter {
      * @param lastUpdateFailed true if last update failed
      */
     public static Future<?> setFeedLastUpdateFailed(final long feedId,
-                                                    final boolean lastUpdateFailed) {
+            final boolean lastUpdateFailed) {
         return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -872,13 +932,16 @@ public class DBWriter {
      * Sort the FeedItems in the queue with the given the named sort order.
      *
      * @param broadcastUpdate <code>true</code> if this operation should trigger a
-     *                        QueueUpdateBroadcast. This option should be set to <code>false</code>
-     *                        if the caller wants to avoid unexpected updates of the GUI.
+     *                        QueueUpdateBroadcast. This option should be set to
+     *                        <code>false</code>
+     *                        if the caller wants to avoid unexpected updates of the
+     *                        GUI.
      */
     public static Future<?> reorderQueue(@Nullable SortOrder sortOrder, final boolean broadcastUpdate) {
         if (sortOrder == null) {
             Log.w(TAG, "reorderQueue() - sortOrder is null. Do nothing.");
-            return runOnDbThread(() -> { });
+            return runOnDbThread(() -> {
+            });
         }
         final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         return runOnDbThread(() -> {
@@ -902,8 +965,9 @@ public class DBWriter {
      * @param filterValues Values that represent properties to filter by
      */
     public static Future<?> setFeedItemsFilter(final long feedId,
-                                               final Set<String> filterValues) {
-        Log.d(TAG, "setFeedItemsFilter() called with: " + "feedId = [" + feedId + "], filterValues = [" + filterValues + "]");
+            final Set<String> filterValues) {
+        Log.d(TAG, "setFeedItemsFilter() called with: " + "feedId = [" + feedId + "], filterValues = [" + filterValues
+                + "]");
         return runOnDbThread(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -941,7 +1005,8 @@ public class DBWriter {
     }
 
     /**
-     * Removes the feed with the given download url. This method should NOT be executed on the GUI thread.
+     * Removes the feed with the given download url. This method should NOT be
+     * executed on the GUI thread.
      *
      * @param context     Used for accessing the db
      * @param downloadUrl URL of the feed.
@@ -973,7 +1038,8 @@ public class DBWriter {
     }
 
     /**
-     * Submit to the DB thread only if caller is not already on the DB thread. Otherwise,
+     * Submit to the DB thread only if caller is not already on the DB thread.
+     * Otherwise,
      * just execute synchronously
      */
     private static Future<?> runOnDbThread(Runnable runnable) {

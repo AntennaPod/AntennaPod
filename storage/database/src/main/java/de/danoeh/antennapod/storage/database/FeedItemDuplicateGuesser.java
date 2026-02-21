@@ -8,10 +8,12 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Publishers sometimes mess up their feed by adding episodes twice or by changing the ID of existing episodes.
+ * Publishers sometimes mess up their feed by adding episodes twice or by
+ * changing the ID of existing episodes.
  * This class tries to guess if publishers actually meant another episode,
  * even if their feed explicitly says that the episodes are different.
  */
+@SuppressWarnings("unused")
 public class FeedItemDuplicateGuesser {
     public static boolean seemDuplicates(FeedItem item1, FeedItem item2) {
         if (sameAndNotEmpty(item1.getItemIdentifier(), item2.getItemIdentifier())) {

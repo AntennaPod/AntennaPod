@@ -62,14 +62,16 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
         final Resources res = requireActivity().getResources();
         final Map<String, String> options = new ArrayMap<>();
         {
-            String[] keys = res.getStringArray(R.array.enqueue_location_values);
-            String[] values = res.getStringArray(R.array.enqueue_location_options);
+            String[] keys = res.getStringArray(R.array.global_enqueue_location_values);
+            String[] values = res.getStringArray(R.array.global_enqueue_location_options);
             for (int i = 0; i < keys.length; i++) {
                 options.put(keys[i], values[i]);
             }
         }
 
         ListPreference pref = requirePreference(UserPreferences.PREF_ENQUEUE_LOCATION);
+        pref.setEntries(res.getStringArray(R.array.global_enqueue_location_options));
+        pref.setEntryValues(res.getStringArray(R.array.global_enqueue_location_values));
         pref.setSummary(res.getString(R.string.pref_enqueue_location_sum, options.get(pref.getValue())));
 
         pref.setOnPreferenceChangeListener((preference, newValue) -> {

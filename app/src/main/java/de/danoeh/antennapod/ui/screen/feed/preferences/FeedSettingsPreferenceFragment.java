@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -62,6 +61,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     private static final String PREF_NOTIFICATION = "episodeNotification";
     private static final String PREF_RENAME = "rename";
     private static final String PREF_TAGS = "tags";
+    private static final String PREF_FEED_ENQUEUE_LOCATION = "feedEnqueueLocation";
 
     private Feed feed;
     private Disposable disposable;
@@ -76,8 +76,8 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     boolean notificationPermissionDenied = false;
-    private final ActivityResultLauncher<String> enableNotificationsRequestPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+    private final ActivityResultLauncher<String> enableNotifLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     SwitchPreferenceCompat pref = findPreference(PREF_NOTIFICATION);
                     pref.setChecked(true);
@@ -137,7 +137,8 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
                     }
 
                     findPreference(PREF_SCREEN).setVisible(true);
-                }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
+                }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> {
+                });
     }
 
     @Override
@@ -149,6 +150,52 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setupPreferences() {
+        ListPreference enqueueLocationPref = findPreference(PREF_FEED_ENQUEUE_LOCATION);
+        if (enqueueLocationPref != null) {
+            FeedPreferences.EnqueueLocation loc = feedPreferences.getEnqueueLocation();
+
+            CharSequence[] entries = getResources().getStringArray(R.array.enqueue_location_options);
+            CharSequence[] entryValues = getResources().getStringArray(R.array.enqueue_location_values);
+            enqueueLocationPref.setEntries(entries);
+            enqueueLocationPref.setEntryValues(entryValues);
+
+            // Map enum to value string: use the enum name for UI
+            enqueueLocationPref.setValue(loc.name());
+            updateEnqueueLocationSummary(enqueueLocationPref, loc);
+
+            enqueueLocationPref.setOnPreferenceChangeListener((preference, newValue) -> {
+                Log.d(TAG, "=== ENQUEUE LOCATION CHANGE ===");
+                Log.d(TAG, "newValue: " + newValue);
+                Log.d(TAG, "current feedPreferences: " + feedPreferences.getEnqueueLocation());
+
+                if (newValue == null || !(newValue instanceof String)) {
+                    Log.w(TAG, "Invalid newValue, returning false");
+                    return false;
+                }
+
+                try {
+                    // Parse string value to enum, then get code for database
+                    String valueStr = (String) newValue;
+                    FeedPreferences.EnqueueLocation newLocation = FeedPreferences.EnqueueLocation.valueOf(valueStr);
+                    Log.d(TAG, "parsed newLocation: " + newLocation);
+
+                    feedPreferences.setEnqueueLocation(newLocation);
+                    Log.d(TAG, "set feedPreferences.enqueueLocation to: " + feedPreferences.getEnqueueLocation());
+
+                    DBWriter.setFeedPreferences(feedPreferences);
+                    Log.d(TAG, "called DBWriter.setFeedPreferences");
+
+                    updateEnqueueLocationSummary(enqueueLocationPref, newLocation);
+                    // setValue() not needed - preference already shows correct value
+                    Log.d(TAG, "updated preference UI value");
+                } catch (Exception e) {
+                    Log.e(TAG, "Error setting enqueue location", e);
+                }
+
+                return false; // Don't persist to SharedPreferences - DB is authoritative
+            });
+        }
+
         findPreference(PREF_AUTO_SKIP).setOnPreferenceClickListener(preference -> {
             new FeedPreferenceSkipDialog(getContext(),
                     feedPreferences.getFeedSkipIntro(), feedPreferences.getFeedSkipEnding()) {
@@ -229,6 +276,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
             updateNewEpisodesActionSummary();
             return false;
         });
+
         SwitchPreferenceCompat keepUpdated = findPreference("keepUpdated");
         keepUpdated.setChecked(feedPreferences.getKeepUpdated());
         keepUpdated.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -255,9 +303,9 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         notificationPreference.setChecked(feedPreferences.getShowEpisodeNotification());
         notificationPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             boolean checked = Boolean.TRUE.equals(newValue);
-            if (checked && Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(getContext(),
+            if (checked && Build.VERSION.SDK_INT >= 33 && requireContext().checkSelfPermission(
                     Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                enableNotificationsRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                enableNotifLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
                 return false;
             }
             feedPreferences.setShowEpisodeNotification(checked);
@@ -274,9 +322,11 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     private void updateAutoDeleteSummary() {
         ListPreference autoDeletePreference = findPreference(PREF_AUTO_DELETE);
         boolean isEnabledGlobally = feed.isLocalFeed()
-                ? UserPreferences.isAutoDeleteLocal() : UserPreferences.isAutoDelete();
+                ? UserPreferences.isAutoDeleteLocal()
+                : UserPreferences.isAutoDelete();
         int globalStringResource = isEnabledGlobally
-                ? R.string.feed_auto_download_always : R.string.feed_auto_download_never;
+                ? R.string.feed_auto_download_always
+                : R.string.feed_auto_download_never;
         String summary = switch (feedPreferences.getAutoDeleteAction()) {
             case GLOBAL -> getString(R.string.global_default_with_value, getString(globalStringResource));
             case ALWAYS -> getString(R.string.feed_auto_download_always);
@@ -329,11 +379,27 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         autoDownloadPreference.setValue("" + feedPreferences.getAutoDownload().code);
     }
 
+    private void updateEnqueueLocationSummary(ListPreference preference, FeedPreferences.EnqueueLocation location) {
+        CharSequence[] entries = preference.getEntries();
+        CharSequence[] values = preference.getEntryValues();
+
+        // Find the index of the enum name in values array
+        for (int i = 0; i < values.length; i++) {
+            if (values[i].toString().equals(location.name())) {
+                preference.setSummary(entries[i].toString());
+                return;
+            }
+        }
+
+        // Fallback - shouldn't happen
+        preference.setSummary(location.name().replace("_", " "));
+    }
+
     private boolean showPlaybackSpeedDialog(Preference preference) {
-        PlaybackSpeedFeedSettingDialogBinding viewBinding =
-                PlaybackSpeedFeedSettingDialogBinding.inflate(getLayoutInflater());
-        viewBinding.seekBar.setProgressChangedListener(speed ->
-                viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
+        PlaybackSpeedFeedSettingDialogBinding viewBinding = PlaybackSpeedFeedSettingDialogBinding
+                .inflate(getLayoutInflater());
+        viewBinding.seekBar.setProgressChangedListener(
+                speed -> viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
         viewBinding.useGlobalCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             viewBinding.seekBar.setEnabled(!isChecked);
             viewBinding.seekBar.setAlpha(isChecked ? 0.4f : 1f);
@@ -354,7 +420,8 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
                 .setView(viewBinding.getRoot())
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     float newSpeed = viewBinding.useGlobalCheckbox.isChecked()
-                            ? FeedPreferences.SPEED_USE_GLOBAL : viewBinding.seekBar.getCurrentSpeed();
+                            ? FeedPreferences.SPEED_USE_GLOBAL
+                            : viewBinding.seekBar.getCurrentSpeed();
                     feedPreferences.setFeedPlaybackSpeed(newSpeed);
                     FeedPreferences.SkipSilence newSkipSilence;
                     if (viewBinding.useGlobalCheckbox.isChecked()) {

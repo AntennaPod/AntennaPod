@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings({ "unused", "serial" })
 public class FeedItemFilter implements Serializable {
 
     private final String[] properties;

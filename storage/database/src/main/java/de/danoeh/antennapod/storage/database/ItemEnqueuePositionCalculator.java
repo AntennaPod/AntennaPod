@@ -8,8 +8,8 @@ import java.util.Random;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
-import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.model.playback.Playable;
 
 /**
@@ -18,24 +18,28 @@ import de.danoeh.antennapod.model.playback.Playable;
 public class ItemEnqueuePositionCalculator {
 
     @NonNull
-    private final EnqueueLocation enqueueLocation;
+    private final FeedPreferences.EnqueueLocation enqueueLocation;
+    private static final Random RANDOM = new Random();
 
-    public ItemEnqueuePositionCalculator(@NonNull EnqueueLocation enqueueLocation) {
+    public ItemEnqueuePositionCalculator(@NonNull FeedPreferences.EnqueueLocation enqueueLocation) {
         this.enqueueLocation = enqueueLocation;
     }
 
     /**
-     * Determine the position (0-based) that the item(s) should be inserted to the named queue.
+     * Determine the position (0-based) that the item(s) should be inserted to the
+     * named queue.
      *
-     * @param curQueue           the queue to which the item is to be inserted
-     * @param currentPlaying     the currently playing media
+     * @param curQueue       the queue to which the item is to be inserted
+     * @param currentPlaying the currently playing media
      */
     public int calcPosition(@NonNull List<FeedItem> curQueue, @Nullable Playable currentPlaying) {
         switch (enqueueLocation) {
+            case GLOBAL:
             case BACK:
                 return curQueue.size();
             case FRONT:
-                // Return not necessarily 0, so that when a list of items are downloaded and enqueued
+                // Return not necessarily 0, so that when a list of items are downloaded and
+                // enqueued
                 // in succession of calls (e.g., users manually tapping download one by one),
                 // the items enqueued are kept the same order.
                 // Simply returning 0 will reverse the order.
@@ -45,8 +49,7 @@ public class ItemEnqueuePositionCalculator {
                 return getPositionOfFirstNonDownloadingItem(
                         currentlyPlayingPosition + 1, curQueue);
             case RANDOM:
-                Random random = new Random();
-                return random.nextInt(curQueue.size() + 1);
+                return RANDOM.nextInt(curQueue.size() + 1);
             default:
                 throw new AssertionError("calcPosition() : unrecognized enqueueLocation option: " + enqueueLocation);
         }
@@ -63,19 +66,16 @@ public class ItemEnqueuePositionCalculator {
     }
 
     private boolean isItemAtPositionDownloading(int position, List<FeedItem> curQueue) {
-        FeedItem curItem;
-        try {
-            curItem = curQueue.get(position);
-        } catch (IndexOutOfBoundsException e) {
-            curItem = null;
+        if (position < 0 || position >= curQueue.size()) {
+            return false;
         }
-        return curItem != null
-                && curItem.getMedia() != null
+        FeedItem curItem = curQueue.get(position);
+        return curItem.getMedia() != null
                 && DownloadServiceInterface.get().isDownloadingEpisode(curItem.getMedia().getDownloadUrl());
     }
 
     private static int getCurrentlyPlayingPosition(@NonNull List<FeedItem> curQueue,
-                                                   @Nullable Playable currentPlaying) {
+            @Nullable Playable currentPlaying) {
         if (!(currentPlaying instanceof FeedMedia)) {
             return -1;
         }

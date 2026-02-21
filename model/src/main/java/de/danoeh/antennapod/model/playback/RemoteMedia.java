@@ -19,6 +19,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * {@link FeedMedia} hasn't been found.
  * Used for Casting and for previewing unsubscribed feeds.
  */
+@SuppressWarnings({ "unused", "serial" })
 public class RemoteMedia implements Playable {
     public static final String TAG = "RemoteMedia";
 
@@ -42,9 +43,9 @@ public class RemoteMedia implements Playable {
     private long lastPlayedTimeStatistics;
 
     public RemoteMedia(String downloadUrl, String itemId, String feedUrl, String feedTitle,
-                       String episodeTitle, String episodeLink, String feedAuthor,
-                       String imageUrl, String feedLink, String mimeType, Date pubDate,
-                       String notes) {
+            String episodeTitle, String episodeLink, String feedAuthor,
+            String imageUrl, String feedLink, String mimeType, Date pubDate,
+            String notes) {
         this.downloadUrl = downloadUrl;
         this.itemIdentifier = itemId;
         this.feedUrl = feedUrl;

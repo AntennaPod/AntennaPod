@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author daniel
  */
+@SuppressWarnings({ "unused", "serial" })
 public class Feed {
 
     public static final int FEEDFILETYPE_FEED = 0;
@@ -56,7 +57,8 @@ public class Feed {
     private List<FeedItem> items;
 
     /**
-     * String that identifies the last update (adopted from Last-Modified or ETag header).
+     * String that identifies the last update (adopted from Last-Modified or ETag
+     * header).
      */
     private String lastModified;
     private long lastRefreshAttempt;
@@ -73,8 +75,10 @@ public class Feed {
     private FeedPreferences preferences;
 
     /**
-     * The page number that this feed is on. Only feeds with page number "0" should be stored in the
-     * database, feed objects with a higher page number only exist temporarily and should be merged
+     * The page number that this feed is on. Only feeds with page number "0" should
+     * be stored in the
+     * database, feed objects with a higher page number only exist temporarily and
+     * should be merged
      * into feeds with page number "0".
      * <p/>
      * This attribute's value is not saved in the database
@@ -82,21 +86,25 @@ public class Feed {
     private int pageNr;
 
     /**
-     * True if this is a "paged feed", i.e. there exist other feed files that belong to the same
+     * True if this is a "paged feed", i.e. there exist other feed files that belong
+     * to the same
      * logical feed.
      */
     private boolean paged;
 
     /**
-     * Link to the next page of this feed. If this feed object represents a logical feed (i.e. a feed
-     * that is saved in the database) this might be null while still being a paged feed.
+     * Link to the next page of this feed. If this feed object represents a logical
+     * feed (i.e. a feed
+     * that is saved in the database) this might be null while still being a paged
+     * feed.
      */
     private String nextPageLink;
 
     private boolean lastUpdateFailed;
 
     /**
-     * Contains property strings. If such a property applies to a feed item, it is not shown in the feed list
+     * Contains property strings. If such a property applies to a feed item, it is
+     * not shown in the feed list
      */
     private FeedItemFilter itemfilter;
 
@@ -112,10 +120,10 @@ public class Feed {
      * This constructor is used for restoring a feed from the database.
      */
     public Feed(long id, String lastModified, String title, String customTitle, String link,
-                String description, String paymentLinks, String author, String language,
-                String type, String feedIdentifier, String imageUrl, String fileUrl,
-                String downloadUrl, long lastRefreshAttempt, boolean paged, String nextPageLink,
-                String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed, int state) {
+            String description, String paymentLinks, String author, String language,
+            String type, String feedIdentifier, String imageUrl, String fileUrl,
+            String downloadUrl, long lastRefreshAttempt, boolean paged, String nextPageLink,
+            String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed, int state) {
         this.localFileUrl = fileUrl;
         this.downloadUrl = downloadUrl;
         this.lastRefreshAttempt = lastRefreshAttempt;
@@ -148,14 +156,15 @@ public class Feed {
      * This constructor is used for test purposes.
      */
     public Feed(long id, String lastModified, String title, String link, String description, String paymentLink,
-                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
-                String downloadUrl, long lastRefreshAttempt) {
+            String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
+            String downloadUrl, long lastRefreshAttempt) {
         this(id, lastModified, title, null, link, description, paymentLink, author, language, type, feedIdentifier,
                 imageUrl, fileUrl, downloadUrl, lastRefreshAttempt, false, null, null, null, false, STATE_SUBSCRIBED);
     }
 
     /**
-     * This constructor is used for requesting a feed download (it must not be used for anything else!).
+     * This constructor is used for requesting a feed download (it must not be used
+     * for anything else!).
      * It should NOT be used if the title of the feed is already known.
      */
     public Feed(String url, String lastModified) {
@@ -166,7 +175,8 @@ public class Feed {
     }
 
     /**
-     * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
+     * This constructor is used for requesting a feed download (it must not be used
+     * for anything else!). It should be
      * used if the title of the feed is already known.
      */
     public Feed(String url, String lastModified, String title) {
@@ -175,7 +185,8 @@ public class Feed {
     }
 
     /**
-     * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
+     * This constructor is used for requesting a feed download (it must not be used
+     * for anything else!). It should be
      * used if the title of the feed is already known.
      */
     public Feed(String url, String lastModified, String title, String username, String password) {
@@ -251,7 +262,8 @@ public class Feed {
         if (other.lastRefreshAttempt > lastRefreshAttempt) {
             lastRefreshAttempt = other.lastRefreshAttempt;
         }
-        // this feed's nextPage might already point to a higher page, so we only update the nextPage value
+        // this feed's nextPage might already point to a higher page, so we only update
+        // the nextPage value
         // if this feed is not paged and the other feed is.
         if (!this.paged && other.paged) {
             this.paged = other.paged;

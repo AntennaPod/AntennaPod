@@ -17,6 +17,7 @@ import java.util.Set;
  *
  * @author daniel
  */
+@SuppressWarnings({ "unused", "serial" })
 public class FeedItem implements Serializable {
 
     /** tag that indicates this item is in the queue */
@@ -55,17 +56,21 @@ public class FeedItem implements Serializable {
     private String paymentLink;
 
     /**
-     * Is true if the database contains any chapters that belong to this item. This attribute is only
+     * Is true if the database contains any chapters that belong to this item. This
+     * attribute is only
      * written once by DBReader on initialization.
-     * The FeedItem might still have a non-null chapters value. In this case, the list of chapters
+     * The FeedItem might still have a non-null chapters value. In this case, the
+     * list of chapters
      * has not been saved in the database yet.
-     * */
+     */
     private final boolean hasChapters;
 
     /**
-     * The list of chapters of this item. This might be null even if there are chapters of this item
-     * in the database. The 'hasChapters' attribute should be used to check if this item has any chapters.
-     * */
+     * The list of chapters of this item. This might be null even if there are
+     * chapters of this item
+     * in the database. The 'hasChapters' attribute should be used to check if this
+     * item has any chapters.
+     */
     private transient List<Chapter> chapters;
     private String imageUrl;
 
@@ -83,11 +88,11 @@ public class FeedItem implements Serializable {
 
     /**
      * This constructor is used by DBReader.
-     * */
+     */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
-                    boolean hasChapters, String imageUrl, int state,
-                    String itemIdentifier, boolean autoDownloadEnabled, String podcastIndexChapterUrl,
-                    String transcriptType, String transcriptUrl, String socialInteractUrl) {
+            boolean hasChapters, String imageUrl, int state,
+            String itemIdentifier, boolean autoDownloadEnabled, String podcastIndexChapterUrl,
+            String transcriptType, String transcriptUrl, String socialInteractUrl) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -122,10 +127,11 @@ public class FeedItem implements Serializable {
     }
 
     /**
-     * This constructor should be used for creating test objects involving chapter marks.
+     * This constructor should be used for creating test objects involving chapter
+     * marks.
      */
     public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate,
-                    int state, Feed feed, boolean hasChapters) {
+            int state, Feed feed, boolean hasChapters) {
         this.id = id;
         this.title = title;
         this.itemIdentifier = itemIdentifier;
@@ -315,8 +321,11 @@ public class FeedItem implements Serializable {
     }
 
     /**
-     * Updates this item's description property if the given argument is longer than the already stored description
-     * @param newDescription The new item description, content:encoded, itunes:description, etc.
+     * Updates this item's description property if the given argument is longer than
+     * the already stored description
+     * 
+     * @param newDescription The new item description, content:encoded,
+     *                       itunes:description, etc.
      */
     public void setDescriptionIfLonger(String newDescription) {
         if (newDescription == null) {
@@ -379,8 +388,10 @@ public class FeedItem implements Serializable {
 
     /**
      * Returns the image of this item, as specified in the feed.
-     * To load the image that can be displayed to the user, use {@link #getImageLocation},
-     * which also considers embedded pictures or the feed picture if no other picture is present.
+     * To load the image that can be displayed to the user, use
+     * {@link #getImageLocation},
+     * which also considers embedded pictures or the feed picture if no other
+     * picture is present.
      */
     public String getImageUrl() {
         return imageUrl;

@@ -65,7 +65,7 @@ class DBUpgrader {
                 do {
                     long mediaId = feeditemCursor.getLong(KEY_MEDIA_POSITION);
                     contentValues.put(PodDBAdapter.KEY_FEEDITEM, feeditemCursor.getLong(KEY_ID_POSITION));
-                    db.update(PodDBAdapter.TABLE_NAME_FEED_MEDIA, contentValues, PodDBAdapter.KEY_ID + "=?", new String[]{String.valueOf(mediaId)});
+                    db.update(PodDBAdapter.TABLE_NAME_FEED_MEDIA, contentValues, PodDBAdapter.KEY_ID + "= ?", new String[]{String.valueOf(mediaId)});
                     contentValues.clear();
                 } while (feeditemCursor.moveToNext());
                 db.setTransactionSuccessful();
@@ -342,7 +342,7 @@ class DBUpgrader {
                     + " INTEGER DEFAULT " + FeedPreferences.SkipSilence.GLOBAL.code);
         }
         if (oldVersion < 3050000) {
-            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                     + " ADD COLUMN " + PodDBAdapter.KEY_STATE + " INTEGER DEFAULT " + Feed.STATE_SUBSCRIBED);
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                     + " ADD COLUMN " + PodDBAdapter.KEY_PODCASTINDEX_TRANSCRIPT_URL + " TEXT");

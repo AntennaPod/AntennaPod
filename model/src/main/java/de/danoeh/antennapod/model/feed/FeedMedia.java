@@ -17,6 +17,10 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents the media file of a FeedItem.
+ */
+@SuppressWarnings({ "unused", "serial" })
 public class FeedMedia implements Playable {
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
@@ -27,7 +31,7 @@ public class FeedMedia implements Playable {
      * and got an invalid response. Using Integer.MIN_VALUE because
      * 1) we'll still check on it in case it gets downloaded (it's <= 0)
      * 2) By default all FeedMedia have a size of 0 if we don't know it,
-     *    so this won't conflict with existing practice.
+     * so this won't conflict with existing practice.
      */
     private static final int CHECKED_ON_SIZE_BUT_UNKNOWN = Integer.MIN_VALUE;
 
@@ -41,7 +45,8 @@ public class FeedMedia implements Playable {
     private int playedDuration; // How many ms of this file have been played
     private long size; // File size in Byte
     private String mimeType;
-    @Nullable private volatile FeedItem item;
+    @Nullable
+    private volatile FeedItem item;
     private Date lastPlayedTimeHistory;
     private int startPosition = -1;
     private int playedDurationWhenStarted;
@@ -53,7 +58,7 @@ public class FeedMedia implements Playable {
     private long itemID;
 
     public FeedMedia(FeedItem i, String downloadUrl, long size,
-                     String mimeType) {
+            String mimeType) {
         this.localFileUrl = null;
         this.downloadUrl = downloadUrl;
         this.downloadDate = 0;
@@ -64,9 +69,9 @@ public class FeedMedia implements Playable {
     }
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
-                     long size, String mimeType, String localFileUrl, String downloadUrl,
-                     long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
-                     long lastPlayedTimeStatistics) {
+            long size, String mimeType, String localFileUrl, String downloadUrl,
+            long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
+            long lastPlayedTimeStatistics) {
         this.localFileUrl = localFileUrl;
         this.downloadUrl = downloadUrl;
         this.downloadDate = downloadDate;
@@ -80,14 +85,15 @@ public class FeedMedia implements Playable {
         this.size = size;
         this.mimeType = mimeType;
         this.lastPlayedTimeHistory = lastPlayedTimeHistory == null
-                ? null : (Date) lastPlayedTimeHistory.clone();
+                ? null
+                : (Date) lastPlayedTimeHistory.clone();
         this.lastPlayedTimeStatistics = lastPlayedTimeStatistics;
     }
 
     public FeedMedia(long id, FeedItem item, int duration, int position,
-                     long size, String mimeType, String localFileUrl, String downloadUrl,
-                     long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
-                     Boolean hasEmbeddedPicture, long lastPlayedTimeStatistics) {
+            long size, String mimeType, String localFileUrl, String downloadUrl,
+            long downloadDate, Date lastPlayedTimeHistory, int playedDuration,
+            Boolean hasEmbeddedPicture, long lastPlayedTimeStatistics) {
         this(id, item, duration, position, size, mimeType, localFileUrl, downloadUrl, downloadDate,
                 lastPlayedTimeHistory, playedDuration, lastPlayedTimeStatistics);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
@@ -113,7 +119,8 @@ public class FeedMedia implements Playable {
                 .setDescription(p.getFeedTitle())
                 .setSubtitle(p.getFeedTitle());
         if (item != null) {
-            // getImageLocation() also loads embedded images, which we can not send to external devices
+            // getImageLocation() also loads embedded images, which we can not send to
+            // external devices
             if (item.getImageUrl() != null) {
                 builder.setIconUri(Uri.parse(item.getImageUrl()));
             } else if (item.getFeed() != null && item.getFeed().getImageUrl() != null) {
@@ -261,12 +268,14 @@ public class FeedMedia implements Playable {
 
     public Date getLastPlayedTimeHistory() {
         return lastPlayedTimeHistory == null
-                ? null : (Date) lastPlayedTimeHistory.clone();
+                ? null
+                : (Date) lastPlayedTimeHistory.clone();
     }
 
     public void setLastPlayedTimeHistory(Date lastPlayedTimeHistory) {
         this.lastPlayedTimeHistory = lastPlayedTimeHistory == null
-                ? null : (Date) lastPlayedTimeHistory.clone();
+                ? null
+                : (Date) lastPlayedTimeHistory.clone();
     }
 
     public boolean isInProgress() {
@@ -521,21 +530,21 @@ public class FeedMedia implements Playable {
     }
 
     public void setTranscript(Transcript t) {
-        if (item == null)  {
+        if (item == null) {
             return;
         }
         item.setTranscript(t);
     }
 
     public Transcript getTranscript() {
-        if (item == null)  {
+        if (item == null) {
             return null;
         }
         return item.getTranscript();
     }
 
     public Boolean hasTranscript() {
-        if (item == null)  {
+        if (item == null) {
             return false;
         }
         return item.hasTranscript();

@@ -4,6 +4,7 @@ import android.content.Context;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -157,7 +158,10 @@ public class FeedDatabaseWriterTest {
         }
     }
 
-    /** Two feeds with the same title, but different download URLs should be treated as different feeds. */
+    /**
+     * Two feeds with the same title, but different download URLs should be treated
+     * as different feeds.
+     */
     @Test
     public void testUpdateFeedSameTitle() {
         Feed feed1 = createFeed();
@@ -263,11 +267,34 @@ public class FeedDatabaseWriterTest {
     }
 
     @Test
+    public void testFeedPreferencesEnqueueLocationPersists() throws Exception {
+        // create feed and store it
+        final Feed feed = createFeed();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // ensure saved
+        assertTrue(feed.getId() != 0);
+
+        // change enqueue location and persist via DBWriter
+        FeedPreferences prefs = feed.getPreferences();
+        prefs.setEnqueueLocation(de.danoeh.antennapod.model.feed.FeedPreferences.EnqueueLocation.FRONT);
+        DBWriter.setFeedPreferences(prefs).get();
+
+        // read back feed and verify
+        Feed feedFromDb = DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
+        assertNotNull(feedFromDb);
+        assertEquals(de.danoeh.antennapod.model.feed.FeedPreferences.EnqueueLocation.FRONT,
+                feedFromDb.getPreferences().getEnqueueLocation());
+    }
+
+    @Test
     public void testUpdateFeedSetDuplicate() {
         final Feed feed = createFeed();
         for (int i = 0; i < 10; i++) {
-            FeedItem item =
-                    new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed);
+            FeedItem item = new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed);
             FeedMedia media = new FeedMedia(item, "download url " + i, 123, "media/mp3");
             item.setMedia(media);
             feed.getItems().add(item);
@@ -292,10 +319,9 @@ public class FeedDatabaseWriterTest {
         assertEquals("id 0-duplicate", updatedItem.getItemIdentifier()); // Should use the new ID for sync etc
     }
 
-
     @SuppressWarnings("SameParameterValue")
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs,
-                                 int numItemsOld, int numItemsNew) {
+            int numItemsOld, int numItemsNew) {
         assertEquals(feedID, newFeed.getId());
         assertEquals(numItemsNew + numItemsOld, newFeed.getItems().size());
         Collections.reverse(newFeed.getItems());

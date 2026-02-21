@@ -11,6 +11,7 @@ import java.util.Date;
 /**
  * Converts a {@link Cursor} to a {@link FeedItem} object.
  */
+@SuppressWarnings("unused")
 public class FeedItemCursor extends CursorWrapper {
     private final FeedMediaCursor feedMediaCursor;
     private final int indexId;

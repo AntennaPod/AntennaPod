@@ -12,6 +12,7 @@ import de.danoeh.antennapod.storage.database.PodDBAdapter;
 /**
  * Converts a {@link Cursor} to a {@link Feed} object.
  */
+@SuppressWarnings("unused")
 public class FeedCursor extends CursorWrapper {
     private final FeedPreferencesCursor preferencesCursor;
     private final int indexId;
