@@ -35,15 +35,24 @@ public class PlaybackSpeedSeekBar extends FrameLayout {
     private void setup() {
         View.inflate(getContext(), R.layout.playback_speed_seek_bar, this);
         seekBar = findViewById(R.id.playback_speed);
-        findViewById(R.id.butDecSpeed).setOnClickListener(v -> seekBar.setProgress(seekBar.getProgress() - 2));
-        findViewById(R.id.butIncSpeed).setOnClickListener(v -> seekBar.setProgress(seekBar.getProgress() + 2));
+        findViewById(R.id.butDecSpeed).setOnClickListener(v -> {
+            seekBar.setProgress(seekBar.getProgress() - 1);
+            if (progressChangedListener != null) {
+                progressChangedListener.accept(getCurrentSpeed());
+            }
+        });
+        findViewById(R.id.butIncSpeed).setOnClickListener(v -> {
+            seekBar.setProgress(seekBar.getProgress() + 1);
+            if (progressChangedListener != null) {
+                progressChangedListener.accept(getCurrentSpeed());
+            }
+        });
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float playbackSpeed = (progress + 10) / 20.0f;
-                if (progressChangedListener != null) {
-                    progressChangedListener.accept(playbackSpeed);
+                if (fromUser && progressChangedListener != null) {
+                    progressChangedListener.accept(getCurrentSpeed());
                 }
             }
 

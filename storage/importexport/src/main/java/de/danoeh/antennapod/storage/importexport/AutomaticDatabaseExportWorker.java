@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -113,8 +112,8 @@ public class AutomaticDatabaseExportWorker extends Worker {
         Intent intent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(
                 getApplicationContext().getPackageName());
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                R.id.pending_intent_backup_error, intent, PendingIntent.FLAG_UPDATE_CURRENT
-                        | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                R.id.pending_intent_backup_error, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Notification notification = new NotificationCompat.Builder(getApplicationContext(),
                         NotificationUtils.CHANNEL_ID_SYNC_ERROR)
                 .setContentTitle(getApplicationContext().getString(R.string.automatic_database_export_error))

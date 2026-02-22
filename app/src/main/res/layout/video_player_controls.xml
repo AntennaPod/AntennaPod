@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateOnly="true"
+        android:visibility="invisible" />
+
+    <FrameLayout
+        android:id="@+id/toolbarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="#90000000">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
+            app:navigationIcon="?homeAsUpIndicator" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/controlsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layoutDirection="ltr"
+        android:background="@android:color/transparent"
+        android:padding="16dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/rewindButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/rewind_label"
+            app:srcCompat="@drawable/ic_fast_rewind_video_white" />
+
+        <de.danoeh.antennapod.ui.screen.playback.PlayButton
+            android:id="@+id/playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/pause_label"
+            app:srcCompat="@drawable/ic_pause_video_white" />
+
+        <ImageButton
+            android:id="@+id/fastForwardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/fast_forward_label"
+            app:srcCompat="@drawable/ic_fast_forward_video_white" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/skipAnimationImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:padding="64dp"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/bottomControlsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/seekCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:layout_marginBottom="12dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?attr/seek_background"
+            app:cardElevation="0dp"
+            tools:alpha="1">
+
+            <TextView
+                android:id="@+id/seekPositionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="24dp"
+                android:paddingTop="4dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                tools:text="1:06:29" />
+
+        </androidx.cardview.widget.CardView>
+
+        <FrameLayout
+            android:id="@+id/seekBarContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#90000000">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layoutDirection="ltr"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:id="@+id/positionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/position_default_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/durationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/position_default_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <SeekBar
+                    android:id="@+id/sbPosition"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/durationLabel"
+                    android:layout_toStartOf="@+id/durationLabel"
+                    android:layout_toRightOf="@+id/positionLabel"
+                    android:layout_toEndOf="@+id/positionLabel"
+                    android:layout_centerInParent="true"
+                    android:max="500" />
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

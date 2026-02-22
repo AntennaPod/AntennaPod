@@ -1,9 +1,9 @@
 android {
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
-        minSdk 21
-        targetSdk 35
+        minSdk 23
+        targetSdk 36
 
         vectorDrawables.useSupportLibrary true
         vectorDrawables.generatedDensities = []
@@ -11,6 +11,9 @@ android {
         testApplicationId "de.danoeh.antennapod.core.tests"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resourceConfigurations += ["en", "ar", "br", "ca", "cs", "da", "de", "el", "es", "et", "eu", "fa", "fi", "fr", "gl", "hi", "hu", "in", "it", "iw", "ja", "ko", "lt", "nb", "nl", "pl", "pt", "pt-rBR", "ro", "ru", "sc", "sk", "sl", "sr", "sv", "tr", "uk", "zh-rCN", "zh-rTW"]
+
+        buildConfigField "boolean", "USE_MEDIA3_PLAYBACK_SERVICE", "true"
+        manifestPlaceholders = [oldServiceEnabled: "false", newServiceEnabled: "true"]
     }
 
     buildTypes {
@@ -33,8 +36,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     testOptions {
@@ -84,7 +87,7 @@ gradle.projectsEvaluated {
 apply plugin: 'com.github.spotbugs'
 
 spotbugs {
-    toolVersion = '4.2.3'
+    toolVersion = '4.8.6'
     effort = 'max'
     reportLevel = 'medium'
     excludeFilter = rootProject.file('config/spotbugs/exclude.xml')

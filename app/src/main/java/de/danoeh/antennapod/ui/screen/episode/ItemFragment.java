@@ -116,9 +116,7 @@ public class ItemFragment extends Fragment {
         viewBinding = FeeditemFragmentBinding.inflate(inflater, container, false);
         viewBinding.header.setVisibility(View.INVISIBLE);
         viewBinding.txtvPodcast.setOnClickListener(v -> openPodcast());
-        if (Build.VERSION.SDK_INT >= 23) {
-            viewBinding.txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
-        }
+        viewBinding.txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         viewBinding.txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         viewBinding.webvDescription.setTimecodeSelectedListener(time -> {
             if (!PlaybackService.isRunning) {

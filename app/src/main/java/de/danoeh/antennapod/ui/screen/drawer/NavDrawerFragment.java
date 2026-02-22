@@ -477,7 +477,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     }
 
     private int feedCounter(Feed feed, Map<Long, Integer> feedCounters) {
-        if (navDrawerData == null || feedCounters == null) {
+        if (feedCounters == null) {
             return 0;
         }
         return feedCounters.containsKey(feed.getId()) ? feedCounters.get(feed.getId()) : 0;

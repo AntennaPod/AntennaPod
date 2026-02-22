@@ -182,6 +182,19 @@
         </activity>
 
         <activity
+            android:name=".ui.screen.playback.video.Media3VideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
+            android:supportsPictureInPicture="true"
+            android:screenOrientation="sensorLandscape"
+            android:exported="true"
+            tools:ignore="DiscouragedApi">
+            <intent-filter>
+                <action android:name="de.danoeh.antennapod.intents.VIDEO_PLAYER_MEDIA3" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".ui.screen.onlinefeedview.OnlineFeedViewActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AntennaPod.Splash.Translucent"

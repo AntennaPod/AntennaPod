@@ -5,9 +5,11 @@ import android.view.KeyEvent;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.playback.base.BuildConfig;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.playback.service.PlaybackStatus;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 
 public class PauseActionButton extends ItemActionButton {
@@ -35,8 +37,15 @@ public class PauseActionButton extends ItemActionButton {
             return;
         }
 
-        if (PlaybackStatus.isCurrentlyPlaying(media)) {
-            context.sendBroadcast(MediaButtonStarter.createIntent(context, KeyEvent.KEYCODE_MEDIA_PAUSE));
+        if (!PlaybackStatus.isCurrentlyPlaying(media)) {
+            return;
         }
+
+        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+            PlaybackController.bindToMedia3Service(context, controller -> controller.pause());
+            return;
+        }
+
+        context.sendBroadcast(MediaButtonStarter.createIntent(context, KeyEvent.KEYCODE_MEDIA_PAUSE));
     }
 }

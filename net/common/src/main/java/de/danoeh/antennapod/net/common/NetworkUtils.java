@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.os.Build;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,9 +72,6 @@ public abstract class NetworkUtils {
     }
 
     public static boolean isVpnOverWifi() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return false;
-        }
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkCapabilities capabilities = connManager.getNetworkCapabilities(connManager.getActiveNetwork());
         return capabilities != null
@@ -85,30 +81,19 @@ public abstract class NetworkUtils {
 
     private static boolean isNetworkCellular() {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT >= 23) {
-            Network network = connManager.getActiveNetwork();
-            if (network == null) {
-                return false; // Nothing connected
-            }
-            NetworkInfo info = connManager.getNetworkInfo(network);
-            if (info == null) {
-                return true; // Better be safe than sorry
-            }
-            NetworkCapabilities capabilities = connManager.getNetworkCapabilities(network);
-            if (capabilities == null) {
-                return true; // Better be safe than sorry
-            }
-            return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
-        } else {
-            // if the default network is a VPN,
-            // this method will return the NetworkInfo for one of its underlying networks
-            NetworkInfo info = connManager.getActiveNetworkInfo();
-            if (info == null) {
-                return false; // Nothing connected
-            }
-            //noinspection deprecation
-            return info.getType() == ConnectivityManager.TYPE_MOBILE;
+        Network network = connManager.getActiveNetwork();
+        if (network == null) {
+            return false; // Nothing connected
         }
+        NetworkInfo info = connManager.getNetworkInfo(network);
+        if (info == null) {
+            return true; // Better be safe than sorry
+        }
+        NetworkCapabilities capabilities = connManager.getNetworkCapabilities(network);
+        if (capabilities == null) {
+            return true; // Better be safe than sorry
+        }
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
     }
 
     public static boolean wasDownloadBlocked(Throwable throwable) {

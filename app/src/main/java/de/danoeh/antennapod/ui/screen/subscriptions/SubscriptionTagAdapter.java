@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
 import android.app.Activity;
-import android.os.Build;
 import android.view.ContextMenu;
 import android.view.InputDevice;
 import android.view.LayoutInflater;
@@ -84,11 +83,9 @@ public class SubscriptionTagAdapter extends RecyclerView.Adapter<SubscriptionTag
         holder.chip.setElevation(0);
         holder.chip.setOnClickListener(v -> onTagClick(tag));
         holder.chip.setOnTouchListener((v, e) -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (e.isFromSource(InputDevice.SOURCE_MOUSE)
-                        &&  e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
-                    longPressedItem = tag;
-                }
+            if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                    &&  e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                longPressedItem = tag;
             }
             return false;
         });

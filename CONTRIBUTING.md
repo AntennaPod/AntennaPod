@@ -23,7 +23,7 @@ How to submit a feature request
 
 Translating AntennaPod
 ----------------------
-If you would like to translate the app into another language or improve an existing translation, you can visit the [Transifex project page](https://www.transifex.com/antennapod/antennapod/). From there, you can either join a language team if it already exists or create a new language team.
+If you would like to translate the app into another language or improve an existing translation, you can visit the [Weblate project page](https://antennapod.org/contribute/translate). From there, you can either join a language team if it already exists or create a new language team.
 
 
 Submit a pull request
@@ -43,7 +43,7 @@ Submit a pull request
   - Please do not upgrade dependencies or build tools unless you have a good reason for it. Doing so can easily introduce bugs that are hard to track down.
   - Please follow our code style. You can use Checkstyle within Android Studio using our [configuration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle.xml).
   - To check the code style locally, run `./gradlew checkstyle spotbugsPlayDebug spotbugsDebug :app:lintPlayDebug`
-  - Please only change the English string resources. Translations are handled on [Transifex](https://www.transifex.com/antennapod/antennapod/).
+  - Please only change the English string resources. Translations are handled on [Weblate](https://antennapod.org/contribute/translate).
 - Open the PR
   - Mention the corresponding issue in the pull request text, so that it can be closed once your pull request has been merged. If you use [special keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue), GitHub will close the issue(s) automatically.
 

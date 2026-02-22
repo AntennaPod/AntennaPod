@@ -56,6 +56,7 @@ import androidx.media.utils.MediaConstants;
 
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.LocalPSMP;
@@ -237,6 +238,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Service created.");
+        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+            throw new IllegalStateException("Media3PlaybackService should be used instead of PlaybackService");
+        }
         isRunning = true;
 
         stateManager = new PlaybackServiceStateManager(this);
@@ -633,8 +637,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
             pendingIntentAllowThisTime = PendingIntent.getService(this,
-                    R.id.pending_intent_allow_stream_this_time, intentAllowThisTime, PendingIntent.FLAG_UPDATE_CURRENT
-                            | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                    R.id.pending_intent_allow_stream_this_time, intentAllowThisTime,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         }
 
         Intent intentAlwaysAllow = new Intent(intentAllowThisTime);
@@ -647,8 +651,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
             pendingIntentAlwaysAllow = PendingIntent.getService(this,
-                    R.id.pending_intent_allow_stream_always, intentAlwaysAllow, PendingIntent.FLAG_UPDATE_CURRENT
-                            | (Build.VERSION.SDK_INT >= 23 ? PendingIntent.FLAG_IMMUTABLE : 0));
+                    R.id.pending_intent_allow_stream_always, intentAlwaysAllow,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
@@ -978,7 +982,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
             }
-            playable.onPlaybackPause(getApplicationContext());
         }
 
         @Override
@@ -1183,11 +1186,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (!(playable instanceof FeedMedia)) {
             Log.d(TAG, "Not doing post-playback processing: media not of type FeedMedia");
-            if (ended) {
-                playable.onPlaybackCompleted(getApplicationContext());
-            } else {
-                playable.onPlaybackPause(getApplicationContext());
-            }
             return;
         }
         FeedMedia media = (FeedMedia) playable;
@@ -1205,14 +1203,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             autoSkipped = true;
         }
 
-        if (ended || almostEnded) {
-            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, true);
-            media.onPlaybackCompleted(getApplicationContext());
-        } else {
-            SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
-            media.onPlaybackPause(getApplicationContext());
-        }
-
+        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, ended || almostEnded);
         if (item != null) {
             if (ended || almostEnded
                     || autoSkipped

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
 import android.app.Activity;
-import android.os.Build;
 import android.text.Layout;
 import android.text.format.Formatter;
 import android.util.Log;
@@ -74,9 +73,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         placeholder = itemView.findViewById(R.id.txtvPlaceholder);
         cover = itemView.findViewById(R.id.imgvCover);
         title = itemView.findViewById(R.id.txtvTitle);
-        if (Build.VERSION.SDK_INT >= 23) {
-            title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
-        }
+        title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         pubDate = itemView.findViewById(R.id.txtvPubDate);
         position = itemView.findViewById(R.id.txtvPosition);
         duration = itemView.findViewById(R.id.txtvDuration);

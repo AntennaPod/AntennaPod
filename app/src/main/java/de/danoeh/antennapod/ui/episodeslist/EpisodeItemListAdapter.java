@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.episodeslist;
 
 import android.app.Activity;
-import android.os.Build;
 import android.view.ContextMenu;
 import android.view.InputDevice;
 import android.view.MenuInflater;
@@ -111,13 +110,11 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             return false;
         });
         holder.itemView.setOnTouchListener((v, e) -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (e.isFromSource(InputDevice.SOURCE_MOUSE)
-                        && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
-                    longPressedItem = item;
-                    longPressedPosition = holder.getBindingAdapterPosition();
-                    return false;
-                }
+            if (e.isFromSource(InputDevice.SOURCE_MOUSE)
+                    && e.getButtonState() == MotionEvent.BUTTON_SECONDARY) {
+                longPressedItem = item;
+                longPressedPosition = holder.getBindingAdapterPosition();
+                return false;
             }
             return false;
         });
