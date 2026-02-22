@@ -2,8 +2,6 @@ package de.danoeh.antennapod.ui.screen.playback;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
@@ -14,11 +12,14 @@ import androidx.media3.common.Format;
 import androidx.media3.common.TrackGroup;
 import androidx.media3.common.Tracks;
 import androidx.media3.common.TrackSelectionOverride;
-import androidx.media3.common.TrackSelectionParameters;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,16 +52,27 @@ public class PlaybackControlsDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        populateTrackList();
+        EventBus.getDefault().register(this);
+        setupAudioTracks();
     }
 
-    private void populateTrackList() {
-        trackOptions.clear();
-        ViewGroup container = dialog.findViewById(R.id.track_selection_container);
-        container.removeAllViews();
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusEvent(PlayerStatusEvent event) {
+        setupAudioTracks();
+    }
+
+    private void setupAudioTracks() {
+        final ViewGroup container = dialog.findViewById(R.id.track_selection_container);
 
         PlaybackController.bindToMedia3Service(requireContext(), controller -> {
             Tracks tracks = controller.getCurrentTracks();
+            trackOptions.clear();
             for (Tracks.Group group : tracks.getGroups()) {
                 if (group.getType() != C.TRACK_TYPE_AUDIO || !group.isSupported()) {
                     continue;
@@ -70,15 +82,16 @@ public class PlaybackControlsDialog extends DialogFragment {
                         continue;
                     }
                     Format format = group.getTrackFormat(i);
-                    String label = formatLabel(format, group.length, i);
+                    String label = formatLabel(format, i);
                     trackOptions.add(new TrackOption(group.getMediaTrackGroup(), i, label, group.isTrackSelected(i)));
                 }
             }
 
-            requireActivity().runOnUiThread(() -> {
-                if (getActivity() == null || !isAdded()) {
-                    return;
-                }
+            if (getActivity() == null || !isAdded()) {
+                return;
+            }
+            getActivity().runOnUiThread(() -> {
+                container.removeAllViews();
                 int margin = (int) (8 * getResources().getDisplayMetrics().density);
                 for (int idx = 0; idx < trackOptions.size(); idx++) {
                     Chip chip = (Chip) getLayoutInflater().inflate(R.layout.item_tag_chip, container, false);
@@ -90,24 +103,24 @@ public class PlaybackControlsDialog extends DialogFragment {
                     chip.setText(opt.label);
                     chip.setChecked(opt.selected);
                     final int trackIndex = idx;
-                    chip.setOnClickListener(v -> selectTrack(trackIndex));
+                    chip.setOnClickListener(v -> {
+                        selectTrack(trackIndex);
+                        chip.setChecked(true);
+                    });
                     container.addView(chip);
                 }
             });
         });
     }
 
-    private static String formatLabel(Format format, int groupLength, int trackIndex) {
+    private static String formatLabel(Format format, int trackIndex) {
         if (format.label != null && !format.label.isEmpty()) {
             return format.label;
         }
         if (format.language != null && !format.language.isEmpty()) {
             return format.language;
         }
-        if (groupLength > 1) {
-            return "Track " + (trackIndex + 1);
-        }
-        return "Audio";
+        return "Track " + (trackIndex + 1);
     }
 
     private void selectTrack(int optionIndex) {
@@ -117,13 +130,10 @@ public class PlaybackControlsDialog extends DialogFragment {
         TrackOption opt = trackOptions.get(optionIndex);
 
         PlaybackController.bindToMedia3Service(requireContext(), controller -> {
-            TrackSelectionParameters params = controller.getTrackSelectionParameters()
+            controller.setTrackSelectionParameters(controller.getTrackSelectionParameters()
                     .buildUpon()
                     .setOverrideForType(new TrackSelectionOverride(opt.mediaTrackGroup, opt.trackIndex))
-                    .build();
-            controller.setTrackSelectionParameters(params);
-            requireActivity().runOnUiThread(() ->
-                    new Handler(Looper.getMainLooper()).postDelayed(this::populateTrackList, 500));
+                    .build());
         });
     }
 
