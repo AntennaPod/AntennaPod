@@ -4,16 +4,12 @@ import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.media3.common.AudioAttributes;
-import androidx.media3.common.C;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.common.util.Util;
-import androidx.media3.datasource.HttpDataSource;
-import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.DefaultMediaNotificationProvider;
 import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
@@ -31,11 +27,11 @@ import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -79,14 +75,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         notificationProvider.setSmallIcon(R.drawable.ic_notification);
         setMediaNotificationProvider(notificationProvider);
 
-        Player basePlayer = new ExoPlayer.Builder(this)
-                .setSeekBackIncrementMs(UserPreferences.getRewindSecs() * 1000L)
-                .setSeekForwardIncrementMs(UserPreferences.getFastForwardSecs() * 1000L)
-                .setAudioAttributes(new AudioAttributes.Builder()
-                        .setUsage(C.USAGE_MEDIA)
-                        .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
-                        .build(), true)
-                .build();
+        Player basePlayer = ExoPlayerUtils.buildPlayer(this);
         Player maybeCastPlayer = CastPlayerWrapper.wrap(basePlayer, this);
         player = new ForwardingPlayer(maybeCastPlayer) {
             @Override
@@ -189,27 +178,8 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         @Override
         public void onPlayerError(@NonNull PlaybackException error) {
-            if (NetworkUtils.wasDownloadBlocked(error)) {
-                EventBus.getDefault().post(new PlayerErrorEvent(getString(R.string.download_error_blocked)));
-            } else {
-                Throwable cause = error.getCause();
-                if (cause instanceof HttpDataSource.HttpDataSourceException) {
-                    if (cause.getCause() != null) {
-                        cause = cause.getCause();
-                    }
-                }
-                if (cause != null && "Source error".equals(cause.getMessage())) {
-                    cause = cause.getCause();
-                }
-                if (cause != null && cause.getMessage() != null) {
-                    EventBus.getDefault().post(new PlayerErrorEvent(cause.getMessage()));
-                } else if (error.getMessage() != null && cause != null) {
-                    EventBus.getDefault().post(new PlayerErrorEvent(
-                            error.getMessage() + ": " + cause.getClass().getSimpleName()));
-                } else {
-                    EventBus.getDefault().post(new PlayerErrorEvent(null));
-                }
-            }
+            EventBus.getDefault().post(new PlayerErrorEvent(
+                    ExoPlayerUtils.translateErrorReason(error, Media3PlaybackService.this)));
         }
     };
 
@@ -444,23 +414,22 @@ public class Media3PlaybackService extends MediaLibraryService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         nextMedia -> {
-                            if (nextMedia != null) {
-                                currentPlayable = nextMedia;
-                                currentPlayable.onPlaybackStart();
-                                MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
-                                PlaybackPreferences.writeMediaPlaying(nextMedia);
-                                player.setPlayWhenReady(UserPreferences.isFollowQueue());
-                                player.setMediaItem(mediaItem);
-                                player.seekTo(nextMedia.getPosition());
-                                player.prepare();
-                            }
+                            currentPlayable = nextMedia;
+                            currentPlayable.onPlaybackStart();
+                            MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
+                            PlaybackPreferences.writeMediaPlaying(nextMedia);
+                            player.setPlayWhenReady(UserPreferences.isFollowQueue());
+                            player.setMediaItem(mediaItem);
+                            player.seekTo(nextMedia.getPosition());
+                            player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
                         () ->  {
                             player.stop();
                             player.clearMediaItems();
                             PlaybackPreferences.writeNoMediaPlaying();
-                            EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                            EventBus.getDefault().post(
+                                    new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
                         }
                 );
     }
