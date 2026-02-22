@@ -90,6 +90,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
         toolbar.getMenu().findItem(R.id.player_switch_to_audio_only).setVisible(true);
         toolbar.getMenu().findItem(R.id.playback_speed).setVisible(true);
         toolbar.getMenu().findItem(R.id.player_show_chapters).setVisible(true);
+        toolbar.getMenu().findItem(R.id.audio_controls).setVisible(true);
 
         viewBinding.controlsView.setListener(new VideoPlayerControlsView.ControlsListener() {
             @Override
