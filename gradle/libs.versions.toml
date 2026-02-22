@@ -1,5 +1,5 @@
 [versions]
-agp = "8.11.0"
+agp = "9.0.1"
 kotlin = "2.3.20"
 media3 = "1.9.0"
 wear-compose = "1.6.0"
@@ -75,13 +75,15 @@ nanohttpd = { module = "com.nanohttpd:nanohttpd", version = "2.1.1" }
 awaitility = { module = "org.awaitility:awaitility", version = "3.1.6" }
 junit = { module = "junit:junit", version = "4.13" }
 robolectric = { module = "org.robolectric:robolectric", version = "4.16" }
-mockito-core = { module = "org.mockito:mockito-core", version = "5.15.2" }
+mockito-core = { module = "org.mockito:mockito-core", version = "5.20.0" }
+hamcrest = { module = "org.hamcrest:hamcrest", version = "2.2" }
+hamcrest-library = { module = "org.hamcrest:hamcrest-library", version = "2.2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-spotbugs = { id = "com.github.spotbugs", version = "4.8.0" }
+spotbugs = { id = "com.github.spotbugs", version = "6.4.8" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.3.0" }
-triplet-play = { id = "com.github.triplet.play", version = "3.9.0" }
+triplet-play = { id = "com.github.triplet.play", version = "4.0.0" }

@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ktlint)
 }
@@ -9,6 +8,7 @@ apply from: "../playFlavor.gradle"
 
 android {
     namespace "de.danoeh.antennapod.wearos"
+    enableKotlin true
 
     defaultConfig {
         applicationId "de.danoeh.antennapod"
@@ -43,10 +43,6 @@ android {
 
     buildFeatures {
         compose true
-    }
-
-    kotlinOptions {
-        jvmTarget = "21"
     }
 
     lint {
