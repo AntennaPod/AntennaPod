@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<HorizontalScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:scrollbars="none">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/track_selection_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="300dp"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical" />
 
-        <Button
-            android:id="@+id/audio_tracks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginBottom="8dp" />
-
-    </LinearLayout>
-
-</ScrollView>
+</HorizontalScrollView>
