@@ -39,16 +39,6 @@ public class PlaybackControlsDialog extends DialogFragment {
         // Empty constructor required for DialogFragment
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        dialog = new MaterialAlertDialogBuilder(getContext())
-                .setTitle(R.string.audio_controls)
-                .setView(R.layout.audio_controls)
-                .setPositiveButton(R.string.close_label, null).create();
-        return dialog;
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -65,6 +55,16 @@ public class PlaybackControlsDialog extends DialogFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusEvent(PlayerStatusEvent event) {
         setupAudioTracks();
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        dialog = new MaterialAlertDialogBuilder(getContext())
+                .setTitle(R.string.audio_controls)
+                .setView(R.layout.audio_controls)
+                .setPositiveButton(R.string.close_label, null).create();
+        return dialog;
     }
 
     private void setupAudioTracks() {

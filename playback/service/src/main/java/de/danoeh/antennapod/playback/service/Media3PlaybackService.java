@@ -189,11 +189,6 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
 
         @Override
-        public void onTracksChanged(@NonNull Tracks tracks) {
-            EventBus.getDefault().post(new PlayerStatusEvent());
-        }
-
-        @Override
         public void onPlayerError(@NonNull PlaybackException error) {
             if (NetworkUtils.wasDownloadBlocked(error)) {
                 EventBus.getDefault().post(new PlayerErrorEvent(getString(R.string.download_error_blocked)));
