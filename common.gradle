@@ -1,5 +1,6 @@
 android {
     compileSdk 36
+    enableKotlin false
 
     defaultConfig {
         minSdk 23
@@ -18,7 +19,7 @@ android {
 
     buildTypes {
         release {
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard.cfg"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg"
             resValue "string", "app_name", "AntennaPod"
         }
         debug {
@@ -65,6 +66,7 @@ android {
     buildFeatures {
         viewBinding true
         buildConfig true
+        resValues true
     }
 }
 
