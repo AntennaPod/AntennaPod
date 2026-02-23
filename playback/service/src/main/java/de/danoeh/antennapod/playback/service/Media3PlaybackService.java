@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.common.util.Util;
+import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.DefaultMediaNotificationProvider;
 import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
@@ -57,6 +59,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
     private static final long POSITION_SAVE_INTERVAL_MS = 5000;
 
+    private ExoPlayer exoPlayer;
     private Player player;
     private MediaLibrarySession mediaSession;
     private FeedMedia currentPlayable;
@@ -75,8 +78,8 @@ public class Media3PlaybackService extends MediaLibraryService {
         notificationProvider.setSmallIcon(R.drawable.ic_notification);
         setMediaNotificationProvider(notificationProvider);
 
-        Player basePlayer = ExoPlayerUtils.buildPlayer(this);
-        Player maybeCastPlayer = CastPlayerWrapper.wrap(basePlayer, this);
+        exoPlayer = ExoPlayerUtils.buildPlayer(this);
+        Player maybeCastPlayer = CastPlayerWrapper.wrap(exoPlayer, this);
         player = new ForwardingPlayer(maybeCastPlayer) {
             @Override
             @NonNull
@@ -119,6 +122,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             } else if (customCommand.customAction.equals(SESSION_COMMAND_NEXT_CHAPTER.customAction)) {
                 seekToNextChapter();
+                return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+            } else if (customCommand.customAction.equals(SESSION_COMMAND_SKIP_SILENCE.customAction)) {
+                boolean enabled = MediaLibrarySessionCallback.getBoolean(args, false);
+                PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
+                exoPlayer.setSkipSilenceEnabled(enabled);
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             }
             return super.onCustomCommand(session, controller, customCommand, args);
@@ -251,6 +259,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
+    @OptIn(markerClass = UnstableApi.class)
     private void ensureCurrentMediaLoaded() {
         if (player == null || player.getCurrentMediaItem() == null) {
             return;
@@ -267,18 +276,18 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
                             currentPlayable = media;
-                            if (player != null) {
-                                currentPlayable.setPosition((int) player.getCurrentPosition());
-                            }
+                            currentPlayable.setPosition((int) player.getCurrentPosition());
                             currentPlayable.onPlaybackStart();
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
                                 DBWriter.addQueueItem(this, currentPlayable.getItem());
                             }
                             float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
-                            if (player != null) {
-                                player.setPlaybackSpeed(speed);
-                            }
+                            player.setPlaybackSpeed(speed);
+                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(currentPlayable)
+                                    == FeedPreferences.SkipSilence.AGGRESSIVE;
+                            PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
+                            exoPlayer.setSkipSilenceEnabled(enabled);
                             updatePlaybackPreferences();
                             EventBus.getDefault().post(new PlayerStatusEvent());
                         },

@@ -61,6 +61,20 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("skip_to_next", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_NEXT_CHAPTER
             = new SessionCommand("next_chapter", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_SKIP_SILENCE
+            = new SessionCommand("skip_silence", Bundle.EMPTY);
+
+    private static final String EXTRA_VALUE = "value";
+
+    public static Bundle createBundle(boolean value) {
+        Bundle args = new Bundle();
+        args.putBoolean(EXTRA_VALUE, value);
+        return args;
+    }
+
+    public static boolean getBoolean(Bundle args, boolean defaultValue) {
+        return args != null ? args.getBoolean(EXTRA_VALUE, defaultValue) : defaultValue;
+    }
 
     private final Context context;
     private final CompositeDisposable disposables = new CompositeDisposable();
@@ -81,6 +95,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_PLAYBACK_SPEED)
                 .add(SESSION_COMMAND_SKIP_TO_NEXT)
                 .add(SESSION_COMMAND_NEXT_CHAPTER)
+                .add(SESSION_COMMAND_SKIP_SILENCE)
                 .build();
         Player.Commands playerCommands = new Player.Commands.Builder()
                 .addAllCommands()
