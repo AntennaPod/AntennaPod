@@ -48,12 +48,10 @@
             <TextView
                 android:id="@+id/sleepTimerHintText"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:visibility="visible"
-                android:layout_weight="1"
                 android:selectAllOnFocus="true"
                 android:layout_margin="8dp"
-                android:ems="2"
                 android:text="@string/multiple_sleep_episodes_while_continuous_playback_disabled" />
 
             <Button

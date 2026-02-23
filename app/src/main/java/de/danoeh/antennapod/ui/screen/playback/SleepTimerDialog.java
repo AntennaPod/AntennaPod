@@ -252,7 +252,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.sleep_timer_without_continuous_playback)
                 .setMessage(R.string.sleep_timer_without_continuous_playback_message)
-                .setNegativeButton(R.string.sleep_timer_without_continuous_playback,
+                .setNegativeButton(android.R.string.cancel,
                         (dialogInterface, i) -> {
                             // disable continuous playback and also disable the auto sleep timer
                             UserPreferences.setFollowQueue(false);
