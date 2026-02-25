@@ -20,6 +20,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -143,7 +144,13 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         skipSilenceCheckbox.setChecked(UserPreferences.isSkipSilence());
         skipSilenceCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setSkipSilence(isChecked);
-            controller.setSkipSilence(isChecked);
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                PlaybackController.bindToMedia3Service(getContext(), mediaController ->
+                        mediaController.sendCustomCommand(MediaLibrarySessionCallback.SESSION_COMMAND_SKIP_SILENCE,
+                                MediaLibrarySessionCallback.createBundle(isChecked)));
+            } else if (controller != null) {
+                controller.setSkipSilence(isChecked);
+            }
         });
         return root;
     }
