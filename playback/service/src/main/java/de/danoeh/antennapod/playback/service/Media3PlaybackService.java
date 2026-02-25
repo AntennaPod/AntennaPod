@@ -276,6 +276,9 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
                             currentPlayable = media;
+                            if (player == null) {
+                                return;
+                            }
                             currentPlayable.setPosition((int) player.getCurrentPosition());
                             currentPlayable.onPlaybackStart();
                             if (currentPlayable.getItem() != null
