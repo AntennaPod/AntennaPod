@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
@@ -156,6 +158,36 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     @Override
+    @UnstableApi
+    public boolean onMediaButtonEvent(
+            @NonNull MediaSession session,
+            @NonNull MediaSession.ControllerInfo controllerInfo,
+            @NonNull Intent intent) {
+        KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+        if (keyEvent != null
+                && keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                && keyEvent.getRepeatCount() == 0) {
+            int keyCode = keyEvent.getKeyCode();
+            if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
+                // Instead of skipping to the next episode, do a fast-forward.
+                Player player = session.getPlayer();
+                player.seekTo(player.getCurrentPosition()
+                        + UserPreferences.getFastForwardSecs() * 1000L);
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+                // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
+                // Instead of going to the previous episode, do a rewind.
+                Player player = session.getPlayer();
+                player.seekTo(Math.max(0, player.getCurrentPosition()
+                        - UserPreferences.getRewindSecs() * 1000L));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     @NonNull
     @UnstableApi
     public ListenableFuture<SessionResult> onCustomCommand(@NonNull MediaSession session,
@@ -163,10 +195,14 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                                            @NonNull SessionCommand customCommand,
                                                            @NonNull Bundle args) {
         if (customCommand.customAction.equals(SESSION_COMMAND_REWIND.customAction)) {
-            session.getPlayer().seekBack();
+            Player player = session.getPlayer();
+            player.seekTo(Math.max(0, player.getCurrentPosition()
+                    - UserPreferences.getRewindSecs() * 1000L));
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         } else if (customCommand.customAction.equals(SESSION_COMMAND_FAST_FORWARD.customAction)) {
-            session.getPlayer().seekForward();
+            Player player = session.getPlayer();
+            player.seekTo(player.getCurrentPosition()
+                    + UserPreferences.getFastForwardSecs() * 1000L);
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         }
         return Futures.immediateFuture(new SessionResult(SessionError.ERROR_NOT_SUPPORTED));
