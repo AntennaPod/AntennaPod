@@ -22,7 +22,8 @@ public class ExoPlayerUtils {
                 .setSeekBackIncrementMs(UserPreferences.getRewindSecs() * 1000L)
                 .setSeekForwardIncrementMs(UserPreferences.getFastForwardSecs() * 1000L)
                 .setLoadControl(new DefaultLoadControl.Builder()
-                        .setBufferDurationsMs((int) (UserPreferences.getFastForwardSecs() * 1000L),
+                        .setBufferDurationsMs(
+                                (int) (UserPreferences.getFastForwardSecs() * 1000L),
                                 Math.max(DefaultLoadControl.DEFAULT_MAX_BUFFER_MS,
                                         (int) (UserPreferences.getFastForwardSecs() * 1000L)),
                                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
