@@ -25,6 +25,7 @@ import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -36,9 +37,14 @@ import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
+import de.danoeh.antennapod.playback.service.internal.SleepTimer;
+import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
+import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -51,7 +57,10 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.core.Maybe;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -67,13 +76,15 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
     private long lastPositionSaveTime = 0;
+    private SleepTimer sleepTimer;
 
     @UnstableApi
     @Override
     public void onCreate() {
         super.onCreate();
-        DefaultMediaNotificationProvider notificationProvider
-                = new DefaultMediaNotificationProvider(this, session -> R.id.notification_playing,
+        EventBus.getDefault().register(this);
+        DefaultMediaNotificationProvider notificationProvider = new DefaultMediaNotificationProvider(this,
+                session -> R.id.notification_playing,
                 NotificationUtils.CHANNEL_ID_PLAYING, R.string.notification_channel_playing);
         notificationProvider.setSmallIcon(R.drawable.ic_notification);
         setMediaNotificationProvider(notificationProvider);
@@ -109,9 +120,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         @NonNull
         @UnstableApi
         public ListenableFuture<SessionResult> onCustomCommand(@NonNull MediaSession session,
-                                                               @NonNull MediaSession.ControllerInfo controller,
-                                                               @NonNull SessionCommand customCommand,
-                                                               @NonNull Bundle args) {
+                @NonNull MediaSession.ControllerInfo controller,
+                @NonNull SessionCommand customCommand,
+                @NonNull Bundle args) {
             if (customCommand.customAction.equals(SESSION_COMMAND_PLAYBACK_SPEED.customAction)) {
                 setNextPlaybackSpeed();
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
@@ -127,6 +138,20 @@ public class Media3PlaybackService extends MediaLibraryService {
                 boolean enabled = MediaLibrarySessionCallback.getBoolean(args, false);
                 PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
                 exoPlayer.setSkipSilenceEnabled(enabled);
+                return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+            } else if (customCommand.customAction.equals(
+                    MediaLibrarySessionCallback.SESSION_COMMAND_SET_SLEEP_TIMER.customAction)) {
+                long time = MediaLibrarySessionCallback.getLong(args, 0);
+                startSleepTimer(time);
+                return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+            } else if (customCommand.customAction.equals(
+                    MediaLibrarySessionCallback.SESSION_COMMAND_DISABLE_SLEEP_TIMER.customAction)) {
+                disableSleepTimer();
+                return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+            } else if (customCommand.customAction.equals(
+                    MediaLibrarySessionCallback.SESSION_COMMAND_EXTEND_SLEEP_TIMER.customAction)) {
+                long time = MediaLibrarySessionCallback.getLong(args, 0);
+                extendSleepTimer(time);
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             }
             return super.onCustomCommand(session, controller, customCommand, args);
@@ -176,6 +201,17 @@ public class Media3PlaybackService extends MediaLibraryService {
             WidgetUpdater.updateWidget(Media3PlaybackService.this, widgetState);
             updatePlaybackPreferences();
             EventBus.getDefault().post(new PlayerStatusEvent());
+
+            // Auto-enable sleep timer when playback starts
+            if (isPlaying && sleepTimer == null && SleepTimerPreferences.autoEnable()) {
+                int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                if (SleepTimerPreferences.isInTimeRange(
+                        SleepTimerPreferences.autoEnableFrom(),
+                        SleepTimerPreferences.autoEnableTo(),
+                        currentHour)) {
+                    startSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
+                }
+            }
         }
 
         @Override
@@ -202,6 +238,11 @@ public class Media3PlaybackService extends MediaLibraryService {
     public void onDestroy() {
         PlaybackService.isRunning = false;
         cancelPositionObserver();
+        if (sleepTimer != null) {
+            sleepTimer.stop();
+            sleepTimer = null;
+        }
+        EventBus.getDefault().unregister(this);
         if (mediaLoaderDisposable != null) {
             mediaLoaderDisposable.dispose();
             mediaLoaderDisposable = null;
@@ -248,8 +289,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     lastPositionSaveTime = currentTime;
                                 }
                             }
-                        }, error -> Log.e(TAG, "Position observer error", error)
-                );
+                        }, error -> Log.e(TAG, "Position observer error", error));
     }
 
     private void cancelPositionObserver() {
@@ -270,8 +310,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 if (mediaLoaderDisposable != null) {
                     mediaLoaderDisposable.dispose();
                 }
-                mediaLoaderDisposable = Single.fromCallable(() ->
-                                DBReader.getFeedMedia(mediaId))
+                mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
@@ -287,8 +326,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
                             player.setPlaybackSpeed(speed);
-                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(currentPlayable)
-                                    == FeedPreferences.SkipSilence.AGGRESSIVE;
+                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
+                                    currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
                             PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
                             exoPlayer.setSkipSilenceEnabled(enabled);
                             updatePlaybackPreferences();
@@ -299,7 +338,8 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
         } catch (NumberFormatException e) {
             Log.e(TAG, "Invalid media ID: " + (player != null && player.getCurrentMediaItem() != null
-                    ? player.getCurrentMediaItem().mediaId : "null"), e);
+                    ? player.getCurrentMediaItem().mediaId
+                    : "null"), e);
         }
     }
 
@@ -345,8 +385,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             if (item != null) {
                 DBWriter.markItemPlayed(FeedItem.PLAYED, true, item);
                 DBWriter.removeQueueItem(this, true, item);
-                FeedPreferences.AutoDeleteAction action =
-                        item.getFeed().getPreferences().getCurrentAutoDelete();
+                FeedPreferences.AutoDeleteAction action = item.getFeed().getPreferences().getCurrentAutoDelete();
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
                 boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
@@ -412,6 +451,19 @@ public class Media3PlaybackService extends MediaLibraryService {
      */
     @UnstableApi
     private void startNextInQueue(FeedItem item) {
+        // Check sleep timer: if active, ask if can continue to next episode
+        if (sleepTimer != null && sleepTimer.isActive()) {
+            sleepTimer.episodeFinishedPlayback();
+            if (!sleepTimer.shouldContinueToNextEpisode()) {
+                player.stop();
+                player.clearMediaItems();
+                PlaybackPreferences.writeNoMediaPlaying();
+                EventBus.getDefault().post(
+                        new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                return;
+            }
+        }
+
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
         }
@@ -436,13 +488,62 @@ public class Media3PlaybackService extends MediaLibraryService {
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
-                        () ->  {
+                        () -> {
                             player.stop();
                             player.clearMediaItems();
                             PlaybackPreferences.writeNoMediaPlaying();
                             EventBus.getDefault().post(
                                     new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
-                        }
-                );
+                        });
+    }
+
+    // ===== Sleep Timer =====
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSleepTimerUpdated(SleepTimerUpdatedEvent event) {
+        if (event.isOver()) {
+            Log.d(TAG, "Sleep timer expired, pausing playback");
+            if (player != null) {
+                exoPlayer.setVolume(1.0f);
+                player.pause();
+            }
+            sleepTimer = null;
+        } else if (!event.isCancelled() && !event.wasJustEnabled()) {
+            // Volume fade in the last 10 seconds
+            long millisLeft = event.getMillisTimeLeft();
+            if (millisLeft < SleepTimer.NOTIFICATION_THRESHOLD && millisLeft > 0) {
+                float volume = (float) millisLeft / SleepTimer.NOTIFICATION_THRESHOLD;
+                exoPlayer.setVolume(Math.max(0.1f, volume));
+            }
+        }
+    }
+
+    private void startSleepTimer(long timeOrEpisodes) {
+        if (sleepTimer != null) {
+            sleepTimer.stop();
+        }
+        if (SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
+            sleepTimer = new EpisodeSleepTimer(this);
+        } else {
+            sleepTimer = new ClockSleepTimer(this);
+        }
+        sleepTimer.start(timeOrEpisodes);
+    }
+
+    private void disableSleepTimer() {
+        if (sleepTimer != null) {
+            sleepTimer.stop();
+            sleepTimer = null;
+        }
+        if (player != null) {
+            exoPlayer.setVolume(1.0f);
+        }
+    }
+
+    private void extendSleepTimer(long additionalTime) {
+        if (sleepTimer != null && sleepTimer.isActive()) {
+            long currentLeft = sleepTimer.getTimeLeft().getDisplayValue();
+            sleepTimer.updateRemainingTime(currentLeft + additionalTime);
+        }
     }
 }
