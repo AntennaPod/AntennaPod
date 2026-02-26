@@ -19,6 +19,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import de.danoeh.antennapod.ui.common.ConfirmationDialog;
+import de.danoeh.antennapod.ui.common.NavigationToolbarActivity;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.event.StatisticsEvent;
 import de.danoeh.antennapod.ui.common.PagedToolbarFragment;
@@ -42,7 +43,7 @@ public class StatisticsFragment extends PagedToolbarFragment {
     public static final String PREF_INCLUDE_MARKED_PLAYED = "countAll";
     public static final String PREF_FILTER_FROM = "filterFrom";
     public static final String PREF_FILTER_TO = "filterTo";
-
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private static final int POS_SUBSCRIPTIONS = 0;
     private static final int POS_YEARS = 1;
@@ -52,6 +53,7 @@ public class StatisticsFragment extends PagedToolbarFragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private MaterialToolbar toolbar;
+    private boolean displayUpArrow;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -67,7 +69,15 @@ public class StatisticsFragment extends PagedToolbarFragment {
         if (BuildConfig.DEBUG || EchoConfig.isCurrentlyVisible()) {
             toolbar.getMenu().findItem(R.id.show_echo).setVisible(true);
         }
-        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        if (getActivity() instanceof NavigationToolbarActivity) {
+            ((NavigationToolbarActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
+        } else {
+            toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        }
         viewPager.setAdapter(new StatisticsPagerAdapter(this));
         // Give the TabLayout the ViewPager
         tabLayout = rootView.findViewById(R.id.sliding_tabs);
@@ -88,6 +98,12 @@ public class StatisticsFragment extends PagedToolbarFragment {
             }
         }).attach();
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

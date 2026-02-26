@@ -36,7 +36,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
-import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
+
 import de.danoeh.antennapod.ui.view.EmptyViewHandler;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
 import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
@@ -284,9 +284,6 @@ public class SubscriptionFragment extends Fragment
             } else {
                 ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             }
-            return true;
-        } else if (itemId == R.id.action_statistics) {
-            ((MainActivity) getActivity()).loadChildFragment(new StatisticsFragment());
             return true;
         } else if (itemId == R.id.pref_show_subscription_title) {
             item.setChecked(!item.isChecked());

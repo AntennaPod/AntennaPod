@@ -267,6 +267,7 @@
         <item>NewEpisodesFragment</item>
         <item>EpisodesFragment</item>
         <item>SubscriptionFragment</item>
+        <item>StatisticsFragment</item>
         <item>remember</item>
     </string-array>
 
@@ -276,6 +277,7 @@
         <item>@string/inbox_label</item>
         <item>@string/episodes_label</item>
         <item>@string/subscriptions_label</item>
+        <item>@string/statistics_label</item>
         <item>@string/remember_last_page</item>
     </string-array>
 </resources>
