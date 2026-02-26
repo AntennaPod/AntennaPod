@@ -168,14 +168,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
                 // Instead of skipping to the next episode, do a fast-forward.
-                Player player = session.getPlayer();
-                player.seekTo(player.getCurrentPosition() + UserPreferences.getFastForwardSecs() * 1000L);
+                session.getPlayer().seekForward();
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                 // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
                 // Instead of going to the previous episode, do a rewind.
-                Player player = session.getPlayer();
-                player.seekTo(Math.max(0, player.getCurrentPosition() - UserPreferences.getRewindSecs() * 1000L));
+                session.getPlayer().seekBack();
                 return true;
             }
         }
@@ -190,12 +188,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                                            @NonNull SessionCommand customCommand,
                                                            @NonNull Bundle args) {
         if (customCommand.customAction.equals(SESSION_COMMAND_REWIND.customAction)) {
-            Player player = session.getPlayer();
-            player.seekTo(Math.max(0, player.getCurrentPosition() - UserPreferences.getRewindSecs() * 1000L));
+            session.getPlayer().seekBack();
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         } else if (customCommand.customAction.equals(SESSION_COMMAND_FAST_FORWARD.customAction)) {
-            Player player = session.getPlayer();
-            player.seekTo(player.getCurrentPosition() + UserPreferences.getFastForwardSecs() * 1000L);
+            session.getPlayer().seekForward();
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         }
         return Futures.immediateFuture(new SessionResult(SessionError.ERROR_NOT_SUPPORTED));
