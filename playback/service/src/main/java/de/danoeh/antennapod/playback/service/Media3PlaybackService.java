@@ -518,12 +518,15 @@ public class Media3PlaybackService extends MediaLibraryService {
                 player.pause();
             }
             sleepTimer = null;
-        } else if (!event.isCancelled() && !event.wasJustEnabled()) {
-            // Volume fade in the last 10 seconds
+        } else if (event.isCancelled()) {
+            exoPlayer.setVolume(1.0f);
+        } else if (!event.wasJustEnabled()) {
             long millisLeft = event.getMillisTimeLeft();
             if (millisLeft < SleepTimer.NOTIFICATION_THRESHOLD && millisLeft > 0) {
                 float volume = (float) millisLeft / SleepTimer.NOTIFICATION_THRESHOLD;
                 exoPlayer.setVolume(Math.max(0.1f, volume));
+            } else {
+                exoPlayer.setVolume(1.0f);
             }
         }
     }
