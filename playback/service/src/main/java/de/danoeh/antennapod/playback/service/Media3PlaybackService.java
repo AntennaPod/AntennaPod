@@ -72,8 +72,8 @@ public class Media3PlaybackService extends MediaLibraryService {
     @Override
     public void onCreate() {
         super.onCreate();
-        DefaultMediaNotificationProvider notificationProvider
-                = new DefaultMediaNotificationProvider(this, session -> R.id.notification_playing,
+        DefaultMediaNotificationProvider notificationProvider = new DefaultMediaNotificationProvider(this,
+                session -> R.id.notification_playing,
                 NotificationUtils.CHANNEL_ID_PLAYING, R.string.notification_channel_playing);
         notificationProvider.setSmallIcon(R.drawable.ic_notification);
         setMediaNotificationProvider(notificationProvider);
@@ -97,6 +97,16 @@ public class Media3PlaybackService extends MediaLibraryService {
                 PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
                 EventBus.getDefault().post(new SpeedChangedEvent(speed));
             }
+
+            @Override
+            public void seekBack() {
+                seekTo(Math.max(0, getCurrentPosition() - UserPreferences.getRewindSecs() * 1000L));
+            }
+
+            @Override
+            public void seekForward() {
+                seekTo(Math.min(getDuration(), getCurrentPosition() + UserPreferences.getFastForwardSecs() * 1000L));
+            }
         };
         player.addListener(playerListener);
         mediaSession = new MediaLibraryService.MediaLibrarySession.Builder(this, player, sessionCallback)
@@ -109,9 +119,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         @NonNull
         @UnstableApi
         public ListenableFuture<SessionResult> onCustomCommand(@NonNull MediaSession session,
-                                                               @NonNull MediaSession.ControllerInfo controller,
-                                                               @NonNull SessionCommand customCommand,
-                                                               @NonNull Bundle args) {
+                @NonNull MediaSession.ControllerInfo controller,
+                @NonNull SessionCommand customCommand,
+                @NonNull Bundle args) {
             if (customCommand.customAction.equals(SESSION_COMMAND_PLAYBACK_SPEED.customAction)) {
                 setNextPlaybackSpeed();
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
@@ -248,8 +258,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     lastPositionSaveTime = currentTime;
                                 }
                             }
-                        }, error -> Log.e(TAG, "Position observer error", error)
-                );
+                        }, error -> Log.e(TAG, "Position observer error", error));
     }
 
     private void cancelPositionObserver() {
@@ -270,8 +279,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 if (mediaLoaderDisposable != null) {
                     mediaLoaderDisposable.dispose();
                 }
-                mediaLoaderDisposable = Single.fromCallable(() ->
-                                DBReader.getFeedMedia(mediaId))
+                mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
@@ -287,8 +295,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
                             player.setPlaybackSpeed(speed);
-                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(currentPlayable)
-                                    == FeedPreferences.SkipSilence.AGGRESSIVE;
+                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
+                                    currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
                             PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
                             exoPlayer.setSkipSilenceEnabled(enabled);
                             updatePlaybackPreferences();
@@ -299,7 +307,8 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
         } catch (NumberFormatException e) {
             Log.e(TAG, "Invalid media ID: " + (player != null && player.getCurrentMediaItem() != null
-                    ? player.getCurrentMediaItem().mediaId : "null"), e);
+                    ? player.getCurrentMediaItem().mediaId
+                    : "null"), e);
         }
     }
 
@@ -345,8 +354,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             if (item != null) {
                 DBWriter.markItemPlayed(FeedItem.PLAYED, true, item);
                 DBWriter.removeQueueItem(this, true, item);
-                FeedPreferences.AutoDeleteAction action =
-                        item.getFeed().getPreferences().getCurrentAutoDelete();
+                FeedPreferences.AutoDeleteAction action = item.getFeed().getPreferences().getCurrentAutoDelete();
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
                 boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
@@ -436,13 +444,12 @@ public class Media3PlaybackService extends MediaLibraryService {
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
-                        () ->  {
+                        () -> {
                             player.stop();
                             player.clearMediaItems();
                             PlaybackPreferences.writeNoMediaPlaying();
                             EventBus.getDefault().post(
                                     new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
-                        }
-                );
+                        });
     }
 }

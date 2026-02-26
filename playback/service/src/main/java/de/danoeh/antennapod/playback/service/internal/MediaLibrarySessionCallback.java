@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
@@ -153,6 +155,29 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         }
 
         return buttons.build();
+    }
+
+    @Override
+    @UnstableApi
+    public boolean onMediaButtonEvent(@NonNull MediaSession session,
+            @NonNull MediaSession.ControllerInfo controllerInfo, @NonNull Intent intent) {
+        KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+        if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                && keyEvent.getRepeatCount() == 0) {
+            int keyCode = keyEvent.getKeyCode();
+            if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
+                // Instead of skipping to the next episode, do a fast-forward.
+                session.getPlayer().seekForward();
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+                // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
+                // Instead of going to the previous episode, do a rewind.
+                session.getPlayer().seekBack();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
