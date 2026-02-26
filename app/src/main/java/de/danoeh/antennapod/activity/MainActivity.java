@@ -55,6 +55,7 @@ import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.common.NavigationToolbarActivity;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
@@ -75,6 +76,7 @@ import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.view.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
@@ -89,7 +91,7 @@ import java.util.Objects;
 /**
  * The activity that is shown when the user launches the app.
  */
-public class MainActivity extends CastEnabledActivity {
+public class MainActivity extends CastEnabledActivity implements NavigationToolbarActivity {
 
     private static final String TAG = "MainActivity";
     public static final String MAIN_FRAGMENT_TAG = "main";
@@ -313,6 +315,7 @@ public class MainActivity extends CastEnabledActivity {
         }
     }
 
+    @Override
     public void setupToolbarToggle(@NonNull MaterialToolbar toolbar, boolean displayUpArrow) {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             if (drawerToggle != null) {
@@ -427,6 +430,9 @@ public class MainActivity extends CastEnabledActivity {
                 break;
             case SubscriptionFragment.TAG:
                 fragment = new SubscriptionFragment();
+                break;
+            case StatisticsFragment.TAG:
+                fragment = new StatisticsFragment();
                 break;
             case DiscoveryFragment.TAG:
                 fragment = new DiscoveryFragment();
@@ -765,6 +771,9 @@ public class MainActivity extends CastEnabledActivity {
                         break;
                     case "SUBSCRIPTIONS":
                         loadFragment(SubscriptionFragment.TAG, null);
+                        break;
+                    case "STATISTICS":
+                        loadFragment(StatisticsFragment.TAG, null);
                         break;
                     default:
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.app_action_not_found, feature)));
