@@ -108,6 +108,16 @@ public class Media3PlaybackService extends MediaLibraryService {
                 PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
                 EventBus.getDefault().post(new SpeedChangedEvent(speed));
             }
+
+            @Override
+            public void seekBack() {
+                seekTo(Math.max(0, getCurrentPosition() - UserPreferences.getRewindSecs() * 1000L));
+            }
+
+            @Override
+            public void seekForward() {
+                seekTo(Math.min(getDuration(), getCurrentPosition() + UserPreferences.getFastForwardSecs() * 1000L));
+            }
         };
         player.addListener(playerListener);
         mediaSession = new MediaLibraryService.MediaLibrarySession.Builder(this, player, sessionCallback)

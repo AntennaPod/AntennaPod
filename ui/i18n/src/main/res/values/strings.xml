@@ -11,6 +11,7 @@
     <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update subscriptions</string>
     <string name="statistics_label">Statistics</string>
+    <string name="statistics_label_short">Stats</string>
     <string name="add_feed_label">Add podcast</string>
     <string name="add_feed_label_short">Add</string>
     <string name="episodes_label">Episodes</string>
