@@ -39,7 +39,6 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TimeDialogBinding;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.database.DBReader;
