@@ -237,7 +237,8 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         });
         viewBinding.setSleeptimerButton.setOnClickListener(v -> {
             if (!PlaybackService.isRunning
-                    || (controller != null && controller.getStatus() != PlayerStatus.PLAYING)) {
+                    || (!BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE
+                            && controller != null && controller.getStatus() != PlayerStatus.PLAYING)) {
                 Snackbar.make(viewBinding.getRoot(), R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
                 return;
             }
