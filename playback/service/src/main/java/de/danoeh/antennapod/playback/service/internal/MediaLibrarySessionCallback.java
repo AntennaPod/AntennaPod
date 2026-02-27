@@ -283,7 +283,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         .subscribeOn(Schedulers.io())
                         .subscribe(
                                 media -> {
-                                    MediaSession.MediaItemsWithStartPosition result = new MediaSession.MediaItemsWithStartPosition(
+                                    MediaSession.MediaItemsWithStartPosition result =
+                                            new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
                                             0, media.getPosition());
                                     future.set(result);
