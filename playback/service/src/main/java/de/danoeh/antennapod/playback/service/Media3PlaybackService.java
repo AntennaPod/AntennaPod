@@ -468,7 +468,6 @@ public class Media3PlaybackService extends MediaLibraryService {
      */
     @UnstableApi
     private void startNextInQueue(FeedItem item) {
-
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
         }

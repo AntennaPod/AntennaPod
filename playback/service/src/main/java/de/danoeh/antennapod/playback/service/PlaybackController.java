@@ -169,7 +169,7 @@ public abstract class PlaybackController {
 
     private final ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            if (service instanceof PlaybackService.LocalBinder) {
+            if(service instanceof PlaybackService.LocalBinder) {
                 playbackService = ((PlaybackService.LocalBinder) service).getService();
                 if (!released) {
                     queryService();
@@ -350,7 +350,7 @@ public abstract class PlaybackController {
     }
 
     public Playable getMedia() {
-        if (media == null && !BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+        if (media == null) {
             media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
         }
         return media;
@@ -439,8 +439,8 @@ public abstract class PlaybackController {
         if (playbackService != null) {
             return playbackService.getCurrentSkipSilence();
         } else {
-            return PlaybackSpeedUtils
-                    .getCurrentSkipSilencePreference(getMedia()) == FeedPreferences.SkipSilence.AGGRESSIVE;
+            return PlaybackSpeedUtils.getCurrentSkipSilencePreference(getMedia())
+                    == FeedPreferences.SkipSilence.AGGRESSIVE;
         }
     }
 
@@ -518,8 +518,8 @@ public abstract class PlaybackController {
     public static void bindToMedia3Service(Context context, Consumer<MediaController> consumer) {
         SessionToken sessionToken = new SessionToken(context,
                 new ComponentName(context, Media3PlaybackService.class));
-        ListenableFuture<MediaController> controllerFuture = new MediaController.Builder(context, sessionToken)
-                .buildAsync();
+        ListenableFuture<MediaController> controllerFuture =
+                new MediaController.Builder(context, sessionToken).buildAsync();
         controllerFuture.addListener(() -> {
             try {
                 MediaController controller = controllerFuture.get();

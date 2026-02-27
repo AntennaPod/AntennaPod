@@ -138,7 +138,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         viewBinding = TimeDialogBinding.inflate(inflater);
         List<String> spinnerContent = new ArrayList<>();
         // add "title" for all options
@@ -206,11 +206,12 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         viewBinding.vibrateCheckbox.setChecked(SleepTimerPreferences.vibrate());
         refreshAutoEnableControls(SleepTimerPreferences.autoEnable());
 
-        viewBinding.shakeToResetCheckbox.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> SleepTimerPreferences.setShakeToReset(isChecked));
-        viewBinding.vibrateCheckbox
-                .setOnCheckedChangeListener((buttonView, isChecked) -> SleepTimerPreferences.setVibrate(isChecked));
-        viewBinding.autoEnableCheckbox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+        viewBinding.shakeToResetCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
+                -> SleepTimerPreferences.setShakeToReset(isChecked));
+        viewBinding.vibrateCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
+                -> SleepTimerPreferences.setVibrate(isChecked));
+        viewBinding.autoEnableCheckbox.setOnCheckedChangeListener((compoundButton, isChecked)
+                -> {
             boolean mostOfDay = isSleepTimerConfiguredForMostOfTheDay();
             if (isChecked && mostOfDay && SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
                 confirmAlwaysSleepTimerDialog();
@@ -336,8 +337,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
             }
 
             if (isEpisodeType) {
-                // for episode timers check if the queue length exceeds the number of sleep
-                // episodes we have
+                // for episode timers check if the queue length exceeds the number of sleep episodes we have
                 if (currentQueueSize != null && selectedSleepTime > currentQueueSize) {
                     viewBinding.sleepTimerHintText.setText(getResources().getQuantityString(
                             R.plurals.episodes_sleep_timer_exceeds_queue,
@@ -348,10 +348,9 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
                     viewBinding.sleepTimerHintText.setVisibility(View.GONE);
                 }
             } else {
-                // for time sleep timers check if the selected value exceeds the remaining play
-                // time in the episode
-                final int remaining = controller != null ? controller.getDuration() - controller.getPosition()
-                        : Integer.MAX_VALUE;
+                // for time sleep timers check if the selected value exceeds the remaining play time in the episode
+                final int remaining = controller != null ? controller.getDuration() - controller.getPosition() :
+                        Integer.MAX_VALUE;
                 final long timer = TimeUnit.MINUTES.toMillis(selectedSleepTime);
                 if ((timer > remaining) && !UserPreferences.isFollowQueue()) {
                     final int remainingMinutes = Math.toIntExact(TimeUnit.MILLISECONDS.toMinutes(remaining));
@@ -359,7 +358,8 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
                             .setText(getResources().getQuantityString(
                                     R.plurals.timer_exceeds_remaining_time_while_continuous_playback_disabled,
                                     remainingMinutes,
-                                    remainingMinutes));
+                                    remainingMinutes
+                            ));
                     viewBinding.sleepTimerHintText.setVisibility(View.VISIBLE);
                 } else {
                     // don't show it at all
@@ -386,16 +386,13 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         } else {
             setupExtendButton(viewBinding.extendSleepFiveMinutesButton,
                     "+" + getResources().getQuantityString(R.plurals.num_episodes,
-                            EXTEND_FEW_EPISODES, EXTEND_FEW_EPISODES),
-                    EXTEND_FEW_EPISODES);
+                    EXTEND_FEW_EPISODES, EXTEND_FEW_EPISODES), EXTEND_FEW_EPISODES);
             setupExtendButton(viewBinding.extendSleepTenMinutesButton,
                     "+" + getResources().getQuantityString(R.plurals.num_episodes,
-                            EXTEND_MID_EPISODES, EXTEND_MID_EPISODES),
-                    EXTEND_MID_EPISODES);
+                    EXTEND_MID_EPISODES, EXTEND_MID_EPISODES), EXTEND_MID_EPISODES);
             setupExtendButton(viewBinding.extendSleepTwentyMinutesButton,
                     "+" + getResources().getQuantityString(R.plurals.num_episodes,
-                            EXTEND_LOTS_EPISODES, EXTEND_LOTS_EPISODES),
-                    EXTEND_LOTS_EPISODES);
+                    EXTEND_LOTS_EPISODES, EXTEND_LOTS_EPISODES), EXTEND_LOTS_EPISODES);
         }
     }
 
@@ -421,8 +418,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
             SleepTimerPreferences.setAutoEnableTo(dialog.getTo());
             boolean mostOfDay = isSleepTimerConfiguredForMostOfTheDay();
             // disable the checkbox if they've selected always
-            // only change the state if true, don't change it regardless of flag (although
-            // we could)
+            // only change the state if true, don't change it regardless of flag (although we could)
             if (mostOfDay && SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES) {
                 confirmAlwaysSleepTimerDialog();
             } else if (!viewBinding.autoEnableCheckbox.isChecked()) {
