@@ -71,7 +71,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             Bundle.EMPTY);
 
     private static final String EXTRA_VALUE = "value";
-    private static final String EXTRA_LONG_VALUE = "long_value";
 
     public static Bundle createBundle(boolean value) {
         Bundle args = new Bundle();
@@ -79,18 +78,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         return args;
     }
 
+    public static Bundle createBundle(long value) {
+        Bundle args = new Bundle();
+        args.putLong(EXTRA_VALUE, value);
+        return args;
+    }
+
     public static boolean getBoolean(Bundle args, boolean defaultValue) {
         return args != null ? args.getBoolean(EXTRA_VALUE, defaultValue) : defaultValue;
     }
 
-    public static Bundle createLongBundle(long value) {
-        Bundle args = new Bundle();
-        args.putLong(EXTRA_LONG_VALUE, value);
-        return args;
-    }
-
     public static long getLong(Bundle args, long defaultValue) {
-        return args != null ? args.getLong(EXTRA_LONG_VALUE, defaultValue) : defaultValue;
+        return args != null ? args.getLong(EXTRA_VALUE, defaultValue) : defaultValue;
     }
 
     private final Context context;
@@ -284,8 +283,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         .subscribeOn(Schedulers.io())
                         .subscribe(
                                 media -> {
-                                    MediaSession.MediaItemsWithStartPosition result =
-                                            new MediaSession.MediaItemsWithStartPosition(
+                                    MediaSession.MediaItemsWithStartPosition result = new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
                                             0, media.getPosition());
                                     future.set(result);

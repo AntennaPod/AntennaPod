@@ -149,19 +149,14 @@ public class Media3PlaybackService extends MediaLibraryService {
                 PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
                 exoPlayer.setSkipSilenceEnabled(enabled);
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
-            } else if (customCommand.customAction.equals(
-                    MediaLibrarySessionCallback.SESSION_COMMAND_SET_SLEEP_TIMER.customAction)) {
-                long time = MediaLibrarySessionCallback.getLong(args, 0);
-                startSleepTimer(time);
+            } else if (customCommand.customAction.equals(SESSION_COMMAND_SET_SLEEP_TIMER.customAction)) {
+                startSleepTimer(MediaLibrarySessionCallback.getLong(args, 0));
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
-            } else if (customCommand.customAction.equals(
-                    MediaLibrarySessionCallback.SESSION_COMMAND_DISABLE_SLEEP_TIMER.customAction)) {
+            } else if (customCommand.customAction.equals(SESSION_COMMAND_DISABLE_SLEEP_TIMER.customAction)) {
                 disableSleepTimer();
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
-            } else if (customCommand.customAction.equals(
-                    MediaLibrarySessionCallback.SESSION_COMMAND_EXTEND_SLEEP_TIMER.customAction)) {
-                long time = MediaLibrarySessionCallback.getLong(args, 0);
-                extendSleepTimer(time);
+            } else if (customCommand.customAction.equals(SESSION_COMMAND_EXTEND_SLEEP_TIMER.customAction)) {
+                extendSleepTimer(MediaLibrarySessionCallback.getLong(args, 0));
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             }
             return super.onCustomCommand(session, controller, customCommand, args);
@@ -186,6 +181,18 @@ public class Media3PlaybackService extends MediaLibraryService {
                 FeedMedia media = currentPlayable;
                 currentPlayable = null; // To avoid position updater saving position after we already reset it
                 onPlaybackEnd(media);
+                if (sleepTimer != null && sleepTimer.isActive()) {
+                    sleepTimer.episodeFinishedPlayback();
+                    if (!sleepTimer.shouldContinueToNextEpisode()) {
+                        player.stop();
+                        player.clearMediaItems();
+                        PlaybackPreferences.writeNoMediaPlaying();
+                        EventBus.getDefault().post(
+                                new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                        EventBus.getDefault().post(new PlayerStatusEvent());
+                        return;
+                    }
+                }
                 startNextInQueue(media.getItem());
             }
             EventBus.getDefault().post(new PlayerStatusEvent());
@@ -213,7 +220,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             EventBus.getDefault().post(new PlayerStatusEvent());
 
             // Auto-enable sleep timer when playback starts
-            if (isPlaying && sleepTimer == null && SleepTimerPreferences.autoEnable()) {
+            if (PlaybackService.isRunning && sleepTimer == null && SleepTimerPreferences.autoEnable()) {
                 int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
                 if (SleepTimerPreferences.isInTimeRange(
                         SleepTimerPreferences.autoEnableFrom(),
@@ -461,18 +468,6 @@ public class Media3PlaybackService extends MediaLibraryService {
      */
     @UnstableApi
     private void startNextInQueue(FeedItem item) {
-        // Check sleep timer: if active, ask if can continue to next episode
-        if (sleepTimer != null && sleepTimer.isActive()) {
-            sleepTimer.episodeFinishedPlayback();
-            if (!sleepTimer.shouldContinueToNextEpisode()) {
-                player.stop();
-                player.clearMediaItems();
-                PlaybackPreferences.writeNoMediaPlaying();
-                EventBus.getDefault().post(
-                        new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
-                return;
-            }
-        }
 
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
@@ -507,26 +502,24 @@ public class Media3PlaybackService extends MediaLibraryService {
                         });
     }
 
-    // ===== Sleep Timer =====
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSleepTimerUpdated(SleepTimerUpdatedEvent event) {
         if (event.isOver()) {
             Log.d(TAG, "Sleep timer expired, pausing playback");
             if (player != null) {
-                exoPlayer.setVolume(1.0f);
+                player.setVolume(1.0f);
                 player.pause();
             }
             sleepTimer = null;
         } else if (event.isCancelled()) {
-            exoPlayer.setVolume(1.0f);
+            player.setVolume(1.0f);
         } else if (!event.wasJustEnabled()) {
             long millisLeft = event.getMillisTimeLeft();
             if (millisLeft < SleepTimer.NOTIFICATION_THRESHOLD && millisLeft > 0) {
                 float volume = (float) millisLeft / SleepTimer.NOTIFICATION_THRESHOLD;
-                exoPlayer.setVolume(Math.max(0.1f, volume));
+                player.setVolume(Math.max(0.1f, volume));
             } else {
-                exoPlayer.setVolume(1.0f);
+                player.setVolume(1.0f);
             }
         }
     }
@@ -549,13 +542,13 @@ public class Media3PlaybackService extends MediaLibraryService {
             sleepTimer = null;
         }
         if (player != null) {
-            exoPlayer.setVolume(1.0f);
+            player.setVolume(1.0f);
         }
     }
 
     private void extendSleepTimer(long additionalTime) {
         if (sleepTimer != null && sleepTimer.isActive()) {
-            long currentLeft = sleepTimer.getTimeLeft().getDisplayValue();
+            long currentLeft = sleepTimer.getTimeLeft().getMillisValue();
             sleepTimer.updateRemainingTime(currentLeft + additionalTime);
         }
     }

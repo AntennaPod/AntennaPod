@@ -20,7 +20,6 @@ import androidx.media3.session.SessionToken;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import de.danoeh.antennapod.playback.base.BuildConfig;
-import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.model.playback.TimerValue;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -334,8 +333,8 @@ public abstract class PlaybackController {
     public int getPosition() {
         if (playbackService != null) {
             return playbackService.getCurrentPosition();
-        } else if (media != null) {
-            return media.getPosition();
+        } else if (getMedia() != null) {
+            return getMedia().getPosition();
         } else {
             return Playable.INVALID_TIME;
         }
@@ -344,8 +343,8 @@ public abstract class PlaybackController {
     public int getDuration() {
         if (playbackService != null) {
             return playbackService.getDuration();
-        } else if (media != null) {
-            return media.getDuration();
+        } else if (getMedia() != null) {
+            return getMedia().getDuration();
         } else {
             return Playable.INVALID_TIME;
         }
@@ -363,13 +362,7 @@ public abstract class PlaybackController {
     }
 
     public void disableSleepTimer() {
-        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-            PlaybackController.bindToMedia3Service(activity, controller -> {
-                controller.sendCustomCommand(
-                        MediaLibrarySessionCallback.SESSION_COMMAND_DISABLE_SLEEP_TIMER,
-                        Bundle.EMPTY);
-            });
-        } else if (playbackService != null) {
+        if (playbackService != null) {
             playbackService.disableSleepTimer();
         }
     }
@@ -383,28 +376,14 @@ public abstract class PlaybackController {
     }
 
     public void extendSleepTimer(long extendTime) {
-        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-            PlaybackController.bindToMedia3Service(activity, controller -> {
-                controller.sendCustomCommand(
-                        MediaLibrarySessionCallback.SESSION_COMMAND_EXTEND_SLEEP_TIMER,
-                        MediaLibrarySessionCallback.createLongBundle(extendTime));
-            });
-        } else {
-            TimerValue timeLeft = getSleepTimerTimeLeft();
-            if (playbackService != null && timeLeft.getMillisValue() != Playable.INVALID_TIME) {
-                setSleepTimer(timeLeft.getDisplayValue() + extendTime);
-            }
+        TimerValue timeLeft = getSleepTimerTimeLeft();
+        if (playbackService != null && timeLeft.getMillisValue() != Playable.INVALID_TIME) {
+            setSleepTimer(timeLeft.getDisplayValue() + extendTime);
         }
     }
 
     public void setSleepTimer(long time) {
-        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-            PlaybackController.bindToMedia3Service(activity, controller -> {
-                controller.sendCustomCommand(
-                        MediaLibrarySessionCallback.SESSION_COMMAND_SET_SLEEP_TIMER,
-                        MediaLibrarySessionCallback.createLongBundle(time));
-            });
-        } else if (playbackService != null) {
+        if (playbackService != null) {
             playbackService.setSleepTimer(time);
         }
     }
