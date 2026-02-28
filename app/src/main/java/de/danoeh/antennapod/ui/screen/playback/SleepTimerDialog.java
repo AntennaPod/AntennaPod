@@ -403,7 +403,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
                 PlaybackController.bindToMedia3Service(getActivity(), mediaController -> {
                     mediaController.sendCustomCommand(
                             MediaLibrarySessionCallback.SESSION_COMMAND_EXTEND_SLEEP_TIMER,
-                            MediaLibrarySessionCallback.createBundle((long) extendValue));
+                            MediaLibrarySessionCallback.createBundle(extendValue));
                 });
             } else if (controller != null) {
                 controller.extendSleepTimer(extendValue);

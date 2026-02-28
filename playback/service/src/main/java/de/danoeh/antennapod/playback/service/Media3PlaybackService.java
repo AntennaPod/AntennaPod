@@ -547,7 +547,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     private void extendSleepTimer(long additionalTime) {
         if (sleepTimer != null && sleepTimer.isActive()) {
-            long currentLeft = sleepTimer.getTimeLeft().getMillisValue();
+            long currentLeft = sleepTimer.getTimeLeft().getDisplayValue();
             sleepTimer.updateRemainingTime(currentLeft + additionalTime);
         }
     }
