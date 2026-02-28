@@ -528,6 +528,9 @@ public class Media3PlaybackService extends MediaLibraryService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         nextMedia -> {
+                            if (nextMedia == null) {
+                                return;
+                            }
                             if (PlaybackServiceStarter.needsStreaming(nextMedia)
                                     && !NetworkUtils.isStreamingAllowed()
                                     && UserPreferences.isFollowQueue()) {
