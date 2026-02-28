@@ -1,10 +1,21 @@
 package de.danoeh.antennapod.playback.service;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
@@ -19,6 +30,7 @@ import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
@@ -29,6 +41,8 @@ import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
@@ -191,6 +205,28 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     };
 
+    @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        if (intent != null) {
+            if (PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME.equals(intent.getAction())
+                    || PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS.equals(intent.getAction())) {
+                NotificationManagerCompat.from(this).cancel(R.id.notification_streaming_confirmation);
+                if (intent.getBooleanExtra(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS, false)) {
+                    UserPreferences.setAllowMobileStreaming(true);
+                }
+                Playable playable = intent.getParcelableExtra(PlaybackServiceInterface.EXTRA_PLAYABLE);
+                if (playable instanceof FeedMedia) {
+                    new PlaybackServiceStarter(this, playable)
+                            .shouldStreamThisTime(true)
+                            .callEvenIfRunning(true)
+                            .start();
+                }
+                return START_NOT_STICKY;
+            }
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     @Nullable
     @Override
     public MediaLibrarySession onGetSession(@NonNull MediaSession.ControllerInfo controllerInfo) {
@@ -264,6 +300,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (player == null || player.getCurrentMediaItem() == null) {
             return;
         }
+        NotificationManagerCompat.from(this).cancel(R.id.notification_streaming_confirmation);
         try {
             long mediaId = Long.parseLong(player.getCurrentMediaItem().mediaId);
             if (currentPlayable == null || currentPlayable.getId() != mediaId) {
@@ -407,6 +444,71 @@ public class Media3PlaybackService extends MediaLibraryService {
         player.seekTo(chapters.get(nextChapter).getStart());
     }
 
+    @SuppressLint("LaunchActivityFromNotification")
+    private void displayStreamingNotAllowedNotification(FeedMedia media) {
+        if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
+            EventBus.getDefault().post(new MessageEvent(
+                    getString(R.string.confirm_mobile_streaming_notification_message)));
+            return;
+        }
+
+        Intent intentAllowThisTime = new Intent(this, Media3PlaybackService.class);
+        intentAllowThisTime.setAction(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME);
+        intentAllowThisTime.putExtra(PlaybackServiceInterface.EXTRA_PLAYABLE, (Parcelable) media);
+        intentAllowThisTime.putExtra(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, true);
+        PendingIntent pendingIntentAllowThisTime;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            pendingIntentAllowThisTime = PendingIntent.getForegroundService(this,
+                    R.id.pending_intent_allow_stream_this_time, intentAllowThisTime,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntentAllowThisTime = PendingIntent.getService(this,
+                    R.id.pending_intent_allow_stream_this_time, intentAllowThisTime,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        }
+
+        Intent intentAlwaysAllow = new Intent(this, Media3PlaybackService.class);
+        intentAlwaysAllow.setAction(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS);
+        intentAlwaysAllow.putExtra(PlaybackServiceInterface.EXTRA_PLAYABLE, (Parcelable) media);
+        intentAlwaysAllow.putExtra(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_THIS_TIME, true);
+        intentAlwaysAllow.putExtra(PlaybackServiceInterface.EXTRA_ALLOW_STREAM_ALWAYS, true);
+        PendingIntent pendingIntentAlwaysAllow;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            pendingIntentAlwaysAllow = PendingIntent.getForegroundService(this,
+                    R.id.pending_intent_allow_stream_always, intentAlwaysAllow,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntentAlwaysAllow = PendingIntent.getService(this,
+                    R.id.pending_intent_allow_stream_always, intentAlwaysAllow,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
+                NotificationUtils.CHANNEL_ID_USER_ACTION)
+                .setSmallIcon(R.drawable.ic_notification_stream)
+                .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
+                .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(getString(R.string.confirm_mobile_streaming_notification_message)))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntentAllowThisTime)
+                .addAction(R.drawable.ic_notification_stream,
+                        getString(R.string.confirm_mobile_streaming_button_once),
+                        pendingIntentAllowThisTime)
+                .addAction(R.drawable.ic_notification_stream,
+                        getString(R.string.confirm_mobile_streaming_button_always),
+                        pendingIntentAlwaysAllow)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(R.id.notification_streaming_confirmation, builder.build());
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    R.string.confirm_mobile_streaming_notification_message, Toast.LENGTH_LONG).show();
+        }
+    }
+
     /**
      * Loads the next item, and starts it if continuous playback is enabled.
      */
@@ -426,6 +528,17 @@ public class Media3PlaybackService extends MediaLibraryService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         nextMedia -> {
+                            if (PlaybackServiceStarter.needsStreaming(nextMedia)
+                                    && !NetworkUtils.isStreamingAllowed()
+                                    && UserPreferences.isFollowQueue()) {
+                                displayStreamingNotAllowedNotification(nextMedia);
+                                player.stop();
+                                player.clearMediaItems();
+                                PlaybackPreferences.writeNoMediaPlaying();
+                                EventBus.getDefault().post(new PlaybackServiceEvent(
+                                        PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                                return;
+                            }
                             currentPlayable = nextMedia;
                             currentPlayable.onPlaybackStart();
                             MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
