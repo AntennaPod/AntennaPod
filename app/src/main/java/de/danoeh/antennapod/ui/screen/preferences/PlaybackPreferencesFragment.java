@@ -2,6 +2,7 @@ package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
@@ -49,6 +50,11 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
             SkipPreferenceDialog.showSkipPreference(activity, SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, null);
             return true;
         });
+        if (Build.VERSION.SDK_INT >= 31) {
+            findPreference(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT).setVisible(false);
+            findPreference(UserPreferences.PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT).setVisible(false);
+        }
+
         buildEnqueueLocationPreference();
     }
 
