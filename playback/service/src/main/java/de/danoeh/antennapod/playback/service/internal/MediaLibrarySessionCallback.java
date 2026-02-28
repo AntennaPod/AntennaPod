@@ -65,6 +65,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("next_chapter", Bundle.EMPTY);
     public static final SessionCommand SESSION_COMMAND_SKIP_SILENCE
             = new SessionCommand("skip_silence", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_SET_SLEEP_TIMER
+            = new SessionCommand("set_sleep_timer", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_DISABLE_SLEEP_TIMER
+            = new SessionCommand("disable_sleep_timer", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_EXTEND_SLEEP_TIMER
+            = new SessionCommand("extend_sleep_timer", Bundle.EMPTY);
 
     private static final String EXTRA_VALUE = "value";
 
@@ -74,8 +80,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         return args;
     }
 
+    public static Bundle createBundle(long value) {
+        Bundle args = new Bundle();
+        args.putLong(EXTRA_VALUE, value);
+        return args;
+    }
+
     public static boolean getBoolean(Bundle args, boolean defaultValue) {
         return args != null ? args.getBoolean(EXTRA_VALUE, defaultValue) : defaultValue;
+    }
+
+    public static long getLong(Bundle args, long defaultValue) {
+        return args != null ? args.getLong(EXTRA_VALUE, defaultValue) : defaultValue;
     }
 
     private final Context context;
@@ -98,6 +114,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_SKIP_TO_NEXT)
                 .add(SESSION_COMMAND_NEXT_CHAPTER)
                 .add(SESSION_COMMAND_SKIP_SILENCE)
+                .add(SESSION_COMMAND_SET_SLEEP_TIMER)
+                .add(SESSION_COMMAND_DISABLE_SLEEP_TIMER)
+                .add(SESSION_COMMAND_EXTEND_SLEEP_TIMER)
                 .build();
         Player.Commands playerCommands = new Player.Commands.Builder()
                 .addAllCommands()
