@@ -6,13 +6,10 @@ import android.os.Parcelable;
 import android.webkit.URLUtil;
 import androidx.core.content.ContextCompat;
 import androidx.media3.common.DeviceInfo;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
-import org.greenrobot.eventbus.EventBus;
 
 public class PlaybackServiceStarter {
     private final Context context;
@@ -47,11 +44,6 @@ public class PlaybackServiceStarter {
 
     public void start() {
         if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-            if (!shouldStreamThisTime && needsStreaming(media) && !NetworkUtils.isStreamingAllowed()) {
-                EventBus.getDefault().post(new MessageEvent(
-                        context.getString(R.string.confirm_mobile_streaming_notification_message)));
-                return;
-            }
             PlaybackController.bindToMedia3Service(context, controller -> {
                 if (controller.getCurrentMediaItem() != null && media instanceof FeedMedia
                         && ("" + ((FeedMedia) media).getItemId()).equals(controller.getCurrentMediaItem().mediaId)) {
