@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/interruptions">
         <SwitchPreferenceCompat
@@ -15,16 +14,14 @@
                 android:dependency="prefPauseOnHeadsetDisconnect"
                 android:key="prefUnpauseOnHeadsetReconnect"
                 android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
-                android:title="@string/pref_unpauseOnHeadsetReconnect_title"
-                app:searchable="false"/>
+                android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
         <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
                 android:dependency="prefPauseOnHeadsetDisconnect"
                 android:key="prefUnpauseOnBluetoothReconnect"
                 android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
-                android:title="@string/pref_unpauseOnBluetoothReconnect_title"
-                app:searchable="false"/>
+                android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
         <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
