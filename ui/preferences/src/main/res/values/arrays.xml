@@ -104,6 +104,18 @@
         <item>600</item>
     </string-array>
 
+    <string-array name="skip_silence_intensity_entries">
+        <item>@string/skip_silence_intensity_mild</item>
+        <item>@string/skip_silence_intensity_normal</item>
+        <item>@string/skip_silence_intensity_aggressive</item>
+    </string-array>
+
+    <string-array name="skip_silence_intensity_values">
+        <item>mild</item>
+        <item>normal</item>
+        <item>aggressive</item>
+    </string-array>
+
 
     <integer-array name="seek_delta_values">
         <item>5</item>

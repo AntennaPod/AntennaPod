@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
@@ -17,6 +18,7 @@ import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
 import java.util.Map;
 
 public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
+    private static final String TAG = "PlaybackPreferences";
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
     private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
@@ -56,28 +58,51 @@ public class PlaybackPreferencesFragment extends AnimatedPreferenceFragment {
         }
 
         buildEnqueueLocationPreference();
+        buildSkipSilenceIntensityPreference();
     }
 
     private void buildEnqueueLocationPreference() {
+        buildListPreferenceWithSummary(
+                UserPreferences.PREF_ENQUEUE_LOCATION,
+                R.array.enqueue_location_values,
+                R.array.enqueue_location_options,
+                R.string.pref_enqueue_location_sum);
+    }
+
+    private void buildSkipSilenceIntensityPreference() {
+        buildListPreferenceWithSummary(
+                UserPreferences.PREF_PLAYBACK_SKIP_SILENCE_INTENSITY,
+                R.array.skip_silence_intensity_values,
+                R.array.skip_silence_intensity_entries,
+                R.string.pref_skip_silence_intensity_sum);
+    }
+
+    private void buildListPreferenceWithSummary(@NonNull CharSequence key,
+                                                int valuesResId,
+                                                int entriesResId,
+                                                int summaryResId) {
         final Resources res = requireActivity().getResources();
         final Map<String, String> options = new ArrayMap<>();
-        {
-            String[] keys = res.getStringArray(R.array.enqueue_location_values);
-            String[] values = res.getStringArray(R.array.enqueue_location_options);
-            for (int i = 0; i < keys.length; i++) {
-                options.put(keys[i], values[i]);
-            }
+        String[] keys = res.getStringArray(valuesResId);
+        String[] values = res.getStringArray(entriesResId);
+        if (keys.length != values.length) {
+            Log.w(TAG, "Preference array length mismatch for " + key + ": values="
+                    + keys.length + ", entries=" + values.length);
+        }
+        int count = Math.min(keys.length, values.length);
+        for (int i = 0; i < count; i++) {
+            options.put(keys[i], values[i]);
         }
 
-        ListPreference pref = requirePreference(UserPreferences.PREF_ENQUEUE_LOCATION);
-        pref.setSummary(res.getString(R.string.pref_enqueue_location_sum, options.get(pref.getValue())));
+        ListPreference pref = requirePreference(key);
+        pref.setSummary(res.getString(summaryResId, options.get(pref.getValue())));
 
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             if (!(newValue instanceof String)) {
                 return false;
             }
             String newValStr = (String) newValue;
-            pref.setSummary(res.getString(R.string.pref_enqueue_location_sum, options.get(newValStr)));
+            pref.setSummary(res.getString(summaryResId, options.get(newValStr)));
             return true;
         });
     }
