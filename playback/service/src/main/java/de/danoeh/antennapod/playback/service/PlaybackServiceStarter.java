@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.media3.common.DeviceInfo;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 
@@ -55,6 +56,10 @@ public class PlaybackServiceStarter {
                     controller.play(); // Casting somehow does not play when not quickly starting the old episode
                 }
                 controller.setMediaItem(MediaItemAdapter.fromPlayable(media));
+                if (!shouldStreamThisTime && needsStreaming(media)
+                        && !NetworkUtils.isStreamingAllowed()) {
+                    return;
+                }
                 controller.prepare();
                 controller.play();
             });
