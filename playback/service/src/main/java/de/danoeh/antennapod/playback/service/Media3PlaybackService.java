@@ -155,7 +155,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             private boolean handleStreamingConfirmation() {
                 if (pendingStreamMedia != null && getCurrentMediaItem() != null
                         && MEDIA_ID_CONFIRM_STREAMING.equals(getCurrentMediaItem().mediaId)) {
-                    FeedMedia media = pendingStreamMedia;
+                    final FeedMedia media = pendingStreamMedia;
                     pendingStreamMedia = null;
                     allowStreamingThisTime = true;
                     cancelStreamingConfirmationNotification();
@@ -280,7 +280,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (intent != null && ACTION_ALLOW_STREAM_THIS_TIME.equals(intent.getAction())) {
             cancelStreamingConfirmationNotification();
             if (pendingStreamMedia != null) {
-                FeedMedia media = pendingStreamMedia;
+                final FeedMedia media = pendingStreamMedia;
                 pendingStreamMedia = null;
                 allowStreamingThisTime = true;
                 startPendingStreamMedia(media);
@@ -290,7 +290,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             cancelStreamingConfirmationNotification();
             UserPreferences.setAllowMobileStreaming(true);
             if (pendingStreamMedia != null) {
-                FeedMedia media = pendingStreamMedia;
+                final FeedMedia media = pendingStreamMedia;
                 pendingStreamMedia = null;
                 startPendingStreamMedia(media);
             }
