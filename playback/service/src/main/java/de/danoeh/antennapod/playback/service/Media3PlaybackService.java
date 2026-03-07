@@ -1,20 +1,13 @@
 package de.danoeh.antennapod.playback.service;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.webkit.URLUtil;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
@@ -24,6 +17,7 @@ import androidx.media3.common.util.UnstableApi;
 import androidx.media3.common.util.Util;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.DefaultMediaNotificationProvider;
+import androidx.media3.session.MediaController;
 import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
 import androidx.media3.session.SessionCommand;
@@ -35,17 +29,17 @@ import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
-import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
-import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
 import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
@@ -55,14 +49,14 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
-import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
+import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import io.reactivex.rxjava3.core.Maybe;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
@@ -72,10 +66,6 @@ public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
     private static final long POSITION_SAVE_INTERVAL_MS = 5000;
     private static final String MEDIA_ID_CONFIRM_STREAMING = "confirm_streaming";
-    private static final String ACTION_ALLOW_STREAM_THIS_TIME =
-            "de.danoeh.antennapod.action.allowStreamThisTime";
-    private static final String ACTION_ALLOW_STREAM_ALWAYS =
-            "de.danoeh.antennapod.action.allowStreamAlways";
 
     private ExoPlayer exoPlayer;
     private Player player;
@@ -139,7 +129,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 return currentPlayable != null
                         && (getPlaybackState() == Player.STATE_READY
                                 || getPlaybackState() == Player.STATE_BUFFERING)
-                        && PlaybackServiceStarter.needsStreaming(currentPlayable)
+                        && needsStreaming(currentPlayable)
                         && !NetworkUtils.isStreamingAllowed();
             }
 
@@ -158,7 +148,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                     final FeedMedia media = pendingStreamMedia;
                     pendingStreamMedia = null;
                     allowStreamingThisTime = true;
-                    cancelStreamingConfirmationNotification();
                     startPendingStreamMedia(media);
                     return true;
                 }
@@ -276,34 +265,8 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     @UnstableApi
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null && ACTION_ALLOW_STREAM_THIS_TIME.equals(intent.getAction())) {
-            cancelStreamingConfirmationNotification();
-            if (pendingStreamMedia != null) {
-                final FeedMedia media = pendingStreamMedia;
-                pendingStreamMedia = null;
-                allowStreamingThisTime = true;
-                startPendingStreamMedia(media);
-            }
-            return START_NOT_STICKY;
-        } else if (intent != null && ACTION_ALLOW_STREAM_ALWAYS.equals(intent.getAction())) {
-            cancelStreamingConfirmationNotification();
-            UserPreferences.setAllowMobileStreaming(true);
-            if (pendingStreamMedia != null) {
-                final FeedMedia media = pendingStreamMedia;
-                pendingStreamMedia = null;
-                startPendingStreamMedia(media);
-            }
-            return START_NOT_STICKY;
-        }
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @UnstableApi
-    @Override
     public void onDestroy() {
         PlaybackService.isRunning = false;
-        cancelStreamingConfirmationNotification();
         cancelPositionObserver();
         if (mediaLoaderDisposable != null) {
             mediaLoaderDisposable.dispose();
@@ -371,7 +334,6 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         pendingStreamMedia = null;
-        cancelStreamingConfirmationNotification();
         try {
             long mediaId = Long.parseLong(player.getCurrentMediaItem().mediaId);
             if (currentPlayable == null || currentPlayable.getId() != mediaId) {
@@ -387,7 +349,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             if (player == null) {
                                 return;
                             }
-                            if (PlaybackServiceStarter.needsStreaming(media)
+                            if (needsStreaming(media)
                                     && !NetworkUtils.isStreamingAllowed()
                                     && !allowStreamingThisTime) {
                                 showStreamingConfirmation(media);
@@ -526,95 +488,44 @@ public class Media3PlaybackService extends MediaLibraryService {
     private void showStreamingConfirmation(FeedMedia media) {
         pendingStreamMedia = media;
         currentPlayable = null;
-        player.stop();
-
+        int resourceId = R.raw.no_streaming;
+        Uri uri = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(getResources().getResourcePackageName(resourceId))
+                .appendPath(getResources().getResourceTypeName(resourceId))
+                .appendPath(getResources().getResourceEntryName(resourceId))
+                .build();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder()
-                .setTitle(media.getEpisodeTitle())
-                .setSubtitle(getString(R.string.confirm_mobile_streaming_notification_message))
+                .setTitle(getString(R.string.confirm_mobile_streaming_notification_title))
+                .setDescription(getString(R.string.confirm_mobile_streaming_notification_message))
                 .setIsPlayable(true)
                 .setIsBrowsable(false);
-        if (media.getImageLocation() != null && media.getImageLocation().startsWith("http")) {
-            metadataBuilder.setArtworkUri(Uri.parse(media.getImageLocation()));
-        }
         MediaItem confirmItem = new MediaItem.Builder()
                 .setMediaId(MEDIA_ID_CONFIRM_STREAMING)
+                .setUri(uri)
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
         player.setMediaItem(confirmItem);
-        displayStreamingNotAllowedNotification();
-    }
-
-    @SuppressLint("LaunchActivityFromNotification")
-    private void displayStreamingNotAllowedNotification() {
-        if (EventBus.getDefault().hasSubscriberForEvent(MessageEvent.class)) {
-            EventBus.getDefault().post(new MessageEvent(
-                    getString(R.string.confirm_mobile_streaming_notification_message)));
-            return;
-        }
-
-        Intent intentAllowThisTime = new Intent(this, Media3PlaybackService.class);
-        intentAllowThisTime.setAction(ACTION_ALLOW_STREAM_THIS_TIME);
-        PendingIntent pendingIntentAllowThisTime;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            pendingIntentAllowThisTime = PendingIntent.getForegroundService(this,
-                    R.id.pending_intent_allow_stream_this_time, intentAllowThisTime,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        } else {
-            pendingIntentAllowThisTime = PendingIntent.getService(this,
-                    R.id.pending_intent_allow_stream_this_time, intentAllowThisTime,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        }
-
-        Intent intentAlwaysAllow = new Intent(this, Media3PlaybackService.class);
-        intentAlwaysAllow.setAction(ACTION_ALLOW_STREAM_ALWAYS);
-        PendingIntent pendingIntentAlwaysAllow;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            pendingIntentAlwaysAllow = PendingIntent.getForegroundService(this,
-                    R.id.pending_intent_allow_stream_always, intentAlwaysAllow,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        } else {
-            pendingIntentAlwaysAllow = PendingIntent.getService(this,
-                    R.id.pending_intent_allow_stream_always, intentAlwaysAllow,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
-                NotificationUtils.CHANNEL_ID_USER_ACTION)
-                .setSmallIcon(R.drawable.ic_notification_stream)
-                .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
-                .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(getString(R.string.confirm_mobile_streaming_notification_message)))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntentAllowThisTime)
-                .addAction(R.drawable.ic_notification_stream,
-                        getString(R.string.confirm_mobile_streaming_button_once),
-                        pendingIntentAllowThisTime)
-                .addAction(R.drawable.ic_notification_stream,
-                        getString(R.string.confirm_mobile_streaming_button_always),
-                        pendingIntentAlwaysAllow)
-                .setAutoCancel(true);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
-                == PackageManager.PERMISSION_GRANTED) {
-            notificationManager.notify(R.id.notification_streaming_confirmation, builder.build());
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    R.string.confirm_mobile_streaming_notification_message, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void cancelStreamingConfirmationNotification() {
-        NotificationManagerCompat.from(this).cancel(R.id.notification_streaming_confirmation);
+        player.setPlayWhenReady(false);
+        player.prepare();
+        EventBus.getDefault().post(new MessageEvent(
+                getString(R.string.confirm_mobile_streaming_notification_title),
+                context -> PlaybackController.bindToMedia3Service(context, MediaController::play),
+                getString(R.string.confirm_mobile_streaming_button_once)));
     }
 
     @UnstableApi
     private void startPendingStreamMedia(FeedMedia media) {
         MediaItem mediaItem = MediaItemAdapter.fromPlayable(media);
         player.setMediaItem(mediaItem);
-        player.seekTo(media.getPosition());
         player.prepare();
+        player.seekTo(media.getPosition());
         player.play();
+    }
+
+
+    private static boolean needsStreaming(FeedMedia media) {
+        return !media.localFileAvailable() && !URLUtil.isContentUrl(media.getStreamUrl());
     }
 
     /**
@@ -636,7 +547,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         nextMedia -> {
-                            if (PlaybackServiceStarter.needsStreaming(nextMedia)
+                            if (needsStreaming(nextMedia)
                                     && !NetworkUtils.isStreamingAllowed()
                                     && !allowStreamingThisTime
                                     && UserPreferences.isFollowQueue()) {
