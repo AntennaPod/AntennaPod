@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
@@ -63,6 +65,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("next_chapter", Bundle.EMPTY);
     public static final SessionCommand SESSION_COMMAND_SKIP_SILENCE
             = new SessionCommand("skip_silence", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_SET_SLEEP_TIMER
+            = new SessionCommand("set_sleep_timer", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_DISABLE_SLEEP_TIMER
+            = new SessionCommand("disable_sleep_timer", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_EXTEND_SLEEP_TIMER
+            = new SessionCommand("extend_sleep_timer", Bundle.EMPTY);
 
     private static final String EXTRA_VALUE = "value";
 
@@ -72,8 +80,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         return args;
     }
 
+    public static Bundle createBundle(long value) {
+        Bundle args = new Bundle();
+        args.putLong(EXTRA_VALUE, value);
+        return args;
+    }
+
     public static boolean getBoolean(Bundle args, boolean defaultValue) {
         return args != null ? args.getBoolean(EXTRA_VALUE, defaultValue) : defaultValue;
+    }
+
+    public static long getLong(Bundle args, long defaultValue) {
+        return args != null ? args.getLong(EXTRA_VALUE, defaultValue) : defaultValue;
     }
 
     private final Context context;
@@ -96,6 +114,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_SKIP_TO_NEXT)
                 .add(SESSION_COMMAND_NEXT_CHAPTER)
                 .add(SESSION_COMMAND_SKIP_SILENCE)
+                .add(SESSION_COMMAND_SET_SLEEP_TIMER)
+                .add(SESSION_COMMAND_DISABLE_SLEEP_TIMER)
+                .add(SESSION_COMMAND_EXTEND_SLEEP_TIMER)
                 .build();
         Player.Commands playerCommands = new Player.Commands.Builder()
                 .addAllCommands()
@@ -153,6 +174,29 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         }
 
         return buttons.build();
+    }
+
+    @Override
+    @UnstableApi
+    public boolean onMediaButtonEvent(@NonNull MediaSession session,
+            @NonNull MediaSession.ControllerInfo controllerInfo, @NonNull Intent intent) {
+        KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+        if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                && keyEvent.getRepeatCount() == 0) {
+            int keyCode = keyEvent.getKeyCode();
+            if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
+                // Instead of skipping to the next episode, do a fast-forward.
+                session.getPlayer().seekForward();
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+                // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
+                // Instead of going to the previous episode, do a rewind.
+                session.getPlayer().seekBack();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

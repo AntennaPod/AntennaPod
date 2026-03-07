@@ -402,20 +402,20 @@ public class ExoPlayerWrapper {
             return;
         }
 
-        LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
         LoudnessEnhancer oldEnhancer = this.loudnessEnhancer;
         if (oldEnhancer != null) {
             try {
+                LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
                 newEnhancer.setEnabled(oldEnhancer.getEnabled());
                 if (oldEnhancer.getEnabled()) {
                     newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
                 }
                 oldEnhancer.release();
+                this.loudnessEnhancer = newEnhancer;
             } catch (Exception e) {
                 Log.d(TAG, e.toString());
+                this.loudnessEnhancer = null;
             }
         }
-
-        this.loudnessEnhancer = newEnhancer;
     }
 }
