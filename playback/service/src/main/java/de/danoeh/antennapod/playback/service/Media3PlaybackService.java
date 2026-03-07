@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
+import androidx.core.util.Pair;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
@@ -476,18 +477,22 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         queueLoaderDisposable = Maybe.fromCallable(() -> {
             FeedItem nextItem = DBReader.getNextInQueue(item);
-            return nextItem != null && nextItem.getMedia() != null ? nextItem.getMedia() : null;
+            if (nextItem != null && nextItem.getMedia() != null) {
+                return new Pair<>(nextItem.getMedia(), MediaItemAdapter.fromPlayable(nextItem.getMedia()));
+            }
+            return null;
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        nextMedia -> {
+                        pair -> {
+                            final FeedMedia nextMedia = pair.first;
+                            final MediaItem nextMediaItem = pair.second;
                             currentPlayable = nextMedia;
                             currentPlayable.onPlaybackStart();
-                            MediaItem mediaItem = MediaItemAdapter.fromPlayable(nextMedia);
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
-                            player.setMediaItem(mediaItem);
+                            player.setMediaItem(nextMediaItem);
                             player.seekTo(nextMedia.getPosition());
                             player.prepare();
                         },
