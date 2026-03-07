@@ -27,8 +27,10 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -38,8 +40,11 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLibrarySession.Callback {
     private static final String TAG = "M3SessionCallback";
@@ -49,9 +54,11 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final String MEDIA_ID_EPISODES = "episodes";
     private static final String MEDIA_ID_SUBSCRIPTIONS = "subscriptions";
     private static final String MEDIA_ID_CURRENT = "current";
+    private static final String MEDIA_ID_FOR_YOU = "for_you";
+    private static final int FOR_YOU_LIMIT = 30;
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
             MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
-            MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CURRENT);
+            MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CURRENT, MEDIA_ID_FOR_YOU);
 
     protected static final SessionCommand SESSION_COMMAND_REWIND
             = new SessionCommand("rewind", Bundle.EMPTY);
@@ -312,8 +319,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .setExtras(rootExtras).build();
         if ("com.google.android.googlequicksearchbox".equals(browser.getPackageName())) {
             // Android Auto "for you" screen
+            String autoRootId = UserPreferences.isAndroidAutoForYouEnabled()
+                    ? MEDIA_ID_FOR_YOU : MEDIA_ID_CURRENT;
             return Futures.immediateFuture(LibraryResult.ofItem(
-                    createBrowsableMediaItem(MEDIA_ID_CURRENT), libraryParams));
+                    createBrowsableMediaItem(autoRootId), libraryParams));
         }
         return Futures.immediateFuture(LibraryResult.ofItem(createBrowsableMediaItem(MEDIA_ID_ROOT), libraryParams));
     }
@@ -343,8 +352,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
 
         switch (parentId) {
             case MEDIA_ID_ROOT:
+                String topItemId = UserPreferences.isAndroidAutoForYouEnabled()
+                        ? MEDIA_ID_FOR_YOU : MEDIA_ID_CURRENT;
                 disposables.add(Single.fromCallable(() -> ImmutableList.of(
-                                createBrowsableMediaItem(MEDIA_ID_CURRENT),
+                                createBrowsableMediaItem(topItemId),
                                 createBrowsableMediaItem(MEDIA_ID_QUEUE),
                                 createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
                                 createBrowsableMediaItem(MEDIA_ID_EPISODES),
@@ -379,6 +390,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                 },
                                 error -> {
                                     Log.e(TAG, "Failed to load currently playing media", error);
+                                    future.set(LibraryResult.ofItemList(ImmutableList.of(), params));
+                                }
+                        ));
+                return future;
+            case MEDIA_ID_FOR_YOU:
+                disposables.add(Single.fromCallable(this::buildForYouList)
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(
+                                items -> future.set(LibraryResult.ofItemList(
+                                        MediaItemAdapter.fromItemList(items), params)),
+                                error -> {
+                                    Log.e(TAG, "Failed to load For You items", error);
                                     future.set(LibraryResult.ofItemList(ImmutableList.of(), params));
                                 }
                         ));
@@ -432,6 +455,40 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     @WorkerThread
+    private List<FeedItem> buildForYouList() {
+        List<FeedItem> result = new ArrayList<>();
+        Set<Long> seenIds = new HashSet<>();
+
+        // First: in-progress episodes (started but not finished), most recently played first
+        List<FeedItem> inProgress = DBReader.getEpisodes(0, FOR_YOU_LIMIT,
+                new FeedItemFilter(FeedItemFilter.PAUSED, FeedItemFilter.HAS_MEDIA),
+                SortOrder.COMPLETION_DATE_NEW_OLD);
+        for (FeedItem item : inProgress) {
+            if (seenIds.add(item.getId())) {
+                result.add(item);
+            }
+        }
+
+        // Second: newest episodes across all subscriptions, filling up to the limit
+        if (result.size() < FOR_YOU_LIMIT) {
+            int remaining = FOR_YOU_LIMIT - result.size();
+            List<FeedItem> newest = DBReader.getEpisodes(0, remaining + result.size(),
+                    new FeedItemFilter(FeedItemFilter.HAS_MEDIA),
+                    SortOrder.DATE_NEW_OLD);
+            for (FeedItem item : newest) {
+                if (result.size() >= FOR_YOU_LIMIT) {
+                    break;
+                }
+                if (seenIds.add(item.getId())) {
+                    result.add(item);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @WorkerThread
     private MediaItem createBrowsableMediaItem(String id) {
         if (id.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
             long feedId = Long.parseLong(id.split(":")[1]);
@@ -466,6 +523,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             case MEDIA_ID_CURRENT:
                 return MediaItemAdapter.from(context, MEDIA_ID_CURRENT,
                         context.getString(R.string.current_playing_episode), R.drawable.ic_play_48dp_black, null);
+            case MEDIA_ID_FOR_YOU:
+                return MediaItemAdapter.from(context, MEDIA_ID_FOR_YOU,
+                        context.getString(R.string.for_you_label), R.drawable.ic_play_48dp_black, null);
             default:
                 throw new IllegalArgumentException("ID not known: " + id);
         }
