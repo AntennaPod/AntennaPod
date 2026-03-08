@@ -100,8 +100,8 @@
         <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
-                android:key="prefAndroidAutoForYou"
-                android:summary="@string/pref_android_auto_for_you_sum"
-                android:title="@string/pref_android_auto_for_you_title"/>
+                android:key="prefAndroidAutoRecommendations"
+                android:summary="@string/pref_android_auto_recommendations_sum"
+                android:title="@string/pref_android_auto_recommendations_title"/>
     </PreferenceCategory>
 </PreferenceScreen>

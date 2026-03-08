@@ -36,10 +36,10 @@
     <string name="years_statistics_label">Years</string>
     <string name="notification_pref_fragment">Notifications</string>
     <string name="current_playing_episode">Current</string>
-    <string name="for_you_label">For You</string>
+    <string name="recommendations_label">Recommendations</string>
     <string name="android_auto_label">Android Auto</string>
-    <string name="pref_android_auto_for_you_title">\"For You\" mix</string>
-    <string name="pref_android_auto_for_you_sum">Show a mix of in-progress and newest episodes instead of only the current episode in Android Auto</string>
+    <string name="pref_android_auto_recommendations_title">\"For You\" recommendations</string>
+    <string name="pref_android_auto_recommendations_sum">Show a mix of in-progress and newest episodes instead of only the current episode in Android Auto\'s \"For You\" tab</string>
 
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>

@@ -90,7 +90,7 @@ public abstract class UserPreferences {
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
-    public static final String PREF_ANDROID_AUTO_FOR_YOU = "prefAndroidAutoForYou";
+    public static final String PREF_ANDROID_AUTO_RECOMMENDATIONS = "prefAndroidAutoRecommendations";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
@@ -398,8 +398,8 @@ public abstract class UserPreferences {
         return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
     }
 
-    public static boolean isAndroidAutoForYouEnabled() {
-        return prefs.getBoolean(PREF_ANDROID_AUTO_FOR_YOU, false);
+    public static boolean isAndroidAutoRecommendationsEnabled() {
+        return prefs.getBoolean(PREF_ANDROID_AUTO_RECOMMENDATIONS, false);
     }
 
     /**
