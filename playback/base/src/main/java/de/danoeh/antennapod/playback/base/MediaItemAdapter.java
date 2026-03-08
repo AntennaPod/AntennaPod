@@ -13,6 +13,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.system.utils.ThreadUtils;
 
 import java.util.List;
 
@@ -20,7 +21,30 @@ public class MediaItemAdapter {
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
     public static final String KEY_STREAM_URL = "stream_url";
 
+    /**
+     * Create a basic media item without attached metadata.
+     * Should be used when initiating playback from outside the service.
+     */
+    public static MediaItem fromPlayableStub(Playable playable) {
+        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+        metadataBuilder.setIsPlayable(true);
+        metadataBuilder.setIsBrowsable(false);
+        String mediaId = "0";
+        if (playable instanceof FeedMedia) {
+            mediaId = String.valueOf(((FeedMedia) playable).getId());
+        }
+        return new MediaItem.Builder()
+                .setMediaId(mediaId)
+                .setMediaMetadata(metadataBuilder.build())
+                .build();
+    }
+
+    /**
+     * Create a media item and load all its metadata.
+     * Do NOT use this method on the main thread.
+     */
     public static MediaItem fromPlayable(Playable playable) {
+        ThreadUtils.assertNotMainThread();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(playable.getEpisodeTitle());
         metadataBuilder.setIsPlayable(true);

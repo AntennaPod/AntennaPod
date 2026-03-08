@@ -10,8 +10,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -42,6 +40,7 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemFilterQuery;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
 
+import de.danoeh.antennapod.system.utils.ThreadUtils;
 import org.apache.commons.io.FileUtils;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
@@ -389,24 +388,8 @@ public class PodDBAdapter {
         return newDb;
     }
 
-    private boolean isTest() {
-        if ("robolectric".equals(Build.FINGERPRINT)) {
-            return true;
-        }
-        try {
-            Class.forName("org.junit.Test");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
-
     public synchronized PodDBAdapter open() {
-        if (BuildConfig.DEBUG) {
-            if (Looper.myLooper() == Looper.getMainLooper() && !isTest()) {
-                throw new RuntimeException("I/O on main thread");
-            }
-        }
+        ThreadUtils.assertNotMainThread();
         // do nothing
         return this;
     }
