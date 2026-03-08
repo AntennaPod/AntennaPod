@@ -54,10 +54,14 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
 
                     for (int i = 0; i < j.length(); i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
-                        PodcastSearchResult podcast = PodcastSearchResult.fromPodcastIndex(podcastJson);
-                        if (podcast.feedUrl != null) {
-                            podcasts.add(podcast);
+                        if (!podcastJson.has("url")) {
+                            continue;
                         }
+                        String title = podcastJson.optString("title", "Unknown");
+                        String imageUrl = podcastJson.optString("image", "");
+                        String feedUrl = podcastJson.optString("url", "");
+                        String author = podcastJson.optString("author", "Unknown");
+                        podcasts.add(new PodcastSearchResult(title, imageUrl, feedUrl, author));
                     }
                 } else {
                     subscriber.onError(new IOException(response.toString()));
