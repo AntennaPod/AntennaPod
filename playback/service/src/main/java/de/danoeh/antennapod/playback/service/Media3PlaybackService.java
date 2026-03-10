@@ -2,6 +2,7 @@ package de.danoeh.antennapod.playback.service;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
@@ -306,6 +307,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     saveCurrentPosition();
                                     lastPositionSaveTime = currentTime;
                                 }
+                                skipEndingIfNecessary();
                             }
                         }, error -> Log.e(TAG, "Position observer error", error));
     }
@@ -314,6 +316,50 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (positionObserverDisposable != null) {
             positionObserverDisposable.dispose();
             positionObserverDisposable = null;
+        }
+    }
+
+    private void skipIntro(FeedMedia media) {
+        if (player == null || media.getItem() == null || media.getItem().getFeed() == null
+                || media.getItem().getFeed().getPreferences() == null) {
+            return;
+        }
+        FeedPreferences preferences = media.getItem().getFeed().getPreferences();
+        int skipIntro = preferences.getFeedSkipIntro();
+        long position = player.getCurrentPosition();
+        if (skipIntro > 0 && position < skipIntro * 1000L) {
+            long duration = player.getDuration();
+            if (skipIntro * 1000L < duration || duration <= 0) {
+                Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
+                player.seekTo(skipIntro * 1000L);
+                Toast.makeText(this, getString(R.string.pref_feed_skip_intro_toast, skipIntro),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void skipEndingIfNecessary() {
+        if (currentPlayable == null || player == null) {
+            return;
+        }
+        if (currentPlayable.getItem() == null || currentPlayable.getItem().getFeed() == null
+                || currentPlayable.getItem().getFeed().getPreferences() == null) {
+            return;
+        }
+        long duration = player.getDuration();
+        long position = player.getCurrentPosition();
+        long remainingTime = duration - position;
+        FeedPreferences preferences = currentPlayable.getItem().getFeed().getPreferences();
+        int skipEnd = preferences.getFeedSkipEnding();
+        float speed = player.getPlaybackParameters().speed;
+        if (skipEnd > 0
+                && skipEnd * 1000L < duration
+                && (remainingTime - (skipEnd * 1000L) > 0)
+                && ((remainingTime - skipEnd * 1000L) < (speed * 1000))) {
+            Log.d(TAG, "skipEndingIfNecessary: Skipping remaining " + remainingTime);
+            Toast.makeText(this, getString(R.string.pref_feed_skip_ending_toast, skipEnd),
+                    Toast.LENGTH_LONG).show();
+            player.seekTo(duration);
         }
     }
 
@@ -338,6 +384,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             currentPlayable.setPosition((int) player.getCurrentPosition());
                             currentPlayable.onPlaybackStart();
+                            skipIntro(media);
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
                                 DBWriter.addQueueItem(this, currentPlayable.getItem());
