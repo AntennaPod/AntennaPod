@@ -1,9 +1,16 @@
 package de.danoeh.antennapod.playback.service.internal;
 
+import android.content.Context;
+import android.util.Log;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.playback.service.R;
+import org.greenrobot.eventbus.EventBus;
 
 public final class SkipUtils {
+    private static final String TAG = "SkipUtils";
+
     private SkipUtils() {
     }
 
@@ -27,10 +34,26 @@ public final class SkipUtils {
     }
 
     /**
+     * Logs the skip event, posts an EventBus message, and returns true if the ending should be
+     * skipped given the current position, duration and playback speed.
+     */
+    public static boolean skipEndingIfNecessary(Context context, FeedMedia media,
+                                                long position, long duration, float speed) {
+        int skipEnd = skipEndingSeconds(media, position, duration, speed);
+        if (skipEnd > 0) {
+            Log.d(TAG, "skipEndingIfNecessary: Skipping remaining " + (duration - position));
+            EventBus.getDefault().post(
+                    new MessageEvent(context.getString(R.string.pref_feed_skip_ending_toast, skipEnd)));
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Returns the number of seconds to skip at the end of the episode, or 0 if no ending should
      * be skipped given the current position, duration and playback speed.
      */
-    public static int skipEndingSeconds(FeedMedia media, long position, long duration, float speed) {
+    private static int skipEndingSeconds(FeedMedia media, long position, long duration, float speed) {
         if (media.getItem() == null || media.getItem().getFeed() == null
                 || media.getItem().getFeed().getPreferences() == null) {
             return 0;

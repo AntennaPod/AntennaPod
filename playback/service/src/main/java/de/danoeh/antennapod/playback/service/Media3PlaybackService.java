@@ -309,7 +309,9 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     saveCurrentPosition();
                                     lastPositionSaveTime = currentTime;
                                 }
-                                skipEndingIfNecessary(position, duration, speed);
+                                if (SkipUtils.skipEndingIfNecessary(this, currentPlayable, position, duration, speed)) {
+                                    player.seekTo(duration);
+                                }
                             }
                         }, error -> Log.e(TAG, "Position observer error", error));
     }
@@ -318,18 +320,6 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (positionObserverDisposable != null) {
             positionObserverDisposable.dispose();
             positionObserverDisposable = null;
-        }
-    }
-
-    private void skipEndingIfNecessary(long position, long duration, float speed) {
-        if (currentPlayable == null) {
-            return;
-        }
-        int skipEnd = SkipUtils.skipEndingSeconds(currentPlayable, position, duration, speed);
-        if (skipEnd > 0) {
-            Log.d(TAG, "skipEndingIfNecessary: Skipping remaining " + (duration - position));
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.pref_feed_skip_ending_toast, skipEnd)));
-            player.seekTo(duration);
         }
     }
 
