@@ -296,19 +296,20 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             long position = player.getCurrentPosition();
                             long duration = player.getDuration();
+                            float speed = player.getPlaybackParameters().speed;
                             if (duration > 0) {
                                 EventBus.getDefault().post(
                                         new PlaybackPositionEvent((int) position, (int) duration));
                                 WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
                                         Util.shouldShowPlayButton(player) ? PlayerStatus.PAUSED : PlayerStatus.PLAYING,
-                                        (int) position, (int) duration, player.getPlaybackParameters().speed);
+                                        (int) position, (int) duration, speed);
                                 WidgetUpdater.updateWidget(this, widgetState);
                                 long currentTime = System.currentTimeMillis();
                                 if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
                                     saveCurrentPosition();
                                     lastPositionSaveTime = currentTime;
                                 }
-                                skipEndingIfNecessary();
+                                skipEndingIfNecessary(position, duration, speed);
                             }
                         }, error -> Log.e(TAG, "Position observer error", error));
     }
@@ -320,13 +321,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
-    private void skipEndingIfNecessary() {
-        if (currentPlayable == null || player == null) {
+    private void skipEndingIfNecessary(long position, long duration, float speed) {
+        if (currentPlayable == null) {
             return;
         }
-        long duration = player.getDuration();
-        long position = player.getCurrentPosition();
-        float speed = player.getPlaybackParameters().speed;
         int skipEnd = SkipUtils.skipEndingSeconds(currentPlayable, position, duration, speed);
         if (skipEnd > 0) {
             Log.d(TAG, "skipEndingIfNecessary: Skipping remaining " + (duration - position));
