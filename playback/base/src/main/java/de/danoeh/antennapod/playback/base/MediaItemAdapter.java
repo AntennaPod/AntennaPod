@@ -46,38 +46,7 @@ public class MediaItemAdapter {
     }
 
     /**
-     * Create a media item and load all its metadata.
-     * Do NOT use this method on the main thread.
-     */
-    public static MediaItem fromPlayable(Playable playable) {
-        ThreadUtils.assertNotMainThread();
-        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
-        metadataBuilder.setTitle(playable.getEpisodeTitle());
-        metadataBuilder.setIsPlayable(true);
-        metadataBuilder.setIsBrowsable(false);
-        metadataBuilder.setMediaType(MediaMetadata.MEDIA_TYPE_PODCAST_EPISODE);
-        String mediaId = "0";
-        if (playable instanceof FeedMedia) {
-            FeedMedia feedMedia = (FeedMedia) playable;
-            mediaId = String.valueOf(feedMedia.getId());
-            metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
-            if (feedMedia.getImageLocation() != null && feedMedia.getImageLocation().startsWith("http")) {
-                metadataBuilder.setArtworkUri(Uri.parse(feedMedia.getImageLocation()));
-            }
-        }
-        Bundle extras = new Bundle();
-        extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
-        metadataBuilder.setExtras(extras);
-        String localPlaybackUri = playable.localFileAvailable() ? playable.getLocalFileUrl() : playable.getStreamUrl();
-        return new MediaItem.Builder()
-                .setUri(localPlaybackUri != null ? Uri.parse(localPlaybackUri) : null)
-                .setMediaId(mediaId)
-                .setMediaMetadata(metadataBuilder.build())
-                .build();
-    }
-
-    /**
-     * Create a media item, load all its metadata, and load cover art using Glide.
+     * Create a media item and load all its metadata, including cover art using Glide.
      * Do NOT use this method on the main thread.
      */
     public static MediaItem fromPlayable(Context context, Playable playable) {
@@ -176,11 +145,11 @@ public class MediaItemAdapter {
                 .build();
     }
 
-    public static ImmutableList<MediaItem> fromItemList(List<FeedItem> feedItems) {
+    public static ImmutableList<MediaItem> fromItemList(Context context, List<FeedItem> feedItems) {
         ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
         for (FeedItem item : feedItems) {
             if (item.getMedia() != null) {
-                itemsBuilder.add(MediaItemAdapter.fromPlayable(item.getMedia()));
+                itemsBuilder.add(MediaItemAdapter.fromPlayable(context, item.getMedia()));
             }
         }
         return itemsBuilder.build();
