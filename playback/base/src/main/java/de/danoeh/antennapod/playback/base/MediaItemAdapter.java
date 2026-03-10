@@ -87,21 +87,24 @@ public class MediaItemAdapter {
             return Glide.with(context).asBitmap().load(playable.getImageLocation())
                     .submit(iconSize, iconSize).get(500, TimeUnit.MILLISECONDS);
         } catch (Exception tr1) {
-            String fallback = null;
-            if (playable instanceof FeedMedia) {
-                FeedMedia feedMedia = (FeedMedia) playable;
-                if (feedMedia.getItem() != null && feedMedia.getItem().getFeed() != null) {
-                    fallback = feedMedia.getItem().getFeed().getImageUrl();
-                }
-            }
-            if (fallback != null) {
-                try {
-                    return Glide.with(context).asBitmap().load(fallback)
-                            .submit(iconSize, iconSize).get(500, TimeUnit.MILLISECONDS);
-                } catch (Exception tr2) {
-                    Log.e(TAG, "Error loading artwork bitmap", tr2);
-                }
-            }
+            // fall through to try feed image
+        }
+        if (!(playable instanceof FeedMedia)) {
+            return null;
+        }
+        FeedMedia feedMedia = (FeedMedia) playable;
+        if (feedMedia.getItem() == null || feedMedia.getItem().getFeed() == null) {
+            return null;
+        }
+        String fallback = feedMedia.getItem().getFeed().getImageUrl();
+        if (fallback == null) {
+            return null;
+        }
+        try {
+            return Glide.with(context).asBitmap().load(fallback)
+                    .submit(iconSize, iconSize).get(500, TimeUnit.MILLISECONDS);
+        } catch (Exception tr2) {
+            Log.e(TAG, "Error loading artwork bitmap", tr2);
         }
         return null;
     }
