@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -37,6 +38,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
 import java.util.List;
@@ -236,10 +238,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     return new Pair<>(updatedItems, mediaDetails);
                 })
                 .subscribeOn(Schedulers.io())
-                .subscribe(result ->
-                                future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index,
-                                        result.second.getPosition() > 0 ? result.second.getPosition() :
-                                                (startPositionMs > 0 ? startPositionMs : 0))),
+                .subscribe(result -> {
+                            long position = result.second.getPosition() > 0 ? result.second.getPosition() :
+                                    (startPositionMs > 0 ? startPositionMs : 0);
+                            future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index,
+                                    computeSkipIntroPosition(result.second, position)));
+                        },
                         error -> {
                             Log.e(TAG, "Failed to load media", error);
                             future.set(new MediaSession.MediaItemsWithStartPosition(
@@ -291,12 +295,28 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
-                                            0, media.getPosition());
+                                            0, computeSkipIntroPosition(media, media.getPosition()));
                             future.set(result);
                         },
                         future::setException
                 ));
         return future;
+    }
+
+    private long computeSkipIntroPosition(FeedMedia media, long currentPosition) {
+        if (media.getItem() == null || media.getItem().getFeed() == null
+                || media.getItem().getFeed().getPreferences() == null) {
+            return currentPosition;
+        }
+        int skipIntro = media.getItem().getFeed().getPreferences().getFeedSkipIntro();
+        long duration = media.getDuration();
+        if (skipIntro > 0 && currentPosition < skipIntro * 1000L
+                && (skipIntro * 1000L < duration || duration <= 0)) {
+            Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.pref_feed_skip_intro_toast, skipIntro)));
+            return skipIntro * 1000L;
+        }
+        return currentPosition;
     }
 
     @Override

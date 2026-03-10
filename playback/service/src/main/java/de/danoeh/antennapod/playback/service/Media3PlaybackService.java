@@ -377,12 +377,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             if (player == null) {
                                 return;
                             }
-                            long startPosition = player.getCurrentPosition();
-                            startPosition = applySkipIntro(media, startPosition, player.getDuration());
-                            if (startPosition != player.getCurrentPosition()) {
-                                player.seekTo(startPosition);
-                            }
-                            currentPlayable.setPosition((int) startPosition);
+                            currentPlayable.setPosition((int) player.getCurrentPosition());
                             currentPlayable.onPlaybackStart();
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
