@@ -20,7 +20,6 @@ import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
@@ -499,12 +498,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            long startPosition = SkipUtils.skipIntroPosition(nextMedia, nextMedia.getPosition());
-                            if (startPosition != nextMedia.getPosition()) {
-                                Log.d(TAG, "skipIntro " + nextMedia.getEpisodeTitle());
-                                EventBus.getDefault().post(new MessageEvent(
-                                        getString(R.string.pref_feed_skip_intro_toast, (int) (startPosition / 1000))));
-                            }
+                            long startPosition = SkipUtils.skipIntroIfNecessary(this, nextMedia, nextMedia.getPosition());
                             player.seekTo(startPosition);
                             player.prepare();
                         },

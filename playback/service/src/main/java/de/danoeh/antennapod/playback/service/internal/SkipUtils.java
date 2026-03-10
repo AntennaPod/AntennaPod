@@ -15,11 +15,21 @@ public final class SkipUtils {
     }
 
     /**
-     * Returns the position to start playback at, taking into account skip intro.
-     * If the intro should be skipped, returns the skip intro position.
+     * Logs the skip event, posts an EventBus message, and returns the position to start playback at,
+     * taking into account skip intro. If the intro should be skipped, returns the skip intro position.
      * Otherwise returns currentPosition unchanged.
      */
-    public static long skipIntroPosition(FeedMedia media, long currentPosition) {
+    public static long skipIntroIfNecessary(Context context, FeedMedia media, long currentPosition) {
+        long startPosition = skipIntroPosition(media, currentPosition);
+        if (startPosition != currentPosition) {
+            Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
+            EventBus.getDefault().post(
+                    new MessageEvent(context.getString(R.string.pref_feed_skip_intro_toast, (int) (startPosition / 1000))));
+        }
+        return startPosition;
+    }
+
+    private static long skipIntroPosition(FeedMedia media, long currentPosition) {
         if (media.getItem() == null || media.getItem().getFeed() == null
                 || media.getItem().getFeed().getPreferences() == null) {
             return currentPosition;

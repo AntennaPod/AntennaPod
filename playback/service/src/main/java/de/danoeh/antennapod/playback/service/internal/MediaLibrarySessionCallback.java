@@ -26,7 +26,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -241,12 +240,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .subscribe(result -> {
                             long position = result.second.getPosition() > 0 ? result.second.getPosition() :
                                     (startPositionMs > 0 ? startPositionMs : 0);
-                            long startPosition = SkipUtils.skipIntroPosition(result.second, position);
-                            if (startPosition != position) {
-                                Log.d(TAG, "skipIntro " + result.second.getEpisodeTitle());
-                                EventBus.getDefault().post(new MessageEvent(
-                                        context.getString(R.string.pref_feed_skip_intro_toast, (int) (startPosition / 1000))));
-                            }
+                            long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second, position);
                             future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
                         },
                         error -> {
@@ -297,12 +291,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         media -> {
-                            long startPosition = SkipUtils.skipIntroPosition(media, media.getPosition());
-                            if (startPosition != media.getPosition()) {
-                                Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
-                                EventBus.getDefault().post(new MessageEvent(
-                                        context.getString(R.string.pref_feed_skip_intro_toast, (int) (startPosition / 1000))));
-                            }
+                            long startPosition = SkipUtils.skipIntroIfNecessary(context, media, media.getPosition());
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
