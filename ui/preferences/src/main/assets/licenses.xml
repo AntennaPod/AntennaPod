@@ -43,12 +43,6 @@
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library
-        name="fyydlin"
-        author="Martin Fietz"
-        website="https://github.com/mfietz/fyydlin"
-        license="Apache 2.0"
-        licenseText="LICENSE_APACHE-2.0.txt" />
-    <library
         name="Glide"
         author="bumptech"
         website="https://github.com/bumptech/glide"

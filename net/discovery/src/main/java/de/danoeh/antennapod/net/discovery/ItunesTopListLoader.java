@@ -108,10 +108,32 @@ public class ItunesTopListLoader {
         List<PodcastSearchResult> results = new ArrayList<>();
         for (int i = 0; i < entries.length(); i++) {
             JSONObject json = entries.getJSONObject(i);
-            results.add(PodcastSearchResult.fromItunesToplist(json));
+            results.add(toSearchResult(json));
         }
 
         return results;
     }
 
+    private static PodcastSearchResult toSearchResult(JSONObject json) throws JSONException {
+        String title = json.getJSONObject("im:name").getString("label");
+        String imageUrl = null;
+        JSONArray images =  json.getJSONArray("im:image");
+        for (int i = 0; imageUrl == null && i < images.length(); i++) {
+            JSONObject image = images.getJSONObject(i);
+            String height = image.getJSONObject("attributes").getString("height");
+            if (Integer.parseInt(height) >= 100) {
+                imageUrl = image.getString("label");
+            }
+        }
+        String feedUrl = "https://itunes.apple.com/lookup?id="
+                + json.getJSONObject("id").getJSONObject("attributes").getString("im:id");
+
+        String author = null;
+        try {
+            author = json.getJSONObject("im:artist").getString("label");
+        } catch (Exception e) {
+            // Some feeds have empty artist
+        }
+        return new PodcastSearchResult(title, imageUrl, feedUrl, author);
+    }
 }
