@@ -39,6 +39,7 @@ import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
+import de.danoeh.antennapod.playback.service.internal.SkipUtils;
 import de.danoeh.antennapod.playback.service.internal.SleepTimer;
 import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
@@ -319,40 +320,16 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
-    private long applySkipIntro(FeedMedia media, long currentPosition, long duration) {
-        if (media.getItem() == null || media.getItem().getFeed() == null
-                || media.getItem().getFeed().getPreferences() == null) {
-            return currentPosition;
-        }
-        int skipIntro = media.getItem().getFeed().getPreferences().getFeedSkipIntro();
-        if (skipIntro > 0 && currentPosition < skipIntro * 1000L
-                && (skipIntro * 1000L < duration || duration <= 0)) {
-            Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.pref_feed_skip_intro_toast, skipIntro)));
-            return skipIntro * 1000L;
-        }
-        return currentPosition;
-    }
-
     private void skipEndingIfNecessary() {
         if (currentPlayable == null || player == null) {
             return;
         }
-        if (currentPlayable.getItem() == null || currentPlayable.getItem().getFeed() == null
-                || currentPlayable.getItem().getFeed().getPreferences() == null) {
-            return;
-        }
         long duration = player.getDuration();
         long position = player.getCurrentPosition();
-        long remainingTime = duration - position;
-        FeedPreferences preferences = currentPlayable.getItem().getFeed().getPreferences();
-        int skipEnd = preferences.getFeedSkipEnding();
         float speed = player.getPlaybackParameters().speed;
-        if (skipEnd > 0
-                && skipEnd * 1000L < duration
-                && (remainingTime - (skipEnd * 1000L) > 0)
-                && ((remainingTime - skipEnd * 1000L) < (speed * 1000))) {
-            Log.d(TAG, "skipEndingIfNecessary: Skipping remaining " + remainingTime);
+        int skipEnd = SkipUtils.skipEndingSeconds(currentPlayable, position, duration, speed);
+        if (skipEnd > 0) {
+            Log.d(TAG, "skipEndingIfNecessary: Skipping remaining " + (duration - position));
             EventBus.getDefault().post(new MessageEvent(getString(R.string.pref_feed_skip_ending_toast, skipEnd)));
             player.seekTo(duration);
         }
@@ -534,7 +511,12 @@ public class Media3PlaybackService extends MediaLibraryService {
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            long startPosition = applySkipIntro(nextMedia, nextMedia.getPosition(), nextMedia.getDuration());
+                            long startPosition = SkipUtils.skipIntroPosition(nextMedia, nextMedia.getPosition());
+                            if (startPosition != nextMedia.getPosition()) {
+                                Log.d(TAG, "skipIntro " + nextMedia.getEpisodeTitle());
+                                EventBus.getDefault().post(new MessageEvent(
+                                        getString(R.string.pref_feed_skip_intro_toast, (int) (startPosition / 1000))));
+                            }
                             player.seekTo(startPosition);
                             player.prepare();
                         },
