@@ -2,7 +2,6 @@ package de.danoeh.antennapod.playback.service;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
@@ -21,6 +20,7 @@ import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
@@ -319,23 +319,19 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
-    private void skipIntro(FeedMedia media) {
-        if (player == null || media.getItem() == null || media.getItem().getFeed() == null
+    private long applySkipIntro(FeedMedia media, long currentPosition, long duration) {
+        if (media.getItem() == null || media.getItem().getFeed() == null
                 || media.getItem().getFeed().getPreferences() == null) {
-            return;
+            return currentPosition;
         }
-        FeedPreferences preferences = media.getItem().getFeed().getPreferences();
-        int skipIntro = preferences.getFeedSkipIntro();
-        long position = player.getCurrentPosition();
-        if (skipIntro > 0 && position < skipIntro * 1000L) {
-            long duration = player.getDuration();
-            if (skipIntro * 1000L < duration || duration <= 0) {
-                Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
-                player.seekTo(skipIntro * 1000L);
-                Toast.makeText(this, getString(R.string.pref_feed_skip_intro_toast, skipIntro),
-                        Toast.LENGTH_LONG).show();
-            }
+        int skipIntro = media.getItem().getFeed().getPreferences().getFeedSkipIntro();
+        if (skipIntro > 0 && currentPosition < skipIntro * 1000L
+                && (skipIntro * 1000L < duration || duration <= 0)) {
+            Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.pref_feed_skip_intro_toast, skipIntro)));
+            return skipIntro * 1000L;
         }
+        return currentPosition;
     }
 
     private void skipEndingIfNecessary() {
@@ -357,8 +353,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 && (remainingTime - (skipEnd * 1000L) > 0)
                 && ((remainingTime - skipEnd * 1000L) < (speed * 1000))) {
             Log.d(TAG, "skipEndingIfNecessary: Skipping remaining " + remainingTime);
-            Toast.makeText(this, getString(R.string.pref_feed_skip_ending_toast, skipEnd),
-                    Toast.LENGTH_LONG).show();
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.pref_feed_skip_ending_toast, skipEnd)));
             player.seekTo(duration);
         }
     }
@@ -382,9 +377,13 @@ public class Media3PlaybackService extends MediaLibraryService {
                             if (player == null) {
                                 return;
                             }
-                            currentPlayable.setPosition((int) player.getCurrentPosition());
+                            long startPosition = player.getCurrentPosition();
+                            startPosition = applySkipIntro(media, startPosition, player.getDuration());
+                            if (startPosition != player.getCurrentPosition()) {
+                                player.seekTo(startPosition);
+                            }
+                            currentPlayable.setPosition((int) startPosition);
                             currentPlayable.onPlaybackStart();
-                            skipIntro(media);
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
                                 DBWriter.addQueueItem(this, currentPlayable.getItem());
@@ -540,7 +539,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            player.seekTo(nextMedia.getPosition());
+                            long startPosition = applySkipIntro(nextMedia, nextMedia.getPosition(), nextMedia.getDuration());
+                            player.seekTo(startPosition);
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
