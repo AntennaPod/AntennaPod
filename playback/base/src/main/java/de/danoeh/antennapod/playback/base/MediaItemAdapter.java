@@ -2,12 +2,15 @@ package de.danoeh.antennapod.playback.base;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
+import com.bumptech.glide.Glide;
 import com.google.common.collect.ImmutableList;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -15,9 +18,12 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.system.utils.ThreadUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MediaItemAdapter {
+    private static final String TAG = "MediaItemAdapter";
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
     public static final String KEY_STREAM_URL = "stream_url";
 
@@ -68,6 +74,67 @@ public class MediaItemAdapter {
                 .setMediaId(mediaId)
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
+    }
+
+    /**
+     * Create a media item, load all its metadata, and load cover art using Glide.
+     * Do NOT use this method on the main thread.
+     */
+    public static MediaItem fromPlayable(Context context, Playable playable) {
+        ThreadUtils.assertNotMainThread();
+        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+        metadataBuilder.setTitle(playable.getEpisodeTitle());
+        metadataBuilder.setIsPlayable(true);
+        metadataBuilder.setIsBrowsable(false);
+        metadataBuilder.setMediaType(MediaMetadata.MEDIA_TYPE_PODCAST_EPISODE);
+        String mediaId = "0";
+        if (playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            mediaId = String.valueOf(feedMedia.getId());
+            metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
+        }
+        int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
+        Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
+        if (bitmap != null) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bos);
+            metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
+        } else if (playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
+            metadataBuilder.setArtworkUri(Uri.parse(playable.getImageLocation()));
+        }
+        Bundle extras = new Bundle();
+        extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
+        metadataBuilder.setExtras(extras);
+        String localPlaybackUri = playable.localFileAvailable() ? playable.getLocalFileUrl() : playable.getStreamUrl();
+        return new MediaItem.Builder()
+                .setUri(localPlaybackUri != null ? Uri.parse(localPlaybackUri) : null)
+                .setMediaId(mediaId)
+                .setMediaMetadata(metadataBuilder.build())
+                .build();
+    }
+
+    private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
+        try {
+            return Glide.with(context).asBitmap().load(playable.getImageLocation())
+                    .submit(iconSize, iconSize).get(500, TimeUnit.MILLISECONDS);
+        } catch (Exception tr1) {
+            String fallback = null;
+            if (playable instanceof FeedMedia) {
+                FeedMedia feedMedia = (FeedMedia) playable;
+                if (feedMedia.getItem() != null && feedMedia.getItem().getFeed() != null) {
+                    fallback = feedMedia.getItem().getFeed().getImageUrl();
+                }
+            }
+            if (fallback != null) {
+                try {
+                    return Glide.with(context).asBitmap().load(fallback)
+                            .submit(iconSize, iconSize).get(500, TimeUnit.MILLISECONDS);
+                } catch (Exception tr2) {
+                    Log.e(TAG, "Error loading artwork bitmap", tr2);
+                }
+            }
+        }
+        return null;
     }
 
 

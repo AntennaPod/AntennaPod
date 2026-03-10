@@ -14,6 +14,7 @@ dependencies {
     implementation "androidx.media3:media3-exoplayer:$media3Version"
     implementation "androidx.media3:media3-session:$media3Version"
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
 
     testImplementation "junit:junit:$junitVersion"
 }
