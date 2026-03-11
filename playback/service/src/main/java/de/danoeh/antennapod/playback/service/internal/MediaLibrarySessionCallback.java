@@ -238,9 +238,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                            long position = result.second.getPosition() > 0 ? result.second.getPosition() :
-                                    (startPositionMs > 0 ? startPositionMs : 0);
-                            long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second, position);
+                            long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second, startPositionMs);
                             future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
                         },
                         error -> {
@@ -291,7 +289,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         media -> {
-                            long startPosition = SkipUtils.skipIntroIfNecessary(context, media, media.getPosition());
+                            long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(media)),

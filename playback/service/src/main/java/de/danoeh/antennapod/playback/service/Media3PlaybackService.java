@@ -180,22 +180,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                 saveCurrentPosition();
             }
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
-                FeedMedia media = currentPlayable;
-                currentPlayable = null; // To avoid position updater saving position after we already reset it
-                onPlaybackEnd(media);
-                if (sleepTimer != null && sleepTimer.isActive()) {
-                    sleepTimer.episodeFinishedPlayback();
-                    if (!sleepTimer.shouldContinueToNextEpisode()) {
-                        player.stop();
-                        player.clearMediaItems();
-                        PlaybackPreferences.writeNoMediaPlaying();
-                        EventBus.getDefault().post(
-                                new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
-                        EventBus.getDefault().post(new PlayerStatusEvent());
-                        return;
-                    }
-                }
-                startNextInQueue(media.getItem());
+                handleEpisodeEnded();
+                return;
             }
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
@@ -309,7 +295,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     lastPositionSaveTime = currentTime;
                                 }
                                 if (SkipUtils.skipEndingIfNecessary(this, currentPlayable, position, duration, speed)) {
-                                    player.seekTo(duration);
+                                    handleEpisodeEnded();
                                 }
                             }
                         }, error -> Log.e(TAG, "Position observer error", error));
@@ -422,6 +408,26 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
+    @UnstableApi
+    private void handleEpisodeEnded() {
+        FeedMedia media = currentPlayable;
+        currentPlayable = null; // To avoid position updater saving position after we already reset it
+        onPlaybackEnd(media);
+        if (sleepTimer != null && sleepTimer.isActive()) {
+            sleepTimer.episodeFinishedPlayback();
+            if (!sleepTimer.shouldContinueToNextEpisode()) {
+                player.stop();
+                player.clearMediaItems();
+                PlaybackPreferences.writeNoMediaPlaying();
+                EventBus.getDefault().post(
+                        new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                EventBus.getDefault().post(new PlayerStatusEvent());
+                return;
+            }
+        }
+        startNextInQueue(media.getItem());
+    }
+
     private void setNextPlaybackSpeed() {
         if (player == null) {
             return;
@@ -498,7 +504,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            long startPosition = SkipUtils.skipIntroIfNecessary(this, nextMedia, nextMedia.getPosition());
+                            long startPosition = SkipUtils.skipIntroIfNecessary(this, nextMedia);
                             player.seekTo(startPosition);
                             player.prepare();
                         },
