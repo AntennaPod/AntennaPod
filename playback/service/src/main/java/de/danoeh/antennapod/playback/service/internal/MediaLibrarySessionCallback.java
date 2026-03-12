@@ -289,7 +289,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         media -> {
-                            long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
+                            long startPosition = SkipUtils.skipIntroIfNecessary(context, media, 0);
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(media)),

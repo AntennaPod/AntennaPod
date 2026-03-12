@@ -15,16 +15,7 @@ public final class SkipUtils {
     }
 
     /**
-     * Logs the skip event, posts an EventBus message, and returns the position to start playback at,
-     * taking into account skip intro. If the intro should be skipped, returns the skip intro position.
-     * Otherwise returns the media's saved position unchanged.
-     */
-    public static long skipIntroIfNecessary(Context context, FeedMedia media) {
-        return skipIntroIfNecessary(context, media, 0);
-    }
-
-    /**
-     * Logs the skip event, posts an EventBus message, and returns the position to start playback at,
+     * Returns the position to start playback at,
      * taking into account skip intro. Uses media's saved position if > 0, otherwise falls back to
      * startPositionMs. If the intro should be skipped, returns the skip intro position.
      */
@@ -51,7 +42,7 @@ public final class SkipUtils {
     }
 
     /**
-     * Logs the skip event, posts an EventBus message, and returns true if the ending should be
+     * Returns true and notifies the user if the ending should be
      * skipped given the current position, duration and playback speed.
      */
     public static boolean skipEndingIfNecessary(Context context, FeedMedia media,
