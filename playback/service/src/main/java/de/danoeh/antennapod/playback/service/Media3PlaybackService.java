@@ -344,6 +344,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
                             player.setPlaybackSpeed(speed);
+                            mediaSession.setCustomLayout(sessionCallback.buildCustomLayout(speed));
                             boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
                                     currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
                             PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
@@ -437,6 +438,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
 
         player.setPlaybackSpeed(newSpeed);
+        mediaSession.setCustomLayout(sessionCallback.buildCustomLayout(newSpeed));
     }
 
     @UnstableApi

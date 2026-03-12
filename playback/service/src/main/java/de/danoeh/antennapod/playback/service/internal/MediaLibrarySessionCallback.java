@@ -38,6 +38,8 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import android.net.Uri;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -125,7 +127,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .build();
         return new MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
-                .setCustomLayout(buildCustomLayout())
+                .setCustomLayout(buildCustomLayout(UserPreferences.getPlaybackSpeed()))
                 .setAvailablePlayerCommands(playerCommands)
                 .build();
     }
@@ -133,11 +135,11 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     @Override
     @UnstableApi
     public void onPostConnect(@NonNull MediaSession session, @NonNull MediaSession.ControllerInfo controller) {
-        session.setCustomLayout(buildCustomLayout());
+        session.setCustomLayout(buildCustomLayout(UserPreferences.getPlaybackSpeed()));
     }
 
     @UnstableApi
-    private ImmutableList<CommandButton> buildCustomLayout() {
+    public ImmutableList<CommandButton> buildCustomLayout(float speed) {
         ImmutableList.Builder<CommandButton> buttons = ImmutableList.builder();
 
         buttons.add(new CommandButton.Builder(CommandButton.ICON_REWIND)
@@ -151,9 +153,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .build());
 
         if (UserPreferences.showPlaybackSpeedOnFullNotification()) {
+            Uri speedIconUri = SpeedIconGenerator.generateSpeedIcon(context, speed);
             buttons.add(new CommandButton.Builder(CommandButton.ICON_UNDEFINED)
                     .setSessionCommand(SESSION_COMMAND_PLAYBACK_SPEED)
-                    .setCustomIconResId(R.drawable.ic_notification_playback_speed)
+                    .setIconUri(speedIconUri)
                     .setDisplayName(context.getString(R.string.playback_speed))
                     .build());
         }
