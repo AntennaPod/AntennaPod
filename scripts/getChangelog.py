@@ -17,6 +17,10 @@ TOKEN = os.getenv("GITHUB_API_TOKEN")
 BASE = os.getenv("BASE", "")
 HEAD = os.getenv("HEAD", "")
 NEEDS_REVIEW_REPLY_LABEL = os.getenv("NEED_REVIEW_REPLY_LABEL", "Needs: Review reply")
+PLAY_REVIEW_LINK_MARKERS = (
+    "https://play.google.com/apps/publish?account=8008695526664634386#ReviewDetailsPlace:p=de.danoeh.antennapod&reviewid=",
+    "https://play.google.com/console/u/0/developers/8008695526664634386/app/4974638472012894302/user-feedback/review-details?reviewId=",
+)
 
 
 def print_exception(prefix, error_message, data=None):
@@ -211,13 +215,73 @@ def load_pr(pr_number):
     return data["repository"]["pullRequest"]
 
 
-def collect_review_reply_numbers(pr_data):
+def comment_contains_review_link(comment_body):
+    for marker in PLAY_REVIEW_LINK_MARKERS:
+        if marker in comment_body:
+            return True
+    return False
+
+
+def load_issue_review_reply_comment_urls(issue_number):
+    query = """
+    query($owner: String!, $repo: String!, $issueNumber: Int!, $cursor: String) {
+      repository(name: $repo, owner: $owner) {
+        issue(number: $issueNumber) {
+          comments(first: 100, after: $cursor) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              body
+              url
+            }
+          }
+        }
+      }
+    }
+    """
+
+    urls = []
+    cursor = None
+    while True:
+        data = graphql_request(
+            query,
+            {
+                "owner": OWNER,
+                "repo": REPO,
+                "issueNumber": issue_number,
+                "cursor": cursor,
+            },
+        )
+        comments = data["repository"]["issue"]["comments"]
+        for comment in comments["nodes"]:
+            if comment_contains_review_link(comment["body"]):
+                urls.append(comment["url"])
+        if not comments["pageInfo"]["hasNextPage"]:
+            break
+        cursor = comments["pageInfo"]["endCursor"]
+        time.sleep(0.5)
+    return urls
+
+
+def collect_review_reply_details(pr_data, review_reply_comment_cache):
+    details = []
     numbers = []
     for issue in pr_data["closingIssuesReferences"]["nodes"]:
         issue_label_names = [node["name"] for node in issue["labels"]["nodes"]]
-        if NEEDS_REVIEW_REPLY_LABEL in issue_label_names:
-            numbers.append(issue["number"])
-    return numbers
+        if NEEDS_REVIEW_REPLY_LABEL not in issue_label_names:
+            continue
+        issue_number = issue["number"]
+        numbers.append(issue_number)
+        if issue_number not in review_reply_comment_cache:
+            review_reply_comment_cache[issue_number] = load_issue_review_reply_comment_urls(issue_number)
+        comment_urls = review_reply_comment_cache[issue_number]
+        if comment_urls:
+            details.append(str(issue_number) + ": " + " ".join(comment_urls))
+        else:
+            details.append(str(issue_number))
+    return numbers, details
 
 
 def collect_commit_author_logins(commit):
@@ -293,6 +357,7 @@ def main():
     unique_pr_numbers = sorted(set(pr_numbers))
     pr_rows = []
     issues_needing_review_replies = set()
+    review_reply_comment_cache = {}
 
     for index, pr_number in enumerate(unique_pr_numbers, start=1):
         print("PR " + str(index) + " of " + str(len(unique_pr_numbers)))
@@ -311,11 +376,13 @@ def main():
                 label_names.add(label["name"])
         labels = ", ".join(sorted(label_names))
 
-        needs_review_reply_numbers = collect_review_reply_numbers(pr_data)
+        needs_review_reply_numbers, needs_review_reply_details = collect_review_reply_details(
+            pr_data, review_reply_comment_cache
+        )
         for number in needs_review_reply_numbers:
             issues_needing_review_replies.add(number)
-        if needs_review_reply_numbers:
-            needs_review_replies = "Yes (" + ", ".join(str(number) for number in needs_review_reply_numbers) + ")"
+        if needs_review_reply_details:
+            needs_review_replies = "Yes (" + "; ".join(needs_review_reply_details) + ")"
         else:
             needs_review_replies = "No"
 
