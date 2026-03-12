@@ -38,8 +38,6 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import android.net.Uri;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -152,14 +150,22 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .setDisplayName(context.getString(R.string.fast_forward_label))
                 .build());
 
-        if (UserPreferences.showPlaybackSpeedOnFullNotification()) {
-            Uri speedIconUri = SpeedIconGenerator.generateSpeedIcon(context, speed);
-            buttons.add(new CommandButton.Builder(CommandButton.ICON_UNDEFINED)
-                    .setSessionCommand(SESSION_COMMAND_PLAYBACK_SPEED)
-                    .setIconUri(speedIconUri)
-                    .setDisplayName(context.getString(R.string.playback_speed))
-                    .build());
+        List<Float> speeds = UserPreferences.getPlaybackSpeedArray();
+        int activeStep = 0;
+        float minDiff = Float.MAX_VALUE;
+        for (int i = 0; i < speeds.size(); i++) {
+            float diff = Math.abs(speeds.get(i) - speed);
+            if (diff < minDiff) {
+                minDiff = diff;
+                activeStep = i;
+            }
         }
+        int iconResId = SpeedIconGenerator.getSpeedStepIconResId(speeds.size(), activeStep + 1);
+        buttons.add(new CommandButton.Builder(CommandButton.ICON_UNDEFINED)
+                .setSessionCommand(SESSION_COMMAND_PLAYBACK_SPEED)
+                .setCustomIconResId(iconResId)
+                .setDisplayName(context.getString(R.string.playback_speed))
+                .build());
 
         if (UserPreferences.showNextChapterOnFullNotification()) {
             buttons.add(new CommandButton.Builder(CommandButton.ICON_UNDEFINED)
