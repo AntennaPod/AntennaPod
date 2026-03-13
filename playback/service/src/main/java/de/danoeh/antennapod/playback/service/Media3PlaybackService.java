@@ -181,7 +181,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
                 FeedMedia media = currentPlayable;
-                currentPlayable = null;
+                currentPlayable = null; // To avoid position updater saving position after we already reset it
                 onPlaybackEnd(media);
                 if (sleepTimer != null && sleepTimer.isActive()) {
                     sleepTimer.episodeFinishedPlayback();
@@ -196,7 +196,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                     }
                 }
                 startNextInQueue(media.getItem());
-                return;
             }
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
@@ -310,7 +309,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     lastPositionSaveTime = currentTime;
                                 }
                                 if (SkipUtils.skipEndingIfNecessary(this, currentPlayable, position, duration, speed)) {
-                                    startNextInQueue(currentPlayable.getItem());
+                                    player.seekToNextMediaItem();
                                 }
                             }
                         }, error -> Log.e(TAG, "Position observer error", error));
@@ -499,8 +498,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            long startPosition = SkipUtils.skipIntroIfNecessary(this, nextMedia, 0);
-                            player.seekTo(startPosition);
+                            player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia, 0));
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),

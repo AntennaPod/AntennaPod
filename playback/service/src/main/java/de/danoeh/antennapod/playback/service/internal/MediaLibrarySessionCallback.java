@@ -31,14 +31,12 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.R;
-import de.danoeh.antennapod.playback.service.internal.SkipUtils;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
 import java.util.Collections;
 import java.util.List;
 
@@ -238,15 +236,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                            long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second, startPositionMs);
-                            future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
-                        },
-                        error -> {
-                            Log.e(TAG, "Failed to load media", error);
-                            future.set(new MediaSession.MediaItemsWithStartPosition(
-                                    mediaItems, index, startPositionMs));
-                        }
-                ));
+                    long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second, startPositionMs);
+                    future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
+                }, error -> {
+                    Log.e(TAG, "Failed to load media", error);
+                    future.set(new MediaSession.MediaItemsWithStartPosition(mediaItems, index, startPositionMs));
+                }));
         return future;
     }
 
