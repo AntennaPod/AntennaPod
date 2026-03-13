@@ -57,3 +57,8 @@ For running tests, use the command `./gradlew --console=plain` and use the task 
 As a final style check before opening a PR (or if a user explicitly asks for it), use `./gradlew checkstyle spotbugsPlayDebug spotbugsDebug :app:lintPlayDebug`.
 If any command does not give any output, it is likely that it failed, so abort.
 
+# PR Conventions
+When creating a PR, always strictly follow the PR template at .github/pull_request_template.md.
+The description goes above the checklist.
+Tick checklist items by replacing [ ] with [x] for each item you have completed.
+Always mention the corresponding issue using "Closes: #<number>" in the description.
