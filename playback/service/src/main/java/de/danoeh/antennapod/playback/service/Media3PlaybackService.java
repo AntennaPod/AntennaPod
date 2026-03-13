@@ -38,6 +38,7 @@ import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
+import de.danoeh.antennapod.playback.service.internal.SkipUtils;
 import de.danoeh.antennapod.playback.service.internal.SleepTimer;
 import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
@@ -294,17 +295,21 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             long position = player.getCurrentPosition();
                             long duration = player.getDuration();
+                            float speed = player.getPlaybackParameters().speed;
                             if (duration > 0) {
                                 EventBus.getDefault().post(
                                         new PlaybackPositionEvent((int) position, (int) duration));
                                 WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
                                         Util.shouldShowPlayButton(player) ? PlayerStatus.PAUSED : PlayerStatus.PLAYING,
-                                        (int) position, (int) duration, player.getPlaybackParameters().speed);
+                                        (int) position, (int) duration, speed);
                                 WidgetUpdater.updateWidget(this, widgetState);
                                 long currentTime = System.currentTimeMillis();
                                 if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
                                     saveCurrentPosition();
                                     lastPositionSaveTime = currentTime;
+                                }
+                                if (SkipUtils.skipEndingIfNecessary(this, currentPlayable, position, duration, speed)) {
+                                    player.seekTo(player.getDuration());
                                 }
                             }
                         }, error -> Log.e(TAG, "Position observer error", error));
@@ -493,7 +498,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            player.seekTo(nextMedia.getPosition());
+                            player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia));
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),

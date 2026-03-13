@@ -236,16 +236,13 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     return new Pair<>(updatedItems, mediaDetails);
                 })
                 .subscribeOn(Schedulers.io())
-                .subscribe(result ->
-                                future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index,
-                                        result.second.getPosition() > 0 ? result.second.getPosition() :
-                                                (startPositionMs > 0 ? startPositionMs : 0))),
-                        error -> {
-                            Log.e(TAG, "Failed to load media", error);
-                            future.set(new MediaSession.MediaItemsWithStartPosition(
-                                    mediaItems, index, startPositionMs));
-                        }
-                ));
+                .subscribe(result -> {
+                    long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
+                    future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
+                }, error -> {
+                    Log.e(TAG, "Failed to load media", error);
+                    future.set(new MediaSession.MediaItemsWithStartPosition(mediaItems, index, startPositionMs));
+                }));
         return future;
     }
 
@@ -291,7 +288,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(context, media)),
-                                            0, media.getPosition());
+                                            0, SkipUtils.skipIntroIfNecessary(context, media));
                             future.set(result);
                         },
                         future::setException
