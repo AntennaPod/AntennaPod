@@ -309,7 +309,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     lastPositionSaveTime = currentTime;
                                 }
                                 if (SkipUtils.skipEndingIfNecessary(this, currentPlayable, position, duration, speed)) {
-                                    player.seekToNextMediaItem();
+                                    player.seekTo(player.getDuration());
                                 }
                             }
                         }, error -> Log.e(TAG, "Position observer error", error));
@@ -498,7 +498,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia, 0));
+                            player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia));
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),

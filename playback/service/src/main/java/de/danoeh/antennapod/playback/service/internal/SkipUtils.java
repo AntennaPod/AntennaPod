@@ -16,22 +16,21 @@ public final class SkipUtils {
 
     /**
      * Returns the position to start playback at, taking into account the configured skip intro time.
-     * Uses media's saved position if > 0, otherwise falls back to startPositionMs.
+     * Uses media's saved position if > 0.
      */
-    public static long skipIntroIfNecessary(Context context, FeedMedia media, long startPositionMs) {
-        long currentPosition = media.getPosition() > 0 ? media.getPosition()
-                : (startPositionMs > 0 ? startPositionMs : 0);
+    public static long skipIntroIfNecessary(Context context, FeedMedia media) {
         if (media.getItem() == null || media.getItem().getFeed() == null
                 || media.getItem().getFeed().getPreferences() == null) {
-            return currentPosition;
+            return media.getPosition();
         }
         int skipIntro = media.getItem().getFeed().getPreferences().getFeedSkipIntro();
         long duration = media.getDuration();
-        long startPosition = currentPosition;
-        if (skipIntro > 0 && currentPosition < skipIntro * 1000L && (skipIntro * 1000L < duration || duration <= 0)) {
+        long startPosition = media.getPosition();
+        if (skipIntro > 0 && media.getPosition() < skipIntro * 1000L
+                && (skipIntro * 1000L < duration || duration <= 0)) {
             startPosition = skipIntro * 1000L;
         }
-        if (startPosition != currentPosition) {
+        if (startPosition != media.getPosition()) {
             Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
             EventBus.getDefault().post(new MessageEvent(
                     context.getString(R.string.pref_feed_skip_intro_toast, (int) (startPosition / 1000))));

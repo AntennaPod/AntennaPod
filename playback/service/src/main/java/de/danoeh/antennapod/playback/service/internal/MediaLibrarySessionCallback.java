@@ -37,6 +37,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -236,7 +237,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                    long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second, startPositionMs);
+                    long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
                     future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
                 }, error -> {
                     Log.e(TAG, "Failed to load media", error);
@@ -284,11 +285,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         media -> {
-                            long startPosition = SkipUtils.skipIntroIfNecessary(context, media, 0);
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
-                                            0, startPosition);
+                                            0, SkipUtils.skipIntroIfNecessary(context, media));
                             future.set(result);
                         },
                         future::setException
