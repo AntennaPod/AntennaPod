@@ -268,7 +268,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         disposables.add(Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        media -> future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(media))),
+                        media -> future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(context, media))),
                         error -> {
                             Log.e(TAG, "Failed to load media with id " + mediaId, error);
                             future.set(Collections.emptyList());
@@ -290,7 +290,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         media -> {
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
-                                            Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
+                                            Collections.singletonList(MediaItemAdapter.fromPlayable(context, media)),
                                             0, media.getPosition());
                             future.set(result);
                         },
@@ -375,7 +375,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         .subscribe(
                                 media -> {
                                     future.set(LibraryResult.ofItemList(
-                                            ImmutableList.of(MediaItemAdapter.fromPlayable(media)), params));
+                                            ImmutableList.of(MediaItemAdapter.fromPlayable(context, media)), params));
                                 },
                                 error -> {
                                     Log.e(TAG, "Failed to load currently playing media", error);
@@ -402,7 +402,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 })
                         .subscribeOn(Schedulers.io())
                         .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                        MediaItemAdapter.fromItemList(items), params)),
+                                        MediaItemAdapter.fromItemList(context, items), params)),
                                 future::setException));
                 return future;
         }
@@ -418,7 +418,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         DBReader.searchFeedItems(0, query, Feed.STATE_SUBSCRIBED))
                 .subscribeOn(Schedulers.io())
                 .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                MediaItemAdapter.fromItemList(items), params)),
+                                MediaItemAdapter.fromItemList(context, items), params)),
                         future::setException));
         return future;
     }
