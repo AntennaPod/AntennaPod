@@ -13,5 +13,3 @@
 - [ ] My code follows the style guidelines of the AntennaPod project: https://antennapod.org/contribute/develop/app/code-style 
 - [ ] I have mentioned the corresponding issue and the relevant keyword (e.g., "Closes: #xy") in the description (see https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)
 - [ ] If it is a core feature, I have added automated tests
-
-<!-- START COPILOT CODING AGENT TIPS -->
