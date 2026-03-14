@@ -26,7 +26,7 @@ jobs:
             }
 
             const bodyLines = (context.payload.pull_request.body || "").split(/\r?\n/);
-            const copilotTipsIndex = bodyLines.findIndex(l => l.includes("<!-- START COPILOT CODING AGENT TIPS -->"));
+            const copilotTipsIndex = bodyLines.findIndex(l => l.trim() === "<!-- START COPILOT CODING AGENT TIPS -->");
             const lastChecklistItem = bodyLines.reduce((acc, l, i) => l.trim().startsWith("- [") ? i : acc, -1);
             const lastHrAfterChecklist = bodyLines.reduce((acc, l, i) => i > lastChecklistItem && l === "---" ? i : acc, -1);
             const cutoff = Math.min(
