@@ -26,11 +26,19 @@ jobs:
             }
 
             const bodyLines = (context.payload.pull_request.body || "").split(/\r?\n/);
-            const checklistIndex = bodyLines.map(l => l.includes("https://antennapod.org")).lastIndexOf(true);
+            const copilotTipsIndex = bodyLines.findIndex(l => l.trim() === "<!-- START COPILOT CODING AGENT TIPS -->");
+            const lastChecklistItem = bodyLines.reduce((acc, l, i) => l.trim().startsWith("- [") ? i : acc, -1);
+            const lastHrAfterChecklist = bodyLines.reduce((acc, l, i) => i > lastChecklistItem && l === "---" ? i : acc, -1);
+            const cutoff = Math.min(
+              copilotTipsIndex !== -1 ? copilotTipsIndex : Infinity,
+              lastHrAfterChecklist !== -1 ? lastHrAfterChecklist : Infinity
+            );
+            const relevantLines = isFinite(cutoff) ? bodyLines.slice(0, cutoff) : bodyLines;
+            const checklistIndex = relevantLines.map(l => l.includes("https://antennapod.org")).lastIndexOf(true);
             if (checklistIndex === -1) {
               core.setFailed("It looks like you did not follow the PR template. The checklist from the template is missing or incomplete.");
               return;
-            } else if (bodyLines.length - checklistIndex - 1 > 5) {
+            } else if (relevantLines.length - checklistIndex - 1 > 5) {
               core.setFailed("It looks like you did not follow the PR template. Please add your description above the checklist, not below.");
               return;
             }
