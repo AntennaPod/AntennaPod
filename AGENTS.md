@@ -60,8 +60,11 @@ If any command does not give any output, it is likely that it failed, so abort.
 # PR Conventions
 When creating a PR, always read the PR template at .github/pull_request_template.md before starting and strictly follow it.
 The description goes above the checklist.
-Tick checklist items by replacing [ ] with [x] for each item you have completed.
 Always mention the corresponding issue using "Closes: #<number>" in the description.
 Never change the PR title unless explicitly asked to do so; the original title from the prompt is usually the most appropriate one.
+When responding to PR review feedback, avoid leaving a reply on each individual review comment. Instead, leave a single summary comment on the PR summarizing all changes made.
+Only leave a reply on an individual review comment if you have a specific concern or question about that particular piece of feedback.
+
+# Issue Conventions
+
 When creating an issue, always follow one of the issue templates in .github/ISSUE_TEMPLATE/.
-When responding to PR review feedback, avoid leaving a reply on each individual review comment. Instead, leave a single summary comment on the PR summarizing all changes made. Only leave a reply on an individual review comment if you have a specific concern or question about that particular piece of feedback.
