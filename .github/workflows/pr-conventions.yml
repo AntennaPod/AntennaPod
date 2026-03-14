@@ -26,11 +26,13 @@ jobs:
             }
 
             const bodyLines = (context.payload.pull_request.body || "").split(/\r?\n/);
-            const checklistIndex = bodyLines.map(l => l.includes("https://antennapod.org")).lastIndexOf(true);
+            const copilotTipsIndex = bodyLines.findIndex(l => l.includes("<!-- START COPILOT CODING AGENT TIPS -->"));
+            const relevantLines = copilotTipsIndex !== -1 ? bodyLines.slice(0, copilotTipsIndex) : bodyLines;
+            const checklistIndex = relevantLines.map(l => l.includes("https://antennapod.org")).lastIndexOf(true);
             if (checklistIndex === -1) {
               core.setFailed("It looks like you did not follow the PR template. The checklist from the template is missing or incomplete.");
               return;
-            } else if (bodyLines.length - checklistIndex - 1 > 5) {
+            } else if (relevantLines.length - checklistIndex - 1 > 5) {
               core.setFailed("It looks like you did not follow the PR template. Please add your description above the checklist, not below.");
               return;
             }

@@ -62,3 +62,5 @@ When creating a PR, always strictly follow the PR template at .github/pull_reque
 The description goes above the checklist.
 Tick checklist items by replacing [ ] with [x] for each item you have completed.
 Always mention the corresponding issue using "Closes: #<number>" in the description.
+When creating an issue, always follow one of the issue templates in .github/ISSUE_TEMPLATE/.
+Any agent-generated content (such as a Security Summary) must be placed after the `<!-- START COPILOT CODING AGENT TIPS -->` marker at the end of the PR body.

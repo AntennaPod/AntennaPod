@@ -1,7 +1,5 @@
 name: "Copilot Setup Steps"
 
-# Automatically run the setup steps when they are changed to allow for easy validation, and
-# allow manual testing through the repository's "Actions" tab
 on:
   workflow_dispatch:
   push:
@@ -36,5 +34,3 @@ jobs:
           key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
       - name: Configure parallel build
         run: echo "org.gradle.parallel=true" >> local.properties
-      - name: Build with Gradle
-        run: ./gradlew :app:assemblePlayDebug
