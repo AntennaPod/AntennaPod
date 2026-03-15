@@ -27,11 +27,10 @@ jobs:
 
             const bodyLines = (context.payload.pull_request.body || "").split(/\r?\n/);
             const copilotTipsIndex = bodyLines.findIndex(l => l.trim() === "<!-- START COPILOT CODING AGENT TIPS -->");
-            const lastChecklistItem = bodyLines.reduce((acc, l, i) => l.trim().startsWith("- [") ? i : acc, -1);
-            const lastHrAfterChecklist = bodyLines.reduce((acc, l, i) => i > lastChecklistItem && l === "---" ? i : acc, -1);
+            const originalPromptIndex = bodyLines.findIndex(l => l.trim().toLowerCase() === "original prompt");
             const cutoff = Math.min(
               copilotTipsIndex !== -1 ? copilotTipsIndex : Infinity,
-              lastHrAfterChecklist !== -1 ? lastHrAfterChecklist : Infinity
+              originalPromptIndex !== -1 ? originalPromptIndex : Infinity
             );
             const relevantLines = isFinite(cutoff) ? bodyLines.slice(0, cutoff) : bodyLines;
             const checklistIndex = relevantLines.map(l => l.includes("https://antennapod.org")).lastIndexOf(true);
