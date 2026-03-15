@@ -38,6 +38,11 @@
         android:title="@string/add_to_queue_label" />
 
     <item
+        android:id="@+id/share_item"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share_label" />
+
+    <item
         android:id="@+id/remove_inbox_item"
         android:icon="@drawable/ic_check"
         android:title="@string/remove_inbox_label" />

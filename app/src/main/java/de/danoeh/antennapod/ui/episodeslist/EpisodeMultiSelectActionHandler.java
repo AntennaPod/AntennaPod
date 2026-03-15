@@ -3,6 +3,8 @@ package de.danoeh.antennapod.ui.episodeslist;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.fragment.app.FragmentActivity;
+
 import androidx.annotation.PluralsRes;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.share.ShareDialog;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,6 +60,8 @@ public class EpisodeMultiSelectActionHandler {
             removeFromFavoritesChecked(items);
         } else if (actionId == R.id.reset_position) {
             resetPositionChecked(items);
+        } else if (actionId == R.id.share_item) {
+            shareChecked(items);
         } else if (actionId == R.id.move_to_top_item) {
             moveToTopChecked(items);
         } else if (actionId == R.id.move_to_bottom_item) {
@@ -198,6 +203,17 @@ public class EpisodeMultiSelectActionHandler {
             count++;
         }
         showMessage(R.plurals.reset_position_message, count);
+    }
+
+    private void shareChecked(List<FeedItem> items) {
+        if (items.isEmpty() || !(activity instanceof FragmentActivity)) {
+            return;
+        }
+        FeedItem item = items.get(0);
+        activity.runOnUiThread(() -> {
+            ShareDialog shareDialog = ShareDialog.newInstance(item);
+            shareDialog.show(((FragmentActivity) activity).getSupportFragmentManager(), "ShareEpisodeDialog");
+        });
     }
 
     private void moveToTopChecked(List<FeedItem> items) {
