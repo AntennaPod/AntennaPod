@@ -9,7 +9,6 @@ import android.widget.ListView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
-import androidx.preference.SwitchPreferenceCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
@@ -101,13 +100,8 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             if (newValue instanceof Boolean && !(Boolean) newValue) {
                 new MaterialAlertDialogBuilder(getContext())
                         .setMessage(R.string.bottom_navigation_deprecation_warning)
-                        .setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                            backOpensDrawerToggle(false);
-                            ((SwitchPreferenceCompat) preference).setChecked(false);
-                        })
-                        .setNegativeButton(R.string.cancel_label, null)
+                        .setPositiveButton(android.R.string.ok, null)
                         .show();
-                return false;
             }
             if (newValue instanceof Boolean) {
                 backOpensDrawerToggle((Boolean) newValue);
