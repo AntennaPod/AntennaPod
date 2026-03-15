@@ -27,7 +27,7 @@ jobs:
 
             const body = context.payload.pull_request.body || "";
             const descriptionMatch = body.match(/###\s*Description\s*\n([\s\S]*?)###\s*Checklist/i);
-            if (!descriptionMatch || !descriptionMatch[1].trim()) {
+            if (!descriptionMatch || descriptionMatch[1].replace(/\s/g, "").length < 10) {
               core.setFailed("It looks like you did not follow the PR template. Please add a description in the Description section, above the checklist.");
               return;
             }
