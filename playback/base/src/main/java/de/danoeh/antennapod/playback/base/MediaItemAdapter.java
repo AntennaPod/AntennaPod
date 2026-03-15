@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.RawRes;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
 import com.google.common.collect.ImmutableList;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class MediaItemAdapter {
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
+    public static final String MEDIA_ID_CONFIRM_STREAMING = "confirm_streaming";
     public static final String KEY_STREAM_URL = "stream_url";
 
     /**
@@ -106,6 +108,28 @@ public class MediaItemAdapter {
         return new MediaItem.Builder()
                 .setMediaId(id)
                 .setMediaMetadata(metadataBuilder.build())
+                .build();
+    }
+
+    public static MediaItem buildStreamingConfirmationItem(Context context,
+                                                              @RawRes int audioResId,
+                                                              String title, String description) {
+        Uri uri = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(context.getResources().getResourcePackageName(audioResId))
+                .appendPath(context.getResources().getResourceTypeName(audioResId))
+                .appendPath(context.getResources().getResourceEntryName(audioResId))
+                .build();
+        MediaMetadata metadata = new MediaMetadata.Builder()
+                .setTitle(title)
+                .setDescription(description)
+                .setIsPlayable(true)
+                .setIsBrowsable(false)
+                .build();
+        return new MediaItem.Builder()
+                .setMediaId(MEDIA_ID_CONFIRM_STREAMING)
+                .setUri(uri)
+                .setMediaMetadata(metadata)
                 .build();
     }
 

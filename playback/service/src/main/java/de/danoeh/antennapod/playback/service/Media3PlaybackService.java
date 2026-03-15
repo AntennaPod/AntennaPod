@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.playback.service;
 
-import android.content.ContentResolver;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.URLUtil;
@@ -11,22 +9,20 @@ import androidx.annotation.OptIn;
 import androidx.core.util.Pair;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
-import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.common.util.Util;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.DefaultMediaNotificationProvider;
-import androidx.media3.session.MediaController;
 import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
 import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
@@ -75,13 +71,11 @@ import java.util.concurrent.TimeUnit;
 public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
     private static final long POSITION_SAVE_INTERVAL_MS = 5000;
-    private static final String MEDIA_ID_CONFIRM_STREAMING = "confirm_streaming";
-
     private ExoPlayer exoPlayer;
     private Player player;
     private MediaLibrarySession mediaSession;
     private FeedMedia currentPlayable;
-    private FeedMedia pendingStreamMedia;
+    private String pendingStreamMediaId;
     private boolean allowStreamingThisTime = false;
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
@@ -145,22 +139,21 @@ public class Media3PlaybackService extends MediaLibraryService {
                         && !NetworkUtils.isStreamingAllowed();
             }
 
-            @Override
-            public void prepare() {
-                if (pendingStreamMedia != null && getCurrentMediaItem() != null
-                        && MEDIA_ID_CONFIRM_STREAMING.equals(getCurrentMediaItem().mediaId)) {
-                    return;
-                }
-                super.prepare();
-            }
-
             private boolean handleStreamingConfirmation() {
-                if (pendingStreamMedia != null && getCurrentMediaItem() != null
-                        && MEDIA_ID_CONFIRM_STREAMING.equals(getCurrentMediaItem().mediaId)) {
-                    final FeedMedia media = pendingStreamMedia;
-                    pendingStreamMedia = null;
+                if (pendingStreamMediaId != null && getCurrentMediaItem() != null
+                        && MediaItemAdapter.MEDIA_ID_CONFIRM_STREAMING.equals(getCurrentMediaItem().mediaId)) {
+                    final String mediaId = pendingStreamMediaId;
+                    pendingStreamMediaId = null;
                     allowStreamingThisTime = true;
-                    startPendingStreamMedia(media);
+                    MediaItem mediaItem = new MediaItem.Builder()
+                            .setMediaId(mediaId)
+                            .build();
+                    PlaybackController.bindToMedia3Service(
+                            Media3PlaybackService.this, controller -> {
+                                controller.setMediaItem(mediaItem);
+                                controller.prepare();
+                                controller.play();
+                            });
                     return true;
                 }
                 return false;
@@ -303,9 +296,6 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         @Override
         public void onPlayerError(@NonNull PlaybackException error) {
-            if (pendingStreamMedia != null) {
-                return;
-            }
             EventBus.getDefault().post(new PlayerErrorEvent(
                     ExoPlayerUtils.translateErrorReason(error, Media3PlaybackService.this)));
         }
@@ -388,10 +378,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (player == null || player.getCurrentMediaItem() == null) {
             return;
         }
-        if (MEDIA_ID_CONFIRM_STREAMING.equals(player.getCurrentMediaItem().mediaId)) {
+        if (MediaItemAdapter.MEDIA_ID_CONFIRM_STREAMING.equals(player.getCurrentMediaItem().mediaId)) {
             return;
         }
-        pendingStreamMedia = null;
+        pendingStreamMediaId = null;
         try {
             long mediaId = Long.parseLong(player.getCurrentMediaItem().mediaId);
             if (currentPlayable == null || currentPlayable.getId() != mediaId) {
@@ -543,43 +533,17 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     @UnstableApi
     private void showStreamingConfirmation(FeedMedia media) {
-        pendingStreamMedia = media;
+        pendingStreamMediaId = String.valueOf(media.getId());
         currentPlayable = null;
-        int resourceId = R.raw.no_streaming;
-        Uri uri = new Uri.Builder()
-                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-                .authority(getResources().getResourcePackageName(resourceId))
-                .appendPath(getResources().getResourceTypeName(resourceId))
-                .appendPath(getResources().getResourceEntryName(resourceId))
-                .build();
-        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder()
-                .setTitle(getString(R.string.confirm_mobile_streaming_notification_title))
-                .setDescription(getString(R.string.confirm_mobile_streaming_notification_message))
-                .setIsPlayable(true)
-                .setIsBrowsable(false);
-        MediaItem confirmItem = new MediaItem.Builder()
-                .setMediaId(MEDIA_ID_CONFIRM_STREAMING)
-                .setUri(uri)
-                .setMediaMetadata(metadataBuilder.build())
-                .build();
+        MediaItem confirmItem = MediaItemAdapter.buildStreamingConfirmationItem(this,
+                R.raw.no_streaming,
+                getString(R.string.confirm_mobile_streaming_notification_title),
+                getString(R.string.confirm_mobile_streaming_notification_message));
         player.setMediaItem(confirmItem);
         player.setPlayWhenReady(false);
         player.prepare();
-        EventBus.getDefault().post(new MessageEvent(
-                getString(R.string.confirm_mobile_streaming_notification_title),
-                context -> PlaybackController.bindToMedia3Service(context, MediaController::play),
-                getString(R.string.confirm_mobile_streaming_button_once)));
+        EventBus.getDefault().post(new StreamingConfirmationEvent());
     }
-
-    @UnstableApi
-    private void startPendingStreamMedia(FeedMedia media) {
-        MediaItem mediaItem = MediaItemAdapter.fromPlayable(media);
-        player.setMediaItem(mediaItem);
-        player.prepare();
-        player.seekTo(media.getPosition());
-        player.play();
-    }
-
 
     private static boolean needsStreaming(FeedMedia media) {
         return !media.localFileAvailable() && !URLUtil.isContentUrl(media.getStreamUrl());
