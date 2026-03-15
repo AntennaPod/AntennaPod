@@ -57,8 +57,6 @@ public class SwipeActionsDialog {
         keys = new ArrayList<>();
         if (tag.equals(QueueFragment.TAG)) {
             keys.add(new RemoveFromQueueSwipeAction());
-        } else if (tag.equals(FavoritesFragment.TAG)) {
-            keys.add(new RemoveFromFavoritesSwipeAction());
         } else {
             keys.add(new AddToQueueSwipeAction());
         }
@@ -73,7 +71,11 @@ public class SwipeActionsDialog {
         if (!tag.equals(InboxFragment.TAG)) {
             keys.add(new DeleteSwipeAction());
         }
-        keys.add(new MarkFavoriteSwipeAction());
+        if (tag.equals(FavoritesFragment.TAG)) {
+            keys.add(new RemoveFromFavoritesSwipeAction());
+        } else {
+            keys.add(new MarkFavoriteSwipeAction());
+        }
         if (tag.equals(PlaybackHistoryFragment.TAG)) {
             keys.add(new RemoveFromHistorySwipeAction());
         }
