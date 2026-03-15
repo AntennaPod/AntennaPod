@@ -26,13 +26,8 @@ jobs:
             }
 
             const bodyLines = (context.payload.pull_request.body || "").split(/\r?\n/);
-            const copilotTipsIndex = bodyLines.findIndex(l => l.trim() === "<!-- START COPILOT CODING AGENT TIPS -->");
-            const originalPromptIndex = bodyLines.findIndex(l => l.trim().toLowerCase() === "original prompt");
-            const cutoff = Math.min(
-              copilotTipsIndex !== -1 ? copilotTipsIndex : Infinity,
-              originalPromptIndex !== -1 ? originalPromptIndex : Infinity
-            );
-            const relevantLines = isFinite(cutoff) ? bodyLines.slice(0, cutoff) : bodyLines;
+            const lastChecklistItemIndex = bodyLines.reduce((acc, l, i) => l.trim().startsWith("- [") ? i : acc, -1);
+            const relevantLines = lastChecklistItemIndex !== -1 ? bodyLines.slice(0, lastChecklistItemIndex + 1) : bodyLines;
             const checklistIndex = relevantLines.map(l => l.includes("https://antennapod.org")).lastIndexOf(true);
             if (checklistIndex === -1) {
               core.setFailed("It looks like you did not follow the PR template. The checklist from the template is missing or incomplete.");
