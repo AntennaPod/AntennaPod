@@ -26,6 +26,7 @@ public class FavoritesFragment extends EpisodesListFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = super.onCreateView(inflater, container, savedInstanceState);
+        toolbar.inflateMenu(R.menu.favorites);
         toolbar.setTitle(R.string.favorite_episodes_label);
         updateToolbar();
         emptyView.setIcon(R.drawable.ic_star);
