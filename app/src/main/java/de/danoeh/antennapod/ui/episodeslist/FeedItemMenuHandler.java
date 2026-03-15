@@ -100,6 +100,9 @@ public class FeedItemMenuHandler {
             canShare = false;
             canShowTranscript = false;
             canShowSocialInteract = false;
+            if (canAddFavorite) {
+                canRemoveFavorite = false;
+            }
         }
 
         setItemVisibility(menu, R.id.skip_episode_item, canSkip);
