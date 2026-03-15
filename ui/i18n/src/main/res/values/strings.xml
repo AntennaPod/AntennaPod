@@ -290,17 +290,29 @@
         <item quantity="other">%d episodes removed from inbox.</item>
     </plurals>
     <string name="add_to_favorite_label">Add to favorites</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d episode added to favorites.</item>
+        <item quantity="other">%d episodes added to favorites.</item>
+    </plurals>
+    <string name="remove_from_favorite_label">Remove from favorites</string>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d episode removed from favorites.</item>
+        <item quantity="other">%d episodes removed from favorites.</item>
+    </plurals>
     <string name="show_transcript">Show transcript</string>
     <string name="transcript">Transcript</string>
     <string name="transcript_follow_audio_label">Follow audio</string>
     <string name="no_transcript_label">No transcript</string>
-    <string name="remove_from_favorite_label">Remove from favorites</string>
     <string name="visit_website_label">Visit website</string>
     <string name="visit_social_interact_label">Show comments</string>
     <string name="visit_social_interact_confirm_dialog_title">You are leaving AntennaPod</string>
     <string name="visit_social_interact_confirm_dialog_message">Please make sure that you trust the website \"%1$s\".</string>
     <string name="skip_episode_label">Skip episode</string>
     <string name="reset_playback_position_label">Reset playback position</string>
+    <plurals name="reset_position_message">
+        <item quantity="one">%d episode position reset.</item>
+        <item quantity="other">%d episode positions reset.</item>
+    </plurals>
     <string name="no_items_selected_message">No items selected</string>
     <string name="delete_local_feed_confirmation_dialog_message">Deleting removes the episode from AntennaPod and deletes the media file from your device storage. It cannot be downloaded again through AntennaPod.</string>
 
