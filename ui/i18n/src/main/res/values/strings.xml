@@ -23,6 +23,7 @@
     <string name="inbox_label">Inbox</string>
     <string name="inbox_label_short">Inbox</string>
     <string name="favorite_episodes_label">Favorites</string>
+    <string name="favorite_episodes_label_short">Favorites</string>
     <string name="settings_label">Settings</string>
     <string name="downloads_label">Downloads</string>
     <string name="downloads_label_short">Downloads</string>
@@ -424,6 +425,8 @@
     <string name="no_log_downloads_label">Download logs will appear here when available.</string>
     <string name="no_history_head_label">No history</string>
     <string name="no_history_label">After you listen to an episode, it will appear here.</string>
+    <string name="no_fav_episodes_head_label">No favorites</string>
+    <string name="no_fav_episodes_label">Mark episodes as favorites by tapping the star icon.</string>
     <string name="no_all_episodes_head_label">No episodes</string>
     <string name="no_all_episodes_label">When you add a podcast, the episodes will be shown here.</string>
     <string name="no_all_episodes_filtered_label">Try clearing the filter to see more episodes.</string>
