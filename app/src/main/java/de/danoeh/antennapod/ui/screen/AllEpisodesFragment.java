@@ -23,8 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -106,16 +104,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         if (item.getItemId() == R.id.filter_items) {
             AllEpisodesFilterDialog.newInstance(getFilter()).show(getChildFragmentManager(), null);
             return true;
-        } else if (item.getItemId() == R.id.action_favorites) {
-            ArrayList<String> filter = new ArrayList<>(getFilter().getValuesList());
-            if (filter.contains(FeedItemFilter.IS_FAVORITE)) {
-                filter.remove(FeedItemFilter.IS_FAVORITE);
-                filter.remove(FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
-            } else {
-                filter.add(FeedItemFilter.IS_FAVORITE);
-            }
-            onFilterChanged(new AllEpisodesFilterDialog.AllEpisodesFilterChangedEvent(new HashSet<>(filter)));
-            return true;
         } else if (item.getItemId() == R.id.episodes_sort) {
             new AllEpisodesSortDialog().show(getChildFragmentManager().beginTransaction(), "SortDialog");
             return true;
@@ -142,8 +130,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             txtvInformation.setVisibility(View.VISIBLE);
             emptyView.setMessage(R.string.no_all_episodes_filtered_label);
         }
-        toolbar.getMenu().findItem(R.id.action_favorites).setIcon(
-                getFilter().showIsFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);
     }
 
     @Override

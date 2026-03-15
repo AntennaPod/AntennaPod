@@ -15,16 +15,4 @@
         android:menuCategory="container"
         custom:showAsAction="never" />
 
-    <item
-        android:id="@+id/filter_items"
-        android:icon="@drawable/ic_filter"
-        android:menuCategory="container"
-        android:title="@string/filter"
-        custom:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/episodes_sort"
-        android:title="@string/sort"
-        custom:showAsAction="never" />
-
 </menu>

@@ -24,6 +24,7 @@ import de.danoeh.antennapod.databinding.SwipeactionsPickerItemBinding;
 import de.danoeh.antennapod.databinding.SwipeactionsRowBinding;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
+import de.danoeh.antennapod.ui.screen.FavoritesFragment;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
@@ -70,7 +71,11 @@ public class SwipeActionsDialog {
         if (!tag.equals(InboxFragment.TAG)) {
             keys.add(new DeleteSwipeAction());
         }
-        keys.add(new MarkFavoriteSwipeAction());
+        if (tag.equals(FavoritesFragment.TAG)) {
+            keys.add(new RemoveFromFavoritesSwipeAction());
+        } else {
+            keys.add(new MarkFavoriteSwipeAction());
+        }
         if (tag.equals(PlaybackHistoryFragment.TAG)) {
             keys.add(new RemoveFromHistorySwipeAction());
         }
@@ -97,6 +102,9 @@ public class SwipeActionsDialog {
                 break;
             case PlaybackHistoryFragment.TAG:
                 forFragment = context.getString(R.string.playback_history_label);
+                break;
+            case FavoritesFragment.TAG:
+                forFragment = context.getString(R.string.favorite_episodes_label);
                 break;
             default: break;
         }
