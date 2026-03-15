@@ -22,6 +22,10 @@
         android:title="@string/playback_history_label"/>
 
     <Preference
+        android:key="prefSwipeFavorites"
+        android:title="@string/favorite_episodes_label"/>
+
+    <Preference
         android:key="prefSwipeFeed"
         android:title="@string/individual_subscription"/>
 

@@ -3,6 +3,8 @@ package de.danoeh.antennapod.ui.episodeslist;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.fragment.app.FragmentActivity;
+
 import androidx.annotation.PluralsRes;
 
 import java.util.ArrayList;
@@ -15,9 +17,13 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
+import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.share.ShareDialog;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,6 +54,14 @@ public class EpisodeMultiSelectActionHandler {
             downloadChecked(items);
         } else if (actionId == R.id.remove_item) {
             LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
+        } else if (actionId == R.id.add_to_favorites_item) {
+            addToFavoritesChecked(items);
+        } else if (actionId == R.id.remove_from_favorites_item) {
+            removeFromFavoritesChecked(items);
+        } else if (actionId == R.id.reset_position) {
+            resetPositionChecked(items);
+        } else if (actionId == R.id.share_item) {
+            shareChecked(items);
         } else if (actionId == R.id.move_to_top_item) {
             moveToTopChecked(items);
         } else if (actionId == R.id.move_to_bottom_item) {
@@ -150,6 +164,56 @@ public class EpisodeMultiSelectActionHandler {
             }
         }
         showMessage(R.plurals.deleted_episode_message, countHasMedia);
+    }
+
+    private void addToFavoritesChecked(List<FeedItem> items) {
+        int count = 0;
+        for (FeedItem episode : items) {
+            if (!episode.isTagged(FeedItem.TAG_FAVORITE)) {
+                DBWriter.addFavoriteItem(episode);
+                count++;
+            }
+        }
+        showMessage(R.plurals.added_to_favorites_message, count);
+    }
+
+    private void removeFromFavoritesChecked(List<FeedItem> items) {
+        int count = 0;
+        for (FeedItem episode : items) {
+            if (episode.isTagged(FeedItem.TAG_FAVORITE)) {
+                DBWriter.removeFavoriteItem(episode);
+                count++;
+            }
+        }
+        showMessage(R.plurals.removed_from_favorites_message, count);
+    }
+
+    private void resetPositionChecked(List<FeedItem> items) {
+        int count = 0;
+        for (FeedItem episode : items) {
+            if (!episode.hasMedia() || episode.getMedia().getPosition() == 0) {
+                continue;
+            }
+            episode.getMedia().setPosition(0);
+            if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == episode.getMedia().getId()) {
+                PlaybackPreferences.writeNoMediaPlaying();
+                IntentUtils.sendLocalBroadcast(activity, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+            }
+            DBWriter.markItemPlayed(FeedItem.UNPLAYED, true, episode);
+            count++;
+        }
+        showMessage(R.plurals.reset_position_message, count);
+    }
+
+    private void shareChecked(List<FeedItem> items) {
+        if (items.isEmpty() || !(activity instanceof FragmentActivity)) {
+            return;
+        }
+        FeedItem item = items.get(0);
+        activity.runOnUiThread(() -> {
+            ShareDialog shareDialog = ShareDialog.newInstance(item);
+            shareDialog.show(((FragmentActivity) activity).getSupportFragmentManager(), "ShareEpisodeDialog");
+        });
     }
 
     private void moveToTopChecked(List<FeedItem> items) {

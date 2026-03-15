@@ -97,6 +97,12 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
         }
 
         findPreference(UserPreferences.PREF_BOTTOM_NAVIGATION).setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue instanceof Boolean && !(Boolean) newValue) {
+                new MaterialAlertDialogBuilder(getContext())
+                        .setMessage(R.string.bottom_navigation_deprecation_warning)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+            }
             if (newValue instanceof Boolean) {
                 backOpensDrawerToggle((Boolean) newValue);
             }
