@@ -54,13 +54,13 @@ public class DatabaseExporter {
             adapter.walCheckpoint();
             adapter.close();
             FileUtils.copyFile(currentDB, tempDB);
-            SQLiteDatabase tempDbHandle = SQLiteDatabase.openDatabase(
-                    tempDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
-            if (tempDbHandle.getVersion() != PodDBAdapter.VERSION) {
-                throw new IOException("Database version mismatch. Expected: " + PodDBAdapter.VERSION
-                        + ", found: " + tempDbHandle.getVersion());
+            try (SQLiteDatabase tempDbHandle = SQLiteDatabase.openDatabase(
+                    tempDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY)) {
+                if (tempDbHandle.getVersion() != PodDBAdapter.VERSION) {
+                    throw new IOException("Database version mismatch. Expected: " + PodDBAdapter.VERSION
+                            + ", found: " + tempDbHandle.getVersion());
+                }
             }
-            tempDbHandle.close();
             try (InputStream src = new FileInputStream(tempDB)) {
                 return IOUtils.copy(src, outFileStream);
             }
