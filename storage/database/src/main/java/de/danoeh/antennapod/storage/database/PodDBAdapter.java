@@ -432,7 +432,7 @@ public class PodDBAdapter {
     }
 
     public void walCheckpoint() {
-        db.execSQL("PRAGMA wal_checkpoint(FULL)");
+        db.rawQuery("PRAGMA wal_checkpoint(FULL)", null);
     }
 
     public static boolean deleteDatabase() {

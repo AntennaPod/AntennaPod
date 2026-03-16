@@ -48,25 +48,29 @@ public class DatabaseExporter {
             throw new IOException("Cannot access current database");
         }
         File tempDB = context.getDatabasePath(TEMP_DB_NAME);
-        int result;
         try {
-            PodDBAdapter.getInstance().walCheckpoint();
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.walCheckpoint();
+            adapter.close();
             FileUtils.copyFile(currentDB, tempDB);
-            SQLiteDatabase tempDbHandle = SQLiteDatabase.openDatabase(tempDB.getAbsolutePath(),
-                    null, SQLiteDatabase.OPEN_READONLY);
+            SQLiteDatabase tempDbHandle = SQLiteDatabase.openDatabase(
+                    tempDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
+            if (tempDbHandle.getVersion() != PodDBAdapter.VERSION) {
+                throw new IOException("Database version mismatch. Expected: " + PodDBAdapter.VERSION
+                        + ", found: " + tempDbHandle.getVersion());
+            }
             tempDbHandle.close();
             try (InputStream src = new FileInputStream(tempDB)) {
-                result = IOUtils.copy(src, outFileStream);
+                return IOUtils.copy(src, outFileStream);
             }
         } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            tempDB.delete();
             throw e;
+        } finally {
+            boolean deleted = tempDB.delete();
+            Log.d(TAG, "Deleted temp database file: " + deleted);
         }
-        if (!tempDB.delete() && tempDB.exists()) {
-            throw new IOException("Unable to delete temp database file");
-        }
-        return result;
     }
 
     public static void importBackup(Uri inputUri, Context context) throws IOException {
@@ -84,12 +88,14 @@ public class DatabaseExporter {
             db.close();
 
             File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
-            boolean success = currentDB.delete();
-            if (!success) {
+            if (!currentDB.delete()) {
                 throw new IOException("Unable to delete old database");
             }
-            new File(currentDB.getAbsolutePath() + "-wal").delete();
-            new File(currentDB.getAbsolutePath() + "-shm").delete();
+            for (String suffix : new String[]{"-wal", "-shm", "-journal"}) {
+                File sidecarFile = new File(currentDB.getAbsolutePath() + suffix);
+                boolean success = sidecarFile.delete();
+                Log.d(TAG, "Deleting sidecar file: " + sidecarFile.getAbsolutePath() + ", success: " + success);
+            }
             FileUtils.moveFile(tempDB, currentDB);
         } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
