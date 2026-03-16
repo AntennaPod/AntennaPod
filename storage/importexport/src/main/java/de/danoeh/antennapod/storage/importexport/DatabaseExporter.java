@@ -47,11 +47,30 @@ public class DatabaseExporter {
         if (!currentDB.exists()) {
             throw new IOException("Cannot access current database");
         }
-        try (InputStream src = new FileInputStream(currentDB)) {
-            return IOUtils.copy(src, outFileStream);
-        } catch (IOException e) {
+        boolean success = false;
+        File tempDB = context.getDatabasePath(TEMP_DB_NAME);
+        try {
+            PodDBAdapter.getInstance().walCheckpoint();
+            FileUtils.copyFile(currentDB, tempDB);
+            SQLiteDatabase tempDbHandle = SQLiteDatabase.openDatabase(tempDB.getAbsolutePath(),
+                    null, SQLiteDatabase.OPEN_READONLY);
+            tempDbHandle.close();
+            try (InputStream src = new FileInputStream(tempDB)) {
+                int result = IOUtils.copy(src, outFileStream);
+                success = true;
+                return result;
+            }
+        } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
+        } finally {
+            if (!tempDB.delete() && tempDB.exists()) {
+                if (success) {
+                    throw new IOException("Unable to delete temp database file");
+                } else {
+                    Log.e(TAG, "Unable to delete temp database file");
+                }
+            }
         }
     }
 

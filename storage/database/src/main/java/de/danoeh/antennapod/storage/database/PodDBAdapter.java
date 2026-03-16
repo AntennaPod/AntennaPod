@@ -414,6 +414,10 @@ public class PodDBAdapter {
         instance = null;
     }
 
+    public void walCheckpoint() {
+        db.execSQL("PRAGMA wal_checkpoint(FULL)");
+    }
+
     public static boolean deleteDatabase() {
         PodDBAdapter adapter = getInstance();
         adapter.open();
