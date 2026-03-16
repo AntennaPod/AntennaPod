@@ -382,7 +382,6 @@ public class PodDBAdapter {
         SQLiteDatabase newDb;
         try {
             newDb = dbHelper.getWritableDatabase();
-            newDb.disableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
             newDb = dbHelper.getReadableDatabase();
