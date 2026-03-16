@@ -88,6 +88,8 @@ public class DatabaseExporter {
             if (!success) {
                 throw new IOException("Unable to delete old database");
             }
+            new File(currentDB.getAbsolutePath() + "-wal").delete();
+            new File(currentDB.getAbsolutePath() + "-shm").delete();
             FileUtils.moveFile(tempDB, currentDB);
         } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
