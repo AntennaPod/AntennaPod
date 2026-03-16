@@ -9,6 +9,7 @@ import android.database.DefaultDatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.os.Looper;
@@ -429,6 +430,18 @@ public class PodDBAdapter {
     public static void tearDownTests() {
         getInstance().dbHelper.close();
         instance = null;
+    }
+
+    public void walCheckpoint() {
+        if (db == null || !db.isOpen() || !db.isWriteAheadLoggingEnabled()) {
+            return;
+        }
+        try (Cursor cursor = db.rawQuery("PRAGMA wal_checkpoint(FULL)", null)) {
+            cursor.moveToFirst();
+            Log.d(TAG, "WAL checkpoint result: " + DatabaseUtils.dumpCurrentRowToString(cursor));
+        } catch (SQLiteException e) {
+            Log.e(TAG, "wal_checkpoint PRAGMA failed", e);
+        }
     }
 
     public static boolean deleteDatabase() {
