@@ -47,8 +47,8 @@ public class DatabaseExporter {
         if (!currentDB.exists()) {
             throw new IOException("Cannot access current database");
         }
-        boolean success = false;
         File tempDB = context.getDatabasePath(TEMP_DB_NAME);
+        int result;
         try {
             PodDBAdapter.getInstance().walCheckpoint();
             FileUtils.copyFile(currentDB, tempDB);
@@ -56,22 +56,17 @@ public class DatabaseExporter {
                     null, SQLiteDatabase.OPEN_READONLY);
             tempDbHandle.close();
             try (InputStream src = new FileInputStream(tempDB)) {
-                int result = IOUtils.copy(src, outFileStream);
-                success = true;
-                return result;
+                result = IOUtils.copy(src, outFileStream);
             }
         } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
+            tempDB.delete();
             throw e;
-        } finally {
-            if (!tempDB.delete() && tempDB.exists()) {
-                if (success) {
-                    throw new IOException("Unable to delete temp database file");
-                } else {
-                    Log.e(TAG, "Unable to delete temp database file");
-                }
-            }
         }
+        if (!tempDB.delete() && tempDB.exists()) {
+            throw new IOException("Unable to delete temp database file");
+        }
+        return result;
     }
 
     public static void importBackup(Uri inputUri, Context context) throws IOException {
