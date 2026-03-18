@@ -120,17 +120,6 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
 
             @Override
-            public void setPlayWhenReady(boolean playWhenReady) {
-                if (playWhenReady && handleStreamingConfirmation()) {
-                    return;
-                } else if (playWhenReady && shouldBlockForStreamingConfirmation()) {
-                    showStreamingConfirmation(currentPlayable);
-                    return;
-                }
-                super.setPlayWhenReady(playWhenReady);
-            }
-
-            @Override
             public void setPlaybackSpeed(float speed) {
                 super.setPlaybackSpeed(speed);
                 PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
