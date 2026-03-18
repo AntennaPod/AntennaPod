@@ -112,8 +112,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             public void play() {
                 if (handleStreamingConfirmation()) {
                     return;
-                }
-                if (shouldBlockForStreamingConfirmation()) {
+                } else if (shouldBlockForStreamingConfirmation()) {
                     showStreamingConfirmation(currentPlayable);
                     return;
                 }
@@ -124,40 +123,11 @@ public class Media3PlaybackService extends MediaLibraryService {
             public void setPlayWhenReady(boolean playWhenReady) {
                 if (playWhenReady && handleStreamingConfirmation()) {
                     return;
-                }
-                if (playWhenReady && shouldBlockForStreamingConfirmation()) {
+                } else if (playWhenReady && shouldBlockForStreamingConfirmation()) {
                     showStreamingConfirmation(currentPlayable);
                     return;
                 }
                 super.setPlayWhenReady(playWhenReady);
-            }
-
-            private boolean shouldBlockForStreamingConfirmation() {
-                return currentPlayable != null
-                        && (getPlaybackState() == Player.STATE_READY
-                                || getPlaybackState() == Player.STATE_BUFFERING)
-                        && needsStreaming(currentPlayable)
-                        && !NetworkUtils.isStreamingAllowed();
-            }
-
-            private boolean handleStreamingConfirmation() {
-                if (pendingStreamMediaId != null && getCurrentMediaItem() != null
-                        && MediaItemAdapter.MEDIA_ID_CONFIRM_STREAMING.equals(getCurrentMediaItem().mediaId)) {
-                    final String mediaId = pendingStreamMediaId;
-                    pendingStreamMediaId = null;
-                    allowStreamingThisTime = true;
-                    MediaItem mediaItem = new MediaItem.Builder()
-                            .setMediaId(mediaId)
-                            .build();
-                    PlaybackController.bindToMedia3Service(
-                            Media3PlaybackService.this, controller -> {
-                                controller.setMediaItem(mediaItem);
-                                controller.prepare();
-                                controller.play();
-                            });
-                    return true;
-                }
-                return false;
             }
 
             @Override
@@ -401,8 +371,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             if (player == null) {
                                 return;
                             }
-                            if (needsStreaming(media)
-                                    && !NetworkUtils.isStreamingAllowed()
+                            if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
                                     && !allowStreamingThisTime) {
                                 showStreamingConfirmation(media);
                                 return;
@@ -536,6 +505,34 @@ public class Media3PlaybackService extends MediaLibraryService {
         player.seekTo(chapters.get(nextChapter).getStart());
     }
 
+    private boolean shouldBlockForStreamingConfirmation() {
+        return currentPlayable != null
+                && (player.getPlaybackState() == Player.STATE_READY
+                    || player.getPlaybackState() == Player.STATE_BUFFERING)
+                && needsStreaming(currentPlayable)
+                && !NetworkUtils.isStreamingAllowed();
+    }
+
+    private boolean handleStreamingConfirmation() {
+        if (pendingStreamMediaId != null && player.getCurrentMediaItem() != null
+                && MediaItemAdapter.MEDIA_ID_CONFIRM_STREAMING.equals(player.getCurrentMediaItem().mediaId)) {
+            final String mediaId = pendingStreamMediaId;
+            pendingStreamMediaId = null;
+            allowStreamingThisTime = true;
+            MediaItem mediaItem = new MediaItem.Builder()
+                    .setMediaId(mediaId)
+                    .build();
+            PlaybackController.bindToMedia3Service(
+                    Media3PlaybackService.this, controller -> {
+                        controller.setMediaItem(mediaItem);
+                        controller.prepare();
+                        controller.play();
+                    });
+            return true;
+        }
+        return false;
+    }
+
     @UnstableApi
     private void showStreamingConfirmation(FeedMedia media) {
         pendingStreamMediaId = String.valueOf(media.getId());
@@ -578,10 +575,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                         pair -> {
                             final FeedMedia nextMedia = pair.first;
                             final MediaItem nextMediaItem = pair.second;
-                            if (needsStreaming(nextMedia)
-                                    && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime
-                                    && UserPreferences.isFollowQueue()) {
+                            if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
+                                    && !allowStreamingThisTime && UserPreferences.isFollowQueue()) {
                                 showStreamingConfirmation(nextMedia);
                                 return;
                             }
