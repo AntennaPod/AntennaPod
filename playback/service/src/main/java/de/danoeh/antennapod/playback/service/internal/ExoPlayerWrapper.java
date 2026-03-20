@@ -403,19 +403,19 @@ public class ExoPlayerWrapper {
         }
 
         LoudnessEnhancer oldEnhancer = this.loudnessEnhancer;
-        if (oldEnhancer != null) {
-            try {
-                LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
+        try {
+            LoudnessEnhancer newEnhancer = new LoudnessEnhancer(audioStreamId);
+            if (oldEnhancer != null) {
                 newEnhancer.setEnabled(oldEnhancer.getEnabled());
                 if (oldEnhancer.getEnabled()) {
                     newEnhancer.setTargetGain((int) oldEnhancer.getTargetGain());
                 }
                 oldEnhancer.release();
-                this.loudnessEnhancer = newEnhancer;
-            } catch (Exception e) {
-                Log.d(TAG, e.toString());
-                this.loudnessEnhancer = null;
             }
+            this.loudnessEnhancer = newEnhancer;
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
+            this.loudnessEnhancer = null;
         }
     }
 }
