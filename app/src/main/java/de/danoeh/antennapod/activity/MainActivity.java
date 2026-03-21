@@ -160,6 +160,19 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
             setNavDrawerSize();
         }
         openDefaultPageBackPressedCallback = new OpenDefaultPageBackPressedCallback();
+        if (drawerLayout != null) {
+            drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    updateMainBackCallbackEnabledState();
+                }
+
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    updateMainBackCallbackEnabledState();
+                }
+            });
+        }
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
@@ -171,6 +184,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         });
 
         final FragmentManager fm = getSupportFragmentManager();
+        fm.addOnBackStackChangedListener(this::updateMainBackCallbackEnabledState);
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
             if (!UserPreferences.DEFAULT_PAGE_REMEMBER.equals(UserPreferences.getDefaultPage())) {
                 loadFragment(UserPreferences.getDefaultPage(), null);
@@ -495,6 +509,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             drawerLayout.closeDrawer(navDrawer);
         }
+        updateMainBackCallbackEnabledState();
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition, String navigationTag) {
@@ -519,6 +534,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                 .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
+        updateMainBackCallbackEnabledState();
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
@@ -644,9 +660,19 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         }
     }
 
+    private void updateMainBackCallbackEnabledState() {
+        String defaultPage = UserPreferences.getDefaultPage();
+        boolean shouldEnable = getSupportFragmentManager().getBackStackEntryCount() > 0
+                || (!NavDrawerFragment.getLastNavFragment(this).equals(defaultPage)
+                        && !UserPreferences.DEFAULT_PAGE_REMEMBER.equals(defaultPage))
+                || (UserPreferences.backButtonOpensDrawer() && drawerLayout != null
+                        && bottomNavigation == null && !drawerLayout.isDrawerOpen(navDrawer));
+        openDefaultPageBackPressedCallback.setEnabled(shouldEnable);
+    }
+
     class OpenDefaultPageBackPressedCallback extends OnBackPressedCallback {
         OpenDefaultPageBackPressedCallback() {
-            super(true);
+            super(false);
         }
 
         @Override
@@ -748,6 +774,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));
+        updateMainBackCallbackEnabledState();
     }
 
     @Override
