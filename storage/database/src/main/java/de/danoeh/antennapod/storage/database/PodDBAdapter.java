@@ -267,6 +267,8 @@ public class PodDBAdapter {
     public static final String SELECT_KEY_ITEM_ID = "item_id";
     public static final String SELECT_KEY_MEDIA_ID = "media_id";
     public static final String SELECT_KEY_FEED_ID = "feed_id";
+    public static final String SELECT_KEY_IS_FAVORITE = "is_favorite";
+    public static final String SELECT_KEY_IS_IN_QUEUE = "is_in_queue";
 
     private static final String KEYS_FEED_ITEM_WITHOUT_DESCRIPTION =
             TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " AS " + SELECT_KEY_ITEM_ID + ", "
@@ -284,7 +286,11 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_CHAPTER_URL + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_SOCIAL_INTERACT_URL + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_TYPE + ", "
-            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_URL;
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_URL + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " IN (SELECT " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
+            + " FROM " + TABLE_NAME_FAVORITES + ") AS " + SELECT_KEY_IS_FAVORITE + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " IN (SELECT " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+            + " FROM " + TABLE_NAME_QUEUE + ") AS " + SELECT_KEY_IS_IN_QUEUE;
 
     private static final String KEYS_FEED_MEDIA =
             TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " AS " + SELECT_KEY_MEDIA_ID + ", "
@@ -1109,12 +1115,6 @@ public class PodDBAdapter {
                     + TABLE_NAME_FEED_MEDIA + "." + KEY_LAST_PLAYED_TIME_STATISTICS + " ELSE 0 END) DESC , "
                 + TABLE_NAME_QUEUE + "." + KEY_ID
                 + " LIMIT " + limit;
-        return db.rawQuery(query, null);
-    }
-
-    public final Cursor getFavoritesIdsCursor() {
-        final String query = "SELECT " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
-                + " FROM " + TABLE_NAME_FAVORITES;
         return db.rawQuery(query, null);
     }
 

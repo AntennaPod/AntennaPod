@@ -136,7 +136,7 @@ public class DbReaderTest {
                     items.add(item);
                 }
             }
-            DBReader.loadAdditionalFeedItemListData(items);
+            DBReader.loadFeedDataOfFeedItemList(items);
             for (int i = 0; i < numFeeds; i++) {
                 for (int j = 0; j < numItems; j++) {
                     FeedItem item = feeds.get(i).getItems().get(j);
