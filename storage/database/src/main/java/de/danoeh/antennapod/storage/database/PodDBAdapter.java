@@ -869,10 +869,9 @@ public class PodDBAdapter {
     private boolean isItemInFavorites(FeedItem item) {
         String query = String.format(Locale.US, "SELECT %s from %s WHERE %s=%d",
                 KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
-        Cursor c = db.rawQuery(query, null);
-        int count = c.getCount();
-        c.close();
-        return count > 0;
+        try (Cursor c = db.rawQuery(query, null)) {
+            return c.getCount() > 0;
+        }
     }
 
     public void setQueue(List<FeedItem> queue) {
@@ -1289,13 +1288,12 @@ public class PodDBAdapter {
 
     public int getQueueSize() {
         final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_QUEUE);
-        Cursor c = db.rawQuery(query, null);
-        int result = 0;
-        if (c.moveToFirst()) {
-            result = c.getInt(0);
+        try (Cursor c = db.rawQuery(query, null)) {
+            if (c.moveToFirst()) {
+                return c.getInt(0);
+            }
+            return 0;
         }
-        c.close();
-        return result;
     }
 
     public final Map<Long, Integer> getFeedCounters(FeedCounter setting, long... feedIds) {
@@ -1348,16 +1346,17 @@ public class PodDBAdapter {
                 + " WHERE " + limitFeeds + " "
                 + whereRead + " GROUP BY " + KEY_FEED;
 
-        Cursor c = db.rawQuery(query, null);
         Map<Long, Integer> result = new HashMap<>();
-        if (c.moveToFirst()) {
+        try (Cursor c = db.rawQuery(query, null)) {
+            if (!c.moveToFirst()) {
+                return result;
+            }
             do {
                 long feedId = c.getLong(0);
                 int count = c.getInt(1);
                 result.put(feedId, count);
             } while (c.moveToNext());
         }
-        c.close();
         return result;
     }
 
@@ -1372,16 +1371,17 @@ public class PodDBAdapter {
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " GROUP BY " + KEY_FEED;
 
-        Cursor c = db.rawQuery(query, null);
         Map<Long, Long> result = new HashMap<>();
-        if (c.moveToFirst()) {
+        try (Cursor c = db.rawQuery(query, null)) {
+            if (!c.moveToFirst()) {
+                return result;
+            }
             do {
                 long feedId = c.getLong(0);
                 long date = c.getLong(1);
                 result.put(feedId, date);
             } while (c.moveToNext());
         }
-        c.close();
         return result;
     }
 
