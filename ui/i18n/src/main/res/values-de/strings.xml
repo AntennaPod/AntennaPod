@@ -801,8 +801,8 @@
     <string name="echo_thanks_large">Danke</string>
     <string name="echo_thanks_we_are_glad_old">dass du dieses Jahr wieder dabei warst!\n\nDu hast deine erste Episode im %1$s abgespielt. Es ist uns eine Ehre, seitdem für dich da zu sein.</string>
     <string name="echo_thanks_we_are_glad_new">dass du dich dieses Jahr für uns entschieden hast!\n\nEgal ob du von einer anderen App gekommen bist oder mit AntennaPod in Podcasts eingestiegen bist: Wir sind froh, dass du da bist!</string>
-    <string name="echo_thanks_now_favorite">Schauen wir uns jetzt noch deine Lieblings-Podcasts an…</string>
-    <string name="echo_share_heading">Meine Lieblings-Podcasts</string>
+    <string name="echo_thanks_now_favorite">Schauen wir uns jetzt noch deine Lieblingspodcasts an…</string>
+    <string name="echo_share_heading">Meine Lieblingspodcasts</string>
     <string name="echo_share">Mein Podcast-Jahr %d. #AntennaPodEcho</string>
     <string name="add_feed_label_short">Hinzufügen</string>
     <string name="episodes_label_short">Episoden</string>

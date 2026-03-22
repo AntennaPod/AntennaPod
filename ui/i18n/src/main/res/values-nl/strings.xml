@@ -885,4 +885,6 @@
     <string name="feed_delete_explanation_delete">Verwijderen verwijdert ALLE afleveringen inclusief downloads, afspeelgeschiedenis, en statistieken.</string>
     <string name="feed_delete_explanation_archive">Archiveren verbergt het van de abonnementenlijst en stopt automatische updates. Downloads, statistieken en afspeelstatus worden behouden.</string>
     <string name="tag_untagged">Ongelabeld</string>
+    <string name="general_expand_button">Toon</string>
+    <string name="general_collapse_button">Verberg</string>
 </resources>

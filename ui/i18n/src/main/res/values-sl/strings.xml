@@ -802,4 +802,8 @@
     <string name="mark_as_unplayed_label">Označi kot nepredvajano</string>
     <string name="transcript_follow_audio_label">Sledi zvoku</string>
     <string name="visit_social_interact_confirm_dialog_title">Zapuščate AntennaPod</string>
+    <string name="general_expand_button">Razširi</string>
+    <string name="general_collapse_button">Strni</string>
+    <string name="archiving_podcast_progress">Arhiviranje poddaje %1$d od %2$d…</string>
+    <string name="deleting_podcast_progress">Brisanje poddaje %1$d od %2$d…</string>
 </resources>

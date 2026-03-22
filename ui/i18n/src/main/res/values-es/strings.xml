@@ -927,9 +927,47 @@
     </plurals>
     <string name="archive_feed_label_verb">Archivar</string>
     <string name="remove_archive_feed_label">Borrar / archivar</string>
-    <string name="feed_delete_explanation_delete">La eliminación borrara TODOS sus episodios, incluyendo las descargas, el historial de reproducción y las estadísticas.</string>
-    <string name="feed_delete_explanation_archive">El archivado lo ocultará de la lista de suscripciones e impedirá que obtenga actualizaciones. Las descargas, las estadísticas y el estado de reproducción se conservan.</string>
+    <string name="feed_delete_explanation_delete">La eliminación borrará la subscripción incluyendo todos sus episodios, descargas, historial de reproducción y estadísticas.</string>
+    <string name="feed_delete_explanation_archive">Archivar oculta la suscripción de la lista y deja de buscar nuevos episodios. Se conservan las descargas, las estadísticas y el estado de reproducción.</string>
     <string name="tag_untagged">Sin etiquetar</string>
     <string name="no_archive_head_label">No se ha archivado nada</string>
     <string name="no_archive_label">Puede archivar los podcasts desde la pantalla de suscripciones principal.</string>
+    <string name="general_expand_button">Expandir</string>
+    <string name="general_collapse_button">Colapsar</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Ordenación por defecto</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Elige el orden por defecto de los episodios en la pantalla de detalles de un podcast</string>
+    <string name="report_bug_title">Informar de un error</string>
+    <string name="report_bug_message">Lamentamos que algo no funcione. Nos encantaría que nos ayudaras a mejorar AntennaPod. Consulta nuestro foro o GitHub para ver si ya se ha reportado la incidencia. Si no es así, avísanos y lo investigaremos.</string>
+    <string name="report_bug_device_info_title">Dispositivo</string>
+    <string name="report_bug_attrib_app_version">Versión de la app</string>
+    <string name="report_bug_attrib_android_version">Versión de Android</string>
+    <string name="report_bug_attrib_device_name">Nombre del Dispositivo</string>
+    <string name="report_bug_crash_log_title">Registro de fallos</string>
+    <string name="report_bug_crash_log_message">Creado: %1$s.</string>
+    <string name="report_bug_forum_title">Foro</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">episodios</string>
+    <string name="sleep_timer_without_continuous_playback">Desactivar la reproducción continua</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Modificar horario</string>
+    <string name="sleep_timer_without_continuous_playback_message">En lugar de habilitar siempre automáticamente el temporizador de apagado con un episodio, desactive la \"reproducción continua\" en la configuración.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">La reproducción continua está deshabilitada y al episodio actual solo le queda %1$d minuto</item>
+        <item quantity="many">La reproducción continua está deshabilitada y al episodio actual solo le quedan %1$d minutos</item>
+        <item quantity="other">La reproducción continua está deshabilitada y al episodio actual solo le quedan %1$d minutos</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">La reproducción continua está desactivada en la configuración. Se detiene siempre al final del episodio.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Solo queda %1$d episodio en tu cola</item>
+        <item quantity="many">Solo quedan %1$d episodios en tu cola</item>
+        <item quantity="other">Solo quedan %1$d episodios en tu cola</item>
+    </plurals>
+    <string name="archiving_podcast_progress">Archivando podcast %1$d de %2$d…</string>
+    <string name="deleting_podcast_progress">Borrando podcast %1$d de %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Estado</string>
+    <string name="download_log_details_technical_reason_title">Detalles técnicos</string>
+    <string name="download_log_details_file_url_title">URL del fichero</string>
+    <string name="download_log_open_feed">Abrir</string>
+    <string name="no_following_in_queue">Éste fue el último episodio en la cola</string>
+    <string name="episode">Episodio</string>
+    <string name="feed">Podcast</string>
 </resources>

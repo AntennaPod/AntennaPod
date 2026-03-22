@@ -882,8 +882,8 @@
     <string name="archive_feed_label_noun">Artxiboa</string>
     <string name="restore_archive_label">Berrezarri</string>
     <string name="remove_archive_feed_label">Ezabatu / artxiboa</string>
-    <string name="feed_delete_explanation_delete">Ezabatzen baduzu, atal GUZTIAK kenduko dira, deskargak, erreprodukzio-historia eta estatistikak barne.</string>
-    <string name="feed_delete_explanation_archive">Artxibatzeak harpidetza-zerrendatik ezkutatuko du eta eguneraketak jasotzea eragotziko du. Deskargak, estatistikak eta erreprodukzio-egoera gordetzen dira.</string>
+    <string name="feed_delete_explanation_delete">Ezabatzean harpidetza ezabatzen da, atal, deskarga, erreprodukzio-historia eta estatistikak barne.</string>
+    <string name="feed_delete_explanation_archive">Artxibatzeak harpidetza zerrendatik ezkutatzen du eta atal berriak bilatzeari uzten dio. Deskargak, estatistikak eta erreprodukzio-egoera gordetzen dira.</string>
     <string name="tag_untagged">Etiketarik gabe</string>
     <plurals name="mobile_download_notice">
         <item quantity="one">Hurrengo %d minutuz datu mugikorren konexioaren bidez deskargatzen</item>
@@ -902,5 +902,41 @@
     <plurals name="statistics_episodes_downloaded">
         <item quantity="one">deskargatuta</item>
         <item quantity="other">deskargatuta</item>
+    </plurals>
+    <string name="general_expand_button">Hedatu</string>
+    <string name="general_collapse_button">Tolestu</string>
+    <string name="archiving_podcast_progress">%2$d-tik %1$d podcasta artxibatzen…</string>
+    <string name="deleting_podcast_progress">%2$d-tik %1$d podcasta ezabatzen…</string>
+    <string name="download_log_details_human_readable_reason_title">Egoera</string>
+    <string name="download_log_details_technical_reason_title">Xehetasun teknikoak</string>
+    <string name="download_log_details_file_url_title">URL fitxategia</string>
+    <string name="download_log_open_feed">Ireki</string>
+    <string name="no_following_in_queue">Hau zen ilarako azken atala</string>
+    <string name="episode">Atala</string>
+    <string name="feed">Podcast-a</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Ordenazio-ordena lehenetsia</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Aukeratu podcastaren pantailan atalen ordena lehenetsia</string>
+    <string name="report_bug_title">Akatsaren berri eman</string>
+    <string name="report_bug_message">Sentitzen dugu zerbaitek huts egiten duela entzutea. Zure laguntza eskertuko genuke AntennaPod hobetzeko. Mesedez, begiratu gure foroa edo GitHub-a arazoa jakinarazi den ikusteko. Hala ez bada, jakinarazi iezaguzu eta ikertuko dugu.</string>
+    <string name="report_bug_device_info_title">Gailua</string>
+    <string name="report_bug_attrib_app_version">App-aren bertsioa</string>
+    <string name="report_bug_attrib_android_version">Androiden bertsioa</string>
+    <string name="report_bug_attrib_device_name">Gailuaren izena</string>
+    <string name="report_bug_crash_log_title">Matxura erregistroa</string>
+    <string name="report_bug_crash_log_message">Sortua: %1$s.</string>
+    <string name="report_bug_forum_title">Foroa</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">atalak</string>
+    <string name="sleep_timer_without_continuous_playback">Desgaitu erreprodukzio jarraitua</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Orduak aldatu</string>
+    <string name="sleep_timer_without_continuous_playback_message">Atal batekin lo egiteko tenporizadorea automatikoki gaitu beharrean, desgaitu \"erreprodukzio jarraitua\" ezarpenetan.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Erreprodukzio jarraitua desgaituta dago eta uneko atalari minutu %1$d baino ez zaio geratzen</item>
+        <item quantity="other">Erreprodukzio jarraitua desgaituta dago eta uneko atalari %1$d minutu baino ez zaizkio geratzen</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Erreprodukzio jarraitua desgaituta dago ezarpenetan. Atalaren amaieran beti geldituko da.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Atal %1$d baino ez da gertazen zure ilaran</item>
+        <item quantity="other">%1$d atal baino ez dira geratzen zure ilaran</item>
     </plurals>
 </resources>

@@ -131,17 +131,17 @@
         <item quantity="other">%1$d/%2$d valda</item>
     </plurals>
     <plurals name="num_episodes">
-        <item quantity="one">%d episod</item>
+        <item quantity="one">%d avsnitt</item>
         <item quantity="other">%d avsnitt</item>
     </plurals>
     <string name="episode_notification">Avsnittsaviseringar</string>
     <string name="episode_notification_summary">Visa en avisering när ett nytt avsnitt släpps</string>
     <plurals name="new_episode_notification_message">
-        <item quantity="one">%2$s har en ny episod</item>
+        <item quantity="one">%2$s har ett nytt avsnitt</item>
         <item quantity="other">%2$s har %1$d nya avsnitt</item>
     </plurals>
     <plurals name="new_episode_notification_title">
-        <item quantity="one">Ny episod</item>
+        <item quantity="one">Nytt avsnitt</item>
         <item quantity="other">Nya avsnitt</item>
     </plurals>
     <string name="new_episode_notification_group_text">Dina prenumerationer har nya avsnitt.</string>
@@ -190,7 +190,7 @@
     <string name="add_to_queue_label">Lägg till i kön</string>
     <string name="remove_from_queue_label">Ta bort från kön</string>
     <plurals name="removed_from_inbox_batch_label">
-        <item quantity="one">%d episod har tagits bort från inkorg.</item>
+        <item quantity="one">%d avsnitt har tagits bort från inkorgen.</item>
         <item quantity="other">%d avsnitt har tagits bort från inkorgen.</item>
     </plurals>
     <string name="add_to_favorite_label">Lägg till i favoriter</string>
@@ -894,8 +894,8 @@
     <string name="statistics_expected_next_episode_any_time">När som helst nu</string>
     <string name="release_schedule_multiple_per_day">flera gånger om dagen</string>
     <string name="cover_as_background">Omslagsbild som bakgrund</string>
-    <string name="feed_delete_explanation_delete">Borttagningen kommer att radera ALLA dess avsnitt, inklusive nedladdningar, uppspelningshistorik och statistik.</string>
-    <string name="feed_delete_explanation_archive">Arkiverandet kommer att dölja den från prenumerationslistan och hindra den från att uppdateras. Nedladdningar, statistik och uppspelningsposition behålls.</string>
+    <string name="feed_delete_explanation_delete">Borttagning av prenumerationen raderar alla dess avsnitt, nedladdningar, uppspelningshistorik och statistik.</string>
+    <string name="feed_delete_explanation_archive">Arkivering döljer prenumerationen från prenumerationslistan och uppdatering av nya avsnitt upphör. Nedladdningar, statistik och uppspelningsposition behålls.</string>
     <string name="please_wait_before_refreshing">Vänligen vänta en stund innan du uppdaterar poddarna igen.</string>
     <plurals name="mobile_download_notice">
         <item quantity="one">Laddar ned via mobil dataanslutning under den kommande minuten</item>
@@ -903,4 +903,40 @@
     </plurals>
     <string name="no_archive_label">Du kan arkivera poddar från huvudskärmen för prenumerationer.</string>
     <string name="tag_untagged">Utan etikett</string>
+    <string name="general_collapse_button">Kollapsa</string>
+    <string name="archiving_podcast_progress">Arkiverar podcast %1$d av %2$d…</string>
+    <string name="deleting_podcast_progress">Tar bort podcast %1$d av %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Status</string>
+    <string name="download_log_details_technical_reason_title">Tekniska detaljer</string>
+    <string name="download_log_details_file_url_title">Fil URL</string>
+    <string name="download_log_open_feed">Öppna</string>
+    <string name="no_following_in_queue">Detta var sista avsnittet i kön</string>
+    <string name="episode">Avsnitt</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Standard sorteringsordning</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Välj standardordning för avsnitt i podcastvyn</string>
+    <string name="report_bug_title">Rapportera fel</string>
+    <string name="report_bug_message">Beklagar att något inte fungerar. Vi skulle uppskatta din hjälp i förbättringsarbetet med AntennaPod. För att se om problemet redan inrapporterats, kolla vårt forum eller vår GitHub. Om det saknas, gör en felrapport så undersöker vi problemet.</string>
+    <string name="report_bug_device_info_title">Enhet</string>
+    <string name="report_bug_attrib_app_version">Appversion</string>
+    <string name="report_bug_attrib_android_version">Androidversion</string>
+    <string name="report_bug_attrib_device_name">Enhetens namn</string>
+    <string name="report_bug_crash_log_title">Kraschlogg</string>
+    <string name="report_bug_crash_log_message">Skapades: %1$s.</string>
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">avsnitt</string>
+    <string name="sleep_timer_without_continuous_playback">Avaktivera oavbruten uppspelning</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Ändra klockslag</string>
+    <string name="general_expand_button">Expandera</string>
+    <string name="feed">Podcast</string>
+    <string name="sleep_timer_without_continuous_playback_message">Istället för att alltid automatiskt aktivera insomningstimern med ett avsnitt, vänligen inaktivera \"kontinuerlig uppspelning\" i inställningarna.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Kontinuerlig uppspelning är inaktiverad och det aktuella avsnittet har bara %1$d minut kvar</item>
+        <item quantity="other">Kontinuerlig uppspelning är inaktiverad och det aktuella avsnittet har bara %1$d minuter kvar</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Kontinuerlig uppspelning är inaktiverad i inställningarna. Stoppar alltid på slutet av ett avsnitt.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Det finns bara %1$d avsnitt kvar i din kö</item>
+        <item quantity="other">Det finns bara %1$d flera avsnitt kvar i din kö</item>
+    </plurals>
 </resources>
