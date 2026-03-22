@@ -22,7 +22,7 @@ public class NonSubscribedFeedsCleaner {
             }
             DBReader.getFeedItemList(feed, new FeedItemFilter(FeedItemFilter.INCLUDE_NOT_SUBSCRIBED),
                     SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
-            DBReader.loadAdditionalFeedItemListData(feed.getItems());
+            DBReader.loadFeedDataOfFeedItemList(feed.getItems());
             if (shouldDelete(feed)) {
                 Log.d(TAG, "Deleting unsubscribed feed " + feed.getTitle());
                 try {
