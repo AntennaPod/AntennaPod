@@ -964,16 +964,16 @@ public class DBWriter {
     public static void removeFeedWithDownloadUrl(Context context, String downloadUrl) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = adapter.getFeedCursorDownloadUrls();
         long feedId = 0;
-        if (cursor.moveToFirst()) {
-            do {
-                if (cursor.getString(1).equals(downloadUrl)) {
-                    feedId = cursor.getLong(0);
-                }
-            } while (cursor.moveToNext());
+        try (Cursor cursor = adapter.getFeedCursorDownloadUrls()) {
+            if (cursor.moveToFirst()) {
+                do {
+                    if (cursor.getString(1).equals(downloadUrl)) {
+                        feedId = cursor.getLong(0);
+                    }
+                } while (cursor.moveToNext());
+            }
         }
-        cursor.close();
         adapter.close();
 
         if (feedId != 0) {
