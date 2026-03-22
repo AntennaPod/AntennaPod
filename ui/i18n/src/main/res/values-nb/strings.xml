@@ -210,7 +210,7 @@
     <string name="download_error_unknown_host">Kan ikke finne tjeneren. Sjekk at adressen er korrekt og at nettverkstilkoplingen din virker.</string>
     <string name="download_error_unauthorized">Autentiseringsfeil. Sjekk at brukernavn og passordet er riktig.</string>
     <string name="download_error_file_type_type">Filtype-feil</string>
-    <string name="download_error_forbidden">Verten til podcastens tjener svarer ikke.</string>
+    <string name="download_error_forbidden">Verten til podkastens tjener svarer ikke.</string>
     <string name="download_canceled_msg">Nedlasting avbrutt</string>
     <string name="download_error_wrong_size">Mistet tjenertilkoblingen før nedlastingen var ferdig</string>
     <string name="download_error_blocked">Nedlasting ble blokkert av en annen app på enhenten din (som en VPN eller reklameblokkering).</string>
@@ -335,7 +335,7 @@
     <string name="feed_every_24_hours">Hver dag</string>
     <string name="feed_every_72_hours">Hver 3. dag</string>
     <string name="pref_followQueue_title">Kontinuerlig avspilling</string>
-    <string name="pref_pauseOnHeadsetDisconnect_title">Hodetelefoner eller Bluetooth er koblet fra</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Hodetelefoner eller Bluetooth frakobling</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Hodetelefoner er koblet til igjen</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Blutetooth er koblet til igjen</string>
     <string name="pref_stream_over_download_title">Foretrekk strømming</string>
@@ -486,7 +486,7 @@
     <string name="sleep_timer_label">Søvntidsbryter</string>
     <string name="time_dialog_invalid_input">Ugyldig angivelse, tid må være et heltall</string>
     <string name="shake_to_reset_label">Rist for å tilbakestille</string>
-    <string name="timer_vibration_label">Vibrer rett før slutten</string>
+    <string name="timer_vibration_label">Vibrer kort rett før slutten</string>
     <string name="time_seconds">sekunder</string>
     <string name="time_minutes">minutter</string>
     <string name="time_hours">timer</string>
@@ -504,7 +504,7 @@
     <string name="synchronization_host_label">Tjeneradresse</string>
     <string name="proceed_to_login_butLabel">Fortsett til innlogging</string>
     <string name="synchronization_nextcloud_authenticate_browser">Gi tilgang ved å bruke en nettleser og kom tilbake til AntennaPod.</string>
-    <string name="gpodnetauth_login_butLabel">Logg inn</string>
+    <string name="gpodnetauth_login_butLabel">Innlogging</string>
     <string name="synchronization_credentials_explanation">Legg til innloggingsinformasjon for kontoen din på synkroniseringsserveren.</string>
     <string name="gpodnetauth_encryption_warning">Passord og data er ikke kryptert!</string>
     <string name="username_label">Brukernavn</string>
@@ -892,13 +892,51 @@
     <string name="cover_as_background">Omslagsbilde som bakgrunn</string>
     <plurals name="num_subscriptions">
         <item quantity="one">%d abonnement</item>
-        <item quantity="other">%d abonnement</item>
+        <item quantity="other">%d abonnementer</item>
     </plurals>
     <string name="archive_feed_label_verb">Arkiver</string>
     <string name="archive_feed_label_noun">Arkiv</string>
     <string name="restore_archive_label">Gjenopprett</string>
     <string name="remove_archive_feed_label">Slett/arkiver</string>
-    <string name="feed_delete_explanation_delete">Sletting fjerner ALLE episodene, inkludert nedlastinger, avspillingshistorikk og statistikk.</string>
-    <string name="feed_delete_explanation_archive">Arkivering skjuler den fra abonnementslisten og ignorerer oppdateringer. Nedlastinger, statistikk og avspillingsstatus bevares.</string>
+    <string name="feed_delete_explanation_delete">Sletting fjerner abonnementet i tillegg til alle episoder, nedlastinger, avspillingshistorikk og statistikk.</string>
+    <string name="feed_delete_explanation_archive">Arkivering skjuler den fra abonnementslisten og slutter å se etter nye episoder. Nedlastinger, statistikk og avspillingsstatus bevares.</string>
     <string name="tag_untagged">Ikke merket</string>
+    <string name="general_expand_button">Utvid</string>
+    <string name="general_collapse_button">Kollaps</string>
+    <string name="archiving_podcast_progress">Arkiverer podkast %1$d av %2$d …</string>
+    <string name="deleting_podcast_progress">Sletter podkast %1$d av %2$d …</string>
+    <string name="download_log_details_human_readable_reason_title">Status</string>
+    <string name="download_log_details_technical_reason_title">Tekniske detaljer</string>
+    <string name="download_log_details_file_url_title">Fil-URL</string>
+    <string name="no_following_in_queue">Dette var den siste episoden i køen</string>
+    <string name="episode">Episode</string>
+    <string name="feed">Podkast</string>
+    <string name="no_archive_head_label">Ingenting arkivert</string>
+    <string name="no_archive_label">Du kan arkivere podkaster gjennom hovedmenyen for abonnementer.</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Standard sorteringsrekkefølge</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Velg standardrekkefølgen for episoder på podkastskjermen</string>
+    <string name="report_bug_title">Rapporter programvarefeil</string>
+    <string name="report_bug_message">Beklager for at noe ikke fungerer. Vi hadde satt pris på din hjelp til å forbedre AntennaPod. Sjekk om feilen allerede er rapporter på forumet eller GitHub. Om det ikke er det, si ifra, så tar vi en titt.</string>
+    <string name="report_bug_device_info_title">Enhet</string>
+    <string name="report_bug_attrib_app_version">App-versjon</string>
+    <string name="report_bug_attrib_android_version">Android-versjon</string>
+    <string name="report_bug_attrib_device_name">Enhetsnavn</string>
+    <string name="report_bug_crash_log_title">Krasjelogg</string>
+    <string name="report_bug_crash_log_message">Opprettet: %1$s.</string>
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">episoder</string>
+    <string name="sleep_timer_without_continuous_playback">Skru av kontinuerlig avspilling</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Endre timer</string>
+    <string name="sleep_timer_without_continuous_playback_message">Istedenfor å alltid automatisk skru på søvntidtakeren med én episode, skru heller av «kontinuerlig avspilling» i innstillingene.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Kontinuerlig avspilling er deaktivert og den gjeldende episoden har kun %1$d minutt igjen</item>
+        <item quantity="other">Kontinuerlig avspilling er deaktivert og den gjeldende episoden har kun %1$d minutter igjen</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Kontinuerlig avspilling er deaktivert i innstillingene. Stopper alltid på slutten av episoden.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Det er kun %1$d episode igjen i køen din</item>
+        <item quantity="other">Det er kun %1$d episoder igjen i køen din</item>
+    </plurals>
+    <string name="download_log_open_feed">Åpne</string>
 </resources>
