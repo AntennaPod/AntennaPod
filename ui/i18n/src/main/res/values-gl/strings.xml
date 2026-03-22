@@ -51,7 +51,7 @@
     <string name="home_welcome_text">Aínda non tes subscricións. Abre o menú e engade un podcast.</string>
     <string name="notification_permission_denied">Non outorgaches o permiso.</string>
     <string name="configure_home">Configura a pantalla de Inicio</string>
-    <string name="section_hidden">Oculto</string>
+    <string name="section_hidden">Ocultos</string>
     <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
     <string name="drawer_close">Pechar menú</string>
@@ -182,13 +182,13 @@
     <string name="play_label">Reproducir</string>
     <string name="pause_label">Pausar</string>
     <string name="stream_label">Escoitar</string>
-    <string name="delete_label">Borrar</string>
+    <string name="delete_label">Eliminar</string>
     <string name="remove_inbox_label">Retirar da lista de novidades</string>
     <string name="toggle_played_label">Cambiar estado de reprodución</string>
     <string name="mark_read_no_media_label">Marcar como lido</string>
     <string name="mark_unread_label_no_media">Marcar como non lido</string>
     <string name="add_to_queue_label">Engadir á cola</string>
-    <string name="remove_from_queue_label">Eliminar da cola</string>
+    <string name="remove_from_queue_label">Retirar da cola</string>
     <plurals name="removed_from_inbox_batch_label">
         <item quantity="one">%d episodio eliminado das novidades.</item>
         <item quantity="other">%d episodios eliminados das novidades.</item>
@@ -748,7 +748,7 @@
     <string name="home_continue_empty_text">Podes engadir episodios descargándoos ou cunha pulsación longa sobre eles e elixir \"Engadir á cola\".</string>
     <string name="null_value_podcast_error">A ligazón indicada non contén un URL de podcast válido. Comproba a ligazón e volve a intentalo, ou busca o podcast de xeito manual.</string>
     <string name="bottom_navigation">Navegación inferior</string>
-    <string name="pref_nav_drawer_items_title">Personalizar a navegación</string>
+    <string name="pref_nav_drawer_items_title">Editar panel</string>
     <string name="pref_nav_drawer_items_sum">Cambia os elementos que aparecen na caixa de navegación ou na barra inferior</string>
     <string name="discover_more">Achar mais »</string>
     <string name="nextcloud_login_error_generic">Non se puido acceder a Nextcloud.\n\n- Comproba a conexión á rede.\n- Confirma que é o enderezo correcto do servidor.\n- Comproba que está instalado o complemento Nextcloud Gpodder Sync.</string>

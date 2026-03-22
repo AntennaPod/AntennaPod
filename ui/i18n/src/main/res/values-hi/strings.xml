@@ -688,8 +688,8 @@
     <string name="archive_feed_label_noun">आर्काइव</string>
     <string name="restore_archive_label">वापस लाएं</string>
     <string name="remove_archive_feed_label">मिटाएं / आर्काइव करें</string>
-    <string name="feed_delete_explanation_delete">मिटाने पर सारे एपिसोड और उनके डाउनलोड, प्लेबैक इतिहास, और आंकड़े भी मिट जाएंगे।</string>
-    <string name="feed_delete_explanation_archive">आर्काइव करने पर इसको सब्सक्रिप्शन लिस्ट से छुपा दिया जाएगा और अपडेट देना बंद हो जाएगा। डाउनलोड, आंकड़े, और प्लेबैक इतिहास वैसे के वैसे रखे जाते हैं।</string>
+    <string name="feed_delete_explanation_delete">मिटाने पर सब्सक्रिप्शन और उसके सारे एपिसोड, डाउनलोड, प्लेबैक इतिहास, और आंकड़े भी मिट जाएंगे।</string>
+    <string name="feed_delete_explanation_archive">आर्काइव करने पर सब्सक्रिप्शन लिस्ट में छुपा दिया जाएगा और उसके नए एपिसोड देखना बंद हो जाएगा। डाउनलोड, आंकड़े, और प्लेबैक इतिहास वैसे के वैसे रखे जाते हैं।</string>
     <string name="archiving_podcast_progress">%2$d में से %1$d पॉडकास्ट आर्काइव कर रहे…</string>
     <string name="deleting_podcast_progress">%2$d में से %1$d पॉडकास्ट मिटा रहे…</string>
     <string name="multi_select_started_talkback">नीचे में दिखाए जाने वाले कई एक्शन चुनें</string>

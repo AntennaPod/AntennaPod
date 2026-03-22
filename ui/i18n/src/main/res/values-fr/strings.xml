@@ -941,13 +941,13 @@
     <string name="download_log_details_technical_reason_title">Détails techniques</string>
     <string name="download_log_details_file_url_title">Lien du flux</string>
     <string name="download_log_open_feed">Ouvrir</string>
-    <string name="no_following_in_queue">Il s\'agissait du dernier épisode de la liste de lecture</string>
+    <string name="no_following_in_queue">Dernier épisode de la liste de lecture lu</string>
     <string name="episode">Épisode</string>
     <string name="feed">Podcast</string>
     <string name="pref_global_default_episode_list_sort_order_title">Tri par défaut</string>
     <string name="pref_global_default_episode_list_sort_order_sum">Choisir le tri par défaut des épisodes dans l\'écran de détail d\'un podcast</string>
     <string name="report_bug_title">Signaler un bug</string>
-    <string name="report_bug_message">Désolé si quelque chose ne marche pas. Nous apprécions votre aide pour améliorer AntennaPod. Vérifier sur notre forum ou GitHub si le problème est déjà connu. Si il ne l\'est pas, faites le nous savoir et nous le prendrons en compte.</string>
+    <string name="report_bug_message">Désolé si quelque chose ne marche pas. Votre aide pour améliorer AntennaPod est appréciée. Commencer par vérifier sur notre forum ou GitHub si le problème est déjà connu. Si il ne l\'est pas, faites le nous savoir et nous le prendrons en compte.</string>
     <string name="report_bug_device_info_title">Appareil</string>
     <string name="report_bug_attrib_app_version">Version de l\'application</string>
     <string name="report_bug_attrib_android_version">Version Android</string>
@@ -958,14 +958,14 @@
     <string name="report_bug_github_title">GitHub</string>
     <string name="sleep_timer_episodes_label">épisodes</string>
     <string name="sleep_timer_without_continuous_playback">Désactiver la lecture continue</string>
-    <string name="sleep_timer_without_continuous_playback_change_hours">Changer les heures</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Changer les heures d\'activation</string>
     <string name="sleep_timer_without_continuous_playback_message">Au lieu de toujours activé le minuteur pour s\'arrêter après un épisode, désactivez la lecture continue dans les préférences.</string>
     <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
         <item quantity="one">La lecture continue est désactivée et il ne reste qu\'%1$d minute pour l\'épisode en cours</item>
         <item quantity="many">La lecture continue est désactivée et il ne reste qu\'%1$d minutes pour l\'épisode en cours</item>
         <item quantity="other">La lecture continue est désactivée et il ne reste qu\'%1$d minutes pour l\'épisode en cours</item>
     </plurals>
-    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">La lecture continue est désactivée dans les préférences. La lecture s\'arrête toujours à la fin d\'un épisode.</string>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">La lecture continue est désactivée dans les préférences. Le lecteur s\'arrête toujours à la fin d\'un épisode.</string>
     <plurals name="episodes_sleep_timer_exceeds_queue">
         <item quantity="one">Il reste seulement %1$d épisode dans la liste de lecture</item>
         <item quantity="many">Il reste seulement %1$d épisodes dans la liste de lecture</item>
