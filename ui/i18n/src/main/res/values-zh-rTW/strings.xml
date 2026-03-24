@@ -862,8 +862,8 @@
     <string name="archive_feed_label_noun">封存</string>
     <string name="restore_archive_label">復原</string>
     <string name="remove_archive_feed_label">刪除 / 封存</string>
-    <string name="feed_delete_explanation_delete">將會刪除其所有集數，包括下載、播放歷史記錄和統計資料。</string>
-    <string name="feed_delete_explanation_archive">封存會將其從訂閱清單中隱藏，並停止更新。下載、統計資料和播放狀態都會保留。</string>
+    <string name="feed_delete_explanation_delete">刪除將移除訂閱，包括其所有集數、下載內容、播放紀錄和統計資料。</string>
+    <string name="feed_delete_explanation_archive">封存會將訂閱從清單中隱藏，並停止尋找新集數。下載、統計資料和播放狀態將被保留。</string>
     <string name="please_wait_before_refreshing">請等待一段時間後再重新載入 Podcasts 。</string>
     <string name="transcript_follow_audio_label">跟隨音訊</string>
     <string name="already_downloaded">單集已下載</string>

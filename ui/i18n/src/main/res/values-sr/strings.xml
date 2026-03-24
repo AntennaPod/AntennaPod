@@ -126,8 +126,8 @@
     <string name="show_info_label">Прикажи информације</string>
     <string name="show_feed_settings_label">Прикажи подешавања подкаста</string>
     <string name="feed_settings_label">Подешавања подкаста</string>
-    <string name="rename_feed_label">Преименуј подкаст</string>
-    <string name="remove_feed_label">Уклони подкаст</string>
+    <string name="rename_feed_label">Преименуј</string>
+    <string name="remove_feed_label">Обриши</string>
     <string name="load_complete_feed">Освежи цео подкаст</string>
     <string name="multi_select">Вишеструки избор</string>
     <string name="select_all_above">Изабери све изнад</string>
@@ -222,12 +222,12 @@
     <string name="project_pref">Пројекат</string>
     <string name="synchronization_pref">Синхронизација</string>
     <string name="download_pref_details">Детаљи</string>
-    <string name="import_export_pref">Увоз/Извоз</string>
+    <string name="import_export_pref">Прављење резервне копије и повраћај</string>
     <string name="theming">Тема</string>
     <string name="external_elements">Спољни елементи</string>
     <string name="playback_control">Контрола репродукције</string>
     <string name="reassign_hardware_buttons">Поновна додела хардверске дугмади</string>
-    <string name="import_export_search_keywords">резервна копија, бекап, враћање, rezervna kopija, bekap, vraćanje</string>
+    <string name="import_export_search_keywords">увоз, извоз, uvoz, izvoz</string>
     <string name="preference_search_no_results">Нема резултата</string>
     <string name="preference_search_clear_input">Очисти</string>
     <string name="overflow_more">Више</string>
@@ -270,7 +270,7 @@
     <string name="pref_black_theme_message">Користи потпуно црну за тамну тему</string>
     <string name="pref_tinted_theme_title">Динамичке боје</string>
     <string name="pref_tinted_theme_message">Прилагодите боје апликације на основу позадине</string>
-    <string name="pref_nav_drawer_feed_counter_title">Подешавање бројача претплата</string>
+    <string name="pref_nav_drawer_feed_counter_title">Бројач</string>
     <string name="pref_automatic_download_title">Аутоматско преузимање</string>
     <string name="pref_automatic_download_global_description">Аутоматски преузимајте епизоде из сандучета. Може се заменити по подкасту.</string>
     <string name="pref_automatic_download_queue_title">Преузимање у редоследу</string>
@@ -409,7 +409,7 @@
     <string name="synchronization_choose_title">Избор пружаоца синхронизације</string>
     <string name="synchronization_summary_unchoosen">Можете бирати између више пружалаца са којима ћете синхронизовати своје претплате и стање репродукције епизоде</string>
     <string name="dialog_choose_sync_service_title">Избор пружаоца синхронизације</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersynd је Nextcloud апликација отвореног кода коју можете лако да инсталирате на сопствени сервер. Апликација је независна од пројекта AntennaPod.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync је Nextcloud апликација отвореног кода коју можеш лако да инсталирате на сопствени сервер. Апликација је независна од пројекта AntennaPod.</string>
     <string name="gpodnet_description">Gpodder.net је услуга синхронизације подкаста отвореног кода коју можете да инсталирате на сопствени сервер. Gpodder.net је независан од пројекта AntennaPod.</string>
     <string name="synchronization_host_explanation">Можете изабрати сопствени сервер за синхронизацију. Када се идентификује жељени сервер за синхронизацију, унесите његову адресу овде.</string>
     <string name="synchronization_host_label">Адреса сервера</string>
@@ -621,7 +621,7 @@
     <string name="preference_search_hint">Претрага…</string>
     <string name="automation">Аутоматизација</string>
     <string name="interruptions">Прекиди</string>
-    <string name="pref_pauseOnDisconnect_sum">Паузирајте репродукцију када су слушалице или Bluetooth искључени</string>
+    <string name="pref_pauseOnDisconnect_sum">Паузирајте репродукцију када се слушалице или Bluetooth уређај искључе</string>
     <string name="button_action_rewind">Премотавање уназад</string>
     <string name="pref_auto_delete_playback_sum">Избришите епизоду, када се репродукција заврши</string>
     <string name="pref_back_button_opens_drawer">Дугме „Назад“ отвара траку</string>
@@ -678,7 +678,7 @@
     <string name="proxy_test_label">Тест</string>
     <string name="notification_channel_playing">Тренутно се репродукује</string>
     <string name="search_podcastindex_label">Претрага Podcast Index-а</string>
-    <string name="nextcloud_login_error_generic">Није могуће пријавити се на ваш Nextcloud.\n\n- Проверите своју мрежну везу.\n- Потврдите да користите исправну адресу сервера.\n- Уверите се да је gpoddersync Nextcloud додатак инсталиран.</string>
+    <string name="nextcloud_login_error_generic">Није могуће пријавити се на ваш Nextcloud.\n\n- Проверите своју мрежну везу.\n- Потврдите да користите исправну адресу сервера.\n- Уверите се да је Gpodder Sync Nextcloud додатак инсталиран.</string>
     <string name="notification_channel_user_action_description">Приказује се ако је потребна ваша радња, на пример ако треба да унесете лозинку.</string>
     <string name="select_country">Избор државе</string>
     <string name="synchronization_nextcloud_authenticate_browser">Одобрите приступ помоћу отвореног веб-прегледача и вратите се у AntennaPod.</string>
@@ -697,7 +697,7 @@
     <string name="feed_tags_summary">Промените ознаке овог подкаста да бисте лакше организовали своје претплате</string>
     <string name="proxy_checking">Провера…</string>
     <string name="rating_contribute_button">Откриј начине за допринос</string>
-    <string name="feed_folders_include_root">Прикажи овај подкаст на главној листи</string>
+    <string name="feed_folders_include_root">Прикажи овај подкаст изнад тагова (само стражња навигација)</string>
     <string name="rating_volunteers_label">AntennaPod развијају волонтери у слободно време. Поделите своју захвалност за њихов рад остављајући лепу оцену.</string>
     <string name="episode_filters_description">Листа термина који се користе за одлучивање да ли епизоду треба обухватити или изоставити приликом аутоматског преузимања</string>
     <string name="rating_rate">Оцени AntennaPod</string>
@@ -863,4 +863,72 @@
     <string name="no_queue_items_inbox_has_items_label">Нема заказаних епизода, али постоје нове епизоде које вас очекују!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Иди у сандуче</string>
     <string name="auto_download_inbox_category">Аутоматски преузимај епизоде из сандучета</string>
+    <string name="general_expand_button">Прошири</string>
+    <string name="general_collapse_button">Умањи</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d претплата</item>
+        <item quantity="few">%d претплате</item>
+        <item quantity="other">%d претплата</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Архивирај</string>
+    <string name="archive_feed_label_noun">Архива</string>
+    <string name="restore_archive_label">Поврати</string>
+    <string name="remove_archive_feed_label">Обриши или архивирај</string>
+    <string name="feed_delete_explanation_delete">Брисање уклања претплату укључујући све њене епизоде, преузимања, историју репродукције и статистике.</string>
+    <string name="feed_delete_explanation_archive">Архивирање сакрива претплату са листе и прекида тражење нових епизода. Преузимања, статистике и стање репродукције су сачувани.</string>
+    <string name="archiving_podcast_progress">Архивира се поткаст %1$d од %2$d…</string>
+    <string name="deleting_podcast_progress">Брише се поткаст %1$d oд %2$d…</string>
+    <string name="please_wait_before_refreshing">Молимо те да сачекаш неко време пре поновног освежавања поткаста.</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">%d епизода означена као репродукована.</item>
+        <item quantity="few">%d епизоде означене као репродуковане.</item>
+        <item quantity="other">%d епизода означено као репродуковане.</item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">%d епизода означено као да није репродуковано.</item>
+        <item quantity="few">%d епизоде означене као да нису репродуковане.</item>
+        <item quantity="other">%d епизода означено као да нису репродуковане.</item>
+    </plurals>
+    <string name="download_log_details_human_readable_reason_title">Статус</string>
+    <string name="download_log_details_technical_reason_title">Технички детаљи</string>
+    <string name="download_log_details_file_url_title">URL датотеке</string>
+    <string name="download_log_open_feed">Отвори</string>
+    <string name="already_downloaded">Епизода је већ преузета</string>
+    <string name="no_following_in_queue">Ово је била последња епизода у реду</string>
+    <string name="episode">Епизода</string>
+    <string name="feed">Поткаст</string>
+    <string name="no_archive_head_label">Ништа није архивирано</string>
+    <string name="no_archive_label">Можеш да архивираш поткасте са главног екрана за претплате.</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Подразумевани редослед за сортирање</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Одаберите подразумевани редослед за епизоде на екрану за поткасте</string>
+    <string name="report_bug_title">Пријави грешку</string>
+    <string name="report_bug_message">Жао нам је да чујемо да нешто не ради. Волели бисмо твоју помоћ у побољшању AntennaPod-a. Молимо те да посетиш наш форум или GitHub како би проверио да ли је проблем већ пријављен. Уколико није, јави нам и ми ћемо да истражимо.</string>
+    <string name="report_bug_device_info_title">Уређај</string>
+    <string name="report_bug_attrib_app_version">Верзија апликације</string>
+    <string name="report_bug_attrib_android_version">Верзија Android-a</string>
+    <string name="report_bug_attrib_device_name">Име уређаја</string>
+    <string name="report_bug_crash_log_title">Извештај о грешци</string>
+    <string name="report_bug_crash_log_message">Направљен: %1$s.</string>
+    <string name="report_bug_forum_title">Форум</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">епизоде</string>
+    <string name="sleep_timer_without_continuous_playback">Онемогући континуирану репродукцију</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Промени сате</string>
+    <string name="sleep_timer_without_continuous_playback_message">Уместо аутоматског тајмера за спавање после сваке епизоде, можеш једноставно да искључиш \'континуирану репродукцију\' у подешавањима.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Континуирана репродукција је искључена и тренутна епизода траје још %1$d минуту</item>
+        <item quantity="few">Континуирана репродукција је искључена и тренутна епизода траје још %1$d минуте</item>
+        <item quantity="other">Континуирана репродукција је искључена и тренутна епизода траје још %1$d минута</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Континуирана репродукција је онемогућена у подешавањима. Увек ће се прекинути након завршетка епизоде.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Још само %1$d епизода у твом реду за репродукцију</item>
+        <item quantity="few">Још само %1$d епизоде у твом реду за репродукцију</item>
+        <item quantity="other">Још само %1$d епизода у твом реду за репродукцију</item>
+    </plurals>
+    <string name="tag_all">Све</string>
+    <string name="tag_untagged">Без ознаке</string>
+    <string name="statistics_expected_next_episode_any_time">Било када</string>
+    <string name="release_schedule_multiple_per_day">Неколико пута дневно</string>
+    <string name="cover_as_background">Корица као позадина</string>
 </resources>

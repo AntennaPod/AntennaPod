@@ -33,19 +33,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
+import androidx.media3.session.MediaController;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.model.download.DownloadStatus;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
+import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.databasemaintenanceservice.DatabaseMaintenanceWorker;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
@@ -155,6 +160,19 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
             setNavDrawerSize();
         }
         openDefaultPageBackPressedCallback = new OpenDefaultPageBackPressedCallback();
+        if (drawerLayout != null) {
+            drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                @Override
+                public void onDrawerOpened(View drawerView) {
+                    updateMainBackCallbackEnabledState();
+                }
+
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    updateMainBackCallbackEnabledState();
+                }
+            });
+        }
 
         // Consume navigation bar insets - we apply them in setPlayerVisible()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_view), (v, insets) -> {
@@ -166,6 +184,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         });
 
         final FragmentManager fm = getSupportFragmentManager();
+        fm.addOnBackStackChangedListener(this::updateMainBackCallbackEnabledState);
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
             if (!UserPreferences.DEFAULT_PAGE_REMEMBER.equals(UserPreferences.getDefaultPage())) {
                 loadFragment(UserPreferences.getDefaultPage(), null);
@@ -490,6 +509,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             drawerLayout.closeDrawer(navDrawer);
         }
+        updateMainBackCallbackEnabledState();
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition, String navigationTag) {
@@ -514,6 +534,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                 .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
+        updateMainBackCallbackEnabledState();
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
@@ -639,9 +660,19 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         }
     }
 
+    private void updateMainBackCallbackEnabledState() {
+        String defaultPage = UserPreferences.getDefaultPage();
+        boolean shouldEnable = getSupportFragmentManager().getBackStackEntryCount() > 0
+                || (!NavDrawerFragment.getLastNavFragment(this).equals(defaultPage)
+                        && !UserPreferences.DEFAULT_PAGE_REMEMBER.equals(defaultPage))
+                || (UserPreferences.backButtonOpensDrawer() && drawerLayout != null
+                        && bottomNavigation == null && !drawerLayout.isDrawerOpen(navDrawer));
+        openDefaultPageBackPressedCallback.setEnabled(shouldEnable);
+    }
+
     class OpenDefaultPageBackPressedCallback extends OnBackPressedCallback {
         OpenDefaultPageBackPressedCallback() {
-            super(true);
+            super(false);
         }
 
         @Override
@@ -680,6 +711,24 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         if (event.action != null) {
             snackbar.setAction(event.actionText, v -> event.action.accept(this));
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onStreamingConfirmation(StreamingConfirmationEvent event) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.stream_label)
+                .setMessage(NetworkUtils.isNetworkRestricted() && NetworkUtils.isVpnOverWifi()
+                        ? getString(R.string.confirm_mobile_streaming_notification_message)
+                                + "\n\n" + getString(R.string.confirm_mobile_download_dialog_message_vpn)
+                        : getString(R.string.confirm_mobile_streaming_notification_message))
+                .setPositiveButton(R.string.confirm_mobile_streaming_button_once, (dialog, which) ->
+                        PlaybackController.bindToMedia3Service(this, MediaController::play))
+                .setNegativeButton(R.string.confirm_mobile_streaming_button_always, (dialog, which) -> {
+                    UserPreferences.setAllowMobileStreaming(true);
+                    PlaybackController.bindToMedia3Service(this, MediaController::play);
+                })
+                .setNeutralButton(R.string.cancel_label, null)
+                .show();
     }
 
     private void handleNavIntent() {
@@ -725,6 +774,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));
+        updateMainBackCallbackEnabledState();
     }
 
     @Override

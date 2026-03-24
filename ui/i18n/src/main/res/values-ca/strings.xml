@@ -50,7 +50,7 @@
     <string name="home_welcome_title">Benvinguts/des a l\'AntennaPod!</string>
     <string name="home_welcome_text">Encara no us heu subscrit a cap pòdcast. Obriu el menú per a afegir-ne un.</string>
     <string name="notification_permission_denied">Heu denegat el permís.</string>
-    <string name="configure_home">Configureu l\'Inici</string>
+    <string name="configure_home">Configureu la pantalla d\'Inici</string>
     <string name="section_hidden">Amagades</string>
     <!--Main activity-->
   <string name="drawer_open">Obre menú</string>
@@ -150,8 +150,8 @@
     <string name="show_info_label">Mostra informació</string>
     <string name="show_feed_settings_label">Mostra la configuració del pòdcast</string>
     <string name="feed_settings_label">Configuració del pòdcast</string>
-    <string name="rename_feed_label">Reanomena el pòdcast</string>
-    <string name="remove_feed_label">Suprimeix el pòdcast</string>
+    <string name="rename_feed_label">Reanomena</string>
+    <string name="remove_feed_label">Eliminar</string>
     <string name="share_label">Comparteix</string>
     <string name="share_file_label">Comparteix el fitxer</string>
     <string name="load_complete_feed">Actualitza el pòdcast sencer</string>
@@ -302,8 +302,8 @@
     <string name="synchronization_sum">Sincronitza amb altres dispositius</string>
     <string name="automation">Automatització</string>
     <string name="download_pref_details">Detalls</string>
-    <string name="import_export_pref">Importa/Exporta</string>
-    <string name="import_export_search_keywords">còpia de seguretat, restaurar</string>
+    <string name="import_export_pref">Còpia de seguretat i restaurar</string>
+    <string name="import_export_search_keywords">importar, exportar</string>
     <string name="theming">Temes</string>
     <string name="external_elements">Elements externs</string>
     <string name="interruptions">Interrupcions</string>
@@ -314,7 +314,7 @@
     <string name="preference_search_clear_history">Neteja l\'historial</string>
     <string name="pref_episode_cleanup_title">Suprimeix abans de baixar automàticament</string>
     <string name="pref_episode_cleanup_summary">Episodis que podrien eliminar-se si la Descàrrega Automàtica necessita espai per a episodis nous</string>
-    <string name="pref_pauseOnDisconnect_sum">Pauseu la reproducció en desconnectar els auriculars o el bluetooth</string>
+    <string name="pref_pauseOnDisconnect_sum">Pausa la reproducció quan es desconnecten els auriculars o dispositius Bluetooth</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Continua la reproducció en connectar novament els auriculars</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Continua la reproducció en connectar novament el bluetooth</string>
     <string name="pref_hardware_forward_button_title">Botó d\'avanç</string>
@@ -371,7 +371,7 @@
     <string name="pref_black_theme_message">Utilitza tot negre per al tema fosc</string>
     <string name="pref_tinted_theme_title">Colors dinàmics</string>
     <string name="pref_tinted_theme_message">Adaptar colors segons el fons</string>
-    <string name="pref_nav_drawer_feed_counter_title">Ajustar el comptador de subscripcions</string>
+    <string name="pref_nav_drawer_feed_counter_title">Comptador</string>
     <string name="pref_automatic_download_title">Baixada automàtica</string>
     <string name="pref_automatic_download_sum">Configureu la baixada automàtica d\'episodis</string>
     <string name="pref_automatic_download_on_battery_title">Baixa mentre no es carrega</string>
@@ -510,8 +510,8 @@
     <string name="sleep_timer_always">Temporitzador sempre</string>
     <string name="sleep_timer_label">Temporitzador</string>
     <string name="time_dialog_invalid_input">L\'entrada no és vàlida, ja que el temps ha de ser un nombre i no ho és</string>
-    <string name="shake_to_reset_label">Agita per a resetejar</string>
-    <string name="timer_vibration_label">Vibra un poc abans del final</string>
+    <string name="shake_to_reset_label">Sacseja per restablir</string>
+    <string name="timer_vibration_label">Vibra una mica abans del final</string>
     <string name="time_seconds">segons</string>
     <string name="time_minutes">minuts</string>
     <string name="time_hours">hores</string>
@@ -536,15 +536,15 @@
         <item quantity="other">%d dies</item>
     </plurals>
     <string name="auto_enable_label">Activació automàtica del temporitzador en reproduir</string>
-    <string name="auto_enable_label_with_times">Activa el temporitzador de son automàticament en reproduir entre les %1$si les %2$s</string>
+    <string name="auto_enable_label_with_times">Activa el temporitzador automàticament en reproduir entre les %1$si les %2$s</string>
     <string name="auto_enable_change_times">Canvia el rang de temps</string>
-    <string name="sleep_timer_enabled_label">Temporitzador habilitat</string>
+    <string name="sleep_timer_enabled_label">Temporitzador actiu</string>
     <!--Synchronisation-->
   <string name="synchronization_choose_title">Escull el proveïdor de sincronització</string>
     <string name="synchronization_summary_unchoosen">Podeu escollir entre múltiples proveïdors per sincronitzar-hi les vostres subscripcions i l\'estat de reproducció dels episodis</string>
     <string name="dialog_choose_sync_service_title">Escull el proveïdor de sincronització</string>
     <string name="gpodnet_description">Gpodder.net és un servei de sincronització de podcasts de codi obert que podeu instal·lar al vostre propi servidor. Gpodder.net és independent del projecte AntennaPod.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync és una aplicació de codi obert de Nextcloud que podeu instal·lar fàcilment al vostre servidor. L\'aplicació és independent del projecte AntennaPod.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync és una aplicació de Nextcloud de codi obert que podeu instal·lar fàcilment al vostre propi servidor. Gpodder Sync és independent del projecte AntennaPod.</string>
     <string name="synchronization_host_explanation">Podeu triar el vostre propi servidor per sincronitzar-lo. Quan hàgiu identificat el vostre servidor de sincronització preferit, introduïu la seva adreça aquí.</string>
     <string name="synchronization_host_label">Adreça del servidor</string>
     <string name="proceed_to_login_butLabel">Continua per iniciar la sessió</string>
@@ -617,7 +617,7 @@
     <string name="authentication_descr">Canvieu el vostre nom d\'usuari i contrasenya per a aquest pòdcast i els seus episodis</string>
     <string name="feed_tags_label">Etiquetes</string>
     <string name="feed_tags_summary">Canvia les etiquetes d\'aquest pòdcast per ajudar-vos a organitzar les subscripcions</string>
-    <string name="feed_folders_include_root">Mostra aquest pòdcast a la llista principal</string>
+    <string name="feed_folders_include_root">Mostra a sobre de les etiquetes (només a la navegació lateral)</string>
     <string name="multi_feed_common_tags_info">Només es mostren les etiquetes comunes a les subscripcions seleccionades. No afecta les altres etiquetes.</string>
     <string name="episode_filters_label">Filtra els termes</string>
     <string name="episode_filters_description">Llistat de termes usats per decidir si un episodi s\'ha d\'incloure o excloure en descarregar automàticament</string>
@@ -780,7 +780,7 @@
     <string name="notification_channel_refreshing">S’estan actualitzant els pòdcasts</string>
     <string name="echo_intro_your_year">El vostre any</string>
     <string name="episode_lists">Llistes d\'episodis</string>
-    <string name="echo_hours_this_year">Aquest any heu reproduït</string>
+    <string name="echo_hours_this_year">Aquest any has reproduït</string>
     <string name="echo_share">El meu any %d en pòdcasts. #AntennaPodEcho</string>
     <string name="pref_nav_drawer_items_title">Personalitza la navegació</string>
     <string name="notification_channel_refreshing_description">Es mostra quan es comprova si hi ha episodis nous.</string>
@@ -797,7 +797,7 @@
     <string name="pref_downloads_button_action_title">Reprodueix des de la pantalla de baixades</string>
     <string name="pref_downloads_button_action_sum">Mostra el botó de reproducció en lloc del botó d\'esborrar a la pantalla de baixades</string>
     <string name="sync_status_wait_for_downloads">S\'està esperant l\'actualització de les subscripcions…</string>
-    <string name="nextcloud_login_error_generic">No es pot iniciar sessió al Nextcloud.\n\n- Comproveu la connexió de xarxa.\n- Confirmeu que esteu utilitzant l\'adreça de servidor correcta.\n- Assegureu-vos que el connector gpoddersync del Nextcloud estigui instal·lat.</string>
+    <string name="nextcloud_login_error_generic">No es pot iniciar sessió al Nextcloud.\n\n- Comproveu la connexió de xarxa.\n- Confirmeu que esteu utilitzant l\'adreça de servidor correcta.\n- Assegureu-vos que el connector Gpodder Sync del Nextcloud estigui instal·lat.</string>
     <string name="download_started_talkback">S\'ha iniciat la baixada per a %1$s</string>
     <string name="download_completed_talkback">S\'ha completat la baixada per a %1$s</string>
     <string name="statistics_time_total">total</string>
@@ -815,7 +815,7 @@
     <string name="echo_queue_hours_clean">Això és aproximadament %1$s cada dia fins que %2$d comenci.</string>
     <string name="echo_queue_hours_normal">Això és aproximadament %1$s cada dia fins que %2$d comenci. Pots començar l\'any net si saltes uns quants episodis.</string>
     <string name="echo_queue_hours_much">Això és aproximadament %1$s cada dia fins que %2$d comenci. Espera, què?</string>
-    <string name="echo_listened_after_title">Hem fet algunes anàlisis sobre quan es publiquen els episodis i quan els vas completar. La nostra conclusió?</string>
+    <string name="echo_listened_after_title">Hem analitzat quan es publiquen els episodis i quan els has escoltat. La nostra conclusió?</string>
     <string name="echo_listened_after_comment_easy">Ets relaxat/da</string>
     <string name="echo_listened_after_time">Normalment, heu completat un episodi %1$s després de publicar-lo.</string>
     <string name="echo_listened_after_comment_addict">Ets un/a addicte/a al podcast</string>
@@ -823,9 +823,9 @@
     <string name="echo_hoarder_subtitle_hoarder">Mirant els números, creiem que ets un atracador</string>
     <string name="echo_hoarder_comment_hoarder">Els números no menteixen, diuen. I amb només %1$d%% de les vostres %2$d subscripcions actives que s\'han reproduït aquest any, probablement tenim raó.</string>
     <string name="echo_hoarder_subtitle_medium">Comprova-ho. No atresoreu aquí.</string>
-    <string name="echo_hoarder_comment_medium">Heu reproduït episodis del %1$d%% de les vostres %2$d subscripcions actives aquest any. Què tal si torneu a escoltar \"%3$s\"?</string>
+    <string name="echo_hoarder_comment_medium">Has reproduït episodis del %1$d%% de les teves %2$d subscripcions actives aquest any. Què tal si tornes a escoltar \"%3$s\"?</string>
     <string name="echo_hoarder_subtitle_clean">Net!</string>
-    <string name="echo_hoarder_comment_clean">Heu reproduït episodis del %1$d%% de les vostres %2$d subscripcions actives aquest any. Apostem a que mantinguis el teu escriptori net, també!</string>
+    <string name="echo_hoarder_comment_clean">Has reproduït episodis del %1$d%% de les teves %2$d subscripcions actives aquest any. Segur que mantens el teu escriptori net, també!</string>
     <string name="echo_thanks_we_are_glad_old">per estar amb nosaltres aquest any!\n\nVas reproduir el teu primer episodi amb nosaltres a %1$s. Ha estat un honor servir-te des de llavors.</string>
     <string name="echo_thanks_we_are_glad_new">per unir-vos a nosaltres aquest any!\n\nTant si veniu d\'una altra aplicació com si comenceu la vostra aventura de podcàsting amb nosaltres: estem encantats de tenir-vos amb nosaltres!</string>
     <string name="echo_thanks_now_favorite">Ara, anem a fer una ullada als vostres pòdcasts preferits…</string>
@@ -908,4 +908,66 @@
     <string name="statistics_expected_next_episode_any_time">En qualsevol moment</string>
     <string name="release_schedule_multiple_per_day">diverses vegades al dia</string>
     <string name="cover_as_background">Portada com a fons</string>
+    <string name="general_expand_button">Mostra més</string>
+    <string name="general_collapse_button">Recollir</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d subscripció</item>
+        <item quantity="many">%d subscripcions</item>
+        <item quantity="other">%d subscripcions</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Arxivar</string>
+    <string name="archive_feed_label_noun">Arxius</string>
+    <string name="restore_archive_label">Restaurar</string>
+    <string name="remove_archive_feed_label">Eliminar / Arxivar</string>
+    <string name="feed_delete_explanation_delete">Eliminar suprimeix la subscripció, inclosos tots els episodis, les descàrregues, l’historial de reproducció i les estadístiques.</string>
+    <string name="feed_delete_explanation_archive">Arxivar amaga la subscripció de la llista i deixa de cercar episodis nous. Es conserven les descàrregues, les estadístiques i l’estat de reproducció.</string>
+    <string name="archiving_podcast_progress">S’està arxivant el podcast %1$d de %2$d…</string>
+    <string name="deleting_podcast_progress">S’està eliminant el pòdcast %1$d de %2$d…</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">S\'ha marcat %d episodi com a reproduït.</item>
+        <item quantity="many">S’han marcat %d episodis com a reproduïts.</item>
+        <item quantity="other">S’han marcat %d episodis com a reproduïts.</item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">S’ha marcat %d episodi com a no reproduït.</item>
+        <item quantity="many">S’han marcat %d episodis com a no reproduïts.</item>
+        <item quantity="other">S’han marcat %d episodis com a no reproduïts.</item>
+    </plurals>
+    <string name="download_log_details_human_readable_reason_title">Estat</string>
+    <string name="download_log_details_technical_reason_title">Detalls tècnics</string>
+    <string name="download_log_details_file_url_title">URL del canal</string>
+    <string name="download_log_open_feed">Obrir</string>
+    <string name="no_following_in_queue">Aquest era l\'últim episodi de la cua</string>
+    <string name="episode">Episodi</string>
+    <string name="feed">Pòdcast</string>
+    <string name="no_archive_head_label">Res arxivat</string>
+    <string name="no_archive_label">Podeu arxivar pòdcasts des de la pantalla principal de subscripcions.</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Ordre per defecte</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Trieu l’ordre per defecte dels episodis a la pantalla del pòdcast</string>
+    <string name="report_bug_title">Informeu d\'un error</string>
+    <string name="report_bug_message">Ens sap greu saber que alguna cosa no funciona. Ens encantaria comptar amb la vostra ajuda per millorar AntennaPod. Consulteu el nostre fòrum o GitHub per veure si el problema ja s’ha notificat. Si no és així, feu-nos-ho saber i ho investigarem.</string>
+    <string name="report_bug_device_info_title">Dispositiu</string>
+    <string name="report_bug_attrib_app_version">Versió de l\'aplicació</string>
+    <string name="report_bug_attrib_android_version">Versió d\'Android</string>
+    <string name="report_bug_attrib_device_name">Nom del dispositiu</string>
+    <string name="report_bug_crash_log_title">Registre d\'errors</string>
+    <string name="report_bug_crash_log_message">Creat: %1$s.</string>
+    <string name="report_bug_forum_title">Fòrum</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">episodis</string>
+    <string name="sleep_timer_without_continuous_playback">Desactiva la reproducció contínua</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Canvia les hores d’activació</string>
+    <string name="sleep_timer_without_continuous_playback_message">En lloc d’activar sempre automàticament el temporitzador amb un sol episodi, desactiveu la **Reproducció contínua** a la configuració.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">La reproducció contínua està desactivada i a l’episodi actual només li queda %1$d minut</item>
+        <item quantity="many">La reproducció contínua està desactivada i a l’episodi actual només li queden %1$d minuts</item>
+        <item quantity="other">La reproducció contínua està desactivada i a l’episodi actual només li queden %1$d minuts</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">La reproducció contínua està desactivada a la configuració. Sempre s’atura al final de l’episodi.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Només queda %1$d episodi a la cua</item>
+        <item quantity="many">Només queden %1$d episodis a la cua</item>
+        <item quantity="other">Només queden %1$d episodis a la cua</item>
+    </plurals>
+    <string name="tag_untagged">Sense etiqueta</string>
 </resources>

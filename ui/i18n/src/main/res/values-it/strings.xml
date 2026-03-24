@@ -248,7 +248,7 @@
     <string name="download_log_title_unknown">Titolo sconosciuto</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">File multimediale</string>
-    <string name="no_feed_url_podcast_found_by_search">Il podcast suggerito non ha un link RSS, AntennaPod ha trovato un podcast che potrebbe corrispondere</string>
+    <string name="no_feed_url_podcast_found_by_search">Il podcast suggerito non ha un collegamento RSS, ma AntennaPod ha trovato un podcast che potrebbe corrispondere</string>
     <string name="authentication_notification_title">Autenticazione richiesta</string>
     <string name="confirm_mobile_download_dialog_title">Conferma download su rete mobile</string>
     <string name="confirm_mobile_download_dialog_message">Il download su rete mobile è disabilitato nelle impostazioni. AntennaPod può scaricare l\'episodio più tardi, quando il Wi-Fi sarà disponibile.</string>
@@ -753,7 +753,7 @@
         <item quantity="other">Dimensione totale di %d episodi sul dispositivo</item>
     </plurals>
     <string name="delete_downloads_played_confirmation">Conferma che vuoi eliminare tutti i download riprodotti.</string>
-    <string name="null_value_podcast_error">Il link che hai toccato non contiene un URL podcast valido. Verifica il link e riprova, oppure cerca il podcast manualmente.</string>
+    <string name="null_value_podcast_error">Il collegamento che hai toccato non contiene un URL di podcast valido. Verifica il collegamento e riprova, oppure cerca il podcast manualmente.</string>
     <string name="pref_nav_drawer_items_title">Personalizza navigazione</string>
     <string name="discover_more">Scopri di più »</string>
     <string name="section_shown">Mostrati</string>
@@ -927,8 +927,8 @@
     <string name="archive_feed_label_noun">Archivio</string>
     <string name="restore_archive_label">Ripristina</string>
     <string name="remove_archive_feed_label">Elimina / Archivia</string>
-    <string name="feed_delete_explanation_delete">Eliminandola rimuoverai TUTTI gli episodi, compresi download, cronologia riproduzioni e statistiche.</string>
-    <string name="feed_delete_explanation_archive">Archiviandola la nasconderai dall\'elenco delle iscrizioni e impedirai che riceva aggiornamenti. Download, statistiche e stato di riproduzione saranno mantenuti.</string>
+    <string name="feed_delete_explanation_delete">Eliminandola rimuoverai l\'iscrizione, compresi tutti i suoi episodi, download, cronologia riproduzioni e statistiche.</string>
+    <string name="feed_delete_explanation_archive">Archiviandola nasconderai l\'iscrizione dall\'elenco e smetterai di cercarne nuovi episodi. Download, statistiche e stato di riproduzione saranno mantenuti.</string>
     <string name="tag_untagged">Senza tag</string>
     <string name="no_archive_label">È possibile archiviare i podcast dalla schermata principale delle iscrizioni.</string>
     <string name="no_archive_head_label">Niente archiviato</string>

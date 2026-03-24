@@ -495,7 +495,7 @@
     <string name="database_import_warning">Import bazy danych nadpisze wszystkie twoje aktualne subskrypcje i historię odtworzeń. Zalecany jest eksport aktualnej bazy danych jako kopia zapasowa. Czy chcesz zamienić?</string>
     <string name="please_wait">Prosimy poczekać…</string>
     <string name="export_error_label">Błąd eksportu</string>
-    <string name="export_success_title">Export zakończony powodzeniem</string>
+    <string name="export_success_title">Eksport zakończony powodzeniem</string>
     <string name="opml_import_ask_read_permission">Dostęp do zewnętrznej pamięci jest potrzebny do odczytywania plików OPML</string>
     <string name="successful_import_label">Import udany</string>
     <string name="import_ok">Naciśnij OK, aby zrestartować AntennaPod</string>
@@ -913,8 +913,8 @@
     <string name="archive_feed_label_noun">Archiwum</string>
     <string name="restore_archive_label">Przywróć</string>
     <string name="remove_archive_feed_label">Usuń / Archiwizuj</string>
-    <string name="feed_delete_explanation_delete">Usunięcie WSZYSTKICH odcinków, w tym pobranych plików, historii odtwarzania i statystyk.</string>
-    <string name="feed_delete_explanation_archive">Archiwizacja spowoduje ukrycie go na liście subskrypcji i uniknięcie jego aktualizacji. Pobrane pliki, statystyki i stan odtwarzania zostaną zachowane.</string>
+    <string name="feed_delete_explanation_delete">Usunięcie kasuje subskrypcję, wszystkie jej odcinki, w tym pobrane pliki, historię odtwarzania i statystyki.</string>
+    <string name="feed_delete_explanation_archive">Archiwizacja spowoduje ukrycie podcastu na liście subskrypcji i nie będzie on aktualizowany. Pobrane pliki, statystyki i stan odtwarzania zostaną zachowane.</string>
     <string name="please_wait_before_refreshing">Odczekaj chwilę przed ponownym odświeżeniem podcastów.</string>
     <plurals name="marked_as_played_message">
         <item quantity="one">%d odcinek oznaczony jako odtworzony.</item>
@@ -960,4 +960,44 @@
     <string name="release_schedule_multiple_per_day">Harmonogramy wydań podcastu</string>
     <string name="cover_as_background">Okładka jako tło</string>
     <string name="echo_thanks_we_are_glad_old">za bycie z nami w tym roku!\n\nTwój pierwszy odcinek został odtworzony %1$s. To dla nas zaszczyt służyć Ci od tego czasu.</string>
+    <string name="general_expand_button">Rozwiń</string>
+    <string name="general_collapse_button">Zwiń</string>
+    <string name="archiving_podcast_progress">Archiwizacja podcastu %1$d z %2$d…</string>
+    <string name="deleting_podcast_progress">Usuwanie podcastu %1$d z %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Status</string>
+    <string name="download_log_details_technical_reason_title">Szczegóły techniczne</string>
+    <string name="download_log_details_file_url_title">Adres URL pliku</string>
+    <string name="download_log_open_feed">Otwórz</string>
+    <string name="no_following_in_queue">To był ostatni odcinek w kolejce</string>
+    <string name="episode">Odcinek</string>
+    <string name="feed">Podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Domyślne sortowanie</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Wybierz domyślne sortowanie odcinków na ekranie podcastu</string>
+    <string name="report_bug_title">Zgłoś błąd</string>
+    <string name="report_bug_message">Przykro słyszeć, że coś nie działa. Doceniamy twój wkład w rozwój AntennaPod. Możesz sprawdzić, na forum lub GitHubie, czy został zaraportowany już ten błąd. Jeżeli nie, daj nam znać, i zajmiemy się tym.</string>
+    <string name="report_bug_device_info_title">Urządzenie</string>
+    <string name="report_bug_attrib_app_version">Wersja aplikacji</string>
+    <string name="report_bug_attrib_android_version">Wersja systemu Android</string>
+    <string name="report_bug_attrib_device_name">Nazwa urządzenia</string>
+    <string name="report_bug_crash_log_title">Log błędu</string>
+    <string name="report_bug_crash_log_message">Utworzono: %1$s.</string>
+    <string name="report_bug_forum_title">Forum</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">odcinki</string>
+    <string name="sleep_timer_without_continuous_playback">Wyłącz ciągłe odtwarzanie</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Zmień godziny</string>
+    <string name="sleep_timer_without_continuous_playback_message">Zamiast zawsze automatycznie aktywować czas do wyłączenia dla pojedynczego odcinka, wyłącz ciągłe odtwarzanie w opcjach.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Ciągłe odtwarzanie jest wyłączone, a pozostało tylko %1$d aktualnego odcinka</item>
+        <item quantity="few">Ciągłe odtwarzanie jest wyłączone, a pozostały tylko %1$d minuty aktualnego odcinka</item>
+        <item quantity="many">Ciągłe odtwarzanie jest wyłączone, a pozostało tylko %1$d minut aktualnego odcinka</item>
+        <item quantity="other">Ciągłe odtwarzanie jest wyłączone, a pozostało tylko %1$d minut aktualnego odcinka</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Ciągłe odtwarzanie jest wyłączone w opcjach. Odtwarzanie zawsze zostanie wstrzymane po zakończeniu odcinka.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Pozostał tylko %1$d odcinek w kolejce</item>
+        <item quantity="few">Pozostały tylko %1$d odcinki w kolejce</item>
+        <item quantity="many">Pozostało tylko %1$d odcinków w kolejce</item>
+        <item quantity="other">Pozostało tylko %1$d odcinków w kolejce</item>
+    </plurals>
 </resources>

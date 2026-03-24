@@ -927,9 +927,9 @@
     <string name="archive_feed_label_verb">Arquivar</string>
     <string name="archive_feed_label_noun">Arquivo</string>
     <string name="restore_archive_label">Restaurar</string>
-    <string name="feed_delete_explanation_delete">Excluir removerá a inscrição incluindo todos os seus episódios, downloads, histórico de reprodução e estatísticas.</string>
-    <string name="feed_delete_explanation_archive">Arquivar oculta a inscrição da lista e interrompe a busca por novos episódios. Downloads, estatísticas and estado de reprodução são mantidos.</string>
-    <string name="remove_archive_feed_label">Excluir / arquivo</string>
+    <string name="feed_delete_explanation_delete">A exclusão remove a inscrição, incluindo todos os seus episódios, downloads, histórico de reprodução e estatísticas.</string>
+    <string name="feed_delete_explanation_archive">O arquivamento oculta a inscrição da lista e interrompe a busca por novos episódios. Os downloads, as estatísticas e o estado de reprodução são mantidos.</string>
+    <string name="remove_archive_feed_label">Excluir / arquivar</string>
     <string name="tag_untagged">Sem etiquetas</string>
     <string name="no_archive_head_label">Nada arquivado</string>
     <string name="no_archive_label">Você pode arquivar podcasts a partir da tela principal de inscrições.</string>

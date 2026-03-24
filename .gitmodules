@@ -2,3 +2,4 @@
 	path = app/src/main/play
 	url = https://github.com/AntennaPod/StoreMetadata.git
 	branch = main
+	shallow = true

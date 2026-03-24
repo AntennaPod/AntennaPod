@@ -863,7 +863,7 @@
     <string name="archive_feed_label_noun">Arşiv</string>
     <string name="restore_archive_label">Geri yükle</string>
     <string name="remove_archive_feed_label">Sil / arşivle</string>
-    <string name="feed_delete_explanation_delete">Silme işlemi indirilenler, oynatma geçmişi ve istatistikler dahil olmak üzere TÜM bölümleri silecektir.</string>
+    <string name="feed_delete_explanation_delete">Silme işlemi tüm bölümleri, indirmeleri, oynatma geçmişini ve istatistikleri de içeren aboneliği kaldırır.</string>
     <string name="feed_delete_explanation_archive">Arşivleme işlemi, abonelik listesinden gizler ve güncelleme almamasını sağlar. İndirilenler, istatistikler ve oynatma durumu korunur.</string>
     <string name="please_wait_before_refreshing">Podcastleri yeniden yenilemek için lütfen bir süre bekleyin.</string>
     <plurals name="downloading_episodes_message">
@@ -903,4 +903,11 @@
     <string name="cover_as_background">Arka plan olarak kapak</string>
     <string name="no_archive_head_label">Arşivlenmiş yok</string>
     <string name="no_archive_label">Podcast\'leri ana abonelik ekranında arşivleyebilirsiniz.</string>
+    <string name="general_expand_button">Genişlet</string>
+    <string name="general_collapse_button">Daralt</string>
+    <string name="archiving_podcast_progress">%1$d podcastin %2$d tanesi arşivleniyor…</string>
+    <string name="deleting_podcast_progress">%1$d podcastin %2$d tanesi siliniyor…</string>
+    <string name="download_log_details_human_readable_reason_title">Durum</string>
+    <string name="download_log_details_file_url_title">Dosya adresi</string>
+    <string name="download_log_open_feed">Aç</string>
 </resources>

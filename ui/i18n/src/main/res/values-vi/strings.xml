@@ -5,7 +5,7 @@
     <string name="queue_label">Danh sách phát</string>
     <string name="favorite_episodes_label">Lượt thích</string>
     <string name="settings_label">Cài đặt</string>
-    <string name="downloads_label">Tải về</string>
+    <string name="downloads_label">Đã tải về</string>
     <string name="subscriptions_label">Đăng ký</string>
     <string name="notification_pref_fragment">Thông báo</string>
     <!--Google Assistant-->
@@ -139,4 +139,8 @@
     <string name="support_podcast">Hỗ trợ podcast này</string>
     <string name="inbox_label_short">Hộp thư</string>
     <string name="inbox_label">Hộp thư</string>
+    <string name="episodes_label_short">Số tập</string>
+    <string name="downloads_label_short">Đã tải về</string>
+    <string name="swipe_right">Lướt sang bên phải</string>
+    <string name="swipe_left">Lướt sang bên trái</string>
 </resources>

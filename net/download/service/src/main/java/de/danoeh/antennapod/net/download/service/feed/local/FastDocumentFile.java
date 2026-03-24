@@ -29,16 +29,22 @@ public class FastDocumentFile {
                 DocumentsContract.Document.COLUMN_LAST_MODIFIED,
                 DocumentsContract.Document.COLUMN_MIME_TYPE}, null, null, null);
         ArrayList<FastDocumentFile> list = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            String id = cursor.getString(0);
-            Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, id);
-            String name = cursor.getString(1);
-            long size = cursor.getLong(2);
-            long lastModified = cursor.getLong(3);
-            String mimeType = cursor.getString(4);
-            list.add(new FastDocumentFile(name, mimeType, uri, size, lastModified));
+        if (cursor == null) {
+            return list;
         }
-        cursor.close();
+        try {
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(0);
+                Uri uri = DocumentsContract.buildDocumentUriUsingTree(folderUri, id);
+                String name = cursor.getString(1);
+                long size = cursor.getLong(2);
+                long lastModified = cursor.getLong(3);
+                String mimeType = cursor.getString(4);
+                list.add(new FastDocumentFile(name, mimeType, uri, size, lastModified));
+            }
+        } finally {
+            cursor.close();
+        }
         return list;
     }
 
