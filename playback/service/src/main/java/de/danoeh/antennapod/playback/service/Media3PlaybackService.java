@@ -35,6 +35,9 @@ import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+
+import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
+
 import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
@@ -80,6 +83,9 @@ public class Media3PlaybackService extends MediaLibraryService {
     private long lastPositionSaveTime = 0;
     private SleepTimer sleepTimer;
 
+    // Tracks the timestamp of the last pause to calculate the auto-rewind duration later
+    private long timeOfLastPause = 0;
+
     @UnstableApi
     @Override
     public void onCreate() {
@@ -102,6 +108,27 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
                         .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
                         .build();
+            }
+
+            // Intercept the play command to restore auto-rewind functionality on resume.
+            // We only trigger this if the player was previously paused (timeOfLastPause > 0).
+            @Override
+            public void play() {
+                if (timeOfLastPause > 0) {
+                    int currentPosition = (int) getCurrentPosition();
+
+                    // Calculate the rewind amount using the existing utility class
+                    int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(currentPosition, timeOfLastPause);
+
+                    // Seek backward before starting playback if paused duration was significant
+                    if (newPosition < currentPosition) {
+                        seekTo(newPosition);
+                    }
+
+                    // Reset the pause timestamp to prevent repeated rewinds
+                    timeOfLastPause = 0;
+                }
+                super.play();
             }
 
             @Override
@@ -132,9 +159,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         @NonNull
         @UnstableApi
         public ListenableFuture<SessionResult> onCustomCommand(@NonNull MediaSession session,
-                @NonNull MediaSession.ControllerInfo controller,
-                @NonNull SessionCommand customCommand,
-                @NonNull Bundle args) {
+                                                               @NonNull MediaSession.ControllerInfo controller,
+                                                               @NonNull SessionCommand customCommand,
+                                                               @NonNull Bundle args) {
             if (customCommand.customAction.equals(SESSION_COMMAND_PLAYBACK_SPEED.customAction)) {
                 setNextPlaybackSpeed();
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
@@ -167,6 +194,16 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     @UnstableApi
     private final Player.Listener playerListener = new Player.Listener() {
+
+        // Cancel auto-rewind if the user manually seeks or scrubs the progress bar while paused.
+        // This ensures the auto-rewind doesn't interfere with manual actions.
+        @Override
+        public void onPositionDiscontinuity(@NonNull Player.PositionInfo oldPosition, @NonNull Player.PositionInfo newPosition, int reason) {
+            if (reason == Player.DISCONTINUITY_REASON_SEEK || reason == Player.DISCONTINUITY_REASON_SEEK_ADJUSTMENT) {
+                timeOfLastPause = 0;
+            }
+        }
+
         @Override
         public void onPlaybackStateChanged(int playbackState) {
             if (playbackState == Player.STATE_BUFFERING) {
@@ -209,6 +246,10 @@ public class Media3PlaybackService extends MediaLibraryService {
             } else {
                 cancelPositionObserver();
                 saveCurrentPosition();
+
+                // Record the exact time the player was paused
+                timeOfLastPause = System.currentTimeMillis();
+
                 if (currentPlayable != null) {
                     SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
                 }
@@ -337,25 +378,25 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
-                            currentPlayable = media;
-                            if (player == null) {
-                                return;
-                            }
-                            currentPlayable.setPosition((int) player.getCurrentPosition());
-                            currentPlayable.onPlaybackStart();
-                            if (currentPlayable.getItem() != null
-                                    && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
-                                DBWriter.addQueueItem(this, currentPlayable.getItem());
-                            }
-                            float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
-                            player.setPlaybackSpeed(speed);
-                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
-                                    currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
-                            PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
-                            exoPlayer.setSkipSilenceEnabled(enabled);
-                            updatePlaybackPreferences();
-                            EventBus.getDefault().post(new PlayerStatusEvent());
-                        },
+                                    currentPlayable = media;
+                                    if (player == null) {
+                                        return;
+                                    }
+                                    currentPlayable.setPosition((int) player.getCurrentPosition());
+                                    currentPlayable.onPlaybackStart();
+                                    if (currentPlayable.getItem() != null
+                                            && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
+                                        DBWriter.addQueueItem(this, currentPlayable.getItem());
+                                    }
+                                    float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
+                                    player.setPlaybackSpeed(speed);
+                                    boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
+                                            currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
+                                    PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
+                                    exoPlayer.setSkipSilenceEnabled(enabled);
+                                    updatePlaybackPreferences();
+                                    EventBus.getDefault().post(new PlayerStatusEvent());
+                                },
                                 error -> Log.e(TAG, "Failed to load current media", error));
 
             }
@@ -481,12 +522,12 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         queueLoaderDisposable = Maybe.fromCallable(() -> {
-            FeedItem nextItem = DBReader.getNextInQueue(item);
-            if (nextItem != null && nextItem.getMedia() != null) {
-                return new Pair<>(nextItem.getMedia(), MediaItemAdapter.fromPlayable(Media3PlaybackService.this, nextItem.getMedia()));
-            }
-            return null;
-        })
+                    FeedItem nextItem = DBReader.getNextInQueue(item);
+                    if (nextItem != null && nextItem.getMedia() != null) {
+                        return new Pair<>(nextItem.getMedia(), MediaItemAdapter.fromPlayable(Media3PlaybackService.this, nextItem.getMedia()));
+                    }
+                    return null;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
