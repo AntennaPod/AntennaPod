@@ -146,7 +146,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                     }
                     timeOfLastPause = 0;
                 }
-                
+
                 super.play();
             }
 
@@ -404,37 +404,37 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
-                            currentPlayable = media;
-                            if (player == null) {
-                                return;
-                            }
-                            if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime) {
-                                showStreamingConfirmation(media);
-                                return;
-                            }
-                            allowStreamingThisTime = false;
-                            currentPlayable.setPosition((int) player.getCurrentPosition());
-                            currentPlayable.onPlaybackStart();
-                            if (currentPlayable.getItem() != null
-                                    && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
-                                DBWriter.addQueueItem(this, currentPlayable.getItem());
-                            }
-                            float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
-                            player.setPlaybackSpeed(speed);
-                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
-                                    currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
-                            PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
-                            exoPlayer.setSkipSilenceEnabled(enabled);
-                            if (currentPlayable.getItem() != null
-                                    && currentPlayable.getItem().getFeed() != null) {
-                                volumeAdaptionFactor = currentPlayable.getItem().getFeed()
-                                        .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
-                                applyVolumeAdaption(1.0f);
-                            }
-                            updatePlaybackPreferences();
-                            EventBus.getDefault().post(new PlayerStatusEvent());
-                        },
+                                    currentPlayable = media;
+                                    if (player == null) {
+                                        return;
+                                    }
+                                    if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
+                                            && !allowStreamingThisTime) {
+                                        showStreamingConfirmation(media);
+                                        return;
+                                    }
+                                    allowStreamingThisTime = false;
+                                    currentPlayable.setPosition((int) player.getCurrentPosition());
+                                    currentPlayable.onPlaybackStart();
+                                    if (currentPlayable.getItem() != null
+                                            && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
+                                        DBWriter.addQueueItem(this, currentPlayable.getItem());
+                                    }
+                                    float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
+                                    player.setPlaybackSpeed(speed);
+                                    boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
+                                            currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
+                                    PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
+                                    exoPlayer.setSkipSilenceEnabled(enabled);
+                                    if (currentPlayable.getItem() != null
+                                            && currentPlayable.getItem().getFeed() != null) {
+                                        volumeAdaptionFactor = currentPlayable.getItem().getFeed()
+                                                .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
+                                        applyVolumeAdaption(1.0f);
+                                    }
+                                    updatePlaybackPreferences();
+                                    EventBus.getDefault().post(new PlayerStatusEvent());
+                                },
                                 error -> Log.e(TAG, "Failed to load current media", error));
 
             }
@@ -551,7 +551,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private boolean shouldBlockForStreamingConfirmation() {
         return currentPlayable != null
                 && (player.getPlaybackState() == Player.STATE_READY
-                    || player.getPlaybackState() == Player.STATE_BUFFERING)
+                || player.getPlaybackState() == Player.STATE_BUFFERING)
                 && needsStreaming(currentPlayable)
                 && !NetworkUtils.isStreamingAllowed();
     }
@@ -606,12 +606,12 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         queueLoaderDisposable = Maybe.fromCallable(() -> {
-                    FeedItem nextItem = DBReader.getNextInQueue(item);
-                    if (nextItem != null && nextItem.getMedia() != null) {
-                        return new Pair<>(nextItem.getMedia(), MediaItemAdapter.fromPlayable(Media3PlaybackService.this, nextItem.getMedia()));
-                    }
-                    return null;
-                })
+            FeedItem nextItem = DBReader.getNextInQueue(item);
+            if (nextItem != null && nextItem.getMedia() != null) {
+                return new Pair<>(nextItem.getMedia(), MediaItemAdapter.fromPlayable(Media3PlaybackService.this, nextItem.getMedia()));
+            }
+            return null;
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
