@@ -17,6 +17,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.system.utils.ThreadUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -49,6 +50,7 @@ public class MediaItemAdapter {
 
     /**
      * Create a media item and load all its metadata, including cover art using Glide.
+     * Respects the "Use episode cover" preference when choosing artwork.
      * Do NOT use this method on the main thread.
      */
     public static MediaItem fromPlayable(Context context, Playable playable) {
@@ -64,14 +66,15 @@ public class MediaItemAdapter {
             mediaId = String.valueOf(feedMedia.getId());
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
         }
+        String artworkUrl = getArtworkUrl(playable);
         int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
-        Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
+        Bitmap bitmap = loadArtworkBitmap(context, artworkUrl, playable, iconSize);
         if (bitmap != null) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bos);
             metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
-        } else if (playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
-            metadataBuilder.setArtworkUri(Uri.parse(playable.getImageLocation()));
+        } else if (artworkUrl != null && artworkUrl.startsWith("http")) {
+            metadataBuilder.setArtworkUri(Uri.parse(artworkUrl));
         }
         Bundle extras = new Bundle();
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
@@ -84,16 +87,19 @@ public class MediaItemAdapter {
                 .build();
     }
 
-    private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
-        try {
-            return Glide.with(context)
-                    .asBitmap()
-                    .onlyRetrieveFromCache(true)
-                    .load(playable.getImageLocation())
-                    .submit(iconSize, iconSize)
-                    .get(500, TimeUnit.MILLISECONDS);
-        } catch (Exception tr1) {
-            // fall through to try feed image
+    private static Bitmap loadArtworkBitmap(Context context, @Nullable String imageUrl,
+                                            Playable playable, int iconSize) {
+        if (imageUrl != null) {
+            try {
+                return Glide.with(context)
+                        .asBitmap()
+                        .onlyRetrieveFromCache(true)
+                        .load(imageUrl)
+                        .submit(iconSize, iconSize)
+                        .get(500, TimeUnit.MILLISECONDS);
+            } catch (Exception tr1) {
+                // fall through to try feed image
+            }
         }
         if (!(playable instanceof FeedMedia)) {
             return null;
@@ -117,6 +123,19 @@ public class MediaItemAdapter {
             Log.e(TAG, "Skipping to load artwork bitmap: " + tr2.getMessage());
         }
         return null;
+    }
+
+    private static String getArtworkUrl(Playable playable) {
+        if (UserPreferences.getUseEpisodeCoverSetting()) {
+            return playable.getImageLocation();
+        }
+        if (playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            if (feedMedia.getItem() != null && feedMedia.getItem().getFeed() != null) {
+                return feedMedia.getItem().getFeed().getImageUrl();
+            }
+        }
+        return playable.getImageLocation();
     }
 
     public static MediaItem fromFeed(Context context, Feed feed) {
