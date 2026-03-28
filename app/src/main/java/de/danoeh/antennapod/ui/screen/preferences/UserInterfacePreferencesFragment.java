@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.UserManager;
 import android.os.Looper;
 import android.os.Handler;
 import android.text.InputType;
