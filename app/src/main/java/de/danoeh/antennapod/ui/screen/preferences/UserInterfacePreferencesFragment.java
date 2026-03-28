@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.preferences;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
@@ -131,19 +130,19 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
         // only show the 'parental password' dialog if we're on a 'child' device (family link)
         findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(false);
         AccountManager am = AccountManager.get(requireContext());
-        Account[] accounts = am.getAccountsByType("com.google");
-        for (Account account : accounts) {
-            am.hasFeatures(account, new String[]{"child"}, new AccountManagerCallback<Boolean>() {
-                @Override
-                public void run(AccountManagerFuture<Boolean> future) {
-                    try {
-                        boolean isChild = future.getResult();
-                        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(isChild);
-                    } catch (AuthenticatorException | OperationCanceledException | IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, new Handler(Looper.getMainLooper()));
+        for (Account account : am.getAccountsByType("com.google")) {
+            am.hasFeatures(account, new String[]{"child"},
+                    f -> findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(getAccountFeatureResult(f)),
+                    new Handler(Looper.getMainLooper()));
+        }
+    }
+
+    private boolean getAccountFeatureResult(AccountManagerFuture<Boolean> future) {
+        try {
+            return future.getResult();
+        } catch (AuthenticatorException | OperationCanceledException | IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
