@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.screen.preferences;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.UserManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
@@ -118,6 +119,10 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             showChangePasswordDialog();
             return true;
         });
+
+        UserManager userManager = (UserManager) requireContext().getSystemService(Context.USER_SERVICE);
+        //noinspection deprecation
+        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(userManager.isRestrictedProfile());
     }
 
     private void backOpensDrawerToggle(boolean bottomNavigationEnabled) {
