@@ -19,7 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import de.danoeh.antennapod.storage.preferences.ParentalControlPassword;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
@@ -117,7 +119,12 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 username = savedInstanceState.getString("username");
                 password = savedInstanceState.getString("password");
             }
-            lookupUrlAndDownload(UrlChecker.prepareUrl(feedUrl));
+            String preparedUrl = UrlChecker.prepareUrl(feedUrl);
+            if (!ParentalControlPassword.isPasswordSet(this)) {
+                lookupUrlAndDownload(preparedUrl);
+            } else {
+                showParentalControlDialog(preparedUrl);
+            }
         }
     }
 
@@ -421,6 +428,31 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             finish();
         });
         builder.show();
+    }
+
+    private void showParentalControlDialog(String feedUrl) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.add_feed_label);
+        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+        dialogBinding.textInput.setHint(R.string.password);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(dialogBinding.getRoot());
+        builder.setPositiveButton(R.string.confirm_label, null);
+        builder.setNegativeButton(R.string.cancel_label, (d, w) -> finish());
+        builder.setOnCancelListener(d -> finish());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String entered = dialogBinding.textInput.getText().toString();
+            if (ParentalControlPassword.verifyPassword(this, entered)) {
+                alertDialog.dismiss();
+                lookupUrlAndDownload(feedUrl);
+            } else {
+                dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
+                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
