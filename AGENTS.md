@@ -54,7 +54,7 @@ For installing and running the application, use the command
 Then confirm with the user that the application is running correctly.
 If there is a crash, read the logs using `adb logcat -d | grep "de.danoeh.antennapod" | tail -20` and fix the issue.
 For running tests, use the command `./gradlew --console=plain` and use the task `:test` of the relevant module.
-As a final style check before opening a PR (or if a user explicitly asks for it), use `./gradlew checkstyle spotbugsPlayDebug spotbugsDebug :app:lintPlayDebug`.
+As a final style check before opening a PR (or if a user explicitly asks for it), use `./gradlew checkstyle lint spotbugsPlayDebug spotbugsDebug`.
 If any command does not give any output, it is likely that it failed, so abort.
 
 # PR Conventions

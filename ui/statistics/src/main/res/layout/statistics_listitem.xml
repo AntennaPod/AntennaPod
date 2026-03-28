@@ -9,7 +9,8 @@
     android:paddingRight="16dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    tools:ignore="Overdraw">
 
     <ImageView
         android:id="@+id/imgvCover"

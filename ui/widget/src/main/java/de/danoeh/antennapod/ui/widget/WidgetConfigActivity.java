@@ -55,6 +55,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
         }
 
         opacityTextView = findViewById(R.id.widget_opacity_textView);
+        opacityTextView.setText(String.format(Locale.getDefault(), "%d%%", 100));
         opacitySeekBar = findViewById(R.id.widget_opacity_seekBar);
         widgetPreview = findViewById(R.id.widgetLayout);
         findViewById(R.id.butConfirm).setOnClickListener(v -> confirmCreateWidget());
@@ -74,7 +75,6 @@ public class WidgetConfigActivity extends ToolbarActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
-
         });
 
         widgetPreview.findViewById(R.id.txtNoPlaying).setVisibility(View.GONE);

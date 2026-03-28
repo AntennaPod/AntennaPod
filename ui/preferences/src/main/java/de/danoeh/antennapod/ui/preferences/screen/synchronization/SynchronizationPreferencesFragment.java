@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Spanned;
 import android.text.format.DateUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -164,10 +163,10 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
                 TextView title;
             }
 
+            @NonNull
             public View getView(int position, View convertView, ViewGroup parent) {
-                final LayoutInflater inflater = LayoutInflater.from(getContext());
                 if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.alertdialog_sync_provider_chooser, null);
+                    convertView = View.inflate(getContext(), R.layout.alertdialog_sync_provider_chooser, null);
                     holder = new ViewHolder();
                     holder.icon = convertView.findViewById(R.id.icon);
                     holder.title = convertView.findViewById(R.id.title);

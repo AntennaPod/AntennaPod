@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.statistics.R;
 
 import java.util.ArrayList;
@@ -58,8 +59,7 @@ public class YearStatisticsListAdapter extends RecyclerView.Adapter<RecyclerView
             StatisticsHolder holder = (StatisticsHolder) h;
             DBReader.MonthlyStatisticsItem statsItem = yearlyAggregate.get(position - 1);
             holder.year.setText(String.format(Locale.getDefault(), "%d ", statsItem.getYear()));
-            holder.hours.setText(String.format(Locale.getDefault(), "%.1f ", statsItem.getTimePlayed() / 3600000.0f)
-                    + context.getString(R.string.time_hours));
+            holder.hours.setText(Converter.shortLocalizedDuration(context, statsItem.getTimePlayed() / 1000));
         }
     }
 
