@@ -899,8 +899,8 @@
     <string name="archive_feed_label_noun">الأرشيف</string>
     <string name="restore_archive_label">استعِد</string>
     <string name="remove_archive_feed_label">احذف / أرشِف</string>
-    <string name="feed_delete_explanation_delete">سيؤدي الحذف إلى إزالة جميع حلقاته بما في ذلك التنزيلات، وسجل التشغيل، والإحصائيات.</string>
-    <string name="feed_delete_explanation_archive">ستؤدي الأرشفة إلى إخفاءه من قائمة الاشتراكات وتجنب تحديثه. ستبقى التنزيلات، والإحصائيات، وسجل التشغيل.</string>
+    <string name="feed_delete_explanation_delete">يؤدي الحذف إلى إزالة الاشتراك وجميع حلقاته، وتنزيلاته، وسجل تشغيله، وإحصائياته.</string>
+    <string name="feed_delete_explanation_archive">تؤدي الأرشفة إلى إخفاء الاشتراك من القائمة وتجنب تحديثه. ستبقى التنزيلات، والإحصائيات، وسجل التشغيل.</string>
     <string name="please_wait_before_refreshing">انتظر قبل أن تنعش الاشتراكات مرة أخرى.</string>
     <plurals name="downloading_episodes_message">
         <item quantity="zero">لا ينزل أي حلقات.</item>
@@ -910,4 +910,19 @@
         <item quantity="many">ينزل %d حلقة.</item>
         <item quantity="other">ينزل %d حلقة.</item>
     </plurals>
+    <string name="general_expand_button">وسّع</string>
+    <string name="general_collapse_button">صغّر</string>
+    <string name="archiving_podcast_progress">جارٍ أرشفة المسموعية %1$d من %2$d…</string>
+    <string name="deleting_podcast_progress">جارٍ حذف المسموعية %1$d من %2$d…</string>
+    <plurals name="deleted_episode_message">
+        <item quantity="zero">لم تحذف أي حلقات منزلة.</item>
+        <item quantity="one">حذفت حلقة منزلة واحدة.</item>
+        <item quantity="two">حذفت حلقتان منزلتان.</item>
+        <item quantity="few">حذفت %d حلقات منزلة.</item>
+        <item quantity="many">حذفت %d حلقة منزلة.</item>
+        <item quantity="other">حذفت %d حلقة منزلة.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">أُزيل من صندوق الوارد</string>
+    <string name="mark_as_played_label">علِّم كمشغل</string>
+    <string name="play_this_to_seek_position_message">تحتاج لتشغيل الحلقة للانتقال لأي توقيت معين</string>
 </resources>

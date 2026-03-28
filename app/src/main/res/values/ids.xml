@@ -25,8 +25,10 @@
     <item name="bottom_navigation_episodes" type="id"/>
     <item name="bottom_navigation_downloads" type="id"/>
     <item name="bottom_navigation_history" type="id"/>
+    <item name="bottom_navigation_favorites" type="id"/>
     <item name="bottom_navigation_addfeed" type="id"/>
     <item name="bottom_navigation_subscriptions" type="id"/>
+    <item name="bottom_navigation_statistics" type="id"/>
     <item name="bottom_navigation_more" type="id"/>
     <item name="bottom_navigation_customize" type="id"/>
     <item name="bottom_navigation_settings" type="id"/>

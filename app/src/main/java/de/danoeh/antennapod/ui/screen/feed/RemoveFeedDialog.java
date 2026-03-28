@@ -196,8 +196,10 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.removeConfirmButton.getLayoutParams();
         ValueAnimator animator = ValueAnimator.ofFloat(1.0f, 2.0f);
         animator.addUpdateListener(animation -> {
-            params.weight = (float) animation.getAnimatedValue();
-            binding.removeConfirmButton.setLayoutParams(params);
+            if (binding != null) {
+                params.weight = (float) animation.getAnimatedValue();
+                binding.removeConfirmButton.setLayoutParams(params);
+            }
         });
         animator.setDuration(400);
         animator.setInterpolator(new OvershootInterpolator(3.0f));

@@ -52,7 +52,7 @@ public class HttpDownloader extends Downloader {
         final boolean fileExists = destination.exists();
 
         RandomAccessFile out = null;
-        InputStream connection;
+        InputStream connection = null;
         ResponseBody responseBody = null;
 
         try {
@@ -219,6 +219,7 @@ public class HttpDownloader extends Downloader {
             onFail(DownloadError.ERROR_CONNECTION_ERROR, request.getSource());
         } finally {
             IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly(connection);
             IOUtils.closeQuietly(responseBody);
         }
     }

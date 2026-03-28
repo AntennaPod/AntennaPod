@@ -44,7 +44,7 @@ public class PlayActionButton extends ItemActionButton {
             Log.i(TAG, "Missing episode. Will update the database now.");
             media.setDownloaded(false, 0);
             media.setLocalFileUrl(null);
-            DBWriter.setFeedMedia(media);
+            DBWriter.setMediaDownloadInformation(media);
             EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
             return;

@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
@@ -27,6 +29,7 @@ import com.google.common.util.concurrent.SettableFuture;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -60,6 +63,36 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("skip_to_next", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_NEXT_CHAPTER
             = new SessionCommand("next_chapter", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_SKIP_SILENCE
+            = new SessionCommand("skip_silence", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_SET_SLEEP_TIMER
+            = new SessionCommand("set_sleep_timer", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_DISABLE_SLEEP_TIMER
+            = new SessionCommand("disable_sleep_timer", Bundle.EMPTY);
+    public static final SessionCommand SESSION_COMMAND_EXTEND_SLEEP_TIMER
+            = new SessionCommand("extend_sleep_timer", Bundle.EMPTY);
+
+    private static final String EXTRA_VALUE = "value";
+
+    public static Bundle createBundle(boolean value) {
+        Bundle args = new Bundle();
+        args.putBoolean(EXTRA_VALUE, value);
+        return args;
+    }
+
+    public static Bundle createBundle(long value) {
+        Bundle args = new Bundle();
+        args.putLong(EXTRA_VALUE, value);
+        return args;
+    }
+
+    public static boolean getBoolean(Bundle args, boolean defaultValue) {
+        return args != null ? args.getBoolean(EXTRA_VALUE, defaultValue) : defaultValue;
+    }
+
+    public static long getLong(Bundle args, long defaultValue) {
+        return args != null ? args.getLong(EXTRA_VALUE, defaultValue) : defaultValue;
+    }
 
     private final Context context;
     private final CompositeDisposable disposables = new CompositeDisposable();
@@ -80,6 +113,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_PLAYBACK_SPEED)
                 .add(SESSION_COMMAND_SKIP_TO_NEXT)
                 .add(SESSION_COMMAND_NEXT_CHAPTER)
+                .add(SESSION_COMMAND_SKIP_SILENCE)
+                .add(SESSION_COMMAND_SET_SLEEP_TIMER)
+                .add(SESSION_COMMAND_DISABLE_SLEEP_TIMER)
+                .add(SESSION_COMMAND_EXTEND_SLEEP_TIMER)
                 .build();
         Player.Commands playerCommands = new Player.Commands.Builder()
                 .addAllCommands()
@@ -140,6 +177,29 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     @Override
+    @UnstableApi
+    public boolean onMediaButtonEvent(@NonNull MediaSession session,
+            @NonNull MediaSession.ControllerInfo controllerInfo, @NonNull Intent intent) {
+        KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+        if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN
+                && keyEvent.getRepeatCount() == 0) {
+            int keyCode = keyEvent.getKeyCode();
+            if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
+                // Instead of skipping to the next episode, do a fast-forward.
+                session.getPlayer().seekForward();
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+                // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
+                // Instead of going to the previous episode, do a rewind.
+                session.getPlayer().seekBack();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     @NonNull
     @UnstableApi
     public ListenableFuture<SessionResult> onCustomCommand(@NonNull MediaSession session,
@@ -176,16 +236,13 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     return new Pair<>(updatedItems, mediaDetails);
                 })
                 .subscribeOn(Schedulers.io())
-                .subscribe(result ->
-                                future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index,
-                                        result.second.getPosition() > 0 ? result.second.getPosition() :
-                                                (startPositionMs > 0 ? startPositionMs : 0))),
-                        error -> {
-                            Log.e(TAG, "Failed to load media", error);
-                            future.set(new MediaSession.MediaItemsWithStartPosition(
-                                    mediaItems, index, startPositionMs));
-                        }
-                ));
+                .subscribe(result -> {
+                    long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
+                    future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
+                }, error -> {
+                    Log.e(TAG, "Failed to load media", error);
+                    future.set(new MediaSession.MediaItemsWithStartPosition(mediaItems, index, startPositionMs));
+                }));
         return future;
     }
 
@@ -208,7 +265,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         disposables.add(Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        media -> future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(media))),
+                        media -> future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(context, media))),
                         error -> {
                             Log.e(TAG, "Failed to load media with id " + mediaId, error);
                             future.set(Collections.emptyList());
@@ -230,8 +287,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         media -> {
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
-                                            Collections.singletonList(MediaItemAdapter.fromPlayable(media)),
-                                            0, media.getPosition());
+                                            Collections.singletonList(MediaItemAdapter.fromPlayable(context, media)),
+                                            0, SkipUtils.skipIntroIfNecessary(context, media));
                             future.set(result);
                         },
                         future::setException
@@ -315,7 +372,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         .subscribe(
                                 media -> {
                                     future.set(LibraryResult.ofItemList(
-                                            ImmutableList.of(MediaItemAdapter.fromPlayable(media)), params));
+                                            ImmutableList.of(MediaItemAdapter.fromPlayable(context, media)), params));
                                 },
                                 error -> {
                                     Log.e(TAG, "Failed to load currently playing media", error);
@@ -342,7 +399,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 })
                         .subscribeOn(Schedulers.io())
                         .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                        MediaItemAdapter.fromItemList(items), params)),
+                                        MediaItemAdapter.fromItemList(context, items), params)),
                                 future::setException));
                 return future;
         }
@@ -358,7 +415,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         DBReader.searchFeedItems(0, query, Feed.STATE_SUBSCRIBED))
                 .subscribeOn(Schedulers.io())
                 .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                MediaItemAdapter.fromItemList(items), params)),
+                                MediaItemAdapter.fromItemList(context, items), params)),
                         future::setException));
         return future;
     }

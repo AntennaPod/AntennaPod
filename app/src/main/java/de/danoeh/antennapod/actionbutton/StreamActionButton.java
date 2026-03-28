@@ -12,8 +12,6 @@ import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
-import de.danoeh.antennapod.net.common.NetworkUtils;
-import de.danoeh.antennapod.ui.StreamingConfirmationDialog;
 
 public class StreamActionButton extends ItemActionButton {
 
@@ -41,10 +39,6 @@ public class StreamActionButton extends ItemActionButton {
         }
         UsageStatistics.logAction(UsageStatistics.ACTION_STREAM);
 
-        if (!NetworkUtils.isStreamingAllowed()) {
-            new StreamingConfirmationDialog(context, media).show();
-            return;
-        }
         new PlaybackServiceStarter(context, media)
                 .callEvenIfRunning(true)
                 .start();

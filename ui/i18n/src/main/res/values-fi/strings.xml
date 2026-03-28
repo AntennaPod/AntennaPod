@@ -901,4 +901,6 @@
         <item quantity="one">ladattu</item>
         <item quantity="other">ladattu</item>
     </plurals>
+    <string name="general_expand_button">Laajenna</string>
+    <string name="general_collapse_button">Pienennä</string>
 </resources>

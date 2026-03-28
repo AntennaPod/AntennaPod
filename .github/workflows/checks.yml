@@ -47,8 +47,8 @@ jobs:
       - name: Generate readable error messages for GitHub
         if: failure()
         run: |
-          git diff --name-only | xargs -I '{}' echo "::error file={},line=1,endLine=1,title=XML Format::Run android-xml-formatter.jar on this file or view CI output to see how it should be formatted."
           python .github/workflows/errorPrinter.py
+          git diff --name-only | xargs -I '{}' echo "::error file={},line=1,endLine=1,title=XML Format::Run android-xml-formatter.jar on this file or view CI output to see how it should be formatted."
           false
 
   unit-test:
@@ -112,7 +112,7 @@ jobs:
             target: default
           - api-level: 30
             target: aosp_atd
-          - api-level: 35
+          - api-level: 36
             target: aosp_atd
     steps:
       - name: Remove unused packages to save space

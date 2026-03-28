@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.screen.drawer;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.screen.FavoritesFragment;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
@@ -11,6 +12,7 @@ import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
+import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 
 public abstract class NavigationNames {
     public static @DrawableRes int getDrawable(String tag) {
@@ -29,8 +31,12 @@ public abstract class NavigationNames {
                 return R.drawable.ic_history;
             case SubscriptionFragment.TAG:
                 return R.drawable.ic_subscriptions;
+            case StatisticsFragment.TAG:
+                return R.drawable.ic_chart_box;
             case AddFeedFragment.TAG:
                 return R.drawable.ic_add;
+            case FavoritesFragment.TAG:
+                return R.drawable.ic_star;
             default:
                 return 0;
         }
@@ -52,8 +58,12 @@ public abstract class NavigationNames {
                 return R.string.downloads_label;
             case PlaybackHistoryFragment.TAG:
                 return R.string.playback_history_label;
+            case StatisticsFragment.TAG:
+                return R.string.statistics_label;
             case AddFeedFragment.TAG:
                 return R.string.add_feed_label;
+            case FavoritesFragment.TAG:
+                return R.string.favorite_episodes_label;
             case NavListAdapter.SUBSCRIPTION_LIST_TAG:
                 return R.string.subscriptions_list_label;
             default:
@@ -77,8 +87,12 @@ public abstract class NavigationNames {
                 return R.string.downloads_label_short;
             case PlaybackHistoryFragment.TAG:
                 return R.string.playback_history_label_short;
+            case StatisticsFragment.TAG:
+                return R.string.statistics_label_short;
             case AddFeedFragment.TAG:
                 return R.string.add_feed_label_short;
+            case FavoritesFragment.TAG:
+                return R.string.favorite_episodes_label_short;
             case NavListAdapter.SUBSCRIPTION_LIST_TAG:
                 return R.string.subscriptions_list_label;
             default:
@@ -98,10 +112,14 @@ public abstract class NavigationNames {
                 return R.id.bottom_navigation_downloads;
             case PlaybackHistoryFragment.TAG:
                 return R.id.bottom_navigation_history;
+            case FavoritesFragment.TAG:
+                return R.id.bottom_navigation_favorites;
             case AddFeedFragment.TAG:
                 return R.id.bottom_navigation_addfeed;
             case SubscriptionFragment.TAG:
                 return R.id.bottom_navigation_subscriptions;
+            case StatisticsFragment.TAG:
+                return R.id.bottom_navigation_statistics;
             case HomeFragment.TAG: // fall-through
             default:
                 return R.id.bottom_navigation_home;
@@ -119,10 +137,14 @@ public abstract class NavigationNames {
             return CompletedDownloadsFragment.TAG;
         } else if (id == R.id.bottom_navigation_history) {
             return PlaybackHistoryFragment.TAG;
+        } else if (id == R.id.bottom_navigation_favorites) {
+            return FavoritesFragment.TAG;
         } else if (id == R.id.bottom_navigation_addfeed) {
             return AddFeedFragment.TAG;
         } else if (id == R.id.bottom_navigation_subscriptions) {
             return SubscriptionFragment.TAG;
+        } else if (id == R.id.bottom_navigation_statistics) {
+            return StatisticsFragment.TAG;
         } else if (id == R.id.bottom_navigation_home) {
             return HomeFragment.TAG;
         }

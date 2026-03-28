@@ -9,9 +9,8 @@ import android.database.DefaultDatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -42,6 +41,7 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemFilterQuery;
 import de.danoeh.antennapod.storage.database.mapper.FeedItemSortQuery;
 
+import de.danoeh.antennapod.system.utils.ThreadUtils;
 import org.apache.commons.io.FileUtils;
 
 import static de.danoeh.antennapod.model.feed.FeedPreferences.SPEED_USE_GLOBAL;
@@ -266,6 +266,8 @@ public class PodDBAdapter {
     public static final String SELECT_KEY_ITEM_ID = "item_id";
     public static final String SELECT_KEY_MEDIA_ID = "media_id";
     public static final String SELECT_KEY_FEED_ID = "feed_id";
+    public static final String SELECT_KEY_IS_FAVORITE = "is_favorite";
+    public static final String SELECT_KEY_IS_IN_QUEUE = "is_in_queue";
 
     private static final String KEYS_FEED_ITEM_WITHOUT_DESCRIPTION =
             TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " AS " + SELECT_KEY_ITEM_ID + ", "
@@ -283,7 +285,11 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_CHAPTER_URL + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_SOCIAL_INTERACT_URL + ", "
             + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_TYPE + ", "
-            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_URL;
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_PODCASTINDEX_TRANSCRIPT_URL + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " IN (SELECT " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
+            + " FROM " + TABLE_NAME_FAVORITES + ") AS " + SELECT_KEY_IS_FAVORITE + ", "
+            + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " IN (SELECT " + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+            + " FROM " + TABLE_NAME_QUEUE + ") AS " + SELECT_KEY_IS_IN_QUEUE;
 
     private static final String KEYS_FEED_MEDIA =
             TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " AS " + SELECT_KEY_MEDIA_ID + ", "
@@ -381,7 +387,6 @@ public class PodDBAdapter {
         SQLiteDatabase newDb;
         try {
             newDb = dbHelper.getWritableDatabase();
-            newDb.disableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
             newDb = dbHelper.getReadableDatabase();
@@ -389,24 +394,8 @@ public class PodDBAdapter {
         return newDb;
     }
 
-    private boolean isTest() {
-        if ("robolectric".equals(Build.FINGERPRINT)) {
-            return true;
-        }
-        try {
-            Class.forName("org.junit.Test");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
-
     public synchronized PodDBAdapter open() {
-        if (BuildConfig.DEBUG) {
-            if (Looper.myLooper() == Looper.getMainLooper() && !isTest()) {
-                throw new RuntimeException("I/O on main thread");
-            }
-        }
+        ThreadUtils.assertNotMainThread();
         // do nothing
         return this;
     }
@@ -429,6 +418,18 @@ public class PodDBAdapter {
     public static void tearDownTests() {
         getInstance().dbHelper.close();
         instance = null;
+    }
+
+    public void walCheckpoint() {
+        if (db == null || !db.isOpen() || !db.isWriteAheadLoggingEnabled()) {
+            return;
+        }
+        try (Cursor cursor = db.rawQuery("PRAGMA wal_checkpoint(FULL)", null)) {
+            cursor.moveToFirst();
+            Log.d(TAG, "WAL checkpoint result: " + DatabaseUtils.dumpCurrentRowToString(cursor));
+        } catch (SQLiteException e) {
+            Log.e(TAG, "wal_checkpoint PRAGMA failed", e);
+        }
     }
 
     public static boolean deleteDatabase() {
@@ -529,6 +530,7 @@ public class PodDBAdapter {
 
     /**
      * Inserts or updates a media entry
+     * Use carefully to avoid overwriting properties with stale data.
      *
      * @return the id of the entry
      */
@@ -559,6 +561,24 @@ public class PodDBAdapter {
                     new String[]{String.valueOf(media.getId())});
         }
         return media.getId();
+    }
+
+    /**
+     * Update download state related properties of the feed media.
+     */
+    public void setMediaDownloadInformation(FeedMedia media) {
+        if (media.getId() != 0) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_SIZE, media.getSize());
+            values.put(KEY_FILE_URL, media.getLocalFileUrl());
+            values.put(KEY_DOWNLOAD_URL, media.getDownloadUrl());
+            values.put(KEY_DOWNLOAD_DATE, media.getDownloadDate());
+            values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
+            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
+                    new String[]{String.valueOf(media.getId())});
+        } else {
+            Log.e(TAG, "setMediaDownloadInformation: ID of media was 0");
+        }
     }
 
     public void setFeedMediaPlaybackInformation(FeedMedia media) {
@@ -867,10 +887,9 @@ public class PodDBAdapter {
     private boolean isItemInFavorites(FeedItem item) {
         String query = String.format(Locale.US, "SELECT %s from %s WHERE %s=%d",
                 KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
-        Cursor c = db.rawQuery(query, null);
-        int count = c.getCount();
-        c.close();
-        return count > 0;
+        try (Cursor c = db.rawQuery(query, null)) {
+            return c.getCount() > 0;
+        }
     }
 
     public void setQueue(List<FeedItem> queue) {
@@ -1083,12 +1102,6 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFavoritesIdsCursor() {
-        final String query = "SELECT " + TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM
-                + " FROM " + TABLE_NAME_FAVORITES;
-        return db.rawQuery(query, null);
-    }
-
     public void setFeedItems(int oldState, int newState) {
         setFeedItems(oldState, newState, 0);
     }
@@ -1287,13 +1300,12 @@ public class PodDBAdapter {
 
     public int getQueueSize() {
         final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_QUEUE);
-        Cursor c = db.rawQuery(query, null);
-        int result = 0;
-        if (c.moveToFirst()) {
-            result = c.getInt(0);
+        try (Cursor c = db.rawQuery(query, null)) {
+            if (c.moveToFirst()) {
+                return c.getInt(0);
+            }
+            return 0;
         }
-        c.close();
-        return result;
     }
 
     public final Map<Long, Integer> getFeedCounters(FeedCounter setting, long... feedIds) {
@@ -1346,16 +1358,17 @@ public class PodDBAdapter {
                 + " WHERE " + limitFeeds + " "
                 + whereRead + " GROUP BY " + KEY_FEED;
 
-        Cursor c = db.rawQuery(query, null);
         Map<Long, Integer> result = new HashMap<>();
-        if (c.moveToFirst()) {
+        try (Cursor c = db.rawQuery(query, null)) {
+            if (!c.moveToFirst()) {
+                return result;
+            }
             do {
                 long feedId = c.getLong(0);
                 int count = c.getInt(1);
                 result.put(feedId, count);
             } while (c.moveToNext());
         }
-        c.close();
         return result;
     }
 
@@ -1370,16 +1383,17 @@ public class PodDBAdapter {
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " GROUP BY " + KEY_FEED;
 
-        Cursor c = db.rawQuery(query, null);
         Map<Long, Long> result = new HashMap<>();
-        if (c.moveToFirst()) {
+        try (Cursor c = db.rawQuery(query, null)) {
+            if (!c.moveToFirst()) {
+                return result;
+            }
             do {
                 long feedId = c.getLong(0);
                 long date = c.getLong(1);
                 result.put(feedId, date);
             } while (c.moveToNext());
         }
-        c.close();
         return result;
     }
 

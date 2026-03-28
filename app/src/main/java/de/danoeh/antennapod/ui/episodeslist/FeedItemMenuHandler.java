@@ -100,6 +100,9 @@ public class FeedItemMenuHandler {
             canShare = false;
             canShowTranscript = false;
             canShowSocialInteract = false;
+            if (canAddFavorite) {
+                canRemoveFavorite = false;
+            }
         }
 
         setItemVisibility(menu, R.id.skip_episode_item, canSkip);
@@ -248,7 +251,8 @@ public class FeedItemMenuHandler {
         // but they don't want it considered 'NEW' anymore
         DBWriter.markItemPlayed(playState, false, item);
 
-        final Handler h = new Handler(fragment.requireContext().getMainLooper());
+        Context context = fragment.requireContext();
+        final Handler h = new Handler(context.getMainLooper());
         final Runnable r = () -> {
             FeedMedia media = item.getMedia();
             if (media == null) {
@@ -260,7 +264,7 @@ public class FeedItemMenuHandler {
             boolean almostEnded = media.getDuration() > 0
                     && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
             if (almostEnded && shouldAutoDelete) {
-                DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), media);
+                DBWriter.deleteFeedMediaOfItem(context, media);
             }
         };
 
@@ -285,7 +289,7 @@ public class FeedItemMenuHandler {
 
         if (showSnackbar) {
             EventBus.getDefault().post(new MessageEvent(message,
-                    context -> {
+                    ctx -> {
                         DBWriter.markItemPlayed(item.getPlayState(), false, item);
                         // don't forget to cancel the thing that's going to remove the media
                         h.removeCallbacks(r);

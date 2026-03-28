@@ -20,6 +20,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
 import de.danoeh.antennapod.ui.screen.download.CompletedDownloadsFragment;
+import de.danoeh.antennapod.ui.screen.FavoritesFragment;
 import de.danoeh.antennapod.ui.screen.InboxFragment;
 import de.danoeh.antennapod.ui.screen.PlaybackHistoryFragment;
 import de.danoeh.antennapod.ui.screen.queue.QueueFragment;
@@ -37,8 +38,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
     private static final List<SwipeAction> swipeActions = Collections.unmodifiableList(
             Arrays.asList(new AddToQueueSwipeAction(), new RemoveFromInboxSwipeAction(),
                     new StartDownloadSwipeAction(), new MarkFavoriteSwipeAction(),
-                    new TogglePlaybackStateSwipeAction(), new RemoveFromQueueSwipeAction(),
-                    new DeleteSwipeAction(), new RemoveFromHistorySwipeAction()));
+                    new RemoveFromFavoritesSwipeAction(), new TogglePlaybackStateSwipeAction(),
+                    new RemoveFromQueueSwipeAction(), new DeleteSwipeAction(),
+                    new RemoveFromHistorySwipeAction()));
 
     private final Fragment fragment;
     private final String tag;
@@ -113,6 +115,9 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
                 break;
             case PlaybackHistoryFragment.TAG:
                 defaultActions = SwipeAction.REMOVE_FROM_HISTORY + "," + SwipeAction.REMOVE_FROM_HISTORY;
+                break;
+            case FavoritesFragment.TAG:
+                defaultActions = SwipeAction.REMOVE_FROM_FAVORITES + "," + SwipeAction.REMOVE_FROM_FAVORITES;
                 break;
             default:
             case AllEpisodesFragment.TAG:

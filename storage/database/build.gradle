@@ -18,6 +18,7 @@ dependencies {
     implementation project(':net:download:service-interface')
     implementation project(':net:sync:service-interface')
     implementation project(':storage:preferences')
+    implementation project(':system')
     implementation project(':ui:app-start-intent')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"

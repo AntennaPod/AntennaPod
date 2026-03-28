@@ -47,11 +47,29 @@ public class DatabaseExporter {
         if (!currentDB.exists()) {
             throw new IOException("Cannot access current database");
         }
-        try (InputStream src = new FileInputStream(currentDB)) {
-            return IOUtils.copy(src, outFileStream);
-        } catch (IOException e) {
+        File tempDB = context.getDatabasePath(TEMP_DB_NAME);
+        try {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.walCheckpoint();
+            adapter.close();
+            FileUtils.copyFile(currentDB, tempDB);
+            try (SQLiteDatabase tempDbHandle = SQLiteDatabase.openDatabase(
+                    tempDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY)) {
+                if (tempDbHandle.getVersion() != PodDBAdapter.VERSION) {
+                    throw new IOException("Database version mismatch. Expected: " + PodDBAdapter.VERSION
+                            + ", found: " + tempDbHandle.getVersion());
+                }
+            }
+            try (InputStream src = new FileInputStream(tempDB)) {
+                return IOUtils.copy(src, outFileStream);
+            }
+        } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
+        } finally {
+            boolean deleted = tempDB.delete();
+            Log.d(TAG, "Deleted temp database file: " + deleted);
         }
     }
 
@@ -70,9 +88,13 @@ public class DatabaseExporter {
             db.close();
 
             File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
-            boolean success = currentDB.delete();
-            if (!success) {
+            if (!currentDB.delete()) {
                 throw new IOException("Unable to delete old database");
+            }
+            for (String suffix : new String[]{"-wal", "-shm", "-journal"}) {
+                File sidecarFile = new File(currentDB.getAbsolutePath() + suffix);
+                boolean success = sidecarFile.delete();
+                Log.d(TAG, "Deleting sidecar file: " + sidecarFile.getAbsolutePath() + ", success: " + success);
             }
             FileUtils.moveFile(tempDB, currentDB);
         } catch (IOException | SQLiteException e) {

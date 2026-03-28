@@ -25,12 +25,9 @@ jobs:
               return;
             }
 
-            const bodyLines = (context.payload.pull_request.body || "").split(/\r?\n/);
-            const checklistIndex = bodyLines.map(l => l.includes("https://antennapod.org")).lastIndexOf(true);
-            if (checklistIndex === -1) {
-              core.setFailed("It looks like you did not follow the PR template. The checklist from the template is missing or incomplete.");
-              return;
-            } else if (bodyLines.length - checklistIndex - 1 > 5) {
-              core.setFailed("It looks like you did not follow the PR template. Please add your description above the checklist, not below.");
+            const body = context.payload.pull_request.body || "";
+            const descriptionMatch = body.match(/###\s*Description\s*\n([\s\S]*?)###\s*Checklist/i);
+            if (!descriptionMatch || descriptionMatch[1].replace(/\s/g, "").length < 10) {
+              core.setFailed("It looks like you did not follow the PR template. Please add a description in the Description section, above the checklist.");
               return;
             }
