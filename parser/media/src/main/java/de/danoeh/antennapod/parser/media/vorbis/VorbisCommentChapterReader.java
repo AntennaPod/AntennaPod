@@ -95,7 +95,6 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
      * Return the id of a vorbiscomment chapter from a string like CHAPTERxxx*
      *
      * @return the id of the chapter key or -1 if the id couldn't be read.
-     * @throws VorbisCommentReaderException
      * */
     private static int getIdFromKey(String key) throws VorbisCommentReaderException {
         if (key.length() >= CHAPTERXXX_LENGTH) { // >= CHAPTERxxx
