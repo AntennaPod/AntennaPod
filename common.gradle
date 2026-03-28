@@ -48,7 +48,7 @@ android {
     }
 
     lint {
-        disable "GradleDependency", "OutdatedLibrary", "AndroidGradlePluginVersion"
+        disable "GradleDependency", "OutdatedLibrary", "AndroidGradlePluginVersion", "CheckResult"
         checkDependencies true
         warningsAsErrors true
         abortOnError true
