@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.screen.subscriptions;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,9 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.annotation.NonNull;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
@@ -27,7 +23,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
@@ -37,7 +32,6 @@ import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
-import de.danoeh.antennapod.storage.preferences.ParentalControlPassword;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
@@ -166,7 +160,11 @@ public class SubscriptionFragment extends Fragment
         progressBar.setVisibility(View.VISIBLE);
 
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
-        subscriptionAddButton.setOnClickListener(view -> showPasswordDialog());
+        subscriptionAddButton.setOnClickListener(view -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
+            }
+        });
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) ->
@@ -235,41 +233,6 @@ public class SubscriptionFragment extends Fragment
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
         super.onSaveInstanceState(outState);
-    }
-
-    private void showPasswordDialog() {
-        // If no password is set, go directly to add feed
-        if (!ParentalControlPassword.isPasswordSet(requireContext())) {
-            if (getActivity() instanceof MainActivity) {
-                ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
-            }
-            return;
-        }
-
-        // Password is set, show dialog to verify
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(R.string.add_feed_label);
-        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
-        dialogBinding.textInput.setHint(R.string.password);
-        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(dialogBinding.getRoot());
-        builder.setPositiveButton(R.string.confirm_label, null);
-        builder.setNegativeButton(R.string.cancel_label, null);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((buttonView) -> {
-            String enteredPassword = dialogBinding.textInput.getText().toString();
-            if (ParentalControlPassword.verifyPassword(requireContext(), enteredPassword)) {
-                alertDialog.dismiss();
-                if (getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
-                }
-            } else {
-                dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
-                Toast.makeText(requireContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void refreshToolbarState() {
