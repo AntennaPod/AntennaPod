@@ -91,9 +91,6 @@ public class Media3PlaybackService extends MediaLibraryService {
     private LoudnessEnhancer loudnessEnhancer = null;
     private float volumeAdaptionFactor = 1.0f;
 
-    // Tracks the timestamp of the last pause to calculate the auto-rewind duration later
-    private long timeOfLastPause = 0;
-
     @UnstableApi
     @Override
     public void onCreate() {
@@ -125,10 +122,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .build();
             }
 
-            // Intercept the play command to handle both streaming confirmation and auto-rewind.
             @Override
             public void play() {
-                // 1. Streaming checks (from develop)
                 if (handleStreamingConfirmation()) {
                     return;
                 } else if (shouldBlockForStreamingConfirmation()) {
@@ -136,17 +131,16 @@ public class Media3PlaybackService extends MediaLibraryService {
                     return;
                 }
 
-                // 2. Auto-rewind logic (Issue #8268)
-                if (timeOfLastPause > 0) {
+                // Auto-rewind logic using database timestamp (Issue #8268)
+                if (currentPlayable != null && currentPlayable.getLastPlayedTimeStatistics() > 0) {
                     int currentPosition = (int) getCurrentPosition();
-                    int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(currentPosition, timeOfLastPause);
+                    long lastPlayed = currentPlayable.getLastPlayedTimeStatistics();
+                    int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(currentPosition, lastPlayed);
 
                     if (newPosition < currentPosition) {
                         seekTo(newPosition);
                     }
-                    timeOfLastPause = 0;
                 }
-
                 super.play();
             }
 
@@ -214,14 +208,6 @@ public class Media3PlaybackService extends MediaLibraryService {
     @UnstableApi
     private final Player.Listener playerListener = new Player.Listener() {
 
-        // Cancel auto-rewind if the user manually seeks or scrubs the progress bar while paused.
-        @Override
-        public void onPositionDiscontinuity(@NonNull Player.PositionInfo oldPosition, @NonNull Player.PositionInfo newPosition, int reason) {
-            if (reason == Player.DISCONTINUITY_REASON_SEEK || reason == Player.DISCONTINUITY_REASON_SEEK_ADJUSTMENT) {
-                timeOfLastPause = 0;
-            }
-        }
-
         @Override
         public void onPlaybackStateChanged(int playbackState) {
             if (playbackState == Player.STATE_BUFFERING) {
@@ -264,9 +250,6 @@ public class Media3PlaybackService extends MediaLibraryService {
             } else {
                 cancelPositionObserver();
                 saveCurrentPosition();
-
-                // Record the exact time the player was paused
-                timeOfLastPause = System.currentTimeMillis();
 
                 if (currentPlayable != null) {
                     SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
@@ -404,38 +387,37 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
-                                    currentPlayable = media;
-                                    if (player == null) {
-                                        return;
-                                    }
-                                    if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
-                                            && !allowStreamingThisTime) {
-                                        showStreamingConfirmation(media);
-                                        return;
-                                    }
-                                    allowStreamingThisTime = false;
-                                    currentPlayable.setPosition((int) player.getCurrentPosition());
-                                    currentPlayable.onPlaybackStart();
-                                    if (currentPlayable.getItem() != null
-                                            && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
-                                        DBWriter.addQueueItem(this, currentPlayable.getItem());
-                                    }
-                                    float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
-                                    player.setPlaybackSpeed(speed);
-                                    boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
-                                            currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
-                                    PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
-                                    exoPlayer.setSkipSilenceEnabled(enabled);
-                                    if (currentPlayable.getItem() != null
-                                            && currentPlayable.getItem().getFeed() != null) {
-                                        volumeAdaptionFactor = currentPlayable.getItem().getFeed()
-                                                .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
-                                        applyVolumeAdaption(1.0f);
-                                    }
-                                    updatePlaybackPreferences();
-                                    EventBus.getDefault().post(new PlayerStatusEvent());
-                                },
-                                error -> Log.e(TAG, "Failed to load current media", error));
+                            currentPlayable = media;
+                            if (player == null) {
+                                return;
+                            }
+                            if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
+                                    && !allowStreamingThisTime) {
+                                showStreamingConfirmation(media);
+                                return;
+                            }
+                            allowStreamingThisTime = false;
+                            currentPlayable.setPosition((int) player.getCurrentPosition());
+                            currentPlayable.onPlaybackStart();
+                            if (currentPlayable.getItem() != null
+                                    && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
+                                DBWriter.addQueueItem(this, currentPlayable.getItem());
+                            }
+                            float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
+                            player.setPlaybackSpeed(speed);
+                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
+                                    currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
+                            PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
+                            exoPlayer.setSkipSilenceEnabled(enabled);
+                            if (currentPlayable.getItem() != null
+                                    && currentPlayable.getItem().getFeed() != null) {
+                                volumeAdaptionFactor = currentPlayable.getItem().getFeed()
+                                        .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
+                                applyVolumeAdaption(1.0f);
+                            }
+                            updatePlaybackPreferences();
+                            EventBus.getDefault().post(new PlayerStatusEvent());
+                        }, error -> Log.e(TAG, "Failed to load current media", error));
 
             }
         } catch (NumberFormatException e) {
@@ -551,7 +533,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private boolean shouldBlockForStreamingConfirmation() {
         return currentPlayable != null
                 && (player.getPlaybackState() == Player.STATE_READY
-                || player.getPlaybackState() == Player.STATE_BUFFERING)
+                    || player.getPlaybackState() == Player.STATE_BUFFERING)
                 && needsStreaming(currentPlayable)
                 && !NetworkUtils.isStreamingAllowed();
     }
@@ -614,38 +596,35 @@ public class Media3PlaybackService extends MediaLibraryService {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        pair -> {
-                            final FeedMedia nextMedia = pair.first;
-                            final MediaItem nextMediaItem = pair.second;
-                            if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime && UserPreferences.isFollowQueue()) {
-                                showStreamingConfirmation(nextMedia);
-                                return;
-                            }
-                            allowStreamingThisTime = false;
+                .subscribe(pair -> {
+                    final FeedMedia nextMedia = pair.first;
+                    final MediaItem nextMediaItem = pair.second;
+                    if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
+                            && !allowStreamingThisTime && UserPreferences.isFollowQueue()) {
+                        showStreamingConfirmation(nextMedia);
+                        return;
+                    }
+                    allowStreamingThisTime = false;
 
-                            currentPlayable = nextMedia;
-                            currentPlayable.onPlaybackStart();
-                            PlaybackPreferences.writeMediaPlaying(nextMedia);
-                            if (nextMedia.getItem() != null && nextMedia.getItem().getFeed() != null) {
-                                volumeAdaptionFactor = nextMedia.getItem().getFeed()
-                                        .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
-                                applyVolumeAdaption(1.0f);
-                            }
-                            player.setPlayWhenReady(UserPreferences.isFollowQueue());
-                            player.setMediaItem(nextMediaItem);
-                            player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia));
-                            player.prepare();
-                        },
-                        error -> Log.e(TAG, "Failed to load next queue item", error),
-                        () -> {
-                            player.stop();
-                            player.clearMediaItems();
-                            PlaybackPreferences.writeNoMediaPlaying();
-                            EventBus.getDefault().post(
-                                    new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
-                        });
+                    currentPlayable = nextMedia;
+                    currentPlayable.onPlaybackStart();
+                    PlaybackPreferences.writeMediaPlaying(nextMedia);
+                    if (nextMedia.getItem() != null && nextMedia.getItem().getFeed() != null) {
+                        volumeAdaptionFactor = nextMedia.getItem().getFeed()
+                                .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
+                        applyVolumeAdaption(1.0f);
+                    }
+                    player.setPlayWhenReady(UserPreferences.isFollowQueue());
+                    player.setMediaItem(nextMediaItem);
+                    player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia));
+                    player.prepare();
+                }, error -> Log.e(TAG, "Failed to load next queue item", error), () -> {
+                    player.stop();
+                    player.clearMediaItems();
+                    PlaybackPreferences.writeNoMediaPlaying();
+                    EventBus.getDefault().post(
+                            new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
