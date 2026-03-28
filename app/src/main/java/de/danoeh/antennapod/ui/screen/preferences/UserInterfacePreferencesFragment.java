@@ -1,10 +1,18 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.os.UserManager;
 import android.os.Bundle;
+import android.os.UserManager;
+import android.os.Looper;
+import android.os.Handler;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.ListView;
@@ -27,6 +35,7 @@ import de.danoeh.antennapod.ui.screen.subscriptions.EpisodeListGlobalDefaultSort
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.List;
 
 public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment {
@@ -120,9 +129,23 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             return true;
         });
 
-        UserManager userManager = (UserManager) requireContext().getSystemService(Context.USER_SERVICE);
-        //noinspection deprecation
-        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(userManager.isRestrictedProfile());
+        // only show the 'parental password' dialog if we're on a 'child' device (family link)
+        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(false);
+        AccountManager am = AccountManager.get(requireContext());
+        Account[] accounts = am.getAccountsByType("com.google");
+        for (Account account : accounts) {
+            am.hasFeatures(account, new String[]{"child"}, new AccountManagerCallback<Boolean>() {
+                @Override
+                public void run(AccountManagerFuture<Boolean> future) {
+                    try {
+                        boolean isChild = future.getResult();
+                        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(isChild);
+                    } catch (AuthenticatorException | OperationCanceledException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Handler(Looper.getMainLooper()));
+        }
     }
 
     private void backOpensDrawerToggle(boolean bottomNavigationEnabled) {
