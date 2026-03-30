@@ -208,7 +208,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             EpisodeMultiSelectActionHandler handler
                     = new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId());
             Completable.fromAction(() -> handleActionForAllSelectedItems(handler))
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> adapter.endSelectMode(),
                             error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -621,7 +621,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     }
                     return feedDownloadLog.get(0);
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     downloadStatus -> DownloadLogDetailsDialog.newInstance(downloadStatus, false)
@@ -676,7 +676,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     int count = DBReader.getFeedEpisodeCount(feed.getId(), feed.getItemFilter());
                     return new Pair<>(feed, count);
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
@@ -708,7 +708,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         adapter.setDummyViews(1);
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
         disposable = Observable.fromCallable(() -> loadMoreData(page))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         items -> {

@@ -87,7 +87,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             // Make sure the media is loaded in case getCurrentPlaybackSpeedMultiplier has to access it
             return controller.getMedia();
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pair -> {
                     if (controller == null) {

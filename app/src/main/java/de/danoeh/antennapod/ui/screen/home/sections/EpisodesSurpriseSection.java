@@ -150,7 +150,7 @@ public class EpisodesSurpriseSection extends HomeSection {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> DBReader.getRandomEpisodes(NUM_EPISODES, seed))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(episodes -> {
                     this.episodes = episodes;

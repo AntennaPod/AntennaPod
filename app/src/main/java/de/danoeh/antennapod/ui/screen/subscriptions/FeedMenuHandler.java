@@ -42,7 +42,7 @@ public abstract class FeedMenuHandler {
                 public void onConfirmButtonPressed(DialogInterface clickedDialog) {
                     clickedDialog.dismiss();
                     Observable.fromCallable((Callable<Future>) () -> DBWriter.removeFeedNewFlag(selectedFeed.getId()))
-                            .subscribeOn(Schedulers.io())
+                            .subscribeOn(Schedulers.computation())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(result -> {
                                 if (removeFromInboxCallback != null) {

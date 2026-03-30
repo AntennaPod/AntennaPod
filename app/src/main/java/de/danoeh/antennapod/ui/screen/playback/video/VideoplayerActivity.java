@@ -289,7 +289,7 @@ public class VideoplayerActivity extends CastEnabledActivity
             }
             emitter.onSuccess(new Pair<>(media, feedItem));
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {

@@ -87,7 +87,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
 
         disposable = Single.fromCallable(() ->
                         DBReader.getRemainingQueueSize(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> currentQueueSize = result);
     }

@@ -253,7 +253,7 @@ public abstract class EpisodesListFragment extends Fragment
                         } while (nextPage.size() == EPISODES_PER_PAGE);
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> listAdapter.endSelectMode(),
                         error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -282,7 +282,7 @@ public abstract class EpisodesListFragment extends Fragment
         listAdapter.setDummyViews(1);
         listAdapter.notifyItemInserted(listAdapter.getItemCount() - 1);
         disposable = Observable.fromCallable(() -> loadMoreData(page))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         data -> {
@@ -401,7 +401,7 @@ public abstract class EpisodesListFragment extends Fragment
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> new Pair<>(loadData(), loadTotalItemCount()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         data -> {

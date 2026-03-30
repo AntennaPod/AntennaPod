@@ -193,7 +193,7 @@ public class CompletedDownloadsFragment extends Fragment
                     Observable.fromCallable(() -> DBReader.getEpisodes(0, Integer.MAX_VALUE,
                                     new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED,
                                             FeedItemFilter.PLAYED), SortOrder.DATE_OLD_NEW))
-                            .subscribeOn(Schedulers.io())
+                            .subscribeOn(Schedulers.computation())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(items -> new EpisodeMultiSelectActionHandler(getActivity(), R.id.remove_item)
                                     .handleAction(items), error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -329,7 +329,7 @@ public class CompletedDownloadsFragment extends Fragment
             currentDownloads.addAll(downloadedItems);
             return currentDownloads;
         })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
                 result -> {

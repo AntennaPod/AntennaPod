@@ -181,7 +181,7 @@ public class ExternalPlayerFragment extends Fragment {
             disposable.dispose();
         }
         disposable = Maybe.fromCallable(() -> controller.getMedia())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateUi,
                         error -> Log.e(TAG, Log.getStackTraceString(error)),

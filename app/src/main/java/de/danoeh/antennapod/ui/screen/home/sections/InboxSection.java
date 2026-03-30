@@ -127,7 +127,7 @@ public class InboxSection extends HomeSection {
                         new Pair<>(DBReader.getEpisodes(0, NUM_EPISODES,
                                 new FeedItemFilter(FeedItemFilter.NEW), UserPreferences.getInboxSortedOrder()),
                                 DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW))))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     items = data.first;

@@ -372,7 +372,7 @@ public class SubscriptionFragment extends Fragment
                             List<NavDrawerData.TagItem> tags = DBReader.getAllTags(stateToShow);
                             return new Pair<>(navDrawerData, tags);
                         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {

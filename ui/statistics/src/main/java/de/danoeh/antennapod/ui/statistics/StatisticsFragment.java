@@ -124,7 +124,7 @@ public class StatisticsFragment extends PagedToolbarFragment {
                 .apply();
 
         Disposable disposable = Completable.fromFuture(DBWriter.resetStatistics())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> EventBus.getDefault().post(new StatisticsEvent()),
                         error -> Log.e(TAG, Log.getStackTraceString(error)));

@@ -245,7 +245,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         final Uri uri = result.getData().getData();
         progressDialog.show();
         disposable = Completable.fromAction(() -> DatabaseExporter.importBackup(uri, getContext()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     showDatabaseImportSuccessDialog();
@@ -259,7 +259,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         }
         progressDialog.show();
         disposable = Completable.fromAction(() -> DatabaseExporter.exportToDocument(uri, getContext()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     showExportSuccessSnackbar(uri, "application/x-sqlite3");
@@ -306,7 +306,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
                         subscriber.onError(e);
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(outputFile -> {
                     progressDialog.dismiss();
@@ -332,7 +332,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
                         subscriber.onError(e);
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ignore -> {
                     progressDialog.dismiss();

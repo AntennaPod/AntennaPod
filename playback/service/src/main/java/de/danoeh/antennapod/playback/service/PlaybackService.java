@@ -372,7 +372,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
             emitter.onSuccess(queueItems);
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
         singleShotDisposables.add(d);
@@ -432,7 +432,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             result.sendResult(loadChildrenSynchronous(parentId));
             emitter.onComplete();
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     () -> {
@@ -574,7 +574,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             return playable;
                         }
                     })
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             loadedPlayable -> startPlaying(loadedPlayable, allowStreamThisTime),
@@ -771,7 +771,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void startPlayingFromPreferences() {
         Disposable d = Observable.fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         playable -> startPlaying(playable, false),

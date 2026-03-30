@@ -109,7 +109,7 @@ public class ItemDescriptionFragment extends Fragment {
                     context, media.getDescription(), media.getDuration());
             emitter.onSuccess(shownotesCleaner.processShownotes());
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     webvDescription.loadDataWithBaseURL("https://127.0.0.1", data, "text/html",

@@ -133,7 +133,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         }
 
         disposable = Observable.fromCallable(() -> DBReader.getFeedItem(itemId))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     item = result;

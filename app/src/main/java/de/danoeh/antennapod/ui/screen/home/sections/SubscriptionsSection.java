@@ -97,7 +97,7 @@ public class SubscriptionsSection extends HomeSection {
         long threeYearsAgo = System.currentTimeMillis() - 3L * 365L * 24L * 60L * 60L * 1000L;
         disposable = Observable.fromCallable(() ->
                         DBReader.getStatistics(includeMarkedAsPlayed, threeYearsAgo, Long.MAX_VALUE).feedTime)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(statisticsData -> {
                     Collections.sort(statisticsData, (item1, item2) ->

@@ -62,7 +62,7 @@ public class LicensesFragment extends ListFragment {
             }
             emitter.onSuccess(licenses);
         })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
                 developers -> setListAdapter(new SimpleIconListAdapter<LicenseItem>(getContext(), developers)),

@@ -40,7 +40,7 @@ public class SpecialThanksFragment extends ListFragment {
             }
             emitter.onSuccess(specialMembers);
         })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
                 translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),

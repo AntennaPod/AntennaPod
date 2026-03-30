@@ -104,7 +104,7 @@ public class CoverFragment extends Fragment {
             } else {
                 emitter.onComplete();
             }
-        }).subscribeOn(Schedulers.io())
+        }).subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> {
                     this.media = media;

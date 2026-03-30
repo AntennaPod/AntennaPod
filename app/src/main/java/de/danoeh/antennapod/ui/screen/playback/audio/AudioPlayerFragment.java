@@ -262,7 +262,7 @@ public class AudioPlayerFragment extends Fragment implements
                 emitter.onComplete();
             }
         })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(media -> {
             updateUi(media);
