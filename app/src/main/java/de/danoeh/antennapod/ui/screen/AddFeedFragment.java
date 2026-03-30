@@ -181,7 +181,7 @@ public class AddFeedFragment extends Fragment {
             return;
         }
         Observable.fromCallable(() -> addLocalFolder(uri))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         feed -> {

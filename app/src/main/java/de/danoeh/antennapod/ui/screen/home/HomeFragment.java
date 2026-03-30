@@ -164,7 +164,7 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> DBReader.getTotalEpisodeCount(FeedItemFilter.unfiltered()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(numEpisodes -> {
                     boolean hasEpisodes = numEpisodes != 0;

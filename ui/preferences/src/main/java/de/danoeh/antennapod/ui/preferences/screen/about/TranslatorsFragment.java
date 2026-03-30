@@ -36,7 +36,7 @@ public class TranslatorsFragment extends ListFragment {
             }
             emitter.onSuccess(translators);
         })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
                 translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),

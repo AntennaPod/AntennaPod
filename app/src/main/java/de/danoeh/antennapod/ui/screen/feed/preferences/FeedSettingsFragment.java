@@ -59,7 +59,7 @@ public class FeedSettingsFragment extends Fragment {
                 emitter.onComplete();
             }
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> toolbar.setSubtitle(result.getTitle()),
                         error -> Log.d(TAG, Log.getStackTraceString(error)),

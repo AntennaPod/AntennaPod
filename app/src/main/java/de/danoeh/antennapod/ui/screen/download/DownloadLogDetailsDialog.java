@@ -125,7 +125,7 @@ public class DownloadLogDetailsDialog extends DialogFragment {
             }
             emitter.onSuccess(true);
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(obj -> updateUi(),
                         error -> Log.e(TAG, Log.getStackTraceString(error)));

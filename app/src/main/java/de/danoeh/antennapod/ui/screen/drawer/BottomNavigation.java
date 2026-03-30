@@ -74,7 +74,7 @@ public class BottomNavigation {
         }
         bottomNavigationBadgeLoader = Observable.fromCallable(
                         () -> DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.bottom_navigation_inbox);

@@ -160,7 +160,7 @@ public class PlaybackServiceTaskManager {
                 ChapterUtils.loadChapters(media, context, false);
                 emitter.onComplete();
             })
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> callback.onChapterLoaded(media),
                             throwable -> Log.d(TAG, "Error loading chapters: " + Log.getStackTraceString(throwable)));

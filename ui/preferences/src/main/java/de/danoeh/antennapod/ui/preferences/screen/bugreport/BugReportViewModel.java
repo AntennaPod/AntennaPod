@@ -173,7 +173,7 @@ public class BugReportViewModel extends AndroidViewModel {
         super(application);
         // Does file I/O, so we have to use a background thread
         this.disposable = Observable.fromCallable(() -> new UiState(application))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .subscribe(this.uiState::postValue);
     }
 

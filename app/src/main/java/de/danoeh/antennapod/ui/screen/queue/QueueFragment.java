@@ -533,7 +533,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             boolean displayGoToInboxButton = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW)) > 0;
             return new Pair<>(DBReader.getQueue(), displayGoToInboxButton);
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(itemsAndDisplayButton -> {
                     final boolean restoreScrollPosition = queue == null || queue.isEmpty();

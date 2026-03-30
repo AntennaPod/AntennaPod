@@ -415,7 +415,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             adapterFeeds.updateData(Collections.emptyList());
         } else {
             disposableFeeds = Observable.fromCallable(() -> DBReader.searchFeeds(query, state))
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(results -> {
                         progressBar.setVisibility(View.GONE);
@@ -424,7 +424,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                     }, error -> Log.e(TAG, Log.getStackTraceString(error)));
         }
         disposableEpisodes = Observable.fromCallable(() -> DBReader.searchFeedItems(feed, query, state))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(results -> {
                     progressBar.setVisibility(View.GONE);

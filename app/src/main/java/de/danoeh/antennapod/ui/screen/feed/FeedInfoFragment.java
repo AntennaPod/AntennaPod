@@ -145,7 +145,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                 emitter.onComplete();
             }
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result;
@@ -353,7 +353,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             feed.setDownloadUrl(Feed.PREFIX_LOCAL_FOLDER + uri.toString());
             FeedDatabaseWriter.updateFeed(getContext(), feed, false);
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> EventBus.getDefault().post(new MessageEvent(getString(android.R.string.ok))),

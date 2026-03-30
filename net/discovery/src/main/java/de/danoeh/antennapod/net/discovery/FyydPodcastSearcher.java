@@ -32,7 +32,7 @@ public class FyydPodcastSearcher implements PodcastSearcher {
 
             subscriber.onSuccess(searchResults);
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

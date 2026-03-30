@@ -117,7 +117,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
                 emitter.onComplete();
             }
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result;
