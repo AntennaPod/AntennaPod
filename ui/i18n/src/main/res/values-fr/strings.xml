@@ -343,7 +343,7 @@
     <string name="pref_auto_delete_sum">Supprimer les épisodes après la lecture ou si le téléchargement automatique a besoin de plus de place</string>
     <string name="pref_auto_local_delete_title">Suppression automatique pour dossiers locaux</string>
     <string name="pref_auto_local_delete_sum">Inclure les dossiers locaux lors de la suppression automatique</string>
-    <string name="pref_auto_local_delete_dialog_body">Attention la suppression des épisodes des dossiers locaux dans AntennaPod les suppriment aussi de votre appareil. Ils seront définitivement perdus et ne pourront pas être \"retélécharger\" à partir d\'AntennaPod. Activer quand même l\'option ?</string>
+    <string name="pref_auto_local_delete_dialog_body">Attention: la suppression des épisodes des dossiers locaux dans AntennaPod les supprime aussi de votre appareil. Ils seront définitivement perdus et ne pourront pas être \"retéléchargés\" à partir d\'AntennaPod. Activer quand même l\'option ?</string>
     <string name="pref_smart_mark_as_played_sum">En dessous de la durée choisie les épisodes seront marqués comme lus même s\'ils n\'ont pas été terminés</string>
     <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligemment</string>
     <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
