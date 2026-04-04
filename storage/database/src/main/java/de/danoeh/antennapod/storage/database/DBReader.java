@@ -73,14 +73,15 @@ public final class DBReader {
     }
 
     /**
-     * Returns a list with the download URLs of all feeds.
+     * Returns a list with the download URLs of feeds.
      *
-     * @return A list of Strings with the download URLs of all feeds.
+     * @param subscribedOnly If true, only return feeds with {@link Feed#STATE_SUBSCRIBED}.
+     * @return A list of Strings with the download URLs of matching feeds.
      */
-    public static List<String> getFeedListDownloadUrls() {
+    public static List<String> getFeedListDownloadUrls(boolean subscribedOnly) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getFeedCursorDownloadUrls()) {
+        try (Cursor cursor = adapter.getFeedCursorDownloadUrls(subscribedOnly)) {
             List<String> result = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 String url = cursor.getString(1);

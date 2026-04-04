@@ -1001,8 +1001,9 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFeedCursorDownloadUrls() {
-        return db.query(TABLE_NAME_FEEDS, new String[]{KEY_ID, KEY_DOWNLOAD_URL}, null, null, null, null, null);
+    public final Cursor getFeedCursorDownloadUrls(boolean subscribedOnly) {
+        String selection = subscribedOnly ? KEY_STATE + "=" + Feed.STATE_SUBSCRIBED : null;
+        return db.query(TABLE_NAME_FEEDS, new String[]{KEY_ID, KEY_DOWNLOAD_URL}, selection, null, null, null, null);
     }
 
     /**

@@ -965,7 +965,7 @@ public class DBWriter {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         long feedId = 0;
-        try (Cursor cursor = adapter.getFeedCursorDownloadUrls()) {
+        try (Cursor cursor = adapter.getFeedCursorDownloadUrls(false)) {
             if (cursor.moveToFirst()) {
                 do {
                     if (cursor.getString(1).equals(downloadUrl)) {
