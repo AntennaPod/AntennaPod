@@ -1,0 +1,47 @@
+name: Create Changelog
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: Base tag or branch to compare from
+        required: false
+        type: string
+      head_ref:
+        description: Head tag or branch to compare to
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run getChangelog.py
+        id: get_changelog
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: ${{ github.event.inputs.base_ref }}
+          HEAD: ${{ github.event.inputs.head_ref }}
+        run: python scripts/getChangelog.py
+
+      - name: Archive changelog as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelog
+          path: ${{ steps.get_changelog.outputs.filename }}
