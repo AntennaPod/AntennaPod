@@ -115,7 +115,7 @@ public class DbReaderTest {
         @Test
         public void testFeedListDownloadUrls() {
             List<Feed> feeds = saveFeedlist(10, 0, false);
-            List<String> urls = DBReader.getFeedListDownloadUrls();
+            List<String> urls = DBReader.getFeedListDownloadUrls(false);
             assertNotNull(urls);
             assertEquals(feeds.size(), urls.size());
             for (int i = 0; i < urls.size(); i++) {
