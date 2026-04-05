@@ -771,6 +771,7 @@
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
     <string name="wrong_password">Wrong password</string>
+    <string name="show_password_accessibility">Show password</string>
     <string name="synchronization_login_butLabel">Log in</string>
     <string name="synchronization_selectDevice_explanation">Please select the device that you created on the synchronization server or create a new one.</string>
     <string name="gpodnetauth_device_name">Device name</string>

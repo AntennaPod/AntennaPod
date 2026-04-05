@@ -60,9 +60,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="100%"
                     android:textSize="16sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:text="100%" />
 
             </LinearLayout>
 

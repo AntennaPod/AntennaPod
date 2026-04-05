@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.List;
-
 public abstract class IntentUtils {
     private static final String TAG = "IntentUtils";
 
@@ -18,14 +16,8 @@ public abstract class IntentUtils {
      *  Checks if there is at least one exported activity that can be performed for the intent
      */
     public static boolean isCallable(final Context context, final Intent intent) {
-        List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent,
-                PackageManager.MATCH_DEFAULT_ONLY);
-        for(ResolveInfo info : list) {
-            if(info.activityInfo.exported) {
-                return true;
-            }
-        }
-        return false;
+        ResolveInfo info = context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return info != null && info.activityInfo.exported;
     }
 
     public static void sendLocalBroadcast(Context context, String action) {

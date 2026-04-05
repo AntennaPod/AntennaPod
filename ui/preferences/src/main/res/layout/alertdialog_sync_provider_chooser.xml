@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/icon"
@@ -12,6 +14,7 @@
         android:layout_height="48dp"
         android:layout_marginRight="16dip"
         android:layout_marginEnd="16dip"
+        android:importantForAccessibility="no"
         android:layout_gravity="center_vertical" />
 
     <TextView

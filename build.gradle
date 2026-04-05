@@ -43,18 +43,3 @@ project.ext {
     testCoreVersion = "1.5.0"
     mockitoVersion = "5.15.2"
 }
-
-checkstyle {
-    toolVersion '10.3.1'
-}
-
-tasks.register('checkstyle', Checkstyle) {
-    minHeapSize = "200m"
-    maxHeapSize = "2g"
-    classpath = files()
-    source "${project.rootDir}"
-    exclude("**/generated-sources/**")
-    exclude("**/gen/**")
-    exclude("**/build/**")
-    exclude("**/generated/**")
-}

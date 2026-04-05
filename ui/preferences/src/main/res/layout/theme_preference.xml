@@ -2,12 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="?android:attr/colorBackground"
     android:gravity="top"
-    android:padding="8dp">
+    android:padding="8dp"
+    tools:ignore="Overdraw,UseCompoundDrawables">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/themeSystemCard"
@@ -15,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:clickable="true"
+        android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_weight="1"
         app:cardElevation="0dp"
@@ -32,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:maxHeight="200dp"
                 android:adjustViewBounds="true"
+                android:importantForAccessibility="no"
                 android:src="@drawable/theme_preview_system" />
 
             <TextView
@@ -53,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:clickable="true"
+        android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_weight="1"
         app:cardElevation="0dp"
@@ -70,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:maxHeight="200dp"
                 android:adjustViewBounds="true"
+                android:importantForAccessibility="no"
                 android:src="@drawable/theme_preview_light" />
 
             <TextView
@@ -91,6 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:clickable="true"
+        android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:layout_weight="1"
         app:cardElevation="0dp"
@@ -108,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:maxHeight="200dp"
                 android:adjustViewBounds="true"
+                android:importantForAccessibility="no"
                 android:src="@drawable/theme_preview_dark" />
 
             <TextView

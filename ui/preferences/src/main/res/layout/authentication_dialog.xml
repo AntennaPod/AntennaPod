@@ -53,6 +53,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:alpha="0.6"
             android:textSize="20sp"
+            android:contentDescription="@string/show_password_accessibility"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp" />
 

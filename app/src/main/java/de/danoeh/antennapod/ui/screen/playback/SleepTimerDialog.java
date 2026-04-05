@@ -73,6 +73,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
     private TimeDialogBinding viewBinding;
     private Disposable disposable;
     private volatile Integer currentQueueSize = null;
+    private volatile FeedMedia currentMedia = null;
 
     public SleepTimerDialog() {
     }
@@ -90,6 +91,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
 
         disposable = Single.fromCallable(() -> {
             FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            currentMedia = media;
             if (media == null || media.getItem() == null) {
                 return 0;
             }
@@ -97,8 +99,13 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> currentQueueSize = result,
-                        error -> currentQueueSize = 0);
+                .subscribe(result -> {
+                    currentQueueSize = result;
+                    refreshUiState();
+                }, error -> {
+                    currentQueueSize = 0;
+                    refreshUiState();
+                });
     }
 
     @Override
@@ -349,8 +356,9 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
                 }
             } else {
                 // for time sleep timers check if the selected value exceeds the remaining play time in the episode
-                final int remaining = controller != null ? controller.getDuration() - controller.getPosition() :
-                        Integer.MAX_VALUE;
+                final int remaining = (controller != null && currentMedia != null)
+                        ? currentMedia.getDuration() - currentMedia.getPosition()
+                        : Integer.MAX_VALUE;
                 final long timer = TimeUnit.MINUTES.toMillis(selectedSleepTime);
                 if ((timer > remaining) && !UserPreferences.isFollowQueue()) {
                     final int remainingMinutes = Math.toIntExact(TimeUnit.MILLISECONDS.toMinutes(remaining));

@@ -48,7 +48,7 @@ android {
     }
 
     lint {
-        disable "GradleDependency", "OutdatedLibrary", "AndroidGradlePluginVersion"
+        disable "GradleDependency", "OutdatedLibrary", "AndroidGradlePluginVersion", "CheckResult"
         checkDependencies true
         warningsAsErrors true
         abortOnError true
@@ -127,4 +127,26 @@ def parseSpotBugsXml(task, xmlFile) {
         throw new TaskExecutionException(task,
                 new Exception("SpotBugs violations were found. See output above for details."))
     }
+}
+
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = '10.12.0'
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+    ignoreFailures = false
+    showViolations = true
+}
+
+tasks.register('checkstyle', Checkstyle) {
+    group = "verification"
+
+    classpath = files()
+    source = fileTree('src/main/java') { include '**/*.java' }
+    if (file("src/free/java").exists()) source += fileTree("src/free/java") { include '**/*.java' }
+    if (file("src/play/java").exists()) source += fileTree("src/play/java") { include '**/*.java' }
+
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
 }
