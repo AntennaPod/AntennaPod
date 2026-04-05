@@ -127,16 +127,30 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             return true;
         });
 
-        // show the 'parental password' dialog if we're on a 'child' device (family link) or if it's a debug build
+        setParentalControlsVisibility();
+    }
+  
+    // show the 'parental password' dialog if we're on a 'child' device (family link) or if it's a debug build
+    private void setParentalControlsVisibility() {
         if (BuildConfig.DEBUG) {
             findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(true);
         } else {
             findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(false);
+
             AccountManager am = AccountManager.get(requireContext());
-            for (Account account : am.getAccountsByType("com.google")) {
-                am.hasFeatures(account, new String[]{"child"},
-                        f -> findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(getAccountFeatureResult(f)),
-                        new Handler(Looper.getMainLooper()));
+            Account[] accounts = am.getAccountsByType("com.google");
+
+            for (Account account : accounts) {
+                am.hasFeatures(account, new String[]{"child"}, future -> {
+                    try {
+                        if (future.getResult()) {
+                            // found a child account -> show parental controls
+                            findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(true);
+                        }
+                    } catch (AuthenticatorException | OperationCanceledException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }, new Handler(Looper.getMainLooper()));
             }
         }
     }
