@@ -21,7 +21,6 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import de.danoeh.antennapod.storage.preferences.ParentalControlPassword;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
@@ -32,6 +31,7 @@ import de.danoeh.antennapod.model.download.DownloadRequest;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.common.UrlChecker;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
 import de.danoeh.antennapod.net.discovery.FeedUrlNotFoundException;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
@@ -120,7 +120,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 password = savedInstanceState.getString("password");
             }
             String preparedUrl = UrlChecker.prepareUrl(feedUrl);
-            if (!ParentalControlPassword.isPasswordSet(this)) {
+            if (!UserPreferences.isParentalControlPasswordSet()) {
                 lookupUrlAndDownload(preparedUrl);
             } else {
                 showParentalControlDialog(preparedUrl);
@@ -445,7 +445,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String entered = dialogBinding.textInput.getText().toString();
-            if (ParentalControlPassword.verifyPassword(this, entered)) {
+            if (UserPreferences.verifyParentalControlPassword(entered)) {
                 alertDialog.dismiss();
                 lookupUrlAndDownload(feedUrl);
             } else {

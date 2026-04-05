@@ -23,7 +23,6 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
-import de.danoeh.antennapod.storage.preferences.ParentalControlPassword;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
@@ -228,7 +227,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
     }
 
     private void showChangePasswordDialog() {
-        if (ParentalControlPassword.isPasswordSet(requireContext())) {
+        if (UserPreferences.isParentalControlPasswordSet()) {
             // Password is set, need to verify old password first
             showVerifyOldPasswordDialog();
         } else {
@@ -253,7 +252,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String oldPassword = dialogBinding.textInput.getText().toString();
-            if (ParentalControlPassword.verifyPassword(requireContext(), oldPassword)) {
+            if (UserPreferences.verifyParentalControlPassword(oldPassword)) {
                 alertDialog.dismiss();
                 showSetNewPasswordDialog(true);
             } else {
@@ -264,8 +263,8 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
 
         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
             String oldPassword = dialogBinding.textInput.getText().toString();
-            if (ParentalControlPassword.verifyPassword(requireContext(), oldPassword)) {
-                ParentalControlPassword.clearPassword(requireContext());
+            if (UserPreferences.verifyParentalControlPassword(oldPassword)) {
+                UserPreferences.clearParentalControlPassword();
                 Toast.makeText(requireContext(), R.string.pref_parental_control_password_cleared, Toast.LENGTH_SHORT)
                         .show();
                 alertDialog.dismiss();
@@ -320,7 +319,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
                 Toast.makeText(requireContext(), R.string.pref_parental_control_passwords_dont_match,
                         Toast.LENGTH_SHORT).show();
             } else {
-                ParentalControlPassword.setPassword(requireContext(), newPassword);
+                UserPreferences.setParentalControlPassword(newPassword);
                 Toast.makeText(requireContext(),
                         isChanging ? R.string.pref_parental_control_password_changed
                                 : R.string.pref_parental_control_password_set,
