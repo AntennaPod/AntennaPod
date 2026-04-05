@@ -12,22 +12,6 @@
     <string name="feed_update_receiver_name">Update subscriptions</string>
     <string name="statistics_label">Statistics</string>
     <string name="password">Password</string>
-    <string name="parental_control">Parental Control</string>
-    <string name="pref_parental_control_password_title">Parental Control Password</string>
-    <string name="pref_parental_control_password_summary">Set a password to restrict adding new subscriptions</string>
-    <string name="pref_parental_control_set_password">Set Password</string>
-    <string name="pref_parental_control_change_password">Change Password</string>
-    <string name="pref_parental_control_enter_old_password">Enter your current password to change it or clear it</string>
-    <string name="pref_parental_control_old_password">Current password</string>
-    <string name="pref_parental_control_new_password">New password</string>
-    <string name="pref_parental_control_confirm_password">Confirm password</string>
-    <string name="pref_parental_control_confirm_password_title">Confirm Password</string>
-    <string name="pref_parental_control_passwords_dont_match">Passwords don\'t match</string>
-    <string name="pref_parental_control_password_empty">Password cannot be empty</string>
-    <string name="pref_parental_control_password_set">Password set successfully</string>
-    <string name="pref_parental_control_password_changed">Password changed successfully</string>
-    <string name="pref_parental_control_password_cleared">Password cleared successfully</string>
-    <string name="pref_parental_control_clear_password">Clear Password</string>
     <string name="statistics_label_short">Stats</string>
     <string name="add_feed_label">Add podcast</string>
     <string name="add_feed_label_short">Add</string>
@@ -995,9 +979,28 @@
     <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
     <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
 
+    <!-- Shortcuts -->
     <string name="shortcut_subscription_label">Subscription shortcut</string>
     <string name="shortcut_select_subscription">Select subscription</string>
     <string name="add_shortcut">Add shortcut</string>
+
+    <!-- Parental Control -->
+    <string name="parental_control">Parental Control</string>
+    <string name="pref_parental_control_password_title">Parental Control Password</string>
+    <string name="pref_parental_control_password_summary">Set a password to restrict adding new subscriptions</string>
+    <string name="pref_parental_control_set_password">Set Password</string>
+    <string name="pref_parental_control_change_password">Change Password</string>
+    <string name="pref_parental_control_enter_old_password">Enter your current password to change it or clear it</string>
+    <string name="pref_parental_control_old_password">Current password</string>
+    <string name="pref_parental_control_new_password">New password</string>
+    <string name="pref_parental_control_confirm_password">Confirm password</string>
+    <string name="pref_parental_control_confirm_password_title">Confirm Password</string>
+    <string name="pref_parental_control_passwords_dont_match">Passwords don\'t match</string>
+    <string name="pref_parental_control_password_empty">Password cannot be empty</string>
+    <string name="pref_parental_control_password_set">Password set successfully</string>
+    <string name="pref_parental_control_password_changed">Password changed successfully</string>
+    <string name="pref_parental_control_password_cleared">Password cleared successfully</string>
+    <string name="pref_parental_control_clear_password">Clear Password</string>
 
     <!-- Echo -->
     <string name="antennapod_echo" translatable="false">AntennaPod Echo</string>
