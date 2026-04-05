@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.preference.Preference;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.storage.preferences.ParentalControlPassword;
@@ -127,13 +128,17 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             return true;
         });
 
-        // only show the 'parental password' dialog if we're on a 'child' device (family link)
-        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(false);
-        AccountManager am = AccountManager.get(requireContext());
-        for (Account account : am.getAccountsByType("com.google")) {
-            am.hasFeatures(account, new String[]{"child"},
-                    f -> findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(getAccountFeatureResult(f)),
-                    new Handler(Looper.getMainLooper()));
+        // show the 'parental password' dialog if we're on a 'child' device (family link) or if it's a debug build
+        if (BuildConfig.DEBUG) {
+            findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(true);
+        } else {
+            findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(false);
+            AccountManager am = AccountManager.get(requireContext());
+            for (Account account : am.getAccountsByType("com.google")) {
+                am.hasFeatures(account, new String[]{"child"},
+                        f -> findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(getAccountFeatureResult(f)),
+                        new Handler(Looper.getMainLooper()));
+            }
         }
     }
 
