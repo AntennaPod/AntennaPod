@@ -40,7 +40,6 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
-import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
 import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
@@ -72,6 +71,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 
 public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
@@ -131,14 +132,15 @@ public class Media3PlaybackService extends MediaLibraryService {
                     return;
                 }
 
-                // Auto-rewind logic using database timestamp (Issue #8268)
-                if (currentPlayable != null && currentPlayable.getLastPlayedTimeStatistics() > 0) {
-                    int currentPosition = (int) getCurrentPosition();
-                    long lastPlayed = currentPlayable.getLastPlayedTimeStatistics();
-                    int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(currentPosition, lastPlayed);
-
-                    if (newPosition < currentPosition) {
-                        seekTo(newPosition);
+                // Apply auto-rewind when resuming playback from a paused state
+                if (currentPlayable != null && !getPlayWhenReady()) {
+                    long savedPosition = getCurrentPosition();
+                    if (currentPlayable.getLastPlayedTimeStatistics() > 0) {
+                        long startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics());
+                        if (startPosition != savedPosition) {
+                            seekTo(startPosition);
+                        }
                     }
                 }
                 super.play();
@@ -172,9 +174,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         @NonNull
         @UnstableApi
         public ListenableFuture<SessionResult> onCustomCommand(@NonNull MediaSession session,
-                                                               @NonNull MediaSession.ControllerInfo controller,
-                                                               @NonNull SessionCommand customCommand,
-                                                               @NonNull Bundle args) {
+                @NonNull MediaSession.ControllerInfo controller,
+                @NonNull SessionCommand customCommand,
+                @NonNull Bundle args) {
             if (customCommand.customAction.equals(SESSION_COMMAND_PLAYBACK_SPEED.customAction)) {
                 setNextPlaybackSpeed();
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
@@ -207,7 +209,6 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     @UnstableApi
     private final Player.Listener playerListener = new Player.Listener() {
-
         @Override
         public void onPlaybackStateChanged(int playbackState) {
             if (playbackState == Player.STATE_BUFFERING) {
@@ -250,7 +251,6 @@ public class Media3PlaybackService extends MediaLibraryService {
             } else {
                 cancelPositionObserver();
                 saveCurrentPosition();
-
                 if (currentPlayable != null) {
                     SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
                 }
@@ -396,9 +396,14 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 showStreamingConfirmation(media);
                                 return;
                             }
+
+                            // Restore exact DB position, auto-rewind ()
                             allowStreamingThisTime = false;
-                            currentPlayable.setPosition((int) player.getCurrentPosition());
+                            long savedPosition = media.getPosition();
+                            currentPlayable.setPosition((int) savedPosition);
+                            player.seekTo(savedPosition);
                             currentPlayable.onPlaybackStart();
+
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
                                 DBWriter.addQueueItem(this, currentPlayable.getItem());
@@ -417,7 +422,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             updatePlaybackPreferences();
                             EventBus.getDefault().post(new PlayerStatusEvent());
-                        }, error -> Log.e(TAG, "Failed to load current media", error));
+                        },
+                                error -> Log.e(TAG, "Failed to load current media", error));
 
             }
         } catch (NumberFormatException e) {
@@ -596,35 +602,44 @@ public class Media3PlaybackService extends MediaLibraryService {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(pair -> {
-                    final FeedMedia nextMedia = pair.first;
-                    final MediaItem nextMediaItem = pair.second;
-                    if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
-                            && !allowStreamingThisTime && UserPreferences.isFollowQueue()) {
-                        showStreamingConfirmation(nextMedia);
-                        return;
-                    }
-                    allowStreamingThisTime = false;
+                .subscribe(
+                        pair -> {
+                            final FeedMedia nextMedia = pair.first;
+                            final MediaItem nextMediaItem = pair.second;
+                            if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
+                                    && !allowStreamingThisTime && UserPreferences.isFollowQueue()) {
+                                showStreamingConfirmation(nextMedia);
+                                return;
+                            }
+                            allowStreamingThisTime = false;
 
-                    currentPlayable = nextMedia;
-                    currentPlayable.onPlaybackStart();
-                    PlaybackPreferences.writeMediaPlaying(nextMedia);
-                    if (nextMedia.getItem() != null && nextMedia.getItem().getFeed() != null) {
-                        volumeAdaptionFactor = nextMedia.getItem().getFeed()
-                                .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
-                        applyVolumeAdaption(1.0f);
-                    }
-                    player.setPlayWhenReady(UserPreferences.isFollowQueue());
-                    player.setMediaItem(nextMediaItem);
-                    player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia));
-                    player.prepare();
-                }, error -> Log.e(TAG, "Failed to load next queue item", error), () -> {
-                    player.stop();
-                    player.clearMediaItems();
-                    PlaybackPreferences.writeNoMediaPlaying();
-                    EventBus.getDefault().post(
-                            new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
-                });
+                            currentPlayable = nextMedia;
+                            currentPlayable.onPlaybackStart();
+                            PlaybackPreferences.writeMediaPlaying(nextMedia);
+                            if (nextMedia.getItem() != null && nextMedia.getItem().getFeed() != null) {
+                                volumeAdaptionFactor = nextMedia.getItem().getFeed()
+                                        .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
+                                applyVolumeAdaption(1.0f);
+                            }
+                            player.setPlayWhenReady(UserPreferences.isFollowQueue());
+                            player.setMediaItem(nextMediaItem);
+                            // Apply auto-rewind when transitioning to next item
+                            long startPosition = SkipUtils.skipIntroIfNecessary(this, nextMedia);
+                            if (nextMedia.getLastPlayedTimeStatistics() > 0) {
+                                startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                        (int) startPosition, nextMedia.getLastPlayedTimeStatistics());
+                            }
+                            player.seekTo(startPosition);
+                            player.prepare();
+                        },
+                        error -> Log.e(TAG, "Failed to load next queue item", error),
+                        () -> {
+                            player.stop();
+                            player.clearMediaItems();
+                            PlaybackPreferences.writeNoMediaPlaying();
+                            EventBus.getDefault().post(
+                                    new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
