@@ -86,7 +86,6 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
     private long lastPositionSaveTime = 0;
-    private long pauseTimestamp = 0;
     private SleepTimer sleepTimer;
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
@@ -210,7 +209,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                 saveCurrentPosition();
             }
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
-                pauseTimestamp = 0;
                 FeedMedia media = currentPlayable;
                 currentPlayable = null; // To avoid position updater saving position after we already reset it
                 onPlaybackEnd(media);
@@ -236,17 +234,15 @@ public class Media3PlaybackService extends MediaLibraryService {
             PlaybackService.isRunning = !Util.shouldShowPlayButton(player);
             if (PlaybackService.isRunning) {
                 lastPositionSaveTime = System.currentTimeMillis();
-                if (pauseTimestamp > 0 && currentPlayable != null) {
+                if (currentPlayable != null) {
                     int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                            (int) player.getCurrentPosition(), pauseTimestamp);
+                            (int) player.getCurrentPosition(), currentPlayable.getLastPlayedTimeStatistics());
                     player.seekTo(newPosition);
                 }
-                pauseTimestamp = 0;
                 setupPositionObserver();
             } else {
                 cancelPositionObserver();
                 saveCurrentPosition();
-                pauseTimestamp = System.currentTimeMillis();
                 if (currentPlayable != null) {
                     SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
                 }
@@ -273,7 +269,6 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         @Override
         public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
-            pauseTimestamp = 0;
             ensureCurrentMediaLoaded();
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
@@ -394,6 +389,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 return;
                             }
                             allowStreamingThisTime = false;
+                            if (player.isPlaying()) {
+                                int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                        (int) player.getCurrentPosition(), media.getLastPlayedTimeStatistics());
+                                player.seekTo(newPosition);
+                            }
                             currentPlayable.setPosition((int) player.getCurrentPosition());
                             currentPlayable.onPlaybackStart();
                             if (currentPlayable.getItem() != null
