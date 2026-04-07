@@ -40,6 +40,7 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
 import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
@@ -85,6 +86,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
     private long lastPositionSaveTime = 0;
+    private long pauseTimestamp = 0;
     private SleepTimer sleepTimer;
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
@@ -208,6 +210,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 saveCurrentPosition();
             }
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
+                pauseTimestamp = 0;
                 FeedMedia media = currentPlayable;
                 currentPlayable = null; // To avoid position updater saving position after we already reset it
                 onPlaybackEnd(media);
@@ -233,10 +236,17 @@ public class Media3PlaybackService extends MediaLibraryService {
             PlaybackService.isRunning = !Util.shouldShowPlayButton(player);
             if (PlaybackService.isRunning) {
                 lastPositionSaveTime = System.currentTimeMillis();
+                if (pauseTimestamp > 0 && currentPlayable != null) {
+                    int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                            (int) player.getCurrentPosition(), pauseTimestamp);
+                    player.seekTo(newPosition);
+                }
+                pauseTimestamp = 0;
                 setupPositionObserver();
             } else {
                 cancelPositionObserver();
                 saveCurrentPosition();
+                pauseTimestamp = System.currentTimeMillis();
                 if (currentPlayable != null) {
                     SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
                 }
@@ -263,6 +273,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         @Override
         public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
+            pauseTimestamp = 0;
             ensureCurrentMediaLoaded();
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
