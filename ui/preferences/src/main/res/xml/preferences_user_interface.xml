@@ -55,12 +55,6 @@
                 android:summary="@string/pref_full_notification_buttons_sum"
                 android:title="@string/pref_full_notification_buttons_title"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/parental_control">
-        <Preference
-                android:key="prefParentalControlPassword"
-                android:title="@string/pref_parental_control_password_title"
-                android:summary="@string/pref_parental_control_password_summary"/>
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/behavior">
         <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference
                 android:entryValues="@array/default_page_values"

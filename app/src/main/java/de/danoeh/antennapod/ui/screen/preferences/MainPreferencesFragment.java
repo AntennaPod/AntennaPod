@@ -1,20 +1,35 @@
 package de.danoeh.antennapod.ui.screen.preferences;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.InputType;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.EditTextDialogBinding;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.preferences.screen.about.AboutFragment;
 import de.danoeh.antennapod.ui.preferences.screen.bugreport.BugReportFragment;
+
+import java.io.IOException;
 
 public class MainPreferencesFragment extends AnimatedPreferenceFragment {
 
@@ -30,12 +45,14 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
+    private static final String PREF_PARENTAL_CONTROL_PASSWORD = "prefParentalControlPassword";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
         setupMainScreen();
         setupSearch();
+        setParentalControlsVisibility();
 
         // If you are writing a spin-off, please update the details on screens like "About" and "Report bug"
         // and afterwards remove the following lines. Please keep in mind that AntennaPod is licensed under the GPL.
@@ -120,6 +137,131 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
                     .replace(R.id.settingsContainer, new BugReportFragment())
                     .addToBackStack(getString(R.string.report_bug_title)).commit();
             return true;
+        });
+        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setOnPreferenceClickListener(preference -> {
+            showChangePasswordDialog();
+            return true;
+        });
+    }
+
+    // show the 'parental password' preference if we're on a 'child' device (family link) or if it's a debug build
+    private void setParentalControlsVisibility() {
+        if (BuildConfig.DEBUG) {
+            findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(true);
+        } else {
+            findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(false);
+            AccountManager am = AccountManager.get(requireContext());
+            for (Account account : am.getAccountsByType("com.google")) {
+                am.hasFeatures(account, new String[]{"child"}, future -> {
+                    try {
+                        if (future.getResult()) {
+                            findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(true);
+                        }
+                    } catch (AuthenticatorException | OperationCanceledException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }, new Handler(Looper.getMainLooper()));
+            }
+        }
+    }
+
+    private void showChangePasswordDialog() {
+        if (UserPreferences.isParentalControlPasswordSet()) {
+            showVerifyOldPasswordDialog();
+        } else {
+            showSetNewPasswordDialog(false);
+        }
+    }
+
+    private void showVerifyOldPasswordDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(R.string.pref_parental_control_password_title);
+        builder.setMessage(R.string.pref_parental_control_enter_old_password);
+        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+        dialogBinding.textInput.setHint(R.string.pref_parental_control_old_password);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(dialogBinding.getRoot());
+        builder.setPositiveButton(R.string.confirm_label, null);
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.setNeutralButton(R.string.pref_parental_control_clear_password, null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String oldPassword = dialogBinding.textInput.getText().toString();
+            if (UserPreferences.verifyParentalControlPassword(oldPassword)) {
+                alertDialog.dismiss();
+                showSetNewPasswordDialog(true);
+            } else {
+                dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
+                Toast.makeText(requireContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
+            String oldPassword = dialogBinding.textInput.getText().toString();
+            if (UserPreferences.verifyParentalControlPassword(oldPassword)) {
+                UserPreferences.clearParentalControlPassword();
+                Toast.makeText(requireContext(), R.string.pref_parental_control_password_cleared, Toast.LENGTH_SHORT)
+                        .show();
+                alertDialog.dismiss();
+            } else {
+                dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
+                Toast.makeText(requireContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showSetNewPasswordDialog(boolean isChanging) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(isChanging ? R.string.pref_parental_control_change_password
+                : R.string.pref_parental_control_set_password);
+        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+        dialogBinding.textInput.setHint(R.string.pref_parental_control_new_password);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(dialogBinding.getRoot());
+        builder.setPositiveButton(R.string.confirm_label, null);
+        builder.setNegativeButton(R.string.cancel_label, null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String newPassword = dialogBinding.textInput.getText().toString();
+            if (newPassword.isEmpty()) {
+                dialogBinding.textInputLayout.setError(getString(R.string.pref_parental_control_password_empty));
+                return;
+            }
+            showConfirmPasswordDialog(newPassword, isChanging);
+            alertDialog.dismiss();
+        });
+    }
+
+    private void showConfirmPasswordDialog(String newPassword, boolean isChanging) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(R.string.pref_parental_control_confirm_password_title);
+        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+        dialogBinding.textInput.setHint(R.string.pref_parental_control_confirm_password);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(dialogBinding.getRoot());
+        builder.setPositiveButton(R.string.confirm_label, null);
+        builder.setNegativeButton(R.string.cancel_label, null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String confirmPassword = dialogBinding.textInput.getText().toString();
+            if (!newPassword.equals(confirmPassword)) {
+                dialogBinding.textInputLayout.setError(getString(R.string.pref_parental_control_passwords_dont_match));
+                Toast.makeText(requireContext(), R.string.pref_parental_control_passwords_dont_match,
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                UserPreferences.setParentalControlPassword(newPassword);
+                Toast.makeText(requireContext(),
+                        isChanging ? R.string.pref_parental_control_password_changed
+                                : R.string.pref_parental_control_password_set,
+                        Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
+            }
         });
     }
 
