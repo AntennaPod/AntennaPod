@@ -389,11 +389,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 return;
                             }
                             allowStreamingThisTime = false;
-                            if (player.isPlaying()) {
-                                int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                                        (int) player.getCurrentPosition(), media.getLastPlayedTimeStatistics());
-                                player.seekTo(newPosition);
-                            }
                             currentPlayable.setPosition((int) player.getCurrentPosition());
                             currentPlayable.onPlaybackStart();
                             if (currentPlayable.getItem() != null
