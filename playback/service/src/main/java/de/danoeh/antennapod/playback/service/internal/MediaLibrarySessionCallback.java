@@ -48,10 +48,11 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final String MEDIA_ID_DOWNLOADS = "downloads";
     private static final String MEDIA_ID_EPISODES = "episodes";
     private static final String MEDIA_ID_SUBSCRIPTIONS = "subscriptions";
-    private static final String MEDIA_ID_CURRENT = "current";
+    private static final String MEDIA_ID_CONTINUE_LISTENING = "continue_listening";
+    private static final int CONTINUE_LISTENING_NUM_EPISODES = 8;
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
             MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
-            MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CURRENT);
+            MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CONTINUE_LISTENING);
 
     protected static final SessionCommand SESSION_COMMAND_REWIND
             = new SessionCommand("rewind", Bundle.EMPTY);
@@ -254,20 +255,14 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         if (mediaItems.isEmpty()) {
             return Futures.immediateFuture(Collections.emptyList());
         }
-        long mediaId;
-        try {
-            mediaId = Long.parseLong(mediaItems.get(0).mediaId);
-        } catch (NumberFormatException e) {
-            return Futures.immediateFuture(Collections.emptyList());
-        }
 
         SettableFuture<List<MediaItem>> future = SettableFuture.create();
-        disposables.add(Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
+        disposables.add(Single.fromCallable(() -> enrichMediaItems(mediaItems))
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        media -> future.set(Collections.singletonList(MediaItemAdapter.fromPlayable(context, media))),
+                        items -> future.set(items.isEmpty() ? Collections.emptyList() : items),
                         error -> {
-                            Log.e(TAG, "Failed to load media with id " + mediaId, error);
+                            Log.e(TAG, "Failed to load media items", error);
                             future.set(Collections.emptyList());
                         }
                 ));
@@ -310,7 +305,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         if ("com.google.android.googlequicksearchbox".equals(browser.getPackageName())) {
             // Android Auto "for you" screen
             return Futures.immediateFuture(LibraryResult.ofItem(
-                    createBrowsableMediaItem(MEDIA_ID_CURRENT), libraryParams));
+                    createBrowsableMediaItem(MEDIA_ID_CONTINUE_LISTENING), libraryParams));
         }
         return Futures.immediateFuture(LibraryResult.ofItem(createBrowsableMediaItem(MEDIA_ID_ROOT), libraryParams));
     }
@@ -341,7 +336,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         switch (parentId) {
             case MEDIA_ID_ROOT:
                 disposables.add(Single.fromCallable(() -> ImmutableList.of(
-                                createBrowsableMediaItem(MEDIA_ID_CURRENT),
+                                createBrowsableMediaItem(MEDIA_ID_CONTINUE_LISTENING),
                                 createBrowsableMediaItem(MEDIA_ID_QUEUE),
                                 createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
                                 createBrowsableMediaItem(MEDIA_ID_EPISODES),
@@ -365,17 +360,15 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                 },
                                 future::setException));
                 return future;
-            case MEDIA_ID_CURRENT:
-                disposables.add(Single.fromCallable(() ->
-                                DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+            case MEDIA_ID_CONTINUE_LISTENING:
+                disposables.add(Single.fromCallable(
+                                () -> DBReader.getPausedQueue(CONTINUE_LISTENING_NUM_EPISODES))
                         .subscribeOn(Schedulers.io())
                         .subscribe(
-                                media -> {
-                                    future.set(LibraryResult.ofItemList(
-                                            ImmutableList.of(MediaItemAdapter.fromPlayable(context, media)), params));
-                                },
+                                items -> future.set(LibraryResult.ofItemList(
+                                        MediaItemAdapter.fromItemList(context, items), params)),
                                 error -> {
-                                    Log.e(TAG, "Failed to load currently playing media", error);
+                                    Log.e(TAG, "Failed to load continue listening", error);
                                     future.set(LibraryResult.ofItemList(ImmutableList.of(), params));
                                 }
                         ));
@@ -429,6 +422,21 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     @WorkerThread
+    private List<MediaItem> enrichMediaItems(List<MediaItem> mediaItems) {
+        ImmutableList.Builder<MediaItem> builder = ImmutableList.builder();
+        for (MediaItem item : mediaItems) {
+            try {
+                long mediaId = Long.parseLong(item.mediaId);
+                FeedMedia media = DBReader.getFeedMedia(mediaId);
+                builder.add(MediaItemAdapter.fromPlayable(context, media));
+            } catch (NumberFormatException e) {
+                Log.e(TAG, "Invalid media ID: " + item.mediaId, e);
+            }
+        }
+        return builder.build();
+    }
+
+    @WorkerThread
     private MediaItem createBrowsableMediaItem(String id) {
         if (id.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
             long feedId = Long.parseLong(id.split(":")[1]);
@@ -460,8 +468,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             case MEDIA_ID_SUBSCRIPTIONS:
                 return MediaItemAdapter.from(context, MEDIA_ID_SUBSCRIPTIONS,
                         context.getString(R.string.subscriptions_label), R.drawable.ic_subscriptions_black, null);
-            case MEDIA_ID_CURRENT:
-                return MediaItemAdapter.from(context, MEDIA_ID_CURRENT,
+            case MEDIA_ID_CONTINUE_LISTENING:
+                return MediaItemAdapter.from(context, MEDIA_ID_CONTINUE_LISTENING,
                         context.getString(R.string.current_playing_episode), R.drawable.ic_play_48dp_black, null);
             default:
                 throw new IllegalArgumentException("ID not known: " + id);
