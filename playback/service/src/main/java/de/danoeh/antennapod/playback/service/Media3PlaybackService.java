@@ -40,6 +40,7 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
+import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.playback.cast.CastPlayerWrapper;
 import de.danoeh.antennapod.playback.service.internal.ExoPlayerUtils;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
@@ -71,8 +72,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 
 public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
@@ -132,15 +131,12 @@ public class Media3PlaybackService extends MediaLibraryService {
                     return;
                 }
 
-                // Apply auto-rewind when resuming playback from a paused state
                 if (currentPlayable != null && !getPlayWhenReady()) {
                     long savedPosition = getCurrentPosition();
-                    if (currentPlayable.getLastPlayedTimeStatistics() > 0) {
-                        long startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                                (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics());
-                        if (startPosition != savedPosition) {
-                            seekTo(startPosition);
-                        }
+                    long startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                            (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics());
+                    if (startPosition != savedPosition) {
+                        seekTo(startPosition);
                     }
                 }
                 super.play();
@@ -396,14 +392,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 showStreamingConfirmation(media);
                                 return;
                             }
-
-                            // Restore exact DB position, auto-rewind ()
                             allowStreamingThisTime = false;
                             long savedPosition = media.getPosition();
                             currentPlayable.setPosition((int) savedPosition);
                             player.seekTo(savedPosition);
                             currentPlayable.onPlaybackStart();
-
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
                                 DBWriter.addQueueItem(this, currentPlayable.getItem());
@@ -623,12 +616,9 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            // Apply auto-rewind when transitioning to next item
                             long startPosition = SkipUtils.skipIntroIfNecessary(this, nextMedia);
-                            if (nextMedia.getLastPlayedTimeStatistics() > 0) {
-                                startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                                        (int) startPosition, nextMedia.getLastPlayedTimeStatistics());
-                            }
+                            startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                    (int) startPosition, nextMedia.getLastPlayedTimeStatistics());
                             player.seekTo(startPosition);
                             player.prepare();
                         },
