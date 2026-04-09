@@ -393,9 +393,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 return;
                             }
                             allowStreamingThisTime = false;
-                            long savedPosition = media.getPosition();
-                            currentPlayable.setPosition((int) savedPosition);
-                            player.seekTo(savedPosition);
+                            currentPlayable.setPosition((int) player.getCurrentPosition());
                             currentPlayable.onPlaybackStart();
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
@@ -616,10 +614,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem);
-                            long startPosition = SkipUtils.skipIntroIfNecessary(this, nextMedia);
-                            startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                                    (int) startPosition, nextMedia.getLastPlayedTimeStatistics());
-                            player.seekTo(startPosition);
+                            player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia));
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
