@@ -30,6 +30,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
+import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -238,6 +239,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
                     long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
+                    startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                            (int) startPosition, result.second.getLastPlayedTimeStatistics());
                     future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
                 }, error -> {
                     Log.e(TAG, "Failed to load media", error);
@@ -285,10 +288,13 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         media -> {
+                            long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
+                            startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                    (int) startPosition, media.getLastPlayedTimeStatistics());
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(MediaItemAdapter.fromPlayable(context, media)),
-                                            0, SkipUtils.skipIntroIfNecessary(context, media));
+                                            0, startPosition);
                             future.set(result);
                         },
                         future::setException
