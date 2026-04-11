@@ -146,22 +146,62 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
 
     // show the 'parental password' preference if we're on a 'child' device (family link) or if it's a debug build
     private void setParentalControlsVisibility() {
-        if (BuildConfig.DEBUG) {
-            findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(true);
-        } else {
-            findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(false);
-            AccountManager am = AccountManager.get(requireContext());
-            for (Account account : am.getAccountsByType("com.google")) {
-                am.hasFeatures(account, new String[]{"child"}, future -> {
+        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(false);
+
+        // --- Approach 1: AccountManager - all accounts ---
+        AccountManager am = AccountManager.get(requireContext());
+        Account[] allAccounts = am.getAccounts();
+        android.util.Log.d("ParentalControl", "All accounts (" + allAccounts.length + "):");
+        for (Account account : allAccounts) {
+            android.util.Log.d("ParentalControl", "  name=" + account.name + " type=" + account.type);
+        }
+
+        // --- Approach 2: AccountManager feature checks on all Google accounts ---
+        String[] featuresToCheck = {"child", "service_uca_familylink", "features_FAMILY_LINK_CHILD"};
+        Account[] googleAccounts = am.getAccountsByType("com.google");
+        android.util.Log.d("ParentalControl", "Google accounts: " + googleAccounts.length);
+        for (Account account : googleAccounts) {
+            for (String feature : featuresToCheck) {
+                am.hasFeatures(account, new String[]{feature}, future -> {
                     try {
-                        if (future.getResult()) {
+                        boolean has = future.getResult();
+                        android.util.Log.d("ParentalControl", "  " + account.name + " feature=" + feature + " -> " + has);
+                        if (has) {
                             findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(true);
                         }
                     } catch (AuthenticatorException | OperationCanceledException | IOException e) {
-                        e.printStackTrace();
+                        android.util.Log.e("ParentalControl", "  error for feature=" + feature, e);
                     }
                 }, new Handler(Looper.getMainLooper()));
             }
+        }
+
+        // --- Approach 3: UserManager restrictions set by Family Link ---
+        android.os.UserManager um = requireContext().getSystemService(android.os.UserManager.class);
+        android.os.Bundle restrictions = um.getUserRestrictions();
+        android.util.Log.d("ParentalControl", "UserRestrictions:");
+        for (String key : restrictions.keySet()) {
+            android.util.Log.d("ParentalControl", "  " + key + "=" + restrictions.get(key));
+        }
+        boolean disallowInstall = um.hasUserRestriction(android.os.UserManager.DISALLOW_INSTALL_APPS);
+        boolean disallowUninstall = um.hasUserRestriction(android.os.UserManager.DISALLOW_UNINSTALL_APPS);
+        android.util.Log.d("ParentalControl", "DISALLOW_INSTALL_APPS=" + disallowInstall
+                + " DISALLOW_UNINSTALL_APPS=" + disallowUninstall);
+
+        // --- Approach 4: Check if Family Link helper app is installed ---
+        String[] familyLinkPackages = {
+                "com.google.android.apps.kids.familylinkhelper",
+                "com.google.android.apps.kids.familylink",
+                "com.google.android.apps.kids.home"
+        };
+        android.content.pm.PackageManager pm = requireContext().getPackageManager();
+        for (String pkg : familyLinkPackages) {
+            boolean installed = false;
+            try {
+                pm.getPackageInfo(pkg, 0);
+                installed = true;
+            } catch (android.content.pm.PackageManager.NameNotFoundException ignored) { }
+            android.util.Log.d("ParentalControl", "package " + pkg + " installed=" + installed);
         }
     }
 
