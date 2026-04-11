@@ -1001,6 +1001,12 @@
     <string name="pref_parental_control_password_changed">Password changed successfully</string>
     <string name="pref_parental_control_password_cleared">Password cleared successfully</string>
     <string name="pref_parental_control_clear_password">Clear Password</string>
+    <string name="pref_parental_control_title">Parental Controls</string>
+    <string name="pref_parental_control_sum">Restrict adding new subscriptions with a password</string>
+    <string name="pref_parental_control_enabled_title">Enabled</string>
+    <string name="pref_parental_control_enabled_sum">Protect parental controls with a password</string>
+    <string name="pref_parental_control_require_subscribe_title">Require password for subscribing</string>
+    <string name="pref_parental_control_require_subscribe_sum">Ask for the parental control password when subscribing to new podcasts</string>
 
     <!-- Echo -->
     <string name="antennapod_echo" translatable="false">AntennaPod Echo</string>

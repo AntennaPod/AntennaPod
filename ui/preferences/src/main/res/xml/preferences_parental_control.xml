@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreferenceCompat
+            android:key="prefParentalControlEnabled"
+            android:title="@string/pref_parental_control_enabled_title"
+            android:summary="@string/pref_parental_control_enabled_sum"
+            android:persistent="false"/>
+    <SwitchPreferenceCompat
+            android:key="prefParentalControlRequireSubscribe"
+            android:title="@string/pref_parental_control_require_subscribe_title"
+            android:summary="@string/pref_parental_control_require_subscribe_sum"
+            android:defaultValue="true"/>
+</PreferenceScreen>

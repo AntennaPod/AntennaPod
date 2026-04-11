@@ -47,9 +47,9 @@
             android:icon="@drawable/ic_notifications"/>
 
     <Preference
-            android:key="prefParentalControlPassword"
-            android:title="@string/pref_parental_control_password_title"
-            android:summary="@string/pref_parental_control_password_summary"
+            android:key="prefScreenParentalControl"
+            android:title="@string/pref_parental_control_title"
+            android:summary="@string/pref_parental_control_sum"
             android:icon="@drawable/ic_settings"/>
 
     <PreferenceCategory

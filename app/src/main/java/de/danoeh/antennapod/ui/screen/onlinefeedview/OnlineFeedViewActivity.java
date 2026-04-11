@@ -120,10 +120,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 password = savedInstanceState.getString("password");
             }
             String preparedUrl = UrlChecker.prepareUrl(feedUrl);
-            if (!UserPreferences.isParentalControlPasswordSet()) {
-                lookupUrlAndDownload(preparedUrl);
-            } else {
+            if (UserPreferences.isParentalControlPasswordSet()
+                    && UserPreferences.isParentalControlRequireSubscribeSet()) {
                 showParentalControlDialog(preparedUrl);
+            } else {
+                lookupUrlAndDownload(preparedUrl);
             }
         }
     }

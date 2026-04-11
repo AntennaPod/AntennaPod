@@ -37,7 +37,7 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
-    private static final String PREF_PARENTAL_CONTROL_PASSWORD = "prefParentalControlPassword";
+    private static final String PREF_SCREEN_PARENTAL_CONTROL = "prefScreenParentalControl";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -130,32 +130,29 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
                     .addToBackStack(getString(R.string.report_bug_title)).commit();
             return true;
         });
-        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setOnPreferenceClickListener(preference -> {
-            showChangePasswordDialog();
+        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setOnPreferenceClickListener(preference -> {
+            if (UserPreferences.isParentalControlPasswordSet()) {
+                showParentalControlGateDialog(() ->
+                        ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_parental_control));
+            } else {
+                ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_parental_control);
+            }
             return true;
         });
     }
 
-    // show the 'parental password' preference if we're on a 'child' device (family link) or if it's a debug build
+    // show the 'parental controls' preference if we're on a 'child' device (family link) or if it's a debug build
     private void setParentalControlsVisibility() {
         android.os.UserManager um = requireContext().getSystemService(android.os.UserManager.class);
         // Family Link child devices have DISALLOW_FACTORY_RESET set (among other restrictions).
         // AccountManager-based checks don't work: supervised users have no visible Google accounts.
         boolean isChildDevice = um.hasUserRestriction(android.os.UserManager.DISALLOW_FACTORY_RESET);
-        findPreference(PREF_PARENTAL_CONTROL_PASSWORD).setVisible(isChildDevice);
+        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(isChildDevice);
     }
 
-    private void showChangePasswordDialog() {
-        if (UserPreferences.isParentalControlPasswordSet()) {
-            showVerifyOldPasswordDialog();
-        } else {
-            showSetNewPasswordDialog(false);
-        }
-    }
-
-    private void showVerifyOldPasswordDialog() {
+    private void showParentalControlGateDialog(Runnable onSuccess) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(R.string.pref_parental_control_password_title);
+        builder.setTitle(R.string.pref_parental_control_title);
         builder.setMessage(R.string.pref_parental_control_enter_old_password);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         dialogBinding.textInput.setHint(R.string.pref_parental_control_old_password);
@@ -163,84 +160,17 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label, null);
         builder.setNegativeButton(R.string.cancel_label, null);
-        builder.setNeutralButton(R.string.pref_parental_control_clear_password, null);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            String oldPassword = dialogBinding.textInput.getText().toString();
-            if (UserPreferences.verifyParentalControlPassword(oldPassword)) {
+            String entered = dialogBinding.textInput.getText().toString();
+            if (UserPreferences.verifyParentalControlPassword(entered)) {
                 alertDialog.dismiss();
-                showSetNewPasswordDialog(true);
+                onSuccess.run();
             } else {
                 dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
                 Toast.makeText(requireContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
-            String oldPassword = dialogBinding.textInput.getText().toString();
-            if (UserPreferences.verifyParentalControlPassword(oldPassword)) {
-                UserPreferences.clearParentalControlPassword();
-                Toast.makeText(requireContext(), R.string.pref_parental_control_password_cleared, Toast.LENGTH_SHORT)
-                        .show();
-                alertDialog.dismiss();
-            } else {
-                dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
-                Toast.makeText(requireContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void showSetNewPasswordDialog(boolean isChanging) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(isChanging ? R.string.pref_parental_control_change_password
-                : R.string.pref_parental_control_set_password);
-        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
-        dialogBinding.textInput.setHint(R.string.pref_parental_control_new_password);
-        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(dialogBinding.getRoot());
-        builder.setPositiveButton(R.string.confirm_label, null);
-        builder.setNegativeButton(R.string.cancel_label, null);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            String newPassword = dialogBinding.textInput.getText().toString();
-            if (newPassword.isEmpty()) {
-                dialogBinding.textInputLayout.setError(getString(R.string.pref_parental_control_password_empty));
-                return;
-            }
-            showConfirmPasswordDialog(newPassword, isChanging);
-            alertDialog.dismiss();
-        });
-    }
-
-    private void showConfirmPasswordDialog(String newPassword, boolean isChanging) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle(R.string.pref_parental_control_confirm_password_title);
-        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
-        dialogBinding.textInput.setHint(R.string.pref_parental_control_confirm_password);
-        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(dialogBinding.getRoot());
-        builder.setPositiveButton(R.string.confirm_label, null);
-        builder.setNegativeButton(R.string.cancel_label, null);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            String confirmPassword = dialogBinding.textInput.getText().toString();
-            if (!newPassword.equals(confirmPassword)) {
-                dialogBinding.textInputLayout.setError(getString(R.string.pref_parental_control_passwords_dont_match));
-                Toast.makeText(requireContext(), R.string.pref_parental_control_passwords_dont_match,
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                UserPreferences.setParentalControlPassword(newPassword);
-                Toast.makeText(requireContext(),
-                        isChanging ? R.string.pref_parental_control_password_changed
-                                : R.string.pref_parental_control_password_set,
-                        Toast.LENGTH_SHORT).show();
-                alertDialog.dismiss();
             }
         });
     }
