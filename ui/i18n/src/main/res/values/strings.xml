@@ -985,7 +985,6 @@
     <string name="add_shortcut">Add shortcut</string>
 
     <!-- Parental Control -->
-    <string name="parental_control">Parental Control</string>
     <string name="pref_parental_control_set_password">Set Password</string>
     <string name="pref_parental_control_change_password">Change Password</string>
     <string name="pref_parental_control_enter_old_password">Enter your current password to change it or clear it</string>
