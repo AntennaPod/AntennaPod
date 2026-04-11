@@ -12,8 +12,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 3110195
-        versionName "3.11.1"
+        versionCode 3110395
+        versionName "3.11.3"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -142,7 +142,10 @@ dependencies {
 if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
     apply plugin: 'com.github.triplet.play'
     play {
-        track.set('alpha')
+        track.set('beta')
+        //noinspection UnnecessaryQualifiedReference
+        releaseStatus.set(com.github.triplet.gradle.androidpublisher.ReleaseStatus.IN_PROGRESS)
+        userFraction.set(0.01d)
         serviceAccountCredentials.set(file(antennaPodPlayPublisherCredentials))
     }
 }

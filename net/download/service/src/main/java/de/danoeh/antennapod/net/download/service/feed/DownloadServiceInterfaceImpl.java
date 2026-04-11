@@ -78,8 +78,8 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
         String tag = WORK_TAG_EPISODE_URL + media.getDownloadUrl();
         Future<List<WorkInfo>> future = WorkManager.getInstance(context).getWorkInfosByTag(tag);
         Observable.fromFuture(future)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.computation())
                 .subscribe(
                     workInfos -> {
                         for (WorkInfo info : workInfos) {

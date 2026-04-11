@@ -121,7 +121,7 @@ public class SubscriptionStatisticsFragment extends Fragment {
                             Long.compare(item2.timePlayed, item1.timePlayed));
                     return statisticsData;
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     statisticsResult = result;

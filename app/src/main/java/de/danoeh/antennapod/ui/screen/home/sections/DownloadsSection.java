@@ -134,7 +134,7 @@ public class DownloadsSection extends HomeSection {
         }
         SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
         disposable = Observable.fromCallable(() -> DBReader.getEpisodes(0, NUM_EPISODES, FILTER_DOWNLOADED, sortOrder))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(downloads -> {
                     items = downloads;

@@ -43,7 +43,7 @@ public class DevelopersFragment extends ListFragment {
                 emitter.onError(e);
             }
         })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
                 developers -> setListAdapter(new SimpleIconListAdapter<>(getContext(), developers)),

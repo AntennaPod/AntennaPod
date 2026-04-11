@@ -88,7 +88,7 @@ public class EchoActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         redrawTimer = Flowable.timer(20, TimeUnit.MILLISECONDS)
-                .observeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
                 .repeat()
                 .subscribe(i -> {
                     if (progressPaused) {
@@ -143,7 +143,7 @@ public class EchoActivity extends AppCompatActivity {
                             Long.compare(item2.timePlayed, item1.timePlayed));
                     return statisticsData;
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     for (EchoScreen screen : screens) {

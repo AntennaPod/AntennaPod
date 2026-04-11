@@ -125,7 +125,7 @@ public class SelectSubscriptionActivity extends AppCompatActivity {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(DBReader::getFeedList)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {

@@ -112,7 +112,7 @@ public class ItemDescriptionFragment extends Fragment {
                     context, media.getDescription(), media.getDuration());
             emitter.onSuccess(shownotesCleaner.processShownotes());
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     if (TextUtils.equals(loadedData, data)) {

@@ -58,7 +58,7 @@ public class TimeReleasePlayScreen extends EchoScreen {
         }
         disposable = Observable.fromCallable(() ->
                         DBReader.getTimeBetweenReleaseAndPlayback(EchoConfig.jan1(), Long.MAX_VALUE))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::display, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }

@@ -52,7 +52,7 @@ public class EchoSection extends Fragment {
                 }
                 return totalTime;
             })
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(totalTime -> {
                 boolean shouldShow = (totalTime >= 3600 * 10);

@@ -97,7 +97,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
             }
             return DBReader.getRemainingQueueSize(media.getItemId());
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     currentQueueSize = result;

@@ -431,7 +431,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                     reclaimableSpace = EpisodeCleanupAlgorithmFactory.build().getReclaimableItems();
                     return new Pair<>(data, makeFlatDrawerData(data.tags, data.feedCounters));
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {

@@ -404,7 +404,7 @@ public class ItemFragment extends Fragment {
             viewBinding.progbarLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadInBackground)
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
                 viewBinding.progbarLoading.setVisibility(View.GONE);
