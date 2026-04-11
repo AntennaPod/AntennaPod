@@ -14,6 +14,7 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -147,7 +148,7 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         // Family Link child devices have DISALLOW_FACTORY_RESET set (among other restrictions).
         // AccountManager-based checks don't work: supervised users have no visible Google accounts.
         boolean isChildDevice = um.hasUserRestriction(android.os.UserManager.DISALLOW_FACTORY_RESET);
-        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(isChildDevice);
+        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(isChildDevice || BuildConfig.DEBUG);
     }
 
     private void showParentalControlGateDialog(Runnable onSuccess) {
