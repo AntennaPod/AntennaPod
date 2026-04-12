@@ -114,16 +114,32 @@ public class MediaItemAdapter {
                     .submit(iconSize, iconSize)
                     .get(500, TimeUnit.MILLISECONDS);
         } catch (Exception tr2) {
-            Log.e(TAG, "Error loading artwork bitmap", tr2);
+            Log.e(TAG, "Skipping to load artwork bitmap: " + tr2.getMessage());
         }
         return null;
     }
 
-
-    public static MediaItem fromFeed(Feed feed) {
+    public static MediaItem fromFeed(Context context, Feed feed) {
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(feed.getTitle());
-        if (feed.getImageUrl() != null && feed.getImageUrl().startsWith("http")) {
+
+        Bitmap bitmap = null;
+        try {
+            int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
+            bitmap = Glide.with(context)
+                    .asBitmap()
+                    .onlyRetrieveFromCache(true)
+                    .load(feed.getImageUrl())
+                    .submit(iconSize, iconSize)
+                    .get(500, TimeUnit.MILLISECONDS);
+        } catch (Exception exception) {
+            Log.e(TAG, "Skipping to load artwork bitmap:" + exception.getMessage());
+        }
+        if (bitmap != null) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bos);
+            metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
+        } else if (feed.getImageUrl() != null && feed.getImageUrl().startsWith("http")) {
             metadataBuilder.setArtworkUri(Uri.parse(feed.getImageUrl()));
         }
         metadataBuilder.setSubtitle(feed.getAuthor());
