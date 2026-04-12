@@ -19,6 +19,15 @@ public class RewindAfterPauseUtilTest {
     }
 
     @Test
+    public void testCalculatePositionWithRewindMinimalRewind() {
+        final int ORIGINAL_POSITION = 10000;
+        long lastPlayed = System.currentTimeMillis() - 500;
+        int position = RewindAfterPauseUtils.calculatePositionWithRewind(ORIGINAL_POSITION, lastPlayed);
+
+        assertEquals(ORIGINAL_POSITION - RewindAfterPauseUtils.MINIMUM_REWIND, position);
+    }
+
+    @Test
     public void testCalculatePositionWithRewindSmallRewind() {
         final int ORIGINAL_POSITION = 10000;
         long lastPlayed = System.currentTimeMillis() - RewindAfterPauseUtils.ELAPSED_TIME_FOR_SHORT_REWIND - 1000;

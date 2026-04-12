@@ -205,6 +205,27 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     @UnstableApi
     private final Player.Listener playerListener = new Player.Listener() {
+        private boolean wasTemporarilySuspended = false;
+
+        @Override
+        public void onPlaybackSuppressionReasonChanged(int playbackSuppressionReason) {
+            if (playbackSuppressionReason
+                    == Player.PLAYBACK_SUPPRESSION_REASON_TRANSIENT_AUDIO_FOCUS_LOSS) {
+                wasTemporarilySuspended = true;
+            } else if (playbackSuppressionReason == Player.PLAYBACK_SUPPRESSION_REASON_NONE
+                    && wasTemporarilySuspended && currentPlayable != null) {
+                wasTemporarilySuspended = false;
+                long savedPosition = player.getCurrentPosition();
+                long startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                        (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics());
+                if (startPosition != savedPosition) {
+                    player.seekTo(startPosition);
+                }
+            } else {
+                wasTemporarilySuspended = false;
+            }
+        }
+
         @Override
         public void onPlaybackStateChanged(int playbackState) {
             if (playbackState == Player.STATE_BUFFERING) {
