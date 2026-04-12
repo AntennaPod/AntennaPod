@@ -359,7 +359,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                     ImmutableList.Builder<MediaItem> builder = new ImmutableList.Builder<>();
                                     for (Feed feed : items) {
                                         if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-                                            builder.add(MediaItemAdapter.fromFeed(feed));
+                                            builder.add(MediaItemAdapter.fromFeed(context, feed));
                                         }
                                     }
                                     future.set(LibraryResult.ofItemList(builder.build(), params));
@@ -447,7 +447,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         if (id.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
             long feedId = Long.parseLong(id.split(":")[1]);
             Feed feed = DBReader.getFeed(feedId, false, 0, 0);
-            return MediaItemAdapter.fromFeed(feed);
+            return MediaItemAdapter.fromFeed(context, feed);
         }
         switch (id) {
             case MEDIA_ID_ROOT:
