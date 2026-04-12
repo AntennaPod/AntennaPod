@@ -86,8 +86,12 @@ public class MediaItemAdapter {
 
     private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
         try {
-            return Glide.with(context).asBitmap().load(playable.getImageLocation())
-                    .submit(iconSize, iconSize).get(500, TimeUnit.MILLISECONDS);
+            return Glide.with(context)
+                    .asBitmap()
+                    .onlyRetrieveFromCache(true)
+                    .load(playable.getImageLocation())
+                    .submit(iconSize, iconSize)
+                    .get(500, TimeUnit.MILLISECONDS);
         } catch (Exception tr1) {
             // fall through to try feed image
         }
@@ -103,8 +107,12 @@ public class MediaItemAdapter {
             return null;
         }
         try {
-            return Glide.with(context).asBitmap().load(fallback)
-                    .submit(iconSize, iconSize).get(500, TimeUnit.MILLISECONDS);
+            return Glide.with(context)
+                    .asBitmap()
+                    .onlyRetrieveFromCache(true)
+                    .load(fallback)
+                    .submit(iconSize, iconSize)
+                    .get(500, TimeUnit.MILLISECONDS);
         } catch (Exception tr2) {
             Log.e(TAG, "Error loading artwork bitmap", tr2);
         }

@@ -336,7 +336,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     @NonNull
     public ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> onGetChildren(
             @NonNull MediaLibraryService.MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
-            @NonNull String parentId, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
+            @NonNull String parentId, int page, int pageSizeRequest,
+            @Nullable MediaLibraryService.LibraryParams params) {
+        final int pageSize = Math.min(100, pageSizeRequest); // Safety limit when calling application wants too much
         SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
 
         switch (parentId) {
