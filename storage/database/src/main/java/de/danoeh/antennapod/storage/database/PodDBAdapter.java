@@ -756,7 +756,7 @@ public class PodDBAdapter {
      * @param resetMediaPosition Should the postition of the media item be reset?
      * @param items              Array of items to upgrade
      */
-    public void setFeedItemRead(int played, boolean resetMediaPosition, FeedItem... items) {
+    public void setFeedItemsRead(int played, boolean resetMediaPosition, List<FeedItem> items) {
         try {
             db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
@@ -868,20 +868,17 @@ public class PodDBAdapter {
     /**
      * Adds the item to favorites
      */
-    public void addFavoriteItem(FeedItem item) {
-        // don't add an item that's already there...
-        if (isItemInFavorites(item)) {
-            Log.d(TAG, "item already in favorites");
-            return;
-        }
-        ContentValues values = new ContentValues();
-        values.put(KEY_FEEDITEM, item.getId());
-        values.put(KEY_FEED, item.getFeedId());
-        db.insert(TABLE_NAME_FAVORITES, null, values);
+    public void addFavoriteItems(List<FeedItem> items) {
+        db.execSQL("INSERT INTO " + TABLE_NAME_FAVORITES + " (" + KEY_FEEDITEM + ", " + KEY_FEED + ")"
+                + " SELECT " + KEY_ID + ", " + KEY_FEED
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " WHERE " + KEY_ID + " IN (" + getItemIds(items) + ")"
+                + " AND " + KEY_ID + " NOT IN (SELECT " + KEY_FEEDITEM + " FROM " + TABLE_NAME_FAVORITES + ")");
     }
 
-    public void removeFavoriteItem(FeedItem item) {
-        db.execSQL("DELETE FROM " + TABLE_NAME_FAVORITES + " WHERE " + KEY_FEEDITEM + "=" + item.getId());
+    public void removeFavoriteItems(List<FeedItem> items) {
+        db.execSQL("DELETE FROM " + TABLE_NAME_FAVORITES
+                + " WHERE " + KEY_FEEDITEM + " IN (" + getItemIds(items) + ")");
     }
 
     private boolean isItemInFavorites(FeedItem item) {
@@ -1485,6 +1482,17 @@ public class PodDBAdapter {
         sb.append(" ORDER BY " + KEY_TITLE + " ASC LIMIT 300");
 
         return db.rawQuery(sb.toString(), null);
+    }
+
+    private String getItemIds(List<FeedItem> items) {
+        StringBuilder itemIds = new StringBuilder();
+        for (FeedItem item : items) {
+            if (itemIds.length() != 0) {
+                itemIds.append(",");
+            }
+            itemIds.append(item.getId());
+        }
+        return itemIds.toString();
     }
 
     /**

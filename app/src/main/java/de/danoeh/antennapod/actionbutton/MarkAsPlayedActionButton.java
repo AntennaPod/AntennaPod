@@ -9,6 +9,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.database.DBWriter;
 
+import java.util.Collections;
+
 public class MarkAsPlayedActionButton extends ItemActionButton {
 
     public MarkAsPlayedActionButton(FeedItem item) {
@@ -30,7 +32,7 @@ public class MarkAsPlayedActionButton extends ItemActionButton {
     @Override
     public void onClick(Context context) {
         if (!item.isPlayed()) {
-            DBWriter.markItemPlayed(FeedItem.PLAYED, true, item);
+            DBWriter.markItemsPlayed(FeedItem.PLAYED, true, Collections.singletonList(item));
         }
     }
 

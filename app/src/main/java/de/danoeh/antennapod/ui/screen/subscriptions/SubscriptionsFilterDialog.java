@@ -18,7 +18,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.FilterDialogBinding;
 import de.danoeh.antennapod.databinding.FilterDialogRowBinding;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
@@ -127,6 +127,6 @@ public class SubscriptionsFilterDialog extends BottomSheetDialogFragment {
     private static void updateFilter(Set<String> filterValues) {
         SubscriptionsFilter subscriptionsFilter = new SubscriptionsFilter(filterValues.toArray(new String[0]));
         UserPreferences.setSubscriptionsFilter(subscriptionsFilter);
-        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+        EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
     }
 }

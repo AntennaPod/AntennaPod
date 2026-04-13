@@ -12,8 +12,8 @@ import androidx.preference.Preference;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.storage.preferences.UsageStatistics;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
@@ -22,6 +22,7 @@ import de.danoeh.antennapod.ui.screen.subscriptions.EpisodeListGlobalDefaultSort
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Collections;
 import java.util.List;
 
 public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment {
@@ -56,7 +57,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
                             UserPreferences.setShowRemainTimeSetting((Boolean) newValue);
-                            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                            EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
                             EventBus.getDefault().post(new PlayerStatusEvent());
                             return true;
                         });
@@ -86,7 +87,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
         findPreference(UserPreferences.PREF_STREAM_OVER_DOWNLOAD)
                 .setOnPreferenceChangeListener((preference, newValue) -> {
                     // Update all visible lists to reflect new streaming action button
-                    EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                    EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
                     // User consciously decided whether to prefer the streaming button, disable suggestion
                     UsageStatistics.doNotAskAgain(UsageStatistics.ACTION_STREAM);
                     return true;

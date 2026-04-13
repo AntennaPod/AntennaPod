@@ -43,7 +43,6 @@ import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -329,6 +328,10 @@ public abstract class EpisodesListFragment extends Fragment
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            loadItems();
+            return;
+        }
         for (FeedItem item : event.items) {
             int pos = FeedItemEvent.indexOfItemWithId(episodes, item.getId());
             if (pos >= 0) {
@@ -339,6 +342,10 @@ public abstract class EpisodesListFragment extends Fragment
                 } else {
                     listAdapter.notifyItemRemoved(pos);
                 }
+            } else if (getFilter().matches(item)) {
+                // Found something new
+                loadItems();
+                return;
             }
         }
     }
@@ -383,11 +390,6 @@ public abstract class EpisodesListFragment extends Fragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        loadItems();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         loadItems();
     }
 
