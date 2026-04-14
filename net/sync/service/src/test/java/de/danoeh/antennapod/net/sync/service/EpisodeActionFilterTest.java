@@ -59,7 +59,7 @@ public class EpisodeActionFilterTest extends TestCase {
                 .build()
         );
 
-        Map<Pair<String, String>, EpisodeAction> uniqueList = episodeActionFilter
+        Map<Pair<String, String>, EpisodeAction> uniqueList = EpisodeActionFilter
                 .getRemoteActionsOverridingLocalActions(remoteActions, episodeActions);
         assertSame(1, uniqueList.size());
     }
@@ -104,7 +104,7 @@ public class EpisodeActionFilterTest extends TestCase {
                 .build()
         );
 
-        Map<Pair<String, String>, EpisodeAction> uniqueList = episodeActionFilter
+        Map<Pair<String, String>, EpisodeAction> uniqueList = EpisodeActionFilter
                 .getRemoteActionsOverridingLocalActions(remoteActions, episodeActions);
         assertSame(0, uniqueList.size());
     }
@@ -142,7 +142,7 @@ public class EpisodeActionFilterTest extends TestCase {
                 .build()
         );
 
-        Map<Pair<String, String>, EpisodeAction> uniqueList = episodeActionFilter
+        Map<Pair<String, String>, EpisodeAction> uniqueList = EpisodeActionFilter
                 .getRemoteActionsOverridingLocalActions(remoteActions, episodeActions);
         assertEquals(2, uniqueList.size());
     }
@@ -180,7 +180,7 @@ public class EpisodeActionFilterTest extends TestCase {
                 .build()
         );
 
-        Map<Pair<String, String>, EpisodeAction> uniqueList = episodeActionFilter
+        Map<Pair<String, String>, EpisodeAction> uniqueList = EpisodeActionFilter
                 .getRemoteActionsOverridingLocalActions(remoteActions, episodeActions);
         assertEquals(0, uniqueList.size());
     }
@@ -205,7 +205,7 @@ public class EpisodeActionFilterTest extends TestCase {
                 .build()
         );
 
-        Map<Pair<String, String>, EpisodeAction> uniqueList = episodeActionFilter
+        Map<Pair<String, String>, EpisodeAction> uniqueList = EpisodeActionFilter
                 .getRemoteActionsOverridingLocalActions(remoteActions, episodeActions);
         assertSame(1, uniqueList.size());
     }
