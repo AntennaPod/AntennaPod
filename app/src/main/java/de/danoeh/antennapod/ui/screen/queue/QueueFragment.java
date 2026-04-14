@@ -505,7 +505,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 }
                 if (item.getMedia() != null) {
                     long itemTimeLeft = item.getMedia().getDuration() - item.getMedia().getPosition();
-                    timeLeft += itemTimeLeft / playbackSpeed;
+                    timeLeft += (long) (itemTimeLeft / playbackSpeed);
                 }
             }
             info += " • ";

@@ -494,6 +494,11 @@ public class FeedMedia implements Playable {
     }
 
     @Override
+    public int hashCode() {
+        return Long.hashCode(id);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
