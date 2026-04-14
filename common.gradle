@@ -40,6 +40,13 @@ android {
         targetCompatibility JavaVersion.VERSION_21
     }
 
+    tasks.withType(JavaCompile) {
+        options.compilerArgs.addAll([
+            "-Xlint:all,-deprecation,-serial,-this-escape,-unchecked,-processing,-classfile",
+            "-Werror",
+        ])
+    }
+
     testOptions {
         animationsDisabled = true
         unitTests {
@@ -73,14 +80,6 @@ tasks.withType(Test).configureEach {
         events "skipped", "passed", "failed"
         showStandardStreams true
         displayGranularity 2
-    }
-}
-
-gradle.projectsEvaluated {
-    tasks.withType(JavaCompile).tap {
-        configureEach {
-            options.compilerArgs << "-Xlint"
-        }
     }
 }
 
