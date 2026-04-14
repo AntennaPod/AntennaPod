@@ -307,16 +307,14 @@ public class DBWriter {
      * @param date LastPlayedTimeHistory for <code>media</code>
      */
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media, Date date) {
+        media.setLastPlayedTimeHistory(date);
         return runOnDbThread(() -> {
             Log.d(TAG, "Adding item to playback history");
-            media.setLastPlayedTimeHistory(date);
-
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedMediaLastPlayedTimeHistory(media);
             adapter.close();
             EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
-
         });
     }
 
@@ -460,7 +458,6 @@ public class DBWriter {
             adapter.open();
             adapter.clearQueue();
             adapter.close();
-
             EventBus.getDefault().post(QueueEvent.cleared());
         });
     }
@@ -537,25 +534,25 @@ public class DBWriter {
     }
 
     public static Future<?> addFavoriteItems(final List<FeedItem> items) {
+        for (FeedItem item : items) {
+            item.addTag(FeedItem.TAG_FAVORITE);
+        }
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.addFavoriteItems(items);
             adapter.close();
-            for (FeedItem item : items) {
-                item.addTag(FeedItem.TAG_FAVORITE);
-            }
             EventBus.getDefault().post(new FeedItemEvent(items, false));
         });
     }
 
     public static Future<?> removeFavoriteItems(final List<FeedItem> items) {
+        for (FeedItem item : items) {
+            item.removeTag(FeedItem.TAG_FAVORITE);
+        }
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.removeFavoriteItems(items);
             adapter.close();
-            for (FeedItem item : items) {
-                item.removeTag(FeedItem.TAG_FAVORITE);
-            }
             EventBus.getDefault().post(new FeedItemEvent(items, false));
         });
     }
@@ -653,18 +650,17 @@ public class DBWriter {
      */
     @NonNull
     public static Future<?> markItemsPlayed(int played, boolean resetMediaPosition, List<FeedItem> items) {
+        for (FeedItem item : items) {
+            if (item.hasMedia() && resetMediaPosition) {
+                item.getMedia().setPosition(0);
+            }
+            item.setPlayState(played);
+        }
         return runOnDbThread(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setFeedItemsRead(played, resetMediaPosition, items);
             adapter.close();
-
-            for (FeedItem item : items) {
-                if (item.hasMedia() && resetMediaPosition) {
-                    item.getMedia().setPosition(0);
-                }
-                item.setPlayState(played);
-            }
             EventBus.getDefault().post(new FeedItemEvent(items, true));
         });
     }
@@ -680,7 +676,6 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED, feedId);
             adapter.close();
-
             EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
         });
     }
@@ -694,7 +689,6 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED);
             adapter.close();
-
             EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
         });
     }
