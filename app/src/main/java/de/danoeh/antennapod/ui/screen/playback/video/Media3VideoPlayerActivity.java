@@ -317,7 +317,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void itemChanged(FeedItemEvent event) {
-        if (currentMedia != null && event.items.contains(currentMedia.getItem())) {
+        if (currentMedia != null && FeedItemEvent.indexOfItemWithId(event.items, currentMedia.getItemId()) != -1) {
             loadMediaInfo();
         }
     }

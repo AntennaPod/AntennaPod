@@ -754,7 +754,7 @@ public class PodDBAdapter {
      *
      * @param played             New read status of items. See @FeedItem
      * @param resetMediaPosition Should the postition of the media item be reset?
-     * @param items              Array of items to upgrade
+     * @param items              List of items to upgrade
      */
     public void setFeedItemsRead(int played, boolean resetMediaPosition, List<FeedItem> items) {
         try {
@@ -869,6 +869,9 @@ public class PodDBAdapter {
      * Adds the item to favorites
      */
     public void addFavoriteItems(List<FeedItem> items) {
+        if (items.isEmpty()) {
+            return;
+        }
         db.execSQL("INSERT INTO " + TABLE_NAME_FAVORITES + " (" + KEY_FEEDITEM + ", " + KEY_FEED + ")"
                 + " SELECT " + KEY_ID + ", " + KEY_FEED
                 + " FROM " + TABLE_NAME_FEED_ITEMS
@@ -877,16 +880,11 @@ public class PodDBAdapter {
     }
 
     public void removeFavoriteItems(List<FeedItem> items) {
+        if (items.isEmpty()) {
+            return;
+        }
         db.execSQL("DELETE FROM " + TABLE_NAME_FAVORITES
                 + " WHERE " + KEY_FEEDITEM + " IN (" + getItemIds(items) + ")");
-    }
-
-    private boolean isItemInFavorites(FeedItem item) {
-        String query = String.format(Locale.US, "SELECT %s from %s WHERE %s=%d",
-                KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
-        try (Cursor c = db.rawQuery(query, null)) {
-            return c.getCount() > 0;
-        }
     }
 
     public void setQueue(List<FeedItem> queue) {

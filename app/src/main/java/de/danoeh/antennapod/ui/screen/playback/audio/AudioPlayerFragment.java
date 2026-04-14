@@ -249,7 +249,7 @@ public class AudioPlayerFragment extends Fragment implements
             AudioPlayerFragment.this.loadMediaInfo(false);
         }
         if (event.items.isEmpty()) {
-            // The unread update update event is sometimes abused to trigger UI updates
+            // The unread update event is sometimes abused to trigger UI updates
             updatePosition(new PlaybackPositionEvent(currentMedia.getPosition(),
                     currentMedia.getDuration()));
         }
@@ -485,12 +485,9 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     public void setupOptionsMenu() {
-        boolean isFeedMedia = currentMedia instanceof FeedMedia;
-        toolbar.getMenu().findItem(R.id.open_feed_item).setVisible(isFeedMedia);
-        if (isFeedMedia) {
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(),
-                    Collections.singletonList(((FeedMedia) currentMedia).getItem()));
-        }
+        toolbar.getMenu().findItem(R.id.open_feed_item).setVisible(true);
+        FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(),
+                Collections.singletonList(((FeedMedia) currentMedia).getItem()));
         ((CastEnabledActivity) getActivity()).requestCastButton(toolbar.getMenu());
     }
 
@@ -500,8 +497,7 @@ public class AudioPlayerFragment extends Fragment implements
             return false;
         }
 
-        final @Nullable FeedItem feedItem = (currentMedia instanceof FeedMedia)
-                ? ((FeedMedia) currentMedia).getItem() : null;
+        final @Nullable FeedItem feedItem = currentMedia.getItem();
         if (feedItem != null && FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), feedItem)) {
             return true;
         }

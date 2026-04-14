@@ -107,7 +107,8 @@ public class DBWriter {
                 return;
             }
             deleteFeedMediaSynchronous(context, media);
-            EventBus.getDefault().post(new FeedItemEvent(Collections.singletonList(media.getItem()), false));
+            EventBus.getDefault().post(new FeedItemEvent(media.getItem() != null
+                    ? Collections.singletonList(media.getItem()) : Collections.emptyList(), false));
             if (UserPreferences.shouldDeleteRemoveFromQueue()) {
                 DBWriter.removeQueueItemSynchronous(context, false, media.getItemId());
             }
