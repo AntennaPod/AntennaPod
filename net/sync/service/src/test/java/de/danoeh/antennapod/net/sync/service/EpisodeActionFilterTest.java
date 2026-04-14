@@ -17,8 +17,6 @@ import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 
 public class EpisodeActionFilterTest extends TestCase {
 
-    EpisodeActionFilter episodeActionFilter = new EpisodeActionFilter();
-
     public void testGetRemoteActionsHappeningAfterLocalActions() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date morning = format.parse("2021-01-01 08:00:00");

@@ -8,7 +8,7 @@ android {
     namespace "de.danoeh.antennapod.playback.service"
 
     tasks.withType(JavaCompile) {
-        // There is no way to suppress this specific warning, so we have to disable all:
+        // There is no way to suppress this specific warning, so we have to opt out of all:
         // class file for com.google.j2objc.annotations.ReflectionSupport$Level not found
         options.compilerArgs.removeAll { it == "-Werror" }
     }
