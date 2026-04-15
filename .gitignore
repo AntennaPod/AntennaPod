@@ -30,3 +30,4 @@ gradle.properties
 .vscode
 .cursor
 *.hprof
+.kotlin

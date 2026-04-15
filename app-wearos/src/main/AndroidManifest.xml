@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.type.watch" android:required="true" />
+
+    <application
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault">
+
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="false" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="de.danoeh.antennapod.wearos.MainListActivity"
+            android:exported="true"
+            android:taskAffinity=".wearos">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="de.danoeh.antennapod.wearos.FeedListActivity"
+            android:exported="false"
+            android:taskAffinity=".wearos" />
+
+        <activity
+            android:name="de.danoeh.antennapod.wearos.EpisodeListActivity"
+            android:exported="false"
+            android:taskAffinity=".wearos" />
+
+        <activity
+            android:name="de.danoeh.antennapod.wearos.EpisodeDetailActivity"
+            android:exported="false"
+            android:taskAffinity=".wearos" />
+
+        <service
+            android:name="de.danoeh.antennapod.wearos.sync.WearDataListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

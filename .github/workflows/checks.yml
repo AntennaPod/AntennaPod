@@ -43,7 +43,7 @@ jobs:
           find . -wholename "*/res/layout/*.xml" | xargs java -jar android-xml-formatter.jar
           test $(git diff | wc -l) -eq 0 || (echo -e "\n\n===== Found XML code style violations! See output below how to fix them. =====\n\n" && git --no-pager diff --color=always && false)
       - name: Checkstyle, Lint, SpotBugs
-        run: ./gradlew checkstyle lint spotbugsPlayDebug spotbugsDebug
+        run: ./gradlew checkstyle lint ktlintCheck spotbugsPlayDebug spotbugsDebug
       - name: Generate readable error messages for GitHub
         if: failure()
         run: |
@@ -88,7 +88,9 @@ jobs:
       - name: Configure parallel build
         run: echo "org.gradle.parallel=true" >> local.properties
       - name: Create temporary release keystore
-        run: keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
+        run: |
+          keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
+          cp app/keystore app-wearos/keystore
       - name: Build
         run: ./gradlew assemble${{ matrix.variant }}
       - name: Test

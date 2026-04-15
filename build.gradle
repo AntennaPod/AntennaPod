@@ -1,11 +1,19 @@
 buildscript {
     ext.agpVersion = "8.11.0"
+    ext.kotlin_version = '2.3.20'
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+    repositories {
+        mavenCentral()
+    }
 }
 plugins {
     id 'com.android.application' version "$agpVersion" apply false
     id 'com.android.library' version "$agpVersion" apply false
     id 'com.github.spotbugs' version '4.8.0' apply false
     id 'checkstyle'
+    id 'org.jlleitschuh.gradle.ktlint' version '12.3.0' apply false
 }
 
 project.ext {
@@ -22,6 +30,15 @@ project.ext {
     viewPager2Version = "1.1.0"
     workManagerVersion = "2.10.3"
     googleMaterialVersion = "1.12.0"
+
+    // Wear OS
+    wearableVersion = "19.0.0"
+    wearVersion = "1.3.0"
+    wearComposeVersion = "1.6.0"
+    composeVersion = "1.7.5"
+    lifecycleRuntimeComposeVersion = "2.8.7"
+    coreKtxVersion = "1.18.0"
+    activityComposeVersion = "1.9.3"
 
     // Third-party
     commonslangVersion = "3.18.0"

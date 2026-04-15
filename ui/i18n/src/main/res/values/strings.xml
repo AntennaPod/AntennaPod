@@ -1032,4 +1032,12 @@
 
     <string name="echo_share_heading">My favorite podcasts</string>
     <string name="echo_share">My year %d in podcasts. #AntennaPodEcho</string>
+
+    <!-- WearOS specific strings (unused in main app module, so we need to suppress the warnings) -->
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Connected to %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Version %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Phone not compatible. Make sure you are running the most recent version of AntennaPod from Google Play on your phone.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">No items</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Could not reach the phone. Make sure your phone is nearby and AntennaPod is installed.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Play on phone</string>
 </resources>
