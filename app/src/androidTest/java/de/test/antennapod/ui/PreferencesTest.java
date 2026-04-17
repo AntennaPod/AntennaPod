@@ -69,6 +69,8 @@ public class PreferencesTest {
 
     @Test
     public void testEnablePersistentPlaybackControls() {
+        // Preference is hidden on Android 11+ where the system controls notification persistence.
+        assumeTrue(Build.VERSION.SDK_INT < Build.VERSION_CODES.R);
         final boolean persistNotify = UserPreferences.isPersistNotify();
         clickPreference(R.string.user_interface_label);
         clickPreference(R.string.pref_persistNotify_title);
