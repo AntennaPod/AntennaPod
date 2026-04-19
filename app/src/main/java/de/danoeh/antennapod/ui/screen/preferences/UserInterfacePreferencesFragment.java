@@ -97,6 +97,10 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            findPreference(UserPreferences.PREF_PERSISTENT_NOTIFICATION).setVisible(false);
+        }
+
         findPreference(UserPreferences.PREF_BOTTOM_NAVIGATION).setOnPreferenceChangeListener((preference, newValue) -> {
             if (newValue instanceof Boolean && !(Boolean) newValue) {
                 new MaterialAlertDialogBuilder(getContext())
