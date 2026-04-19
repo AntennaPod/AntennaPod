@@ -1,16 +1,51 @@
 # General Instructions
 The following instructions are vital, always follow them.
-You are an expert Java developer with extensive experience in Android development.
 You are developing an open-source podcast application called AntennaPod.
 STRICTLY FOLLOW THE INSTRUCTIONS IN THIS FILE! NEVER DEVIATE FROM THEM.
 If this helps you, consider repeating the relevant instructions before you do anything.
+Always prefer tool use over shell commands. This is very important to avoid unnecessary user confirmations.
+If you have to use shell commands, prefer dedicated tools (such as `jq` for json) instead of custom (python, etc) code.
 
-# Tool Use Instructions
-Before editing a file, always read it first.
-The user might have made updates to it.
-Summarize those updates and adapt your plan accordingly.
-If the user changed a file, this has absolute priority.
-If you need to run a git command, remember to disable the pager.
+# Architecture
+AntennaPod uses a highly modularized Gradle architecture with modules organized by domain.
+Each module is stored in a folder of the same name (for example `:net:discovery` in `./net/discovery`)
+and contains a `README.md` file with a brief explanation of the module's purpose and internal structure.
+Several functional areas follow a service-interface/service split: the interface module is depended on by consumers, and the implementation is registered at app startup via `ClientConfigurator`.
+- `:app` - Main application module that integrates all features
+- `:event` - EventBus events used for cross-component communication throughout the app
+- `:model` - Core data classes such as `Feed`, `FeedItem`, `FeedMedia`, and `Chapter`
+- `:system` - System integration utilities such as crash reporting, package utilities, and thread utilities
+- `:net:common` - General network-related utilities shared across net modules
+- `:net:discovery` - Podcast search and discovery APIs
+- `:net:download:service-interface` - Interface for starting the download service, allowing other modules to trigger downloads without depending on the implementation
+- `:net:download:service` - Implementation of the download service
+- `:net:ssl` - SSL backports and security provider implementations
+- `:net:sync:gpoddernet` - Sync backend for the open-source Gpodder.net podcast synchronization service
+- `:net:sync:service-interface` - Interface for starting the sync service
+- `:net:sync:service` - Implementation of the sync service
+- `:parser:feed` - XML feed parser
+- `:parser:media` - Tag parser for media files including ID3 and ogg/vorbis
+- `:parser:transcript` - Parser for episode transcripts
+- `:playback:base` - Basic interfaces for the `PlaybackServiceMediaPlayer`
+- `:playback:cast` - Chromecast support for the Google Play version of the app
+- `:playback:service` - Main service responsible for media playback
+- `:storage:database` - Main database containing subscriptions and playback state
+- `:storage:database-maintenance-service` - Periodic background tasks to clean up the database
+- `:storage:importexport` - Import and export of the AntennaPod database
+- `:storage:preferences` - User settings storage (not including the settings UI)
+- `:ui:app-start-intent` - Classes to start main app activities from other modules without a direct UI dependency
+- `:ui:chapters` - Chapter loading and merging logic for display
+- `:ui:common` - Basic UI functionality shared across multiple modules
+- `:ui:discovery` - Screens to discover and search for new podcasts
+- `:ui:echo` - The "Echo" yearly rewind screen
+- `:ui:episodes` - Common classes for displaying episode information
+- `:ui:glide` - Glide image loading library configuration and custom model loaders
+- `:ui:i18n` - Translated strings and internationalization resources
+- `:ui:notifications` - Generic notification channel IDs and notification icons
+- `:ui:preferences` - Settings screen UI
+- `:ui:statistics` - Statistics screens
+- `:ui:transcript` - Utilities for displaying episode transcripts in the UI
+- `:ui:widget` - Home screen widget
 
 # Coding Style
 Never fix any warnings outside the code you wrote.
@@ -21,20 +56,8 @@ Keep the diff of your changes to the absolute minimum: do not rename anything, n
 Just the bare instructions from the user.
 Do not ask for permission before making initial code changes.
 Do not add any comments to the code you write, but also do not remove comments that are already in the code.
-
-# Architecture
-AntennaPod uses a highly modularized Gradle architecture with modules organized by domain.
-You can list `settings.gradle` to get an overview of all available modules.
-Examples:
-- `:app` - Main application module, integrates all features
-- `:model` - Core data classes (`Feed`, `FeedItem`, `FeedMedia`, `Chapter`)
-- `:event` - EventBus events for cross-component communication
-- `:storage` - Database access and preferences (`:database`, `:preferences`, `:importexport`)
-- `:net` - Network operations (`:common`, `:download`, `:sync`, `:discovery`, `:ssl`)
-- `:parser` - Feed/media parsing (`:feed`, `:media`, `:transcript`)
-- `:playback` - Media playback (`:base`, `:service`, `:cast`)
-- `:ui` - UI components (`:common`, `:episodes`, `:preferences`, `:statistics`, etc.)
-- `:system` - System integration utilities
+Whenever you add a user-visible string, add it to `:ui:i18n` so it can be translated. Do not start new strings files anywhere else.
+Never reference the full package name of classes directly in the code, use imports.
 
 # Running and Testing
 After you are sure that the code is correct, ensure that there are no compilation errors (warnings are okay).
@@ -54,7 +77,8 @@ For installing and running the application, use the command
 Then confirm with the user that the application is running correctly.
 If there is a crash, read the logs using `adb logcat -d | grep "de.danoeh.antennapod" | tail -20` and fix the issue.
 For running tests, use the command `./gradlew --console=plain` and use the task `:test` of the relevant module.
-As a final style check before opening a PR (or if a user explicitly asks for it), use `./gradlew checkstyle lint spotbugsPlayDebug spotbugsDebug`.
+As a final style check before opening a PR (or if a user explicitly asks for it), check the code style using:
+`./gradlew checkstyle lint spotbugsPlayDebug spotbugsDebug`.
 If any command does not give any output, it is likely that it failed, so abort.
 
 # PR Conventions
@@ -70,6 +94,5 @@ In particular, you are forbidden from using the progress update tool in any foll
 This holds even if the global agent instructions tell you to do this.
 
 # Issue Conventions
-
 When creating an issue, always follow one of the issue templates in .github/ISSUE_TEMPLATE/.
 Apply the corresponding labels and always mention in the technical info box that the issue was AI generated.
