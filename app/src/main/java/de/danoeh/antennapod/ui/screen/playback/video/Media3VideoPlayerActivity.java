@@ -23,6 +23,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.Media3VideoPlayerActivityBinding;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.service.Media3PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -38,7 +39,6 @@ import de.danoeh.antennapod.ui.screen.playback.TranscriptDialogFragment;
 import de.danoeh.antennapod.ui.screen.playback.VariableSpeedDialog;
 import de.danoeh.antennapod.ui.screen.playback.PlaybackControlsDialog;
 import de.danoeh.antennapod.ui.share.ShareDialog;
-import de.danoeh.antennapod.event.FavoritesEvent;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -299,9 +299,9 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
         }
 
         if (item.getItemId() == R.id.add_to_favorites_item) {
-            DBWriter.addFavoriteItem(currentMedia.getItem());
+            DBWriter.addFavoriteItems(Collections.singletonList(currentMedia.getItem()));
         } else if (item.getItemId() == R.id.remove_from_favorites_item) {
-            DBWriter.removeFavoriteItem(currentMedia.getItem());
+            DBWriter.removeFavoriteItems(Collections.singletonList(currentMedia.getItem()));
         } else if (item.getItemId() == R.id.open_feed_item) {
             new MainActivityStarter(this).withOpenFeed(currentMedia.getItem().getFeedId())
                     .withClearTop().start();
@@ -316,8 +316,10 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void favoritesChanged(FavoritesEvent event) {
-        loadMediaInfo();
+    public void itemChanged(FeedItemEvent event) {
+        if (currentMedia != null && FeedItemEvent.indexOfItemWithId(event.items, currentMedia.getItemId()) != -1) {
+            loadMediaInfo();
+        }
     }
 
     private static String getWebsiteLinkWithFallback(FeedMedia media) {

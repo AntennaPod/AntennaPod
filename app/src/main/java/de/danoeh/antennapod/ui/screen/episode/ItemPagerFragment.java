@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
@@ -165,6 +164,10 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            refreshToolbarState();
+            return;
+        }
         for (FeedItem item : event.items) {
             if (this.item != null && this.item.getId() == item.getId()) {
                 this.item = item;
@@ -172,11 +175,6 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
                 return;
             }
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(UnreadItemsUpdateEvent event) {
-        refreshToolbarState();
     }
 
     private void openPodcast() {

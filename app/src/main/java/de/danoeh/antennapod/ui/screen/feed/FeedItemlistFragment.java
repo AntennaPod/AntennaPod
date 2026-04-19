@@ -28,7 +28,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -36,7 +35,6 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -401,6 +399,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            updateUi();
+            return;
+        }
         if (feed == null || feed.getItems() == null) {
             return;
         }
@@ -411,6 +413,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 feed.getItems().remove(pos);
                 feed.getItems().add(pos, item);
                 adapter.notifyItemChangedCompat(pos);
+            } else if (item.getFeedId() == feedID) {
+                // Filtered-out item of this feed was touched, reload all
+                updateUi();
+                return;
             }
         }
     }
@@ -441,11 +447,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void favoritesChanged(FavoritesEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQueueChanged(QueueEvent event) {
         updateUi();
     }
@@ -471,11 +472,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         updateUi();
     }
 

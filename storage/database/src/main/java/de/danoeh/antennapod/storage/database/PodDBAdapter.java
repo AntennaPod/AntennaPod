@@ -754,9 +754,9 @@ public class PodDBAdapter {
      *
      * @param played             New read status of items. See @FeedItem
      * @param resetMediaPosition Should the postition of the media item be reset?
-     * @param items              Array of items to upgrade
+     * @param items              List of items to upgrade
      */
-    public void setFeedItemRead(int played, boolean resetMediaPosition, FeedItem... items) {
+    public void setFeedItemsRead(int played, boolean resetMediaPosition, List<FeedItem> items) {
         try {
             db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
@@ -868,28 +868,23 @@ public class PodDBAdapter {
     /**
      * Adds the item to favorites
      */
-    public void addFavoriteItem(FeedItem item) {
-        // don't add an item that's already there...
-        if (isItemInFavorites(item)) {
-            Log.d(TAG, "item already in favorites");
+    public void addFavoriteItems(List<FeedItem> items) {
+        if (items.isEmpty()) {
             return;
         }
-        ContentValues values = new ContentValues();
-        values.put(KEY_FEEDITEM, item.getId());
-        values.put(KEY_FEED, item.getFeedId());
-        db.insert(TABLE_NAME_FAVORITES, null, values);
+        db.execSQL("INSERT INTO " + TABLE_NAME_FAVORITES + " (" + KEY_FEEDITEM + ", " + KEY_FEED + ")"
+                + " SELECT " + KEY_ID + ", " + KEY_FEED
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " WHERE " + KEY_ID + " IN (" + getItemIds(items) + ")"
+                + " AND " + KEY_ID + " NOT IN (SELECT " + KEY_FEEDITEM + " FROM " + TABLE_NAME_FAVORITES + ")");
     }
 
-    public void removeFavoriteItem(FeedItem item) {
-        db.execSQL("DELETE FROM " + TABLE_NAME_FAVORITES + " WHERE " + KEY_FEEDITEM + "=" + item.getId());
-    }
-
-    private boolean isItemInFavorites(FeedItem item) {
-        String query = String.format(Locale.US, "SELECT %s from %s WHERE %s=%d",
-                KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
-        try (Cursor c = db.rawQuery(query, null)) {
-            return c.getCount() > 0;
+    public void removeFavoriteItems(List<FeedItem> items) {
+        if (items.isEmpty()) {
+            return;
         }
+        db.execSQL("DELETE FROM " + TABLE_NAME_FAVORITES
+                + " WHERE " + KEY_FEEDITEM + " IN (" + getItemIds(items) + ")");
     }
 
     public void setQueue(List<FeedItem> queue) {
@@ -1485,6 +1480,17 @@ public class PodDBAdapter {
         sb.append(" ORDER BY " + KEY_TITLE + " ASC LIMIT 300");
 
         return db.rawQuery(sb.toString(), null);
+    }
+
+    private String getItemIds(List<FeedItem> items) {
+        StringBuilder itemIds = new StringBuilder();
+        for (FeedItem item : items) {
+            if (itemIds.length() != 0) {
+                itemIds.append(",");
+            }
+            itemIds.append(item.getId());
+        }
+        return itemIds.toString();
     }
 
     /**

@@ -23,9 +23,9 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
@@ -473,8 +473,10 @@ public class SubscriptionFragment extends Fragment
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        loadSubscriptionsAndTags();
+    public void onUnreadItemsChanged(FeedItemEvent event) {
+        if (event.unreadStatusChanged) {
+            loadSubscriptionsAndTags();
+        }
     }
 
     private void setCollapsingToolbarFlags(int flags) {

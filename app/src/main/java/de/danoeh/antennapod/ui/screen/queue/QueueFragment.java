@@ -56,7 +56,6 @@ import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
@@ -180,6 +179,11 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            loadItems();
+            refreshToolbarState();
+            return;
+        }
         if (queue == null) {
             return;
         } else if (recyclerAdapter == null) {
@@ -195,6 +199,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 recyclerAdapter.notifyItemChangedCompat(pos);
                 refreshInfoBar();
             }
+        }
+        if (event.unreadStatusChanged) {
+            refreshToolbarState();
         }
     }
 
@@ -227,13 +234,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        loadItems();
-        refreshToolbarState();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        // Sent when playback position is reset
         loadItems();
         refreshToolbarState();
     }

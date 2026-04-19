@@ -32,7 +32,6 @@ import de.danoeh.antennapod.ui.screen.feed.ItemSortDialog;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
@@ -251,6 +250,10 @@ public class CompletedDownloadsFragment extends Fragment
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            loadItems();
+            return;
+        }
         if (items == null) {
             return;
         } else if (adapter == null) {
@@ -292,11 +295,6 @@ public class CompletedDownloadsFragment extends Fragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDownloadLogChanged(DownloadLogEvent event) {
-        loadItems();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         loadItems();
     }
 

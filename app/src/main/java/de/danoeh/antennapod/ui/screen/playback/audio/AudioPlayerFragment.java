@@ -55,10 +55,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.screen.feed.preferences.SkipPreferenceDialog;
-import de.danoeh.antennapod.event.FavoritesEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
@@ -102,7 +101,7 @@ public class AudioPlayerFragment extends Fragment implements
     private CardView cardViewSeek;
     private TextView txtvSeek;
 
-    private Playable currentMedia;
+    private FeedMedia currentMedia;
     private Disposable disposable;
     private boolean showTimeLeft;
     private boolean seekedToChapterStart = false;
@@ -242,12 +241,18 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsUpdate(UnreadItemsUpdateEvent event) {
+    public void onItemsUpdate(FeedItemEvent event) {
         if (currentMedia == null) {
             return;
         }
-        updatePosition(new PlaybackPositionEvent(currentMedia.getPosition(),
-                currentMedia.getDuration()));
+        if (FeedItemEvent.indexOfItemWithId(event.items, currentMedia.getItemId()) != -1) {
+            AudioPlayerFragment.this.loadMediaInfo(false);
+        }
+        if (event.items.isEmpty()) {
+            // The unread update event is sometimes abused to trigger UI updates
+            updatePosition(new PlaybackPositionEvent(currentMedia.getPosition(),
+                    currentMedia.getDuration()));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -280,8 +285,8 @@ public class AudioPlayerFragment extends Fragment implements
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Maybe.<Playable>create(emitter -> {
-            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+        disposable = Maybe.<FeedMedia>create(emitter -> {
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media != null) {
                 if (includingChapters) {
                     ChapterUtils.loadChapters(media, getContext(), false);
@@ -404,11 +409,6 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void favoritesChanged(FavoritesEvent event) {
-        AudioPlayerFragment.this.loadMediaInfo(false);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void mediaPlayerError(PlayerErrorEvent event) {
         MediaPlayerErrorDialog.show(getActivity(), event);
     }
@@ -485,12 +485,9 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     public void setupOptionsMenu() {
-        boolean isFeedMedia = currentMedia instanceof FeedMedia;
-        toolbar.getMenu().findItem(R.id.open_feed_item).setVisible(isFeedMedia);
-        if (isFeedMedia) {
-            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(),
-                    Collections.singletonList(((FeedMedia) currentMedia).getItem()));
-        }
+        toolbar.getMenu().findItem(R.id.open_feed_item).setVisible(true);
+        FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(),
+                Collections.singletonList(currentMedia.getItem()));
         ((CastEnabledActivity) getActivity()).requestCastButton(toolbar.getMenu());
     }
 
@@ -500,8 +497,7 @@ public class AudioPlayerFragment extends Fragment implements
             return false;
         }
 
-        final @Nullable FeedItem feedItem = (currentMedia instanceof FeedMedia)
-                ? ((FeedMedia) currentMedia).getItem() : null;
+        final @Nullable FeedItem feedItem = currentMedia.getItem();
         if (feedItem != null && FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), feedItem)) {
             return true;
         }

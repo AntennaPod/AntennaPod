@@ -470,9 +470,9 @@ public class VideoplayerActivity extends CastEnabledActivity
         }
         final @Nullable FeedItem feedItem = getFeedItem(media);
         if (item.getItemId() == R.id.add_to_favorites_item && feedItem != null) {
-            DBWriter.addFavoriteItem(feedItem);
+            DBWriter.addFavoriteItems(Collections.singletonList(feedItem));
         } else if (item.getItemId() == R.id.remove_from_favorites_item && feedItem != null) {
-            DBWriter.removeFavoriteItem(feedItem);
+            DBWriter.removeFavoriteItems(Collections.singletonList(feedItem));
         } else if (item.getItemId() == R.id.disable_sleeptimer_item
                 || item.getItemId() == R.id.set_sleeptimer_item) {
             new SleepTimerDialog().show(getSupportFragmentManager(), "SleepTimerDialog");
