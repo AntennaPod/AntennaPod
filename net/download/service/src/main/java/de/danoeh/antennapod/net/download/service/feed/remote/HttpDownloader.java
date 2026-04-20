@@ -154,6 +154,9 @@ public class HttpDownloader extends Downloader {
             long freeSpace = getFreeSpaceAvailable();
             Log.d(TAG, "Free space is " + freeSpace);
             if (request.getSize() != DownloadResult.SIZE_UNKNOWN && request.getSize() > freeSpace) {
+                if (destination.delete()) {
+                    Log.d(TAG, "Can not delete File: " + destination.getName());
+                }
                 onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
                 return;
             }
@@ -169,6 +172,9 @@ public class HttpDownloader extends Downloader {
             } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
+            // close the file to be able to handle no space left on device
+            out.close();
+
             if (cancelled) {
                 onCancelled();
             } else {
@@ -210,6 +216,15 @@ public class HttpDownloader extends Downloader {
             String message = e.getMessage();
             if (message != null && message.contains("Trust anchor for certification path not found")) {
                 onFail(DownloadError.ERROR_CERTIFICATE, e.getMessage());
+                return;
+            }
+            if (e.getMessage() != null
+                    && (e.getMessage().contains("No space left on device")
+                    || e.getMessage().contains("ENOSPC"))) {
+                if (!destination.delete()) {
+                    Log.d(TAG, "Could not delete partly downloaded file" + destination.getName());
+                }
+                onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, e.getMessage());
                 return;
             }
             onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
