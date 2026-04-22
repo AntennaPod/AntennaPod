@@ -13,6 +13,8 @@ class WearDataListenerService : WearableListenerService() {
             val feeds = WearSerializer.feedsFromBytes(event.data)
             Log.d(TAG, "Received $path: ${feeds.size} feeds")
             WearDataRepository.updateFeeds(path, feeds)
+        } else if (path == WearDataPaths.NOW_PLAYING) {
+            WearDataRepository.updateNowPlaying(WearSerializer.nowPlayingFromBytes(event.data))
         } else if (path == WearDataPaths.QUEUE || path == WearDataPaths.DOWNLOADS ||
             path == WearDataPaths.EPISODES || path.startsWith(WearDataPaths.FEED_EPISODES_PREFIX)
         ) {

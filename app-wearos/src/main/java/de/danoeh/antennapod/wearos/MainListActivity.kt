@@ -2,6 +2,7 @@ package de.danoeh.antennapod.wearos
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,25 +28,45 @@ import androidx.wear.compose.material3.ListHeader
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScrollIndicator
 import androidx.wear.compose.material3.Text
+import com.google.android.gms.wearable.Wearable
 import de.danoeh.antennapod.net.sync.wearinterface.WearConnectionUtils
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths
 import de.danoeh.antennapod.ui.common.R as CommonR
 import de.danoeh.antennapod.wearos.composable.ListItem
 import de.danoeh.antennapod.wearos.sync.WearDataPathUtils
+import de.danoeh.antennapod.wearos.sync.WearDataRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 class MainListActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainListScreen(context = this)
+            MainListScreen(
+                context = this,
+                onRequestNowPlaying = { requestNowPlaying() }
+            )
         }
+    }
+
+    private fun requestNowPlaying() {
+        Wearable.getNodeClient(this).connectedNodes
+            .addOnSuccessListener { nodes ->
+                val node = nodes.firstOrNull() ?: return@addOnSuccessListener
+                Wearable.getMessageClient(this)
+                    .sendMessage(node.id, WearDataPaths.NOW_PLAYING, null)
+                    .addOnFailureListener { e -> Log.e(TAG, "Failed to request now playing", e) }
+            }
+    }
+
+    companion object {
+        private const val TAG = "MainListActivity"
     }
 }
 
 @Composable
-fun MainListScreen(context: MainListActivity) {
+fun MainListScreen(context: MainListActivity, onRequestNowPlaying: () -> Unit) {
     val scrollState = rememberScalingLazyListState()
     val versionName = BuildConfig.VERSION_NAME
     var connectedPhone by remember { mutableStateOf("") }
@@ -54,6 +76,15 @@ fun MainListScreen(context: MainListActivity) {
             WearConnectionUtils.getConnectedNodeName(context)
         }
     }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            onRequestNowPlaying()
+            delay(2000)
+        }
+    }
+
+    val nowPlaying by WearDataRepository.nowPlaying.collectAsState()
 
     val menuItems = listOf(
         WearDataPaths.QUEUE,
@@ -72,6 +103,35 @@ fun MainListScreen(context: MainListActivity) {
                 ListHeader(modifier = Modifier.fillMaxWidth()) {
                     Text(stringResource(R.string.app_name))
                 }
+            }
+
+            item {
+                if (nowPlaying != null) {
+                    ListItem(
+                        text = nowPlaying!!.item.title ?: "",
+                        onClick = {
+                            val intent = Intent(context, EpisodeDetailActivity::class.java).apply {
+                                putExtra(EpisodeDetailActivity.EXTRA_EPISODE, nowPlaying!!.item)
+                            }
+                            context.startActivity(intent)
+                        }
+                    )
+                } else {
+                    ListItem(
+                        text = stringResource(CommonR.string.no_media_playing_label),
+                        onClick = {}
+                    )
+                }
+            }
+
+            item {
+                Text(
+                    text = stringResource(CommonR.string.wearos_browse_phone),
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.outline
+                )
             }
 
             items(menuItems) { path ->

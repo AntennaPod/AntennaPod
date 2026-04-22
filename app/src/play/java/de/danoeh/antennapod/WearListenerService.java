@@ -10,6 +10,9 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import androidx.media3.common.MediaItem;
+import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths;
 import de.danoeh.antennapod.net.sync.wearinterface.WearSerializer;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
@@ -34,6 +37,39 @@ public class WearListenerService extends WearableListenerService {
 
     private void handleMessage(String path, String sourceNodeId, byte[] data) {
         switch (path) {
+            case WearDataPaths.NOW_PLAYING:
+                PlaybackController.bindToMedia3Service(this, controller -> {
+                    MediaItem currentItem = controller.getCurrentMediaItem();
+                    long position = controller.getCurrentPosition();
+                    long duration = controller.getDuration();
+                    boolean isPlaying = controller.isPlaying();
+                    Completable.fromAction(() -> {
+                        if (currentItem != null) {
+                            try {
+                                long id = Long.parseLong(currentItem.mediaId);
+                                FeedMedia feedMedia = DBReader.getFeedMedia(id);
+                                if (feedMedia != null && feedMedia.getItem() != null) {
+                                    feedMedia.setPosition((int) position);
+                                    if (duration > 0) {
+                                        feedMedia.setDuration((int) duration);
+                                    }
+                                    reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
+                                            WearSerializer.nowPlayingToBytes(feedMedia.getItem(), isPlaying));
+                                    return;
+                                }
+                            } catch (NumberFormatException e) {
+                                Log.w(TAG, "Failed to parse media ID: " + currentItem.mediaId, e);
+                            }
+                        }
+                        reply(sourceNodeId, WearDataPaths.NOW_PLAYING, new byte[0]);
+                    }).subscribeOn(Schedulers.io()).subscribe(
+                            () -> { },
+                            throwable -> Log.e(TAG, "Failed to handle now playing", throwable));
+                });
+                break;
+            case WearDataPaths.PAUSE:
+                PlaybackController.bindToMedia3Service(this, controller -> controller.pause());
+                break;
             case WearDataPaths.QUEUE:
                 reply(sourceNodeId, path, WearSerializer.episodesToBytes(DBReader.getQueue()));
                 break;

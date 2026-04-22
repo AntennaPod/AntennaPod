@@ -2,6 +2,7 @@ package de.danoeh.antennapod.wearos.sync
 
 import de.danoeh.antennapod.model.feed.Feed
 import de.danoeh.antennapod.model.feed.FeedItem
+import de.danoeh.antennapod.net.sync.wearinterface.WearNowPlaying
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -16,6 +17,13 @@ object WearDataRepository {
 
     private val _feedsByPath = MutableStateFlow<Map<String, List<Feed>>>(emptyMap())
     val feedsByPath: StateFlow<Map<String, List<Feed>>> = _feedsByPath
+
+    private val _nowPlaying = MutableStateFlow<WearNowPlaying?>(null)
+    val nowPlaying: StateFlow<WearNowPlaying?> = _nowPlaying
+
+    fun updateNowPlaying(nowPlaying: WearNowPlaying?) {
+        _nowPlaying.value = nowPlaying
+    }
 
     fun updateEpisodes(path: String, items: List<FeedItem>) {
         _episodesByPath.value += (path to items)

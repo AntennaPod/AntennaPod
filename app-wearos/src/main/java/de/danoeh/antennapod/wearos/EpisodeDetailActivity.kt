@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +37,8 @@ import de.danoeh.antennapod.ui.common.Converter
 import de.danoeh.antennapod.ui.common.DateFormatter
 import de.danoeh.antennapod.ui.common.R as CommonR
 import de.danoeh.antennapod.wearos.composable.ListItem
+import de.danoeh.antennapod.wearos.sync.WearDataRepository
+import kotlinx.coroutines.delay
 
 class EpisodeDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,18 +49,20 @@ class EpisodeDetailActivity : ComponentActivity() {
         setContent {
             EpisodeDetailScreen(
                 item = episode,
-                onPlay = { playEpisode(episode.id) }
+                onRequestNowPlaying = { sendMessage(WearDataPaths.NOW_PLAYING) },
+                onPlay = { sendMessage(WearDataPaths.playPath(episode.id)) },
+                onPause = { sendMessage(WearDataPaths.PAUSE) }
             )
         }
     }
 
-    private fun playEpisode(itemId: Long) {
+    private fun sendMessage(path: String) {
         Wearable.getNodeClient(this).connectedNodes
             .addOnSuccessListener { nodes ->
                 val node = nodes.firstOrNull() ?: return@addOnSuccessListener
                 Wearable.getMessageClient(this)
-                    .sendMessage(node.id, WearDataPaths.playPath(itemId), null)
-                    .addOnFailureListener { e -> Log.e(TAG, "Failed to send play request", e) }
+                    .sendMessage(node.id, path, null)
+                    .addOnFailureListener { e -> Log.e(TAG, "Failed to send message: $path", e) }
             }
             .addOnFailureListener { e -> Log.e(TAG, "Failed to get connected nodes", e) }
     }
@@ -68,9 +74,23 @@ class EpisodeDetailActivity : ComponentActivity() {
 }
 
 @Composable
-fun EpisodeDetailScreen(item: FeedItem, onPlay: () -> Unit) {
+fun EpisodeDetailScreen(item: FeedItem, onRequestNowPlaying: () -> Unit, onPlay: () -> Unit, onPause: () -> Unit) {
     val scrollState = rememberScalingLazyListState()
     var titleExpanded by remember { mutableStateOf(false) }
+
+    val nowPlaying by WearDataRepository.nowPlaying.collectAsState()
+    val liveData = nowPlaying?.takeIf { it.item.id == item.id }
+
+    val position = liveData?.item?.media?.position ?: item.media!!.position
+    val duration = liveData?.item?.media?.duration?.takeIf { it > 0 } ?: item.media!!.duration
+    val isCurrentlyPlaying = liveData?.isPlaying == true
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            onRequestNowPlaying()
+            delay(2000)
+        }
+    }
 
     ScalingLazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -104,10 +124,10 @@ fun EpisodeDetailScreen(item: FeedItem, onPlay: () -> Unit) {
             )
         }
 
-        if (item.media!!.duration > 0) {
+        if (duration > 0) {
             item {
                 LinearProgressIndicator(
-                    progress = { item.media!!.position.toFloat() / item.media!!.duration.toFloat() },
+                    progress = { position.toFloat() / duration.toFloat() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp, vertical = 2.dp)
@@ -122,12 +142,12 @@ fun EpisodeDetailScreen(item: FeedItem, onPlay: () -> Unit) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = Converter.getDurationStringLong(item.media!!.position),
+                        text = Converter.getDurationStringLong(position),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.outline
                     )
                     Text(
-                        text = Converter.getDurationStringLong(item.media!!.duration),
+                        text = Converter.getDurationStringLong(duration),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.outline
                     )
@@ -136,11 +156,19 @@ fun EpisodeDetailScreen(item: FeedItem, onPlay: () -> Unit) {
         }
 
         item {
-            ListItem(
-                text = stringResource(CommonR.string.wearos_play_on_phone),
-                iconRes = CommonR.drawable.ic_play_48dp_black,
-                onClick = onPlay
-            )
+            if (isCurrentlyPlaying) {
+                ListItem(
+                    text = stringResource(CommonR.string.pause_label),
+                    iconRes = CommonR.drawable.ic_pause_black,
+                    onClick = onPause
+                )
+            } else {
+                ListItem(
+                    text = stringResource(CommonR.string.wearos_play_on_phone),
+                    iconRes = CommonR.drawable.ic_play_48dp_black,
+                    onClick = onPlay
+                )
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.net.sync.wearinterface;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,8 +21,36 @@ public final class WearSerializer {
     private static final String KEY_PUB_DATE = "pub_date";
     private static final String KEY_DURATION = "duration";
     private static final String KEY_POSITION = "position";
+    private static final String KEY_IS_PLAYING = "is_playing";
 
     private WearSerializer() {
+    }
+
+    @NonNull
+    private static JSONObject episodeToJson(@NonNull FeedItem item) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put(KEY_EPISODE_ID, item.getId());
+        obj.put(KEY_TITLE, item.getTitle() != null ? item.getTitle() : "");
+        obj.put(KEY_PUB_DATE, item.getPubDate() != null ? item.getPubDate().getTime() : 0);
+        obj.put(KEY_DURATION, item.getMedia() != null ? item.getMedia().getDuration() : 0);
+        obj.put(KEY_POSITION, item.getMedia() != null ? item.getMedia().getPosition() : 0);
+        return obj;
+    }
+
+    @NonNull
+    private static FeedItem episodeFromJson(@NonNull JSONObject obj) throws JSONException {
+        FeedItem item = new FeedItem();
+        item.setId(obj.optLong(KEY_EPISODE_ID, -1));
+        item.setTitle(obj.optString(KEY_TITLE, ""));
+        long pubDate = obj.optLong(KEY_PUB_DATE, 0);
+        if (pubDate != 0) {
+            item.setPubDate(new Date(pubDate));
+        }
+        int duration = obj.optInt(KEY_DURATION, 0);
+        int position = obj.optInt(KEY_POSITION, 0);
+        FeedMedia media = new FeedMedia(0, item, duration, position, 0, null, null, null, 0, null, 0, 0L);
+        item.setMedia(media);
+        return item;
     }
 
     @NonNull
@@ -30,13 +58,7 @@ public final class WearSerializer {
         JSONArray array = new JSONArray();
         for (FeedItem item : items) {
             try {
-                JSONObject obj = new JSONObject();
-                obj.put(KEY_EPISODE_ID, item.getId());
-                obj.put(KEY_TITLE, item.getTitle() != null ? item.getTitle() : "");
-                obj.put(KEY_PUB_DATE, item.getPubDate() != null ? item.getPubDate().getTime() : 0);
-                obj.put(KEY_DURATION, item.getMedia() != null ? item.getMedia().getDuration() : 0);
-                obj.put(KEY_POSITION, item.getMedia() != null ? item.getMedia().getPosition() : 0);
-                array.put(obj);
+                array.put(episodeToJson(item));
             } catch (JSONException e) {
                 // skip malformed item
             }
@@ -50,20 +72,7 @@ public final class WearSerializer {
         try {
             JSONArray array = new JSONArray(new String(data, StandardCharsets.UTF_8));
             for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                FeedItem item = new FeedItem();
-                item.setId(obj.optLong(KEY_EPISODE_ID, -1));
-                item.setTitle(obj.optString(KEY_TITLE, ""));
-                long pubDate = obj.optLong(KEY_PUB_DATE, 0);
-                if (pubDate != 0) {
-                    item.setPubDate(new Date(pubDate));
-                }
-                int duration = obj.optInt(KEY_DURATION, 0);
-                int position = obj.optInt(KEY_POSITION, 0);
-                de.danoeh.antennapod.model.feed.FeedMedia media = new FeedMedia(
-                        0, item, duration, position, 0, null, null, null, 0, null, 0, 0L);
-                item.setMedia(media);
-                items.add(item);
+                items.add(episodeFromJson(array.getJSONObject(i)));
             }
         } catch (JSONException e) {
             // return whatever we managed to parse
@@ -106,14 +115,29 @@ public final class WearSerializer {
     }
 
     @NonNull
-    public static byte[] playRequestToBytes(long itemId) {
-        return ByteBuffer.allocate(8).putLong(itemId).array();
+    public static byte[] nowPlayingToBytes(@NonNull FeedItem item, boolean isPlaying) {
+        try {
+            JSONObject obj = episodeToJson(item);
+            obj.put(KEY_IS_PLAYING, isPlaying);
+            return obj.toString().getBytes(StandardCharsets.UTF_8);
+        } catch (JSONException e) {
+            return new byte[0];
+        }
     }
 
-    public static long itemIdFromBytes(@NonNull byte[] data) {
-        if (data.length < 8) {
-            return -1;
+    @Nullable
+    public static WearNowPlaying nowPlayingFromBytes(@NonNull byte[] data) {
+        if (data.length == 0) {
+            return null;
         }
-        return ByteBuffer.wrap(data).getLong();
+        try {
+            JSONObject obj = new JSONObject(new String(data, StandardCharsets.UTF_8));
+            FeedItem item = episodeFromJson(obj);
+            boolean isPlaying = obj.optBoolean(KEY_IS_PLAYING, false);
+            return new WearNowPlaying(item, isPlaying);
+        } catch (JSONException e) {
+            return null;
+        }
     }
+
 }

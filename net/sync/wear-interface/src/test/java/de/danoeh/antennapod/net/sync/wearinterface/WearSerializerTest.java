@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -97,14 +98,28 @@ public class WearSerializerTest {
     }
 
     @Test
-    public void testPlayRequestRoundTrip() {
-        long itemId = 12345678901L;
-        byte[] bytes = WearSerializer.playRequestToBytes(itemId);
-        assertEquals(itemId, WearSerializer.itemIdFromBytes(bytes));
+    public void testNowPlayingRoundTrip() {
+        FeedItem item = new FeedItem();
+        item.setId(99L);
+        item.setTitle("Now Playing");
+        item.setPubDate(new Date(2000000L));
+        FeedMedia media = new FeedMedia(0, item, 7200000, 120000, 0, null, null, null, 0, null, 0, 0L);
+        item.setMedia(media);
+
+        byte[] bytes = WearSerializer.nowPlayingToBytes(item, true);
+        WearNowPlaying result = WearSerializer.nowPlayingFromBytes(bytes);
+
+        assertTrue(result != null);
+        assertEquals(99L, result.item.getId());
+        assertEquals("Now Playing", result.item.getTitle());
+        assertEquals(7200000, result.item.getMedia().getDuration());
+        assertEquals(120000, result.item.getMedia().getPosition());
+        assertTrue(result.isPlaying);
     }
 
     @Test
-    public void testItemIdFromBytesTooShort() {
-        assertEquals(-1, WearSerializer.itemIdFromBytes(new byte[4]));
+    public void testNowPlayingFromBytesEmpty() {
+        WearNowPlaying result = WearSerializer.nowPlayingFromBytes(new byte[0]);
+        assertNull(result);
     }
 }
