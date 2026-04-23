@@ -3,6 +3,7 @@ package de.danoeh.antennapod;
 import android.util.Log;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
+import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import com.google.android.gms.wearable.WearableListenerService;
@@ -11,7 +12,9 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import androidx.media3.common.MediaItem;
+import android.content.Intent;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths;
 import de.danoeh.antennapod.net.sync.wearinterface.WearSerializer;
@@ -101,6 +104,10 @@ public class WearListenerService extends WearableListenerService {
                     } catch (NumberFormatException e) {
                         Log.w(TAG, "Ignoring malformed feed episodes path: " + path, e);
                     }
+                } else if (path.startsWith(WearDataPaths.OPEN_ON_PHONE_PREFIX)) {
+                    Intent intent = new MainActivityStarter(this).getIntent();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 } else {
                     Log.d(TAG, "Ignoring unknown path: " + path);
                 }

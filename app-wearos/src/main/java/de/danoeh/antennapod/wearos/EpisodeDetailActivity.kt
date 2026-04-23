@@ -51,7 +51,8 @@ class EpisodeDetailActivity : ComponentActivity() {
                 item = episode,
                 onRequestNowPlaying = { sendMessage(WearDataPaths.NOW_PLAYING) },
                 onPlay = { sendMessage(WearDataPaths.playPath(episode.id)) },
-                onPause = { sendMessage(WearDataPaths.PAUSE) }
+                onPause = { sendMessage(WearDataPaths.PAUSE) },
+                onOpenOnPhone = { sendMessage(WearDataPaths.openOnPhonePath(episode.id)) }
             )
         }
     }
@@ -74,7 +75,13 @@ class EpisodeDetailActivity : ComponentActivity() {
 }
 
 @Composable
-fun EpisodeDetailScreen(item: FeedItem, onRequestNowPlaying: () -> Unit, onPlay: () -> Unit, onPause: () -> Unit) {
+fun EpisodeDetailScreen(
+    item: FeedItem,
+    onRequestNowPlaying: () -> Unit,
+    onPlay: () -> Unit,
+    onPause: () -> Unit,
+    onOpenOnPhone: () -> Unit
+) {
     val scrollState = rememberScalingLazyListState()
     var titleExpanded by remember { mutableStateOf(false) }
 
@@ -169,6 +176,14 @@ fun EpisodeDetailScreen(item: FeedItem, onRequestNowPlaying: () -> Unit, onPlay:
                     onClick = onPlay
                 )
             }
+        }
+
+        item {
+            ListItem(
+                text = stringResource(CommonR.string.wearos_open_on_phone),
+                iconRes = CommonR.drawable.ic_phone_black,
+                onClick = onOpenOnPhone
+            )
         }
     }
 }

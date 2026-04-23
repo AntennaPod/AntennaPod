@@ -1041,4 +1041,5 @@
     <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Could not reach the phone. Make sure your phone is nearby and AntennaPod is installed.</string>
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Play on phone</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Browse phone</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Open on phone</string>
 </resources>
