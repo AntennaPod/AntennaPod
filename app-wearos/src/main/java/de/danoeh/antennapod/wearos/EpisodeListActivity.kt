@@ -1,10 +1,12 @@
 package de.danoeh.antennapod.wearos
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import de.danoeh.antennapod.model.feed.FeedItem
@@ -12,7 +14,6 @@ import de.danoeh.antennapod.wearos.composable.ListItem
 import de.danoeh.antennapod.wearos.composable.ListScaffold
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
 import de.danoeh.antennapod.wearos.sync.rememberPhoneStatus
-import de.danoeh.antennapod.wearos.sync.requestDataFromPhone
 import kotlinx.coroutines.flow.first
 
 class EpisodeListActivity : ComponentActivity() {
@@ -31,11 +32,11 @@ class EpisodeListActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        requestDataFromPhone(path, TAG)
+        WearDataRepository.requestDataFromPhone(this, lifecycleScope, path, TAG)
     }
 
-    fun openEpisodeDetail(episode: FeedItem) {
-        val intent = android.content.Intent(this, EpisodeDetailActivity::class.java).apply {
+    private fun openEpisodeDetail(episode: FeedItem) {
+        val intent = Intent(this, EpisodeDetailActivity::class.java).apply {
             putExtra(EpisodeDetailActivity.EXTRA_EPISODE, episode)
         }
         startActivity(intent)

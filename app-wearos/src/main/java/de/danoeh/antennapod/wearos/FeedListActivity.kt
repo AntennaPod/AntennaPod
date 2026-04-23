@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import de.danoeh.antennapod.model.feed.Feed
@@ -14,7 +15,6 @@ import de.danoeh.antennapod.wearos.composable.ListItem
 import de.danoeh.antennapod.wearos.composable.ListScaffold
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
 import de.danoeh.antennapod.wearos.sync.rememberPhoneStatus
-import de.danoeh.antennapod.wearos.sync.requestDataFromPhone
 import kotlinx.coroutines.flow.first
 
 class FeedListActivity : ComponentActivity() {
@@ -29,7 +29,7 @@ class FeedListActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        requestDataFromPhone(path, TAG)
+        WearDataRepository.requestDataFromPhone(this, lifecycleScope, path, TAG)
     }
 
     fun openFeedEpisodes(feedId: Long) {
