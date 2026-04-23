@@ -6,57 +6,42 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import de.danoeh.antennapod.model.feed.Feed
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths
 import de.danoeh.antennapod.wearos.composable.ListItem
 import de.danoeh.antennapod.wearos.composable.ListScaffold
-import de.danoeh.antennapod.wearos.sync.WearDataRepository
-import de.danoeh.antennapod.wearos.sync.rememberPhoneStatus
-import kotlinx.coroutines.flow.first
 
 class FeedListActivity : ComponentActivity() {
-    private val path = WearDataPaths.SUBSCRIPTIONS
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel = ViewModelProvider(this)[FeedListViewModel::class.java]
+
         setContent {
-            FeedListScreen(onOpenFeedEpisodes = { feedId -> openFeedEpisodes(feedId) })
+            val uiState by viewModel.uiState.collectAsState()
+            FeedListScreen(uiState = uiState, onOpenFeedEpisodes = { feedId ->
+                val intent = Intent(this, EpisodeListActivity::class.java).apply {
+                    putExtra(EpisodeListActivity.EXTRA_PATH, WearDataPaths.feedEpisodesPath(feedId))
+                }
+                startActivity(intent)
+            })
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        WearDataRepository.requestDataFromPhone(this, lifecycleScope, path, TAG)
-    }
-
-    fun openFeedEpisodes(feedId: Long) {
-        val intent = Intent(this, EpisodeListActivity::class.java).apply {
-            putExtra(EpisodeListActivity.EXTRA_PATH, WearDataPaths.feedEpisodesPath(feedId))
-        }
-        startActivity(intent)
-    }
-
-    companion object {
-        private const val TAG = "FeedListActivity"
     }
 }
 
 @Composable
-fun FeedListScreen(onOpenFeedEpisodes: (Long) -> Unit) {
+fun FeedListScreen(uiState: FeedListUiState, onOpenFeedEpisodes: (Long) -> Unit) {
     val scrollState = rememberScalingLazyListState()
-    val feeds: List<Feed>? = WearDataRepository.feedsByPath.collectAsState().value[WearDataPaths.SUBSCRIPTIONS]
-    val (isPhoneSupported, isTimedOut) = rememberPhoneStatus(WearDataPaths.SUBSCRIPTIONS) {
-        WearDataRepository.feedsByPath.first { it.containsKey(WearDataPaths.SUBSCRIPTIONS) }
-    }
+    val feeds: List<Feed>? = uiState.feeds
 
     ListScaffold(
         titleRes = NavigationNames.getTitleResForPath(WearDataPaths.SUBSCRIPTIONS),
         scrollState = scrollState,
-        isPhoneSupported = isPhoneSupported,
-        isTimedOut = isTimedOut,
+        isPhoneSupported = uiState.isPhoneSupported,
+        isTimedOut = uiState.isTimedOut,
         isLoading = feeds == null,
         isEmpty = feeds?.isEmpty() == true
     ) {

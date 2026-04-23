@@ -67,6 +67,7 @@ dependencies {
     implementation "androidx.compose.ui:ui:$composeVersion"
     implementation "androidx.compose.runtime:runtime:$composeVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycleRuntimeComposeVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleRuntimeComposeVersion"
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0"
     implementation "androidx.activity:activity-compose:$activityComposeVersion"
