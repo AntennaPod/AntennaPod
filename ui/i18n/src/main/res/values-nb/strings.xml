@@ -23,7 +23,7 @@
   <string name="app_action_not_found">Kan ikke finne «%1$s»</string>
     <!--SwipeActions-->
   <string name="swipeactions_label">Sveipehandlinger</string>
-    <string name="swipeactions_summary">Velg hva som skjer når du sveiper en episode i ei liste</string>
+    <string name="swipeactions_summary">Velg hva som skjer når du sveiper en episode i en liste</string>
     <string name="swipe_right">Sveip til høyre</string>
     <string name="swipe_left">Sveip til venstre</string>
     <string name="enable_swipeactions">Slå på sveipehandlinger for denne skjermen</string>
@@ -335,7 +335,7 @@
     <string name="feed_every_24_hours">Hver dag</string>
     <string name="feed_every_72_hours">Hver 3. dag</string>
     <string name="pref_followQueue_title">Kontinuerlig avspilling</string>
-    <string name="pref_pauseOnHeadsetDisconnect_title">Hodetelefoner eller Bluetooth frakobling</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Frakobling av hodetelefoner eller Bluetooth</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Hodetelefoner er koblet til igjen</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Blutetooth er koblet til igjen</string>
     <string name="pref_stream_over_download_title">Foretrekk strømming</string>
@@ -403,7 +403,7 @@
     <string name="pref_skip_silence_title">Hopp over stillhet i lyden</string>
     <string name="behavior">Funksjon</string>
     <string name="pref_default_page">Standardside</string>
-    <string name="pref_default_page_sum">Skjerm som åpnes først nå AntennaPod åpnes</string>
+    <string name="pref_default_page_sum">Startskjerm når AntennaPod åpnes</string>
     <string name="pref_back_button_opens_drawer">Tilbakeknappen åpner sidemenyen</string>
     <string name="pref_back_button_opens_drawer_summary">Å trykke tilbakeknappen på startsiden åpner sidemenyen</string>
     <string name="remember_last_page">Husk siste side</string>
@@ -519,9 +519,9 @@
     <string name="pref_gpodnet_setlogin_information_title">Endre innloggingsinformasjon</string>
     <string name="pref_gpodnet_setlogin_information_sum">Endre innlogginsinformasjonen til din gpodder.net-konto.</string>
     <string name="synchronization_sync_changes_title">Synkroniser nå</string>
-    <string name="synchronization_sync_summary">Synkroniser endringer i abonnement og status av episoder</string>
+    <string name="synchronization_sync_summary">Synkroniser endringer i abonnement og status for episoder</string>
     <string name="synchronization_full_sync_title">Tving full synkronisering</string>
-    <string name="synchronization_force_sync_summary">Synkroniser alle abonnementer og status av episoder på nytt</string>
+    <string name="synchronization_force_sync_summary">Synkroniser alle abonnementer og status for episoder på nytt</string>
     <string name="synchronization_logout">Logg ut</string>
     <string name="synchronization_login_status">Logget på som %1$s på %2$s.\n\nDu kan velge ny synkroniseringstjeneste med en gang du har logget deg av.</string>
     <string name="pref_synchronization_logout_toast">Logget ut</string>
@@ -754,7 +754,7 @@
         <item quantity="other">Laster ned med mobildata i løpet av de neste %d minuttene</item>
     </plurals>
     <string name="bottom_navigation">Nedre navigasjonslinje</string>
-    <string name="bottom_navigation_summary">Få tilgang til viktige skjermbilder fra hvor som helst med et enkelt tapp</string>
+    <string name="bottom_navigation_summary">Få tilgang til viktige skjermbilder fra hvor som helst med et enkelt trykk</string>
     <plurals name="statistics_episodes_started">
         <item quantity="one">påbegynt</item>
         <item quantity="other">påbegynte</item>

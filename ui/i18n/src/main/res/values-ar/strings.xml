@@ -293,7 +293,7 @@
     <string name="error_file_not_found">ملف غير موجود</string>
     <string name="no_media_label">لا يوجد ملف وسائط بالعنصر</string>
     <!--Queue operations-->
-  <string name="lock_queue">اقفل الطابور</string>
+  <string name="lock_queue">أَقفِل الطابور</string>
     <string name="queue_locked">أُقفل الطابور</string>
     <string name="queue_unlocked">فُتِح الطابور</string>
     <string name="queue_lock_warning">إذا أقفلت الطابور، لن تتمكن من ترتيب أو تمرير الحلقات فيه.</string>
@@ -339,8 +339,8 @@
     <string name="synchronization_sum">زامن مع أجهرة أخرى</string>
     <string name="automation">التشغيل الآلي</string>
     <string name="download_pref_details">تفاصيل</string>
-    <string name="import_export_pref">استيراد/تصدير</string>
-    <string name="import_export_search_keywords">النسخ الاحتياطي و الاسترجاع</string>
+    <string name="import_export_pref">النسخ الاحتياطي والاستعادة</string>
+    <string name="import_export_search_keywords">استيراد، تصدير</string>
     <string name="theming">السمات</string>
     <string name="external_elements">العوامل الخارجية</string>
     <string name="interruptions">المقاطعات</string>
@@ -408,7 +408,7 @@
     <string name="pref_black_theme_message">استخدم النمط الأسود بالكامل كالنمط الداكن</string>
     <string name="pref_tinted_theme_title">الألوان الحركية</string>
     <string name="pref_tinted_theme_message">تكييف ألوان التطبيق بناءً على الخلفية</string>
-    <string name="pref_nav_drawer_feed_counter_title">حدد عداد الاشتراكات</string>
+    <string name="pref_nav_drawer_feed_counter_title">العداد</string>
     <string name="pref_automatic_download_title">تنزيل تلقائي</string>
     <string name="pref_automatic_download_sum">أضبط التنزيل التلقائي للحلقات</string>
     <string name="pref_automatic_download_on_battery_title">التنزيل عند عدم الشحن الجهاز</string>
@@ -593,7 +593,7 @@
     <string name="synchronization_summary_unchoosen">يمكنك الاختيار من بين عدة مزودين لمزامنة اشتراكاتك وحالة تشغيل الحلقة معهم</string>
     <string name="dialog_choose_sync_service_title">اختر مزود خدمة التزامن</string>
     <string name="gpodnet_description">Gpodder.net هي خدمة مزامنة مسموعيَّات مفتوحة المصدر يمكنك تثبيتها على الخادم الخاص بك. Gpodder.net خدمة مستقلة عن مشروع أنتنابد.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync هو تطبيق Nextcloud مفتوح المصدر يمكنك تنصيبه على خادمك بكل سهولة. التطبيق مستقل عن مشروع أنتنابد.</string>
+    <string name="synchronization_summary_nextcloud">تطبيق «Gpodder Sync» هو تطبيق «Nextcloud» مفتوح المصدر يمكنك تنصيبه على خادمك بكل سهولة. التطبيق مستقل عن مشروع أنتينابود.</string>
     <string name="synchronization_host_explanation">اختر خادما خاصا بك للمزامنة. عند اختيارك لخادم المزامنة المرغوب، اضف عنوانه هنا.</string>
     <string name="synchronization_host_label">عنوان الخادم</string>
     <string name="proceed_to_login_butLabel">اشرع إلى تسجيل الدخول</string>
@@ -668,7 +668,7 @@
     <string name="authentication_descr">غيِّر اسم المستخدم وكلمة المرور لهذه المسموعيَّة وحلقاتها</string>
     <string name="feed_tags_label">العلامات</string>
     <string name="feed_tags_summary">غيِّر العلامات الخاصة بهذه المسموعيَّة للمساعدة في تنظيم اشتراكاتك</string>
-    <string name="feed_folders_include_root">اعرض هذه المسموعيَّة في القائمة الرئيسية</string>
+    <string name="feed_folders_include_root">اعرض فوق الأوسمة (للتنقل الجانبي فقط)</string>
     <string name="multi_feed_common_tags_info">ستعرض العلامات المشتركة بين الاشتراكات المختارة فقط. لن تعدل العلامات الأخرى.</string>
     <string name="episode_filters_label">مصفاة الحلقات</string>
     <string name="episode_filters_description">قائمة الكلمات المستخدمة لتحديد ما إذا كان يجب تضمين حلقة أو استبعادها عند التنزيل التلقائي</string>
@@ -807,9 +807,9 @@
     <string name="bottom_navigation_summary">أوصل إلى الشاشات المهمة من أي مكان، بنقرة واحدة</string>
     <string name="pref_nav_drawer_items_sum">غير الأدوات التي ستظهر في درج التنقل أو التنقل السفلي</string>
     <string name="sync_status_wait_for_downloads">بانتظار تحديث المسموعيَّات…</string>
-    <string name="nextcloud_login_error_generic">فشل الولوج إلى NextCloud الخاص بك.\n\n- تأكد من اتصالك بالشبكة.\n- تأكد من صحة عنوان الخادم.\n- تأكد من تثبيت الملحق gpoddersync على NextCloud.</string>
+    <string name="nextcloud_login_error_generic">فشل الولوج إلى NextCloud الخاص بك.\n\n- تأكد من اتصالك بالشبكة.\n- تأكد من صحة عنوان الخادم.\n- تأكد من تثبيت الملحق Gpodder Sync على NextCloud.</string>
     <string name="discover_more">اكتشف المزيد »</string>
-    <string name="pref_automatic_download_global_description">تنزيل الحلقات الجديدة تلقائيًّا. يمكن تعديله لكل مسموعيَّة.</string>
+    <string name="pref_automatic_download_global_description">تنزيل الحلقات من صندوق الوارد تلقائيًّا. يمكن تعديله لكل مسموعيَّة.</string>
     <string name="pref_automatic_download_queue_title">تنزيل الطابور</string>
     <string name="pref_automatic_download_queue_description">نزل الحلقات المدرجة في الطابور تلقائيًا</string>
     <string name="episode_lists">قوائم الحلقة</string>
@@ -925,4 +925,82 @@
     <string name="removed_from_inbox_message">أُزيل من صندوق الوارد</string>
     <string name="mark_as_played_label">علِّم كمشغل</string>
     <string name="play_this_to_seek_position_message">تحتاج لتشغيل الحلقة للانتقال لأي توقيت معين</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="zero">عُلِّمت %d حلقة كمُشغّلة.</item>
+        <item quantity="one">عُلِّمت حلقة واحدة كمُشغّلة.</item>
+        <item quantity="two">عُلِّمت حلقتان كمُشغّلة.</item>
+        <item quantity="few">عُلِّمت %d حلقات كمُشغّلة.</item>
+        <item quantity="many">عُلِّمت %d حلقة كمُشغّلة.</item>
+        <item quantity="other">عُلِّمت %d حلقة كمُشغّلة.</item>
+    </plurals>
+    <string name="mark_as_unplayed_label">علّم كغير مُشغّلة</string>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="zero">%d حلقة عُلّمت كغير مُشغّلة.</item>
+        <item quantity="one">حلقة واحدة عُلّمت كغير مُشغّلة.</item>
+        <item quantity="two">حلقتان عُلّمتان كغير مُشغّلة.</item>
+        <item quantity="few">%d حلقات عُلّمت كغير مُشغّلة.</item>
+        <item quantity="many">%d حلقة عُلّمت كغير مُشغّلة.</item>
+        <item quantity="other">%d حلقة عُلّمت كغير مُشغّلة.</item>
+    </plurals>
+    <plurals name="added_to_queue_message">
+        <item quantity="zero">%d حلقة أُضيفت لقائمة الانتظار.</item>
+        <item quantity="one">حلقة واحدة أُضيفت لقائمة الانتظار.</item>
+        <item quantity="two">حلقتان أُضيفتان لقائمة الانتظار.</item>
+        <item quantity="few">%d حلقات أُضيفت لقائمة الانتظار.</item>
+        <item quantity="many">%d حلقة أُضيفت لقائمة الانتظار.</item>
+        <item quantity="other">%d حلقة أُضيفت لقائمة الانتظار.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="zero">حُذفت %d حلقة من قائمة الانتظار.</item>
+        <item quantity="one">حُذفت حلقة واحدة من قائمة الانتظار.</item>
+        <item quantity="two">حُذفت حلقتان من قائمة الانتظار.</item>
+        <item quantity="few">حُذفت %d حلقات من قائمة الانتظار.</item>
+        <item quantity="many">حُذفت %d حلقة من قائمة الانتظار.</item>
+        <item quantity="other">حُذفت %d حلقة من قائمة الانتظار.</item>
+    </plurals>
+    <string name="visit_social_interact_confirm_dialog_title">أنت تخرج من التطبيق</string>
+    <string name="visit_social_interact_confirm_dialog_message">تأكّد من ثقتك بموقع الويب «%1$s».</string>
+    <string name="reset_playback_position_label">إعادة تعيين تقدُّم التشغيل</string>
+    <string name="no_items_selected_message">لم يُحدد أي عنصر</string>
+    <string name="download_log_details_human_readable_reason_title">الحالة</string>
+    <string name="download_log_details_technical_reason_title">التفاصيل المتقدّمة</string>
+    <string name="download_log_details_file_url_title">عنوان URL للملف</string>
+    <string name="download_log_open_feed">افتح</string>
+    <string name="transcript_follow_audio_label">تتبع الصوت</string>
+    <string name="delete_local_feed_confirmation_dialog_message">سيزيل الحذف الحلقة من أنْتِنَابُد وسيحذف ملفها من ذاكرة تخزين جهازك. لن تتمكن من تنزيلها عن طريق أنْتِنَابُد مرة أخرى.</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="zero">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقيقة</item>
+        <item quantity="one">سيُنزّل باستخدام بيانات الهاتف لمدة دقيقة</item>
+        <item quantity="two">سيُنزّل باستخدام بيانات الهاتف لمدة دقيقتين</item>
+        <item quantity="few">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقائق</item>
+        <item quantity="many">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقيقة</item>
+        <item quantity="other">سيُنزّل باستخدام بيانات الهاتف لمدة %d دقيقة</item>
+    </plurals>
+    <string name="already_downloaded">نزلت الحلقة مسبقًا</string>
+    <string name="no_following_in_queue">هذه أخر حلقة في الطابور</string>
+    <plurals name="move_to_top_message">
+        <item quantity="zero">لم تنقل أي حلقة للأعلى.</item>
+        <item quantity="one">نقلت حلقة واحدة للأعلى.</item>
+        <item quantity="two">نقلت حلقتان للأعلى.</item>
+        <item quantity="few">نقلت %d حلقات للأعلى.</item>
+        <item quantity="many">نقلت %d حلقة للأعلى.</item>
+        <item quantity="other">نقلت %d حلقة للأعلى.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="zero">لم تنقل أي حلقة للأسفل.</item>
+        <item quantity="one">نقلت حلقة واحدة للأسفل.</item>
+        <item quantity="two">نقلت حلقتان للأسفل.</item>
+        <item quantity="few">نقلت %d حلقات للأسفل.</item>
+        <item quantity="many">نقلت %d حلقة للأسفل.</item>
+        <item quantity="other">نقلت %d حلقة للأسفل.</item>
+    </plurals>
+    <string name="episode">حلقة</string>
+    <string name="feed">مسموعية</string>
+    <string name="no_queue_items_inbox_has_items_label">لا حلقات في الطابور، ولكن هناك حلقات جديدة تنتظرك!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">اذهب إلى صندوق الوارد</string>
+    <string name="no_archive_head_label">الأرشيف فارغ</string>
+    <string name="no_archive_label">أرشف المسموعيات من صحفة الاشتراكات الرئيسية.</string>
+    <string name="pref_global_default_episode_list_sort_order_title">ترتيب الفرز الافتراضي</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">اختر الترتيب الافتراضي للحلقات في صفحة المسموعية</string>
+    <string name="report_bug_title">أبلغ عن علة</string>
 </resources>
