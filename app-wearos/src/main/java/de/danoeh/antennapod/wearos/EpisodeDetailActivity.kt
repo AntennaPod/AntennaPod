@@ -3,10 +3,14 @@ package de.danoeh.antennapod.wearos
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -73,7 +77,9 @@ fun EpisodeDetailScreen(
     ScalingLazyColumn(
         modifier = Modifier.fillMaxWidth(),
         state = scrollState,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 32.dp),
+        autoCentering = null
     ) {
         item {
             val dateStr = DateFormatter.formatAbbrev(LocalContext.current, item.getPubDate())
@@ -155,6 +161,10 @@ fun EpisodeDetailScreen(
                 iconRes = CommonR.drawable.ic_phone_black,
                 onClick = onOpenOnPhone
             )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
