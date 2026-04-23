@@ -1,6 +1,6 @@
 plugins {
     id('com.android.application')
-    id('com.github.triplet.play') version '3.9.0' apply false
+    id('com.github.triplet.play') version '4.0.0' apply false
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -137,6 +137,8 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$runnerVersion"
     androidTestImplementation "androidx.test:rules:$rulesVersion"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation "org.hamcrest:hamcrest:2.2"
+    androidTestImplementation "org.hamcrest:hamcrest-library:2.2"
 }
 
 if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
