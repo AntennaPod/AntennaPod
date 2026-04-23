@@ -12,7 +12,6 @@ import de.danoeh.antennapod.model.feed.Feed
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths
 import de.danoeh.antennapod.wearos.composable.ListItem
 import de.danoeh.antennapod.wearos.composable.ListScaffold
-import de.danoeh.antennapod.wearos.sync.WearDataPathUtils
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
 import de.danoeh.antennapod.wearos.sync.rememberPhoneStatus
 import de.danoeh.antennapod.wearos.sync.requestDataFromPhone
@@ -24,7 +23,7 @@ class FeedListActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FeedListScreen(activity = this)
+            FeedListScreen(onOpenFeedEpisodes = { feedId -> openFeedEpisodes(feedId) })
         }
     }
 
@@ -46,15 +45,15 @@ class FeedListActivity : ComponentActivity() {
 }
 
 @Composable
-fun FeedListScreen(activity: FeedListActivity) {
+fun FeedListScreen(onOpenFeedEpisodes: (Long) -> Unit) {
     val scrollState = rememberScalingLazyListState()
     val feeds: List<Feed>? = WearDataRepository.feedsByPath.collectAsState().value[WearDataPaths.SUBSCRIPTIONS]
-    val (isPhoneSupported, isTimedOut) = rememberPhoneStatus(activity, WearDataPaths.SUBSCRIPTIONS) {
+    val (isPhoneSupported, isTimedOut) = rememberPhoneStatus(WearDataPaths.SUBSCRIPTIONS) {
         WearDataRepository.feedsByPath.first { it.containsKey(WearDataPaths.SUBSCRIPTIONS) }
     }
 
     ListScaffold(
-        titleRes = WearDataPathUtils.getTitleResForPath(WearDataPaths.SUBSCRIPTIONS),
+        titleRes = NavigationNames.getTitleResForPath(WearDataPaths.SUBSCRIPTIONS),
         scrollState = scrollState,
         isPhoneSupported = isPhoneSupported,
         isTimedOut = isTimedOut,
@@ -64,7 +63,7 @@ fun FeedListScreen(activity: FeedListActivity) {
         items(feeds!!) { feed ->
             ListItem(
                 text = feed.title ?: "",
-                onClick = { activity.openFeedEpisodes(feed.id) }
+                onClick = { onOpenFeedEpisodes(feed.id) }
             )
         }
     }

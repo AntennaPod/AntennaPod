@@ -10,7 +10,6 @@ import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.wearos.composable.ListItem
 import de.danoeh.antennapod.wearos.composable.ListScaffold
-import de.danoeh.antennapod.wearos.sync.WearDataPathUtils
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
 import de.danoeh.antennapod.wearos.sync.rememberPhoneStatus
 import de.danoeh.antennapod.wearos.sync.requestDataFromPhone
@@ -26,7 +25,7 @@ class EpisodeListActivity : ComponentActivity() {
             return
         }
         setContent {
-            EpisodeListScreen(path = path, activity = this)
+            EpisodeListScreen(path = path, onOpenEpisodeDetail = { episode -> openEpisodeDetail(episode) })
         }
     }
 
@@ -49,11 +48,11 @@ class EpisodeListActivity : ComponentActivity() {
 }
 
 @Composable
-fun EpisodeListScreen(path: String, activity: EpisodeListActivity) {
+fun EpisodeListScreen(path: String, onOpenEpisodeDetail: (FeedItem) -> Unit) {
     val scrollState = rememberScalingLazyListState()
-    val titleRes = WearDataPathUtils.getTitleResForPath(path)
+    val titleRes = NavigationNames.getTitleResForPath(path)
     val episodes: List<FeedItem>? = WearDataRepository.episodesByPath.collectAsState().value[path]
-    val (isPhoneSupported, isTimedOut) = rememberPhoneStatus(activity, path) {
+    val (isPhoneSupported, isTimedOut) = rememberPhoneStatus(path) {
         WearDataRepository.episodesByPath.first { it.containsKey(path) }
     }
 
@@ -68,7 +67,7 @@ fun EpisodeListScreen(path: String, activity: EpisodeListActivity) {
         items(episodes!!) { episode ->
             ListItem(
                 text = episode.title ?: "",
-                onClick = { activity.openEpisodeDetail(episode) }
+                onClick = { onOpenEpisodeDetail(episode) }
             )
         }
     }

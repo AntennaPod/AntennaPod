@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 /**
  * Singleton holding the last data received from the phone for each data path.
  * Written by WearDataListenerService (even when no activity is running) and
- * read by ItemListActivity.
+ * read by the screen composables.
  */
 object WearDataRepository {
     private val _episodesByPath = MutableStateFlow<Map<String, List<FeedItem>>>(emptyMap())

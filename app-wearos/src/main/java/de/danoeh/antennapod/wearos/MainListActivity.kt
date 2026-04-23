@@ -29,11 +29,11 @@ import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScrollIndicator
 import androidx.wear.compose.material3.Text
 import com.google.android.gms.wearable.Wearable
+import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.net.sync.wearinterface.WearConnectionUtils
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths
 import de.danoeh.antennapod.ui.common.R as CommonR
 import de.danoeh.antennapod.wearos.composable.ListItem
-import de.danoeh.antennapod.wearos.sync.WearDataPathUtils
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -44,8 +44,23 @@ class MainListActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MainListScreen(
-                context = this,
-                onRequestNowPlaying = { requestNowPlaying() }
+                onFetchConnectedPhone = { WearConnectionUtils.getConnectedNodeName(this) },
+                onRequestNowPlaying = { requestNowPlaying() },
+                onOpenEpisodeDetail = { episode ->
+                    val intent = Intent(this, EpisodeDetailActivity::class.java).apply {
+                        putExtra(EpisodeDetailActivity.EXTRA_EPISODE, episode)
+                    }
+                    startActivity(intent)
+                },
+                onOpenFeedList = {
+                    startActivity(Intent(this, FeedListActivity::class.java))
+                },
+                onOpenEpisodeList = { path ->
+                    val intent = Intent(this, EpisodeListActivity::class.java).apply {
+                        putExtra(EpisodeListActivity.EXTRA_PATH, path)
+                    }
+                    startActivity(intent)
+                }
             )
         }
     }
@@ -66,18 +81,24 @@ class MainListActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainListScreen(context: MainListActivity, onRequestNowPlaying: () -> Unit) {
+fun MainListScreen(
+    onFetchConnectedPhone: suspend () -> String,
+    onRequestNowPlaying: () -> Unit,
+    onOpenEpisodeDetail: (FeedItem) -> Unit,
+    onOpenFeedList: () -> Unit,
+    onOpenEpisodeList: (String) -> Unit
+) {
     val scrollState = rememberScalingLazyListState()
     val versionName = BuildConfig.VERSION_NAME
     var connectedPhone by remember { mutableStateOf("") }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect("fetchConnectedPhone") {
         connectedPhone = withContext(Dispatchers.Default) {
-            WearConnectionUtils.getConnectedNodeName(context)
+            onFetchConnectedPhone()
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect("pollNowPlaying") {
         while (true) {
             onRequestNowPlaying()
             delay(2000)
@@ -109,12 +130,7 @@ fun MainListScreen(context: MainListActivity, onRequestNowPlaying: () -> Unit) {
                 if (nowPlaying != null) {
                     ListItem(
                         text = nowPlaying!!.item.title ?: "",
-                        onClick = {
-                            val intent = Intent(context, EpisodeDetailActivity::class.java).apply {
-                                putExtra(EpisodeDetailActivity.EXTRA_EPISODE, nowPlaying!!.item)
-                            }
-                            context.startActivity(intent)
-                        }
+                        onClick = { onOpenEpisodeDetail(nowPlaying!!.item) }
                     )
                 } else {
                     ListItem(
@@ -136,17 +152,14 @@ fun MainListScreen(context: MainListActivity, onRequestNowPlaying: () -> Unit) {
 
             items(menuItems) { path ->
                 ListItem(
-                    text = stringResource(WearDataPathUtils.getTitleResForPath(path)),
-                    iconRes = WearDataPathUtils.getIconResForPath(path),
+                    text = stringResource(NavigationNames.getTitleResForPath(path)),
+                    iconRes = NavigationNames.getIconResForPath(path),
                     onClick = {
-                        val intent = if (path == WearDataPaths.SUBSCRIPTIONS) {
-                            Intent(context, FeedListActivity::class.java)
+                        if (path == WearDataPaths.SUBSCRIPTIONS) {
+                            onOpenFeedList()
                         } else {
-                            Intent(context, EpisodeListActivity::class.java).apply {
-                                putExtra(EpisodeListActivity.EXTRA_PATH, path)
-                            }
+                            onOpenEpisodeList(path)
                         }
-                        context.startActivity(intent)
                     }
                 )
             }

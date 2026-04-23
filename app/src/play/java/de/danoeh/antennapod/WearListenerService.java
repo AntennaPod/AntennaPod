@@ -3,7 +3,6 @@ package de.danoeh.antennapod;
 import android.util.Log;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
-import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import com.google.android.gms.wearable.WearableListenerService;
