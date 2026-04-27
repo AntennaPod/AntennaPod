@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="general_expand_button">Expandir</string>
+    <string name="general_expand_button">Expandir ---TEST---</string>
     <string name="general_collapse_button">Recolher</string>
     <string name="feed_update_receiver_name">Atualizar subscrições</string>
     <string name="statistics_label">Estatísticas</string>
