@@ -512,7 +512,7 @@
     <string name="import_ok">Pulse OK para reiniciar AntennaPod</string>
     <string name="import_no_downgrade">Esta base de datos fue exportada con una versión más moderna de AntennaPod. La versión instalada no puede manejarla.</string>
     <string name="favorites_export_label">Exportar favoritos</string>
-    <string name="favorites_export_summary">Se exportaron los favoritos al archivo</string>
+    <string name="favorites_export_summary">Exportar los favoritos a un archivo</string>
     <!--Sleep timer-->
   <string name="set_sleeptimer_label">Establecer un temporizador</string>
     <string name="disable_sleeptimer_label">Desactivar el temporizador</string>
@@ -575,9 +575,9 @@
     <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
     <string name="synchronization_sync_changes_title">Sincroniza ahora</string>
     <string name="synchronization_sync_summary">Sincronizar los cambios de suscripciones y estados de episodios</string>
-    <string name="synchronization_full_sync_title">Fuerza sincronización completa</string>
+    <string name="synchronization_full_sync_title">Forzar sincronización completa</string>
     <string name="synchronization_force_sync_summary">Resincronizar todas las suscripciones y estados de los episodios</string>
-    <string name="synchronization_logout">Desconecta</string>
+    <string name="synchronization_logout">Desconectar</string>
     <string name="synchronization_login_status">Conectado como %1$s en %2$s.\n\nPuede volver a elegir su proveedor de sincronización una vez que haya cerrado la sesión.</string>
     <string name="pref_synchronization_logout_toast">Te has desconectado correctamente</string>
     <string name="gpodnetsync_error_title">Error de sincronización de gpodder.net</string>
@@ -934,8 +934,8 @@
     <string name="no_archive_label">Puede archivar los podcasts desde la pantalla de suscripciones principal.</string>
     <string name="general_expand_button">Expandir</string>
     <string name="general_collapse_button">Colapsar</string>
-    <string name="pref_global_default_episode_list_sort_order_title">Ordenación por defecto</string>
-    <string name="pref_global_default_episode_list_sort_order_sum">Elige el orden por defecto de los episodios en la pantalla de detalles de un podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Orden por defecto</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Elige el orden por defecto de los episodios en la pantalla del podcast</string>
     <string name="report_bug_title">Informar de un error</string>
     <string name="report_bug_message">Lamentamos que algo no funcione. Nos encantaría que nos ayudaras a mejorar AntennaPod. Consulta nuestro foro o GitHub para ver si ya se ha reportado la incidencia. Si no es así, avísanos y lo investigaremos.</string>
     <string name="report_bug_device_info_title">Dispositivo</string>

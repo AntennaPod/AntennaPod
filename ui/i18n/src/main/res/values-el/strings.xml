@@ -771,10 +771,10 @@
     <string name="add_feed_label_short">Προσθέστε</string>
     <string name="episodes_label_short">επεισόδια</string>
     <string name="home_label_short">Αρχική</string>
-    <string name="queue_label_short">ουρά</string>
-    <string name="inbox_label_short">εισερχόμενα</string>
+    <string name="queue_label_short">Ουρά</string>
+    <string name="inbox_label_short">Εισερχόμενα</string>
     <string name="downloads_label_short">Λήψεις</string>
-    <string name="subscriptions_label_short">συνδρομές</string>
+    <string name="subscriptions_label_short">Συνδρομές</string>
     <string name="playback_history_label_short">Ιστορικό</string>
     <string name="episodes_label_more">Επεισόδια »</string>
     <string name="queue_label_more">Ουρά »</string>
@@ -839,4 +839,9 @@
     <string name="echo_thanks_we_are_glad_old">που μας υποστηρίξατε φέτος!\n\nΠαίξατε το πρώτο σας επεισόδιο μαζί μας στο %1$s. Από τότε είναι τιμή μας να σας εξυπηρετούμε.</string>
     <string name="overflow_more">Περισσότερα</string>
     <string name="statistics_release_next">επόμενο επεισόδιο (εκτίμηση)</string>
+    <string name="report_bug_title">Αναφορά προβλήματος</string>
+    <string name="report_bug_message">Λυπούμαστε πως κάτι δεν λειτουργεί. Θα θέλαμε τη βοήθειά σας για τη βελτίωση του AntennaPod. Ελέγξτε το φόρουμ μας ή το GitHub για να δείτε εάν το πρόβλημα έχει ήδη αναφερθεί. Αν όχι, ενημερώστε μας και θα ερευνήσουμε.</string>
+    <string name="report_bug_forum_title">Φόρουμ</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Προεπιλεγμένη σειρά ταξινόμησης</string>
 </resources>

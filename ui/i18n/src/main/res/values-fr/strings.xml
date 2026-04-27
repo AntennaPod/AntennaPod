@@ -947,7 +947,7 @@
     <string name="pref_global_default_episode_list_sort_order_title">Tri par défaut</string>
     <string name="pref_global_default_episode_list_sort_order_sum">Choisir le tri par défaut des épisodes dans l\'écran de détail d\'un podcast</string>
     <string name="report_bug_title">Signaler un bug</string>
-    <string name="report_bug_message">Désolé si quelque chose ne marche pas. Votre aide pour améliorer AntennaPod est appréciée. Commencer par vérifier sur notre forum ou GitHub si le problème est déjà connu. Si il ne l\'est pas, faites le nous savoir et nous le prendrons en compte.</string>
+    <string name="report_bug_message">Désolé si quelque chose ne marche pas. Votre aide pour améliorer AntennaPod est appréciée. Commencez par vérifier sur notre forum ou GitHub si le problème est déjà connu. Si il ne l\'est pas, faites le nous savoir et nous le prendrons en compte.</string>
     <string name="report_bug_device_info_title">Appareil</string>
     <string name="report_bug_attrib_app_version">Version de l\'application</string>
     <string name="report_bug_attrib_android_version">Version Android</string>
