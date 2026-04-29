@@ -94,6 +94,24 @@ public class Feed {
     private String nextPageLink;
 
     private boolean lastUpdateFailed;
+    private boolean verified = true; // Default to true for existing feeds
+    private boolean importedExternally = false;
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
+    public boolean isImportedExternally() {
+        return importedExternally;
+    }
+
+    public void setImportedExternally(boolean importedExternally) {
+        this.importedExternally = importedExternally;
+    }
 
     /**
      * Contains property strings. If such a property applies to a feed item, it is not shown in the feed list

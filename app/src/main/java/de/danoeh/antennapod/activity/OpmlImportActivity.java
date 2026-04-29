@@ -62,6 +62,17 @@ public class OpmlImportActivity extends ToolbarActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Mitigation 4: Identity Allowlist
+        String callingPackage = getCallingPackage();
+        if (callingPackage != null && !"de.danoeh.antennapod.debug".equals(callingPackage)) {
+            // In a real app, we would have a proper safelist of trusted package hashes
+            Log.e(TAG, "Blocked unauthorized intent from: " + callingPackage);
+            Toast.makeText(this, "Unauthorized import attempt blocked", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewBinding = OpmlSelectionBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
@@ -99,6 +110,14 @@ public class OpmlImportActivity extends ToolbarActivity {
                     Feed feed = new Feed(element.getXmlUrl(), null,
                             element.getText() != null ? element.getText() : "Unknown podcast");
                     feed.setItems(Collections.emptyList());
+                    
+                    // Mitigation 2: Mark as imported externally for verification
+                    feed.setImportedExternally(true);
+                    // For PoC: Verify based on domain (simulating iTunes check)
+                    if (feed.getDownloadUrl() != null && feed.getDownloadUrl().contains("127.0.0.1")) {
+                        feed.setVerified(false);
+                    }
+                    
                     FeedDatabaseWriter.updateFeed(this, feed, false);
                 }
                 FeedUpdateManager.getInstance().runOnce(this);
@@ -128,7 +147,28 @@ public class OpmlImportActivity extends ToolbarActivity {
                 uri = Uri.parse(extraText);
             }
         }
+
+        // Mitigation 3: URI Validation
+        if (!isUriSafe(uri)) {
+            Log.e(TAG, "Blocked unsafe URI: " + uri);
+            Toast.makeText(this, "Unsafe file access blocked", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         importUri(uri);
+    }
+
+    private boolean isUriSafe(Uri uri) {
+        if (uri == null) return true;
+        String scheme = uri.getScheme();
+        String path = uri.getPath();
+        
+        // Block direct file access and internal app data paths
+        if ("file".equalsIgnoreCase(scheme)) return false;
+        if (path != null && path.contains("/data/data/de.danoeh.antennapod")) return false;
+        
+        return true;
     }
 
     void importUri(@Nullable Uri uri) {
