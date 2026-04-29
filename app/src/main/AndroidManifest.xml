@@ -146,7 +146,7 @@
             android:name=".activity.OpmlImportActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/opml_import_label"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <action android:name="android.intent.action.SEND"/>

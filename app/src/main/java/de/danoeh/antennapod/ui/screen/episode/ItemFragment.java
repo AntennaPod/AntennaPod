@@ -272,7 +272,8 @@ public class ItemFragment extends Fragment {
             viewBinding.nonSubscribedWarningLabel.setOnClickListener(v -> openPodcast());
         } else if (item.getFeed().isImportedExternally() && !item.getFeed().isVerified()) {
             viewBinding.nonSubscribedWarningLabel.setVisibility(View.VISIBLE);
-            viewBinding.nonSubscribedWarningLabel.setText("⚠️ This podcast has not been verified to come from the original creator.");
+            viewBinding.nonSubscribedWarningLabel.setText("⚠️ This podcast has not been verified "
+                    + "to come from the original creator.");
             viewBinding.nonSubscribedWarningLabel.setBackgroundColor(0xFFE76022); // AP Orange for urgency
         } else {
             viewBinding.nonSubscribedWarningLabel.setVisibility(View.GONE);

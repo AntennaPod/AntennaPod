@@ -32,7 +32,8 @@ public class VisitWebsiteActionButton extends ItemActionButton {
         if (item.getFeed() != null && !item.getFeed().isVerified()) {
             new MaterialAlertDialogBuilder(context)
                     .setTitle("External Link Warning")
-                    .setMessage("You are leaving AntennaPod to visit an untrusted site. Never enter personal information on pages you don't trust.")
+                    .setMessage("You are leaving AntennaPod to visit an untrusted site. "
+                            + "Never enter personal information on pages you don't trust.")
                     .setPositiveButton("Visit Site", (d, w) -> IntentUtils.openInBrowser(context, item.getLink()))
                     .setNegativeButton("Go Back", null)
                     .show();

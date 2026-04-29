@@ -65,9 +65,8 @@ public class OpmlImportActivity extends ToolbarActivity {
 
         // Mitigation 4: Identity Allowlist
         String callingPackage = getCallingPackage();
-        if (callingPackage != null && !"de.danoeh.antennapod.debug".equals(callingPackage)) {
-            // In a real app, we would have a proper safelist of trusted package hashes
-            Log.e(TAG, "Blocked unauthorized intent from: " + callingPackage);
+        if (callingPackage == null || !SafeList.isTrusted(this, callingPackage)) {
+            Log.e(TAG, "Unauthorized Intent sender: " + callingPackage);
             Toast.makeText(this, "Unauthorized import attempt blocked", Toast.LENGTH_LONG).show();
             finish();
             return;
@@ -113,10 +112,7 @@ public class OpmlImportActivity extends ToolbarActivity {
                     
                     // Mitigation 2: Mark as imported externally for verification
                     feed.setImportedExternally(true);
-                    // For PoC: Verify based on domain (simulating iTunes check)
-                    if (feed.getDownloadUrl() != null && feed.getDownloadUrl().contains("127.0.0.1")) {
-                        feed.setVerified(false);
-                    }
+                    de.danoeh.antennapod.net.FeedVerificationService.verifyFeed(feed);
                     
                     FeedDatabaseWriter.updateFeed(this, feed, false);
                 }
@@ -160,14 +156,20 @@ public class OpmlImportActivity extends ToolbarActivity {
     }
 
     private boolean isUriSafe(Uri uri) {
-        if (uri == null) return true;
+        if (uri == null) {
+            return true;
+        }
         String scheme = uri.getScheme();
         String path = uri.getPath();
-        
+
         // Block direct file access and internal app data paths
-        if ("file".equalsIgnoreCase(scheme)) return false;
-        if (path != null && path.contains("/data/data/de.danoeh.antennapod")) return false;
-        
+        if ("file".equalsIgnoreCase(scheme)) {
+            return false;
+        }
+        if (path != null && path.contains("/data/data/de.danoeh.antennapod")) {
+            return false;
+        }
+
         return true;
     }
 
