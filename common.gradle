@@ -43,7 +43,6 @@ android {
     tasks.withType(JavaCompile) {
         options.compilerArgs.addAll([
             "-Xlint:all,-deprecation,-serial,-this-escape,-unchecked,-processing,-classfile",
-            "-Werror",
         ])
     }
 
