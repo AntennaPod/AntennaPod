@@ -11,6 +11,7 @@
     <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update subscriptions</string>
     <string name="statistics_label">Statistics</string>
+    <string name="password">Password</string>
     <string name="statistics_label_short">Stats</string>
     <string name="add_feed_label">Add podcast</string>
     <string name="add_feed_label_short">Add</string>
@@ -753,6 +754,7 @@
     <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
+    <string name="wrong_password">Wrong password</string>
     <string name="show_password_accessibility">Show password</string>
     <string name="synchronization_login_butLabel">Log in</string>
     <string name="synchronization_selectDevice_explanation">Please select the device that you created on the synchronization server or create a new one.</string>
@@ -977,9 +979,30 @@
     <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
     <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
 
+    <!-- Shortcuts -->
     <string name="shortcut_subscription_label">Subscription shortcut</string>
     <string name="shortcut_select_subscription">Select subscription</string>
     <string name="add_shortcut">Add shortcut</string>
+
+    <!-- Parental Control -->
+    <string name="pref_parental_control_set_password">Set Password</string>
+    <string name="pref_parental_control_change_password">Change Password</string>
+    <string name="pref_parental_control_enter_old_password">Enter your current password to change it or clear it</string>
+    <string name="pref_parental_control_old_password">Current password</string>
+    <string name="pref_parental_control_new_password">New password</string>
+    <string name="pref_parental_control_confirm_password">Confirm password</string>
+    <string name="pref_parental_control_confirm_password_title">Confirm Password</string>
+    <string name="pref_parental_control_passwords_dont_match">Passwords don\'t match</string>
+    <string name="pref_parental_control_password_empty">Password cannot be empty</string>
+    <string name="pref_parental_control_password_set">Password set successfully</string>
+    <string name="pref_parental_control_password_changed">Password changed successfully</string>
+    <string name="pref_parental_control_password_cleared">Password cleared successfully</string>
+    <string name="pref_parental_control_title">Parental Controls</string>
+    <string name="pref_parental_control_sum">Restrict adding new subscriptions with a password</string>
+    <string name="pref_parental_control_enabled_title">Enabled</string>
+    <string name="pref_parental_control_enabled_sum">Protect parental controls with a password</string>
+    <string name="pref_parental_control_require_subscribe_title">Require password for subscribing</string>
+    <string name="pref_parental_control_require_subscribe_sum">Ask for the parental control password when subscribing to new podcasts</string>
 
     <!-- Echo -->
     <string name="antennapod_echo" translatable="false">AntennaPod Echo</string>

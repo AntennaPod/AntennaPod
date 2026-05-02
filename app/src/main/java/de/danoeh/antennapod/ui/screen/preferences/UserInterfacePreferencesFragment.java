@@ -113,6 +113,7 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             }
             return true;
         });
+
     }
 
     private void backOpensDrawerToggle(boolean bottomNavigationEnabled) {
@@ -190,4 +191,5 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
             }
         });
     }
+
 }

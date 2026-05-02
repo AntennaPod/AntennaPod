@@ -62,6 +62,8 @@ public abstract class UserPreferences {
     public static final String PREF_SUBSCRIPTION_TITLE = "prefSubscriptionTitle";
     public static final String PREF_BACK_OPENS_DRAWER = "prefBackButtonOpensDrawer";
     public static final String PREF_BOTTOM_NAVIGATION = "prefBottomNavigation";
+    private static final String PREF_PARENTAL_CONTROL_PASSWORD = "prefParentalControlPassword";
+    private static final String PREF_PARENTAL_CONTROL_REQUIRE_SUBSCRIBE = "prefParentalControlRequireSubscribe";
 
     public static final String PREF_GLOBAL_DEFAULT_SORTED_ORDER = "prefGlobalDefaultSortedOrder";
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
@@ -181,6 +183,31 @@ public abstract class UserPreferences {
             default:
                 return ThemePreference.SYSTEM;
         }
+    }
+
+    public static boolean isParentalControlPasswordSet() {
+        return prefs.contains(PREF_PARENTAL_CONTROL_PASSWORD);
+    }
+
+    public static boolean verifyParentalControlPassword(String password) {
+        String stored = prefs.getString(PREF_PARENTAL_CONTROL_PASSWORD, null);
+        return stored != null && stored.equals(password);
+    }
+
+    public static void setParentalControlPassword(String password) {
+        prefs.edit().putString(PREF_PARENTAL_CONTROL_PASSWORD, password).apply();
+    }
+
+    public static void clearParentalControlPassword() {
+        prefs.edit().remove(PREF_PARENTAL_CONTROL_PASSWORD).apply();
+    }
+
+    public static boolean isParentalControlRequireSubscribeSet() {
+        return prefs.getBoolean(PREF_PARENTAL_CONTROL_REQUIRE_SUBSCRIBE, true);
+    }
+
+    public static void setParentalControlRequireSubscribe(boolean value) {
+        prefs.edit().putBoolean(PREF_PARENTAL_CONTROL_REQUIRE_SUBSCRIBE, value).apply();
     }
 
     public static boolean getIsBlackTheme() {

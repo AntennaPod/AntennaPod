@@ -3,18 +3,26 @@ package de.danoeh.antennapod.ui.screen.preferences;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.text.InputType;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.EditTextDialogBinding;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.preferences.screen.about.AboutFragment;
 import de.danoeh.antennapod.ui.preferences.screen.bugreport.BugReportFragment;
+
 
 public class MainPreferencesFragment extends AnimatedPreferenceFragment {
 
@@ -30,12 +38,14 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
+    private static final String PREF_SCREEN_PARENTAL_CONTROL = "prefScreenParentalControl";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
         setupMainScreen();
         setupSearch();
+        setParentalControlsVisibility();
 
         // If you are writing a spin-off, please update the details on screens like "About" and "Report bug"
         // and afterwards remove the following lines. Please keep in mind that AntennaPod is licensed under the GPL.
@@ -120,6 +130,49 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
                     .replace(R.id.settingsContainer, new BugReportFragment())
                     .addToBackStack(getString(R.string.report_bug_title)).commit();
             return true;
+        });
+        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setOnPreferenceClickListener(preference -> {
+            if (UserPreferences.isParentalControlPasswordSet()) {
+                showParentalControlGateDialog(() ->
+                        ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_parental_control));
+            } else {
+                ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_parental_control);
+            }
+            return true;
+        });
+    }
+
+    // show the 'parental controls' preference if we're on a 'child' device (family link) or if it's a debug build
+    private void setParentalControlsVisibility() {
+        android.os.UserManager um = requireContext().getSystemService(android.os.UserManager.class);
+        // Family Link child devices have DISALLOW_FACTORY_RESET set (among other restrictions).
+        // AccountManager-based checks don't work: supervised users have no visible Google accounts.
+        boolean isChildDevice = um.hasUserRestriction(android.os.UserManager.DISALLOW_FACTORY_RESET);
+        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(isChildDevice || BuildConfig.DEBUG);
+    }
+
+    private void showParentalControlGateDialog(Runnable onSuccess) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(R.string.pref_parental_control_title);
+        builder.setMessage(R.string.pref_parental_control_enter_old_password);
+        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+        dialogBinding.textInput.setHint(R.string.pref_parental_control_old_password);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(dialogBinding.getRoot());
+        builder.setPositiveButton(R.string.confirm_label, null);
+        builder.setNegativeButton(R.string.cancel_label, null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String entered = dialogBinding.textInput.getText().toString();
+            if (UserPreferences.verifyParentalControlPassword(entered)) {
+                alertDialog.dismiss();
+                onSuccess.run();
+            } else {
+                dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
+                Toast.makeText(requireContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
