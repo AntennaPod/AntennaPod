@@ -14,12 +14,6 @@ android {
         // "1.2.3"          -> 1020395
         versionCode 3110395
         versionName "3.11.3"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
-            }
-        }
     }
 
     signingConfigs {
@@ -118,7 +112,6 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
-    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
     implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
     implementation 'com.bytehamster:lib.preferencesearch:2.7.3'
