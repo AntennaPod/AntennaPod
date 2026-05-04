@@ -75,6 +75,7 @@ import de.danoeh.antennapod.ui.screen.download.DownloadLogFragment;
 import de.danoeh.antennapod.ui.screen.drawer.BottomNavigation;
 import de.danoeh.antennapod.ui.screen.drawer.NavDrawerFragment;
 import de.danoeh.antennapod.ui.screen.drawer.NavigationNames;
+import de.danoeh.antennapod.ui.screen.episode.ItemPagerFragment;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.screen.home.HomeFragment;
 import de.danoeh.antennapod.ui.screen.playback.audio.AudioPlayerFragment;
@@ -734,7 +735,11 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(MainActivityStarter.EXTRA_FEED_ID)) {
+        if (intent.hasExtra(MainActivityStarter.EXTRA_EPISODE_ID)) {
+            long episodeId = intent.getLongExtra(MainActivityStarter.EXTRA_EPISODE_ID, 0);
+            loadChildFragment(ItemPagerFragment.newInstance(episodeId));
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        } else if (intent.hasExtra(MainActivityStarter.EXTRA_FEED_ID)) {
             long feedId = intent.getLongExtra(MainActivityStarter.EXTRA_FEED_ID, 0);
             Bundle args = intent.getBundleExtra(MainActivityStarter.EXTRA_FRAGMENT_ARGS);
             if (feedId > 0) {

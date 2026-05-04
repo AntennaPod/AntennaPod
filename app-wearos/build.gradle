@@ -1,0 +1,83 @@
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.20"
+    id("org.jlleitschuh.gradle.ktlint")
+}
+apply from: "../common.gradle"
+apply from: "../playFlavor.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.wearos"
+
+    defaultConfig {
+        applicationId "de.danoeh.antennapod"
+        minSdk 25
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        releaseConfig {
+            enableV1Signing true
+            enableV2Signing true
+            storeFile file(project.getProperties().getOrDefault("releaseStoreFile", "keystore"))
+            storePassword project.getProperties().getOrDefault("releaseStorePassword", "password")
+            keyAlias project.getProperties().getOrDefault("releaseKeyAlias", "alias")
+            keyPassword project.getProperties().getOrDefault("releaseKeyPassword", "password")
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.releaseConfig
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg"
+        }
+    }
+
+    buildFeatures {
+        compose true
+    }
+
+    kotlinOptions {
+        jvmTarget = "21"
+    }
+
+    lint {
+        disable "UnusedResources"
+    }
+}
+
+afterEvaluate {
+    tasks.named('lint').configure {
+        dependsOn ktlintCheck
+    }
+}
+
+dependencies {
+    implementation project(":model")
+    implementation project(":ui:common")
+    implementation project(":net:sync:wear-interface")
+
+    // NOTE: DO NOT INCLUDE a dependency on androidx.compose.material:material, the watch version is a replacement
+    implementation "androidx.wear:wear:$wearVersion"
+    implementation "com.google.android.gms:play-services-wearable:$wearableVersion"
+    implementation "androidx.wear.compose:compose-foundation:$wearComposeVersion"
+    implementation "androidx.wear.compose:compose-material3:$wearComposeVersion"
+    implementation "androidx.compose.ui:ui:$composeVersion"
+    implementation "androidx.compose.runtime:runtime:$composeVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycleRuntimeComposeVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleRuntimeComposeVersion"
+    implementation "androidx.core:core-ktx:$coreKtxVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0"
+    implementation "androidx.activity:activity-compose:$activityComposeVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+
+    testImplementation "junit:junit:$junitVersion"
+}

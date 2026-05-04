@@ -62,6 +62,7 @@ dependencies {
     implementation project(':net:download:service')
     implementation project(':net:ssl')
     implementation project(':net:sync:service')
+    playImplementation project(':net:sync:wear-interface')
     implementation project(':parser:feed')
     implementation project(':parser:transcript')
     implementation project(':playback:base')
@@ -104,6 +105,7 @@ dependencies {
     implementation "androidx.media3:media3-common:$media3Version"
     implementation "androidx.media3:media3-session:$media3Version"
     implementation "androidx.media3:media3-ui:$media3Version"
+    playImplementation "com.google.android.gms:play-services-wearable:$wearableVersion"
 
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"

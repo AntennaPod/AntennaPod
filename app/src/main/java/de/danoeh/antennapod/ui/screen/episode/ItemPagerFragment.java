@@ -42,6 +42,15 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
     private static final String KEY_PAGER_ID = "pager_id";
     private ViewPager2 pager;
 
+    public static ItemPagerFragment newInstance(long itemId) {
+        ItemPagerFragment fragment = new ItemPagerFragment();
+        Bundle args = new Bundle();
+        args.putLongArray(ARG_FEEDITEMS, new long[]{itemId});
+        args.putInt(ARG_FEEDITEM_POS, 0);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     /**
      * Creates a new instance of an ItemPagerFragment.
      *
