@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
@@ -70,14 +72,12 @@ class EpisodeDetailViewModel(application: Application, private val episode: Feed
     }
 
     companion object {
-        fun factory(episode: FeedItem): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : androidx.lifecycle.ViewModel> create(
-                modelClass: Class<T>,
-                extras: androidx.lifecycle.viewmodel.CreationExtras
-            ): T {
-                val app = extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]!!
-                return EpisodeDetailViewModel(app, episode) as T
+        fun factory(episode: FeedItem): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                EpisodeDetailViewModel(
+                    checkNotNull(get(ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY)),
+                    episode
+                )
             }
         }
     }

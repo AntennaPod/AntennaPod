@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -68,12 +69,14 @@ fun MainListScreen(
     val scrollState = rememberScalingLazyListState()
     val versionName = BuildConfig.VERSION_NAME
 
-    val menuItems = listOf(
-        WearDataPaths.QUEUE,
-        WearDataPaths.DOWNLOADS,
-        WearDataPaths.EPISODES,
-        WearDataPaths.SUBSCRIPTIONS
-    )
+    val menuItems = remember {
+        listOf(
+            WearDataPaths.QUEUE,
+            WearDataPaths.DOWNLOADS,
+            WearDataPaths.EPISODES,
+            WearDataPaths.SUBSCRIPTIONS
+        )
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         ScalingLazyColumn(

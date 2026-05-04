@@ -7,21 +7,24 @@ import de.danoeh.antennapod.ui.common.R as CommonR
 
 object NavigationNames {
     @StringRes
-    fun getTitleResForPath(path: String): Int = when {
-        path == WearDataPaths.QUEUE -> CommonR.string.queue_label
-        path == WearDataPaths.DOWNLOADS -> CommonR.string.downloads_label
-        path == WearDataPaths.EPISODES -> CommonR.string.episodes_label
-        path == WearDataPaths.SUBSCRIPTIONS -> CommonR.string.subscriptions_label
-        path.startsWith(WearDataPaths.FEED_EPISODES_PREFIX) -> CommonR.string.episodes_label
-        else -> CommonR.string.app_name
+    fun getTitleResForPath(path: String): Int = when (path) {
+        WearDataPaths.QUEUE -> CommonR.string.queue_label
+        WearDataPaths.DOWNLOADS -> CommonR.string.downloads_label
+        WearDataPaths.EPISODES -> CommonR.string.episodes_label
+        WearDataPaths.SUBSCRIPTIONS -> CommonR.string.subscriptions_label
+        else -> if (path.startsWith(WearDataPaths.FEED_EPISODES_PREFIX)) {
+            CommonR.string.episodes_label
+        } else {
+            CommonR.string.app_name
+        }
     }
 
     @DrawableRes
-    fun getIconResForPath(path: String): Int = when {
-        path == WearDataPaths.QUEUE -> CommonR.drawable.ic_playlist_play_black
-        path == WearDataPaths.DOWNLOADS -> CommonR.drawable.ic_download_black
-        path == WearDataPaths.EPISODES -> CommonR.drawable.ic_feed_black
-        path == WearDataPaths.SUBSCRIPTIONS -> CommonR.drawable.ic_subscriptions_black
+    fun getIconResForPath(path: String): Int = when (path) {
+        WearDataPaths.QUEUE -> CommonR.drawable.ic_playlist_play_black
+        WearDataPaths.DOWNLOADS -> CommonR.drawable.ic_download_black
+        WearDataPaths.EPISODES -> CommonR.drawable.ic_feed_black
+        WearDataPaths.SUBSCRIPTIONS -> CommonR.drawable.ic_subscriptions_black
         else -> CommonR.mipmap.ic_launcher
     }
 }

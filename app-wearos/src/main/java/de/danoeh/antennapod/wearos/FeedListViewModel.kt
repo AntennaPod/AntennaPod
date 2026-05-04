@@ -35,7 +35,7 @@ class FeedListViewModel(application: Application) : AndroidViewModel(application
         }
 
         viewModelScope.launch {
-            val isSupported = withContext(Dispatchers.Default) {
+            val isSupported = withContext(Dispatchers.IO) {
                 WearConnectionUtils.isPhoneSupported(getApplication())
             }
             if (!isSupported) {

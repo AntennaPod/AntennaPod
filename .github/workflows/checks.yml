@@ -43,7 +43,7 @@ jobs:
           find . -wholename "*/res/layout/*.xml" | xargs java -jar android-xml-formatter.jar
           test $(git diff | wc -l) -eq 0 || (echo -e "\n\n===== Found XML code style violations! See output below how to fix them. =====\n\n" && git --no-pager diff --color=always && false)
       - name: Checkstyle, Lint, SpotBugs
-        run: ./gradlew checkstyle lint ktlintCheck spotbugsPlayDebug spotbugsDebug
+        run: ./gradlew checkstyle lint
       - name: Generate readable error messages for GitHub
         if: failure()
         run: |

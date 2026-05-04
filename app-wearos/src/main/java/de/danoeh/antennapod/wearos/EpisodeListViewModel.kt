@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.net.sync.wearinterface.WearConnectionUtils
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
@@ -20,11 +22,12 @@ import kotlinx.coroutines.withTimeoutOrNull
 data class EpisodeListUiState(
     val episodes: List<FeedItem>? = null,
     val isPhoneSupported: Boolean = true,
-    val isTimedOut: Boolean = false
+    val isTimedOut: Boolean = false,
+    val titleRes: Int = 0
 )
 
 class EpisodeListViewModel(application: Application, private val path: String) : AndroidViewModel(application) {
-    private val _uiState = MutableStateFlow(EpisodeListUiState())
+    private val _uiState = MutableStateFlow(EpisodeListUiState(titleRes = NavigationNames.getTitleResForPath(path)))
     val uiState: StateFlow<EpisodeListUiState> = _uiState
 
     init {
@@ -35,7 +38,7 @@ class EpisodeListViewModel(application: Application, private val path: String) :
         }
 
         viewModelScope.launch {
-            val isSupported = withContext(Dispatchers.Default) {
+            val isSupported = withContext(Dispatchers.IO) {
                 WearConnectionUtils.isPhoneSupported(getApplication())
             }
             if (!isSupported) {
@@ -53,14 +56,9 @@ class EpisodeListViewModel(application: Application, private val path: String) :
     }
 
     companion object {
-        fun factory(path: String): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : androidx.lifecycle.ViewModel> create(
-                modelClass: Class<T>,
-                extras: androidx.lifecycle.viewmodel.CreationExtras
-            ): T {
-                val app = extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]!!
-                return EpisodeListViewModel(app, path) as T
+        fun factory(path: String): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                EpisodeListViewModel(checkNotNull(get(ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY)), path)
             }
         }
     }

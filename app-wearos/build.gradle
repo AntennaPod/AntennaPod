@@ -54,6 +54,12 @@ android {
     }
 }
 
+afterEvaluate {
+    tasks.named('lint').configure {
+        dependsOn ktlintCheck
+    }
+}
+
 dependencies {
     implementation project(":model")
     implementation project(":ui:common")

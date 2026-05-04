@@ -26,7 +26,6 @@ class EpisodeListActivity : ComponentActivity() {
         setContent {
             val uiState by viewModel.uiState.collectAsState()
             EpisodeListScreen(
-                path = path,
                 uiState = uiState,
                 onOpenEpisodeDetail = { episode ->
                     val intent = Intent(this, EpisodeDetailActivity::class.java).apply {
@@ -44,13 +43,12 @@ class EpisodeListActivity : ComponentActivity() {
 }
 
 @Composable
-fun EpisodeListScreen(path: String, uiState: EpisodeListUiState, onOpenEpisodeDetail: (FeedItem) -> Unit) {
+fun EpisodeListScreen(uiState: EpisodeListUiState, onOpenEpisodeDetail: (FeedItem) -> Unit) {
     val scrollState = rememberScalingLazyListState()
-    val titleRes = NavigationNames.getTitleResForPath(path)
     val episodes: List<FeedItem>? = uiState.episodes
 
     ListScaffold(
-        titleRes = titleRes,
+        titleRes = uiState.titleRes,
         scrollState = scrollState,
         isPhoneSupported = uiState.isPhoneSupported,
         isTimedOut = uiState.isTimedOut,
