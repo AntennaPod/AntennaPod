@@ -3,6 +3,8 @@ package de.danoeh.antennapod;
 import android.util.Log;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
+import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import com.google.android.gms.wearable.WearableListenerService;
@@ -19,6 +21,7 @@ import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths;
 import de.danoeh.antennapod.net.sync.wearinterface.WearSerializer;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
+
 import java.util.List;
 
 public class WearListenerService extends WearableListenerService {
@@ -30,43 +33,29 @@ public class WearListenerService extends WearableListenerService {
         String path = event.getPath();
         String sourceNodeId = event.getSourceNodeId();
         Log.d(TAG, "Message received: " + path + " from " + sourceNodeId);
-        Completable.fromAction(() -> handleMessage(path, sourceNodeId, event.getData()))
+        Completable.fromAction(() -> handleMessage(path, sourceNodeId))
                 .subscribeOn(Schedulers.computation())
                 .subscribe(
                         () -> { },
                         throwable -> Log.e(TAG, "Failed to handle wearable message: " + path, throwable));
     }
 
-    private void handleMessage(String path, String sourceNodeId, byte[] data) {
+    private void handleMessage(String path, String sourceNodeId) {
         switch (path) {
             case WearDataPaths.NOW_PLAYING:
+                FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+                if (!PlaybackService.isRunning) {
+                    reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
+                            WearSerializer.nowPlayingToBytes(media.getItem(), false));
+                    return;
+                }
                 PlaybackController.bindToMedia3Service(this, controller -> {
-                    MediaItem currentItem = controller.getCurrentMediaItem();
-                    long position = controller.getCurrentPosition();
-                    long duration = controller.getDuration();
-                    boolean isPlaying = controller.isPlaying();
-                    Completable.fromAction(() -> {
-                        if (currentItem != null) {
-                            try {
-                                long id = Long.parseLong(currentItem.mediaId);
-                                FeedMedia feedMedia = DBReader.getFeedMedia(id);
-                                if (feedMedia != null && feedMedia.getItem() != null) {
-                                    feedMedia.setPosition((int) position);
-                                    if (duration > 0) {
-                                        feedMedia.setDuration((int) duration);
-                                    }
-                                    reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
-                                            WearSerializer.nowPlayingToBytes(feedMedia.getItem(), isPlaying));
-                                    return;
-                                }
-                            } catch (NumberFormatException e) {
-                                Log.w(TAG, "Failed to parse media ID: " + currentItem.mediaId, e);
-                            }
-                        }
-                        reply(sourceNodeId, WearDataPaths.NOW_PLAYING, new byte[0]);
-                    }).subscribeOn(Schedulers.io()).subscribe(
-                            () -> { },
-                            throwable -> Log.e(TAG, "Failed to handle now playing", throwable));
+                    media.setPosition((int) controller.getCurrentPosition());
+                    if (controller.getDuration() > 0) {
+                        media.setDuration((int) controller.getDuration());
+                    }
+                    reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
+                            WearSerializer.nowPlayingToBytes(media.getItem(), true));
                 });
                 break;
             case WearDataPaths.PAUSE:
@@ -104,9 +93,14 @@ public class WearListenerService extends WearableListenerService {
                         Log.w(TAG, "Ignoring malformed feed episodes path: " + path, e);
                     }
                 } else if (path.startsWith(WearDataPaths.OPEN_ON_PHONE_PREFIX)) {
-                    Intent intent = new MainActivityStarter(this).getIntent();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                    try {
+                        long itemId = Long.parseLong(path.substring(WearDataPaths.OPEN_ON_PHONE_PREFIX.length()));
+                        Intent intent = new MainActivityStarter(this).withOpenEpisode(itemId).getIntent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    } catch (NumberFormatException e) {
+                        Log.w(TAG, "Ignoring malformed open on phone path: " + path, e);
+                    }
                 } else {
                     Log.d(TAG, "Ignoring unknown path: " + path);
                 }

@@ -31,3 +31,5 @@ gradle.properties
 .cursor
 *.hprof
 .kotlin
+.claude
+.cursor
