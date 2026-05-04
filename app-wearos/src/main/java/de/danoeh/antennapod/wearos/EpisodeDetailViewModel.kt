@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
+import de.danoeh.antennapod.wearos.sync.WearMessageSender
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class EpisodeDetailUiState(
-    val item: FeedItem? = null,
+    val item: FeedItem,
     val position: Int = 0,
     val duration: Int = 0,
     val isCurrentlyPlaying: Boolean = false
@@ -37,7 +38,7 @@ class EpisodeDetailViewModel(application: Application, private val episode: Feed
     init {
         viewModelScope.launch {
             while (true) {
-                WearDataRepository.sendMessage(getApplication(), WearDataPaths.NOW_PLAYING)
+                WearMessageSender.send(getApplication(), WearDataPaths.NOW_PLAYING)
                 delay(1.seconds)
             }
         }
@@ -57,17 +58,17 @@ class EpisodeDetailViewModel(application: Application, private val episode: Feed
 
     fun play() {
         viewModelScope.launch(Dispatchers.IO) {
-            WearDataRepository.sendMessage(getApplication(), WearDataPaths.playPath(episode.id))
+            WearMessageSender.send(getApplication(), WearDataPaths.playPath(episode.id))
         }
     }
 
     fun pause() {
-        viewModelScope.launch(Dispatchers.IO) { WearDataRepository.sendMessage(getApplication(), WearDataPaths.PAUSE) }
+        viewModelScope.launch(Dispatchers.IO) { WearMessageSender.send(getApplication(), WearDataPaths.PAUSE) }
     }
 
     fun openOnPhone() {
         viewModelScope.launch(Dispatchers.IO) {
-            WearDataRepository.sendMessage(getApplication(), WearDataPaths.openOnPhonePath(episode.id))
+            WearMessageSender.send(getApplication(), WearDataPaths.openOnPhonePath(episode.id))
         }
     }
 

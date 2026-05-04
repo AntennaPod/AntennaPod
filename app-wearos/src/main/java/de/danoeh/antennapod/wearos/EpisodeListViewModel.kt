@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.net.sync.wearinterface.WearConnectionUtils
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
+import de.danoeh.antennapod.wearos.sync.WearMessageSender
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +46,7 @@ class EpisodeListViewModel(application: Application, private val path: String) :
                 _uiState.update { it.copy(isPhoneSupported = false) }
                 return@launch
             }
-            WearDataRepository.sendMessage(getApplication(), path)
+            WearMessageSender.send(getApplication(), path)
             val received = withTimeoutOrNull(10.seconds) {
                 WearDataRepository.episodesByPath.first { it.containsKey(path) }
             }

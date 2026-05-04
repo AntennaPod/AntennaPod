@@ -7,6 +7,7 @@ import de.danoeh.antennapod.model.feed.Feed
 import de.danoeh.antennapod.net.sync.wearinterface.WearConnectionUtils
 import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths
 import de.danoeh.antennapod.wearos.sync.WearDataRepository
+import de.danoeh.antennapod.wearos.sync.WearMessageSender
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +43,7 @@ class FeedListViewModel(application: Application) : AndroidViewModel(application
                 _uiState.update { it.copy(isPhoneSupported = false) }
                 return@launch
             }
-            WearDataRepository.sendMessage(getApplication(), WearDataPaths.SUBSCRIPTIONS)
+            WearMessageSender.send(getApplication(), WearDataPaths.SUBSCRIPTIONS)
             val received = withTimeoutOrNull(10.seconds) {
                 WearDataRepository.feedsByPath.first { it.containsKey(WearDataPaths.SUBSCRIPTIONS) }
             }

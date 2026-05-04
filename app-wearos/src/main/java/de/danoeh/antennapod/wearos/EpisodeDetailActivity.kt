@@ -72,7 +72,7 @@ fun EpisodeDetailScreen(
     onPause: () -> Unit,
     onOpenOnPhone: () -> Unit
 ) {
-    val item = uiState.item ?: return
+    val item = uiState.item
     val scrollState = rememberScalingLazyListState()
     var titleExpanded by remember { mutableStateOf(false) }
 
