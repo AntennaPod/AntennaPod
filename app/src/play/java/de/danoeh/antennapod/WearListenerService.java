@@ -43,6 +43,9 @@ public class WearListenerService extends WearableListenerService {
         switch (path) {
             case WearDataPaths.NOW_PLAYING:
                 FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+                if (media == null) {
+                    return;
+                }
                 if (!PlaybackService.isRunning) {
                     reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
                             WearSerializer.nowPlayingToBytes(media.getItem(), false));

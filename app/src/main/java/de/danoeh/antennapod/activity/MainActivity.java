@@ -737,6 +737,9 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         Intent intent = getIntent();
         if (intent.hasExtra(MainActivityStarter.EXTRA_EPISODE_ID)) {
             long episodeId = intent.getLongExtra(MainActivityStarter.EXTRA_EPISODE_ID, 0);
+            if (episodeId <= 0) {
+                return;
+            }
             loadChildFragment(ItemPagerFragment.newInstance(episodeId));
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.hasExtra(MainActivityStarter.EXTRA_FEED_ID)) {

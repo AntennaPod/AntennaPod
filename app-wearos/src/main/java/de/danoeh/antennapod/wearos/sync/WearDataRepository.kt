@@ -5,6 +5,7 @@ import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.net.sync.wearinterface.WearNowPlaying
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * Singleton holding the last data received from the phone for each data path.
@@ -26,10 +27,10 @@ object WearDataRepository {
     }
 
     fun updateEpisodes(path: String, items: List<FeedItem>) {
-        _episodesByPath.value += (path to items)
+        _episodesByPath.update { it + (path to items) }
     }
 
     fun updateFeeds(path: String, feeds: List<Feed>) {
-        _feedsByPath.value += (path to feeds)
+        _feedsByPath.update { it + (path to feeds) }
     }
 }

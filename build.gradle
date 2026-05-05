@@ -14,6 +14,7 @@ plugins {
     id 'com.github.spotbugs' version '4.8.0' apply false
     id 'checkstyle'
     id 'org.jlleitschuh.gradle.ktlint' version '12.3.0' apply false
+    id 'org.jetbrains.kotlin.plugin.compose' version "$kotlin_version" apply false
 }
 
 project.ext {
