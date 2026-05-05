@@ -5,9 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +34,7 @@ import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material3.LinearProgressIndicator
 import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.ScrollIndicator
 import androidx.wear.compose.material3.Text
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.ui.common.Converter
@@ -76,6 +79,7 @@ fun EpisodeDetailScreen(
     val scrollState = rememberScalingLazyListState()
     var titleExpanded by remember { mutableStateOf(false) }
 
+    Box(modifier = Modifier.fillMaxSize()) {
     ScalingLazyColumn(
         modifier = Modifier.fillMaxWidth(),
         state = scrollState,
@@ -168,5 +172,7 @@ fun EpisodeDetailScreen(
         item {
             Spacer(modifier = Modifier.height(32.dp))
         }
+    }
+    ScrollIndicator(state = scrollState, modifier = Modifier.align(Alignment.CenterEnd))
     }
 }
