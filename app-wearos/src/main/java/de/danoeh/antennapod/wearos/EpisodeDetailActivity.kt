@@ -80,99 +80,99 @@ fun EpisodeDetailScreen(
     var titleExpanded by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
-    ScalingLazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        state = scrollState,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 32.dp),
-        autoCentering = null
-    ) {
-        item {
-            val dateStr = DateFormatter.formatAbbrev(LocalContext.current, item.getPubDate())
-            Text(
-                text = dateStr,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.outline,
-                textAlign = TextAlign.Center
-            )
-        }
-
-        item {
-            Text(
-                text = item.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                    .clickable { titleExpanded = !titleExpanded },
-                style = MaterialTheme.typography.titleMedium.copy(
-                    hyphens = Hyphens.Auto,
-                    lineBreak = LineBreak.Paragraph
-                ),
-                textAlign = TextAlign.Center,
-                maxLines = if (titleExpanded) Int.MAX_VALUE else 3,
-                overflow = if (titleExpanded) TextOverflow.Clip else TextOverflow.Ellipsis
-            )
-        }
-
-        if (uiState.duration > 0) {
+        ScalingLazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            state = scrollState,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 32.dp),
+            autoCentering = null
+        ) {
             item {
-                LinearProgressIndicator(
-                    progress = { uiState.position.toFloat() / uiState.duration.toFloat() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 4.dp, vertical = 2.dp)
+                val dateStr = DateFormatter.formatAbbrev(LocalContext.current, item.getPubDate())
+                Text(
+                    text = dateStr,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.outline,
+                    textAlign = TextAlign.Center
                 )
             }
 
             item {
-                Row(
+                Text(
+                    text = item.title,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = Converter.getDurationStringLong(uiState.position),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.outline
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .clickable { titleExpanded = !titleExpanded },
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        hyphens = Hyphens.Auto,
+                        lineBreak = LineBreak.Paragraph
+                    ),
+                    textAlign = TextAlign.Center,
+                    maxLines = if (titleExpanded) Int.MAX_VALUE else 3,
+                    overflow = if (titleExpanded) TextOverflow.Clip else TextOverflow.Ellipsis
+                )
+            }
+
+            if (uiState.duration > 0) {
+                item {
+                    LinearProgressIndicator(
+                        progress = { uiState.position.toFloat() / uiState.duration.toFloat() },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp, vertical = 2.dp)
                     )
-                    Text(
-                        text = Converter.getDurationStringLong(uiState.duration),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.outline
+                }
+
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = Converter.getDurationStringLong(uiState.position),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                        Text(
+                            text = Converter.getDurationStringLong(uiState.duration),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                    }
+                }
+            }
+
+            item {
+                if (uiState.isCurrentlyPlaying) {
+                    ListItem(
+                        text = stringResource(CommonR.string.pause_label),
+                        iconRes = CommonR.drawable.ic_pause_black,
+                        onClick = onPause
+                    )
+                } else {
+                    ListItem(
+                        text = stringResource(CommonR.string.wearos_play_on_phone),
+                        iconRes = CommonR.drawable.ic_play_48dp_black,
+                        onClick = onPlay
                     )
                 }
             }
-        }
 
-        item {
-            if (uiState.isCurrentlyPlaying) {
+            item {
                 ListItem(
-                    text = stringResource(CommonR.string.pause_label),
-                    iconRes = CommonR.drawable.ic_pause_black,
-                    onClick = onPause
-                )
-            } else {
-                ListItem(
-                    text = stringResource(CommonR.string.wearos_play_on_phone),
-                    iconRes = CommonR.drawable.ic_play_48dp_black,
-                    onClick = onPlay
+                    text = stringResource(CommonR.string.wearos_open_on_phone),
+                    iconRes = CommonR.drawable.ic_phone_black,
+                    onClick = onOpenOnPhone
                 )
             }
-        }
 
-        item {
-            ListItem(
-                text = stringResource(CommonR.string.wearos_open_on_phone),
-                iconRes = CommonR.drawable.ic_phone_black,
-                onClick = onOpenOnPhone
-            )
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+            }
         }
-
-        item {
-            Spacer(modifier = Modifier.height(32.dp))
-        }
-    }
-    ScrollIndicator(state = scrollState, modifier = Modifier.align(Alignment.CenterEnd))
+        ScrollIndicator(state = scrollState, modifier = Modifier.align(Alignment.CenterEnd))
     }
 }
