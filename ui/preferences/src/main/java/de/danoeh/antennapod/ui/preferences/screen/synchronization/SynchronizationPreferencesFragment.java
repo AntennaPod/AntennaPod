@@ -153,6 +153,9 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.dialog_choose_sync_service_title);
 
+        // Add intro text above the list
+        builder.setMessage(R.string.synchronization_provider_intro);
+
         SynchronizationProvider[] providers = SynchronizationProvider.values();
         ListAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
 
