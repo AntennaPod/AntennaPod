@@ -1134,6 +1134,14 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public Cursor getEpisodesWantsRedownloadCursor() {
+        final String query = SELECT_FEED_ITEMS_AND_MEDIA
+                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + " = " +
+                + FeedMedia.DOWNLOAD_DATE_WANTS_REDOWNLOAD
+                + " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED;
+        return db.rawQuery(query, null);
+    }
+
     public final Cursor getEpisodeCountCursor(FeedItemFilter filter) {
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;

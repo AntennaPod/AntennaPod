@@ -8,6 +8,9 @@ import com.google.android.material.color.DynamicColors;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.EventBusException;
 
+import de.danoeh.antennapod.net.download.service.episode.autodownload.RedownloadAlgorithm;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 /** Main application class. */
 public class PodcastApp extends Application {
     private static final String TAG = "PodcastApp";
@@ -32,5 +35,7 @@ public class PodcastApp extends Application {
         DynamicColors.applyToActivitiesIfAvailable(this);
         ClientConfigurator.initialize(this);
         PreferenceUpgrader.checkUpgrades(this);
+        Schedulers.io().scheduleDirect(() -> new RedownloadAlgorithm().enqueueRedownloads(this));
     }
+
 }

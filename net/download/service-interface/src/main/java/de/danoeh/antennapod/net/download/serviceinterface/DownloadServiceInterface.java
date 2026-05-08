@@ -37,7 +37,7 @@ public abstract class DownloadServiceInterface {
     /**
      * Download when device seems fit.
      */
-    public abstract void download(Context context, FeedItem item);
+    public abstract void download(Context context, FeedItem item, boolean skipQueue);
 
     public abstract void cancel(Context context, FeedMedia media);
 

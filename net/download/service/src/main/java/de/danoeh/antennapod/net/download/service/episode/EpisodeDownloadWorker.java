@@ -99,8 +99,14 @@ public class EpisodeDownloadWorker extends Worker {
             e.printStackTrace();
             result = Result.failure();
         }
-        if (result.equals(Result.failure()) && downloader != null) {
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+        if (result.equals(Result.failure())) {
+            if (downloader != null) {
+                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            }
+            if (media.isMarkedForRedownload()) {
+                media.setLocalFileUrl(null);
+                DBWriter.setMediaDownloadInformation(media);
+            }
         }
         progressUpdaterThread.interrupt();
         try {

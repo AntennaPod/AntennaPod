@@ -233,6 +233,19 @@ public final class DBReader {
         }
     }
 
+    @NonNull
+    public static List<FeedItem> getEpisodesMarkedForRedownload() {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (FeedItemCursor cursor = new FeedItemCursor(adapter.getEpisodesWantsRedownloadCursor())) {
+            List<FeedItem> items = extractItemlistFromCursor(cursor);
+            loadFeedDataOfFeedItemList(items);
+            return items;
+        } finally {
+            adapter.close();
+        }
+    }
+
     public static int getTotalEpisodeCount(FeedItemFilter filter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

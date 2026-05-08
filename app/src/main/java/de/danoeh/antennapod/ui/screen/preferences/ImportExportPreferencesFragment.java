@@ -230,6 +230,8 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         builder.setCancelable(false);
         builder.setPositiveButton(R.string.import_fix_markers_label, (dialog, which) ->
                 fixMarkersAndRestart(missingMedia));
+        builder.setNeutralButton(R.string.import_redownload_label, (dialog, which) ->
+                redownloadAndRestart(missingMedia));
         builder.setNegativeButton(R.string.import_ignore_label, (dialog, which) -> forceRestart());
         builder.show();
     }
@@ -310,6 +312,19 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         }
     }
 
+    private void setWantsRedownloadForItems(List<FeedMedia> mediaList) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try {
+            for (FeedMedia media : mediaList) {
+                media.setWantsRedownload();
+                adapter.setMediaDownloadInformation(media);
+            }
+        } finally {
+            adapter.close();
+        }
+    }
+
     private void fixMarkersAndRestart(List<FeedMedia> missingMedia) {
         progressDialog.show();
         disposable = Completable.fromAction(() -> clearDownloadStateForItems(missingMedia))
@@ -318,6 +333,18 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
                 .subscribe(() -> {
                     progressDialog.dismiss();
                     forceRestart();
+                    showDatabaseImportSuccessDialog();
+                }, this::showExportErrorDialog);
+    }
+
+    private void redownloadAndRestart(List<FeedMedia> missingMedia) {
+        progressDialog.show();
+        disposable = Completable.fromAction(() -> setWantsRedownloadForItems(missingMedia))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    progressDialog.dismiss();
+                    showDatabaseImportSuccessDialog();
                 }, this::showExportErrorDialog);
     }
 

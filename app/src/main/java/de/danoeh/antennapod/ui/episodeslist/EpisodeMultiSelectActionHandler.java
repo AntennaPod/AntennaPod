@@ -142,7 +142,7 @@ public class EpisodeMultiSelectActionHandler {
         int downloaded = 0;
         for (FeedItem episode : items) {
             if (episode.hasMedia() && !episode.isDownloaded() && !episode.getFeed().isLocalFeed()) {
-                DownloadServiceInterface.get().download(activity, episode);
+                DownloadServiceInterface.get().download(activity, episode, false);
                 downloaded++;
             }
         }
