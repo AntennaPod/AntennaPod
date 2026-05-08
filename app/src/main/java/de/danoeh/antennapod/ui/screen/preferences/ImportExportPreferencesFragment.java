@@ -27,8 +27,10 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.importexport.DatabaseExporter;
@@ -39,6 +41,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -50,6 +53,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -218,6 +222,18 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         builder.show();
     }
 
+    private void showMissingFilesDialog(List<FeedMedia> missingMedia) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle(getResources().getQuantityString(R.plurals.import_missing_files_title,
+                missingMedia.size(), missingMedia.size()));
+        builder.setMessage(getString(R.string.import_missing_files_message));
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.import_fix_markers_label, (dialog, which) ->
+                fixMarkersAndRestart(missingMedia));
+        builder.setNegativeButton(R.string.import_ignore_label, (dialog, which) -> forceRestart());
+        builder.show();
+    }
+
     void showExportSuccessSnackbar(Uri uri, String mimeType) {
         Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG)
                 .setAction(R.string.share_label, v ->
@@ -253,13 +269,56 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         }
         final Uri uri = result.getData().getData();
         progressDialog.show();
-        disposable = Completable.fromAction(() -> DatabaseExporter.importBackup(uri, getContext()))
+        disposable = Single.fromCallable(() -> {
+            DatabaseExporter.importBackup(uri, getContext());
+            return findMissingMediaAfterImport();
+        })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((missingMedia) -> {
+                    progressDialog.dismiss();
+                    if (missingMedia.isEmpty()) {
+                        showDatabaseImportSuccessDialog();
+                    } else {
+                        showMissingFilesDialog(missingMedia);
+                    }
+                }, this::showExportErrorDialog);
+    }
+
+    private List<FeedMedia> findMissingMediaAfterImport() {
+        List<FeedItem> downloadedItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                new FeedItemFilter(FeedItemFilter.DOWNLOADED), SortOrder.DATE_NEW_OLD);
+        List<FeedMedia> missingMedia = new ArrayList<>();
+        for (FeedItem item : downloadedItems) {
+            if (item.getMedia() != null && !item.getMedia().fileExists()) {
+                missingMedia.add(item.getMedia());
+            }
+        }
+        return missingMedia;
+    }
+
+    private void clearDownloadStateForItems(List<FeedMedia> mediaList) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try {
+            for (FeedMedia media : mediaList) {
+                media.setLocalFileUrl(null);
+                adapter.setMediaDownloadInformation(media);
+            }
+        } finally {
+            adapter.close();
+        }
+    }
+
+    private void fixMarkersAndRestart(List<FeedMedia> missingMedia) {
+        progressDialog.show();
+        disposable = Completable.fromAction(() -> clearDownloadStateForItems(missingMedia))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    showDatabaseImportSuccessDialog();
                     progressDialog.dismiss();
-                }, this::showImportErrorDialog);
+                    forceRestart();
+                }, this::showExportErrorDialog);
     }
 
     private void backupDatabaseResult(final Uri uri) {

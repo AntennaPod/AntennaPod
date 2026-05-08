@@ -97,6 +97,7 @@ public class DatabaseExporter {
                 Log.d(TAG, "Deleting sidecar file: " + sidecarFile.getAbsolutePath() + ", success: " + success);
             }
             FileUtils.moveFile(tempDB, currentDB);
+            PodDBAdapter.reconnect();
         } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;

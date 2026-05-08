@@ -405,6 +405,17 @@ public class PodDBAdapter {
     }
 
     /**
+     * Clears the singleton instance so that the next call to {@link #getInstance()} opens a
+     * fresh connection to the current database file. Use this after replacing the underlying
+     * database file (e.g. after a database import). The old connection is left open; because
+     * the old file has already been deleted from the directory, it holds only the old inode and
+     * cannot conflict with the new file.
+     */
+    public static synchronized void reconnect() {
+        instance = null;
+    }
+
+    /**
      * <p>Resets all database connections to ensure new database connections for
      * the next test case. Call method only for unit tests.</p>
      *
