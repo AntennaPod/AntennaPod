@@ -685,6 +685,13 @@
     <string name="import_ok">Please press OK to restart AntennaPod</string>
     <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>
     <string name="import_error_label">Import error</string>
+    <plurals name="import_missing_files_title">
+        <item quantity="one">%1$d episode missing after import</item>
+        <item quantity="other">%1$d episodes missing after import</item>
+    </plurals>
+    <string name="import_missing_files_message">These episodes are marked as downloaded, but their files were not found on this device.</string>
+    <string name="import_ignore_label">Ignore</string>
+    <string name="import_redownload_label">Re-download</string>
     <string name="favorites_export_label">Favorites export</string>
     <string name="favorites_export_summary">Export saved favorites to file</string>
 

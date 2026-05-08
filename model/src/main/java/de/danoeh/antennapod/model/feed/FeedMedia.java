@@ -30,6 +30,7 @@ public class FeedMedia implements Playable {
      *    so this won't conflict with existing practice.
      */
     private static final int CHECKED_ON_SIZE_BUT_UNKNOWN = Integer.MIN_VALUE;
+    public static final long DOWNLOAD_DATE_WANTS_REDOWNLOAD = -1L;
 
     private long id;
     private String localFileUrl;
@@ -397,6 +398,15 @@ public class FeedMedia implements Playable {
 
     public boolean isDownloaded() {
         return downloadDate > 0;
+    }
+
+    public boolean isMarkedForRedownload() {
+        return downloadDate == DOWNLOAD_DATE_WANTS_REDOWNLOAD;
+    }
+
+    public void setWantsRedownload() {
+        this.localFileUrl = null;
+        this.downloadDate = DOWNLOAD_DATE_WANTS_REDOWNLOAD;
     }
 
     public long getItemId() {

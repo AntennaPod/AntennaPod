@@ -24,8 +24,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
-    public void downloadNow(Context context, FeedItem item, boolean ignoreConstraints) {
-        OneTimeWorkRequest.Builder workRequest = getRequest(context, item);
+    public void downloadNow(Context context, FeedItem item, boolean ignoreConstraints, boolean skipQueue) {
+        OneTimeWorkRequest.Builder workRequest = getRequest(context, item, skipQueue);
         workRequest.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST);
         if (ignoreConstraints) {
             workRequest.setConstraints(new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build());
@@ -36,22 +36,22 @@ public class DownloadServiceInterfaceImpl extends DownloadServiceInterface {
                 ExistingWorkPolicy.KEEP, workRequest.build());
     }
 
-    public void download(Context context, FeedItem item) {
+    public void download(Context context, FeedItem item, boolean skipQueue) {
         if (item.isDownloaded()) {
             return;
         }
-        OneTimeWorkRequest.Builder workRequest = getRequest(context, item);
+        OneTimeWorkRequest.Builder workRequest = getRequest(context, item, skipQueue);
         workRequest.setConstraints(getConstraints());
         WorkManager.getInstance(context).enqueueUniqueWork(item.getMedia().getDownloadUrl(),
                 ExistingWorkPolicy.KEEP, workRequest.build());
     }
 
-    private static OneTimeWorkRequest.Builder getRequest(Context context, FeedItem item) {
+    private static OneTimeWorkRequest.Builder getRequest(Context context, FeedItem item, boolean skipQueue) {
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(EpisodeDownloadWorker.class)
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .addTag(DownloadServiceInterface.WORK_TAG)
                 .addTag(DownloadServiceInterface.WORK_TAG_EPISODE_URL + item.getMedia().getDownloadUrl());
-        if (!item.isTagged(FeedItem.TAG_QUEUE) && UserPreferences.enqueueDownloadedEpisodes()) {
+        if (!skipQueue && !item.isTagged(FeedItem.TAG_QUEUE) && UserPreferences.enqueueDownloadedEpisodes()) {
             DBWriter.addQueueItem(context, item);
             workRequest.addTag(DownloadServiceInterface.WORK_DATA_WAS_QUEUED);
         }
