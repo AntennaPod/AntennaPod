@@ -14,31 +14,13 @@ import static org.junit.Assert.assertNull;
 public class OpmlReaderTest {
 
     @Test
-    public void testReadSingleFeed() throws Exception {
+    public void testReadSimple() throws Exception {
         String opml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
                 + "<opml version=\"2.0\">"
                 + "<head><title>Test</title></head>"
                 + "<body>"
-                + "<outline text=\"Feed Text\" title=\"Feed Title\" type=\"rss\""
-                + " xmlUrl=\"https://example.com/feed.xml\" htmlUrl=\"https://example.com\"/>"
-                + "</body>"
-                + "</opml>";
-        OpmlReader reader = new OpmlReader();
-        ArrayList<OpmlElement> result = reader.readDocument(new StringReader(opml));
-        assertEquals(1, result.size());
-        assertEquals("Feed Title", result.get(0).getText());
-        assertEquals("https://example.com/feed.xml", result.get(0).getXmlUrl());
-        assertEquals("https://example.com", result.get(0).getHtmlUrl());
-        assertEquals("rss", result.get(0).getType());
-    }
-
-    @Test
-    public void testReadMultipleFeeds() throws Exception {
-        String opml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                + "<opml version=\"2.0\">"
-                + "<head><title>Test</title></head>"
-                + "<body>"
-                + "<outline text=\"Feed 1\" title=\"Feed 1\" xmlUrl=\"https://example.com/feed1.xml\"/>"
+                + "<outline text=\"Feed Text\" title=\"Feed 1\" type=\"rss\""
+                + " xmlUrl=\"https://example.com/feed1.xml\" htmlUrl=\"https://example.com/1\"/>"
                 + "<outline text=\"Feed 2\" title=\"Feed 2\" xmlUrl=\"https://example.com/feed2.xml\"/>"
                 + "</body>"
                 + "</opml>";
@@ -47,6 +29,8 @@ public class OpmlReaderTest {
         assertEquals(2, result.size());
         assertEquals("Feed 1", result.get(0).getText());
         assertEquals("https://example.com/feed1.xml", result.get(0).getXmlUrl());
+        assertEquals("https://example.com/1", result.get(0).getHtmlUrl());
+        assertEquals("rss", result.get(0).getType());
         assertEquals("Feed 2", result.get(1).getText());
         assertEquals("https://example.com/feed2.xml", result.get(1).getXmlUrl());
     }
@@ -107,20 +91,21 @@ public class OpmlReaderTest {
     }
 
     @Test
-    public void testOutlinesOutsideOpmlTagIgnored() throws Exception {
+    public void testNestedCategoryFeeds() throws Exception {
         String opml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                + "<root>"
-                + "<outline text=\"Outside\" title=\"Outside\" xmlUrl=\"https://example.com/feed.xml\"/>"
                 + "<opml version=\"2.0\">"
                 + "<body>"
-                + "<outline text=\"Inside\" title=\"Inside\" xmlUrl=\"https://example.com/inside.xml\"/>"
+                + "<outline text=\"Tech\">"
+                + "<outline title=\"Feed 1\" xmlUrl=\"https://example.com/feed1.xml\"/>"
+                + "<outline title=\"Feed 2\" xmlUrl=\"https://example.com/feed2.xml\"/>"
+                + "</outline>"
                 + "</body>"
-                + "</opml>"
-                + "</root>";
+                + "</opml>";
         OpmlReader reader = new OpmlReader();
         ArrayList<OpmlElement> result = reader.readDocument(new StringReader(opml));
-        assertEquals(1, result.size());
-        assertEquals("Inside", result.get(0).getText());
+        assertEquals(2, result.size());
+        assertEquals("Feed 1", result.get(0).getText());
+        assertEquals("Feed 2", result.get(1).getText());
     }
 
     @Test
