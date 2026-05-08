@@ -19,6 +19,7 @@ public class MainActivityStarter {
     public static final String EXTRA_OPEN_DRAWER = "open_drawer";
     public static final String EXTRA_OPEN_DOWNLOAD_LOGS = "open_download_logs";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
+    public static final String EXTRA_CHECK_MISSING_FILES_AFTER_IMPORT = "check_missing_files_after_import";
 
     private final Intent intent;
     private final Context context;
