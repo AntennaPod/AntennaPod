@@ -27,6 +27,7 @@ import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -280,7 +281,8 @@ public class SubscriptionFragment extends Fragment
             return true;
         } else if (itemId == R.id.action_search) {
             if (stateToShow == Feed.STATE_ARCHIVED) {
-                ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstanceArchive());
+                ((MainActivity) getActivity()).loadChildFragment(
+                        SearchFragment.newInstance(new FeedItemFilter(FeedItemFilter.INCLUDE_ARCHIVED)));
             } else {
                 ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
             }

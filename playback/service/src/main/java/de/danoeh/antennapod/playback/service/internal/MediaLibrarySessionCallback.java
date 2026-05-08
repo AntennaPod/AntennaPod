@@ -413,7 +413,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull String query, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
         SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
         disposables.add(Single.fromCallable(() ->
-                        DBReader.searchFeedItems(0, query, Feed.STATE_SUBSCRIBED))
+                        DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
                 .subscribeOn(Schedulers.io())
                 .subscribe(items -> future.set(LibraryResult.ofItemList(
                                 MediaItemAdapter.fromItemList(context, items), params)),

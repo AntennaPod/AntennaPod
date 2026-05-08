@@ -3,6 +3,7 @@ package de.danoeh.antennapod.model.feed;
 import android.text.TextUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class FeedItemFilter implements Serializable {
     public final boolean showIsFavorite;
     public final boolean showNotFavorite;
     public final boolean showInHistory;
+    public final boolean includeSubscribed;
+    public final boolean includeArchived;
     public final boolean includeNotSubscribed;
 
     public static final String PLAYED = "played";
@@ -40,10 +43,12 @@ public class FeedItemFilter implements Serializable {
     public static final String DOWNLOADED = "downloaded";
     public static final String NOT_DOWNLOADED = "not_downloaded";
     public static final String IS_IN_HISTORY = "is_in_history";
+    public static final String INCLUDE_SUBSCRIBED = "include_subscribed";
+    public static final String INCLUDE_ARCHIVED = "include_archived";
     public static final String INCLUDE_NOT_SUBSCRIBED = "include_not_subscribed";
 
     public static FeedItemFilter unfiltered() {
-        return new FeedItemFilter("");
+        return new FeedItemFilter();
     }
 
     public FeedItemFilter(String properties) {
@@ -72,6 +77,8 @@ public class FeedItemFilter implements Serializable {
         showNotFavorite = hasProperty(NOT_FAVORITE);
         showNew = hasProperty(NEW);
         showInHistory = hasProperty(IS_IN_HISTORY);
+        includeSubscribed = hasProperty(INCLUDE_SUBSCRIBED);
+        includeArchived = hasProperty(INCLUDE_ARCHIVED);
         includeNotSubscribed = hasProperty(INCLUDE_NOT_SUBSCRIBED);
     }
 
@@ -85,6 +92,12 @@ public class FeedItemFilter implements Serializable {
 
     public List<String> getValuesList() {
         return Arrays.asList(properties);
+    }
+
+    public FeedItemFilter without(String property) {
+        List<String> newValues = new ArrayList<>(Arrays.asList(properties));
+        newValues.remove(property);
+        return new FeedItemFilter(newValues.toArray(new String[0]));
     }
 
     public boolean matches(FeedItem item) {
@@ -119,9 +132,20 @@ public class FeedItemFilter implements Serializable {
         } else if (showInHistory && item.getMedia() != null
                 && item.getMedia().getLastPlayedTimeHistory().getTime() == 0) {
             return false;
-        } else if (!includeNotSubscribed && item.getFeed() != null
-                && item.getFeed().getState() == Feed.STATE_NOT_SUBSCRIBED) {
-            return false;
+        }
+        if (item.getFeed() != null) {
+            int state = item.getFeed().getState();
+            if (includeSubscribed || includeArchived || includeNotSubscribed) {
+                if (state == Feed.STATE_SUBSCRIBED && !includeSubscribed) {
+                    return false;
+                } else if (state == Feed.STATE_ARCHIVED && !includeArchived) {
+                    return false;
+                } else if (state == Feed.STATE_NOT_SUBSCRIBED && !includeNotSubscribed) {
+                    return false;
+                }
+            } else if (state != Feed.STATE_SUBSCRIBED) {
+                return false;
+            }
         }
         return true;
     }

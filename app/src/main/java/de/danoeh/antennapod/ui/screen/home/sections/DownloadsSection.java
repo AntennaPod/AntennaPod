@@ -40,7 +40,8 @@ public class DownloadsSection extends HomeSection {
     public static final String TAG = "DownloadsSection";
     private static final int NUM_EPISODES = 2;
     private static final FeedItemFilter FILTER_DOWNLOADED = new FeedItemFilter(
-            FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+            FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_SUBSCRIBED,
+            FeedItemFilter.INCLUDE_ARCHIVED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
     private EpisodeItemListAdapter adapter;
     private List<FeedItem> items;
     private Disposable disposable;

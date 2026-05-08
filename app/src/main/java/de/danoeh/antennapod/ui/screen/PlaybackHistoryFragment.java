@@ -26,7 +26,8 @@ import java.util.List;
 public class PlaybackHistoryFragment extends EpisodesListFragment {
     public static final String TAG = "PlaybackHistoryFragment";
     private static final FeedItemFilter FILTER_HISTORY = new FeedItemFilter(
-            FeedItemFilter.IS_IN_HISTORY, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+            FeedItemFilter.IS_IN_HISTORY, FeedItemFilter.INCLUDE_SUBSCRIBED,
+            FeedItemFilter.INCLUDE_ARCHIVED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
     private static Pair<Integer, Integer> scrollPosition = null;
 
     @NonNull

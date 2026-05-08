@@ -19,7 +19,8 @@ import java.util.List;
 public class FavoritesFragment extends EpisodesListFragment {
     public static final String TAG = "FavoritesFragment";
     private static final FeedItemFilter FILTER_FAVORITES = new FeedItemFilter(
-            FeedItemFilter.IS_FAVORITE, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+            FeedItemFilter.IS_FAVORITE, FeedItemFilter.INCLUDE_SUBSCRIBED,
+            FeedItemFilter.INCLUDE_ARCHIVED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
     private static Pair<Integer, Integer> scrollPosition = null;
 
     @NonNull

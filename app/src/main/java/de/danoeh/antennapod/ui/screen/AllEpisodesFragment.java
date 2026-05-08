@@ -74,7 +74,8 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     protected FeedItemFilter getFilter() {
         FeedItemFilter filter = new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes());
         if (filter.showIsFavorite) {
-            return new FeedItemFilter(filter, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+            return new FeedItemFilter(filter, FeedItemFilter.INCLUDE_SUBSCRIBED,
+                    FeedItemFilter.INCLUDE_ARCHIVED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
         } else {
             return filter;
         }
