@@ -54,7 +54,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 3110000;
+    public static final int VERSION = 3120000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -244,6 +244,10 @@ public class PodDBAdapter {
 
     static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_SIMPLECHAPTERS + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_SIMPLECHAPTERS + " ("
+            + KEY_FEEDITEM + ")";
+
+    static final String CREATE_INDEX_FAVORITES_FEEDITEM = "CREATE INDEX "
+            + TABLE_NAME_FAVORITES + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_FAVORITES + " ("
             + KEY_FEEDITEM + ")";
 
     static final String CREATE_TABLE_FAVORITES = "CREATE TABLE "
@@ -1555,6 +1559,7 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
+            db.execSQL(CREATE_INDEX_FAVORITES_FEEDITEM);
         }
 
         @Override
