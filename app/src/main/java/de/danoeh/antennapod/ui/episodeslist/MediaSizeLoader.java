@@ -16,9 +16,14 @@ import okhttp3.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MediaSizeLoader {
     private static final String TAG = "MediaSizeLoader";
+    private static final Set<String> inFlightUrls =
+            Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {
         return Single.create((SingleOnSubscribe<Long>) emitter -> {
@@ -27,6 +32,7 @@ public abstract class MediaSizeLoader {
                 return;
             }
             long size = Integer.MIN_VALUE;
+            String inFlightKey = null;
             if (media.isDownloaded()) {
                 File mediaFile = new File(media.getLocalFileUrl());
                 if (mediaFile.exists()) {
@@ -40,6 +46,12 @@ public abstract class MediaSizeLoader {
                     emitter.onSuccess(0L);
                     return;
                 }
+                if (!inFlightUrls.add(url)) {
+                    // another bind is already requesting this URL; let that one update DB+media
+                    emitter.onSuccess(0L);
+                    return;
+                }
+                inFlightKey = url;
 
                 OkHttpClient client = AntennapodHttpClient.getHttpClient();
                 Request.Builder httpReq = new Request.Builder()
@@ -57,6 +69,7 @@ public abstract class MediaSizeLoader {
                         }
                     }
                 } catch (IOException e) {
+                    inFlightUrls.remove(inFlightKey);
                     emitter.onSuccess(0L);
                     Log.e(TAG, Log.getStackTraceString(e));
                     return; // better luck next time
@@ -68,6 +81,9 @@ public abstract class MediaSizeLoader {
                 media.setCheckedOnSizeButUnknown();
             } else {
                 media.setSize(size);
+            }
+            if (inFlightKey != null) {
+                inFlightUrls.remove(inFlightKey);
             }
             emitter.onSuccess(size);
             DBWriter.setMediaDownloadInformation(media);
