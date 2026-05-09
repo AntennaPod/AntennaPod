@@ -357,6 +357,7 @@ class DBUpgrader {
         }
         if (oldVersion < 3120000) {
             db.execSQL(PodDBAdapter.CREATE_INDEX_FAVORITES_FEEDITEM);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDMEDIA_DOWNLOAD_URL);
         }
     }
 

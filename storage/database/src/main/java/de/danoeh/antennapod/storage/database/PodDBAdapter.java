@@ -250,6 +250,10 @@ public class PodDBAdapter {
             + TABLE_NAME_FAVORITES + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_FAVORITES + " ("
             + KEY_FEEDITEM + ")";
 
+    static final String CREATE_INDEX_FEEDMEDIA_DOWNLOAD_URL = "CREATE INDEX "
+            + TABLE_NAME_FEED_MEDIA + "_" + KEY_DOWNLOAD_URL + " ON " + TABLE_NAME_FEED_MEDIA + " ("
+            + KEY_DOWNLOAD_URL + ")";
+
     static final String CREATE_TABLE_FAVORITES = "CREATE TABLE "
             + TABLE_NAME_FAVORITES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
@@ -1560,6 +1564,7 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
             db.execSQL(CREATE_INDEX_FAVORITES_FEEDITEM);
+            db.execSQL(CREATE_INDEX_FEEDMEDIA_DOWNLOAD_URL);
         }
 
         @Override
