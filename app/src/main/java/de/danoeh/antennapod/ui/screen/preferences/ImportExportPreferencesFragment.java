@@ -238,6 +238,15 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         alert.show();
     }
 
+    private void showImportErrorDialog(final Throwable error) {
+        progressDialog.dismiss();
+        final MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(getContext());
+        alert.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        alert.setTitle(R.string.import_error_label);
+        alert.setMessage(error.getMessage());
+        alert.show();
+    }
+
     private void restoreDatabaseResult(final ActivityResult result) {
         if (result.getResultCode() != Activity.RESULT_OK || result.getData() == null) {
             return;
@@ -250,7 +259,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
                 .subscribe(() -> {
                     showDatabaseImportSuccessDialog();
                     progressDialog.dismiss();
-                }, this::showExportErrorDialog);
+                }, this::showImportErrorDialog);
     }
 
     private void backupDatabaseResult(final Uri uri) {
