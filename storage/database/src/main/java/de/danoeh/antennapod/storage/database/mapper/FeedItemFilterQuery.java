@@ -68,22 +68,25 @@ public class FeedItemFilterQuery {
         if (filter.showInHistory) {
             statements.add(keyCompletionDate + " > 0 ");
         }
-        List<String> allowedStates = new ArrayList<>();
-        if (filter.includeSubscribed) {
-            allowedStates.add(String.valueOf(Feed.STATE_SUBSCRIBED));
+        boolean allStatesAllowed = filter.includeSubscribed && filter.includeArchived && filter.includeNotSubscribed;
+        if (!allStatesAllowed) {
+            List<String> allowedStates = new ArrayList<>();
+            if (filter.includeSubscribed) {
+                allowedStates.add(String.valueOf(Feed.STATE_SUBSCRIBED));
+            }
+            if (filter.includeArchived) {
+                allowedStates.add(String.valueOf(Feed.STATE_ARCHIVED));
+            }
+            if (filter.includeNotSubscribed) {
+                allowedStates.add(String.valueOf(Feed.STATE_NOT_SUBSCRIBED));
+            }
+            if (allowedStates.isEmpty()) {
+                allowedStates.add(String.valueOf(Feed.STATE_SUBSCRIBED));
+            }
+            statements.add(PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED
+                    + " IN (SELECT " + PodDBAdapter.KEY_ID + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " WHERE " + PodDBAdapter.KEY_STATE + " IN (" + TextUtils.join(",", allowedStates) + "))");
         }
-        if (filter.includeArchived) {
-            allowedStates.add(String.valueOf(Feed.STATE_ARCHIVED));
-        }
-        if (filter.includeNotSubscribed) {
-            allowedStates.add(String.valueOf(Feed.STATE_NOT_SUBSCRIBED));
-        }
-        if (allowedStates.isEmpty()) {
-            allowedStates.add(String.valueOf(Feed.STATE_SUBSCRIBED));
-        }
-        statements.add(PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED
-                + " IN (SELECT " + PodDBAdapter.KEY_ID + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
-                + " WHERE " + PodDBAdapter.KEY_STATE + " IN (" + TextUtils.join(",", allowedStates) + "))");
 
         if (statements.isEmpty()) {
             return "";

@@ -1011,8 +1011,7 @@ public class PodDBAdapter {
     public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter, SortOrder sortOrder,
                                              int offset, int limit) {
         String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
-        filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_SUBSCRIBED,
-                FeedItemFilter.INCLUDE_ARCHIVED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+        filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClauseAnd = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
@@ -1135,8 +1134,7 @@ public class PodDBAdapter {
     }
 
     public final Cursor getFeedEpisodeCountCursor(long feedId, FeedItemFilter filter) {
-        filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_SUBSCRIBED,
-                FeedItemFilter.INCLUDE_ARCHIVED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+        filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereAndClause = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
@@ -1434,11 +1432,12 @@ public class PodDBAdapter {
         }
 
         String queryStart = SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION + " WHERE " + queryFeedId;
-        if (feedID == 0) {
-            String filterQuery = FeedItemFilterQuery.generateFrom(filter);
-            if (!filterQuery.isEmpty()) {
-                queryStart += " AND " + filterQuery;
-            }
+        FeedItemFilter effectiveFilter = feedID != 0
+                ? new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES)
+                : filter;
+        String filterQuery = FeedItemFilterQuery.generateFrom(effectiveFilter);
+        if (!filterQuery.isEmpty()) {
+            queryStart += " AND " + filterQuery;
         }
         queryStart += " AND (";
         StringBuilder sb = new StringBuilder(queryStart);

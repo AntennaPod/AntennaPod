@@ -314,8 +314,7 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         } else if (itemId == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(
                     SearchFragment.newInstance(new FeedItemFilter(FeedItemFilter.QUEUED,
-                            FeedItemFilter.INCLUDE_SUBSCRIBED, FeedItemFilter.INCLUDE_ARCHIVED,
-                            FeedItemFilter.INCLUDE_NOT_SUBSCRIBED)));
+                            FeedItemFilter.INCLUDE_ALL_FEED_STATES)));
             return true;
         }
         return false;

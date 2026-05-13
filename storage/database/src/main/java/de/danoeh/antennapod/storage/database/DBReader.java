@@ -336,8 +336,7 @@ public final class DBReader {
                 feed = cursor.getFeed();
                 FeedItemFilter filter = (filtered && feed.getItemFilter() != null)
                         ? feed.getItemFilter() : FeedItemFilter.unfiltered();
-                filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_SUBSCRIBED,
-                        FeedItemFilter.INCLUDE_ARCHIVED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED);
+                filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES);
                 List<FeedItem> items = getFeedItemList(feed, filter, feed.getSortOrder(), offset, limit);
                 for (FeedItem item : items) {
                     item.setFeed(feed);

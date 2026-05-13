@@ -46,6 +46,8 @@ public class FeedItemFilter implements Serializable {
     public static final String INCLUDE_SUBSCRIBED = "include_subscribed";
     public static final String INCLUDE_ARCHIVED = "include_archived";
     public static final String INCLUDE_NOT_SUBSCRIBED = "include_not_subscribed";
+    public static final String INCLUDE_ALL_FEED_STATES =
+            INCLUDE_SUBSCRIBED + "," + INCLUDE_ARCHIVED + "," + INCLUDE_NOT_SUBSCRIBED;
 
     public static FeedItemFilter unfiltered() {
         return new FeedItemFilter();
@@ -60,7 +62,7 @@ public class FeedItemFilter implements Serializable {
     }
 
     public FeedItemFilter(String... properties) {
-        this.properties = properties;
+        this.properties = TextUtils.split(TextUtils.join(",", properties), ",");
 
         // see R.arrays.feed_filter_values
         showUnplayed = hasProperty(UNPLAYED);

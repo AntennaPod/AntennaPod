@@ -190,7 +190,8 @@ public class CompletedDownloadsFragment extends Fragment
                 public void onConfirmButtonPressed(DialogInterface clickedDialog) {
                     clickedDialog.dismiss();
                     Observable.fromCallable(() -> DBReader.getEpisodes(0, Integer.MAX_VALUE,
-                                    new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED,
+                                    new FeedItemFilter(FeedItemFilter.DOWNLOADED,
+                                            FeedItemFilter.INCLUDE_ALL_FEED_STATES,
                                             FeedItemFilter.PLAYED), SortOrder.DATE_OLD_NEW))
                             .subscribeOn(Schedulers.computation())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -311,8 +312,7 @@ public class CompletedDownloadsFragment extends Fragment
         disposable = Observable.fromCallable(() -> {
             SortOrder sortOrder = UserPreferences.getDownloadsSortedOrder();
             List<FeedItem> downloadedItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
-                    new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_SUBSCRIBED,
-                            FeedItemFilter.INCLUDE_ARCHIVED, FeedItemFilter.INCLUDE_NOT_SUBSCRIBED), sortOrder);
+                    new FeedItemFilter(FeedItemFilter.DOWNLOADED, FeedItemFilter.INCLUDE_ALL_FEED_STATES), sortOrder);
 
             List<String> mediaUrls = new ArrayList<>();
             if (runningDownloads == null) {
