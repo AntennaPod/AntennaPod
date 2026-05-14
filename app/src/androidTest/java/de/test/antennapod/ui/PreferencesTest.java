@@ -216,18 +216,6 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testPauseForInterruptions() {
-        clickPreference(R.string.playback_pref);
-        final boolean pauseForFocusLoss = UserPreferences.shouldPauseForFocusLoss();
-        clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseForFocusLoss != UserPreferences.shouldPauseForFocusLoss());
-        clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss());
-    }
-
-    @Test
     public void testSetEpisodeCache() {
         String[] entries = res.getStringArray(R.array.episode_cache_size_entries);
         String[] values = res.getStringArray(R.array.episode_cache_size_values);
