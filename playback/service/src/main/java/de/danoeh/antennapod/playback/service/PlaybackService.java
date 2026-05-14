@@ -1913,7 +1913,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return;
             }
 
-            List<FeedItem> results = DBReader.searchFeedItems(0, query, Feed.STATE_SUBSCRIBED);
+            List<FeedItem> results = DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered());
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
                 startPlaying(media, false);

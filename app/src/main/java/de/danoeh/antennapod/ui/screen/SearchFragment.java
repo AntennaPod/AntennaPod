@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -35,6 +36,7 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.net.discovery.CombinedSearcher;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -67,7 +69,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
     private static final String ARG_FEED_NAME = "feedName";
-    private static final String ARG_ARCHIVED = "archived";
+    private static final String ARG_FILTER = "filter";
     private static final int SEARCH_DEBOUNCE_INTERVAL = 1500;
 
     private EpisodeItemListAdapter adapter;
@@ -78,7 +80,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     private EmptyViewHandler emptyViewHandler;
     private EpisodeItemListRecyclerView recyclerView;
     private List<FeedItem> results;
-    private Chip chip;
+    private ChipGroup chipGroup;
     private SearchView searchView;
     private FloatingSelectMenu floatingSelectMenu;
     private Handler automaticSearchDebouncer;
@@ -93,6 +95,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_FEED, 0);
+        args.putSerializable(ARG_FILTER, FeedItemFilter.unfiltered());
         fragment.setArguments(args);
         return fragment;
     }
@@ -116,9 +119,9 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         return fragment;
     }
 
-    public static SearchFragment newInstanceArchive() {
+    public static SearchFragment newInstance(FeedItemFilter filter) {
         SearchFragment fragment = newInstance();
-        fragment.getArguments().putBoolean(ARG_ARCHIVED, true);
+        fragment.getArguments().putSerializable(ARG_FILTER, filter);
         return fragment;
     }
 
@@ -200,12 +203,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         emptyViewHandler.setTitle(R.string.type_to_search);
         EventBus.getDefault().register(this);
 
-        chip = layout.findViewById(R.id.feed_title_chip);
-        chip.setOnCloseIconClickListener(v -> {
-            getArguments().putLong(ARG_FEED, 0);
-            getArguments().putBoolean(ARG_ARCHIVED, false);
-            searchWithProgressBar();
-        });
+        chipGroup = layout.findViewById(R.id.filter_chips);
         updateChipVisibility();
         if (getArguments().getString(ARG_QUERY, null) != null) {
             search();
@@ -380,14 +378,36 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     }
 
     private void updateChipVisibility() {
-        chip.setVisibility(View.GONE);
-        if (getArguments().getBoolean(ARG_ARCHIVED, false)) {
-            chip.setVisibility(View.VISIBLE);
-            chip.setText(R.string.archive_feed_label_noun);
-        } else if (getArguments().getLong(ARG_FEED, 0) != 0) {
-            chip.setVisibility(View.VISIBLE);
-            chip.setText(getArguments().getString(ARG_FEED_NAME, ""));
+        chipGroup.removeAllViews();
+        FeedItemFilter filter = (FeedItemFilter) getArguments().getSerializable(ARG_FILTER);
+        if (filter != null && filter.showQueued) {
+            addChip(getString(R.string.queue_label), v -> {
+                getArguments().putSerializable(ARG_FILTER, filter.without(FeedItemFilter.QUEUED));
+                searchWithProgressBar();
+            });
         }
+        if (filter != null && filter.includeArchived && !filter.includeSubscribed && !filter.includeNotSubscribed) {
+            addChip(getString(R.string.archive_feed_label_noun), v -> {
+                getArguments().putSerializable(ARG_FILTER, filter.without(FeedItemFilter.INCLUDE_ARCHIVED));
+                searchWithProgressBar();
+            });
+        }
+        if (getArguments().getLong(ARG_FEED, 0) != 0) {
+            addChip(getArguments().getString(ARG_FEED_NAME, ""), v -> {
+                getArguments().putLong(ARG_FEED, 0);
+                searchWithProgressBar();
+            });
+        }
+        chipGroup.setVisibility(chipGroup.getChildCount() > 0 ? View.VISIBLE : View.GONE);
+    }
+
+    private void addChip(String text, View.OnClickListener closeListener) {
+        Chip chip = (Chip) getLayoutInflater().inflate(R.layout.item_tag_chip, chipGroup, false);
+        chip.setText(text);
+        chip.setCheckable(false);
+        chip.setCloseIconVisible(true);
+        chip.setOnCloseIconClickListener(closeListener);
+        chipGroup.addView(chip);
     }
 
     private void search() {
@@ -398,21 +418,38 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
             disposableEpisodes.dispose();
         }
         long feed = getArguments().getLong(ARG_FEED, 0);
+        FeedItemFilter filter = (FeedItemFilter) getArguments().getSerializable(ARG_FILTER);
+        if (filter == null) {
+            filter = FeedItemFilter.unfiltered();
+        }
+        for (String value : filter.getValues()) {
+            if (!value.isEmpty()
+                    && !value.equals(FeedItemFilter.QUEUED)
+                    && !value.equals(FeedItemFilter.INCLUDE_ARCHIVED)
+                    && !value.equals(FeedItemFilter.INCLUDE_SUBSCRIBED)
+                    && !value.equals(FeedItemFilter.INCLUDE_NOT_SUBSCRIBED)) {
+                throw new IllegalArgumentException("SearchFragment does not support filter: " + value);
+            }
+        }
+        final FeedItemFilter activeFilter = filter;
+        boolean hasEpisodeFilter = activeFilter.showQueued || activeFilter.showPlayed || activeFilter.showUnplayed
+                || activeFilter.showNew || activeFilter.showDownloaded || activeFilter.showIsFavorite
+                || activeFilter.showInHistory || activeFilter.showPaused;
         boolean isSearchingFeed = feed != 0;
         updateChipVisibility();
-        adapterFeeds.setEndButton(R.string.search_online, isSearchingFeed ? null : this::searchOnline);
+        adapterFeeds.setEndButton(R.string.search_online,
+                (isSearchingFeed || hasEpisodeFilter) ? null : this::searchOnline);
 
         String query = searchView.getQuery().toString();
         if (query.isEmpty()) {
             emptyViewHandler.setTitle(R.string.type_to_search);
             return;
         }
-        final int state = getArguments().getBoolean(ARG_ARCHIVED, false) ? Feed.STATE_ARCHIVED : Feed.STATE_SUBSCRIBED;
-        if (feed != 0) {
-            // Search within a feed
+        if (feed != 0 || hasEpisodeFilter) {
+            // Search within a feed or with episode-level filters: don't show subscription results
             adapterFeeds.updateData(Collections.emptyList());
         } else {
-            disposableFeeds = Observable.fromCallable(() -> DBReader.searchFeeds(query, state))
+            disposableFeeds = Observable.fromCallable(() -> DBReader.searchFeeds(query, activeFilter))
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(results -> {
@@ -421,7 +458,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
                         emptyViewHandler.setTitle(getString(R.string.no_results_for_query, query));
                     }, error -> Log.e(TAG, Log.getStackTraceString(error)));
         }
-        disposableEpisodes = Observable.fromCallable(() -> DBReader.searchFeedItems(feed, query, state))
+        disposableEpisodes = Observable.fromCallable(() -> DBReader.searchFeedItems(feed, query, activeFilter))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(results -> {

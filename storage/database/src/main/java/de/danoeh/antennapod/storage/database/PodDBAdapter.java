@@ -23,6 +23,7 @@ import de.danoeh.antennapod.model.feed.FeedFunding;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -357,7 +358,7 @@ public class PodDBAdapter {
             "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
             + " FROM " + TABLE_NAME_FEED_ITEMS
             + JOIN_FEED_ITEM_AND_MEDIA;
-    public static final String SELECT_WHERE_FEED_IS_SUBSCRIBED = TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
+    private static final String SELECT_WHERE_FEED_IS_SUBSCRIBED = TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
             + " IN (SELECT " + KEY_ID + " FROM " + TABLE_NAME_FEEDS
             + " WHERE " + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED + ")";
 
@@ -1010,6 +1011,7 @@ public class PodDBAdapter {
     public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter, SortOrder sortOrder,
                                              int offset, int limit) {
         String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
+        filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClauseAnd = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
@@ -1132,6 +1134,7 @@ public class PodDBAdapter {
     }
 
     public final Cursor getFeedEpisodeCountCursor(long feedId, FeedItemFilter filter) {
+        filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereAndClause = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
@@ -1416,7 +1419,7 @@ public class PodDBAdapter {
      *
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
-    public Cursor searchItems(long feedID, String searchQuery, int state) {
+    public Cursor searchItems(long feedID, String searchQuery, FeedItemFilter filter) {
         final String[] queryWords = prepareSearchQuery(searchQuery);
 
         String queryFeedId;
@@ -1429,8 +1432,12 @@ public class PodDBAdapter {
         }
 
         String queryStart = SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION + " WHERE " + queryFeedId;
-        if (state == Feed.STATE_SUBSCRIBED && feedID == 0) {
-            queryStart += " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED;
+        FeedItemFilter effectiveFilter = feedID != 0
+                ? new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES)
+                : filter;
+        String filterQuery = FeedItemFilterQuery.generateFrom(effectiveFilter);
+        if (!filterQuery.isEmpty()) {
+            queryStart += " AND " + filterQuery;
         }
         queryStart += " AND (";
         StringBuilder sb = new StringBuilder(queryStart);
@@ -1458,10 +1465,23 @@ public class PodDBAdapter {
      *
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
-    public Cursor searchFeeds(String searchQuery, int state) {
+    public Cursor searchFeeds(String searchQuery, FeedItemFilter filter) {
         final String[] queryWords = prepareSearchQuery(searchQuery);
+        List<String> allowedStates = new ArrayList<>();
+        if (filter.includeSubscribed) {
+            allowedStates.add(String.valueOf(Feed.STATE_SUBSCRIBED));
+        }
+        if (filter.includeArchived) {
+            allowedStates.add(String.valueOf(Feed.STATE_ARCHIVED));
+        }
+        if (filter.includeNotSubscribed) {
+            allowedStates.add(String.valueOf(Feed.STATE_NOT_SUBSCRIBED));
+        }
+        if (allowedStates.isEmpty()) {
+            allowedStates.add(String.valueOf(Feed.STATE_SUBSCRIBED));
+        }
         String queryStart = "SELECT " + KEYS_FEED + " FROM " + TABLE_NAME_FEEDS
-                + " WHERE " + KEY_STATE + " = " + state;
+                + " WHERE " + KEY_STATE + " IN (" + TextUtils.join(",", allowedStates) + ")";
         StringBuilder sb = new StringBuilder(queryStart);
 
         for (int i = 0; i < queryWords.length; i++) {

@@ -312,7 +312,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             conDialog.createNewDialog().show();
             return true;
         } else if (itemId == R.id.action_search) {
-            ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance());
+            ((MainActivity) getActivity()).loadChildFragment(
+                    SearchFragment.newInstance(new FeedItemFilter(FeedItemFilter.QUEUED,
+                            FeedItemFilter.INCLUDE_ALL_FEED_STATES)));
             return true;
         }
         return false;
