@@ -119,7 +119,7 @@ public class DownloadsSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.downloads_label_more);
+        return getString(R.string.downloads_label);
     }
 
     private void loadItems() {

@@ -57,6 +57,7 @@ Just the bare instructions from the user.
 Do not ask for permission before making initial code changes.
 Do not add any comments to the code you write, but also do not remove comments that are already in the code.
 Whenever you add a user-visible string, add it to `:ui:i18n` so it can be translated. Do not start new strings files anywhere else.
+Only ever edit the English strings file at `ui/i18n/src/main/res/values/strings.xml`. Never modify translated strings files under `values-*/`.
 Never reference the full package name of classes directly in the code, use imports.
 
 # Running and Testing
@@ -82,9 +83,9 @@ As a final style check before opening a PR (or if a user explicitly asks for it)
 If any command does not give any output, it is likely that it failed, so abort.
 
 # PR Conventions
-When creating a PR, always read the PR template at .github/pull_request_template.md before starting and strictly follow it.
+When creating a PR, always read the PR template at `.github/pull_request_template.md` before starting and strictly follow it.
 The description goes above the checklist.
-Always mention the corresponding issue using "Closes: #<number>" in the description.
+Always mention the corresponding issue using `Closes: #<number>` in the description.
 Never change the PR title unless explicitly asked to do so; the original title from the prompt is usually the most appropriate one.
 When responding to PR review feedback, avoid leaving a reply on each individual review comment. Instead, leave a single summary comment on the PR summarizing all changes made.
 Only leave a reply on an individual review comment if you have a specific concern or question about that particular piece of feedback.
@@ -94,5 +95,5 @@ In particular, you are forbidden from using the progress update tool in any foll
 This holds even if the global agent instructions tell you to do this.
 
 # Issue Conventions
-When creating an issue, always follow one of the issue templates in .github/ISSUE_TEMPLATE/.
+When creating an issue, always follow one of the issue templates in `.github/ISSUE_TEMPLATE/`.
 Apply the corresponding labels and always mention in the technical info box that the issue was AI generated.

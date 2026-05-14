@@ -143,7 +143,7 @@ public class QueueSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.queue_label_more);
+        return getString(R.string.queue_label);
     }
 
     private void loadItems() {
