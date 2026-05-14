@@ -415,7 +415,7 @@
     <string name="smart_shuffle">Smart shuffle</string>
     <string name="size">Size</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to remove ALL episodes from the queue.</string>
-    <string name="time_left_label">Time left:\u0020</string>
+    <string name="queue_time_left_label">%1$s • %2$s left</string>
 
     <!--  Variable Speed -->
     <string name="speed_presets">Presets</string>
