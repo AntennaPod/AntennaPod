@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.model.feed;
 
-import android.text.TextUtils;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,15 +52,16 @@ public class FeedItemFilter implements Serializable {
     }
 
     public FeedItemFilter(String properties) {
-        this(TextUtils.split(properties, ","));
+        this(properties.isEmpty() ? new String[0] : properties.split(","));
     }
 
     public FeedItemFilter(FeedItemFilter filter, String... additionalProperties) {
-        this(TextUtils.join(",", filter.getValues()) + "," + TextUtils.join(",", additionalProperties));
+        this(String.join(",", filter.getValues()) + "," + String.join(",", additionalProperties));
     }
 
     public FeedItemFilter(String... properties) {
-        this.properties = TextUtils.split(TextUtils.join(",", properties), ",");
+        String joined = String.join(",", properties);
+        this.properties = joined.isEmpty() ? new String[0] : joined.split(",");
 
         // see R.arrays.feed_filter_values
         showUnplayed = hasProperty(UNPLAYED);
