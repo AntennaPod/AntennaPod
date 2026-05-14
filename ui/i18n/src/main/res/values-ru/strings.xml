@@ -288,8 +288,8 @@
     <string name="keep_sorted">Поддерживать упорядоченным</string>
     <string name="date">По дате</string>
     <string name="duration">По длине</string>
-    <string name="episode_title">По названию выпуска</string>
-    <string name="feed_title">По названию подкаста</string>
+    <string name="episode_title">По выпуску</string>
+    <string name="feed_title">По подкасту</string>
     <string name="random">Случайно</string>
     <string name="smart_shuffle">Умное перемешивание</string>
     <string name="size">Размер</string>
@@ -960,5 +960,45 @@
         <item quantity="few">%d выпуска отмечены непрослушанными.</item>
         <item quantity="many">%d выпуска отмечены непрослушанными.</item>
         <item quantity="other">%d выпуска отмечены непрослушанными.</item>
+    </plurals>
+    <string name="no_archive_head_label">В архиве ничего</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="one">начат</item>
+        <item quantity="few">начаты</item>
+        <item quantity="many">начато</item>
+        <item quantity="other">начато</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="one">всего</item>
+        <item quantity="few">всего</item>
+        <item quantity="many">всего</item>
+        <item quantity="other">всего</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="one">скачан</item>
+        <item quantity="few">скачаны</item>
+        <item quantity="many">скачано</item>
+        <item quantity="other">скачано</item>
+    </plurals>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Изменить часы</string>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Непрерывное воспроизведение отключено в настройках. Стоп после каждого выпуска.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">В очереди остался только %1$d выпуск</item>
+        <item quantity="few">В очереди остались только %1$d выпуска</item>
+        <item quantity="many">В очереди осталось только %1$d выпусков</item>
+        <item quantity="other">В очереди осталось только %1$d выпусков</item>
+    </plurals>
+    <string name="sleep_timer_without_continuous_playback_message">Вместо того чтобы автоматически включать таймер сна для одного эпизода, отключите непрерывное воспроизведение в настройках.</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="one">Скачивание по мобильной сети включено на следующую %d минуту</item>
+        <item quantity="few">Скачивание по мобильной сети включено на следующие %d минуты</item>
+        <item quantity="many">Скачивание по мобильной сети включено на следующие %d минут</item>
+        <item quantity="other">Скачивание по мобильной сети включено на следующие %d минут</item>
+    </plurals>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Непрерывное воспроизведение выключено, и в этом выпуске осталась %1$d минута</item>
+        <item quantity="few">Непрерывное воспроизведение выключено, и в этом выпуске остались %1$d минуты</item>
+        <item quantity="many">Непрерывное воспроизведение выключено, и в этом выпуске осталось %1$d минут</item>
+        <item quantity="other">Непрерывное воспроизведение выключено, и в этом выпуске осталось %1$d минут</item>
     </plurals>
 </resources>

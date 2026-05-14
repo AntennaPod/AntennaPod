@@ -56,7 +56,7 @@ public final class DBReader {
      *      The FeedItem-list can be loaded separately with getFeedItemList().
      */
     @NonNull
-    public static List<Feed> getFeedList() {
+    public static synchronized List<Feed> getFeedList() {
         Log.d(TAG, "Extracting Feedlist");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -78,7 +78,7 @@ public final class DBReader {
      * @param subscribedOnly If true, only return feeds with {@link Feed#STATE_SUBSCRIBED}.
      * @return A list of Strings with the download URLs of matching feeds.
      */
-    public static List<String> getFeedListDownloadUrls(boolean subscribedOnly) {
+    public static synchronized List<String> getFeedListDownloadUrls(boolean subscribedOnly) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getFeedCursorDownloadUrls(subscribedOnly)) {
@@ -102,7 +102,7 @@ public final class DBReader {
      *
      * @param items The FeedItems whose Feed-objects should be loaded.
      */
-    public static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
+    public static synchronized void loadFeedDataOfFeedItemList(List<FeedItem> items) {
         List<Feed> feeds = getFeedList();
 
         Map<Long, Feed> feedIndex = new ArrayMap<>(feeds.size());
@@ -126,8 +126,8 @@ public final class DBReader {
      * @param feed The Feed whose items should be loaded
      * @return A list with the FeedItems of the Feed. The Feed-attribute of the FeedItems will already be set correctly.
      */
-    public static List<FeedItem> getFeedItemList(final Feed feed, final FeedItemFilter filter, SortOrder sortOrder,
-                                                 int offset, int limit) {
+    public static synchronized List<FeedItem> getFeedItemList(final Feed feed,
+                                             final FeedItemFilter filter, SortOrder sortOrder, int offset, int limit) {
         Log.d(TAG, "getFeedItemList() called with: " + "feed = [" + feed + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -160,7 +160,7 @@ public final class DBReader {
      *
      * @return A list of IDs sorted by the same order as the queue.
      */
-    public static LongList getQueueIDList() {
+    public static synchronized LongList getQueueIDList() {
         Log.d(TAG, "getQueueIDList() called");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -179,7 +179,7 @@ public final class DBReader {
      * Gets the remaining queue size, given a current item, including the current item.
      * If the current item is not found it will return 0.
      */
-    public static int getRemainingQueueSize(long existingId) {
+    public static synchronized int getRemainingQueueSize(long existingId) {
         final LongList wholeQueue = getQueueIDList();
 
         // now try to find the id
@@ -199,7 +199,7 @@ public final class DBReader {
      * @return A list of FeedItems sorted by the same order as the queue.
      */
     @NonNull
-    public static List<FeedItem> getQueue() {
+    public static synchronized List<FeedItem> getQueue() {
         Log.d(TAG, "getQueue() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -220,7 +220,8 @@ public final class DBReader {
      * @param filter The filter describing which episodes to filter out.
      */
     @NonNull
-    public static List<FeedItem> getEpisodes(int offset, int limit, FeedItemFilter filter, SortOrder sortOrder) {
+    public static synchronized List<FeedItem> getEpisodes(int offset, int limit,
+                                                          FeedItemFilter filter, SortOrder sortOrder) {
         Log.d(TAG, "getRecentlyPublishedEpisodes() called with: offset=" + offset + ", limit=" + limit);
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -233,7 +234,7 @@ public final class DBReader {
         }
     }
 
-    public static int getTotalEpisodeCount(FeedItemFilter filter) {
+    public static synchronized int getTotalEpisodeCount(FeedItemFilter filter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getEpisodeCountCursor(filter)) {
@@ -246,7 +247,7 @@ public final class DBReader {
         }
     }
 
-    public static int getFeedEpisodeCount(long feedId, FeedItemFilter filter) {
+    public static synchronized int getFeedEpisodeCount(long feedId, FeedItemFilter filter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getFeedEpisodeCountCursor(feedId, filter)) {
@@ -259,7 +260,7 @@ public final class DBReader {
         }
     }
 
-    public static List<FeedItem> getRandomEpisodes(int limit, int seed) {
+    public static synchronized List<FeedItem> getRandomEpisodes(int limit, int seed) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (FeedItemCursor cursor = new FeedItemCursor(adapter.getRandomEpisodesCursor(limit, seed))) {
@@ -277,7 +278,7 @@ public final class DBReader {
      * @return A list with DownloadStatus objects that represent the download log.
      * The size of the returned list is limited by {@link #DOWNLOAD_LOG_SIZE}.
      */
-    public static List<DownloadResult> getDownloadLog() {
+    public static synchronized List<DownloadResult> getDownloadLog() {
         Log.d(TAG, "getDownloadLog() called");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -300,7 +301,7 @@ public final class DBReader {
      * @return A list with DownloadStatus objects that represent the feed's download log,
      * newest events first.
      */
-    public static List<DownloadResult> getFeedDownloadLog(long feedId, long limit) {
+    public static synchronized List<DownloadResult> getFeedDownloadLog(long feedId, long limit) {
         Log.d(TAG, "getFeedDownloadLog() called with: " + "feed = [" + feedId + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -326,7 +327,7 @@ public final class DBReader {
      *         database and the items-attribute will be set correctly.
      */
     @Nullable
-    public static Feed getFeed(final long feedId, boolean filtered, int offset, int limit) {
+    public static synchronized Feed getFeed(final long feedId, boolean filtered, int offset, int limit) {
         Log.d(TAG, "getFeed() called with: " + "feedId = [" + feedId + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -359,7 +360,7 @@ public final class DBReader {
      * @return The FeedItem or null if the FeedItem could not be found.
      */
     @Nullable
-    public static FeedItem getFeedItem(final long itemId) {
+    public static synchronized FeedItem getFeedItem(final long itemId) {
         Log.d(TAG, "getFeedItem() called with: " + "itemId = [" + itemId + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -384,7 +385,7 @@ public final class DBReader {
      * @return The FeedItem next in queue or null if the FeedItem could not be found.
      */
     @Nullable
-    public static FeedItem getNextInQueue(FeedItem item) {
+    public static synchronized FeedItem getNextInQueue(FeedItem item) {
         Log.d(TAG, "getNextInQueue() called with: " + "itemId = [" + item.getId() + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -404,7 +405,7 @@ public final class DBReader {
     }
 
     @NonNull
-    public static List<FeedItem> getPausedQueue(int limit) {
+    public static synchronized List<FeedItem> getPausedQueue(int limit) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (FeedItemCursor cursor = new FeedItemCursor(adapter.getPausedQueueCursor(limit))) {
@@ -424,7 +425,7 @@ public final class DBReader {
      * @return The FeedItem or null if the FeedItem could not be found.
      *          Does NOT load additional attributes like feed.
      */
-    public static FeedItem getFeedItemByGuidOrEpisodeUrl(final String guid, final String episodeUrl) {
+    public static synchronized FeedItem getFeedItemByGuidOrEpisodeUrl(final String guid, final String episodeUrl) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (FeedItemCursor cursor = new FeedItemCursor(adapter.getFeedItemCursor(guid, episodeUrl))) {
@@ -443,7 +444,7 @@ public final class DBReader {
      *
      * @param item The FeedItem
      */
-    public static void loadDescriptionOfFeedItem(final FeedItem item) {
+    public static synchronized void loadDescriptionOfFeedItem(final FeedItem item) {
         Log.d(TAG, "loadDescriptionOfFeedItem() called with: " + "item = [" + item + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -465,7 +466,7 @@ public final class DBReader {
      *
      * @param item The FeedItem
      */
-    public static List<Chapter> loadChaptersOfFeedItem(final FeedItem item) {
+    public static synchronized List<Chapter> loadChaptersOfFeedItem(final FeedItem item) {
         Log.d(TAG, "loadChaptersOfFeedItem() called with: " + "item = [" + item + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -493,7 +494,7 @@ public final class DBReader {
      * @return The found object, or null if it does not exist
      */
     @Nullable
-    public static FeedMedia getFeedMedia(final long mediaId) {
+    public static synchronized FeedMedia getFeedMedia(final long mediaId) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
@@ -509,7 +510,7 @@ public final class DBReader {
         }
     }
 
-    public static List<FeedItem> getFeedItemsWithUrl(List<String> urls) {
+    public static synchronized List<FeedItem> getFeedItemsWithUrl(List<String> urls) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (FeedItemCursor itemCursor = new FeedItemCursor(adapter.getFeedItemCursorByUrl(urls))) {
@@ -552,7 +553,7 @@ public final class DBReader {
     }
 
     @NonNull
-    public static List<MonthlyStatisticsItem> getMonthlyTimeStatistics() {
+    public static synchronized List<MonthlyStatisticsItem> getMonthlyTimeStatistics() {
         List<MonthlyStatisticsItem> months = new ArrayList<>();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -583,7 +584,7 @@ public final class DBReader {
      * @return The list of statistics objects
      */
     @NonNull
-    public static StatisticsResult getStatistics(boolean includeMarkedAsPlayed,
+    public static synchronized StatisticsResult getStatistics(boolean includeMarkedAsPlayed,
                                                  long timeFilterFrom, long timeFilterTo) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -625,7 +626,7 @@ public final class DBReader {
         return result;
     }
 
-    public static long getTimeBetweenReleaseAndPlayback(long timeFilterFrom, long timeFilterTo) {
+    public static synchronized long getTimeBetweenReleaseAndPlayback(long timeFilterFrom, long timeFilterTo) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getTimeBetweenReleaseAndPlayback(timeFilterFrom, timeFilterTo)) {
@@ -642,7 +643,7 @@ public final class DBReader {
      * items.
      */
     @NonNull
-    public static NavDrawerData getNavDrawerData(@Nullable SubscriptionsFilter subscriptionsFilter,
+    public static synchronized NavDrawerData getNavDrawerData(@Nullable SubscriptionsFilter subscriptionsFilter,
                                                  FeedOrder feedOrder, FeedCounter feedCounter, int feedState) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -747,7 +748,7 @@ public final class DBReader {
         return result;
     }
 
-    public static List<NavDrawerData.TagItem> getAllTags(int feedState) {
+    public static synchronized List<NavDrawerData.TagItem> getAllTags(int feedState) {
         Map<String, NavDrawerData.TagItem> tags = new HashMap<>();
         List<Feed> allFeeds = getFeedList();
         List<Feed> feeds = new ArrayList<>();
@@ -786,7 +787,7 @@ public final class DBReader {
         return tagsSorted;
     }
 
-    public static List<FeedItem> searchFeedItems(final long feedId, final String query,
+    public static synchronized List<FeedItem> searchFeedItems(final long feedId, final String query,
                                                   FeedItemFilter filter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -799,7 +800,7 @@ public final class DBReader {
         }
     }
 
-    public static List<Feed> searchFeeds(final String query, FeedItemFilter filter) {
+    public static synchronized List<Feed> searchFeeds(final String query, FeedItemFilter filter) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (FeedCursor cursor = new FeedCursor(adapter.searchFeeds(query, filter))) {

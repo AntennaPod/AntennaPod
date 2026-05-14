@@ -111,20 +111,20 @@
     <string name="feed_volume_boost_heavy">Stor höjning</string>
     <string name="feed_auto_download_always">Alltid</string>
     <string name="feed_auto_download_never">Aldrig</string>
-    <string name="feed_new_episodes_action_add_to_inbox">Lägg till i inkorg</string>
+    <string name="feed_new_episodes_action_add_to_inbox">Lägg till i inkorgen</string>
     <string name="feed_new_episodes_action_add_to_queue">Lägg till i kön</string>
     <string name="feed_new_episodes_action_nothing">Ingenting</string>
     <string name="episode_cleanup_never">Aldrig</string>
     <string name="episode_cleanup_except_favorite_removal">När ej favorit</string>
     <string name="episode_cleanup_queue_removal">Om inte köad</string>
-    <string name="episode_cleanup_after_listening">Efter färdigspelad</string>
+    <string name="episode_cleanup_after_listening">Efter uppspelning</string>
     <plurals name="episode_cleanup_hours_after_listening">
-        <item quantity="one">%d timme efter lyssnad på</item>
-        <item quantity="other">%d timmar efter lyssnad på</item>
+        <item quantity="one">%d timme efter uppspelning</item>
+        <item quantity="other">%d timmar efter uppspelning</item>
     </plurals>
     <plurals name="episode_cleanup_days_after_listening">
-        <item quantity="one">%d dag efter lyssnad på</item>
-        <item quantity="other">%d dagar efter lyssnad på</item>
+        <item quantity="one">%d dag efter uppspelning</item>
+        <item quantity="other">%d dagar efter uppspelning</item>
     </plurals>
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d vald</item>
@@ -146,8 +146,8 @@
     </plurals>
     <string name="new_episode_notification_group_text">Dina prenumerationer har nya avsnitt.</string>
     <!--Actions on feeds-->
-  <string name="remove_all_inbox_label">Töm allt i inkorg</string>
-    <string name="removed_all_inbox_msg">Tömde allt i inkorg</string>
+  <string name="remove_all_inbox_label">Ta bort allt från inkorgen</string>
+    <string name="removed_all_inbox_msg">Tog bort allt från inkorgen</string>
     <string name="remove_all_inbox_confirmation_msg">Bekräfta att du vill ta bort allt i inkorgen.</string>
     <string name="multi_select_mark_played_confirmation">Bekräfta att du vill markera alla valda avsnitt som spelade.</string>
     <string name="multi_select_mark_unplayed_confirmation">Bekräfta att du vill markera alla valda avsnitt som ospelade.</string>
@@ -166,8 +166,8 @@
     <string name="filtered_label">Filtrerad</string>
     <string name="refresh_failed_msg">Senaste uppdateringen misslyckades. Tryck för att visa detaljer.</string>
     <string name="open_podcast">Öppna podcast</string>
-    <string name="please_wait_for_data">Vänta tills datan laddats</string>
-    <string name="updates_disabled_label">Uppdateringar avstängt</string>
+    <string name="please_wait_for_data">Vänta tills data har lästs in</string>
+    <string name="updates_disabled_label">Uppdateringar avstängda</string>
     <plurals name="updated_feeds_batch_label">
         <item quantity="one">%d prenumeration uppdaterad.</item>
         <item quantity="other">%d prenumerationer uppdaterade.</item>
@@ -175,16 +175,16 @@
     <string name="edit_tags">Redigera etiketter</string>
     <string name="add_tag">Lägg till etikett</string>
     <string name="rename_tag_label">Byt namn på etikett</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message">Uppdatering av poddar över mobil dataanslutning är avstängt i inställningarna.\n\nVill du fortfarande uppdatera alla poddar över mobildata?</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Din VPN-app låtsas vara ett mobilt nätverk (med datapriser). Uppdatering av podcasts över mobila dataanslutningar är avstängt i inställningarna.\n\nVill du uppdatera ändå? Om du vill lösa detta problem, kontakta skaparen av din VPN-app.</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message">Uppdatering av poddar över mobil dataanslutning är inaktiverad i inställningarna.\n\nVill du fortfarande uppdatera alla poddar över mobildata?</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Din VPN-app låtsas vara ett mobilt nätverk (med datapriser). Uppdatering av podcasts över mobila dataanslutningar är inaktiverad i inställningarna.\n\nVill du uppdatera ändå? Om du vill lösa detta problem, kontakta skaparen av din VPN-app.</string>
     <!--actions on feeditems-->
   <string name="download_label">Ladda ned</string>
     <string name="play_label">Spela</string>
     <string name="pause_label">Pausa</string>
     <string name="stream_label">Strömma</string>
     <string name="delete_label">Ta bort</string>
-    <string name="remove_inbox_label">Ta bort från inkorg</string>
-    <string name="toggle_played_label">Växla spelläge</string>
+    <string name="remove_inbox_label">Ta bort från inkorgen</string>
+    <string name="toggle_played_label">Växla spelstatus</string>
     <string name="mark_read_no_media_label">Markera som läst</string>
     <string name="mark_unread_label_no_media">Markera som oläst</string>
     <string name="add_to_queue_label">Lägg till i kön</string>
@@ -198,7 +198,7 @@
     <string name="transcript">Transkription</string>
     <string name="no_transcript_label">Ingen transkription</string>
     <string name="remove_from_favorite_label">Ta bort från favoriter</string>
-    <string name="visit_website_label">Besök webbsidan</string>
+    <string name="visit_website_label">Besök webbplatsen</string>
     <string name="skip_episode_label">Hoppa över avsnittet</string>
     <!--Download messages and labels-->
   <string name="download_successful">lyckades</string>
@@ -222,7 +222,7 @@
     <string name="download_error_unknown_host">Kunde inte hitta servern. Kontrollera att adressen är korrekt och att nätverksanslutningen fungerar.</string>
     <string name="download_error_unauthorized">Autentiseringsfel. Se till att användarnamn och lösenord är korrekt.</string>
     <string name="download_error_file_type_type">Filtypsfel</string>
-    <string name="download_error_forbidden">Podcastens server svarade inte.</string>
+    <string name="download_error_forbidden">Podcastens server vägrar svara.</string>
     <string name="download_canceled_msg">Nedladdning avbruten</string>
     <string name="download_error_wrong_size">Serveranslutningen förlorades innan nedladdningen var klar</string>
     <string name="download_error_blocked">Nedladdningen blockerades av en annan app på din enhet (exempelvis en VPN- eller reklamblockerare).</string>
@@ -252,7 +252,7 @@
     <string name="confirm_mobile_streaming_button_once">En gång</string>
     <!--Mediaplayer messages-->
   <string name="playback_error_generic">Mediafilen kunde inte spelas upp.\n\n- Testa att ta bort och ladda ner avsnittet igen.\n- Kontrollera din nätverksanslutning och se till att ingen VPN eller inloggningssida blockerar åtkomst.\n- Försök att trycka länge och dela \"Mediaadressen\" till din webbläsare för att se om den kan spelas där. Om inte, kontakta poddskaparna.</string>
-    <string name="no_media_playing_label">Inget media spelar</string>
+    <string name="no_media_playing_label">Ingen media spelas</string>
     <string name="unknown_media_key">AntennaPod - Okänd mediaknapp: %1$d</string>
     <string name="error_file_not_found">Filen hittades inte</string>
     <string name="no_media_label">Artikeln innehåller ingen mediafil</string>
@@ -312,12 +312,12 @@
     <string name="reassign_hardware_buttons">Omfördela hårdvaruknappar</string>
     <string name="preference_search_hint">Sök…</string>
     <string name="preference_search_no_results">Inga resultat</string>
-    <string name="preference_search_clear_history">Resnsa historiken</string>
-    <string name="pref_episode_cleanup_title">Radera innan automatiskt nedladdning</string>
-    <string name="pref_episode_cleanup_summary">Avsnitt som får tas bort om Automatisk Nedladdning behöver mer utrymme för nya avsnitt</string>
-    <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller Bluetooth-enheter kopplas ifrån</string>
+    <string name="preference_search_clear_history">Rensa historiken</string>
+    <string name="pref_episode_cleanup_title">Radera före automatisk nedladdning</string>
+    <string name="pref_episode_cleanup_summary">Avsnitt som får tas bort om automatisk nedladdning behöver mer utrymme för nya avsnitt</string>
+    <string name="pref_pauseOnDisconnect_sum">Pausa uppspelningen när hörlurar eller Bluetooth-enheter kopplas från</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
-    <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när bluetooth återansluts</string>
+    <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när Bluetooth återansluts</string>
     <string name="pref_hardware_forward_button_title">Framåtknapp</string>
     <string name="pref_hardware_forward_button_summary">Ändra beteendet för knappen nästa</string>
     <string name="pref_hardware_previous_button_title">Föregående knapp</string>
@@ -330,7 +330,7 @@
     <string name="pref_auto_delete_playback_sum">Radera avsnitt när uppspelningen är klar</string>
     <string name="pref_auto_delete_playback_title">Radera efter uppspelning</string>
     <string name="pref_auto_delete_title">Automatisk radering</string>
-    <string name="pref_auto_delete_sum">Radera avsnitt efter uppspelning eller när automatiskt nedladdning behöver utrymme</string>
+    <string name="pref_auto_delete_sum">Radera avsnitt efter uppspelning eller när automatisk nedladdning behöver utrymme</string>
     <string name="pref_auto_local_delete_title">Radera automatiskt från lokala kataloger</string>
     <string name="pref_auto_local_delete_sum">Inkludera lokala kataloger i funktionen för automatisk radering</string>
     <string name="pref_auto_local_delete_dialog_body">Notera att detta kommer att ta bort avsnitt från AntennaPod för lokala kataloger och radera deras mediafiler från enhetens lagring. De kan inte laddas ner igen via AntennaPod. Aktivera automatisk radering?</string>
@@ -357,9 +357,9 @@
     <string name="pref_followQueue_title">Kontinuerlig uppspelning</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Hörlurar eller Bluetooth kopplas bort</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Hörlurar återanslutna</string>
-    <string name="pref_unpauseOnBluetoothReconnect_title">Blutetooth återansluts</string>
-    <string name="pref_stream_over_download_title">Föredra strömmning</string>
-    <string name="pref_stream_over_download_sum">Visa knappen för strömning istället för nedladdning i listor</string>
+    <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth återansluts</string>
+    <string name="pref_stream_over_download_title">Föredra strömning</string>
+    <string name="pref_stream_over_download_sum">Visa strömningsknappen i stället för nedladdningsknappen i listor</string>
     <string name="pref_mobileUpdate_title">Mobila uppdateringar</string>
     <string name="pref_mobileUpdate_sum">Välj vad som ska tillåtas över mobila dataanslutningar</string>
     <string name="pref_mobileUpdate_refresh">Podcastuppdatering</string>
@@ -541,7 +541,7 @@
     <string name="synchronization_summary_unchoosen">Du kan välja bland flera leverantörer för att synkronisera dina prenumerationer och uppspelningsstatus med</string>
     <string name="dialog_choose_sync_service_title">Välj synkroniseringsleverantör</string>
     <string name="gpodnet_description">Gpodder.net är en öppen källkodstjänst som du kan installera på en egen server. Gpodder.net är oberende från AntennaPod-projektet.</string>
-    <string name="synchronization_summary_nextcloud">Gpodder Sync är en Nexcloud-app med öppen källkod som du enkelt kan installera på din egen server. Gpodder Sync är oberoende från AntennaPod-projektet.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync är en Nextcloud-app med öppen källkod som du enkelt kan installera på din egen server. Gpodder Sync är oberoende från AntennaPod-projektet.</string>
     <string name="synchronization_host_explanation">Du kan använda din egen server att synkronisera med. När du valt en server att synkronisera med, ange dess adress här.</string>
     <string name="synchronization_host_label">Serveradress</string>
     <string name="proceed_to_login_butLabel">Fortsätt till inloggning</string>
@@ -563,7 +563,7 @@
     <string name="synchronization_sync_changes_title">Synkronisera nu</string>
     <string name="synchronization_sync_summary">Synkronisera ändringar i prenumerationer och avsnittsstatus</string>
     <string name="synchronization_full_sync_title">Tvinga full synkronisering</string>
-    <string name="synchronization_force_sync_summary">Synkronisera om alla prenumerationer och avnittsstatus</string>
+    <string name="synchronization_force_sync_summary">Synkronisera om alla prenumerationer och avsnittsstatus</string>
     <string name="synchronization_logout">Logga ut</string>
     <string name="synchronization_login_status">Inloggad som %1$s på %2$s\n\nDu kan välja en ny synkroniseringsleverantör när du har loggat ut.</string>
     <string name="pref_synchronization_logout_toast">Utloggning lyckades</string>
@@ -574,7 +574,7 @@
     <string name="gpodnetsync_username_characters_error">Användarnamn får bara innehålla bokstäver, siffror, bindestreck och understreck.</string>
     <!--Directory chooser-->
   <string name="choose_data_directory">Välj katalog</string>
-    <string name="choose_data_directory_message">Välj baskatslog för din data. AntennaPod kommer att skapa underkatalogerna som krävs.</string>
+    <string name="choose_data_directory_message">Välj baskatalog för dina data. AntennaPod kommer att skapa underkatalogerna som krävs.</string>
     <string name="choose_data_directory_available_space">%1$s av %2$s ledigt</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pausa uppspelning istället för att sänka volymen när en annan app vill spela ljud</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pausa vid avbrott</string>

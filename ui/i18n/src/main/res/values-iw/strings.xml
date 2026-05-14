@@ -927,9 +927,9 @@
         <item quantity="two">שני מינויים</item>
         <item quantity="other">%d מינויים</item>
     </plurals>
-    <string name="feed_delete_explanation_delete">מחיקה תסיר את ﬤﬥ הפרקים כולל ההורדות, היסטוריית הנגינה והסטטיסטיקה.</string>
+    <string name="feed_delete_explanation_delete">מחיקה תסיר את המינוי לרבות ﬤﬥ הפרקים, ההורדות, היסטוריית הנגינה והסטטיסטיקה שלו.</string>
     <string name="tag_untagged">ללא תיוג</string>
-    <string name="feed_delete_explanation_archive">העברה לארכיון תסתיר מרשימת המינויים ותפסיק את קבלת העדכונים. הורדות, סטטיסטיקות ומצב הנגינה יישמרו.</string>
+    <string name="feed_delete_explanation_archive">העברה לארכיון תסתיר מהרשימה ותפסיק לחפש פרקים חדשים. הורדות, סטטיסטיקות ומצב הנגינה יישמרו.</string>
     <string name="no_archive_head_label">שום דבר לא הועבר לארכיון</string>
     <string name="no_archive_label">אפשר להעביר הסכתים לארכיון ממסך המינויים הראשי.</string>
     <string name="report_bug_attrib_android_version">גרסת Android</string>
