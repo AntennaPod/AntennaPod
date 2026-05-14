@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
+import de.danoeh.antennapod.net.common.RedirectChecker;
 import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -80,7 +81,12 @@ public class MediaItemAdapter {
         Bundle extras = new Bundle();
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
         metadataBuilder.setExtras(extras);
-        String localPlaybackUri = playable.localFileAvailable() ? playable.getLocalFileUrl() : playable.getStreamUrl();
+        String localPlaybackUri;
+        if (playable.localFileAvailable()) {
+            localPlaybackUri = playable.getLocalFileUrl();
+        } else {
+            localPlaybackUri = RedirectChecker.getFinalUrl(playable.getStreamUrl());
+        }
         Bundle requestExtras = new Bundle();
         if (!playable.localFileAvailable() && playable instanceof FeedMedia) {
             FeedMedia feedMedia = (FeedMedia) playable;
