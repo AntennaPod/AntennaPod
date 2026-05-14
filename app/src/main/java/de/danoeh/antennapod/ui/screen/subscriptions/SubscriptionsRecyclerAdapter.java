@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.subscriptions;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -94,14 +95,7 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 holder.gradient.setVisibility(View.GONE);
             }
         }
-        if (holder.selectIcon != null) {
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) holder.card.getLayoutParams();
-            params.leftMargin = cardMargin;
-            params.topMargin = cardMargin;
-            params.rightMargin = cardMargin;
-            params.bottomMargin = cardMargin;
-            holder.card.setLayoutParams(params);
-        }
+        animateCardMargin(holder, cardMargin);
 
         holder.itemView.setOnLongClickListener(v -> {
             if (!inActionMode()) {
@@ -118,6 +112,52 @@ public class SubscriptionsRecyclerAdapter extends SelectableAdapter<Subscription
                 mainActivityRef.get().loadChildFragment(fragment);
             }
         });
+    }
+
+    @Override
+    protected void toggleSelection(int pos) {
+        setSelected(pos, !isSelected(pos));
+        notifyItemChanged(pos, Boolean.TRUE);
+        if (getSelectedCount() == 0) {
+            endSelectMode();
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position,
+                                 @NonNull List<Object> payloads) {
+        if (payloads.isEmpty() || holder.selectIcon == null) {
+            super.onBindViewHolder(holder, position, payloads);
+            return;
+        }
+        holder.itemView.setSelected(isSelected(position));
+        holder.selectIcon.setImageResource(isSelected(position)
+                ? R.drawable.circle_checked : R.drawable.circle_unchecked);
+        int targetMargin = isSelected(position)
+                ? (int) convertDpToPixel(holder.itemView.getContext(), 12f) : 0;
+        animateCardMargin(holder, targetMargin);
+    }
+
+    private void animateCardMargin(@NonNull SubscriptionViewHolder holder, int targetMargin) {
+        if (holder.selectIcon == null) {
+            return;
+        }
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) holder.card.getLayoutParams();
+        int startMargin = params.leftMargin;
+        if (startMargin == targetMargin) {
+            return;
+        }
+        ValueAnimator animator = ValueAnimator.ofInt(startMargin, targetMargin);
+        animator.setDuration(100);
+        animator.addUpdateListener(a -> {
+            int margin = (int) a.getAnimatedValue();
+            params.leftMargin = margin;
+            params.topMargin = margin;
+            params.rightMargin = margin;
+            params.bottomMargin = margin;
+            holder.card.setLayoutParams(params);
+        });
+        animator.start();
     }
 
     @Override
