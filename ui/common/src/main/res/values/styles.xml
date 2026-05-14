@@ -10,6 +10,7 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dynamic.Light" parent="Theme.Material3.DynamicColors.Light">
+        <item name="linearProgressIndicatorStyle">@style/Widget.AntennaPod.LinearProgressIndicator</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="background_color">@color/background_light</item>
@@ -68,6 +69,7 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dynamic.Dark" parent="Theme.Material3.DynamicColors.Dark">
+        <item name="linearProgressIndicatorStyle">@style/Widget.AntennaPod.LinearProgressIndicator</item>
         <item name="background_color">@color/background_darktheme</item>
         <item name="background_elevated">@color/background_elevated_darktheme</item>
         <item name="action_icon_color">@color/white</item>
@@ -314,6 +316,10 @@
         <item name="fastScrollHorizontalTrackDrawable">@drawable/scrollbar_track</item>
         <item name="fastScrollVerticalThumbDrawable">?attr/scrollbar_thumb</item>
         <item name="fastScrollVerticalTrackDrawable">@drawable/scrollbar_track</item>
+    </style>
+
+    <style name="Widget.AntennaPod.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
+        <item name="trackColor">#18000000</item>
     </style>
 
     <style name="Widget.AntennaPod.ActionBar" parent="Widget.Material3.Light.ActionBar.Solid">
