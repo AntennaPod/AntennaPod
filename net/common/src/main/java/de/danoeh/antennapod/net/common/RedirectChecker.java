@@ -50,4 +50,20 @@ public abstract class RedirectChecker {
         }
         return null;
     }
+
+    @Nullable
+    public static String getFinalUrl(String url) {
+        if (url == null) {
+            return null;
+        }
+        try {
+            Request httpReq = new Request.Builder().url(url).head().build();
+            Response response = AntennapodHttpClient.getHttpClient().newCall(httpReq).execute();
+            response.close();
+            return response.request().url().toString();
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to follow redirects for " + url + ": " + e.getMessage());
+            return url;
+        }
+    }
 }
