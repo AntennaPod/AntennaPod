@@ -75,8 +75,10 @@
         android:layout_height="wrap_content"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:paddingVertical="4dp"
-        android:layout_marginEnd="16dp"
+        android:singleLine="true"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="12dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:textAlignment="textEnd"
         app:layout_constraintWidth_max="wrap"
@@ -84,8 +86,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/barrier"
-        tools:text="more »"
-        style="@style/Widget.MaterialComponents.Button.TextButton" />
+        app:icon="@drawable/ic_arrow_right_white"
+        app:iconGravity="end"
+        app:iconPadding="4dp"
+        tools:text="more"
+        style="@style/Widget.Material3.Button.TextButton" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
