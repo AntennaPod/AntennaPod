@@ -137,6 +137,13 @@ checkstyle {
     showViolations = true
 }
 
+afterEvaluate {
+    tasks.matching { it.name == 'lint' }.configureEach {
+        dependsOn tasks.matching { t -> t.name == 'spotbugsDebug' }
+        dependsOn tasks.matching { t -> t.name == 'spotbugsPlayDebug' }
+    }
+}
+
 tasks.register('checkstyle', Checkstyle) {
     group = "verification"
 
