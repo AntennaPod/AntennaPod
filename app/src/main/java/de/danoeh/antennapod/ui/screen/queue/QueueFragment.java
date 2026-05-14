@@ -497,24 +497,20 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     }
 
     private void refreshInfoBar() {
-        String info = getResources().getQuantityString(R.plurals.num_episodes, queue.size(), queue.size());
-        if (!queue.isEmpty()) {
-            long timeLeft = 0;
-            for (FeedItem item : queue) {
-                float playbackSpeed = 1;
-                if (UserPreferences.timeRespectsSpeed()) {
-                    playbackSpeed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(item.getMedia());
-                }
-                if (item.getMedia() != null) {
-                    long itemTimeLeft = item.getMedia().getDuration() - item.getMedia().getPosition();
-                    timeLeft += (long) (itemTimeLeft / playbackSpeed);
-                }
+        long timeLeft = 0;
+        for (FeedItem item : queue) {
+            float playbackSpeed = 1;
+            if (UserPreferences.timeRespectsSpeed()) {
+                playbackSpeed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(item.getMedia());
             }
-            info += " • ";
-            info += getString(R.string.time_left_label);
-            info += Converter.getDurationStringLocalized(getResources(), timeLeft, false);
+            if (item.getMedia() != null) {
+                long itemTimeLeft = item.getMedia().getDuration() - item.getMedia().getPosition();
+                timeLeft += (long) (itemTimeLeft / playbackSpeed);
+            }
         }
-        infoBar.setText(info);
+        String episodes = getResources().getQuantityString(R.plurals.num_episodes, queue.size(), queue.size());
+        String time = Converter.getDurationStringLocalized(getResources(), timeLeft, false);
+        infoBar.setText(getString(R.string.queue_time_left_label, episodes, time));
 
         if (recyclerAdapter.inActionMode()) {
             infoBar.setVisibility(View.INVISIBLE);
