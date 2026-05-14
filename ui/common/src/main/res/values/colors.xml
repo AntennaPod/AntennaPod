@@ -22,8 +22,8 @@
     <color name="text_color_secondary_dark">#cccccc</color>
     <color name="color_surface_variant_light">#D3DCE0</color>
     <color name="color_surface_variant_dark">#2F3B4F</color>
-    <color name="color_secondary_container_light">#A5B8C0</color>
-    <color name="color_secondary_container_dark">#4D5F80</color>
+    <color name="color_secondary_container_light">#C8D8DE</color>
+    <color name="color_secondary_container_dark">#3C4E68</color>
 
     <color name="accent_light">#0078C2</color>
     <color name="accent_dark">#3D8BFF</color>

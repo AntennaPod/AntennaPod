@@ -17,7 +17,7 @@
         android:layout_margin="4dp"
         app:cardBackgroundColor="?attr/colorSurfaceContainer"
         app:cardCornerRadius="12dp"
-        app:cardElevation="1dp">
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"

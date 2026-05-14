@@ -109,7 +109,7 @@
             android:layout_marginRight="16dp"
             android:layout_alignParentBottom="true"
             app:cardBackgroundColor="@color/non_square_icon_background"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="16dp"
             app:cardPreventCornerOverlap="false"
             app:cardElevation="0dp">
 
