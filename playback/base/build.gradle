@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
 }
 apply from: "../../common.gradle"
+apply from: "../../playFlavor.gradle"
 
 android {
     namespace "de.danoeh.antennapod.playback.base"
@@ -10,6 +11,7 @@ android {
 dependencies {
     implementation project(':model')
     implementation project(':system')
+    implementation project(':net:common')
 
     implementation "androidx.media3:media3-exoplayer:$media3Version"
     implementation "androidx.media3:media3-session:$media3Version"

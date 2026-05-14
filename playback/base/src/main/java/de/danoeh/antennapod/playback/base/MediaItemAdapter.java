@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import com.google.common.collect.ImmutableList;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.system.utils.ThreadUtils;
 
@@ -28,6 +31,7 @@ public class MediaItemAdapter {
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
     public static final String MEDIA_ID_CONFIRM_STREAMING = "confirm_streaming";
     public static final String KEY_STREAM_URL = "stream_url";
+    public static final String KEY_AUTHORIZATION_HEADER = "authorization_header";
 
     /**
      * Create a basic media item without attached metadata.
@@ -77,10 +81,25 @@ public class MediaItemAdapter {
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
         metadataBuilder.setExtras(extras);
         String localPlaybackUri = playable.localFileAvailable() ? playable.getLocalFileUrl() : playable.getStreamUrl();
+        Bundle requestExtras = new Bundle();
+        if (!playable.localFileAvailable() && playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            if (feedMedia.getItem() != null && feedMedia.getItem().getFeed() != null) {
+                FeedPreferences prefs = feedMedia.getItem().getFeed().getPreferences();
+                if (prefs != null && !TextUtils.isEmpty(prefs.getUsername())
+                        && !TextUtils.isEmpty(prefs.getPassword())) {
+                    requestExtras.putString(KEY_AUTHORIZATION_HEADER,
+                            HttpCredentialEncoder.encode(prefs.getUsername(), prefs.getPassword(), "ISO-8859-1"));
+                }
+            }
+        }
         return new MediaItem.Builder()
                 .setUri(localPlaybackUri != null ? Uri.parse(localPlaybackUri) : null)
                 .setMediaId(mediaId)
                 .setMediaMetadata(metadataBuilder.build())
+                .setRequestMetadata(new MediaItem.RequestMetadata.Builder()
+                        .setExtras(requestExtras)
+                        .build())
                 .build();
     }
 
