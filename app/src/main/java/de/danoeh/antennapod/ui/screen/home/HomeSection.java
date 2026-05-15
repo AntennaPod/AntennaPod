@@ -91,6 +91,12 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
         unregisterForContextMenu(viewBinding.recyclerView);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewBinding = null;
+    }
+
     protected abstract String getSectionTitle();
 
     protected abstract String getMoreLinkTitle();

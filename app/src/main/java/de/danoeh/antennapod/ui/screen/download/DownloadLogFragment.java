@@ -80,6 +80,7 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
         super.onDestroyView();
+        viewBinding = null;
     }
 
     @Override

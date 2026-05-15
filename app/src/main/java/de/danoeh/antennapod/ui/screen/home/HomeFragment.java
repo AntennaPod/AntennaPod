@@ -154,6 +154,12 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewBinding = null;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
         updateWelcomeScreenVisibility();

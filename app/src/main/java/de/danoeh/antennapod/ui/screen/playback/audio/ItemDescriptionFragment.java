@@ -72,13 +72,14 @@ public class ItemDescriptionFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         Log.d(TAG, "Fragment destroyed");
         if (webvDescription != null) {
             webvDescription.removeAllViews();
             webvDescription.destroy();
         }
+        webvDescription = null;
     }
 
     @Override

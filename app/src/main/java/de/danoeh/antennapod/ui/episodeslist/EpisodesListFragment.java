@@ -308,6 +308,16 @@ public abstract class EpisodesListFragment extends Fragment
     public void onDestroyView() {
         super.onDestroyView();
         listAdapter.endSelectMode();
+        if (toolbar != null) {
+            toolbar.setOnMenuItemClickListener(null);
+            toolbar.setOnLongClickListener(null);
+        }
+        txtvInformation = null;
+        toolbar = null;
+        recyclerView = null;
+        swipeRefreshLayout = null;
+        progressBar = null;
+        floatingSelectMenu = null;
     }
 
     @Override

@@ -355,6 +355,26 @@ public class AudioPlayerFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        toolbar = null;
+        txtvPlaybackSpeed = null;
+        sbPosition = null;
+        txtvPosition = null;
+        txtvLength = null;
+        butRev = null;
+        txtvRev = null;
+        butPlay = null;
+        butFF = null;
+        txtvFF = null;
+        butSkip = null;
+        progressIndicator = null;
+        cardViewSeek = null;
+        txtvSeek = null;
+        pager = null;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void bufferUpdate(BufferUpdateEvent event) {

@@ -155,6 +155,14 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         return root;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        speedSeekBar = null;
+        addCurrentSpeedChip = null;
+        skipSilenceCheckbox = null;
+    }
+
     private void addCurrentSpeed() {
         float newSpeed = speedSeekBar.getCurrentSpeed();
         if (selectedSpeeds.contains(newSpeed)) {

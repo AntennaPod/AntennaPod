@@ -153,6 +153,11 @@ public class CompletedDownloadsFragment extends Fragment
             toolbar.setOnLongClickListener(null);
         }
         super.onDestroyView();
+        toolbar = null;
+        swipeRefreshLayout = null;
+        recyclerView = null;
+        progressBar = null;
+        floatingSelectMenu = null;
     }
 
     @Override

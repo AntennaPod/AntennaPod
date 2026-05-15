@@ -262,6 +262,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             disposable.dispose();
         }
         adapter.endSelectMode();
+        viewBinding = null;
+        nextPageLoader = null;
     }
 
     @Override
@@ -311,12 +313,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             FeedUpdateManager.getInstance().runOnceOrAsk(getContext(), feed);
             return true;
         } else if (item.getItemId() == R.id.refresh_complete_item) {
+            Context appContext = requireContext().getApplicationContext();
+            Feed selectedFeed = feed;
             new Thread(() -> {
-                feed.setNextPageLink(feed.getDownloadUrl());
-                feed.setPageNr(0);
+                selectedFeed.setNextPageLink(selectedFeed.getDownloadUrl());
+                selectedFeed.setPageNr(0);
                 try {
-                    DBWriter.resetPagedFeedPage(feed).get();
-                    FeedUpdateManager.getInstance().runOnce(getContext(), feed);
+                    DBWriter.resetPagedFeedPage(selectedFeed).get();
+                    FeedUpdateManager.getInstance().runOnce(appContext, selectedFeed);
                 } catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }

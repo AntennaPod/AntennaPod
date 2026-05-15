@@ -70,4 +70,10 @@ public class EchoSection extends Fragment {
             ((MainActivity) getActivity()).loadFragment(HomeFragment.TAG, null);
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewBinding = null;
+    }
 }

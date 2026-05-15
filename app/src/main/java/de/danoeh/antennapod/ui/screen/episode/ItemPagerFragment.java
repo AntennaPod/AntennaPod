@@ -133,6 +133,8 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         if (disposable != null) {
             disposable.dispose();
         }
+        toolbar = null;
+        pager = null;
     }
 
     private void loadItem(long itemId) {

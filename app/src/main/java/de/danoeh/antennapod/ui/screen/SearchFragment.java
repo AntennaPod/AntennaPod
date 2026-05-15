@@ -241,6 +241,10 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
+        progressBar = null;
+        recyclerView = null;
+        floatingSelectMenu = null;
+        chipGroup = null;
     }
 
     private void setupToolbar(MaterialToolbar toolbar) {

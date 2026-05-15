@@ -361,6 +361,23 @@ public class SubscriptionFragment extends Fragment
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (toolbar != null) {
+            toolbar.setOnMenuItemClickListener(null);
+            toolbar.setOnLongClickListener(null);
+        }
+        toolbar = null;
+        subscriptionRecycler = null;
+        progressBar = null;
+        subscriptionAddButton = null;
+        feedsFilteredMsg = null;
+        swipeRefreshLayout = null;
+        floatingSelectMenu = null;
+        tagsRecycler = null;
+    }
+
     private void loadSubscriptionsAndTags() {
         if (disposable != null) {
             disposable.dispose();
