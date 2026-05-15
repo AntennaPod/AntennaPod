@@ -326,10 +326,10 @@ public class ItemFragment extends Fragment {
             }
             if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownloadUrl())) {
                 actionButton2 = new CancelDownloadActionButton(item);
-            } else if (!media.isDownloaded()) {
-                actionButton2 = new DownloadActionButton(item);
-            } else {
+            } else if (item.getFeed().isLocalFeed() || media.isDownloaded()) {
                 actionButton2 = new DeleteActionButton(item);
+            } else {
+                actionButton2 = new DownloadActionButton(item);
             }
         }
 
