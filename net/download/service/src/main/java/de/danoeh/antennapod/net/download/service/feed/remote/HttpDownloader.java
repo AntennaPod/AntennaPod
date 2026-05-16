@@ -92,6 +92,17 @@ public class HttpDownloader extends Downloader {
                 request.setSoFar(destination.length());
                 httpReq.addHeader("Range", "bytes=" + request.getSoFar() + "-");
                 Log.d(TAG, "Adding range header: " + request.getSoFar());
+                // Tell the server: only honor the Range request if the underlying file is
+                // still the one we already started downloading. Without this, podcast servers
+                // that perform dynamic ad insertion may return bytes for a freshly-personalized
+                // file that doesn't align with what we have on disk, corrupting the download
+                // (audio loops or premature end of episode). With If-Range, the server returns
+                // a 200 OK with the full new file instead of a 206 if the validator no longer
+                // matches, and the downloader below restarts the file from scratch.
+                if (!TextUtils.isEmpty(request.getLastModified())) {
+                    httpReq.addHeader("If-Range", request.getLastModified());
+                    Log.d(TAG, "Adding If-Range header: " + request.getLastModified());
+                }
             }
 
             Response response = newCall(httpReq);
