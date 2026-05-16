@@ -8,9 +8,14 @@ import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.util.UnstableApi;
+import androidx.media3.database.StandaloneDatabaseProvider;
+import androidx.media3.datasource.DataSource;
 import androidx.media3.datasource.DefaultDataSource;
 import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.datasource.HttpDataSource;
+import androidx.media3.datasource.cache.CacheDataSource;
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
+import androidx.media3.datasource.cache.SimpleCache;
 import androidx.media3.exoplayer.DefaultLoadControl;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.SeekParameters;
@@ -26,6 +31,7 @@ import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
+import java.io.File;
 import java.util.Collections;
 
 public class ExoPlayerUtils {
@@ -75,6 +81,17 @@ public class ExoPlayerUtils {
 
     @OptIn(markerClass = UnstableApi.class)
     public static class ApMediaSourceFactory implements MediaSource.Factory {
+        /**
+         * Process-wide SimpleCache used to insulate streamed playback from podcast servers
+         * that perform dynamic ad insertion. Without this, ExoPlayer's range requests for
+         * the same byte offsets can return different payloads on each request, causing the
+         * player to loop or end an episode early (AntennaPod issues #7409, #7523).
+         *
+         * Static so it survives ExoPlayer lifecycle resets. Same approach as Pocket Casts.
+         */
+        private static final long STREAM_CACHE_BYTES = 100L * 1024 * 1024;
+        private static volatile SimpleCache streamCache;
+
         private LoadErrorHandlingPolicy loadErrorHandlingPolicy;
         private DrmSessionManagerProvider drmSessionManagerProvider;
         private final DefaultExtractorsFactory extractorsFactory;
@@ -83,11 +100,21 @@ public class ExoPlayerUtils {
 
         public ApMediaSourceFactory(Context context) {
             super();
-            this.context = context;
+            this.context = context.getApplicationContext();
             this.extractorsFactory = new DefaultExtractorsFactory();
             this.extractorsFactory.setConstantBitrateSeekingEnabled(true);
             this.extractorsFactory.setMp3ExtractorFlags(Mp3Extractor.FLAG_DISABLE_ID3_METADATA);
-            this.defaultFactory = new DefaultMediaSourceFactory(context, extractorsFactory);
+            this.defaultFactory = new DefaultMediaSourceFactory(this.context, extractorsFactory);
+        }
+
+        private synchronized SimpleCache getStreamCache() {
+            if (streamCache == null) {
+                File cacheDir = new File(context.getCacheDir(), "stream-stable");
+                streamCache = new SimpleCache(cacheDir,
+                        new LeastRecentlyUsedCacheEvictor(STREAM_CACHE_BYTES),
+                        new StandaloneDatabaseProvider(context));
+            }
+            return streamCache;
         }
 
         @Override
@@ -115,7 +142,7 @@ public class ExoPlayerUtils {
             return factory.createMediaSource(mediaItem);
         }
 
-        private DefaultDataSource.Factory buildDataSourceFactory(MediaItem mediaItem) {
+        private DataSource.Factory buildDataSourceFactory(MediaItem mediaItem) {
             DefaultHttpDataSource.Factory httpDataSourceFactory =
                     new DefaultHttpDataSource.Factory();
             httpDataSourceFactory.setUserAgent(UserAgentInterceptor.USER_AGENT);
@@ -129,7 +156,12 @@ public class ExoPlayerUtils {
                 httpDataSourceFactory.setDefaultRequestProperties(
                         Collections.singletonMap("Authorization", authHeader));
             }
-            return new DefaultDataSource.Factory(context, httpDataSourceFactory);
+
+            DataSource.Factory upstream = new DefaultDataSource.Factory(context, httpDataSourceFactory);
+            return new CacheDataSource.Factory()
+                    .setCache(getStreamCache())
+                    .setUpstreamDataSourceFactory(upstream)
+                    .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR);
         }
 
         @Override
