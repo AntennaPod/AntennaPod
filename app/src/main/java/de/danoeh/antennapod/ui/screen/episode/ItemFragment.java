@@ -61,7 +61,7 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
@@ -410,20 +410,21 @@ public class ItemFragment extends Fragment {
         if (!itemsLoaded) {
             viewBinding.progbarLoading.setVisibility(View.VISIBLE);
         }
-        disposable = Observable.fromCallable(this::loadInBackground)
+        disposable = Maybe.fromCallable(this::loadInBackground)
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
-                if (result == null && itemsLoaded) {
-                    requireActivity().getSupportFragmentManager().popBackStack();
-                    return;
-                }
                 viewBinding.progbarLoading.setVisibility(View.GONE);
                 viewBinding.header.setVisibility(View.VISIBLE);
                 item = result;
                 onFragmentLoaded();
                 itemsLoaded = true;
-            }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+            }, error -> Log.e(TAG, Log.getStackTraceString(error)), () -> {
+                if (itemsLoaded) {
+                    // Suddenly not loaded anymore, so the item was deleted.
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                }
+            });
     }
 
     @Nullable
