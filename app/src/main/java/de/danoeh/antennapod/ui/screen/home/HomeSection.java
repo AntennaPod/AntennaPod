@@ -41,8 +41,11 @@ public abstract class HomeSection extends Fragment implements View.OnCreateConte
         }
         // Dummies are necessary to ensure height, but do not animate them
         viewBinding.recyclerView.setItemAnimator(null);
-        viewBinding.recyclerView.postDelayed(
-                () -> viewBinding.recyclerView.setItemAnimator(new DefaultItemAnimator()), 500);
+        viewBinding.recyclerView.postDelayed(() -> {
+            if (viewBinding != null) {
+                viewBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+            }
+        }, 500);
         return viewBinding.getRoot();
     }
 
