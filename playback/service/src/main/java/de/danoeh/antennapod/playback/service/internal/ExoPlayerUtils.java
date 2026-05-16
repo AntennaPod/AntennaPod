@@ -86,7 +86,7 @@ public class ExoPlayerUtils {
          * that perform dynamic ad insertion. Without this, ExoPlayer's range requests for
          * the same byte offsets can return different payloads on each request, causing the
          * player to loop or end an episode early (AntennaPod issues #7409, #7523).
-         *
+         * <p>
          * Static so it survives ExoPlayer lifecycle resets. Same approach as Pocket Casts.
          */
         private static final long STREAM_CACHE_BYTES = 100L * 1024 * 1024;
