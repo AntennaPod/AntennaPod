@@ -407,7 +407,7 @@ public class ItemFragment extends Fragment {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
                 if (result == null && itemsLoaded) {
-                    getParentFragmentManager().popBackStack();
+                    requireActivity().getSupportFragmentManager().popBackStack();
                     return;
                 }
                 viewBinding.progbarLoading.setVisibility(View.GONE);
