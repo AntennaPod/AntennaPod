@@ -166,6 +166,12 @@ public class SyncService extends Worker {
                         || queuedRemovedFeeds.contains(redirectedUrl))) {
                 continue;
             }
+            // If the creator redirected their feed incorrectly, we still try to avoid duplicated subscriptions
+            String finalUrl = RedirectChecker.getFinalUrl(downloadUrl);
+            if (UrlChecker.containsUrl(localSubscriptions, finalUrl)
+                    || queuedRemovedFeeds.contains(finalUrl)) {
+                continue;
+            }
 
             Feed feed = new Feed(downloadUrl, null, "Unknown podcast");
             feed.setItems(Collections.emptyList());
