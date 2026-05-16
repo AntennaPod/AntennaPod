@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("org.jlleitschuh.gradle.ktlint")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ktlint)
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -66,18 +66,18 @@ dependencies {
     implementation project(":net:sync:wear-interface")
 
     // NOTE: DO NOT INCLUDE a dependency on androidx.compose.material:material, the watch version is a replacement
-    implementation "androidx.wear:wear:$wearVersion"
-    implementation "com.google.android.gms:play-services-wearable:$wearableVersion"
-    implementation "androidx.wear.compose:compose-foundation:$wearComposeVersion"
-    implementation "androidx.wear.compose:compose-material3:$wearComposeVersion"
-    implementation "androidx.compose.ui:ui:$composeVersion"
-    implementation "androidx.compose.runtime:runtime:$composeVersion"
-    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycleRuntimeComposeVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleRuntimeComposeVersion"
-    implementation "androidx.core:core-ktx:$coreKtxVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0"
-    implementation "androidx.activity:activity-compose:$activityComposeVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation libs.androidx.wear
+    implementation libs.google.play.services.wearable
+    implementation libs.androidx.wear.compose.foundation
+    implementation libs.androidx.wear.compose.material3
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.runtime
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.core.ktx
+    implementation libs.kotlinx.coroutines.play.services
+    implementation libs.androidx.activity.compose
+    implementation libs.androidx.appcompat
 
-    testImplementation "junit:junit:$junitVersion"
+    testImplementation libs.junit
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
@@ -14,7 +14,7 @@ dependencies {
     implementation project(':parser:media')
     implementation project(':parser:transcript')
 
-    implementation "commons-io:commons-io:$commonsioVersion"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation libs.commons.io
+    implementation libs.commons.lang3
+    implementation libs.okhttp
 }

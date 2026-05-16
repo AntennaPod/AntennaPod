@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
@@ -19,10 +19,10 @@ dependencies {
     implementation project(':ui:common')
     implementation project(':ui:episodes')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
-    implementation "com.google.android.material:material:$googleMaterialVersion"
-    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.appcompat
+    implementation libs.google.material
+    implementation libs.rxandroid
+    implementation libs.rxjava
+    implementation libs.glide
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../common.gradle"
 
@@ -12,11 +12,11 @@ android {
 }
 
 dependencies {
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.media:media:$mediaVersion"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.media
+    implementation libs.commons.lang3
 
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "androidx.test:core:$testCoreVersion"
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation libs.junit
+    testImplementation libs.androidx.test.core
+    testImplementation libs.mockito.core
 }

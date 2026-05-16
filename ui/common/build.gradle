@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../common.gradle"
 
@@ -15,13 +15,13 @@ dependencies {
     implementation project(":storage:preferences")
     implementation project(":ui:i18n")
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
-    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
-    implementation "com.google.android.material:material:$googleMaterialVersion"
-    implementation "androidx.core:core-splashscreen:1.0.0"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "commons-io:commons-io:$commonsioVersion"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.viewpager2
+    implementation libs.google.material
+    implementation libs.androidx.core.splashscreen
+    implementation libs.commons.lang3
+    implementation libs.commons.io
 
-    testImplementation "junit:junit:$junitVersion"
+    testImplementation libs.junit
 }
