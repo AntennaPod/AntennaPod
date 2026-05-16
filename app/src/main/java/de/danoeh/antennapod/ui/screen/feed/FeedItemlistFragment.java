@@ -254,19 +254,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        EventBus.getDefault().unregister(this);
-        if (disposable != null) {
-            disposable.dispose();
-        }
-        adapter.endSelectMode();
-        viewBinding = null;
-        nextPageLoader = null;
-    }
-
-    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
         super.onSaveInstanceState(outState);
