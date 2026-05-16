@@ -116,16 +116,6 @@ public class ExternalPlayerFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        imgvCover = null;
-        txtvTitle = null;
-        butPlay = null;
-        feedName = null;
-        progressBar = null;
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusEvent(PlayerStatusEvent event) {
         loadMediaInfo();

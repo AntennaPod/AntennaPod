@@ -158,7 +158,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         }
         getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .unregisterOnSharedPreferenceChangeListener(this);
-        progressBar = null;
     }
 
     @Override

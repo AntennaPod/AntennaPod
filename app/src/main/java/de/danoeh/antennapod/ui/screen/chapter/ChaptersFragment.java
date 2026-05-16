@@ -115,12 +115,6 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        progressBar = null;
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusEvent(PlayerStatusEvent event) {
         loadMediaInfo(false);
