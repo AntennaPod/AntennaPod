@@ -39,6 +39,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeeditemFragmentBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -370,10 +371,17 @@ public class ItemFragment extends Fragment {
             return;
         }
         for (FeedItem item : event.items) {
-            if (this.item.getId() == item.getId()) {
+            if (this.item != null && this.item.getId() == item.getId()) {
                 load();
                 return;
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedListUpdateEvent event) {
+        if (item != null && item.getFeed() != null && event.contains(item.getFeed())) {
+            load();
         }
     }
 
