@@ -254,6 +254,17 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        EventBus.getDefault().unregister(this);
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        adapter.endSelectMode();
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
         super.onSaveInstanceState(outState);
@@ -300,14 +311,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             FeedUpdateManager.getInstance().runOnceOrAsk(getContext(), feed);
             return true;
         } else if (item.getItemId() == R.id.refresh_complete_item) {
-            Context appContext = requireContext().getApplicationContext();
-            Feed selectedFeed = feed;
             new Thread(() -> {
-                selectedFeed.setNextPageLink(selectedFeed.getDownloadUrl());
-                selectedFeed.setPageNr(0);
+                feed.setNextPageLink(feed.getDownloadUrl());
+                feed.setPageNr(0);
                 try {
-                    DBWriter.resetPagedFeedPage(selectedFeed).get();
-                    FeedUpdateManager.getInstance().runOnce(appContext, selectedFeed);
+                    DBWriter.resetPagedFeedPage(feed).get();
+                    FeedUpdateManager.getInstance().runOnce(getContext(), feed);
                 } catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }

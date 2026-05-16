@@ -255,6 +255,19 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (recyclerAdapter != null) {
+            recyclerAdapter.endSelectMode();
+        }
+        recyclerAdapter = null;
+        if (toolbar != null) {
+            toolbar.setOnMenuItemClickListener(null);
+            toolbar.setOnLongClickListener(null);
+        }
+    }
+
     private void refreshToolbarState() {
         boolean keepSorted = UserPreferences.isQueueKeepSorted();
         toolbar.getMenu().findItem(R.id.queue_lock).setChecked(UserPreferences.isQueueLocked());
