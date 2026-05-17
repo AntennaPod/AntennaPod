@@ -50,7 +50,7 @@
             android:key="prefScreenParentalControl"
             android:title="@string/pref_parental_control_title"
             android:summary="@string/pref_parental_control_sum"
-            android:icon="@drawable/ic_settings"/>
+            android:icon="@drawable/ic_supervisor_account"/>
 
     <PreferenceCategory
             android:key="project"
