@@ -436,7 +436,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         builder.setTitle(R.string.pref_parental_control_title);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         dialogBinding.textInput.setHint(R.string.password_label);
-        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label, null);
         builder.setNegativeButton(R.string.cancel_label, (d, w) -> finish());

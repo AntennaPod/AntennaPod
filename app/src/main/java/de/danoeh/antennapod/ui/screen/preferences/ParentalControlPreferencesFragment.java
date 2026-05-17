@@ -61,7 +61,7 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
         builder.setMessage(R.string.pref_parental_control_enter_old_password);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(fragment.getLayoutInflater());
         dialogBinding.textInput.setHint(R.string.pref_parental_control_old_password);
-        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label, null);
         builder.setNegativeButton(R.string.cancel_label, null);
@@ -90,9 +90,9 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
                 : R.string.pref_parental_control_set_password);
         final DialogSetPasswordBinding dialogBinding = DialogSetPasswordBinding.inflate(getLayoutInflater());
         dialogBinding.textInput.setHint(R.string.pref_parental_control_new_password);
-        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         dialogBinding.textInput2.setHint(R.string.pref_parental_control_confirm_password);
-        dialogBinding.textInput2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        dialogBinding.textInput2.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label, null);
         builder.setNegativeButton(R.string.cancel_label, null);
