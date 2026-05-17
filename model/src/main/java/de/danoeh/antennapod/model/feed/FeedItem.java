@@ -294,6 +294,10 @@ public class FeedItem implements Serializable {
         return state;
     }
 
+    public void setPlayState(int state) {
+        this.state = state;
+    }
+
     public void setNew() {
         state = NEW;
     }

@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../common.gradle"
 
@@ -14,7 +14,7 @@ android {
 dependencies {
     implementation project(':model')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.fragment:fragment:$fragmentVersion"
-    implementation "androidx.preference:preference:$preferenceVersion"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.fragment
+    implementation libs.androidx.preference
 }

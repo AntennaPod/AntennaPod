@@ -21,7 +21,6 @@ public class PodcastApp extends Application {
         try {
             // Robolectric calls onCreate for every test, which causes problems with static members
             EventBus.builder()
-                    .addIndex(new ApEventBusIndex())
                     .logNoSubscriberMessages(false)
                     .sendNoSubscriberEvent(false)
                     .installDefaultEventBus();

@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
@@ -42,6 +41,15 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
     private static final String ARG_FEEDITEM_POS = "feeditem_pos";
     private static final String KEY_PAGER_ID = "pager_id";
     private ViewPager2 pager;
+
+    public static ItemPagerFragment newInstance(long itemId) {
+        ItemPagerFragment fragment = new ItemPagerFragment();
+        Bundle args = new Bundle();
+        args.putLongArray(ARG_FEEDITEMS, new long[]{itemId});
+        args.putInt(ARG_FEEDITEM_POS, 0);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     /**
      * Creates a new instance of an ItemPagerFragment.
@@ -133,7 +141,7 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         }
 
         disposable = Observable.fromCallable(() -> DBReader.getFeedItem(itemId))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     item = result;
@@ -165,6 +173,10 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            refreshToolbarState();
+            return;
+        }
         for (FeedItem item : event.items) {
             if (this.item != null && this.item.getId() == item.getId()) {
                 this.item = item;
@@ -172,11 +184,6 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
                 return;
             }
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(UnreadItemsUpdateEvent event) {
-        refreshToolbarState();
     }
 
     private void openPodcast() {

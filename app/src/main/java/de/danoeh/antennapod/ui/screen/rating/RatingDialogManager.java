@@ -52,7 +52,7 @@ public class RatingDialogManager {
                     }
                     return new Pair<>(totalTime, statisticsData.oldestDate);
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     long totalTime = result.getFirst();

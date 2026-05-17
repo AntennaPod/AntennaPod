@@ -1,45 +1,9 @@
-buildscript {
-    ext.agpVersion = "8.11.0"
-}
 plugins {
-    id 'com.android.application' version "$agpVersion" apply false
-    id 'com.android.library' version "$agpVersion" apply false
-    id 'com.github.spotbugs' version '4.8.0' apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.spotbugs) apply false
     id 'checkstyle'
-}
-
-project.ext {
-    // AndroidX
-    annotationVersion = "1.9.1"
-    appcompatVersion = "1.7.1"
-    coreVersion = "1.16.0"
-    fragmentVersion = "1.8.9"
-    mediaVersion = "1.6.0"
-    media3Version = "1.9.0"
-    paletteVersion = "1.0.0"
-    preferenceVersion = "1.2.1"
-    recyclerViewVersion = "1.4.0"
-    viewPager2Version = "1.1.0"
-    workManagerVersion = "2.10.3"
-    googleMaterialVersion = "1.12.0"
-
-    // Third-party
-    commonslangVersion = "3.18.0"
-    commonsioVersion = "2.5" // Recent versions cause ClassNotFoundException on Android 6
-    jsoupVersion = "1.15.1"
-    glideVersion = "4.16.0"
-    okhttpVersion = "4.12.0"
-    eventbusVersion = "3.3.1"
-    rxAndroidVersion = "3.0.2"
-    rxJavaVersion = "3.1.5"
-
-    //Tests
-    awaitilityVersion = "3.1.6"
-    junitVersion = "4.13"
-    robolectricVersion = "4.16"
-    espressoVersion = "3.5.0"
-    runnerVersion = "1.5.0"
-    rulesVersion = "1.5.0"
-    testCoreVersion = "1.5.0"
-    mockitoVersion = "5.15.2"
+    alias(libs.plugins.ktlint) apply false
 }

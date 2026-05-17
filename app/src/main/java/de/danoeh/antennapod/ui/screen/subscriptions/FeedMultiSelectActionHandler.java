@@ -168,7 +168,7 @@ public class FeedMultiSelectActionHandler {
                         DBWriter.removeFeedNewFlag(selectedFeed.getId());
                     }
                 })
-                        .subscribeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(result -> { }, error -> Log.e(TAG, Log.getStackTraceString(error)));
             }

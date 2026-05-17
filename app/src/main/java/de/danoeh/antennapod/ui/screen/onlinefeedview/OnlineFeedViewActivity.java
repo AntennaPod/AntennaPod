@@ -240,7 +240,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
             return null;
         })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(subscribedFeed -> {
             if (subscribedFeed.getState() == Feed.STATE_NOT_SUBSCRIBED) {

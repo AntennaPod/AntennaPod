@@ -143,7 +143,7 @@ public class QueueSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.queue_label_more);
+        return getString(R.string.queue_label);
     }
 
     private void loadItems() {
@@ -151,7 +151,7 @@ public class QueueSection extends HomeSection {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> DBReader.getPausedQueue(NUM_EPISODES))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(queue -> {
                     this.queue = queue;

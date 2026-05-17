@@ -110,7 +110,7 @@ public class DownloadLogFragment extends BottomSheetDialogFragment
             disposable.dispose();
         }
         disposable = Observable.fromCallable(DBReader::getDownloadLog)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     if (result != null) {

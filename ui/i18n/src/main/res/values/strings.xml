@@ -80,11 +80,7 @@
     <string name="configure_home">Configure home screen</string>
     <string name="section_hidden">Hidden</string>
     <string name="section_shown">Shown</string>
-    <string name="episodes_label_more">Episodes »</string>
-    <string name="queue_label_more">Queue »</string>
-    <string name="inbox_label_more">Inbox »</string>
-    <string name="downloads_label_more">Downloads »</string>
-    <string name="subscriptions_label_more">Subscriptions »</string>
+
 
     <!-- Download Statistics fragment -->
     <plurals name="total_size_downloaded_podcasts">
@@ -420,7 +416,7 @@
     <string name="smart_shuffle">Smart shuffle</string>
     <string name="size">Size</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to remove ALL episodes from the queue.</string>
-    <string name="time_left_label">Time left:\u0020</string>
+    <string name="queue_time_left_label">%1$s • %2$s left</string>
 
     <!--  Variable Speed -->
     <string name="speed_presets">Presets</string>
@@ -487,7 +483,7 @@
     <string name="pref_auto_delete_title">Automatic deletion</string>
     <string name="pref_auto_delete_sum">Delete episodes after playing or when automatic download needs space</string>
     <string name="pref_auto_local_delete_title">Auto delete from local folders</string>
-    <string name="pref_auto_local_delete_sum">Include local folders in Auto delete functionality</string>
+    <string name="pref_auto_local_delete_sum">Also delete files added through \"add local folder\". Note that these are not downloaded by AntennaPod and cannot be re-downloaded</string>
     <string name="pref_auto_local_delete_dialog_body">Note that for local folders this will remove episodes from AntennaPod and delete their media files from your device storage. They cannot be downloaded again through AntennaPod. Enable auto delete?</string>
     <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
     <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
@@ -689,6 +685,7 @@
     <string name="successful_import_label">Import successful</string>
     <string name="import_ok">Please press OK to restart AntennaPod</string>
     <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>
+    <string name="import_error_label">Import error</string>
     <string name="favorites_export_label">Favorites export</string>
     <string name="favorites_export_summary">Export saved favorites to file</string>
 
@@ -783,8 +780,6 @@
     <string name="choose_data_directory">Choose data folder</string>
     <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate subdirectories.</string>
     <string name="choose_data_directory_available_space">%1$s of %2$s free</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
 
     <!-- Rating dialog -->
     <string name="rating_tagline">Since %1$s, you played %2$s%3$d%4$s hours of podcasts.</string>
@@ -1055,4 +1050,14 @@
 
     <string name="echo_share_heading">My favorite podcasts</string>
     <string name="echo_share">My year %d in podcasts. #AntennaPodEcho</string>
+
+    <!-- WearOS specific strings (unused in main app module, so we need to suppress the warnings) -->
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Connected to %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Version %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Phone not compatible. Make sure you are running the most recent version of AntennaPod from Google Play on your phone.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">No items</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Could not reach the phone. Make sure your phone is nearby and AntennaPod is installed.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Play on phone</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Browse phone</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Open on phone</string>
 </resources>

@@ -1,0 +1,18 @@
+plugins {
+    alias(libs.plugins.android.library)
+}
+apply from: "../../../common.gradle"
+
+android {
+    namespace "de.danoeh.antennapod.net.sync.wearinterface"
+}
+
+dependencies {
+    implementation project(':model')
+
+    annotationProcessor libs.androidx.annotation
+    implementation libs.google.play.services.wearable
+
+    testImplementation libs.junit
+    testImplementation libs.robolectric
+}

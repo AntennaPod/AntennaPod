@@ -74,7 +74,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
             setProgressBar(false, 0);
         } else {
             if (PlaybackStatus.isCurrentlyPlaying(media)) {
-                card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.colorSurfaceVariant));
+                card.setCardBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.colorSecondaryContainer));
             }
 
             if (item.getMedia().getDuration() > 0 && item.getMedia().getPosition() > 0) {

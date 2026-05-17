@@ -31,7 +31,7 @@ public class SplashActivity extends Activity {
             PodDBAdapter.getInstance().close();
             subscriber.onComplete();
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     () -> {

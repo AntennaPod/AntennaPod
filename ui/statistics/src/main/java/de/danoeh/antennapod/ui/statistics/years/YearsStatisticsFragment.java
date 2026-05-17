@@ -86,7 +86,7 @@ public class YearsStatisticsFragment extends Fragment {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(DBReader::getMonthlyTimeStatistics)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     listAdapter.update(result);

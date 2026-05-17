@@ -17,6 +17,8 @@ dependencyResolutionManagement {
 }
 
 include ':app'
+include ':app-wearos'
+
 include ':event'
 include ':model'
 include ':system'
@@ -29,6 +31,7 @@ include ':net:ssl'
 include ':net:sync:gpoddernet'
 include ':net:sync:service-interface'
 include ':net:sync:service'
+include ':net:sync:wear-interface'
 
 include ':parser:feed'
 include ':parser:media'

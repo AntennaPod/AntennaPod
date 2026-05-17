@@ -376,7 +376,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
             emitter.onSuccess(queueItems);
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
         singleShotDisposables.add(d);
@@ -436,7 +436,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             result.sendResult(loadChildrenSynchronous(parentId));
             emitter.onComplete();
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     () -> {
@@ -578,7 +578,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             return playable;
                         }
                     })
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             loadedPlayable -> startPlaying(loadedPlayable, allowStreamThisTime),
@@ -775,7 +775,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void startPlayingFromPreferences() {
         Disposable d = Observable.fromCallable(() -> DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         playable -> startPlaying(playable, false),
@@ -1210,7 +1210,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 // only mark the item as played if we're not keeping it anyways
                 positionJustResetAfterPlayback = item.getIdentifyingValue();
-                DBWriter.markItemPlayed(FeedItem.PLAYED, ended || (skipped && almostEnded), item);
+                DBWriter.markItemsPlayed(FeedItem.PLAYED, ended || (skipped && almostEnded),
+                        Collections.singletonList(item));
                 // don't know if it actually matters to not autodownload when smart mark as played is triggered
                 DBWriter.removeQueueItem(PlaybackService.this, ended, item);
                 // Delete episode if enabled
@@ -1912,7 +1913,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return;
             }
 
-            List<FeedItem> results = DBReader.searchFeedItems(0, query, Feed.STATE_SUBSCRIBED);
+            List<FeedItem> results = DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered());
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
                 startPlaying(media, false);

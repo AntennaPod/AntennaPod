@@ -3,12 +3,13 @@ package de.danoeh.antennapod.ui.screen.subscriptions;
 import android.content.Context;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FeedCounterDialog {
@@ -28,7 +29,7 @@ public class FeedCounterDialog {
                 UserPreferences.setFeedCounterSetting(
                         FeedCounter.fromOrdinal(Integer.parseInt(entryValues.get(which))));
                 //Update subscriptions
-                EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
             }
             d.dismiss();
         });

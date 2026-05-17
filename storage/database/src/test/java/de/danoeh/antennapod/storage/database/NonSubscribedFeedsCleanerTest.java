@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -141,7 +142,7 @@ public class NonSubscribedFeedsCleanerTest {
         nonSubscribedFeedFavorite.getItems().add(createItem(nonSubscribedFeedFavorite));
 
         DBWriter.setCompleteFeed(subscribedFeed, nonSubscribedFeedFavorite, nonSubscribedFeed).get();
-        DBWriter.addFavoriteItem(nonSubscribedFeedFavorite.getItems().get(0)).get();
+        DBWriter.addFavoriteItems(Collections.singletonList(nonSubscribedFeedFavorite.getItems().get(0))).get();
 
         NonSubscribedFeedsCleaner.deleteOldNonSubscribedFeeds(context);
 

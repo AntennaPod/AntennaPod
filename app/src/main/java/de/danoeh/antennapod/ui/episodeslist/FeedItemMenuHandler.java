@@ -201,16 +201,16 @@ public class FeedItemMenuHandler {
         } else if (menuItemId == R.id.remove_from_queue_item) {
             DBWriter.removeQueueItem(context, true, selectedItem);
         } else if (menuItemId == R.id.add_to_favorites_item) {
-            DBWriter.addFavoriteItem(selectedItem);
+            DBWriter.addFavoriteItems(Collections.singletonList(selectedItem));
         } else if (menuItemId == R.id.remove_from_favorites_item) {
-            DBWriter.removeFavoriteItem(selectedItem);
+            DBWriter.removeFavoriteItems(Collections.singletonList(selectedItem));
         } else if (menuItemId == R.id.reset_position) {
             selectedItem.getMedia().setPosition(0);
             if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == selectedItem.getMedia().getId()) {
                 PlaybackPreferences.writeNoMediaPlaying();
                 IntentUtils.sendLocalBroadcast(context, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
-            DBWriter.markItemPlayed(FeedItem.UNPLAYED, true, selectedItem);
+            DBWriter.markItemsPlayed(FeedItem.UNPLAYED, true, Collections.singletonList(selectedItem));
         } else if (menuItemId == R.id.visit_website_item) {
             IntentUtils.openInBrowser(context, selectedItem.getLinkWithFallback());
         } else if (menuItemId == R.id.open_social_interact_url) {
@@ -249,7 +249,7 @@ public class FeedItemMenuHandler {
         Log.d(TAG, "markReadWithUndo(" + item.getId() + ")");
         // we're marking it as unplayed since the user didn't actually play it
         // but they don't want it considered 'NEW' anymore
-        DBWriter.markItemPlayed(playState, false, item);
+        DBWriter.markItemsPlayed(playState, false, Collections.singletonList(item));
 
         Context context = fragment.requireContext();
         final Handler h = new Handler(context.getMainLooper());
@@ -290,7 +290,7 @@ public class FeedItemMenuHandler {
         if (showSnackbar) {
             EventBus.getDefault().post(new MessageEvent(message,
                     ctx -> {
-                        DBWriter.markItemPlayed(item.getPlayState(), false, item);
+                        DBWriter.markItemsPlayed(item.getPlayState(), false, Collections.singletonList(item));
                         // don't forget to cancel the thing that's going to remove the media
                         h.removeCallbacks(r);
                     }, fragment.getString(R.string.undo)));

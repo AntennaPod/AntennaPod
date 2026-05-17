@@ -238,6 +238,15 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         alert.show();
     }
 
+    private void showImportErrorDialog(final Throwable error) {
+        progressDialog.dismiss();
+        final MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(getContext());
+        alert.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        alert.setTitle(R.string.import_error_label);
+        alert.setMessage(error.getMessage());
+        alert.show();
+    }
+
     private void restoreDatabaseResult(final ActivityResult result) {
         if (result.getResultCode() != Activity.RESULT_OK || result.getData() == null) {
             return;
@@ -245,12 +254,12 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         final Uri uri = result.getData().getData();
         progressDialog.show();
         disposable = Completable.fromAction(() -> DatabaseExporter.importBackup(uri, getContext()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     showDatabaseImportSuccessDialog();
                     progressDialog.dismiss();
-                }, this::showExportErrorDialog);
+                }, this::showImportErrorDialog);
     }
 
     private void backupDatabaseResult(final Uri uri) {
@@ -259,7 +268,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
         }
         progressDialog.show();
         disposable = Completable.fromAction(() -> DatabaseExporter.exportToDocument(uri, getContext()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     showExportSuccessSnackbar(uri, "application/x-sqlite3");
@@ -306,7 +315,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
                         subscriber.onError(e);
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(outputFile -> {
                     progressDialog.dismiss();
@@ -332,7 +341,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
                         subscriber.onError(e);
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ignore -> {
                     progressDialog.dismiss();

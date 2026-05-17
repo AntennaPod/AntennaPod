@@ -125,7 +125,7 @@ public class TagSettingsDialog extends DialogFragment {
                     }
                     return folders;
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {

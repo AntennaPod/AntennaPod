@@ -1,6 +1,6 @@
 plugins {
-    id('com.android.application')
-    id('com.github.triplet.play') version '3.9.0' apply false
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.triplet.play) apply false
 }
 apply from: "../common.gradle"
 apply from: "../playFlavor.gradle"
@@ -12,14 +12,8 @@ android {
         // Version code schema:
         // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 3110195
-        versionName "3.11.1"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
-            }
-        }
+        versionCode 3120001
+        versionName "3.12.0-beta1"
     }
 
     signingConfigs {
@@ -68,6 +62,7 @@ dependencies {
     implementation project(':net:download:service')
     implementation project(':net:ssl')
     implementation project(':net:sync:service')
+    playImplementation project(':net:sync:wear-interface')
     implementation project(':parser:feed')
     implementation project(':parser:transcript')
     implementation project(':playback:base')
@@ -93,56 +88,59 @@ dependencies {
     implementation project(':ui:chapters')
     implementation project(':ui:transcript')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    implementation "androidx.core:core:$coreVersion"
-    implementation "androidx.fragment:fragment:$fragmentVersion"
-    implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation "androidx.media:media:$mediaVersion"
-    implementation "androidx.palette:palette:$paletteVersion"
-    implementation "androidx.preference:preference:$preferenceVersion"
-    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
-    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
-    implementation "androidx.work:work-runtime:$workManagerVersion"
-    implementation "com.google.android.material:material:$googleMaterialVersion"
-    implementation "androidx.drawerlayout:drawerlayout:1.2.0"
-    implementation "androidx.media3:media3-common:$media3Version"
-    implementation "androidx.media3:media3-session:$media3Version"
-    implementation "androidx.media3:media3-ui:$media3Version"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.coordinatorlayout
+    implementation libs.androidx.core
+    implementation libs.androidx.fragment
+    implementation libs.androidx.gridlayout
+    implementation libs.androidx.media
+    implementation libs.androidx.palette
+    implementation libs.androidx.preference
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.viewpager2
+    implementation libs.androidx.work.runtime
+    implementation libs.google.material
+    implementation libs.androidx.drawerlayout
+    implementation libs.androidx.media3.common
+    implementation libs.androidx.media3.session
+    implementation libs.androidx.media3.ui
+    playImplementation libs.google.play.services.wearable
 
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "commons-io:commons-io:$commonsioVersion"
-    implementation "org.jsoup:jsoup:$jsoupVersion"
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
-    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
-    implementation "org.greenrobot:eventbus:$eventbusVersion"
-    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
-    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
-    implementation 'com.bytehamster:lib.preferencesearch:2.7.3'
-    implementation 'com.github.skydoves:balloon:1.5.3'
-    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
+    implementation libs.commons.lang3
+    implementation libs.commons.io
+    implementation libs.jsoup
+    implementation libs.glide
+    implementation libs.okhttp
+    implementation libs.okhttp.urlconnection
+    implementation libs.eventbus
+    implementation libs.rxandroid
+    implementation libs.rxjava
+    implementation libs.preferencesearch
+    implementation libs.balloon
+    implementation libs.recyclerview.swipedecorator
 
-    testImplementation "androidx.test:core:$testCoreVersion"
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation libs.androidx.test.core
+    testImplementation libs.junit
+    testImplementation libs.robolectric
 
-    androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
-    androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
-    androidTestImplementation "androidx.test:runner:$runnerVersion"
-    androidTestImplementation "androidx.test:rules:$rulesVersion"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation libs.awaitility
+    androidTestImplementation libs.nanohttpd
+    androidTestImplementation libs.androidx.test.espresso.core
+    androidTestImplementation libs.androidx.test.espresso.contrib
+    androidTestImplementation libs.androidx.test.espresso.intents
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.androidx.test.ext.junit
 }
 
 if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
     apply plugin: 'com.github.triplet.play'
     play {
-        track.set('alpha')
+        track.set('beta')
+        //noinspection UnnecessaryQualifiedReference
+        releaseStatus.set(com.github.triplet.gradle.androidpublisher.ReleaseStatus.IN_PROGRESS)
+        userFraction.set(0.01d)
         serviceAccountCredentials.set(file(antennaPodPlayPublisherCredentials))
     }
 }

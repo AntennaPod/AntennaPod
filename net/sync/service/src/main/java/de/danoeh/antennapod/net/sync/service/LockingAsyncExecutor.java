@@ -28,7 +28,7 @@ public class LockingAsyncExecutor {
                 } finally {
                     lock.unlock();
                 }
-            }).subscribeOn(Schedulers.io())
+            }).subscribeOn(Schedulers.computation())
                     .subscribe();
         }
     }

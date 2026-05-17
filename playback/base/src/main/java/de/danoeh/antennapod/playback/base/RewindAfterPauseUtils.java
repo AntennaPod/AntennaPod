@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * This class calculates the proper rewind time after the pause and resume.
  * <p>
- * User might loose context if he/she pauses and resumes the media after longer time.
+ * User might lose context if he/she pauses and resumes the media after longer time.
  * Media file should be "rewinded" x seconds after user resumes the playback.
  */
 public abstract class RewindAfterPauseUtils {
@@ -13,7 +13,8 @@ public abstract class RewindAfterPauseUtils {
     public static final long ELAPSED_TIME_FOR_MEDIUM_REWIND = TimeUnit.HOURS.toMillis(1);
     public static final long ELAPSED_TIME_FOR_LONG_REWIND = TimeUnit.DAYS.toMillis(1);
 
-    public static final long SHORT_REWIND =  TimeUnit.SECONDS.toMillis(3);
+    public static final long MINIMUM_REWIND = TimeUnit.MILLISECONDS.toMillis(800);
+    public static final long SHORT_REWIND = TimeUnit.SECONDS.toMillis(3);
     public static final long MEDIUM_REWIND = TimeUnit.SECONDS.toMillis(10);
     public static final long LONG_REWIND = TimeUnit.SECONDS.toMillis(20);
 
@@ -33,6 +34,8 @@ public abstract class RewindAfterPauseUtils {
                 rewindTime = MEDIUM_REWIND;
             } else if (elapsedTime > ELAPSED_TIME_FOR_SHORT_REWIND) {
                 rewindTime = SHORT_REWIND;
+            } else if (elapsedTime > 0) {
+                rewindTime = MINIMUM_REWIND;
             }
 
             int newPosition = currentPosition - (int) rewindTime;

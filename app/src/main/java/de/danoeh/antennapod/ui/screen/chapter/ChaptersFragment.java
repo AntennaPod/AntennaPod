@@ -146,7 +146,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                 emitter.onComplete();
             }
         })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(media -> onMediaChanged((Playable) media),
                 error -> Log.e(TAG, Log.getStackTraceString(error)));

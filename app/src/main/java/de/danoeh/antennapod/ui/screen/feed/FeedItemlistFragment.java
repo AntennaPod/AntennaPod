@@ -1,11 +1,7 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -28,7 +24,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
-import de.danoeh.antennapod.event.FavoritesEvent;
 import de.danoeh.antennapod.event.FeedEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -36,7 +31,6 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -52,6 +46,7 @@ import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
+import de.danoeh.antennapod.ui.common.ClipboardUtils;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.common.OnCollapseChangeListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListAdapter;
@@ -208,7 +203,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             EpisodeMultiSelectActionHandler handler
                     = new EpisodeMultiSelectActionHandler(getActivity(), menuItem.getItemId());
             Completable.fromAction(() -> handleActionForAllSelectedItems(handler))
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> adapter.endSelectMode(),
                             error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -401,6 +396,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            updateUi();
+            return;
+        }
         if (feed == null || feed.getItems() == null) {
             return;
         }
@@ -411,6 +410,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 feed.getItems().remove(pos);
                 feed.getItems().add(pos, item);
                 adapter.notifyItemChangedCompat(pos);
+            } else if (item.getFeedId() == feedID) {
+                // Filtered-out item of this feed was touched, reload all
+                updateUi();
+                return;
             }
         }
     }
@@ -441,11 +444,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void favoritesChanged(FavoritesEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQueueChanged(QueueEvent event) {
         updateUi();
     }
@@ -471,11 +469,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         updateUi();
     }
 
@@ -585,24 +578,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
         viewBinding.header.txtvFailure.setOnClickListener(v -> showErrorDetails());
         viewBinding.header.txtvAuthor.setOnLongClickListener(view -> {
-            copyToClipboard(requireContext(), viewBinding.header.txtvAuthor.getText().toString());
+            ClipboardUtils.copyText(viewBinding.header.txtvAuthor);
             return true;
         });
         viewBinding.header.txtvTitle.setOnLongClickListener(view -> {
-            copyToClipboard(requireContext(), viewBinding.header.txtvTitle.getText().toString());
+            ClipboardUtils.copyText(viewBinding.header.txtvTitle);
             return true;
         });
-    }
-
-    public void copyToClipboard(Context context, String text) {
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        if (clipboard != null) {
-            ClipData clip = ClipData.newPlainText(text, text);
-            clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT <= 32) {
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
-            }
-        }
     }
 
     private void showErrorDetails() {
@@ -614,7 +596,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     }
                     return feedDownloadLog.get(0);
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     downloadStatus -> DownloadLogDetailsDialog.newInstance(downloadStatus, false)
@@ -669,7 +651,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     int count = DBReader.getFeedEpisodeCount(feed.getId(), feed.getItemFilter());
                     return new Pair<>(feed, count);
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
@@ -701,7 +683,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         adapter.setDummyViews(1);
         adapter.notifyItemInserted(adapter.getItemCount() - 1);
         disposable = Observable.fromCallable(() -> loadMoreData(page))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         items -> {

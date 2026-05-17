@@ -26,8 +26,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.jsoup.internal.StringUtil;
 
 public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder> {
-
-    public String tag = "TranscriptAdapter";
     private final SegmentClickListener segmentClickListener;
     private final Context context;
     private FeedMedia media;

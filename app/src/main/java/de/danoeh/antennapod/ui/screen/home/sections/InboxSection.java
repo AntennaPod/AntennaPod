@@ -25,7 +25,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -85,11 +84,6 @@ public class InboxSection extends HomeSection {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        loadItems();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         loadItems();
     }
@@ -116,7 +110,7 @@ public class InboxSection extends HomeSection {
 
     @Override
     protected String getMoreLinkTitle() {
-        return getString(R.string.inbox_label_more);
+        return getString(R.string.inbox_label);
     }
 
     private void loadItems() {
@@ -127,7 +121,7 @@ public class InboxSection extends HomeSection {
                         new Pair<>(DBReader.getEpisodes(0, NUM_EPISODES,
                                 new FeedItemFilter(FeedItemFilter.NEW), UserPreferences.getInboxSortedOrder()),
                                 DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.NEW))))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     items = data.first;

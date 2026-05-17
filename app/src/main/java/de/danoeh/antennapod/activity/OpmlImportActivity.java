@@ -103,7 +103,7 @@ public class OpmlImportActivity extends ToolbarActivity {
                 }
                 FeedUpdateManager.getInstance().runOnce(this);
             })
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             () -> {
@@ -223,7 +223,7 @@ public class OpmlImportActivity extends ToolbarActivity {
             reader.close();
             return result;
         })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {

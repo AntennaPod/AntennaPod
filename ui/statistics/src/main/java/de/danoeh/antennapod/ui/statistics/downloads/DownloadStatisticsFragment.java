@@ -79,7 +79,7 @@ public class DownloadStatisticsFragment extends Fragment {
                             Long.compare(item2.totalDownloadSize, item1.totalDownloadSize));
                     return statisticsData;
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     listAdapter.update(result.feedTime);

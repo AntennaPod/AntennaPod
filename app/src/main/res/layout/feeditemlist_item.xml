@@ -20,6 +20,8 @@
         android:baselineAligned="false"
         android:paddingStart="12dp"
         android:paddingEnd="0dp"
+        android:background="@drawable/bg_episode_list_item"
+        android:duplicateParentState="true"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -48,7 +50,7 @@
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:layout_marginEnd="@dimen/listitem_threeline_textleftpadding"
             app:cardBackgroundColor="@color/non_square_icon_background"
-            app:cardCornerRadius="4dp"
+            app:cardCornerRadius="8dp"
             app:cardPreventCornerOverlap="false"
             app:cardElevation="0dp">
 

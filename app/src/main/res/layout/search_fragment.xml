@@ -24,15 +24,14 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/feed_title_chip"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filter_chips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/appbar"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="0dp"
-        android:visibility="gone"
-        app:closeIconVisible="true" />
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -47,7 +46,7 @@
         android:id="@+id/recyclerViewFeeds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/feed_title_chip"
+        android:layout_below="@id/filter_chips"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:clipToPadding="false" />

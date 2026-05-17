@@ -23,6 +23,7 @@ import de.danoeh.antennapod.model.feed.FeedFunding;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -357,7 +358,7 @@ public class PodDBAdapter {
             "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA
             + " FROM " + TABLE_NAME_FEED_ITEMS
             + JOIN_FEED_ITEM_AND_MEDIA;
-    public static final String SELECT_WHERE_FEED_IS_SUBSCRIBED = TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
+    private static final String SELECT_WHERE_FEED_IS_SUBSCRIBED = TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
             + " IN (SELECT " + KEY_ID + " FROM " + TABLE_NAME_FEEDS
             + " WHERE " + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED + ")";
 
@@ -754,9 +755,9 @@ public class PodDBAdapter {
      *
      * @param played             New read status of items. See @FeedItem
      * @param resetMediaPosition Should the postition of the media item be reset?
-     * @param items              Array of items to upgrade
+     * @param items              List of items to upgrade
      */
-    public void setFeedItemRead(int played, boolean resetMediaPosition, FeedItem... items) {
+    public void setFeedItemsRead(int played, boolean resetMediaPosition, List<FeedItem> items) {
         try {
             db.beginTransactionNonExclusive();
             ContentValues values = new ContentValues();
@@ -868,28 +869,23 @@ public class PodDBAdapter {
     /**
      * Adds the item to favorites
      */
-    public void addFavoriteItem(FeedItem item) {
-        // don't add an item that's already there...
-        if (isItemInFavorites(item)) {
-            Log.d(TAG, "item already in favorites");
+    public void addFavoriteItems(List<FeedItem> items) {
+        if (items.isEmpty()) {
             return;
         }
-        ContentValues values = new ContentValues();
-        values.put(KEY_FEEDITEM, item.getId());
-        values.put(KEY_FEED, item.getFeedId());
-        db.insert(TABLE_NAME_FAVORITES, null, values);
+        db.execSQL("INSERT INTO " + TABLE_NAME_FAVORITES + " (" + KEY_FEEDITEM + ", " + KEY_FEED + ")"
+                + " SELECT " + KEY_ID + ", " + KEY_FEED
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " WHERE " + KEY_ID + " IN (" + getItemIds(items) + ")"
+                + " AND " + KEY_ID + " NOT IN (SELECT " + KEY_FEEDITEM + " FROM " + TABLE_NAME_FAVORITES + ")");
     }
 
-    public void removeFavoriteItem(FeedItem item) {
-        db.execSQL("DELETE FROM " + TABLE_NAME_FAVORITES + " WHERE " + KEY_FEEDITEM + "=" + item.getId());
-    }
-
-    private boolean isItemInFavorites(FeedItem item) {
-        String query = String.format(Locale.US, "SELECT %s from %s WHERE %s=%d",
-                KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
-        try (Cursor c = db.rawQuery(query, null)) {
-            return c.getCount() > 0;
+    public void removeFavoriteItems(List<FeedItem> items) {
+        if (items.isEmpty()) {
+            return;
         }
+        db.execSQL("DELETE FROM " + TABLE_NAME_FAVORITES
+                + " WHERE " + KEY_FEEDITEM + " IN (" + getItemIds(items) + ")");
     }
 
     public void setQueue(List<FeedItem> queue) {
@@ -1001,8 +997,9 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFeedCursorDownloadUrls() {
-        return db.query(TABLE_NAME_FEEDS, new String[]{KEY_ID, KEY_DOWNLOAD_URL}, null, null, null, null, null);
+    public final Cursor getFeedCursorDownloadUrls(boolean subscribedOnly) {
+        String selection = subscribedOnly ? KEY_STATE + "=" + Feed.STATE_SUBSCRIBED : null;
+        return db.query(TABLE_NAME_FEEDS, new String[]{KEY_ID, KEY_DOWNLOAD_URL}, selection, null, null, null, null);
     }
 
     /**
@@ -1014,6 +1011,7 @@ public class PodDBAdapter {
     public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter, SortOrder sortOrder,
                                              int offset, int limit) {
         String orderByQuery = FeedItemSortQuery.generateFrom(sortOrder);
+        filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClauseAnd = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
@@ -1136,6 +1134,7 @@ public class PodDBAdapter {
     }
 
     public final Cursor getFeedEpisodeCountCursor(long feedId, FeedItemFilter filter) {
+        filter = new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES);
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereAndClause = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = "SELECT count(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") FROM " + TABLE_NAME_FEED_ITEMS
@@ -1420,7 +1419,7 @@ public class PodDBAdapter {
      *
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
-    public Cursor searchItems(long feedID, String searchQuery, int state) {
+    public Cursor searchItems(long feedID, String searchQuery, FeedItemFilter filter) {
         final String[] queryWords = prepareSearchQuery(searchQuery);
 
         String queryFeedId;
@@ -1433,8 +1432,12 @@ public class PodDBAdapter {
         }
 
         String queryStart = SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION + " WHERE " + queryFeedId;
-        if (state == Feed.STATE_SUBSCRIBED && feedID == 0) {
-            queryStart += " AND " + SELECT_WHERE_FEED_IS_SUBSCRIBED;
+        FeedItemFilter effectiveFilter = feedID != 0
+                ? new FeedItemFilter(filter, FeedItemFilter.INCLUDE_ALL_FEED_STATES)
+                : filter;
+        String filterQuery = FeedItemFilterQuery.generateFrom(effectiveFilter);
+        if (!filterQuery.isEmpty()) {
+            queryStart += " AND " + filterQuery;
         }
         queryStart += " AND (";
         StringBuilder sb = new StringBuilder(queryStart);
@@ -1462,10 +1465,23 @@ public class PodDBAdapter {
      *
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
-    public Cursor searchFeeds(String searchQuery, int state) {
+    public Cursor searchFeeds(String searchQuery, FeedItemFilter filter) {
         final String[] queryWords = prepareSearchQuery(searchQuery);
+        List<String> allowedStates = new ArrayList<>();
+        if (filter.includeSubscribed) {
+            allowedStates.add(String.valueOf(Feed.STATE_SUBSCRIBED));
+        }
+        if (filter.includeArchived) {
+            allowedStates.add(String.valueOf(Feed.STATE_ARCHIVED));
+        }
+        if (filter.includeNotSubscribed) {
+            allowedStates.add(String.valueOf(Feed.STATE_NOT_SUBSCRIBED));
+        }
+        if (allowedStates.isEmpty()) {
+            allowedStates.add(String.valueOf(Feed.STATE_SUBSCRIBED));
+        }
         String queryStart = "SELECT " + KEYS_FEED + " FROM " + TABLE_NAME_FEEDS
-                + " WHERE " + KEY_STATE + " = " + state;
+                + " WHERE " + KEY_STATE + " IN (" + TextUtils.join(",", allowedStates) + ")";
         StringBuilder sb = new StringBuilder(queryStart);
 
         for (int i = 0; i < queryWords.length; i++) {
@@ -1484,6 +1500,17 @@ public class PodDBAdapter {
         sb.append(" ORDER BY " + KEY_TITLE + " ASC LIMIT 300");
 
         return db.rawQuery(sb.toString(), null);
+    }
+
+    private String getItemIds(List<FeedItem> items) {
+        StringBuilder itemIds = new StringBuilder();
+        for (FeedItem item : items) {
+            if (itemIds.length() != 0) {
+                itemIds.append(",");
+            }
+            itemIds.append(item.getId());
+        }
+        return itemIds.toString();
     }
 
     /**

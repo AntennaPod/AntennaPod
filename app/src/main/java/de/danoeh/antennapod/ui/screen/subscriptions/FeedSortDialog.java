@@ -8,10 +8,11 @@ import de.danoeh.antennapod.model.feed.FeedOrder;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class FeedSortDialog {
@@ -30,7 +31,7 @@ public class FeedSortDialog {
             if (selectedIndex != which) {
                 UserPreferences.setFeedOrder(FeedOrder.fromOrdinal(Integer.parseInt(entryValues.get(which))));
                 //Update subscriptions
-                EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
             }
             d.dismiss();
         });

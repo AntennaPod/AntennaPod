@@ -43,7 +43,6 @@ import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -253,7 +252,7 @@ public abstract class EpisodesListFragment extends Fragment
                         } while (nextPage.size() == EPISODES_PER_PAGE);
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> listAdapter.endSelectMode(),
                         error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -282,7 +281,7 @@ public abstract class EpisodesListFragment extends Fragment
         listAdapter.setDummyViews(1);
         listAdapter.notifyItemInserted(listAdapter.getItemCount() - 1);
         disposable = Observable.fromCallable(() -> loadMoreData(page))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         data -> {
@@ -329,6 +328,10 @@ public abstract class EpisodesListFragment extends Fragment
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            loadItems();
+            return;
+        }
         for (FeedItem item : event.items) {
             int pos = FeedItemEvent.indexOfItemWithId(episodes, item.getId());
             if (pos >= 0) {
@@ -339,6 +342,10 @@ public abstract class EpisodesListFragment extends Fragment
                 } else {
                     listAdapter.notifyItemRemoved(pos);
                 }
+            } else if (getFilter().matches(item)) {
+                // Found something new
+                loadItems();
+                return;
             }
         }
     }
@@ -387,11 +394,6 @@ public abstract class EpisodesListFragment extends Fragment
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        loadItems();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
         loadItems();
     }
@@ -401,7 +403,7 @@ public abstract class EpisodesListFragment extends Fragment
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> new Pair<>(loadData(), loadTotalItemCount()))
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         data -> {

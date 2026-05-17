@@ -135,7 +135,7 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
                         DBWriter.deleteFeed(context, feed.getId()).get();
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {
@@ -166,7 +166,7 @@ public class RemoveFeedDialog extends BottomSheetDialogFragment {
                         DBWriter.setFeedState(context, feed, newState).get();
                     }
                 })
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {

@@ -95,7 +95,7 @@ public class FeedStatisticsFragment extends Fragment {
                     }
                     return null;
                 })
-                        .subscribeOn(Schedulers.io())
+                        .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(this::showStats, Throwable::printStackTrace);
     }

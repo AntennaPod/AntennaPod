@@ -41,7 +41,7 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
         for (int i = 0; i < statisticsData.size(); i++) {
             StatisticsItem item = statisticsData.get(i);
             dataValues[i] = item.totalDownloadSize;
-            cacheEpisodes += item.episodesDownloadCount;
+            cacheEpisodes += (int) item.episodesDownloadCount;
         }
         return new PieChartView.PieChartData(dataValues);
     }

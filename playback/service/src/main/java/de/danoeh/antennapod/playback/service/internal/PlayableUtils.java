@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.playback.service.internal;
 
+import java.util.Collections;
 import java.util.Date;
 
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -26,7 +27,7 @@ public abstract class PlayableUtils {
             media.setLastPlayedTimeHistory(new Date(timestamp));
             FeedItem item = media.getItem();
             if (item != null && item.isNew()) {
-                DBWriter.markItemPlayed(FeedItem.UNPLAYED, false, item);
+                DBWriter.markItemsPlayed(FeedItem.UNPLAYED, false, Collections.singletonList(item));
             }
             if (media.getStartPosition() >= 0 && playable.getPosition() > media.getStartPosition()) {
                 media.setPlayedDuration(media.getPlayedDurationWhenStarted()

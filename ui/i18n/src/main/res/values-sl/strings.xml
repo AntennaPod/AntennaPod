@@ -152,7 +152,7 @@
     <string name="show_feed_settings_label">Prikaži nastavitve poddaje</string>
     <string name="feed_settings_label">Nastavitve poddaje</string>
     <string name="rename_feed_label">Preimenuj poddajo</string>
-    <string name="remove_feed_label">Odstrani poddajo</string>
+    <string name="remove_feed_label">Izbriši</string>
     <string name="share_label">Deli</string>
     <string name="share_file_label">Deli datoteko</string>
     <string name="load_complete_feed">Osveži poddajo v celoti</string>
@@ -806,4 +806,17 @@
     <string name="general_collapse_button">Strni</string>
     <string name="archiving_podcast_progress">Arhiviranje poddaje %1$d od %2$d…</string>
     <string name="deleting_podcast_progress">Brisanje poddaje %1$d od %2$d…</string>
+    <string name="feed_delete_explanation_delete">Brisanje odstrani naročnino vključno z epizodami, prenosi, zgovodino predvajanj in statistiko.</string>
+    <string name="feed_delete_explanation_archive">Arhiviranje skrije naročnino iz seznama in preneha slediti novim epizodam. Prenosi, statistika in predvajanje se ne spremeni.</string>
+    <string name="multi_select_started_talkback">Možnost izbire večih elementov je prikazana na dnu</string>
+    <string name="please_wait_before_refreshing">Prosim počakajte trenutek preden ponovno osvežite poddajo.</string>
+    <string name="delete_downloads_played_confirmation">Prosim potrdite, da želite izbrisati vse predvajane prenose.</string>
+    <string name="play_this_to_seek_position_message">Da preskočiš na položaj, moraš predvajati epizodo</string>
+    <string name="reset_playback_position_label">Ponastavi pozicijo predvajanja</string>
+    <string name="no_items_selected_message">Noben predmet izbran</string>
+    <string name="delete_local_feed_confirmation_dialog_message">Brisanje odstrani epizodo iz AntennaPod in izbriše medijske datoteke iz vaše naprave. Le-ta več no more biti prenesena preko AntennaPod.</string>
+    <string name="download_log_details_human_readable_reason_title">Stanje</string>
+    <string name="download_log_details_technical_reason_title">Tehnične podrobnosti</string>
+    <string name="download_log_details_file_url_title">URL datoteke</string>
+    <string name="download_log_open_feed">Odpri</string>
 </resources>

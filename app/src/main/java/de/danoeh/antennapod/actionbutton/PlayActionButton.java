@@ -15,6 +15,8 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.Collections;
+
 public class PlayActionButton extends ItemActionButton {
     private static final String TAG = "PlayActionButton";
 
@@ -45,7 +47,7 @@ public class PlayActionButton extends ItemActionButton {
             media.setDownloaded(false, 0);
             media.setLocalFileUrl(null);
             DBWriter.setMediaDownloadInformation(media);
-            EventBus.getDefault().post(FeedItemEvent.updated(media.getItem()));
+            EventBus.getDefault().post(new FeedItemEvent(Collections.singletonList(media.getItem()), false));
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
             return;
         }

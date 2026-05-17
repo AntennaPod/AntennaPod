@@ -69,6 +69,8 @@ public class PreferencesTest {
 
     @Test
     public void testEnablePersistentPlaybackControls() {
+        // Preference is hidden on Android 11+ where the system controls notification persistence.
+        assumeTrue(Build.VERSION.SDK_INT < Build.VERSION_CODES.R);
         final boolean persistNotify = UserPreferences.isPersistNotify();
         clickPreference(R.string.user_interface_label);
         clickPreference(R.string.pref_persistNotify_title);
@@ -211,18 +213,6 @@ public class PreferencesTest {
         clickPreference(R.string.playback_speed);
         onView(isRoot()).perform(waitForView(withText("1.25"), 1000));
         onView(withText("1.25")).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void testPauseForInterruptions() {
-        clickPreference(R.string.playback_pref);
-        final boolean pauseForFocusLoss = UserPreferences.shouldPauseForFocusLoss();
-        clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseForFocusLoss != UserPreferences.shouldPauseForFocusLoss());
-        clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss());
     }
 
     @Test

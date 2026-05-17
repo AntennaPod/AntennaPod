@@ -80,11 +80,19 @@ public class FloatingSelectMenu extends FrameLayout {
 
     @Override
     public void setVisibility(int visibility) {
-        if (getVisibility() != View.VISIBLE && visibility == View.VISIBLE) {
+        if (visibility == View.VISIBLE && getVisibility() != View.VISIBLE) {
             announceForAccessibility(getContext().getString(R.string.multi_select_started_talkback));
+            viewBinding.scrollView.scrollTo(0, 0);
+            updateItemVisibility();
+            setAlpha(0f);
+            super.setVisibility(View.VISIBLE);
+            animate().alpha(1f).setDuration(100).start();
+        } else if (visibility != View.VISIBLE && getVisibility() == View.VISIBLE && isAttachedToWindow()) {
+            animate().alpha(0f).setDuration(100).withEndAction(() -> super.setVisibility(visibility)).start();
+        } else {
+            super.setVisibility(visibility);
+            viewBinding.scrollView.scrollTo(0, 0);
+            updateItemVisibility();
         }
-        super.setVisibility(visibility);
-        viewBinding.scrollView.scrollTo(0, 0);
-        updateItemVisibility();
     }
 }

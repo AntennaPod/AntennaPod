@@ -248,7 +248,7 @@
   <string name="lock_queue">Wachtrij vergrendelen</string>
     <string name="queue_locked">Wachtrij vergrendeld</string>
     <string name="queue_unlocked">Wachtrij ontgrendeld</string>
-    <string name="queue_lock_warning">Als de wachtrij vergrendeld is, kunnen er geen afleveringen meer geveegd of herschikt worden.</string>
+    <string name="queue_lock_warning">Als de wachtrij vergrendeld is, kun je afleveringen niet meer swipen of handmatig sorteren.</string>
     <string name="checkbox_do_not_show_again">Niet opnieuw tonen</string>
     <string name="clear_queue_label">Wachtrij leegmaken</string>
     <string name="undo">Ongedaan maken</string>

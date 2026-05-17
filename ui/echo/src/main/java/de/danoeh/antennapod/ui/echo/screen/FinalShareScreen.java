@@ -119,7 +119,7 @@ public class FinalShareScreen extends EchoScreen {
                     }
                     return statisticsData;
                 })
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(result -> { },
                 error -> Log.e(TAG, Log.getStackTraceString(error)));

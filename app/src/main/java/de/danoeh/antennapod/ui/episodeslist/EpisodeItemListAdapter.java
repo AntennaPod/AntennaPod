@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.ui.SelectableAdapter;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -121,14 +120,11 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
 
         holder.itemView.setSelected(false);
         if (inActionMode()) {
+            holder.itemView.setActivated(false);
             holder.secondaryActionButton.setOnClickListener(
                     v -> toggleSelection(holder.getBindingAdapterPosition()));
             if (isSelected(pos)) {
                 holder.itemView.setSelected(true);
-                holder.itemView.setBackgroundColor(0x88000000
-                        + (0xffffff & ThemeUtils.getColorFromAttr(mainActivityRef.get(), R.attr.colorAccent)));
-            } else {
-                holder.itemView.setBackgroundResource(android.R.color.transparent);
             }
         }
 

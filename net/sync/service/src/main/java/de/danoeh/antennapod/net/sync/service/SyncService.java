@@ -144,7 +144,7 @@ public class SyncService extends Worker {
     private void syncSubscriptions(ISyncService syncServiceImpl) throws SyncServiceException {
         final long lastSync = SynchronizationSettings.getLastSubscriptionSynchronizationTimestamp();
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
-        final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
+        final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls(true);
         SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
         long newTimeStamp = subscriptionChanges.getTimestamp();
 

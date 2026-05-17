@@ -76,7 +76,7 @@ public class QueueScreen extends EchoScreen {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(DBReader::getQueue)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(queue -> {
                     long queueSecondsLeft = 0;
@@ -87,7 +87,7 @@ public class QueueScreen extends EchoScreen {
                         }
                         if (item.getMedia() != null) {
                             long itemTimeLeft = item.getMedia().getDuration() - item.getMedia().getPosition();
-                            queueSecondsLeft += itemTimeLeft / playbackSpeed;
+                            queueSecondsLeft += (long) (itemTimeLeft / playbackSpeed);
                         }
                     }
                     queueSecondsLeft /= 1000;

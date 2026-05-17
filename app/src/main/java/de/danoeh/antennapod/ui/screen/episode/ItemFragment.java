@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.ui.screen.episode;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.text.TextUtils;
@@ -37,11 +34,11 @@ import de.danoeh.antennapod.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeeditemFragmentBinding;
+import de.danoeh.antennapod.ui.common.ClipboardUtils;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -68,6 +65,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -158,25 +156,14 @@ public class ItemFragment extends Fragment {
             actionButton2.onClick(getContext());
         });
         viewBinding.txtvPodcast.setOnLongClickListener(v -> {
-            copyToClipboard(requireContext(), viewBinding.txtvPodcast.getText().toString());
+            ClipboardUtils.copyText(viewBinding.txtvPodcast);
             return true;
         });
         viewBinding.txtvTitle.setOnLongClickListener(v -> {
-            copyToClipboard(requireContext(), viewBinding.txtvTitle.getText().toString());
+            ClipboardUtils.copyText(viewBinding.txtvTitle);
             return true;
         });
         return viewBinding.getRoot();
-    }
-
-    public void copyToClipboard(Context context, String text) {
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        if (clipboard != null) {
-            ClipData clip = ClipData.newPlainText(text, text);
-            clipboard.setPrimaryClip(clip);
-            if (Build.VERSION.SDK_INT <= 32) {
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.copied_to_clipboard)));
-            }
-        }
     }
 
     private void showOnDemandConfigBalloon(boolean offerStreaming) {
@@ -203,7 +190,7 @@ public class ItemFragment extends Fragment {
         positiveButton.setOnClickListener(v1 -> {
             UserPreferences.setStreamOverDownload(offerStreaming);
             // Update all visible lists to reflect new streaming action button
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+            EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
             EventBus.getDefault().post(new MessageEvent(getString(R.string.on_demand_config_setting_changed)));
             balloon.dismiss();
         });
@@ -365,6 +352,10 @@ public class ItemFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.unreadStatusChanged && event.items.isEmpty()) {
+            load();
+            return;
+        }
         for (FeedItem item : event.items) {
             if (this.item.getId() == item.getId()) {
                 load();
@@ -391,11 +382,6 @@ public class ItemFragment extends Fragment {
         updateButtons();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        load();
-    }
-
     private void load() {
         if (disposable != null) {
             disposable.dispose();
@@ -404,7 +390,7 @@ public class ItemFragment extends Fragment {
             viewBinding.progbarLoading.setVisibility(View.VISIBLE);
         }
         disposable = Observable.fromCallable(this::loadInBackground)
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
                 viewBinding.progbarLoading.setVisibility(View.GONE);
