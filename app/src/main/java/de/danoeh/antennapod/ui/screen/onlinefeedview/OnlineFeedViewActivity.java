@@ -433,7 +433,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     private void showParentalControlDialog(String feedUrl) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(R.string.add_feed_label);
+        builder.setTitle(R.string.pref_parental_control_title);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
         dialogBinding.textInput.setHint(R.string.password_label);
         dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
