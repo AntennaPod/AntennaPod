@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -18,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission;
 import androidx.annotation.Nullable;
@@ -27,10 +29,12 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
+import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.importexport.OpmlElement;
 import de.danoeh.antennapod.storage.importexport.OpmlReader;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
@@ -88,35 +92,12 @@ public class OpmlImportActivity extends ToolbarActivity {
             finish();
         });
         viewBinding.butConfirm.setOnClickListener(v -> {
-            viewBinding.progressBar.setVisibility(View.VISIBLE);
-            Completable.fromAction(() -> {
-                SparseBooleanArray checked = viewBinding.feedlist.getCheckedItemPositions();
-                for (int i = 0; i < checked.size(); i++) {
-                    if (!checked.valueAt(i)) {
-                        continue;
-                    }
-                    OpmlElement element = readElements.get(checked.keyAt(i));
-                    Feed feed = new Feed(element.getXmlUrl(), null,
-                            element.getText() != null ? element.getText() : "Unknown podcast");
-                    feed.setItems(Collections.emptyList());
-                    FeedDatabaseWriter.updateFeed(this, feed, false);
-                }
-                FeedUpdateManager.getInstance().runOnce(this);
-            })
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            () -> {
-                                viewBinding.progressBar.setVisibility(View.GONE);
-                                Intent intent = new Intent(OpmlImportActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }, e -> {
-                                e.printStackTrace();
-                                viewBinding.progressBar.setVisibility(View.GONE);
-                                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                            });
+            if (UserPreferences.isParentalControlPasswordSet()
+                    && UserPreferences.isParentalControlRequireSubscribeSet()) {
+                showParentalControlDialog(this::doImport);
+                return;
+            }
+            doImport();
         });
 
         Uri uri = getIntent().getData();
@@ -129,6 +110,38 @@ public class OpmlImportActivity extends ToolbarActivity {
             }
         }
         importUri(uri);
+    }
+
+    private void doImport() {
+        viewBinding.progressBar.setVisibility(View.VISIBLE);
+        Completable.fromAction(() -> {
+            SparseBooleanArray checked = viewBinding.feedlist.getCheckedItemPositions();
+            for (int i = 0; i < checked.size(); i++) {
+                if (!checked.valueAt(i)) {
+                    continue;
+                }
+                OpmlElement element = readElements.get(checked.keyAt(i));
+                Feed feed = new Feed(element.getXmlUrl(), null,
+                        element.getText() != null ? element.getText() : "Unknown podcast");
+                feed.setItems(Collections.emptyList());
+                FeedDatabaseWriter.updateFeed(this, feed, false);
+            }
+            FeedUpdateManager.getInstance().runOnce(this);
+        })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            viewBinding.progressBar.setVisibility(View.GONE);
+                            Intent intent = new Intent(OpmlImportActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }, e -> {
+                            e.printStackTrace();
+                            viewBinding.progressBar.setVisibility(View.GONE);
+                            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        });
     }
 
     void importUri(@Nullable Uri uri) {
@@ -258,5 +271,29 @@ public class OpmlImportActivity extends ToolbarActivity {
                             alert.setPositiveButton(android.R.string.ok, (dialog, which) -> finish());
                             alert.show();
                         });
+    }
+
+    private void showParentalControlDialog(Runnable onSuccess) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.pref_parental_control_title);
+        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+        dialogBinding.textInput.setHint(R.string.password_label);
+        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(dialogBinding.getRoot());
+        builder.setPositiveButton(R.string.confirm_label, null);
+        builder.setNegativeButton(R.string.cancel_label, null);
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String entered = dialogBinding.textInput.getText().toString();
+            if (UserPreferences.verifyParentalControlPassword(entered)) {
+                alertDialog.dismiss();
+                onSuccess.run();
+            } else {
+                dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
+                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
