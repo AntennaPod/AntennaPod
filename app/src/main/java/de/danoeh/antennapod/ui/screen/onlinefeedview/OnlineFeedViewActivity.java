@@ -435,7 +435,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.add_feed_label);
         final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
-        dialogBinding.textInput.setHint(R.string.password);
+        dialogBinding.textInput.setHint(R.string.password_label);
         dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         builder.setView(dialogBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label, null);
