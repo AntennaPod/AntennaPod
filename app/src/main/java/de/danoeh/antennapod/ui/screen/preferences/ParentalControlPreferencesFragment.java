@@ -40,13 +40,10 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
             if ((Boolean) newValue) {
                 showSetNewPasswordDialog(false);
             } else {
-                showVerifyPasswordDialog(() -> {
-                    UserPreferences.clearParentalControlPassword();
-                    enabledPref.setChecked(false);
-                    updateRequireSubscribeEnabled();
-                    Toast.makeText(requireContext(), R.string.pref_parental_control_password_cleared,
-                            Toast.LENGTH_SHORT).show();
-                });
+                UserPreferences.clearParentalControlPassword();
+                enabledPref.setChecked(false);
+                updateRequireSubscribeEnabled();
+                Toast.makeText(requireContext(), R.string.pref_parental_control_password_cleared, Toast.LENGTH_SHORT).show();
             }
             return false;
         });
