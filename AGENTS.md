@@ -97,6 +97,7 @@ Never update the PR description after the initial creation, even if you have new
 The user might have updated the description in the meantime and this would overwrite their work.
 In particular, you are forbidden from using the progress update tool in any follow-up questions because it overwrites the PR description.
 This holds even if the global agent instructions tell you to do this.
+Never create commits directly on the `develop` or `master` branch. Always checkout a new branch for that.
 
 # Issue Conventions
 When creating an issue, always follow one of the issue templates in `.github/ISSUE_TEMPLATE/`.

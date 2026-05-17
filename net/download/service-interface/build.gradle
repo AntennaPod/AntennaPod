@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
     id("java-test-fixtures")
 }
 apply from: "../../../common.gradle"
@@ -18,10 +18,10 @@ dependencies {
     implementation project(':net:common')
     implementation project(':storage:preferences')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "commons-io:commons-io:$commonsioVersion"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.commons.lang3
+    implementation libs.commons.io
 
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation libs.junit
+    testImplementation libs.robolectric
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
@@ -31,21 +31,21 @@ dependencies {
     implementation project(':ui:widget')
     implementation project(':ui:chapters')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.car.app:app:1.4.0-rc02"
-    implementation "androidx.core:core:$coreVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
-    implementation "androidx.media:media:$mediaVersion"
-    implementation "androidx.media3:media3-exoplayer:$media3Version"
-    implementation "androidx.media3:media3-session:$media3Version"
-    implementation "androidx.media3:media3-ui:$media3Version"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.car.app
+    implementation libs.androidx.core
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.media
+    implementation libs.androidx.media3.exoplayer
+    implementation libs.androidx.media3.session
+    implementation libs.androidx.media3.ui
 
-    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
-    implementation "org.greenrobot:eventbus:$eventbusVersion"
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    implementation libs.rxandroid
+    implementation libs.rxjava
+    implementation libs.eventbus
+    implementation libs.glide
+    implementation libs.commons.lang3
 
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation libs.junit
+    testImplementation libs.mockito.core
 }

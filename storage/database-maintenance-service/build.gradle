@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
@@ -12,8 +12,8 @@ dependencies {
     implementation project(':storage:database')
     implementation project(':ui:notifications')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.core:core:$coreVersion"
-    implementation "androidx.work:work-runtime:$workManagerVersion"
-    implementation "com.google.guava:guava:31.0.1-android"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.core
+    implementation libs.androidx.work.runtime
+    implementation libs.guava
 }
