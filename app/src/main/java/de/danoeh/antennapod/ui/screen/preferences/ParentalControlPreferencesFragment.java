@@ -57,11 +57,11 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
         requireSubscribePref.setEnabled(UserPreferences.isParentalControlPasswordSet());
     }
 
-    private void showVerifyPasswordDialog(Runnable onSuccess) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+    static void showVerifyPasswordDialog(androidx.fragment.app.Fragment fragment, Runnable onSuccess) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(fragment.requireContext());
         builder.setTitle(R.string.pref_parental_control_title);
         builder.setMessage(R.string.pref_parental_control_enter_old_password);
-        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(fragment.getLayoutInflater());
         dialogBinding.textInput.setHint(R.string.pref_parental_control_old_password);
         dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         builder.setView(dialogBinding.getRoot());
@@ -76,10 +76,14 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
                 alertDialog.dismiss();
                 onSuccess.run();
             } else {
-                dialogBinding.textInputLayout.setError(getString(R.string.wrong_password));
-                Toast.makeText(requireContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                dialogBinding.textInputLayout.setError(fragment.getString(R.string.wrong_password));
+                Toast.makeText(fragment.requireContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showVerifyPasswordDialog(Runnable onSuccess) {
+        showVerifyPasswordDialog(this, onSuccess);
     }
 
     private void showSetNewPasswordDialog(boolean isChanging) {
