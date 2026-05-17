@@ -985,7 +985,6 @@
     <string name="pref_parental_control_old_password">Current password</string>
     <string name="pref_parental_control_new_password">New password</string>
     <string name="pref_parental_control_confirm_password">Confirm password</string>
-    <string name="pref_parental_control_confirm_password_title">Confirm Password</string>
     <string name="pref_parental_control_passwords_dont_match">Passwords don\'t match</string>
     <string name="pref_parental_control_password_empty">Password cannot be empty</string>
     <string name="pref_parental_control_password_set">Password set successfully</string>
