@@ -78,6 +78,14 @@ public class DownloadsSection extends HomeSection {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    @Override
     protected void handleMoreClick() {
         ((MainActivity) requireActivity()).loadChildFragment(new CompletedDownloadsFragment());
     }
