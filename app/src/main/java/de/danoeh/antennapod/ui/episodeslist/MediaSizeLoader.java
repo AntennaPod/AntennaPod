@@ -36,7 +36,7 @@ public abstract class MediaSizeLoader {
                 // only query the network if we haven't already checked
 
                 String url = media.getDownloadUrl();
-                if (TextUtils.isEmpty(url)) {
+                if (TextUtils.isEmpty(url) || !url.startsWith("http")) {
                     emitter.onSuccess(0L);
                     return;
                 }
