@@ -311,8 +311,8 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                 bottomSheetBackPressedCallback.setEnabled(true);
             } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
                 PlaybackController.bindToMedia3Service(MainActivity.this, controller -> {
-                    controller.stop();
                     controller.clearMediaItems();
+                    controller.stop();
                 });
                 PlaybackPreferences.writeNoMediaPlaying();
                 setPlayerVisible(false);
