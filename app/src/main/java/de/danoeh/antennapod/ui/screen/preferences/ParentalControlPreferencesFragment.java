@@ -81,10 +81,6 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
         });
     }
 
-    private void showVerifyPasswordDialog(Runnable onSuccess) {
-        showVerifyPasswordDialog(this, onSuccess);
-    }
-
     private void showSetNewPasswordDialog(boolean isChanging) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle(isChanging ? R.string.pref_parental_control_change_password
