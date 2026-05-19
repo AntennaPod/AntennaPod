@@ -166,7 +166,7 @@ public class ExternalPlayerFragment extends Fragment {
         if (media == null) {
             return;
         }
-        boolean mediaChanged = currentMedia == null
+        final boolean mediaChanged = currentMedia == null
                 || !Objects.equals(currentMedia.getIdentifier(), media.getIdentifier());
         currentMedia = media;
         ((MainActivity) getActivity()).setPlayerVisible(true);
