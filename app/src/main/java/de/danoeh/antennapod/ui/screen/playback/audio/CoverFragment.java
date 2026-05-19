@@ -272,15 +272,15 @@ public class CoverFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-        if (disposable != null) {
-            disposable.dispose();
-        }
         EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (disposable != null) {
+            disposable.dispose();
+        }
         viewBinding = null;
     }
 

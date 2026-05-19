@@ -48,6 +48,7 @@ import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 
@@ -62,6 +63,7 @@ public class AddFeedFragment extends Fragment {
     private static final String KEY_UP_ARROW = "up_arrow";
 
     private AddfeedBinding viewBinding;
+    private Disposable disposable;
     private MainActivity activity;
     private boolean displayUpArrow;
 
@@ -134,6 +136,9 @@ public class AddFeedFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (disposable != null) {
+            disposable.dispose();
+        }
         viewBinding = null;
     }
 
@@ -199,7 +204,7 @@ public class AddFeedFragment extends Fragment {
         if (uri == null) {
             return;
         }
-        Observable.fromCallable(() -> addLocalFolder(uri))
+        disposable = Observable.fromCallable(() -> addLocalFolder(uri))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

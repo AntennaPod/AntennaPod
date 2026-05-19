@@ -157,6 +157,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (disposable != null) {
+            disposable.dispose();
+        }
         viewBinding = null;
     }
 
