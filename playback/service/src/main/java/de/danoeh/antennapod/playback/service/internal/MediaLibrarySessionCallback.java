@@ -280,15 +280,15 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
         disposables.add(Single.fromCallable(() -> {
-                    FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
-                    if (media == null) {
-                        List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
-                        if (!recentQueue.isEmpty()) {
-                            media = recentQueue.get(0).getMedia();
-                        }
-                    }
-                    return media;
-                })
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            if (media == null) {
+                List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
+                if (!recentQueue.isEmpty()) {
+                    media = recentQueue.get(0).getMedia();
+                }
+            }
+            return media;
+        })
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         media -> {
