@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.net.common;
 
+import android.text.TextUtils;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import okhttp3.Request;
@@ -53,8 +54,8 @@ public abstract class RedirectChecker {
 
     @Nullable
     public static String getFinalUrl(String url) {
-        if (url == null) {
-            return null;
+        if (TextUtils.isEmpty(url) || !url.startsWith("http")) {
+            return url;
         }
         try {
             Request httpReq = new Request.Builder().url(url).head().build();
