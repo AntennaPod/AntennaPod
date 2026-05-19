@@ -204,10 +204,10 @@ public class AudioPlayerFragment extends Fragment implements
                         basePosition = lastUiSeekTargetPosition;
                     }
                     int targetPosition = Math.max(0, basePosition - UserPreferences.getRewindSecs() * 1000);
-                    int duration = (int) controller.getDuration();
-                    if (duration <= 0 && currentMedia != null) {
-                        duration = currentMedia.getDuration();
-                    }
+                    long controllerDuration = controller.getDuration();
+                    int duration = controllerDuration > 0 && controllerDuration <= Integer.MAX_VALUE
+                            ? (int) controllerDuration
+                            : (currentMedia != null ? currentMedia.getDuration() : Playable.INVALID_TIME);
                     if (duration > 0) {
                         targetPosition = Math.min(targetPosition, duration);
                         applyUiSeekSettle(targetPosition, duration);
@@ -253,10 +253,10 @@ public class AudioPlayerFragment extends Fragment implements
                         basePosition = lastUiSeekTargetPosition;
                     }
                     int targetPosition = Math.max(0, basePosition + UserPreferences.getFastForwardSecs() * 1000);
-                    int duration = (int) controller.getDuration();
-                    if (duration <= 0 && currentMedia != null) {
-                        duration = currentMedia.getDuration();
-                    }
+                    long controllerDuration = controller.getDuration();
+                    int duration = controllerDuration > 0 && controllerDuration <= Integer.MAX_VALUE
+                            ? (int) controllerDuration
+                            : (currentMedia != null ? currentMedia.getDuration() : Playable.INVALID_TIME);
                     if (duration > 0) {
                         targetPosition = Math.min(targetPosition, duration);
                         applyUiSeekSettle(targetPosition, duration);
@@ -566,10 +566,10 @@ public class AudioPlayerFragment extends Fragment implements
             final float prog = seekBar.getProgress() / ((float) seekBar.getMax());
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
                 PlaybackController.bindToMedia3Service(getContext(), controller -> {
-                    int duration = (int) controller.getDuration();
-                    if (duration <= 0) {
-                        duration = currentMedia.getDuration();
-                    }
+                    long controllerDuration = controller.getDuration();
+                    int duration = controllerDuration > 0 && controllerDuration <= Integer.MAX_VALUE
+                            ? (int) controllerDuration
+                            : currentMedia.getDuration();
                     if (duration > 0) {
                         int targetPosition = (int) (duration * prog);
                         applyUiSeekSettle(targetPosition, duration);
