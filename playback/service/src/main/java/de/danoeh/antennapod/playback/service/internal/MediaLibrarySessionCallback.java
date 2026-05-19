@@ -27,6 +27,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
@@ -278,8 +279,16 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-        disposables.add(Single.fromCallable(() ->
-                        DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+        disposables.add(Single.fromCallable(() -> {
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            if (media == null) {
+                List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
+                if (!recentQueue.isEmpty()) {
+                    media = recentQueue.get(0).getMedia();
+                }
+            }
+            return media;
+        })
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         media -> {
