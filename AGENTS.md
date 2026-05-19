@@ -10,6 +10,7 @@ If you have to use shell commands, prefer dedicated tools (such as `jq` for json
 AntennaPod uses a highly modularized Gradle architecture with modules organized by domain.
 Each module is stored in a folder of the same name (for example `:net:discovery` in `./net/discovery`)
 and contains a `README.md` file with a brief explanation of the module's purpose and internal structure.
+Before looking at code in a module, always read its `README.md` first.
 Several functional areas follow a service-interface/service split: the interface module is depended on by consumers, and the implementation is registered at app startup via `ClientConfigurator`.
 - `:app` - Main application module that integrates all features
 - `:event` - EventBus events used for cross-component communication throughout the app
