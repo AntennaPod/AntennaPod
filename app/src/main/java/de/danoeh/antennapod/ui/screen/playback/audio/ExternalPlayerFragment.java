@@ -39,6 +39,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Objects;
+
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity.
  */
@@ -164,11 +166,15 @@ public class ExternalPlayerFragment extends Fragment {
         if (media == null) {
             return;
         }
+        boolean mediaChanged = currentMedia == null
+                || !Objects.equals(currentMedia.getIdentifier(), media.getIdentifier());
         currentMedia = media;
         ((MainActivity) getActivity()).setPlayerVisible(true);
         txtvTitle.setText(media.getEpisodeTitle());
         feedName.setText(media.getFeedTitle());
-        onPositionObserverUpdate(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
+        if (mediaChanged) {
+            onPositionObserverUpdate(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
+        }
         boolean isPlaying = PlaybackService.isRunning
                 && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING;
         butPlay.setIsShowPlay(!isPlaying);

@@ -188,6 +188,7 @@ public class AudioPlayerFragment extends Fragment implements
 
     private void setupControlButtons() {
         butRev.setOnClickListener(v -> {
+            seekRelativeInUi(-UserPreferences.getRewindSecs() * 1000);
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
                 PlaybackController.bindToMedia3Service(getContext(), MediaController::seekBack);
             } else {
@@ -217,6 +218,7 @@ public class AudioPlayerFragment extends Fragment implements
             }
         });
         butFF.setOnClickListener(v -> {
+            seekRelativeInUi(UserPreferences.getFastForwardSecs() * 1000);
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
                 PlaybackController.bindToMedia3Service(getContext(), MediaController::seekForward);
             } else {
@@ -238,6 +240,21 @@ public class AudioPlayerFragment extends Fragment implements
                         MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_NEXT));
             }
         });
+    }
+
+    private void seekRelativeInUi(int deltaMs) {
+        if (currentMedia == null) {
+            return;
+        }
+        int newPosition = Math.max(0, currentMedia.getPosition() + deltaMs);
+        int duration = currentMedia.getDuration();
+        if (duration > 0) {
+            newPosition = Math.min(newPosition, duration);
+            currentMedia.setPosition(newPosition);
+            updatePosition(new PlaybackPositionEvent(newPosition, duration));
+        } else {
+            currentMedia.setPosition(newPosition);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -299,19 +316,22 @@ public class AudioPlayerFragment extends Fragment implements
         .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(media -> {
+            boolean mediaChanged = currentMedia == null || currentMedia.getId() != media.getId();
             currentMedia = media;
-            updateUi();
+            updateUi(mediaChanged);
             if (media.getChapters() == null && !includingChapters) {
                 loadMediaInfo(true);
             }
         }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void updateUi() {
+    private void updateUi(boolean updatePositionFromMedia) {
         if (currentMedia == null) {
             return;
         }
-        updatePosition(new PlaybackPositionEvent(currentMedia.getPosition(), currentMedia.getDuration()));
+        if (updatePositionFromMedia) {
+            updatePosition(new PlaybackPositionEvent(currentMedia.getPosition(), currentMedia.getDuration()));
+        }
         updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia)));
         setChapterDividers();
         setupOptionsMenu();
