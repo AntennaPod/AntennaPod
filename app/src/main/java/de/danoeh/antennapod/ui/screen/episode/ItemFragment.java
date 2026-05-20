@@ -420,7 +420,7 @@ public class ItemFragment extends Fragment {
                 onFragmentLoaded();
                 itemsLoaded = true;
             }, error -> Log.e(TAG, Log.getStackTraceString(error)),
-            () -> requireActivity().getSupportFragmentManager().popBackStack());
+                    () -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     @Nullable
