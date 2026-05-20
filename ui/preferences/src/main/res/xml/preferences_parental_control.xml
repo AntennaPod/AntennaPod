@@ -3,7 +3,6 @@
     <SwitchPreferenceCompat
             android:key="prefParentalControlEnabled"
             android:title="@string/pref_parental_control_enabled_title"
-            android:summary="@string/pref_parental_control_enabled_sum"
             android:persistent="false"/>
     <SwitchPreferenceCompat
             android:key="prefParentalControlRequireSubscribe"
