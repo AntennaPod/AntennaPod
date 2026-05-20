@@ -39,6 +39,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeeditemFragmentBinding;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -60,7 +61,7 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
@@ -326,10 +327,10 @@ public class ItemFragment extends Fragment {
             }
             if (DownloadServiceInterface.get().isDownloadingEpisode(media.getDownloadUrl())) {
                 actionButton2 = new CancelDownloadActionButton(item);
-            } else if (!media.isDownloaded()) {
-                actionButton2 = new DownloadActionButton(item);
-            } else {
+            } else if (item.getFeed().isLocalFeed() || media.isDownloaded()) {
                 actionButton2 = new DeleteActionButton(item);
+            } else {
+                actionButton2 = new DownloadActionButton(item);
             }
         }
 
@@ -370,10 +371,17 @@ public class ItemFragment extends Fragment {
             return;
         }
         for (FeedItem item : event.items) {
-            if (this.item.getId() == item.getId()) {
+            if (this.item != null && this.item.getId() == item.getId()) {
                 load();
                 return;
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedListUpdateEvent event) {
+        if (item != null && item.getFeed() != null && event.contains(item.getFeed())) {
+            load();
         }
     }
 
@@ -402,7 +410,7 @@ public class ItemFragment extends Fragment {
         if (!itemsLoaded) {
             viewBinding.progbarLoading.setVisibility(View.VISIBLE);
         }
-        disposable = Observable.fromCallable(this::loadInBackground)
+        disposable = Maybe.fromCallable(this::loadInBackground)
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(result -> {
@@ -411,7 +419,8 @@ public class ItemFragment extends Fragment {
                 item = result;
                 onFragmentLoaded();
                 itemsLoaded = true;
-            }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+            }, error -> Log.e(TAG, Log.getStackTraceString(error)),
+                    () -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     @Nullable
