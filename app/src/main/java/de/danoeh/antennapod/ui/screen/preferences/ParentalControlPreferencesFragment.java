@@ -10,16 +10,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.DialogSetPasswordBinding;
-import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 
 
 public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragment {
-
-    private static final String PREF_ENABLED = "prefParentalControlEnabled";
-    private static final String PREF_REQUIRE_SUBSCRIBE = "prefParentalControlRequireSubscribe";
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_parental_control);
@@ -33,7 +28,7 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
     }
 
     private void setupPreferences() {
-        SwitchPreferenceCompat enabledPref = findPreference(PREF_ENABLED);
+        SwitchPreferenceCompat enabledPref = findPreference(UserPreferences.PREF_PARENTAL_CONTROL_ENABLED);
         enabledPref.setChecked(UserPreferences.isParentalControlPasswordSet());
         enabledPref.setOnPreferenceChangeListener((pref, newValue) -> {
             if ((Boolean) newValue) {
@@ -49,31 +44,9 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
     }
 
     private void updateRequireSubscribeEnabled() {
-        SwitchPreferenceCompat requireSubscribePref = findPreference(PREF_REQUIRE_SUBSCRIBE);
+        SwitchPreferenceCompat requireSubscribePref =
+                findPreference(UserPreferences.PREF_PARENTAL_CONTROL_REQUIRE_SUBSCRIBE);
         requireSubscribePref.setEnabled(UserPreferences.isParentalControlPasswordSet());
-    }
-
-    static void showVerifyPasswordDialog(androidx.fragment.app.Fragment fragment, Runnable onSuccess) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(fragment.requireContext());
-        builder.setTitle(R.string.pref_parental_control_title);
-        final EditTextDialogBinding dialogBinding = EditTextDialogBinding.inflate(fragment.getLayoutInflater());
-        dialogBinding.textInput.setHint(R.string.password_label);
-        dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        builder.setView(dialogBinding.getRoot());
-        builder.setPositiveButton(R.string.confirm_label, null);
-        builder.setNegativeButton(R.string.cancel_label, null);
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            String entered = dialogBinding.textInput.getText().toString();
-            if (UserPreferences.verifyParentalControlPassword(entered)) {
-                alertDialog.dismiss();
-                onSuccess.run();
-            } else {
-                dialogBinding.textInputLayout.setError(fragment.getString(R.string.wrong_password));
-            }
-        });
     }
 
     private void showSetNewPasswordDialog() {
@@ -103,7 +76,7 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
             }
             UserPreferences.setParentalControlPassword(newPassword);
             alertDialog.dismiss();
-            SwitchPreferenceCompat enabledPref = findPreference(PREF_ENABLED);
+            SwitchPreferenceCompat enabledPref = findPreference(UserPreferences.PREF_PARENTAL_CONTROL_ENABLED);
             enabledPref.setChecked(true);
             updateRequireSubscribeEnabled();
         });

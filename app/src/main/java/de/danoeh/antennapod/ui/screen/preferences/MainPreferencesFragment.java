@@ -127,7 +127,7 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         });
         findPreference(PREF_SCREEN_PARENTAL_CONTROL).setOnPreferenceClickListener(preference -> {
             if (UserPreferences.isParentalControlPasswordSet()) {
-                showParentalControlGateDialog(() ->
+                ParentalControlDialog.show(requireContext(), () ->
                         ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_parental_control));
             } else {
                 ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_parental_control);
@@ -143,10 +143,6 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         // AccountManager-based checks don't work: supervised users have no visible Google accounts.
         boolean isChildDevice = um.hasUserRestriction(android.os.UserManager.DISALLOW_FACTORY_RESET);
         findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(isChildDevice || BuildConfig.DEBUG);
-    }
-
-    private void showParentalControlGateDialog(Runnable onSuccess) {
-        ParentalControlPreferencesFragment.showVerifyPasswordDialog(this, onSuccess);
     }
 
     private void setupSearch() {

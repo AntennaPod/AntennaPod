@@ -63,7 +63,8 @@ public abstract class UserPreferences {
     public static final String PREF_BACK_OPENS_DRAWER = "prefBackButtonOpensDrawer";
     public static final String PREF_BOTTOM_NAVIGATION = "prefBottomNavigation";
     private static final String PREF_PARENTAL_CONTROL_PASSWORD = "prefParentalControlPassword";
-    private static final String PREF_PARENTAL_CONTROL_REQUIRE_SUBSCRIBE = "prefParentalControlRequireSubscribe";
+    public static final String PREF_PARENTAL_CONTROL_ENABLED = "prefParentalControlEnabled";
+    public static final String PREF_PARENTAL_CONTROL_REQUIRE_SUBSCRIBE = "prefParentalControlRequireSubscribe";
 
     public static final String PREF_GLOBAL_DEFAULT_SORTED_ORDER = "prefGlobalDefaultSortedOrder";
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
@@ -204,10 +205,6 @@ public abstract class UserPreferences {
 
     public static boolean isParentalControlRequireSubscribeSet() {
         return prefs.getBoolean(PREF_PARENTAL_CONTROL_REQUIRE_SUBSCRIBE, true);
-    }
-
-    public static void setParentalControlRequireSubscribe(boolean value) {
-        prefs.edit().putBoolean(PREF_PARENTAL_CONTROL_REQUIRE_SUBSCRIBE, value).apply();
     }
 
     public static boolean getIsBlackTheme() {
