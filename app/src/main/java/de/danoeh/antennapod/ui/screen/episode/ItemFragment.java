@@ -419,12 +419,8 @@ public class ItemFragment extends Fragment {
                 item = result;
                 onFragmentLoaded();
                 itemsLoaded = true;
-            }, error -> Log.e(TAG, Log.getStackTraceString(error)), () -> {
-                if (itemsLoaded) {
-                    // Suddenly not loaded anymore, so the item was deleted.
-                    requireActivity().getSupportFragmentManager().popBackStack();
-                }
-            });
+            }, error -> Log.e(TAG, Log.getStackTraceString(error)),
+            () -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     @Nullable

@@ -53,8 +53,7 @@ public class EpisodeMultiSelectActionHandler {
         } else if (actionId == R.id.download_item) {
             downloadChecked(items);
         } else if (actionId == R.id.remove_item) {
-            activity.runOnUiThread(() -> LocalDeleteModal
-                    .showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items)));
+            LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(activity, items, () -> deleteChecked(items));
         } else if (actionId == R.id.add_to_favorites_item) {
             addToFavoritesChecked(items);
         } else if (actionId == R.id.remove_from_favorites_item) {
