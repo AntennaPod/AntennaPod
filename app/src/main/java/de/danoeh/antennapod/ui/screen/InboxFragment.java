@@ -49,7 +49,7 @@ public class InboxFragment extends EpisodesListFragment {
         updateToolbar();
         emptyView.setIcon(R.drawable.ic_inbox);
         emptyView.setTitle(R.string.no_inbox_head_label);
-        emptyView.setMessage(R.string.no_inbox_label);
+        emptyView.setMessage(R.string.home_new_empty_text);
         return root;
     }
 
