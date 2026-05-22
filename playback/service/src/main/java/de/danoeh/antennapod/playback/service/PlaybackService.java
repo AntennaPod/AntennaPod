@@ -128,6 +128,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Logging tag
      */
     private static final String TAG = "PlaybackService";
+    private static final long POSITION_OBSERVER_INTERVAL_MS = 250;
 
     public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.core.service.playerStatusChanged";
     private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
@@ -1848,11 +1849,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         Log.d(TAG, "Setting up position observer");
-        positionEventTimer = Observable.interval(1, TimeUnit.SECONDS)
+        positionEventTimer = Observable.interval(0, POSITION_OBSERVER_INTERVAL_MS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(number -> {
                     EventBus.getDefault().post(new PlaybackPositionEvent(getCurrentPosition(), getDuration()));
-                    if (Build.VERSION.SDK_INT < 29) {
+                    if (Build.VERSION.SDK_INT < 29 && number % (1000 / POSITION_OBSERVER_INTERVAL_MS) == 0) {
                         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
                         NotificationManager notificationManager = (NotificationManager)
                                 getSystemService(NOTIFICATION_SERVICE);

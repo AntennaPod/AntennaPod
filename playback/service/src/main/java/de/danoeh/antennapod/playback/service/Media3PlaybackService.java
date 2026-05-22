@@ -76,6 +76,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
+
+    private static final long POSITION_OBSERVER_INTERVAL_MS = 250;
+    public static final String ACTION_WIDGET_REWIND = "de.danoeh.antennapod.action.WIDGET_REWIND";
+    public static final String ACTION_WIDGET_FAST_FORWARD = "de.danoeh.antennapod.action.WIDGET_FAST_FORWARD";
+    public static final String ACTION_WIDGET_SKIP = "de.danoeh.antennapod.action.WIDGET_SKIP";
     private static final long POSITION_SAVE_INTERVAL_MS = 5000;
     private ExoPlayer exoPlayer;
     private Player player;
@@ -351,7 +356,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             positionObserverDisposable.dispose();
         }
 
-        positionObserverDisposable = Observable.interval(1, TimeUnit.SECONDS)
+        positionObserverDisposable = Observable.interval(0, POSITION_OBSERVER_INTERVAL_MS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         ignored -> {
@@ -364,10 +369,12 @@ public class Media3PlaybackService extends MediaLibraryService {
                             if (duration > 0) {
                                 EventBus.getDefault().post(
                                         new PlaybackPositionEvent((int) position, (int) duration));
-                                WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
-                                        Util.shouldShowPlayButton(player) ? PlayerStatus.PAUSED : PlayerStatus.PLAYING,
-                                        (int) position, (int) duration, speed);
-                                WidgetUpdater.updateWidget(this, widgetState);
+                                if (ignored % (1000 / POSITION_OBSERVER_INTERVAL_MS) == 0) {
+                                    WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
+                                            Util.shouldShowPlayButton(player) ? PlayerStatus.PAUSED : PlayerStatus.PLAYING,
+                                            (int) position, (int) duration, speed);
+                                    WidgetUpdater.updateWidget(this, widgetState);
+                                }
                                 long currentTime = System.currentTimeMillis();
                                 if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
                                     saveCurrentPosition();
