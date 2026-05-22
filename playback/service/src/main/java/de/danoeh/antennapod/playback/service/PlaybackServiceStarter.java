@@ -53,7 +53,7 @@ public class PlaybackServiceStarter {
                         == DeviceInfo.PLAYBACK_TYPE_REMOTE) {
                     controller.play(); // Casting somehow does not play when not quickly starting the old episode
                 }
-                controller.setMediaItem(MediaItemAdapter.fromPlayableStub(media), Math.max(0, media.getPosition()));
+                controller.setMediaItem(MediaItemAdapter.fromPlayableStub(media));
                 controller.prepare();
                 controller.play();
             });
