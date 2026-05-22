@@ -568,6 +568,7 @@ public abstract class PlaybackController {
             if (!wasRunning) {
                 controller.setMediaItem(MediaItemAdapter.fromPlayableStub(media), targetPosition);
                 controller.prepare();
+                EventBus.getDefault().post(new PlaybackPositionEvent(targetPosition, media.getDuration()));
             } else {
                 controller.seekTo(targetPosition);
             }

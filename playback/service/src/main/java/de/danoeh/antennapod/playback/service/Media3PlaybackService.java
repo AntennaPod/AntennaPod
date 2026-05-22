@@ -168,6 +168,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             @Override
             public void seekTo(long positionMs) {
                 super.seekTo(positionMs);
+                EventBus.getDefault().post(new PlaybackPositionEvent((int) positionMs, (int) getDuration()));
             }
         };
         player.addListener(playerListener);
