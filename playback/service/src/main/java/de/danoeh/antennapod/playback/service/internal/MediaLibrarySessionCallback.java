@@ -239,9 +239,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                    long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
-                    startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                            (int) startPosition, result.second.getLastPlayedTimeStatistics());
+                    long startPosition = startPositionMs;
+                    if (startPosition == C.TIME_UNSET) {
+                        startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
+                        startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                (int) startPosition, result.second.getLastPlayedTimeStatistics());
+                    }
                     future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
                 }, error -> {
                     Log.e(TAG, "Failed to load media", error);

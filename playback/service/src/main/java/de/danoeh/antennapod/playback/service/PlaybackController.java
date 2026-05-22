@@ -19,6 +19,7 @@ import androidx.media3.session.SessionToken;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import de.danoeh.antennapod.playback.base.BuildConfig;
+import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.internal.PlayableUtils;
 import de.danoeh.antennapod.model.playback.TimerValue;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -49,6 +50,9 @@ import java.util.concurrent.ExecutionException;
 public abstract class PlaybackController {
 
     private static final String TAG = "PlaybackController";
+    private static final Object MEDIA3_CONTROLLER_LOCK = new Object();
+    private static MediaController sharedMedia3Controller;
+    private static ListenableFuture<MediaController> sharedMedia3ControllerFuture;
 
     private final Activity activity;
     private PlaybackService playbackService;
@@ -516,19 +520,113 @@ public abstract class PlaybackController {
     }
 
     public static void bindToMedia3Service(Context context, Consumer<MediaController> consumer) {
-        SessionToken sessionToken = new SessionToken(context,
-                new ComponentName(context, Media3PlaybackService.class));
-        ListenableFuture<MediaController> controllerFuture =
-                new MediaController.Builder(context, sessionToken).buildAsync();
+        MediaController cachedController;
+        ListenableFuture<MediaController> controllerFuture;
+        synchronized (MEDIA3_CONTROLLER_LOCK) {
+            cachedController = sharedMedia3Controller;
+            if (cachedController != null) {
+                consumer.accept(cachedController);
+                return;
+            }
+            if (sharedMedia3ControllerFuture == null) {
+                Context appContext = context.getApplicationContext();
+                SessionToken sessionToken = new SessionToken(appContext,
+                        new ComponentName(appContext, Media3PlaybackService.class));
+                sharedMedia3ControllerFuture = new MediaController.Builder(appContext, sessionToken).buildAsync();
+            }
+            controllerFuture = sharedMedia3ControllerFuture;
+        }
         controllerFuture.addListener(() -> {
             try {
                 MediaController controller = controllerFuture.get();
+                synchronized (MEDIA3_CONTROLLER_LOCK) {
+                    if (sharedMedia3Controller == null) {
+                        sharedMedia3Controller = controller;
+                    }
+                }
                 consumer.accept(controller);
-                controller.release();
             } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
+                Log.e(TAG, "Unable to obtain Media3 controller", e);
+                if (e instanceof InterruptedException) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }, MoreExecutors.directExecutor());
 
+    }
+
+    public static void seekToMedia3(Context context, FeedMedia media, int requestedPosition) {
+        if (media == null) {
+            return;
+        }
+        int targetPosition = clampPosition(requestedPosition, media.getDuration());
+        boolean wasRunning = PlaybackService.isRunning;
+        if (!wasRunning) {
+            ContextCompat.startForegroundService(context, new Intent(context, Media3PlaybackService.class));
+        }
+        bindToMedia3Service(context, controller -> {
+            if (!wasRunning) {
+                controller.setMediaItem(MediaItemAdapter.fromPlayableStub(media), targetPosition);
+                controller.prepare();
+            } else {
+                controller.seekTo(targetPosition);
+            }
+            persistSeekTarget(media, targetPosition);
+        });
+    }
+
+    public static void seekRelativeMedia3(Context context, FeedMedia media, int deltaMs) {
+        if (media == null) {
+            return;
+        }
+        if (!PlaybackService.isRunning) {
+            int targetPosition = clampPosition(media.getPosition() + deltaMs, media.getDuration());
+            seekToMedia3(context, media, targetPosition);
+            return;
+        }
+        bindToMedia3Service(context, controller -> {
+            int duration = (int) controller.getDuration();
+            if (duration <= 0) {
+                duration = media.getDuration();
+            }
+            int targetPosition = clampPosition((int) controller.getCurrentPosition() + deltaMs, duration);
+            controller.seekTo(targetPosition);
+            persistSeekTarget(media, targetPosition);
+        });
+    }
+
+    public static void seekToProgressMedia3(Context context, FeedMedia media, float progress) {
+        if (media == null) {
+            return;
+        }
+        if (!PlaybackService.isRunning) {
+            int targetPosition = clampPosition((int) (media.getDuration() * progress), media.getDuration());
+            seekToMedia3(context, media, targetPosition);
+            return;
+        }
+        bindToMedia3Service(context, controller -> {
+            int duration = (int) controller.getDuration();
+            if (duration <= 0) {
+                duration = media.getDuration();
+            }
+            if (duration <= 0) {
+                return;
+            }
+            int targetPosition = clampPosition((int) (duration * progress), duration);
+            controller.seekTo(targetPosition);
+            persistSeekTarget(media, targetPosition);
+        });
+    }
+
+    private static int clampPosition(int position, int duration) {
+        int clamped = Math.max(0, position);
+        if (duration > 0) {
+            clamped = Math.min(clamped, duration);
+        }
+        return clamped;
+    }
+
+    private static void persistSeekTarget(FeedMedia media, int position) {
+        media.setPosition(position);
     }
 }
