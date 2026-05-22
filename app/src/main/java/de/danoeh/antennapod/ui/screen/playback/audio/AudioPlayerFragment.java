@@ -514,32 +514,17 @@ public class AudioPlayerFragment extends Fragment implements
             seekedToChapterStart = false;
         } else if (currentMedia != null) {
             final float prog = seekBar.getProgress() / ((float) seekBar.getMax());
+            int duration = currentMedia.getDuration();
+            if (duration > 0) {
+                int targetPosition = (int) (duration * prog);
+                applyUiSeekSettle(targetPosition, duration);
+            }
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
                 PlaybackController.bindToMedia3Service(getContext(), controller ->
-                        {
-                            int duration = (int) controller.getDuration();
-                            if (duration <= 0) {
-                                duration = currentMedia.getDuration();
-                            }
-                            if (duration > 0) {
-                                int targetPosition = (int) (duration * prog);
-                                applyUiSeekSettle(targetPosition, duration);
-                                controller.seekTo(targetPosition);
-                            }
-                        });
+                        controller.seekTo((long) (controller.getDuration() * prog)));
             } else {
                 PlaybackController.bindToService(getActivity(), playbackService ->
-                        {
-                            int duration = playbackService.getDuration();
-                            if (duration <= 0) {
-                                duration = currentMedia.getDuration();
-                            }
-                            if (duration > 0) {
-                                int targetPosition = (int) (duration * prog);
-                                applyUiSeekSettle(targetPosition, duration);
-                                playbackService.seekTo(targetPosition);
-                            }
-                        });
+                        playbackService.seekTo((int) (playbackService.getDuration() * prog)));
             }
         }
         cardViewSeek.setScaleX(1f);
