@@ -52,6 +52,9 @@ public class ExternalPlayerFragment extends Fragment {
     private ProgressBar progressBar;
     private Disposable disposable;
     private Playable currentMedia;
+    private int latestLivePosition = Playable.INVALID_TIME;
+    private int latestLiveDuration = Playable.INVALID_TIME;
+    private long latestLiveMediaId = -1;
 
     public ExternalPlayerFragment() {
         super();
@@ -118,11 +121,22 @@ public class ExternalPlayerFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusEvent(PlayerStatusEvent event) {
-        loadMediaInfo();
+        long playingMediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+        Object currentIdentifier = currentMedia != null ? currentMedia.getIdentifier() : null;
+        boolean sameMedia = currentIdentifier instanceof Long
+                && (playingMediaId <= 0 || ((Long) currentIdentifier) == playingMediaId);
+        if (!sameMedia) {
+            loadMediaInfo();
+        } else {
+            updatePlayButton();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPositionObserverUpdate(PlaybackPositionEvent event) {
+        latestLiveMediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+        latestLivePosition = event.getPosition();
+        latestLiveDuration = event.getDuration();
         if (event.getPosition() == Playable.INVALID_TIME || event.getDuration() == Playable.INVALID_TIME) {
             return;
         }
@@ -168,10 +182,19 @@ public class ExternalPlayerFragment extends Fragment {
         ((MainActivity) getActivity()).setPlayerVisible(true);
         txtvTitle.setText(media.getEpisodeTitle());
         feedName.setText(media.getFeedTitle());
-        onPositionObserverUpdate(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
-        boolean isPlaying = PlaybackService.isRunning
-                && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING;
-        butPlay.setIsShowPlay(!isPlaying);
+        int position = media.getPosition();
+        int duration = media.getDuration();
+        Object currentIdentifier = media.getIdentifier();
+        boolean sameMediaAsLive = currentIdentifier instanceof Long
+                && (Long) currentIdentifier == latestLiveMediaId
+                && latestLivePosition != Playable.INVALID_TIME
+                && latestLiveDuration != Playable.INVALID_TIME;
+        if (sameMediaAsLive) {
+            position = latestLivePosition;
+            duration = latestLiveDuration;
+        }
+        onPositionObserverUpdate(new PlaybackPositionEvent(position, duration));
+        updatePlayButton();
 
         RequestOptions options = new RequestOptions()
                 .placeholder(R.color.light_gray)
@@ -195,5 +218,11 @@ public class ExternalPlayerFragment extends Fragment {
             butPlay.setVisibility(View.VISIBLE);
             ((MainActivity) getActivity()).getBottomSheet().setLocked(false);
         }
+    }
+
+    private void updatePlayButton() {
+        boolean isPlaying = PlaybackService.isRunning
+                && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING;
+        butPlay.setIsShowPlay(!isPlaying);
     }
 }

@@ -560,17 +560,19 @@ public abstract class PlaybackController {
             return;
         }
         int targetPosition = clampPosition(requestedPosition, media.getDuration());
-        boolean wasRunning = PlaybackService.isRunning;
-        if (!wasRunning) {
+        if (!PlaybackService.isRunning) {
             ContextCompat.startForegroundService(context, new Intent(context, Media3PlaybackService.class));
         }
         bindToMedia3Service(context, controller -> {
-            if (!wasRunning) {
+            boolean mediaAlreadyLoaded = controller.getCurrentMediaItem() != null
+                    && String.valueOf(media.getId()).equals(controller.getCurrentMediaItem().mediaId);
+            if (mediaAlreadyLoaded) {
+                controller.seekTo(targetPosition);
+            } else {
                 controller.setMediaItem(MediaItemAdapter.fromPlayableStub(media), targetPosition);
                 controller.prepare();
-                EventBus.getDefault().post(new PlaybackPositionEvent(targetPosition, media.getDuration()));
-            } else {
                 controller.seekTo(targetPosition);
+                EventBus.getDefault().post(new PlaybackPositionEvent(targetPosition, media.getDuration()));
             }
             persistSeekTarget(media, targetPosition);
         });
@@ -629,5 +631,6 @@ public abstract class PlaybackController {
 
     private static void persistSeekTarget(FeedMedia media, int position) {
         media.setPosition(position);
+        PlayableUtils.saveCurrentPosition(media, position, System.currentTimeMillis());
     }
 }

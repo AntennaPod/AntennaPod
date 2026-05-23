@@ -109,6 +109,9 @@ public class AudioPlayerFragment extends Fragment implements
     private boolean seekedToChapterStart = false;
     private int currentChapterIndex = -1;
     private long currentMediaId = -1;
+    private int latestLivePosition = Playable.INVALID_TIME;
+    private int latestLiveDuration = Playable.INVALID_TIME;
+    private long latestLiveMediaId = -1;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -317,7 +320,15 @@ public class AudioPlayerFragment extends Fragment implements
         if (currentMedia == null) {
             return;
         }
-        updatePosition(new PlaybackPositionEvent(currentMedia.getPosition(), currentMedia.getDuration()));
+        int position = currentMedia.getPosition();
+        int duration = currentMedia.getDuration();
+        if (currentMedia.getId() == latestLiveMediaId
+                && latestLivePosition != Playable.INVALID_TIME
+                && latestLiveDuration != Playable.INVALID_TIME) {
+            position = latestLivePosition;
+            duration = latestLiveDuration;
+        }
+        updatePosition(new PlaybackPositionEvent(position, duration));
         updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia)));
         setChapterDividers();
         setupOptionsMenu();
@@ -333,7 +344,9 @@ public class AudioPlayerFragment extends Fragment implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusEvent(PlayerStatusEvent event) {
         long playingMediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
-        if (currentMedia == null || currentMediaId != playingMediaId) {
+        boolean sameOrUnknownPlayingMedia = currentMedia != null
+                && (playingMediaId <= 0 || currentMediaId == playingMediaId);
+        if (currentMedia == null || !sameOrUnknownPlayingMedia) {
             loadMediaInfo(false);
         } else {
             updatePlayButton();
@@ -386,6 +399,9 @@ public class AudioPlayerFragment extends Fragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updatePosition(PlaybackPositionEvent event) {
+        latestLiveMediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+        latestLivePosition = event.getPosition();
+        latestLiveDuration = event.getDuration();
         if (txtvPosition == null || txtvLength == null || sbPosition == null) {
             return;
         }

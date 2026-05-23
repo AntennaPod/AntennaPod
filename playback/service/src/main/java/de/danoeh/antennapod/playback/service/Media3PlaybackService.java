@@ -78,10 +78,12 @@ public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
 
     private static final long POSITION_OBSERVER_INTERVAL_MS = 250;
+    private static final long SEEK_SETTLE_TOLERANCE_MS = 500;
     public static final String ACTION_WIDGET_REWIND = "de.danoeh.antennapod.action.WIDGET_REWIND";
     public static final String ACTION_WIDGET_FAST_FORWARD = "de.danoeh.antennapod.action.WIDGET_FAST_FORWARD";
     public static final String ACTION_WIDGET_SKIP = "de.danoeh.antennapod.action.WIDGET_SKIP";
     private static final long POSITION_SAVE_INTERVAL_MS = 5000;
+    private static final int STREAMING_POSITION_MAX_JUMP_MS = 1000;
     private ExoPlayer exoPlayer;
     private Player player;
     private MediaLibrarySession mediaSession;
@@ -92,6 +94,9 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
     private long lastPositionSaveTime = 0;
+    private long lastReportedPosition = 0;
+    private long seekTargetPosition = -1;
+    private boolean userRequestedSeek = false;
     private SleepTimer sleepTimer;
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
@@ -137,7 +142,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                     return;
                 }
 
-                if (currentPlayable != null && !getPlayWhenReady()) {
+                if (currentPlayable != null && !getPlayWhenReady() && getPlaybackState() == Player.STATE_READY) {
                     long savedPosition = getCurrentPosition();
                     long startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                             (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics());
@@ -167,8 +172,20 @@ public class Media3PlaybackService extends MediaLibraryService {
 
             @Override
             public void seekTo(long positionMs) {
-                super.seekTo(positionMs);
-                EventBus.getDefault().post(new PlaybackPositionEvent((int) positionMs, (int) getDuration()));
+                long resolvedTarget = Math.max(0, positionMs);
+                long duration = getDuration();
+                if (duration > 0) {
+                    resolvedTarget = Math.min(resolvedTarget, duration);
+                }
+                userRequestedSeek = true;
+                seekTargetPosition = resolvedTarget;
+                lastReportedPosition = player.getCurrentPosition();
+                super.seekTo(resolvedTarget);
+                if (currentPlayable != null) {
+                    currentPlayable.setPosition((int) resolvedTarget);
+                    PlayableUtils.saveCurrentPosition(currentPlayable, (int) resolvedTarget,
+                            System.currentTimeMillis());
+                }
             }
         };
         player.addListener(playerListener);
@@ -305,6 +322,26 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
 
         @Override
+        public void onPositionDiscontinuity(@NonNull Player.PositionInfo oldPosition,
+                @NonNull Player.PositionInfo newPosition, int reason) {
+            if (player == null) {
+                return;
+            }
+            boolean isSeekDiscontinuity = reason == Player.DISCONTINUITY_REASON_SEEK
+                    || reason == Player.DISCONTINUITY_REASON_SEEK_ADJUSTMENT;
+            if (!isSeekDiscontinuity) {
+                return;
+            }
+            long position = getStablePosition();
+            long duration = player.getDuration();
+            if (position < 0 || duration <= 0) {
+                return;
+            }
+            lastReportedPosition = position;
+            EventBus.getDefault().post(new PlaybackPositionEvent((int) position, (int) duration));
+        }
+
+        @Override
         public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
             ensureCurrentMediaLoaded();
             EventBus.getDefault().post(new PlayerStatusEvent());
@@ -362,6 +399,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             positionObserverDisposable.dispose();
         }
 
+        lastReportedPosition = player != null ? player.getCurrentPosition() : 0;
         positionObserverDisposable = Observable.interval(0, POSITION_OBSERVER_INTERVAL_MS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -369,10 +407,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                             if (currentPlayable == null || player == null) {
                                 return;
                             }
-                            long position = player.getCurrentPosition();
+                            long position = getStablePosition();
                             long duration = player.getDuration();
                             float speed = player.getPlaybackParameters().speed;
                             if (duration > 0) {
+                                lastReportedPosition = position;
                                 EventBus.getDefault().post(
                                         new PlaybackPositionEvent((int) position, (int) duration));
                                 if (ignored % (1000 / POSITION_OBSERVER_INTERVAL_MS) == 0) {
@@ -420,6 +459,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
                             currentPlayable = media;
+                            lastReportedPosition = player != null ? player.getCurrentPosition() : 0;
                             if (player == null) {
                                 return;
                             }
@@ -429,7 +469,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 return;
                             }
                             allowStreamingThisTime = false;
-                            currentPlayable.setPosition((int) player.getCurrentPosition());
+                            int positionToSet = (int) getStablePosition();
+                            currentPlayable.setPosition(positionToSet);
                             currentPlayable.onPlaybackStart();
                             if (currentPlayable.getItem() != null
                                     && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
@@ -482,9 +523,33 @@ public class Media3PlaybackService extends MediaLibraryService {
         } catch (NumberFormatException e) {
             return;
         }
-        long position = player.getCurrentPosition();
+        long position = getStablePosition();
         long timestamp = System.currentTimeMillis();
         PlayableUtils.saveCurrentPosition(currentPlayable, (int) position, timestamp);
+    }
+
+    private long getStablePosition() {
+        if (player == null) {
+            return 0;
+        }
+        long position = player.getCurrentPosition();
+        long targetPosition = seekTargetPosition;
+        if (userRequestedSeek && targetPosition >= 0) {
+            long duration = player.getDuration();
+            if (duration > 0) {
+                targetPosition = Math.min(targetPosition, duration);
+            }
+            if (position >= 0 && Math.abs(position - targetPosition) <= SEEK_SETTLE_TOLERANCE_MS) {
+                userRequestedSeek = false;
+                seekTargetPosition = -1;
+                return position;
+            }
+            return targetPosition;
+        }
+        if (position >= 0) {
+            return position;
+        }
+        return Math.max(0, lastReportedPosition);
     }
 
     private void onPlaybackEnd(FeedMedia media) {
@@ -641,6 +706,9 @@ public class Media3PlaybackService extends MediaLibraryService {
                             allowStreamingThisTime = false;
 
                             currentPlayable = nextMedia;
+                            lastReportedPosition = 0;
+                            userRequestedSeek = false;
+                            seekTargetPosition = -1;
                             currentPlayable.onPlaybackStart();
                             PlaybackPreferences.writeMediaPlaying(nextMedia);
                             if (nextMedia.getItem() != null && nextMedia.getItem().getFeed() != null) {
