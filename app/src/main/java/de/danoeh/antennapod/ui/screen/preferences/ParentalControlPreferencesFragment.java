@@ -10,6 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.DialogSetPasswordBinding;
+import de.danoeh.antennapod.ui.common.Keyboard;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 
@@ -62,6 +63,8 @@ public class ParentalControlPreferencesFragment extends AnimatedPreferenceFragme
         builder.setNegativeButton(R.string.cancel_label, null);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+        dialogBinding.textInput.requestFocus();
+        Keyboard.show(requireContext(), dialogBinding.textInput);
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String newPassword = dialogBinding.textInput.getText().toString();

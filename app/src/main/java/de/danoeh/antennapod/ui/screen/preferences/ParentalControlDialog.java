@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.Keyboard;
 import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
@@ -33,6 +34,8 @@ public class ParentalControlDialog {
         }
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+        dialogBinding.textInput.requestFocus();
+        Keyboard.show(context, dialogBinding.textInput);
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             String entered = dialogBinding.textInput.getText().toString();
