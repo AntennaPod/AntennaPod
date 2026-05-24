@@ -3,6 +3,7 @@ package de.danoeh.antennapod.ui.screen.preferences;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.os.UserManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 
@@ -138,10 +139,10 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
 
     // show the 'parental controls' preference if we're on a 'child' device (family link) or if it's a debug build
     private void setParentalControlsVisibility() {
-        android.os.UserManager um = requireContext().getSystemService(android.os.UserManager.class);
+        UserManager um = requireContext().getSystemService(UserManager.class);
         // Family Link child devices have DISALLOW_FACTORY_RESET set (among other restrictions).
         // AccountManager-based checks don't work: supervised users have no visible Google accounts.
-        boolean isChildDevice = um.hasUserRestriction(android.os.UserManager.DISALLOW_FACTORY_RESET);
+        boolean isChildDevice = um.hasUserRestriction(UserManager.DISALLOW_FACTORY_RESET);
         findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(isChildDevice || BuildConfig.DEBUG);
     }
 
