@@ -143,7 +143,8 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
         // Family Link child devices have DISALLOW_FACTORY_RESET set (among other restrictions).
         // AccountManager-based checks don't work: supervised users have no visible Google accounts.
         boolean isChildDevice = um.hasUserRestriction(UserManager.DISALLOW_FACTORY_RESET);
-        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(isChildDevice || BuildConfig.DEBUG);
+        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(
+                isChildDevice || BuildConfig.DEBUG || UserPreferences.isParentalControlPasswordSet());
     }
 
     private void setupSearch() {
