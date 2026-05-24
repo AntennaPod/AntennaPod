@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.ui.screen.feed;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
@@ -14,16 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedinfoBinding;
@@ -31,7 +25,6 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
-import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ClipboardUtils;
 import de.danoeh.antennapod.ui.common.IntentUtils;
@@ -40,11 +33,9 @@ import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFunding;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
-import de.danoeh.antennapod.ui.screen.feed.preferences.EditUrlSettingsDialog;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsDialogFragment;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsFragment;
-import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.MaybeOnSubscribe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -63,8 +54,6 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedInfoActivity";
-    private final ActivityResultLauncher<Uri> addLocalFolderLauncher =
-            registerForActivityResult(new AddLocalFolder(), this::addLocalFolderResult);
 
     private Feed feed;
     private Disposable disposable;
@@ -261,22 +250,20 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         if (disposable != null) {
             disposable.dispose();
         }
+        viewBinding = null;
     }
 
     private void refreshToolbarState() {
         boolean isSubscribed = feed != null && feed.getState() == Feed.STATE_SUBSCRIBED;
-        viewBinding.toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(
-                isSubscribed && feed.isLocalFeed());
         viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(isSubscribed && !feed.isLocalFeed());
         viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(isSubscribed
                 && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
-        viewBinding.toolbar.getMenu().findItem(R.id.edit_feed_url_item).setVisible(isSubscribed && !feed.isLocalFeed());
     }
 
     @Override
@@ -289,72 +276,10 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
             IntentUtils.openInBrowser(getContext(), feed.getLink());
         } else if (item.getItemId() == R.id.share_item) {
             ShareUtils.shareFeedLink(getContext(), feed);
-        } else if (item.getItemId() == R.id.reconnect_local_folder) {
-            MaterialAlertDialogBuilder alert = new MaterialAlertDialogBuilder(getContext());
-            alert.setMessage(R.string.reconnect_local_folder_warning);
-            alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                try {
-                    addLocalFolderLauncher.launch(null);
-                } catch (ActivityNotFoundException e) {
-                    Log.e(TAG, "No activity found. Should never happen...");
-                }
-            });
-            alert.setNegativeButton(android.R.string.cancel, null);
-            alert.show();
-        } else if (item.getItemId() == R.id.edit_feed_url_item) {
-            new EditUrlSettingsDialog(getActivity(), feed) {
-                @Override
-                protected void setUrl(String url) {
-                    feed.setDownloadUrl(url);
-                    viewBinding.urlLabel.setText(feed.getDownloadUrl());
-                    viewBinding.urlLabel.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0, 0, R.drawable.ic_paperclip, 0);
-                }
-            }.show();
         } else {
             return false;
         }
         return true;
     }
 
-    private void addLocalFolderResult(final Uri uri) {
-        if (uri == null) {
-            return;
-        }
-        reconnectLocalFolder(uri);
-    }
-
-    private void reconnectLocalFolder(Uri uri) {
-        if (feed == null) {
-            return;
-        }
-
-        Completable.fromAction(() -> {
-            getActivity().getContentResolver()
-                    .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
-            if (documentFile == null) {
-                throw new IllegalArgumentException("Unable to retrieve document tree");
-            }
-            feed.setDownloadUrl(Feed.PREFIX_LOCAL_FOLDER + uri.toString());
-            FeedDatabaseWriter.updateFeed(getContext(), feed, false);
-        })
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> EventBus.getDefault().post(new MessageEvent(getString(android.R.string.ok))),
-                        error -> EventBus.getDefault().post(new MessageEvent(error.getLocalizedMessage())));
-    }
-
-    private static class AddLocalFolder extends ActivityResultContracts.OpenDocumentTree {
-        @NonNull
-        @Override
-        public Intent createIntent(@NonNull final Context context, @Nullable final Uri input) {
-            return super.createIntent(context, input)
-                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                            | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        }
-    }
 }

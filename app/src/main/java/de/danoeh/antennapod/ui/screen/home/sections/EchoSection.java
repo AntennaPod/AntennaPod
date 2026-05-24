@@ -70,4 +70,18 @@ public class EchoSection extends Fragment {
             ((MainActivity) getActivity()).loadFragment(HomeFragment.TAG, null);
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewBinding = null;
+    }
 }

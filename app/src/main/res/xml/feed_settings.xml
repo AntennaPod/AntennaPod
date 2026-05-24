@@ -101,6 +101,18 @@
             android:summary="@string/authentication_descr"
             android:title="@string/authentication_label" />
 
+        <Preference
+            android:icon="@drawable/ic_settings"
+            android:key="editFeedUrl"
+            android:summary="@string/edit_url_menu_summary"
+            android:title="@string/edit_url_menu" />
+
+        <Preference
+            android:icon="@drawable/ic_settings"
+            android:key="reconnectLocalFolder"
+            android:summary="@string/reconnect_local_folder_summary"
+            android:title="@string/reconnect_local_folder" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
