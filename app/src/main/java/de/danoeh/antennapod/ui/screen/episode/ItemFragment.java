@@ -24,6 +24,7 @@ import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowOrientationRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.actionbutton.CancelDownloadActionButton;
 import de.danoeh.antennapod.actionbutton.DeleteActionButton;
@@ -122,6 +123,11 @@ public class ItemFragment extends Fragment {
             if (!PlaybackService.isRunning) {
                 EventBus.getDefault().post(
                         new MessageEvent(getString(R.string.play_this_to_seek_position_message)));
+                return;
+            }
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                PlaybackController.bindToMedia3Service(getActivity(), controller ->
+                        controller.seekTo(time));
                 return;
             }
             PlaybackController.bindToService(getActivity(), playbackService -> {
