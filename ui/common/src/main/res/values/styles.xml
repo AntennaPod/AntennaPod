@@ -319,7 +319,7 @@
     </style>
 
     <style name="Widget.AntennaPod.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
-        <item name="trackColor">#18000000</item>
+        <item name="trackColor">#55888888</item>
     </style>
 
     <style name="Widget.AntennaPod.ActionBar" parent="Widget.Material3.Light.ActionBar.Solid">
