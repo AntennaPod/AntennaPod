@@ -236,7 +236,8 @@ public class Media3PlaybackService extends MediaLibraryService {
             } else {
                 EventBus.getDefault().post(BufferUpdateEvent.ended());
             }
-            if (playbackState == Player.STATE_READY || playbackState == Player.STATE_ENDED) {
+            if ((playbackState == Player.STATE_READY && player.getPlayWhenReady())
+                    || playbackState == Player.STATE_ENDED) {
                 saveCurrentPosition();
             }
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
