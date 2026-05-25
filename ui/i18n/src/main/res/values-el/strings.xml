@@ -276,7 +276,6 @@
     <string name="smart_shuffle">Έξυπνη τυχαία σειρά</string>
     <string name="size">μέγεθος</string>
     <string name="clear_queue_confirmation_msg">Παρακαλώ επιβεβαιώστε ότι θέλετε να αφαιρέσετε ΟΛΑ τα επεισόδια απ\' την ουρά.</string>
-    <string name="time_left_label">"Χρόνος που απομένει: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Προεπιλογές</string>
     <string name="preset_already_exists">%1$.2fx είναι ήδη αποθηκευμένο ως προεπιλογή.</string>
@@ -576,8 +575,6 @@
   <string name="choose_data_directory">Επιλογή φακέλου δεδομένων</string>
     <string name="choose_data_directory_message">Επιλέξτε τη βάση του φακέλου δεδομένων σας. Το AntennaPod θα δημιουργήσει τους κατάλληλους υποκαταλόγους.</string>
     <string name="choose_data_directory_available_space">%1$sαπό τα %2$sελεύθερα</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Παύση της αναπαραγωγής, αντί της μείωσης έντασης όταν μια άλλη εφαρμογή θέλει να αναπαράξει ήχους</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Παύση για διακοπές</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Από τις %1$s, έχετε ακούσει %2$s%3$d%4$s ώρες podcasts.</string>
     <string name="rating_contribute_label">Θέλετε να συμμετέχετε; Είτε θέλετε να μεταφράσετε, να υποστηρίξετε, να σχεδιάσετε ή να γράψετε κώδικα, θα χαρούμε να σας έχουμε μαζί μας!</string>
@@ -776,11 +773,6 @@
     <string name="downloads_label_short">Λήψεις</string>
     <string name="subscriptions_label_short">Συνδρομές</string>
     <string name="playback_history_label_short">Ιστορικό</string>
-    <string name="episodes_label_more">Επεισόδια »</string>
-    <string name="queue_label_more">Ουρά »</string>
-    <string name="inbox_label_more">Εισερχόμενα »</string>
-    <string name="downloads_label_more">Λήψεις »</string>
-    <string name="subscriptions_label_more">Συνδρομές »</string>
     <string name="enabled">Ενεργοποίηση</string>
     <string name="disabled">Απενεργοποίηση</string>
     <string name="global_default_with_value">Παγκόσμια προεπιλογή (%1$s)</string>
@@ -844,4 +836,7 @@
     <string name="report_bug_forum_title">Φόρουμ</string>
     <string name="report_bug_github_title">GitHub</string>
     <string name="pref_global_default_episode_list_sort_order_title">Προεπιλεγμένη σειρά ταξινόμησης</string>
+    <string name="general_expand_button">Εξάπλωση</string>
+    <string name="general_collapse_button">Κλείσιμο</string>
+    <string name="no_items_selected_message">Κανένα δεν έχει επιλεχθεί</string>
 </resources>

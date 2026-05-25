@@ -316,11 +316,6 @@
     <string name="home_new_empty_text">Нови епизоди ще се появят тук. Ще трябва да решите дали ви интересуват.</string>
     <string name="home_downloads_empty_text">Можете да изтеглите който епизод поискате и да го слушате без интернет.</string>
     <string name="section_shown">Показан</string>
-    <string name="episodes_label_more">Епизоди »</string>
-    <string name="queue_label_more">Опашка »</string>
-    <string name="inbox_label_more">Поша »</string>
-    <string name="downloads_label_more">Изтеглени »</string>
-    <string name="subscriptions_label_more">Абонаменти »</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Пълен размер на %d епизод на устройството</item>
         <item quantity="other">Пълен размер на %d епизоди на устройството</item>

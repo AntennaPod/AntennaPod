@@ -113,7 +113,6 @@
     <string name="date">Data</string>
     <string name="duration">Duración</string>
     <string name="random">Al debalu</string>
-    <string name="time_left_label">"Tiempu que queda: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Preaxustes</string>
     <!--Empty list labels-->
@@ -245,7 +244,6 @@
     <string name="gpodnetsync_pref_report_successful">Sincronización correuta</string>
     <string name="gpodnetsync_pref_report_failed">Sincronización fallida</string>
     <string name="gpodnetsync_username_characters_error">Los nomes d\'usuariu namás puen contener lletres, díxitos, guiones y guiones baxos.</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Posa la reproducción en cuentes de baxar el volume cuando otra aplicación quier reproducir soníos</string>
     <!--Online feed view-->
   <string name="subscribe_label">Soscribise</string>
     <string name="rewind_label">Rebobinar</string>

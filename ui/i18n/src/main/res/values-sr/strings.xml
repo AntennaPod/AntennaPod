@@ -46,13 +46,9 @@
     <string name="home_downloads_empty_text">Можете преузети било коју епизоду да бисте је слушали офлајн.</string>
     <string name="home_welcome_title">Добро дошли у AntennaPod!</string>
     <string name="section_hidden">Скривено</string>
-    <string name="episodes_label_more">Епизоде »</string>
-    <string name="queue_label_more">Редослед »</string>
     <string name="configure_home">Подешавање почетног екрана</string>
-    <string name="downloads_label_more">Преузимања »</string>
     <string name="drawer_open">Отвори мени</string>
     <string name="drawer_close">Затвори мени</string>
-    <string name="subscriptions_label_more">Претплате »</string>
     <string name="drawer_preferences">Подешавања фиока</string>
     <string name="drawer_feed_order_unplayed_episodes">Сортирање по бројачу</string>
     <string name="drawer_feed_order_alphabetical">Сортирање по абецеди</string>
@@ -207,7 +203,6 @@
     <string name="keep_sorted">Остави сортирано</string>
     <string name="smart_shuffle">Паметно мешање</string>
     <string name="size">Величина</string>
-    <string name="time_left_label">"Преостало време: "</string>
     <string name="speed_presets">Шаблони</string>
     <string name="no_items_header_label">Нема епизода у редоследу</string>
     <string name="no_comp_downloads_head_label">Нема преузетих епизода</string>
@@ -437,7 +432,6 @@
     <string name="choose_data_directory">Избор фолдера података</string>
     <string name="choose_data_directory_message">Изаберите базу фолдера података. AntennaPod ће направити одговарајуће потфолдере.</string>
     <string name="choose_data_directory_available_space">Слободно: %1$s од %2$s</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Паузирајте репродукцију уместо да смањите јачину звука када друга апликација жели да пушта звукове</string>
     <string name="rating_tagline">Од %1$s, слушали сте %2$s%3$d%4$s часова подкаста.</string>
     <string name="rating_contribute_label">Желите да се придружите? Било да желите да преводите, подржите, дизајнирате или кодирате, били бисмо срећни да вас имамо!</string>
     <string name="preview_episodes">Преглед епизода</string>
@@ -547,7 +541,6 @@
     <string name="home_surprise_title">Насумично</string>
     <string name="feed_new_episodes_action_summary_autodownload">Аутоматско преузимање је омогућено. Епизоде се додају у сандуче, а затим се пребацују у редослед након преузимања.</string>
     <string name="removed_all_inbox_msg">Уклоњено све из сандучета</string>
-    <string name="inbox_label_more">Сандуче »</string>
     <string name="section_shown">Приказано</string>
     <string name="pref_favorite_keeps_episodes_sum">Задржите епизоде када су означене као омиљене</string>
     <string name="no_log_downloads_label">Евиденције преузимања ће се појавити овде када буду доступне.</string>
@@ -685,7 +678,6 @@
     <string name="synchronization_force_sync_summary">Поново синхронизујте све претплате и стања епизода</string>
     <string name="gpodnetauth_encryption_warning">Лозинка и подаци нису шифровани!</string>
     <string name="gpodnetauth_login_butLabel">Пријава</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Паузирај за прекиде</string>
     <string name="rating_later">Касније</string>
     <string name="position">Позиција: %1$s</string>
     <string name="remaining_time">Преостало време: %1$s</string>
@@ -862,7 +854,6 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Нема заказаних епизода, али постоје нове епизоде које вас очекују!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Иди у сандуче</string>
-    <string name="auto_download_inbox_category">Аутоматски преузимај епизоде из сандучета</string>
     <string name="general_expand_button">Прошири</string>
     <string name="general_collapse_button">Умањи</string>
     <plurals name="num_subscriptions">

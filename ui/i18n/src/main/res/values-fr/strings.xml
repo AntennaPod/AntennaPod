@@ -162,7 +162,7 @@
     <string name="show_feed_settings_label">Paramètres du podcast</string>
     <string name="feed_settings_label">Paramètres du podcast</string>
     <string name="rename_feed_label">Renommer</string>
-    <string name="remove_feed_label">Supprimer</string>
+    <string name="remove_feed_label">Se désabonner</string>
     <string name="share_label">Partager</string>
     <string name="share_file_label">Partager le fichier</string>
     <string name="load_complete_feed">Mettre à jour tout le podcast</string>
@@ -286,7 +286,6 @@
     <string name="smart_shuffle">Tri intelligent</string>
     <string name="size">Taille</string>
     <string name="clear_queue_confirmation_msg">Merci de confirmer la suppression de TOUS les épisodes de la liste de lecture.</string>
-    <string name="time_left_label">"Durée restante : "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Enregistrées</string>
     <string name="preset_already_exists">%1$.2fx est déjà enregistrée.</string>
@@ -342,7 +341,7 @@
     <string name="pref_auto_delete_title">Suppression automatique</string>
     <string name="pref_auto_delete_sum">Supprimer les épisodes après la lecture ou si le téléchargement automatique a besoin de plus de place</string>
     <string name="pref_auto_local_delete_title">Suppression automatique pour dossiers locaux</string>
-    <string name="pref_auto_local_delete_sum">Inclure les dossiers locaux lors de la suppression automatique</string>
+    <string name="pref_auto_local_delete_sum">Supprimer aussi les fichiers des dossiers locaux ajoutés ; attention, ces fichiers ne sont pas téléchargés par AntennaPod et ne peuvent pas être retéléchargés</string>
     <string name="pref_auto_local_delete_dialog_body">Attention la suppression des épisodes des dossiers locaux dans AntennaPod les suppriment aussi de votre appareil. Ils seront définitivement perdus et ne pourront pas être \"retélécharger\" à partir d\'AntennaPod. Activer quand même l\'option ?</string>
     <string name="pref_smart_mark_as_played_sum">En dessous de la durée choisie les épisodes seront marqués comme lus même s\'ils n\'ont pas été terminés</string>
     <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligemment</string>
@@ -506,7 +505,7 @@
     <string name="database_import_label">Importer la base de données</string>
     <string name="database_import_warning">Importer une base de données remplacera tout vos abonnements et votre historique de lecture. Il est conseillé d\'exporter votre base de données actuelle pour avoir une sauvegarde. Confirmez-vous l\'import ?</string>
     <string name="please_wait">Merci de patienter…</string>
-    <string name="export_error_label">Erreur d\'exportation</string>
+    <string name="export_error_label">Erreur d\'export</string>
     <string name="export_success_title">Export réussi</string>
     <string name="opml_import_ask_read_permission">L\'accès au stockage externe est requis pour lire le fichier OPML</string>
     <string name="successful_import_label">Import réussi</string>
@@ -590,8 +589,6 @@
   <string name="choose_data_directory">Choisir le répertoire</string>
     <string name="choose_data_directory_message">Choisissez le répertoire où enregistrer les données. AntennaPod créera automatiquement les sous-répertoires nécessaires.</string>
     <string name="choose_data_directory_available_space">%1$s sur %2$s d\'espace libre</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Mettre en pause la lecture au lieu de baisser le volume quand une autre application joue un son</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Mettre en pause lors d\'interruptions</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Depuis le %1$s, vous avez écouté %2$s%3$d%4$s heures de podcasts.</string>
     <string name="rating_contribute_label">Vous voulez nous rejoindre ? Vous le pouvez par de la traduction, du support, du design ou du code et nous en serions heureux !</string>
@@ -828,8 +825,6 @@
     <string name="echo_share">Mon année %d en podcasts. #AntennaPodEcho</string>
     <string name="subscriptions_label_short">Abonnements</string>
     <string name="playback_history_label_short">Journal</string>
-    <string name="queue_label_more">Liste de lecture »</string>
-    <string name="inbox_label_more">Boîte de réception »</string>
     <string name="enabled">Activé</string>
     <string name="delete_tag_label">Supprimer le tag</string>
     <string name="delete_tag_confirmation">Merci de confirmer que vous voulez supprimer le tag \"%1$s\".</string>
@@ -841,15 +836,12 @@
     <string name="statistics_time_played">d\'écoute</string>
     <string name="notification_channel_refreshing">Mise à jour des podcasts</string>
     <string name="notification_channel_refreshing_description">S\'affiche lors de la récupération des listes d\'épisodes.</string>
-    <string name="downloads_label_more">Téléchargements »</string>
     <string name="queue_label_short">Lecture</string>
     <string name="downloads_label_short">Téléchargements</string>
     <string name="add_feed_label_short">Ajouter</string>
     <string name="home_label_short">Accueil</string>
     <string name="inbox_label_short">Reçus</string>
     <string name="global_default_with_value">Valeur par défaut (%1$s)</string>
-    <string name="episodes_label_more">Épisodes »</string>
-    <string name="subscriptions_label_more">Abonnements »</string>
     <string name="disabled">Désactivé</string>
     <string name="download_error_unsupported_type_html_manual">L\'adresse entrée est celle d\'un site web et pas d\'un lien RSS de podcast.</string>
     <string name="episodes_label_short">Épisodes</string>
@@ -910,7 +902,6 @@
         <item quantity="many">%d épisodes déplacés en bas de la liste.</item>
         <item quantity="other">%d épisodes déplacés en bas de la liste.</item>
     </plurals>
-    <string name="auto_download_inbox_category">Téléchargement des épisodes dans la boîte de réception</string>
     <string name="no_queue_items_inbox_has_items_button_label">Ouvrir la boîte de réception</string>
     <string name="no_queue_items_inbox_has_items_label">Vous n\'avez rien à lire mais des épisodes vous attendent !</string>
     <string name="please_wait_before_refreshing">Merci d\'attendre un peu avant de réactualiser les podcasts.</string>
@@ -926,8 +917,8 @@
     </plurals>
     <string name="archive_feed_label_verb">Archiver</string>
     <string name="archive_feed_label_noun">Archives</string>
-    <string name="remove_archive_feed_label">Supprimer / Archiver</string>
-    <string name="feed_delete_explanation_delete">Supprimer efface le podcast avec tous ses épisodes, ses téléchargements, son historique de lecture et ses statistiques.</string>
+    <string name="remove_archive_feed_label">Se désabonner / archiver</string>
+    <string name="feed_delete_explanation_delete">Se désabonner efface le podcast avec tous ses épisodes, ses téléchargements, son historique de lecture et ses statistiques.</string>
     <string name="feed_delete_explanation_archive">Archiver cache le podcast de la liste des abonnements et désactive sa mise à jour. Ses téléchargements, son historique de lecture et ses statistiques sont conservés.</string>
     <string name="tag_untagged">Sans tag</string>
     <string name="restore_archive_label">Désarchiver</string>
@@ -936,7 +927,7 @@
     <string name="general_expand_button">Afficher plus</string>
     <string name="general_collapse_button">Réduire</string>
     <string name="archiving_podcast_progress">Archivage du podcast %1$d sur %2$d…</string>
-    <string name="deleting_podcast_progress">Suppression du podcast %1$d sur %2$d…</string>
+    <string name="deleting_podcast_progress">Désabonnement du podcast %1$d sur %2$d…</string>
     <string name="download_log_details_human_readable_reason_title">Statut</string>
     <string name="download_log_details_technical_reason_title">Détails techniques</string>
     <string name="download_log_details_file_url_title">Lien du flux</string>
@@ -971,4 +962,41 @@
         <item quantity="many">Il reste seulement %1$d épisodes dans la liste de lecture</item>
         <item quantity="other">Il reste seulement %1$d épisodes dans la liste de lecture</item>
     </plurals>
+    <string name="statistics_label_short">Stats</string>
+    <string name="favorite_episodes_label_short">Favoris</string>
+    <string name="remove_restore_feed_label">Se désabonner / désarchiver</string>
+    <string name="restoring_podcast_progress">Désarchivage du podcast %1$d sur %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d épisode ajouté aux favoris.</item>
+        <item quantity="many">%d épisodes ajoutés aux favoris.</item>
+        <item quantity="other">%d épisodes ajoutés aux favoris.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d épisode retiré des favoris.</item>
+        <item quantity="many">%d épisodes retirés des favoris.</item>
+        <item quantity="other">%d épisodes retirés des favoris.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">%d position d\'épisode réinitialisée.</item>
+        <item quantity="many">%d positions d\'épisodes réinitialisées.</item>
+        <item quantity="other">%d positions d\'épisodes réinitialisées..</item>
+    </plurals>
+    <string name="queue_time_left_label">Reste : %1$s • %2$s</string>
+    <string name="no_fav_episodes_head_label">Aucun favori</string>
+    <string name="no_fav_episodes_label">Marquer des épisodes comme favori à l\'aide de l’icône en forme d\'étoile.</string>
+    <string name="bottom_navigation_deprecation_warning">Malheureusement la navigation latérale va être retirée dans une prochaine version. AntennaPod est développé par un petit nombre de volontaires et, après plusieurs années de support pour les 2 types de navigations, la maintenance des 2 est devenu trop lourde.\n\nSi vous avez absolument besoin de la navigation latérale, désactivez les mises à jour d\'AntennaPod.</string>
+    <string name="pref_advanced">Avancé</string>
+    <string name="pref_display">Affichage</string>
+    <string name="import_error_label">Erreur d\'import</string>
+    <string name="show_password_accessibility">Montrer le mot de passe</string>
+    <string name="rss_address_invalid">L\'adresse RSS saisie n\'est pas valide.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Connecté à %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Version %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Téléphone non compatible. Assurez-vous que votre version d\'AntennaPod est la plus récente disponible sur le Play Store de votre téléphone.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Aucun élément</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Échec de la connexion au téléphone. Assurez-vous que votre téléphone est à proximité et qu\'AntennaPod est installé.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Lire sur le téléphone</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Parcourir le téléphone</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Ouvrir sur le téléphone</string>
+    <string name="feed_new_episodes_action_snackbar">Impossible à changer quand le téléchargement automatique est activé.</string>
 </resources>

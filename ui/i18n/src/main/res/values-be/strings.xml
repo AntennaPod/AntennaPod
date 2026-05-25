@@ -3,4 +3,11 @@
     <string name="home_label">Галоўная</string>
     <string name="home_label_short">Галоўная</string>
     <string name="feed_update_receiver_name">Абнаўленне падпісак</string>
+    <string name="queue_label">Чарга</string>
+    <string name="queue_label_short">Чарга</string>
+    <string name="feed_new_episodes_action_add_to_queue">Дадаць у чаргу</string>
+    <string name="refresh_label">Абнавіць</string>
+    <string name="statistics_label">Статыстыка</string>
+    <string name="add_feed_label">Дадаць падкаст</string>
+    <string name="add_feed_label_short">Дадацьь</string>
 </resources>

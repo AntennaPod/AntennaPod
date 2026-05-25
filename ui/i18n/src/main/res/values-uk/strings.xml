@@ -294,7 +294,6 @@
     <string name="smart_shuffle">Розумне перемішування</string>
     <string name="size">За розміром</string>
     <string name="clear_queue_confirmation_msg">Будь ласка, підтвердьте, що хочете видалити ВСІ випуски з черги.</string>
-    <string name="time_left_label">"Залишилось: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Заготовки</string>
     <string name="preset_already_exists">%1$.2fx вже збережено як заготовку.</string>
@@ -602,8 +601,6 @@
   <string name="choose_data_directory">Оберіть теку для даних</string>
     <string name="choose_data_directory_message">Будь ласка, виберіть основну теку для файлів AntennaPod, ми створимо всі відповідні підкаталоги.</string>
     <string name="choose_data_directory_available_space">%1$s з %2$s вільно</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Призупиняти програвання замість зниження гучності коли інша програма хоче програти звук</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Пауза в разі переривання</string>
     <!--Rating dialog-->
   <string name="rating_tagline">З %1$s ви прослухали %2$s%3$d%4$s годин подкастів.</string>
     <string name="rating_contribute_label">Бажаєте приєднатися? Якщо ви хочете перекладати, підтримувати, створювати дизайн або писати код, ми будемо раді бачити вас!</string>
@@ -792,11 +789,6 @@
     <string name="downloads_label_short">Завантаження</string>
     <string name="subscriptions_label_short">Підписки</string>
     <string name="playback_history_label_short">Історія</string>
-    <string name="episodes_label_more">Випуски »</string>
-    <string name="queue_label_more">Черга »</string>
-    <string name="inbox_label_more">Вхідні »</string>
-    <string name="downloads_label_more">Завантаження »</string>
-    <string name="subscriptions_label_more">Підписки »</string>
     <string name="enabled">Увімкнено</string>
     <string name="disabled">Вимкнено</string>
     <string name="global_default_with_value">Глобальне за умовчанням (%1$s)</string>
@@ -915,7 +907,6 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Немає запланованих епізодів, але на вас чекають нові епізоди!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Перейти до папки \"Вхідні\"</string>
-    <string name="auto_download_inbox_category">Автоматично завантажувати епізоди з папки \"Вхідні\"</string>
     <string name="please_wait_before_refreshing">Будь ласка, зачекайте деякий час, перш ніж знову оновлювати подкасти.</string>
     <string name="already_downloaded">Епізод вже завантажено</string>
     <string name="tag_all">Усі</string>

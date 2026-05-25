@@ -155,7 +155,7 @@
     <string name="show_feed_settings_label">Vis podcast-indstillinger</string>
     <string name="feed_settings_label">Podcast-indstillinger</string>
     <string name="rename_feed_label">Omdøb</string>
-    <string name="remove_feed_label">Slet</string>
+    <string name="remove_feed_label">Afmeld</string>
     <string name="share_label">Del</string>
     <string name="share_file_label">Del fil</string>
     <string name="load_complete_feed">Opdater hele podcasten</string>
@@ -276,7 +276,6 @@
     <string name="smart_shuffle">Smart blanding</string>
     <string name="size">Størrelse</string>
     <string name="clear_queue_confirmation_msg">Bekræft, at du ønsker at fjerne ALLE afsnit fra køen.</string>
-    <string name="time_left_label">"Tid tilbage: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Forudindstillinger</string>
     <string name="preset_already_exists">%1$.2fx er allerede gemt som en forudindstilling.</string>
@@ -332,7 +331,7 @@
     <string name="pref_auto_delete_title">Automatisk sletning</string>
     <string name="pref_auto_delete_sum">Slet afsnit efter afspilning, eller når automatisk overførsel har brug for plads</string>
     <string name="pref_auto_local_delete_title">Slet automatisk fra lokale mapper</string>
-    <string name="pref_auto_local_delete_sum">Inkluder lokale mapper i automatisk sletning</string>
+    <string name="pref_auto_local_delete_sum">Slet også filer, der er tilføjet via \"Tilføj lokal mappe\". Bemærk, at disse filer ikke overføres af AntennaPod og derfor ikke kan overføres igen</string>
     <string name="pref_auto_local_delete_dialog_body">Bemærk, at for lokale mapper vil dette fjerne afsnit fra AntennaPod og slette deres mediefiler fra din enheds lager. De kan ikke hentes igen via AntennaPod. Aktivér automatisk sletning?</string>
     <string name="pref_smart_mark_as_played_sum">Markér afsnit som værende afspillet, selv om op til et angivet antal sekunders spilletid stadig mangler</string>
     <string name="pref_smart_mark_as_played_title">Smart markering som afspillet</string>
@@ -576,8 +575,6 @@
   <string name="choose_data_directory">Vælg datamappe</string>
     <string name="choose_data_directory_message">Vælg basen for din datamappe. AntennaPod vil oprette de relevante undermapper.</string>
     <string name="choose_data_directory_available_space">%1$s af %2$s ledig</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Sæt afspilning på pause i stedet for at sænke lydniveauet, når en anden app vil afspille lyde</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Sæt på pause ved afbrydelser</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Siden %1$s har du afspillet %2$s%3$d%4$s timers podcasts.</string>
     <string name="rating_contribute_label">Har du lyst til at være med? Uanset om du vil oversætte, supportere, designe eller kode, vil vi være glade for at have dig med!</string>
@@ -773,11 +770,6 @@
     <string name="downloads_label_short">Overførsler</string>
     <string name="subscriptions_label_short">Abonnementer</string>
     <string name="playback_history_label_short">Historik</string>
-    <string name="episodes_label_more">Afsnit »</string>
-    <string name="queue_label_more">Kø »</string>
-    <string name="inbox_label_more">Indbakke »</string>
-    <string name="downloads_label_more">Overførsler »</string>
-    <string name="subscriptions_label_more">Abonnementer »</string>
     <string name="enabled">Aktiveret</string>
     <string name="disabled">Deaktiveret</string>
     <string name="global_default_with_value">Global standard (%1$s)</string>
@@ -867,7 +859,6 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Der er ingen afsnit i kø, men der er nye afsnit, der venter på dig!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Gå til indbakke</string>
-    <string name="auto_download_inbox_category">Overfør automatisk afsnit fra indbakken</string>
     <string name="please_wait_before_refreshing">Vent et øjeblik, før du opdaterer podcasts igen.</string>
     <string name="already_downloaded">Afsnittet er allerede overført</string>
     <string name="tag_all">Alle</string>
@@ -881,8 +872,8 @@
     <string name="archive_feed_label_verb">Arkivér</string>
     <string name="archive_feed_label_noun">Arkiv</string>
     <string name="restore_archive_label">Gendan</string>
-    <string name="remove_archive_feed_label">Slet / arkivér</string>
-    <string name="feed_delete_explanation_delete">Sletning fjerner abonnementet, herunder alle dets afsnit, overførsler, afspilningshistorik og statistikker.</string>
+    <string name="remove_archive_feed_label">Afmeld / arkivér</string>
+    <string name="feed_delete_explanation_delete">Afmelding fjerner abonnementet, herunder alle dets afsnit, overførsler, afspilningshistorik og statistikker.</string>
     <string name="feed_delete_explanation_archive">Arkivering skjuler abonnementet fra listen og stopper med at søge efter nye afsnit. Overførsler, statistik og afspilningsstatus bevares.</string>
     <string name="tag_untagged">Uden etikette</string>
     <plurals name="mobile_download_notice">
@@ -906,7 +897,7 @@
     <string name="general_expand_button">Udvid</string>
     <string name="general_collapse_button">Fold sammen</string>
     <string name="archiving_podcast_progress">Arkiverer podcast %1$d af %2$d…</string>
-    <string name="deleting_podcast_progress">Sletter podcast %1$d af %2$d…</string>
+    <string name="deleting_podcast_progress">Afmelder fra podcast %1$d af %2$d…</string>
     <string name="download_log_details_human_readable_reason_title">Status</string>
     <string name="download_log_details_technical_reason_title">Tekniske detaljer</string>
     <string name="download_log_details_file_url_title">Fil-URL</string>
@@ -939,4 +930,38 @@
         <item quantity="one">Der er kun %1$d afsnit tilbage i din kø</item>
         <item quantity="other">Der er kun %1$d afsnit tilbage i din kø</item>
     </plurals>
+    <string name="favorite_episodes_label_short">Favoritter</string>
+    <string name="feed_new_episodes_action_snackbar">Kan ikke ændres, når automatisk overførsel er aktiveret.</string>
+    <string name="remove_restore_feed_label">Afmeld / gendan</string>
+    <string name="restoring_podcast_progress">Gendanner podcast %1$d af %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d afsnit tilføjet til favoritter.</item>
+        <item quantity="other">%d afsnit tilføjet til favoritter.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d afsnit fjernet fra favoritter.</item>
+        <item quantity="other">%d afsnit fjernet fra favoritter.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">%d afsnitposition nulstillet.</item>
+        <item quantity="other">%d afsnitpositioner nulstillet.</item>
+    </plurals>
+    <string name="queue_time_left_label">%1$s • %2$s tilbage</string>
+    <string name="no_fav_episodes_head_label">Ingen favoritter</string>
+    <string name="no_fav_episodes_label">Markér afsnit som favoritter ved at trykke på stjerneikonet.</string>
+    <string name="bottom_navigation_deprecation_warning">Vi er desværre nødt til at fjerne sidemenuen i en kommende opdatering. AntennaPod udvikles af en lille gruppe frivillige, og efter at have vedligeholdt begge navigationsformer i årevis er det blevet for stor en byrde. \n\nHvis du er helt afhængig af sidemenuen, skal du deaktivere opdateringer til AntennaPod i din app-butik.</string>
+    <string name="pref_advanced">Avanceret</string>
+    <string name="pref_display">Skærm</string>
+    <string name="import_error_label">Importfejl</string>
+    <string name="show_password_accessibility">Vis adgangskode</string>
+    <string name="rss_address_invalid">Den RSS-adresse, du har indtastet, er ikke gyldig.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Forbundet til %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Version %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Telefonen er ikke kompatibel. Sørg for, at du har den nyeste version af AntennaPod fra Google Play installeret på din telefon.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Ingen elementer</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Det var ikke muligt at oprette forbindelse til telefonen. Sørg for, at din telefon er i nærheden, og at AntennaPod er installeret.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Afspil på telefon</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Gennemse telefon</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Åbn på telefon</string>
+    <string name="statistics_label_short">Statistik</string>
 </resources>
