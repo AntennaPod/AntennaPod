@@ -254,7 +254,6 @@
     <string name="random">Sekalainen</string>
     <string name="smart_shuffle">Smart shuffle</string>
     <string name="size">Koko</string>
-    <string name="time_left_label">"Aikaa jäljellä: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Esiasetukset</string>
     <string name="preset_already_exists">%1$.2fx on jo tallennettu esiasetuksena.</string>
@@ -501,8 +500,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Valitse datahakemisto</string>
     <string name="choose_data_directory_available_space">%1$s / %2$s vapaana</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Pysäytä toisto äänenvoimakkuuden hiljentämisen sijasta, kun toinen sovellus haluaa toistaa ääniä</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pysäytä keskeytyksiin</string>
     <string name="rating_rate">Arvostele AntennaPod</string>
     <string name="rating_later">Myöhemmin</string>
     <!--Online feed view-->
@@ -762,17 +759,12 @@
         <item quantity="other">tuntia odottamassa jonossasi\n%1$d jaksosta</item>
     </plurals>
     <string name="pref_downloads_button_action_title">Toista latausnäytöstä</string>
-    <string name="downloads_label_more">Lataukset »</string>
     <string name="echo_hours_this_year">Tänä vuonna toistit</string>
     <string name="echo_queue_hours_clean">Se on noin %1$s joka päivä, kunnes %2$d alkaa.</string>
     <string name="echo_listened_after_comment_easy">Otat rennosti</string>
     <string name="theming">Teeman aikaan saanti</string>
     <string name="enabled">Otettu käyttöön</string>
-    <string name="subscriptions_label_more">Tilaukset »</string>
     <string name="playback_history_label_short">Historia</string>
-    <string name="episodes_label_more">Jaksot »</string>
-    <string name="queue_label_more">Jono »</string>
-    <string name="inbox_label_more">Saapuneet »</string>
     <string name="pref_automatic_download_global_description">Lataa jaksot automaattisesti postilaatikosta. Voidaan ohittaa podcast-kohtaisesti.</string>
     <string name="disabled">Poistettu käytöstä</string>
     <string name="delete_tag_confirmation">Vahvista, että haluat poistaa tunnisteen \"%1$s\".</string>
@@ -865,8 +857,7 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Ei jaksoja tiedossa, mutta uusia jaksoja odottavat sinua!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Siirry postilaatikkoon</string>
-    <string name="auto_download_inbox_category">Lataa jaksot automaattisesti postilaatikosta</string>
-    <string name="please_wait_before_refreshing">Odota hetki ennen kuin päivität podcastit uudellen.</string>
+    <string name="please_wait_before_refreshing">Odota hetki ennen kuin päivität podcastit uudelleen.</string>
     <string name="already_downloaded">Jakso on jo ladattu</string>
     <string name="tag_all">Kaikki</string>
     <string name="statistics_expected_next_episode_any_time">Milloin vain nyt</string>
@@ -904,7 +895,7 @@
     <string name="general_expand_button">Laajenna</string>
     <string name="general_collapse_button">Pienennä</string>
     <string name="archiving_podcast_progress">Arkistoidaan podcastia %1$d %2$dsta…</string>
-    <string name="deleting_podcast_progress">Poistetaan pocastia %1$d %2$dsta…</string>
+    <string name="deleting_podcast_progress">Poistetaan podcastia %1$d %2$dsta…</string>
     <string name="download_log_details_human_readable_reason_title">Status</string>
     <string name="download_log_details_technical_reason_title">Tekniset tiedot</string>
     <string name="download_log_details_file_url_title">Tiedoston URL</string>
@@ -915,24 +906,24 @@
     <string name="pref_global_default_episode_list_sort_order_title">Oletusjärjestys</string>
     <string name="pref_global_default_episode_list_sort_order_sum">Valitse jaksojen oletusjärjestys podcastit-näytöllä</string>
     <string name="report_bug_title">Ilmoita ongelmasta</string>
-    <string name="report_bug_message">Harmi kuulla, että jokin ei toimi. Me otamme mielellämme vastaan apuasi AntennaPodin kehitykseesä. Käy katsomassa meidän foorumissa tai GitHubissa ja katso onko kohtaamastasi virheestä jo ilmoitettu. Jos ei, kerro meille ja me tutkimme asian.</string>
+    <string name="report_bug_message">Harmi kuulla, että jokin ei toimi. Me otamme mielellämme vastaan apuasi AntennaPodin kehityksessä. Käy katsomassa meidän foorumissa tai GitHubissa ja katso onko kohtaamastasi virheestä jo ilmoitettu. Jos ei, kerro meille ja me tutkimme asian.</string>
     <string name="report_bug_device_info_title">Laite</string>
     <string name="report_bug_attrib_app_version">Sovelluksen versio</string>
     <string name="report_bug_attrib_android_version">Android-versio</string>
     <string name="report_bug_attrib_device_name">Laitteen nimi</string>
     <string name="report_bug_crash_log_title">Kaatumisloki</string>
-    <string name="report_bug_crash_log_message">Luotu:%1$s.</string>
+    <string name="report_bug_crash_log_message">Luotu: %1$s.</string>
     <string name="report_bug_forum_title">Foorumi</string>
     <string name="report_bug_github_title">GitHub</string>
     <string name="sleep_timer_episodes_label">jaksot</string>
-    <string name="sleep_timer_without_continuous_playback">Poista käytöstä jatkuva soitto</string>
-    <string name="sleep_timer_without_continuous_playback_change_hours">Vaihta tunteja</string>
+    <string name="sleep_timer_without_continuous_playback">Poista jatkuva toisto käytöstä</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Vaihda tunteja</string>
     <string name="sleep_timer_without_continuous_playback_message">Jokaisen jakson manuaalisen uniajastimen sijasta voit kytkeä pois \"jatkuvan soiton\" asetuksissa.</string>
     <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
         <item quantity="one">Jatkuva toisto on pois käytöstä ja nykyistä jaksoa on vain %1$d minuutti jäljellä</item>
         <item quantity="other">Jatkuva toisto on pois käytöstä ja nykyistä jaksoa on vain %1$d minuuttia jäljellä</item>
     </plurals>
-    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Jatkuva soitto on poistettu käytöst asetuksissa. Toisto lopetetaan aina jakson loppuessa.</string>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Jatkuva toisto on poistettu käytöstä asetuksissa. Toisto lopetetaan aina jakson loppuessa.</string>
     <plurals name="episodes_sleep_timer_exceeds_queue">
         <item quantity="one">Jonossasi on vain %1$d jakso jäljellä</item>
         <item quantity="other">Jonossasi on vain %1$d jaksoa jäljellä</item>

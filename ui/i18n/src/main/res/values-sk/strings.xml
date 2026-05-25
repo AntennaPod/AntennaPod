@@ -286,7 +286,6 @@
     <string name="smart_shuffle">Inteligentné miešanie</string>
     <string name="size">Veľkosť</string>
     <string name="clear_queue_confirmation_msg">Potvrďte, že chcete z poradia odstrániť VŠETKY epizódy.</string>
-    <string name="time_left_label">"Zostávajúci čas: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Predvoľby</string>
     <string name="preset_already_exists">%1$.2fx je už uložené ako predvoľba.</string>
@@ -590,8 +589,6 @@
   <string name="choose_data_directory">Zvoľte priečinok na ukladanie</string>
     <string name="choose_data_directory_message">Vyberte hlavný priečinok pre ukladanie súborov. Aplikácia AntennaPod vytvorí ďalšie príslušné podpriečinky.</string>
     <string name="choose_data_directory_available_space">%1$s voľných z %2$s</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Namiesto zníženia hlasitosti pozastaviť prehrávanie v prípade, ak chce iná aplikácia prehrávať zvuky</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Automaticky pozastaviť prehrávanie</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Od %1$s ste si prehrali %2$s%3$d%4$s hodín podcastov.</string>
     <string name="rating_contribute_label">Chcieť sa pridať? Či už chcete prekladať, podporovať, navrhovať alebo programovať, radi vás privítame!</string>
@@ -776,11 +773,6 @@
     <string name="downloads_label_short">Stiahnuté</string>
     <string name="subscriptions_label_short">Odbery</string>
     <string name="playback_history_label_short">História</string>
-    <string name="episodes_label_more">Epizódy »</string>
-    <string name="queue_label_more">Poradie »</string>
-    <string name="inbox_label_more">Novinky »</string>
-    <string name="downloads_label_more">Sťahovanie »</string>
-    <string name="subscriptions_label_more">Odbery »</string>
     <string name="enabled">Povolené</string>
     <string name="disabled">Zakázané</string>
     <string name="global_default_with_value">Globálne predvolené (%1$s)</string>
@@ -840,7 +832,6 @@
     <string name="feed_new_episodes_action_summary_autodownload">Automatické sťahovanie je povolené. Epizódy sú pridané do schránky a po stiahnutí budú presunuté do poradia.</string>
     <string name="visit_social_interact_label">Zobraziť komentáre</string>
     <string name="rss_address">RSS adresa</string>
-    <string name="auto_download_inbox_category">Automaticky sťahovať epizódy z Noviniek</string>
     <plurals name="downloading_episodes_message">
         <item quantity="one">Sťahovanie %d epizódy.</item>
         <item quantity="few">Sťahovanie %d epizód.</item>
@@ -943,4 +934,7 @@
     <string name="archiving_podcast_progress">Archivovanie podcastu %1$d z %2$d…</string>
     <string name="general_collapse_button">Zbaliť</string>
     <string name="general_expand_button">Rozbaliť</string>
+    <string name="statistics_label_short">Štatistiky</string>
+    <string name="favorite_episodes_label_short">Obľúbené</string>
+    <string name="feed_new_episodes_action_snackbar">Nedá sa zmeniť, keď je povolené automatické sťahovanie.</string>
 </resources>

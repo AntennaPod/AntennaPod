@@ -147,7 +147,7 @@
     <string name="show_feed_settings_label">Erakutsi podcastaren ezarpenak</string>
     <string name="feed_settings_label">Podcastaren ezarpenak</string>
     <string name="rename_feed_label">Berrizendatu</string>
-    <string name="remove_feed_label">Ezabatu</string>
+    <string name="remove_feed_label">Harpidegabetu</string>
     <string name="share_label">Partekatu</string>
     <string name="share_file_label">Partekatu fitxategia</string>
     <string name="load_complete_feed">Eguneratu podcast osoa</string>
@@ -263,7 +263,6 @@
     <string name="random">Ausaz</string>
     <string name="smart_shuffle">Nahasketa adimentsua</string>
     <string name="size">Tamaina</string>
-    <string name="time_left_label">"Gelditzen den denbora: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Aurrezarpenak</string>
     <string name="preset_already_exists">%1$.2f x dagoeneko gordea dago aurrezarpen bezala.</string>
@@ -312,7 +311,7 @@
     <string name="button_action_restart_episode">Hasi berriz saioa</string>
     <string name="pref_followQueue_sum">Jauzi ilarako hurrengo elementura erreprodukzioa amaitzean</string>
     <string name="pref_auto_local_delete_title">Ezabatu automatikoki tokiko karpetetatik</string>
-    <string name="pref_auto_local_delete_sum">Automatikoki ezabatzeko funtzionalitateak tokiko karpetetatik ere ezabatzen du</string>
+    <string name="pref_auto_local_delete_sum">Ezabatu \"tokiko karpeta gehitu\" bidez gehitutako fitxategiak ere. Kontuan izan hauek ez dituela AntennaPod-ek deskargatzen eta ezin direla berriro deskargatu</string>
     <string name="pref_auto_local_delete_dialog_body">Kontuan izan, tokiko karpeten kasuan honek saioak AntennaPod-etik kenduko dituela eta haien multimedia fitxategiak ezabatuko dituela gailuaren biltegiratzetik. Ezingo dira berriz deskargatu AntennaPod bidez. Automatikoki ezabatzea gaitu nahi duzu?</string>
     <string name="pref_smart_mark_as_played_sum">Markatu saioak erreproduzituta bezala, amaitzeko segundo kopuru jakin bat baino gutxiago falta bada</string>
     <string name="pref_smart_mark_as_played_title">Erreproduzituta marka adimendua</string>
@@ -533,8 +532,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Aukeratu datu-karpeta</string>
     <string name="choose_data_directory_available_space">%1$s / %2$s libre</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Beste aplikazio batek soinuak erreproduzitzen dituenean bolumena jaitsi beharrean erreprodukzioa pausatu</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pausatu etenaldietan</string>
     <!--Rating dialog-->
   <string name="rating_tagline">%1$s(e)tik %2$s%3$d%4$s podcast ordu erreproduzitu dituzu.</string>
     <string name="rating_contribute_label">Bat egin nahi duzu? Pozik hartuko zaitugu, egiten duzuna egiten duzula: itzuli, laguntza eskaini, diseinatu edo programatu!</string>
@@ -756,7 +753,6 @@
     <string name="inbox_label_short">Sarrera ontzia</string>
     <string name="statistics_time_played">erreproduzituta</string>
     <string name="downloads_label_short">Deskargak</string>
-    <string name="inbox_label_more">Sarrera ontzia »</string>
     <string name="pref_downloads_button_action_title">Erreproduzitu deskargen pantailatik</string>
     <string name="echo_thanks_now_favorite">Gatozen zure gogoko podcastei begiratua ematera…</string>
     <string name="playback_history_label_short">Historia</string>
@@ -770,10 +766,7 @@
     <string name="pref_automatic_download_queue_description">Deskargatu automatikoki ilaran dauden atalak</string>
     <string name="episode_lists">Atalen zerrendak</string>
     <string name="echo_thanks_we_are_glad_new">gurekin bat egiteagatik aurten.\n\nBeste aplikazio batetik bazatoz edo zure podcast-abentura gurekin hasi berri bazara: pozten gara zu gurekin izateaz!</string>
-    <string name="episodes_label_more">Atalak »</string>
     <string name="delete_tag_label">Ezabatu etiketa</string>
-    <string name="queue_label_more">Ilara »</string>
-    <string name="downloads_label_more">Deskargak »</string>
     <string name="delete_tag_confirmation">Berretsi ezazu mesedez etiketa ezabatu nahi duzula \"%1$s\".</string>
     <string name="statistics_time_total">guztira</string>
     <string name="echo_hours_this_year">Aurten honakoa erreproduzitu duzu</string>
@@ -815,7 +808,6 @@
     <string name="echo_share">Nire %d urtea podcastetan. #AntennaPodEcho</string>
     <string name="home_label_short">Menu nagusia</string>
     <string name="queue_label_short">Ilara</string>
-    <string name="subscriptions_label_more">Harpidetzak »</string>
     <string name="disabled">Desgaituta</string>
     <string name="global_default_with_value">Lehenetsi globala (%1$s)</string>
     <string name="overflow_more">Gehiago</string>
@@ -867,7 +859,6 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Ez dago atalik programatuta, baina badaude zain dituzun atal berriak!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Sarrera-otzira joan</string>
-    <string name="auto_download_inbox_category">Deskargatu automatikoki atalak sarrera-ontzitik</string>
     <string name="please_wait_before_refreshing">Mesedez, itxaron pixka bat podcastak berriro freskatu aurretik.</string>
     <string name="already_downloaded">Atala dagoeneko deskargatuta dago</string>
     <string name="tag_all">Denak</string>
@@ -881,8 +872,8 @@
     <string name="archive_feed_label_verb">Artxiboa</string>
     <string name="archive_feed_label_noun">Artxiboa</string>
     <string name="restore_archive_label">Berrezarri</string>
-    <string name="remove_archive_feed_label">Ezabatu / artxiboa</string>
-    <string name="feed_delete_explanation_delete">Ezabatzean harpidetza ezabatzen da, atal, deskarga, erreprodukzio-historia eta estatistikak barne.</string>
+    <string name="remove_archive_feed_label">Hrpidegabetu / artxiboa</string>
+    <string name="feed_delete_explanation_delete">Harpidetza kentzeak harpidetza ezabatzen du, atal, deskarga, erreprodukzio-historia eta estatistikak barne.</string>
     <string name="feed_delete_explanation_archive">Artxibatzeak harpidetza zerrendatik ezkutatzen du eta atal berriak bilatzeari uzten dio. Deskargak, estatistikak eta erreprodukzio-egoera gordetzen dira.</string>
     <string name="tag_untagged">Etiketarik gabe</string>
     <plurals name="mobile_download_notice">
@@ -906,7 +897,7 @@
     <string name="general_expand_button">Hedatu</string>
     <string name="general_collapse_button">Tolestu</string>
     <string name="archiving_podcast_progress">%2$d-tik %1$d podcasta artxibatzen…</string>
-    <string name="deleting_podcast_progress">%2$d-tik %1$d podcasta ezabatzen…</string>
+    <string name="deleting_podcast_progress">%2$d-tik %1$d podcastetik harpidegabetzen…</string>
     <string name="download_log_details_human_readable_reason_title">Egoera</string>
     <string name="download_log_details_technical_reason_title">Xehetasun teknikoak</string>
     <string name="download_log_details_file_url_title">URL fitxategia</string>
@@ -939,4 +930,38 @@
         <item quantity="one">Atal %1$d baino ez da gertazen zure ilaran</item>
         <item quantity="other">%1$d atal baino ez dira geratzen zure ilaran</item>
     </plurals>
+    <string name="statistics_label_short">Estatistikak</string>
+    <string name="favorite_episodes_label_short">Gustokoenak</string>
+    <string name="feed_new_episodes_action_snackbar">Ezin da aldatu deskarga automatikoa gaituta dagoenean.</string>
+    <string name="remove_restore_feed_label">Harpidegabetu / berrezarri</string>
+    <string name="restoring_podcast_progress">Podcast-a berrezartzen%2$dtik %1$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">atalaren %d gustokoenetara gehituta.</item>
+        <item quantity="other">atalen %d gustokoenetara gehituta.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">atalaren %d gustokoenetatik ezabatuta.</item>
+        <item quantity="other">atalen %d gustokoenetatik ezabatuta.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">Atalaren %d posizioa berrezarri da.</item>
+        <item quantity="other">Atalen %d posizioa berrezarri da.</item>
+    </plurals>
+    <string name="queue_time_left_label">%1$s • %2$s geratzen dira</string>
+    <string name="no_fav_episodes_head_label">Gustokoenik ez</string>
+    <string name="no_fav_episodes_label">Markatu atalak gogoko gisa izarraren ikonoa sakatuz.</string>
+    <string name="bottom_navigation_deprecation_warning">Zoritxarrez, alboko nabigazioa kendu beharko dugu etorkizuneko eguneratze batean. AntennaPod boluntario talde txiki batek garatu du, eta bi nabigazio estiloak urteetan mantendu ondoren, gehiegizko lan bihurtu da.\n\nAlboko nabigazioaren menpe bazaude, desgaitu AntennaPod-en eguneraketak zure aplikazio dendan.</string>
+    <string name="pref_advanced">Aurreratua</string>
+    <string name="pref_display">Bistaratu</string>
+    <string name="import_error_label">Inportatu akatsa</string>
+    <string name="show_password_accessibility">Pasahitza erakutsi</string>
+    <string name="rss_address_invalid">Idatzi duzun RSS helbidea ez da zuzena.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">%sra konektatuta</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">%s bertsioa</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Telefonoa ez da bateragarria. Ziurtatu Google Play-ko AntennaPod-en azken bertsioa erabiltzen ari zarela zure telefonoan.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Elementurik ez</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Ezin izan da telefonora iritsi. Ziurtatu telefonoa gertu dagoela eta AntennaPod instalatuta dagoela.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Mugikorrean erreproduzitu</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Mugikorra arakatu</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Mugikorrean ireki</string>
 </resources>

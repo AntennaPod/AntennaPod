@@ -273,7 +273,6 @@
     <string name="random">Dre zegouezh</string>
     <string name="smart_shuffle">Urzh emgefreek</string>
     <string name="size">Ment</string>
-    <string name="time_left_label">"Padelezh a chom: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Rakreolamantoù</string>
     <string name="preset_already_exists">%1$.2fx a zo ur rakreolamant saveteet dija.</string>
@@ -528,8 +527,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Dibab teuliad ar roadennoù</string>
     <string name="choose_data_directory_available_space">%1$s war %2$s dieub</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Ehaniñ al lenn kentoc\'h eget izelaat ar son pa fell d\'un arload all ober sonioù</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Ehaniñ pa vez arsavet</string>
     <!--Online feed view-->
   <string name="subscribe_label">Koumanantiñ</string>
     <!--Content descriptions for image buttons-->
@@ -655,10 +652,6 @@
     <string name="inbox_label_short">Boest degemer</string>
     <string name="subscriptions_label_short">Koumanantoù</string>
     <string name="playback_history_label_short">Roll istor</string>
-    <string name="episodes_label_more">Rannoù »</string>
-    <string name="queue_label_more">Lost »</string>
-    <string name="inbox_label_more">Boest degemer »</string>
-    <string name="downloads_label_more">Pellgargadennoù »</string>
     <string name="enabled">Gweredekaet</string>
     <string name="disabled">Diweredekaet</string>
     <string name="global_default_with_value">Dre ziouer (%1$s)</string>
@@ -667,7 +660,6 @@
     <string name="feed_new_episodes_action_add_to_queue">Ouzhpennañ el lost (diweredekaat a ra ar pellgargañ emgefreek)</string>
     <string name="delete_downloads_played">Dilemel a re lennet</string>
     <string name="home_label_short">Degemer</string>
-    <string name="subscriptions_label_more">Koumanantoù »</string>
     <string name="downloads_label_short">Pellgargadennoù</string>
     <string name="theming">Neuz</string>
     <string name="pref_episode_cleanup_title">Dilemel a-raok ar pellgargañ emgefreek</string>

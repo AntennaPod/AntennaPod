@@ -51,7 +51,7 @@
     <string name="home_welcome_text">Du prenumererar inte på några poddar än. Öppna menyn för att lägga till en podcast.</string>
     <string name="notification_permission_denied">Du nekade behörigheten.</string>
     <string name="configure_home">Konfigurera hemskärm</string>
-    <string name="section_hidden">Dolt</string>
+    <string name="section_hidden">Döljs</string>
     <!--Main activity-->
   <string name="drawer_open">Öppna meny</string>
     <string name="drawer_close">Stäng meny</string>
@@ -155,7 +155,7 @@
     <string name="show_feed_settings_label">Visa podcastinställningar</string>
     <string name="feed_settings_label">Podcastinställningar</string>
     <string name="rename_feed_label">Byt namn</string>
-    <string name="remove_feed_label">Ta bort</string>
+    <string name="remove_feed_label">Avprenumerera</string>
     <string name="share_label">Dela</string>
     <string name="share_file_label">Dela fil</string>
     <string name="load_complete_feed">Uppdatera hela podcasten</string>
@@ -276,7 +276,6 @@
     <string name="smart_shuffle">Smart blandning</string>
     <string name="size">Storlek</string>
     <string name="clear_queue_confirmation_msg">Var god bekräfta att du vill radera ALLA avsnitt från kön.</string>
-    <string name="time_left_label">"Återstående tid: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Förhandsinställningar</string>
     <string name="preset_already_exists">%1$.2fx är redan sparad som en förhandsinställning.</string>
@@ -331,9 +330,9 @@
     <string name="pref_auto_delete_playback_title">Radera efter uppspelning</string>
     <string name="pref_auto_delete_title">Automatisk radering</string>
     <string name="pref_auto_delete_sum">Radera avsnitt efter uppspelning eller när automatisk nedladdning behöver utrymme</string>
-    <string name="pref_auto_local_delete_title">Radera automatiskt från lokala kataloger</string>
-    <string name="pref_auto_local_delete_sum">Inkludera lokala kataloger i funktionen för automatisk radering</string>
-    <string name="pref_auto_local_delete_dialog_body">Notera att detta kommer att ta bort avsnitt från AntennaPod för lokala kataloger och radera deras mediafiler från enhetens lagring. De kan inte laddas ner igen via AntennaPod. Aktivera automatisk radering?</string>
+    <string name="pref_auto_local_delete_title">Radera automatiskt från lokala mappar</string>
+    <string name="pref_auto_local_delete_sum">Ta också bort filer som lagts till genom \"lägg till lokal mapp\". Notera att dessa inte laddas ner av AntennaPod och inte kan laddas ner igen</string>
+    <string name="pref_auto_local_delete_dialog_body">Notera att detta kommer att ta bort avsnitt från AntennaPod från lokala mappar och radera deras mediafiler från enhetens lagring. De kan inte laddas ner igen via AntennaPod. Aktivera automatisk radering?</string>
     <string name="pref_smart_mark_as_played_sum">Markera avsnitt som spelade även om mindre än ett visst antal sekunder återstår</string>
     <string name="pref_smart_mark_as_played_title">Smart markera som spelad</string>
     <string name="pref_skip_keeps_episodes_sum">Ta inte bort avsnitt när de hoppas över</string>
@@ -576,8 +575,6 @@
   <string name="choose_data_directory">Välj katalog</string>
     <string name="choose_data_directory_message">Välj baskatalog för dina data. AntennaPod kommer att skapa underkatalogerna som krävs.</string>
     <string name="choose_data_directory_available_space">%1$s av %2$s ledigt</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Pausa uppspelning istället för att sänka volymen när en annan app vill spela ljud</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pausa vid avbrott</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Sedan %1$s har du lyssnat på %2$s%3$d%4$s timmar av podcaster.</string>
     <string name="rating_contribute_label">Vill du hjälpa till? Oavsett om du vill översätta, tillhanda hålla support, design eller kod är vi glada att ha dig med!</string>
@@ -657,11 +654,11 @@
     <string name="search_powered_by">Resultat för %1$s</string>
     <string name="select_country">Välj land</string>
     <!--Local feeds-->
-  <string name="add_local_folder">Lägg till i lokal katalog</string>
-    <string name="local_folder">Lokal katalog</string>
-    <string name="reconnect_local_folder">Återanslut lokal katalog</string>
-    <string name="reconnect_local_folder_warning">Om åtkomst nekats kan du använda detta för att återansluta till exakt samma katalog. Välj inte en annan katalog.</string>
-    <string name="local_feed_description">Denna virtuella podcast skapades genom att lägga till en katalog till AntennaPod.</string>
+  <string name="add_local_folder">Lägg till lokal mapp</string>
+    <string name="local_folder">Lokal mapp</string>
+    <string name="reconnect_local_folder">Återanslut lokal mapp</string>
+    <string name="reconnect_local_folder_warning">Om åtkomst nekats kan du använda detta för att återansluta till exakt samma mapp. Välj inte en annan mapp.</string>
+    <string name="local_feed_description">Denna virtuella podcast skapades genom att lägga till en mapp i AntennaPod.</string>
     <string name="unable_to_start_system_file_manager">Kunde inte starta systemets filhanterare</string>
     <string name="filter">Filtrera</string>
     <string name="hide_is_favorite_label">Är favorit</string>
@@ -740,7 +737,7 @@
     <string name="bottom_navigation">Bottennavigering</string>
     <string name="statistics_episodes_space">upptaget utrymme</string>
     <string name="statistics_release_next">nästa avsnitt (uppskattning)</string>
-    <string name="section_shown">Visade</string>
+    <string name="section_shown">Visas</string>
     <string name="home_no_recent_unplayed_episodes_text">Du har redan spelat alla senaste avsnitt. Inget att bli förvånad över här ;)</string>
     <string name="home_continue_empty_text">Du kan lägga till avsnitt genom att ladda ner dem eller trycka länge på dem och välja \"Lägg till i kö\".</string>
     <string name="home_downloads_empty_text">Du kan ladda ner vilket avsnitt som helst för att lyssna på det offline.</string>
@@ -765,11 +762,6 @@
     <string name="pref_automatic_download_queue_title">Ladda ned köade</string>
     <string name="echo_intro_your_year">Ditt år</string>
     <string name="echo_hours_this_year">Det här året spelade du upp</string>
-    <string name="episodes_label_more">Avsnitt »</string>
-    <string name="queue_label_more">Kö »</string>
-    <string name="inbox_label_more">Inkorg »</string>
-    <string name="downloads_label_more">Nedladdningar »</string>
-    <string name="subscriptions_label_more">Prenumerationer »</string>
     <string name="enabled">Aktiverad</string>
     <string name="disabled">Inaktiverad</string>
     <string name="delete_tag_label">Ta bort etikett</string>
@@ -818,7 +810,7 @@
     <string name="global_default_with_value">Global standard (%1$s)</string>
     <string name="echo_hoarder_subtitle_clean">Rensa!</string>
     <string name="echo_thanks_we_are_glad_old">för att du hängt med oss i år!\n\nDu spelade ditt första avsnitt med oss den %1$s. Det har varit vår ära att tjäna dig sedan dess.</string>
-    <string name="echo_thanks_we_are_glad_new">för att du hängde med oss i år!\n\nOavsett om du har flyttat från en annan app eller startat ditt poddäventyr med oss: så är vi glada över att ha dig!</string>
+    <string name="echo_thanks_we_are_glad_new">för att du hängde med oss i år!\n\nOavsett om du har flyttat från en annan app eller startat ditt poddäventyr med oss: vi är glada att du är med oss!</string>
     <string name="echo_home_header">Gå igenom året</string>
     <string name="rss_address">RSS-adress</string>
     <string name="visit_social_interact_label">Visa kommentarer</string>
@@ -862,7 +854,6 @@
     <string name="visit_social_interact_confirm_dialog_message">Vänligen säkerställ att du litar på webbplatsen \"%1$s\".</string>
     <string name="no_items_selected_message">Inga objekt har valts</string>
     <string name="no_queue_items_inbox_has_items_label">Inga avsnitt är köade, men det finns nya avsnitt som väntar dig!</string>
-    <string name="auto_download_inbox_category">Ladda automatiskt ned avsnitt från inkorgen</string>
     <string name="transcript_follow_audio_label">Följ ljuduppspelning</string>
     <plurals name="num_subscriptions">
         <item quantity="one">%d prenumeration</item>
@@ -871,7 +862,7 @@
     <string name="archive_feed_label_verb">Arkivera</string>
     <string name="archive_feed_label_noun">Arkiv</string>
     <string name="restore_archive_label">Återställ</string>
-    <string name="remove_archive_feed_label">Ta bort / arkivera</string>
+    <string name="remove_archive_feed_label">Avprenumerera / arkivera</string>
     <plurals name="marked_as_unplayed_message">
         <item quantity="one">%d avsnitt markerat som ospelat.</item>
         <item quantity="other">%d avsnitt markerade som ospelade.</item>
@@ -894,7 +885,7 @@
     <string name="statistics_expected_next_episode_any_time">När som helst nu</string>
     <string name="release_schedule_multiple_per_day">flera gånger om dagen</string>
     <string name="cover_as_background">Omslagsbild som bakgrund</string>
-    <string name="feed_delete_explanation_delete">Borttagning av prenumerationen raderar alla dess avsnitt, nedladdningar, uppspelningshistorik och statistik.</string>
+    <string name="feed_delete_explanation_delete">Att avprenemurera raderar alla dess avsnitt, nedladdningar, uppspelningshistorik och statistik.</string>
     <string name="feed_delete_explanation_archive">Arkivering döljer prenumerationen från prenumerationslistan och uppdatering av nya avsnitt upphör. Nedladdningar, statistik och uppspelningsposition behålls.</string>
     <string name="please_wait_before_refreshing">Vänligen vänta en stund innan du uppdaterar poddarna igen.</string>
     <plurals name="mobile_download_notice">
@@ -903,9 +894,9 @@
     </plurals>
     <string name="no_archive_label">Du kan arkivera poddar från huvudskärmen för prenumerationer.</string>
     <string name="tag_untagged">Utan etikett</string>
-    <string name="general_collapse_button">Kollapsa</string>
+    <string name="general_collapse_button">Fäll ihop</string>
     <string name="archiving_podcast_progress">Arkiverar podcast %1$d av %2$d…</string>
-    <string name="deleting_podcast_progress">Tar bort podcast %1$d av %2$d…</string>
+    <string name="deleting_podcast_progress">Avprenumererar från podcast %1$d av %2$d…</string>
     <string name="download_log_details_human_readable_reason_title">Status</string>
     <string name="download_log_details_technical_reason_title">Tekniska detaljer</string>
     <string name="download_log_details_file_url_title">Fil URL</string>
@@ -939,4 +930,38 @@
         <item quantity="one">Det finns bara %1$d avsnitt kvar i din kö</item>
         <item quantity="other">Det finns bara %1$d flera avsnitt kvar i din kö</item>
     </plurals>
+    <string name="statistics_label_short">Statistik</string>
+    <string name="favorite_episodes_label_short">Favoriter</string>
+    <string name="feed_new_episodes_action_snackbar">Kan inte ändras när automatisk nedladdning är igång.</string>
+    <string name="remove_restore_feed_label">Avprenumerera / återställ</string>
+    <string name="restoring_podcast_progress">Återställer podcast %1$d av %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d avsnitt har lagts till i favoriter.</item>
+        <item quantity="other">%d avsnitt har lagts till i favoriter.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d avsnitt har tagits bort från favoriter.</item>
+        <item quantity="other">%d avsnitt har tagits bort från favoriter.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">%d avsnittsposition återställd.</item>
+        <item quantity="other">%d avsnittspositioner återställda.</item>
+    </plurals>
+    <string name="queue_time_left_label">%1$s • %2$s kvar</string>
+    <string name="no_fav_episodes_head_label">Inga favoriter</string>
+    <string name="no_fav_episodes_label">Markera avsnitt som favoriter genom att trycka på stjärnikonen.</string>
+    <string name="bottom_navigation_deprecation_warning">Tyvärr måste vi ta bort sidonavigering i en framtida uppdatering. AntennaPod utvecklas av en liten grupp volontärer och efter att ha underhållit båda navigerinsstilarna i flera år har det blivit för mycket omkostnader.\n\nOm du är beroende av sidonavigering bör du inaktivera uppdateringar fö AntennaPod i din app store.</string>
+    <string name="pref_advanced">Avancerat</string>
+    <string name="import_error_label">Importeringsfel</string>
+    <string name="show_password_accessibility">Visa lösenord</string>
+    <string name="rss_address_invalid">RSS-adressen du har angett är inte giltig.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Ansluten till %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Version %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Telefonen är inte kompatibel. Se till att du har den senaste versionen av AntennaPod från Google Play på din telefon.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Inga artiklar</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Kunde inte nå telefonen. Se till att din telefon är nära och att AntennaPod är installerat.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Spela upp på telefon</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Bläddra i telefonen</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Öppna på telefonen</string>
+    <string name="pref_display">Display</string>
 </resources>

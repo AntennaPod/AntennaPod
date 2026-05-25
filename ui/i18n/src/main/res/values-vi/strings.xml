@@ -175,11 +175,6 @@
     <string name="configure_home">Cài đặt màn hình trang chủ</string>
     <string name="section_hidden">Đã ẩn</string>
     <string name="section_shown">Đã hiển thị</string>
-    <string name="episodes_label_more">Các tập »</string>
-    <string name="queue_label_more">Hàng chờ »</string>
-    <string name="inbox_label_more">Hộp thư đến »</string>
-    <string name="downloads_label_more">Bản tải xuống »</string>
-    <string name="subscriptions_label_more">Kênh đăng ký »</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="other">Tổng dung lượng %d tập trên thiết bị</item>
     </plurals>
