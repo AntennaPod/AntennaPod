@@ -64,8 +64,8 @@
 
                 <ImageView
                     android:id="@+id/imgvCoverLarge"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="@dimen/widget_cover_large"
+                    android:layout_height="@dimen/widget_cover_large"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="4dp"
                     android:src="@mipmap/ic_launcher"
