@@ -83,4 +83,4 @@ src="https://user-images.githubusercontent.com/149837/105122859-e1317180-5a8b-11
 
 #### Using the command line
 1. Start an AVD or plug in your phone
-1. `sh .github/workflows/runTests.sh`
+2. `sh .github/workflows/runTests.sh`
