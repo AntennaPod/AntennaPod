@@ -5,10 +5,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.URLUtil;
+
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.parser.media.MediaFormatDetector;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.parser.feed.PodcastIndexChapterParser;
 import de.danoeh.antennapod.parser.media.id3.ChapterReader;
@@ -23,14 +26,17 @@ import okhttp3.Response;
 import org.apache.commons.io.input.CountingInputStream;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
+import java.io.SequenceInputStream;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Utility class for getting chapter data from media files.
@@ -64,7 +70,6 @@ public class ChapterUtils {
                     chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
                             feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefresh);
                 }
-
             }
 
             List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
@@ -84,43 +89,135 @@ public class ChapterUtils {
 
     public static List<Chapter> loadChaptersFromMediaFile(Playable playable, Context context)
             throws InterruptedIOException {
-        try (CountingInputStream in = openStream(playable, context)) {
-            List<Chapter> chapters = readId3ChaptersFrom(in);
-            if (!chapters.isEmpty()) {
-                Log.i(TAG, "Chapters loaded");
+        // Load the first few bytes to detect the format.
+        // Then stitch the format back onto the stream and pass it to the chapter reader.
+        // If we were unable to detect the format, we stitch and send it to the first reader,
+        // then we try again with a fresh stream for the remaining two readers.
+        // This reduces the number of times we have to open a new stream as much as possible.
+        MediaFormatDetector.Format format = MediaFormatDetector.Format.UNKNOWN;
+        MediaFormatDetector.Format hint = MediaFormatDetector.Format.UNKNOWN;
+        try (CountingInputStream sniffStream = openStream(playable, context)) {
+            MediaFormatDetector.Result detection = MediaFormatDetector.detect(sniffStream);
+            format = detection.format;
+            if (format == MediaFormatDetector.Format.UNKNOWN) {
+                hint = detectHintFromMetadata(
+                        ((FeedMedia) playable).getMimeType(), playable.getStreamUrl());
+            }
+            InputStream reconstructed = new SequenceInputStream(
+                    new ByteArrayInputStream(detection.bytes), sniffStream);
+            if (format != MediaFormatDetector.Format.UNKNOWN) {
+                CountingInputStream input = new CountingInputStream(reconstructed);
+                List<Chapter> chapters = readChaptersFromInputStream(input, format);
+                hasLoadedChapters(chapters);
                 return chapters;
+            } else if (hint == MediaFormatDetector.Format.ID3
+                    || hint == MediaFormatDetector.Format.UNKNOWN) {
+                List<Chapter> chapters = readId3ChaptersFrom(new CountingInputStream(reconstructed));
+                if (hasLoadedChapters(chapters)) {
+                    return chapters;
+                }
+            } else if (hint == MediaFormatDetector.Format.OGG) {
+                List<Chapter> chapters = readOggChaptersFromInputStream(
+                        new CountingInputStream(reconstructed));
+                if (hasLoadedChapters(chapters)) {
+                    return chapters;
+                }
+            } else {
+                List<Chapter> chapters = readM4AChaptersFromInputStream(
+                        new CountingInputStream(reconstructed));
+                if (hasLoadedChapters(chapters)) {
+                    return chapters;
+                }
             }
         } catch (InterruptedIOException e) {
             throw e;
-        } catch (IOException | ID3ReaderException e) {
-            Log.e(TAG, "Unable to load ID3 chapters: " + e.getMessage());
+        } catch (IOException | ID3ReaderException | VorbisCommentReaderException e) {
+            Log.e(TAG, "Unable to load chapters: " + e.getMessage());
         }
 
-        try (CountingInputStream in = openStream(playable, context)) {
-            List<Chapter> chapters = readOggChaptersFromInputStream(in);
-            if (!chapters.isEmpty()) {
-                Log.i(TAG, "Chapters loaded");
-                return chapters;
+        if (format == MediaFormatDetector.Format.UNKNOWN) {
+            for (MediaFormatDetector.Format fallbackFormat : getFallbackOrder(hint)) {
+                List<Chapter> chapters = tryFreshStreamParser(playable, context, fallbackFormat);
+                if (hasLoadedChapters(chapters)) {
+                    return chapters;
+                }
             }
-        } catch (InterruptedIOException e) {
-            throw e;
-        } catch (IOException | VorbisCommentReaderException e) {
-            Log.e(TAG, "Unable to load vorbis chapters: " + e.getMessage());
         }
-
-        try (CountingInputStream in = openStream(playable, context)) {
-            List<Chapter> chapters = readM4AChaptersFromInputStream(in);
-            if (!chapters.isEmpty()) {
-                Log.i(TAG, "Chapters loaded");
-                return chapters;
-            }
-        } catch (InterruptedIOException e) {
-            throw e;
-        } catch (IOException e) {
-            Log.e(TAG, "Unable to open stream " + e.getMessage());
-        }
-
         return null;
+    }
+
+    static MediaFormatDetector.Format detectHintFromMetadata(String mime, String url) {
+        MediaFormatDetector.Format format = MediaFormatDetector.Format.UNKNOWN;
+        if (mime != null) {
+            format = switch (mime.trim().toLowerCase(Locale.US)) {
+                case "audio/mpeg", "audio/mp3", "audio/x-mp3"
+                        -> MediaFormatDetector.Format.ID3;
+                case "audio/ogg", "application/ogg", "audio/opus", "application/opus"
+                        -> MediaFormatDetector.Format.OGG;
+                case "audio/mp4", "audio/x-m4a", "audio/m4a", "video/mp4", "audio/x-m4b", "audio/m4b"
+                        -> MediaFormatDetector.Format.M4A;
+                default -> format;
+            };
+        }
+
+        if (format == MediaFormatDetector.Format.UNKNOWN && url != null) {
+            String filename = URLUtil.guessFileName(url, null, mime);
+            if (!TextUtils.isEmpty(filename)) {
+                int dot = filename.lastIndexOf('.');
+                if (dot != -1 && dot < filename.length() - 1) {
+                    String ext = filename.substring(dot + 1).toLowerCase(Locale.US);
+                    format = switch (ext) {
+                        case "mp3" -> MediaFormatDetector.Format.ID3;
+                        case "ogg", "opus" -> MediaFormatDetector.Format.OGG;
+                        case "m4a", "mp4", "m4b" -> MediaFormatDetector.Format.M4A;
+                        default -> format;
+                    };
+                }
+            }
+        }
+        return format;
+    }
+
+    static MediaFormatDetector.Format[] getFallbackOrder(MediaFormatDetector.Format hint) {
+        return switch (hint) {
+            case OGG -> new MediaFormatDetector.Format[]{
+                    MediaFormatDetector.Format.ID3, MediaFormatDetector.Format.M4A};
+            case M4A -> new MediaFormatDetector.Format[]{
+                    MediaFormatDetector.Format.ID3, MediaFormatDetector.Format.OGG};
+            default -> new MediaFormatDetector.Format[]{
+                    MediaFormatDetector.Format.OGG, MediaFormatDetector.Format.M4A};
+        };
+    }
+
+    private static List<Chapter> readChaptersFromInputStream(
+            CountingInputStream input, MediaFormatDetector.Format format)
+            throws IOException, ID3ReaderException, VorbisCommentReaderException {
+        return switch (format) {
+            case ID3 -> readId3ChaptersFrom(input);
+            case OGG -> readOggChaptersFromInputStream(input);
+            case M4A -> readM4AChaptersFromInputStream(input);
+            default -> Collections.emptyList();
+        };
+    }
+
+    private static boolean hasLoadedChapters(List<Chapter> chapters) {
+        if (chapters != null && !chapters.isEmpty()) {
+            Log.i(TAG, "Chapters loaded");
+            return true;
+        }
+        return false;
+    }
+
+    private static List<Chapter> tryFreshStreamParser(Playable playable, Context context,
+                                                      MediaFormatDetector.Format format) throws InterruptedIOException {
+        try (CountingInputStream in = openStream(playable, context)) {
+            return readChaptersFromInputStream(in, format);
+        } catch (InterruptedIOException e) {
+            throw e;
+        } catch (IOException | ID3ReaderException | VorbisCommentReaderException e) {
+            Log.e(TAG, "Unable to load chapters (" + format + "): " + e.getMessage());
+            return null;
+        }
     }
 
     private static CountingInputStream openStream(Playable playable, Context context) throws IOException {
@@ -184,13 +281,7 @@ public class ChapterUtils {
         ChapterReader reader = new ChapterReader(in);
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
-        Collections.sort(chapters, new ChapterStartTimeComparator());
-        enumerateEmptyChapterTitles(chapters);
-        if (!chaptersValid(chapters)) {
-            Log.e(TAG, "Chapter data was invalid");
-            return Collections.emptyList();
-        }
-        return chapters;
+        return processChapters(chapters);
     }
 
     @NonNull
@@ -198,15 +289,7 @@ public class ChapterUtils {
         VorbisCommentChapterReader reader = new VorbisCommentChapterReader(new BufferedInputStream(input));
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
-        if (chapters == null) {
-            return Collections.emptyList();
-        }
-        Collections.sort(chapters, new ChapterStartTimeComparator());
-        enumerateEmptyChapterTitles(chapters);
-        if (chaptersValid(chapters)) {
-            return chapters;
-        }
-        return Collections.emptyList();
+        return processChapters(chapters);
     }
 
     @NonNull
@@ -214,6 +297,10 @@ public class ChapterUtils {
         M4AChapterReader reader = new M4AChapterReader(new BufferedInputStream(input));
         reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
+        return processChapters(chapters);
+    }
+
+    private static List<Chapter> processChapters(List<Chapter> chapters) {
         if (chapters == null) {
             return Collections.emptyList();
         }
@@ -222,6 +309,7 @@ public class ChapterUtils {
         if (chaptersValid(chapters)) {
             return chapters;
         }
+        Log.e(TAG, "Chapter data was invalid");
         return Collections.emptyList();
     }
 
