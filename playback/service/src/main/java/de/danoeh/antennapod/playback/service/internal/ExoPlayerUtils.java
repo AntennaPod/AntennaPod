@@ -47,6 +47,7 @@ public class ExoPlayerUtils {
                         .build(), true)
                 .setMediaSourceFactory(new ApMediaSourceFactory(context))
                 .setSeekParameters(SeekParameters.EXACT)
+                .setHandleAudioBecomingNoisy(UserPreferences.isPauseOnHeadsetDisconnect())
                 .build();
     }
 
