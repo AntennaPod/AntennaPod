@@ -1,0 +1,67 @@
+name: Assign Milestone
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [develop]
+
+jobs:
+  assign-milestone:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v5
+        with:
+          ref: master
+          sparse-checkout: app/build.gradle
+          sparse-checkout-cone-mode: false
+
+      - name: Determine milestone name
+        id: milestone
+        run: |
+          VERSION=$(grep 'versionName' app/build.gradle | grep -oP '"[^"]+"' | tr -d '"')
+          BASE=$(echo "$VERSION" | sed 's/-beta[0-9]*//')
+          MAJOR=$(echo "$BASE" | cut -d. -f1)
+          MINOR=$(echo "$BASE" | cut -d. -f2)
+          MILESTONE="$MAJOR.$((MINOR + 1)).0"
+          echo "Master version: $VERSION → milestone: $MILESTONE"
+          echo "name=$MILESTONE" >> "$GITHUB_OUTPUT"
+
+      - name: Get or create milestone
+        id: get-milestone
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '${{ steps.milestone.outputs.name }}';
+            const milestones = await github.rest.issues.listMilestones({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100,
+            });
+            let milestone = milestones.data.find(m => m.title === title);
+            if (!milestone) {
+              const result = await github.rest.issues.createMilestone({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+              });
+              milestone = result.data;
+            }
+            return milestone.number;
+
+      - name: Assign milestone to PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              milestone: ${{ steps.get-milestone.outputs.result }},
+            });
