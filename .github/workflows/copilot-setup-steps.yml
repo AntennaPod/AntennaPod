@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - name: Cache Gradle
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.gradle/caches

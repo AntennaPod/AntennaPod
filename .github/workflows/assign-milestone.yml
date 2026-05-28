@@ -1,7 +1,7 @@
 name: Assign Milestone
 
 on:
-  pull_request:
+  pull_request_target:
     types: [closed]
     branches: [develop]
 
@@ -34,7 +34,7 @@ jobs:
 
       - name: Get or create milestone
         id: get-milestone
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const title = '${{ steps.milestone.outputs.name }}';
@@ -56,7 +56,7 @@ jobs:
             return milestone.number;
 
       - name: Assign milestone to PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             await github.rest.issues.update({
