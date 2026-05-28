@@ -115,11 +115,39 @@
                 app:iconPadding="8dp"
                 tools:icon="@drawable/ic_settings" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butAction4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:iconGravity="textStart"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_download"
+                tools:icon="@drawable/ic_settings" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butAction5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:iconGravity="textStart"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_settings"
+                tools:icon="@drawable/ic_settings" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butAction6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:iconGravity="textStart"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_share"
+                tools:icon="@drawable/ic_settings" />
             <LinearLayout
                 android:id="@+id/butAction2"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center">
