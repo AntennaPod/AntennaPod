@@ -3,18 +3,21 @@ package de.danoeh.antennapod.ui.screen.preferences;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
-
+import android.os.UserManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import de.danoeh.antennapod.ui.preferences.screen.about.AboutFragment;
 import de.danoeh.antennapod.ui.preferences.screen.bugreport.BugReportFragment;
+
 
 public class MainPreferencesFragment extends AnimatedPreferenceFragment {
 
@@ -30,12 +33,14 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_NOTIFICATION = "notifications";
     private static final String PREF_CONTRIBUTE = "prefContribute";
+    private static final String PREF_SCREEN_PARENTAL_CONTROL = "prefScreenParentalControl";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
         setupMainScreen();
         setupSearch();
+        setParentalControlsVisibility();
 
         // If you are writing a spin-off, please update the details on screens like "About" and "Report bug"
         // and afterwards remove the following lines. Please keep in mind that AntennaPod is licensed under the GPL.
@@ -121,6 +126,25 @@ public class MainPreferencesFragment extends AnimatedPreferenceFragment {
                     .addToBackStack(getString(R.string.report_bug_title)).commit();
             return true;
         });
+        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setOnPreferenceClickListener(preference -> {
+            if (UserPreferences.isParentalControlPasswordSet()) {
+                ParentalControlDialog.show(requireContext(), () ->
+                        ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_parental_control));
+            } else {
+                ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_parental_control);
+            }
+            return true;
+        });
+    }
+
+    // show the 'parental controls' preference if we're on a 'child' device (family link) or if it's a debug build
+    private void setParentalControlsVisibility() {
+        UserManager um = requireContext().getSystemService(UserManager.class);
+        // Family Link child devices have DISALLOW_FACTORY_RESET set (among other restrictions).
+        // AccountManager-based checks don't work: supervised users have no visible Google accounts.
+        boolean isChildDevice = um.hasUserRestriction(UserManager.DISALLOW_FACTORY_RESET);
+        findPreference(PREF_SCREEN_PARENTAL_CONTROL).setVisible(
+                isChildDevice || BuildConfig.DEBUG || UserPreferences.isParentalControlPasswordSet());
     }
 
     private void setupSearch() {

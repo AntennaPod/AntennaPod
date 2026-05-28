@@ -31,7 +31,9 @@ import de.danoeh.antennapod.databinding.OpmlSelectionBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.storage.importexport.OpmlElement;
 import de.danoeh.antennapod.storage.importexport.OpmlReader;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
+import de.danoeh.antennapod.ui.screen.preferences.ParentalControlDialog;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -88,35 +90,12 @@ public class OpmlImportActivity extends ToolbarActivity {
             finish();
         });
         viewBinding.butConfirm.setOnClickListener(v -> {
-            viewBinding.progressBar.setVisibility(View.VISIBLE);
-            Completable.fromAction(() -> {
-                SparseBooleanArray checked = viewBinding.feedlist.getCheckedItemPositions();
-                for (int i = 0; i < checked.size(); i++) {
-                    if (!checked.valueAt(i)) {
-                        continue;
-                    }
-                    OpmlElement element = readElements.get(checked.keyAt(i));
-                    Feed feed = new Feed(element.getXmlUrl(), null,
-                            element.getText() != null ? element.getText() : "Unknown podcast");
-                    feed.setItems(Collections.emptyList());
-                    FeedDatabaseWriter.updateFeed(this, feed, false);
-                }
-                FeedUpdateManager.getInstance().runOnce(this);
-            })
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            () -> {
-                                viewBinding.progressBar.setVisibility(View.GONE);
-                                Intent intent = new Intent(OpmlImportActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }, e -> {
-                                e.printStackTrace();
-                                viewBinding.progressBar.setVisibility(View.GONE);
-                                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                            });
+            if (UserPreferences.isParentalControlPasswordSet()
+                    && UserPreferences.isParentalControlRequireSubscribeSet()) {
+                ParentalControlDialog.show(this, this::doImport);
+                return;
+            }
+            doImport();
         });
 
         Uri uri = getIntent().getData();
@@ -129,6 +108,38 @@ public class OpmlImportActivity extends ToolbarActivity {
             }
         }
         importUri(uri);
+    }
+
+    private void doImport() {
+        viewBinding.progressBar.setVisibility(View.VISIBLE);
+        Completable.fromAction(() -> {
+            SparseBooleanArray checked = viewBinding.feedlist.getCheckedItemPositions();
+            for (int i = 0; i < checked.size(); i++) {
+                if (!checked.valueAt(i)) {
+                    continue;
+                }
+                OpmlElement element = readElements.get(checked.keyAt(i));
+                Feed feed = new Feed(element.getXmlUrl(), null,
+                        element.getText() != null ? element.getText() : "Unknown podcast");
+                feed.setItems(Collections.emptyList());
+                FeedDatabaseWriter.updateFeed(this, feed, false);
+            }
+            FeedUpdateManager.getInstance().runOnce(this);
+        })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            viewBinding.progressBar.setVisibility(View.GONE);
+                            Intent intent = new Intent(OpmlImportActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }, e -> {
+                            e.printStackTrace();
+                            viewBinding.progressBar.setVisibility(View.GONE);
+                            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        });
     }
 
     void importUri(@Nullable Uri uri) {
