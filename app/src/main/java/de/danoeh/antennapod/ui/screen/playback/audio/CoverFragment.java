@@ -237,15 +237,15 @@ public class CoverFragment extends Fragment {
             return;
         }
 
-        PlaybackController.bindToService(getActivity(), playbackService -> {
+        PlaybackController.bindToMedia3Service(getActivity(), controller -> {
             if (displayedChapterIndex < 1) {
-                playbackService.seekTo(0);
-            } else if ((playbackService.getCurrentPosition() - 10000 * playbackService.getCurrentPlaybackSpeed())
+                controller.seekTo(0);
+            } else if ((controller.getCurrentPosition() - 10000 * controller.getPlaybackParameters().speed)
                     < curr.getStart()) {
                 refreshChapterData(displayedChapterIndex - 1);
-                playbackService.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart());
+                controller.seekTo(media.getChapters().get(displayedChapterIndex).getStart());
             } else {
-                playbackService.seekTo((int) curr.getStart());
+                controller.seekTo(curr.getStart());
             }
         });
     }
@@ -257,8 +257,8 @@ public class CoverFragment extends Fragment {
         }
 
         refreshChapterData(displayedChapterIndex + 1);
-        PlaybackController.bindToService(getActivity(), playbackService ->
-                playbackService.seekTo((int) media.getChapters().get(displayedChapterIndex).getStart()));
+        PlaybackController.bindToMedia3Service(getActivity(), controller ->
+                controller.seekTo(media.getChapters().get(displayedChapterIndex).getStart()));
     }
 
     @Override
