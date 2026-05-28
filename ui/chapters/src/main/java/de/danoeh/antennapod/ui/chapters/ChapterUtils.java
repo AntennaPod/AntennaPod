@@ -70,7 +70,6 @@ public class ChapterUtils {
                     chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
                             feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefresh);
                 }
-
             }
 
             List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
@@ -90,36 +89,29 @@ public class ChapterUtils {
 
     public static List<Chapter> loadChaptersFromMediaFile(Playable playable, Context context)
             throws InterruptedIOException {
+        // Load the first few bytes to detect the format.
+        // Then stitch the format back onto the stream and pass it to the chapter reader.
+        // If we were unable to detect the format, we stitch and send it to the first reader,
+        // then we try again with a fresh stream for the remaining two readers.
+        // This reduces the number of times we have to open a new stream as much as possible.
         MediaFormatDetector.Format format = MediaFormatDetector.Format.UNKNOWN;
         MediaFormatDetector.Format hint = MediaFormatDetector.Format.UNKNOWN;
         try (CountingInputStream sniffStream = openStream(playable, context)) {
             MediaFormatDetector.Result detection = MediaFormatDetector.detect(sniffStream);
             format = detection.format;
-
             if (format == MediaFormatDetector.Format.UNKNOWN) {
-                String url = playable.getStreamUrl();
-
-                String mime = null;
-                if (playable instanceof FeedMedia) {
-                    mime = ((FeedMedia) playable).getMimeType();
-                }
-
-                hint = detectHintFromMetadata(mime, url);
+                hint = detectHintFromMetadata(
+                        ((FeedMedia) playable).getMimeType(), playable.getStreamUrl());
             }
-
             InputStream reconstructed = new SequenceInputStream(
-                    new ByteArrayInputStream(detection.bytes),
-                    sniffStream
-            );
-
+                    new ByteArrayInputStream(detection.bytes), sniffStream);
             if (format != MediaFormatDetector.Format.UNKNOWN) {
                 CountingInputStream input = new CountingInputStream(reconstructed);
                 List<Chapter> chapters = readChaptersFromInputStream(input, format);
                 hasLoadedChapters(chapters);
                 return chapters;
-            }
-
-            if (hint == MediaFormatDetector.Format.ID3 || hint == MediaFormatDetector.Format.UNKNOWN) {
+            } else if (hint == MediaFormatDetector.Format.ID3
+                    || hint == MediaFormatDetector.Format.UNKNOWN) {
                 List<Chapter> chapters = readId3ChaptersFrom(new CountingInputStream(reconstructed));
                 if (hasLoadedChapters(chapters)) {
                     return chapters;
@@ -157,17 +149,15 @@ public class ChapterUtils {
     static MediaFormatDetector.Format detectHintFromMetadata(String mime, String url) {
         MediaFormatDetector.Format format = MediaFormatDetector.Format.UNKNOWN;
         if (mime != null) {
-            String m = mime.trim().toLowerCase(Locale.US);
-            if (m.equals("audio/mpeg") || m.equals("audio/mp3") || m.equals("audio/x-mp3")) {
-                format = MediaFormatDetector.Format.ID3;
-            } else if (m.equals("audio/ogg") || m.equals("application/ogg")
-                    || m.equals("audio/opus") || m.equals("application/opus")) {
-                format = MediaFormatDetector.Format.OGG;
-            } else if (m.equals("audio/mp4") || m.equals("audio/x-m4a")
-                    || m.equals("audio/m4a") || m.equals("video/mp4")
-                    || m.equals("audio/x-m4b") || m.equals("audio/m4b")) {
-                format = MediaFormatDetector.Format.M4A;
-            }
+            format = switch (mime.trim().toLowerCase(Locale.US)) {
+                case "audio/mpeg", "audio/mp3", "audio/x-mp3"
+                        -> MediaFormatDetector.Format.ID3;
+                case "audio/ogg", "application/ogg", "audio/opus", "application/opus"
+                        -> MediaFormatDetector.Format.OGG;
+                case "audio/mp4", "audio/x-m4a", "audio/m4a", "video/mp4", "audio/x-m4b", "audio/m4b"
+                        -> MediaFormatDetector.Format.M4A;
+                default -> format;
+            };
         }
 
         if (format == MediaFormatDetector.Format.UNKNOWN && url != null) {
@@ -176,13 +166,12 @@ public class ChapterUtils {
                 int dot = filename.lastIndexOf('.');
                 if (dot != -1 && dot < filename.length() - 1) {
                     String ext = filename.substring(dot + 1).toLowerCase(Locale.US);
-                    if (ext.equals("mp3")) {
-                        format = MediaFormatDetector.Format.ID3;
-                    } else if (ext.equals("ogg") || ext.equals("opus")) {
-                        format = MediaFormatDetector.Format.OGG;
-                    } else if (ext.equals("m4a") || ext.equals("mp4") || ext.equals("m4b")) {
-                        format = MediaFormatDetector.Format.M4A;
-                    }
+                    format = switch (ext) {
+                        case "mp3" -> MediaFormatDetector.Format.ID3;
+                        case "ogg", "opus" -> MediaFormatDetector.Format.OGG;
+                        case "m4a", "mp4", "m4b" -> MediaFormatDetector.Format.M4A;
+                        default -> format;
+                    };
                 }
             }
         }
@@ -190,39 +179,25 @@ public class ChapterUtils {
     }
 
     static MediaFormatDetector.Format[] getFallbackOrder(MediaFormatDetector.Format hint) {
-        if (hint == MediaFormatDetector.Format.OGG) {
-            return new MediaFormatDetector.Format[] {
-                    MediaFormatDetector.Format.ID3,
-                    MediaFormatDetector.Format.M4A
-            };
-        }
-
-        if (hint == MediaFormatDetector.Format.M4A) {
-            return new MediaFormatDetector.Format[] {
-                    MediaFormatDetector.Format.ID3,
-                    MediaFormatDetector.Format.OGG
-            };
-        }
-
-        return new MediaFormatDetector.Format[] {
-                MediaFormatDetector.Format.OGG,
-                MediaFormatDetector.Format.M4A
+        return switch (hint) {
+            case OGG -> new MediaFormatDetector.Format[]{
+                    MediaFormatDetector.Format.ID3, MediaFormatDetector.Format.M4A};
+            case M4A -> new MediaFormatDetector.Format[]{
+                    MediaFormatDetector.Format.ID3, MediaFormatDetector.Format.OGG};
+            default -> new MediaFormatDetector.Format[]{
+                    MediaFormatDetector.Format.OGG, MediaFormatDetector.Format.M4A};
         };
     }
 
     private static List<Chapter> readChaptersFromInputStream(
             CountingInputStream input, MediaFormatDetector.Format format)
             throws IOException, ID3ReaderException, VorbisCommentReaderException {
-        switch (format) {
-            case ID3:
-                return readId3ChaptersFrom(input);
-            case OGG:
-                return readOggChaptersFromInputStream(input);
-            case M4A:
-                return readM4AChaptersFromInputStream(input);
-            default:
-                return Collections.emptyList();
-        }
+        return switch (format) {
+            case ID3 -> readId3ChaptersFrom(input);
+            case OGG -> readOggChaptersFromInputStream(input);
+            case M4A -> readM4AChaptersFromInputStream(input);
+            default -> Collections.emptyList();
+        };
     }
 
     private static boolean hasLoadedChapters(List<Chapter> chapters) {
