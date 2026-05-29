@@ -52,6 +52,7 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
         super.onStart();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.synchronization_pref);
         updateScreen();
+        updateActionBar();
         EventBus.getDefault().register(this);
     }
 
@@ -106,6 +107,7 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
             Snackbar.make(getView(), R.string.pref_synchronization_logout_toast, Snackbar.LENGTH_LONG).show();
             SynchronizationSettings.setSelectedSyncProvider(null);
             updateScreen();
+            updateActionBar();
             return true;
         });
     }
@@ -141,10 +143,17 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
                     SynchronizationCredentials.getUsername(), SynchronizationCredentials.getHosturl());
             Spanned formattedSummary = HtmlCompat.fromHtml(summary, HtmlCompat.FROM_HTML_MODE_LEGACY);
             findPreference(PREFERENCE_LOGOUT).setSummary(formattedSummary);
+        } else {
+            findPreference(PREFERENCE_LOGOUT).setSummary(null);
+        }
+    }
+
+    private void updateActionBar() {
+        // Do not call from onCreate; ActionBar is not yet available at that point
+        if (SynchronizationSettings.isProviderConnected()) {
             updateLastSyncReport(SynchronizationSettings.isLastSyncSuccessful(),
                     SynchronizationSettings.getLastSyncAttempt());
         } else {
-            findPreference(PREFERENCE_LOGOUT).setSummary(null);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setSubtitle(null);
         }
     }
