@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
 import androidx.media3.common.AudioAttributes;
@@ -8,9 +9,12 @@ import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.util.UnstableApi;
+import androidx.media3.datasource.DataSource;
 import androidx.media3.datasource.DefaultDataSource;
 import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.datasource.HttpDataSource;
+import androidx.media3.datasource.ResolvingDataSource;
+import de.danoeh.antennapod.net.common.RedirectChecker;
 import androidx.media3.exoplayer.DefaultLoadControl;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.SeekParameters;
@@ -27,6 +31,7 @@ import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ExoPlayerUtils {
     @OptIn(markerClass = UnstableApi.class)
@@ -81,6 +86,7 @@ public class ExoPlayerUtils {
         private final DefaultExtractorsFactory extractorsFactory;
         private final DefaultMediaSourceFactory defaultFactory;
         private final Context context;
+        private final ConcurrentHashMap<String, String> redirectCache = new ConcurrentHashMap<>();
 
         public ApMediaSourceFactory(Context context) {
             super();
@@ -91,20 +97,24 @@ public class ExoPlayerUtils {
             this.defaultFactory = new DefaultMediaSourceFactory(context, extractorsFactory);
         }
 
+        @NonNull
         @Override
-        public MediaSource.Factory setDrmSessionManagerProvider(DrmSessionManagerProvider drmSessionManagerProvider) {
+        public MediaSource.Factory setDrmSessionManagerProvider(
+                @NonNull DrmSessionManagerProvider drmSessionManagerProvider) {
             this.drmSessionManagerProvider = drmSessionManagerProvider;
             return this;
         }
 
+        @NonNull
         @Override
-        public MediaSource.Factory setLoadErrorHandlingPolicy(LoadErrorHandlingPolicy policy) {
+        public MediaSource.Factory setLoadErrorHandlingPolicy(@NonNull LoadErrorHandlingPolicy policy) {
             this.loadErrorHandlingPolicy = policy;
             return this;
         }
 
+        @NonNull
         @Override
-        public MediaSource createMediaSource(MediaItem mediaItem) {
+        public MediaSource createMediaSource(@NonNull MediaItem mediaItem) {
             DefaultMediaSourceFactory factory = new DefaultMediaSourceFactory(
                     buildDataSourceFactory(mediaItem), extractorsFactory);
             if (loadErrorHandlingPolicy != null) {
@@ -116,7 +126,7 @@ public class ExoPlayerUtils {
             return factory.createMediaSource(mediaItem);
         }
 
-        private DefaultDataSource.Factory buildDataSourceFactory(MediaItem mediaItem) {
+        private DataSource.Factory buildDataSourceFactory(MediaItem mediaItem) {
             DefaultHttpDataSource.Factory httpDataSourceFactory =
                     new DefaultHttpDataSource.Factory();
             httpDataSourceFactory.setUserAgent(UserAgentInterceptor.USER_AGENT);
@@ -130,9 +140,25 @@ public class ExoPlayerUtils {
                 httpDataSourceFactory.setDefaultRequestProperties(
                         Collections.singletonMap("Authorization", authHeader));
             }
-            return new DefaultDataSource.Factory(context, httpDataSourceFactory);
+            DataSource.Factory dataSourceFactory = new DefaultDataSource.Factory(context, httpDataSourceFactory);
+            return new ResolvingDataSource.Factory(dataSourceFactory, dataSpec -> {
+                String originalUrl = dataSpec.uri.toString();
+                if (!originalUrl.startsWith("http")) {
+                    return dataSpec;
+                }
+                String resolvedUrl = redirectCache.get(originalUrl);
+                if (resolvedUrl == null) {
+                    resolvedUrl = RedirectChecker.getFinalUrl(originalUrl);
+                    redirectCache.putIfAbsent(originalUrl, resolvedUrl);
+                }
+                if (resolvedUrl.equals(originalUrl)) {
+                    return dataSpec;
+                }
+                return dataSpec.withUri(Uri.parse(resolvedUrl));
+            });
         }
 
+        @NonNull
         @Override
         public int[] getSupportedTypes() {
             return defaultFactory.getSupportedTypes();
