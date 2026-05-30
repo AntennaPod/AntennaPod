@@ -36,6 +36,8 @@ import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import org.greenrobot.eventbus.EventBus;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -140,6 +142,11 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     @UnstableApi
+    public void refreshNotification(MediaLibraryService.MediaLibrarySession session) {
+        session.setCustomLayout(buildCustomLayout());
+    }
+
+    @UnstableApi
     private ImmutableList<CommandButton> buildCustomLayout() {
         ImmutableList.Builder<CommandButton> buttons = ImmutableList.builder();
 
@@ -173,6 +180,19 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             buttons.add(new CommandButton.Builder(CommandButton.ICON_NEXT)
                     .setSessionCommand(SESSION_COMMAND_SKIP_TO_NEXT)
                     .setDisplayName(context.getString(R.string.skip_episode_label))
+                    .build());
+        }
+
+        if (UserPreferences.showSleepTimerOnFullNotification()) {
+            SleepTimerUpdatedEvent sleepEvent = EventBus.getDefault().getStickyEvent(SleepTimerUpdatedEvent.class);
+            boolean sleepTimerActive = sleepEvent != null && !sleepEvent.isCancelled() && !sleepEvent.isOver();
+            int sleepIcon = sleepTimerActive ? R.drawable.ic_notification_sleep_off : R.drawable.ic_notification_sleep;
+            SessionCommand sleepCommand = sleepTimerActive
+                    ? SESSION_COMMAND_DISABLE_SLEEP_TIMER : SESSION_COMMAND_SET_SLEEP_TIMER;
+            buttons.add(new CommandButton.Builder(CommandButton.ICON_UNDEFINED)
+                    .setSessionCommand(sleepCommand)
+                    .setCustomIconResId(sleepIcon)
+                    .setDisplayName(context.getString(R.string.sleep_timer_label))
                     .build());
         }
 

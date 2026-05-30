@@ -56,6 +56,7 @@ import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
@@ -198,7 +199,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 exoPlayer.setSkipSilenceEnabled(enabled);
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             } else if (customCommand.customAction.equals(SESSION_COMMAND_SET_SLEEP_TIMER.customAction)) {
-                startSleepTimer(MediaLibrarySessionCallback.getLong(args, 0));
+                startSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             } else if (customCommand.customAction.equals(SESSION_COMMAND_DISABLE_SLEEP_TIMER.customAction)) {
                 disableSleepTimer();
@@ -413,7 +414,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                 if (mediaLoaderDisposable != null) {
                     mediaLoaderDisposable.dispose();
                 }
-                mediaLoaderDisposable = Single.fromCallable(() -> DBReader.getFeedMedia(mediaId))
+                mediaLoaderDisposable = Single.fromCallable(() -> {
+                    FeedMedia media = DBReader.getFeedMedia(mediaId);
+                    ChapterUtils.loadChapters(media, this, false);
+                    return media;
+                })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
@@ -663,6 +668,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                         });
     }
 
+    @UnstableApi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSleepTimerUpdated(SleepTimerUpdatedEvent event) {
         if (event.isOver()) {
@@ -672,8 +678,10 @@ public class Media3PlaybackService extends MediaLibraryService {
                 player.pause();
             }
             sleepTimer = null;
+            sessionCallback.refreshNotification(mediaSession);
         } else if (event.isCancelled()) {
             applyVolumeAdaption(1.0f);
+            sessionCallback.refreshNotification(mediaSession);
         } else if (!event.wasJustEnabled()) {
             long millisLeft = event.getMillisTimeLeft();
             if (millisLeft < SleepTimer.NOTIFICATION_THRESHOLD && millisLeft > 0) {
@@ -685,6 +693,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
+    @UnstableApi
     private void startSleepTimer(long timeOrEpisodes) {
         if (sleepTimer != null) {
             sleepTimer.stop();
@@ -695,6 +704,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             sleepTimer = new ClockSleepTimer(this);
         }
         sleepTimer.start(timeOrEpisodes);
+        sessionCallback.refreshNotification(mediaSession);
     }
 
     private void disableSleepTimer() {
