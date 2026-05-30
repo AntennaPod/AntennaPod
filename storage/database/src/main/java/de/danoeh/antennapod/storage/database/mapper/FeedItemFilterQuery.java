@@ -32,7 +32,8 @@ public class FeedItemFilterQuery {
         String tableQueue = PodDBAdapter.TABLE_NAME_QUEUE;
         String tableFavorites = PodDBAdapter.TABLE_NAME_FAVORITES;
         String keyFeedId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED;
-        String localFeedCondition = keyFeedId + " IN (SELECT " + PodDBAdapter.KEY_ID + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
+        String localFeedCondition = keyFeedId + " IN (SELECT " + PodDBAdapter.KEY_ID
+                + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
                 + " WHERE " + PodDBAdapter.KEY_DOWNLOAD_URL + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')";
 
         List<String> statements = new ArrayList<>();

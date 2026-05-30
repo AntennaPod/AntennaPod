@@ -1267,11 +1267,14 @@ public class PodDBAdapter {
                                 + " THEN (" + playedTime + ") ELSE 0 END), 0) AS played_time, "
                         + "IFNULL(SUM(" + TABLE_NAME_FEED_MEDIA + "." + KEY_DURATION + "), 0) AS total_time, "
                         + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + " > 0"
-                                + " OR " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%'"
+                                + " OR " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL
+                                + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%'"
                                 + " THEN 1 ELSE 0 END) AS num_downloaded, "
                         + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + " > 0"
-                                + " OR " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%'"
-                                + " THEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_SIZE + " ELSE 0 END) AS download_size, "
+                                + " OR " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL
+                                + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%'"
+                                + " THEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_SIZE
+                                + " ELSE 0 END) AS download_size, "
                         + "SUM(CASE WHEN " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " != " + FeedItem.PLAYED
                                 + " AND " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " >= " + sixMonthsAgo
                                 + " THEN 1 ELSE 0 END) AS num_recent_unplayed "
