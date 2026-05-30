@@ -30,6 +30,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.playback.service.R;
@@ -301,10 +302,17 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
         disposables.add(Single.fromCallable(() -> {
             FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            // If there is no media to resume, media3 crashes. So instead of crashing, just play something random.
             if (media == null) {
                 List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
                 if (!recentQueue.isEmpty()) {
                     media = recentQueue.get(0).getMedia();
+                }
+            }
+            if (media == null) {
+                List<FeedItem> items = DBReader.getEpisodes(0, 1, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
+                if (!items.isEmpty()) {
+                    media = items.get(0).getMedia();
                 }
             }
             return media;
