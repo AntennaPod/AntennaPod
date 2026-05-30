@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
-import de.danoeh.antennapod.net.common.RedirectChecker;
 import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -85,7 +84,7 @@ public class MediaItemAdapter {
         if (playable.localFileAvailable()) {
             localPlaybackUri = playable.getLocalFileUrl();
         } else {
-            localPlaybackUri = RedirectChecker.getFinalUrl(playable.getStreamUrl());
+            localPlaybackUri = playable.getStreamUrl();
         }
         Bundle requestExtras = new Bundle();
         if (!playable.localFileAvailable() && playable instanceof FeedMedia) {
@@ -224,8 +223,9 @@ public class MediaItemAdapter {
     public static ImmutableList<MediaItem> fromItemList(Context context, List<FeedItem> feedItems) {
         ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
         for (FeedItem item : feedItems) {
-            if (item.getMedia() != null) {
-                itemsBuilder.add(MediaItemAdapter.fromPlayable(context, item.getMedia()));
+            FeedMedia media = item.getMedia();
+            if (media != null && (media.localFileAvailable() || media.getStreamUrl() != null)) {
+                itemsBuilder.add(MediaItemAdapter.fromPlayable(context, media));
             }
         }
         return itemsBuilder.build();
