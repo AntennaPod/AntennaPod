@@ -17,6 +17,7 @@ import de.danoeh.antennapod.ui.preferences.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.ViewHolder> {
@@ -74,8 +75,8 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
 
     private List<StoragePath> getStorageEntries(Context context) {
         final List<File> mediaDirs = new ArrayList<>();
-        mediaDirs.addAll(List.of(context.getExternalFilesDirs(null)));
-        mediaDirs.addAll(List.of(context.getExternalMediaDirs()));
+        mediaDirs.addAll(Arrays.asList(context.getExternalFilesDirs(null)));
+        mediaDirs.addAll(Arrays.asList(context.getExternalMediaDirs()));
         final List<StoragePath> entries = new ArrayList<>(mediaDirs.size());
         for (File dir : mediaDirs) {
             if (!isWritable(dir)) {
