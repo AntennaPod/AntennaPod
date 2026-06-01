@@ -75,6 +75,9 @@ public abstract class WidgetUpdater {
         }
 
         PendingIntent startPlaybackSpeedDialog = new PlaybackSpeedActivityStarter(context).getPendingIntent();
+        int playButtonKeyCode = widgetState.status == PlayerStatus.STOPPED
+                ? KeyEvent.KEYCODE_MEDIA_PLAY
+                : KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE;
 
         RemoteViews views;
         views = new RemoteViews(context.getPackageName(), R.layout.player_widget);
@@ -107,9 +110,9 @@ public abstract class WidgetUpdater {
                 views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.play_label));
             }
             views.setOnClickPendingIntent(R.id.butPlay,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, playButtonKeyCode));
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, playButtonKeyCode));
             views.setOnClickPendingIntent(R.id.butRew,
                     MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_REWIND));
             views.setOnClickPendingIntent(R.id.butFastForward,
@@ -121,7 +124,7 @@ public abstract class WidgetUpdater {
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, playButtonKeyCode));
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
