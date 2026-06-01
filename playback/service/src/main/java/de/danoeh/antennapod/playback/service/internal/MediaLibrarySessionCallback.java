@@ -78,6 +78,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("extend_sleep_timer", Bundle.EMPTY);
 
     private static final String EXTRA_VALUE = "value";
+    private static final String EXTRA_MEDIA_BUTTON_SOURCE =
+            "de.danoeh.antennapod.extra.MEDIA_BUTTON_SOURCE";
+    private static final String MEDIA_BUTTON_SOURCE_WIDGET = "widget";
 
     public static Bundle createBundle(boolean value) {
         Bundle args = new Bundle();
@@ -206,13 +209,21 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN
                 && keyEvent.getRepeatCount() == 0) {
+            boolean fromWidget = MEDIA_BUTTON_SOURCE_WIDGET.equals(
+                    intent.getStringExtra(EXTRA_MEDIA_BUTTON_SOURCE));
             int keyCode = keyEvent.getKeyCode();
-            if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+            if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+                session.getPlayer().seekForward();
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND) {
+                session.getPlayer().seekBack();
+                return true;
+            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
                 // Instead of skipping to the next episode, do a fast-forward.
                 session.getPlayer().seekForward();
                 return true;
-            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                 // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
                 // Instead of going to the previous episode, do a rewind.
                 session.getPlayer().seekBack();

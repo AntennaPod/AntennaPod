@@ -11,6 +11,9 @@ public abstract class MediaButtonStarter {
     private static final String INTENT = "de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER";
     private static final String MEDIA3_PLAYBACK_SERVICE =
             "de.danoeh.antennapod.playback.service.Media3PlaybackService";
+    private static final String EXTRA_MEDIA_BUTTON_SOURCE =
+            "de.danoeh.antennapod.extra.MEDIA_BUTTON_SOURCE";
+    private static final String MEDIA_BUTTON_SOURCE_WIDGET = "widget";
 
     public static Intent createIntent(Context context, int eventCode) {
         KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
@@ -26,7 +29,8 @@ public abstract class MediaButtonStarter {
             KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
             Intent intent = new Intent(Intent.ACTION_MEDIA_BUTTON)
                     .setComponent(new ComponentName(context, MEDIA3_PLAYBACK_SERVICE))
-                    .putExtra(Intent.EXTRA_KEY_EVENT, event);
+                    .putExtra(Intent.EXTRA_KEY_EVENT, event)
+                    .putExtra(EXTRA_MEDIA_BUTTON_SOURCE, MEDIA_BUTTON_SOURCE_WIDGET);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 return PendingIntent.getForegroundService(context, eventCode, intent,
                         PendingIntent.FLAG_IMMUTABLE);
