@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.view.KeyEvent;
 
 public abstract class MediaButtonStarter {
