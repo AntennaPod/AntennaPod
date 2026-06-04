@@ -13,7 +13,7 @@
     <string name="queue_label">Fila</string>
     <string name="queue_label_short">Fila</string>
     <string name="inbox_label">Caixa de entrada</string>
-    <string name="inbox_label_short">Caixa de entrada</string>
+    <string name="inbox_label_short">C. de entrada</string>
     <string name="favorite_episodes_label">Favoritos</string>
     <string name="settings_label">Definições</string>
     <string name="downloads_label">Transferências</string>
@@ -23,7 +23,7 @@
     <string name="subscriptions_label_short">Subscrições</string>
     <string name="subscriptions_list_label">Lista de subscrições</string>
     <string name="cancel_download_label">Cancelar transferência</string>
-    <string name="playback_history_label">Histórico de reprodução</string>
+    <string name="playback_history_label">Histórico</string>
     <string name="playback_history_label_short">Histórico</string>
     <string name="years_statistics_label">Anos</string>
     <string name="notification_pref_fragment">Notificações</string>
@@ -479,7 +479,7 @@
     <string name="pref_tinted_theme_message">Ajustar cores da aplicação à cor de fundo do ecrã</string>
     <string name="bottom_navigation">Navegação inferior</string>
     <string name="bottom_navigation_summary">Aceda aos ecrãs mais importantes em qualquer lado com apenas um toque</string>
-    <string name="pref_nav_drawer_items_title">Personalizar navegação</string>
+    <string name="pref_nav_drawer_items_title">Personalizar menu</string>
     <string name="pref_nav_drawer_items_sum">Alterar itens mostrados no menu de navegação e na navegação inferior</string>
     <string name="pref_nav_drawer_feed_counter_title">Contador</string>
     <string name="pref_automatic_download_title">Transferência automática</string>
@@ -926,7 +926,7 @@
     <string name="favorite_episodes_label_short">Favoritos</string>
     <string name="feed_new_episodes_action_snackbar">Não pode ser alterado quando descargas automáticas estão ativadas.</string>
     <string name="remove_restore_feed_label">Cancelar inscrição / restaurar</string>
-    <string name="restoring_podcast_progress">Restaurar podcast %1$d of %2$d…</string>
+    <string name="restoring_podcast_progress">A restaurar podcast %1$d de %2$d…</string>
     <plurals name="added_to_favorites_message">
         <item quantity="one">%d episódio incluído em favoritos.</item>
         <item quantity="many">%d episódios incluídos em favoritos.</item>
@@ -946,7 +946,7 @@
     <string name="no_fav_episodes_head_label">Sem favoritos</string>
     <string name="no_fav_episodes_label">Marque episódios como favoritos pressionando o ícone de estrela.</string>
     <string name="bottom_navigation_deprecation_warning">Infelizmente, teremos que remover a navegação lateral numa atualização futura. O AntennaPod é desenvolvido por um pequeno grupo de voluntários e manter ambos os estilos de navegação por anos transformou-se em sobrecarga.\n\nSe depende totalmente da navegação lateral, sugerimos que desative as atualizações para o AntennaPod na sua loja de apps.</string>
-    <string name="pref_advanced">Opções avançadas</string>
+    <string name="pref_advanced">Definições avançadas</string>
     <string name="pref_display">Exibição</string>
     <string name="import_error_label">Erro ao importar</string>
     <string name="show_password_accessibility">Exibir palavra-passe</string>

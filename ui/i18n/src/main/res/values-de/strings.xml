@@ -690,7 +690,7 @@
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
     <string name="proxy_test_label">Testen</string>
-    <string name="proxy_checking">Prüfe…</string>
+    <string name="proxy_checking">Wird geprüft…</string>
     <string name="proxy_test_successful">Test erfolgreich</string>
     <string name="proxy_test_failed">Test fehlgeschlagen</string>
     <string name="proxy_host_empty_error">Host darf nicht leer sein</string>
@@ -905,7 +905,7 @@
     <string name="report_bug_forum_title">Forum</string>
     <string name="report_bug_title">Fehler melden</string>
     <string name="general_collapse_button">Einklappen</string>
-    <string name="archiving_podcast_progress">Podcast %1$d von %2$d wird archiviert …</string>
+    <string name="archiving_podcast_progress">Podcast %1$d von %2$d wird archiviert…</string>
     <string name="deleting_podcast_progress">Podcast %1$d von %2$d wird deabonniert…</string>
     <string name="download_log_details_human_readable_reason_title">Status</string>
     <string name="download_log_details_technical_reason_title">Technische Details</string>

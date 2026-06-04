@@ -28,9 +28,9 @@
     <string name="swipe_left">Смахнуть влево</string>
     <string name="enable_swipeactions">Включить смахивание на этом экране</string>
     <string name="change_setting">Изменить</string>
-    <string name="individual_subscription">Отдельная подписка</string>
+    <string name="individual_subscription">Частная подписка</string>
     <!--Statistics fragment-->
-  <string name="statistics_include_marked">Учитывать длину выпусков, отмеченных как прослушанные</string>
+  <string name="statistics_include_marked">Учитывать длину выпусков отмеченых как прослушанные</string>
     <string name="statistics_speed_not_counted">Замечание: Скорость воспроизведения никогда не учитывается.</string>
     <string name="statistics_from">С</string>
     <string name="statistics_to">По</string>
@@ -56,10 +56,10 @@
   <string name="drawer_open">Открыть меню</string>
     <string name="drawer_close">Закрыть меню</string>
     <string name="drawer_preferences">Настройка боковой панели</string>
-    <string name="drawer_feed_order_unplayed_episodes">по количеству</string>
-    <string name="drawer_feed_order_alphabetical">по алфавиту</string>
+    <string name="drawer_feed_order_unplayed_episodes">По количеству</string>
+    <string name="drawer_feed_order_alphabetical">По алфавиту</string>
     <string name="drawer_feed_order_last_update">По дате выхода</string>
-    <string name="drawer_feed_order_most_played">по количеству прослушанных</string>
+    <string name="drawer_feed_order_most_played">По кол-ву прослушанных</string>
     <string name="drawer_feed_counter_inbox">Количество непрослушанных во входящих</string>
     <string name="drawer_feed_counter_unplayed">Количество непрослушанных выпусков</string>
     <string name="drawer_feed_counter_downloaded">Количество скачанных выпусков</string>
@@ -67,8 +67,8 @@
     <string name="drawer_feed_counter_none">Ничего</string>
     <!--Bug report activity-->
   <string name="log_file_share_exception">Совместимых приложений не найдено</string>
-    <string name="export_logs_menu_title">Экспортировать подробные журналы</string>
-    <string name="confirm_export_log_dialog_message">Подробные журналы могут содержать личные сведения, такие как список ваших подписок</string>
+    <string name="export_logs_menu_title">Экспортировать подробный отчёт</string>
+    <string name="confirm_export_log_dialog_message">Подробные отчёты могут содержать личные сведения, такие как список ваших подписок</string>
     <!--Webview actions-->
   <string name="open_in_browser_label">Открыть в браузере</string>
     <string name="copy_url_label">Скопировать ссылку</string>
@@ -112,7 +112,7 @@
     <string name="feed_auto_download_always">Всегда</string>
     <string name="feed_auto_download_never">Никогда</string>
     <string name="feed_new_episodes_action_add_to_inbox">Во входящие</string>
-    <string name="feed_new_episodes_action_add_to_queue">Добавить в очередь</string>
+    <string name="feed_new_episodes_action_add_to_queue">В очередь</string>
     <string name="feed_new_episodes_action_nothing">Ничего</string>
     <string name="episode_cleanup_never">Никогда</string>
     <string name="episode_cleanup_except_favorite_removal">Когда не в избранном</string>
@@ -120,7 +120,7 @@
     <string name="episode_cleanup_after_listening">Сразу после завершения</string>
     <plurals name="episode_cleanup_hours_after_listening">
         <item quantity="one">%d час после завершения</item>
-        <item quantity="few">%d часов после завершения</item>
+        <item quantity="few">%d часа после завершения</item>
         <item quantity="many">%d часов после завершения</item>
         <item quantity="other">%d часов после завершения</item>
     </plurals>
@@ -132,7 +132,7 @@
     </plurals>
     <plurals name="num_selected_label">
         <item quantity="one">%1$d/%2$d выбран</item>
-        <item quantity="few">%1$d/%2$d выбраны</item>
+        <item quantity="few">%1$d/%2$d выбрано</item>
         <item quantity="many">%1$d/%2$d выбрано</item>
         <item quantity="other">%1$d/%2$d выбрано</item>
     </plurals>
@@ -142,7 +142,7 @@
         <item quantity="many">%d выпусков</item>
         <item quantity="other">%d выпусков</item>
     </plurals>
-    <string name="episode_notification">Уведомления о новых выпусках</string>
+    <string name="episode_notification">Уведомления о выпусках</string>
     <string name="episode_notification_summary">Показывать уведомление при появлении новых выпусков</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s: новый выпуск</item>
@@ -167,14 +167,14 @@
     <string name="show_feed_settings_label">Показать настройки подкаста</string>
     <string name="feed_settings_label">Настройки подкаста</string>
     <string name="rename_feed_label">Переименовать</string>
-    <string name="remove_feed_label">Удалить</string>
+    <string name="remove_feed_label">Отписаться</string>
     <string name="share_label">Поделиться</string>
     <string name="share_file_label">Поделиться файлом</string>
     <string name="load_complete_feed">Обновить весь подкаст</string>
     <string name="multi_select">Множественный выбор</string>
     <string name="select_all_above">Выбрать все выше</string>
     <string name="select_all_below">Выбрать все ниже</string>
-    <string name="multi_select_started_talkback">Действия с множественным выбором показаны внизу</string>
+    <string name="multi_select_started_talkback">Действия с множественным выбором показаны снизу</string>
     <string name="filtered_label">Отфильтровано</string>
     <string name="refresh_failed_msg">Последнее обновление не удалось. Подробнее...</string>
     <string name="open_podcast">Открыть подкаст</string>
@@ -188,7 +188,7 @@
     </plurals>
     <string name="edit_tags">Править метки</string>
     <string name="add_tag">Добавить метку</string>
-    <string name="rename_tag_label">Переименовать тег</string>
+    <string name="rename_tag_label">Переименовать метку</string>
     <string name="confirm_mobile_feed_refresh_dialog_message">Обновление подкастов через мобильное соединение отключено в настройках.\n\nВы действительно хотите обновить подкасты?</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Приложение VPN имитирует соединение с ограниченным трафиком. Обновление подкастов через мобильное соединение отключено в настройках\n\nВсё равно обновить? Чтобы устранить эту проблему, свяжитесь с разработчиками вашего приложения VPN.</string>
     <!--actions on feeditems-->
@@ -234,14 +234,14 @@
     <string name="download_error_unsupported_type_html">Сервер подкаста прислал сайт вместо подкаста.</string>
     <string name="download_error_not_found">Сервер подкаста не может найти запрошенный файл. Возможно он был удалён.</string>
     <string name="download_error_connection_error">Ошибка соединения</string>
-    <string name="download_error_no_connection">Не подключено к сети</string>
-    <string name="download_error_unknown_host">Сервер не найден. Проверьте правильность указанного адреса и есть ли подключение к интернету.</string>
+    <string name="download_error_no_connection">Нет подключения к сети</string>
+    <string name="download_error_unknown_host">Сервер не найден. Проверьте правильность указанного адреса и присутствие подключения к интернету.</string>
     <string name="download_error_unauthorized">Ошибка авторизации. Проверьте правильность имени пользователя и пароля.</string>
     <string name="download_error_file_type_type">Неверный тип файла</string>
     <string name="download_error_forbidden">Сервер подкаста отказывает в доступе.</string>
     <string name="download_canceled_msg">Загрузка отменена</string>
     <string name="download_error_wrong_size">Соединение с сервером было оборвано до завершения загрузки</string>
-    <string name="download_error_blocked">Загрузка была заблокирована другим приложением на вашем устройстве (например, VPN или блокировщиком рекламы).</string>
+    <string name="download_error_blocked">Загрузка была заблокирована другим приложением на вашем устройстве (возможно VPN или блокировщиком рекламы).</string>
     <string name="download_error_certificate">Невозможно установить защищённое соединение. Возможно загрузке препятствует другое приложение (например, VPN или блокировщик рекламы), либо что-то не так с сертификатом сервера.</string>
     <string name="download_error_io_error">Ошибка ввода-вывода</string>
     <string name="download_error_request_error">Ошибка запроса</string>
@@ -614,7 +614,7 @@
     <string name="state_deleted_not_subscribed">Вы ещё не подписаны на этот подкаст. Облегчите себе доступ и отслеживайте историю воспроизведения бесплатной подпиской.</string>
     <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">Назад</string>
-    <string name="rewind_label">Назад</string>
+    <string name="rewind_label">Отмотка</string>
     <string name="fast_forward_label">Перемотка вперёд</string>
     <string name="increase_speed">Увеличить скорость</string>
     <string name="decrease_speed">Уменьшить скорость</string>
@@ -847,7 +847,7 @@
     <string name="echo_listened_after_comment_addict">Вы подкастоман</string>
     <string name="echo_listened_after_time">Как правило, вы прослушивали выпуск %1$s после его выхода.</string>
     <string name="echo_hoarder_comment_medium">Вы слушали выпуски из %1$d%% от общего числа %2$d ваших активных подписок в этом году. Почему бы не послушать «%3$s» снова?</string>
-    <string name="removed_from_inbox_message">Удалено из входящих</string>
+    <string name="removed_from_inbox_message">Убрано из входящих</string>
     <string name="mark_as_played_label">Отметить как прослушанное</string>
     <string name="mark_as_unplayed_label">Отметить как непрослушанный</string>
     <string name="reset_playback_position_label">Сбросить позицию</string>
@@ -895,10 +895,10 @@
     <string name="play_this_to_seek_position_message">Чтобы перейти к определённой позиции, необходимо воспроизвести выпуск</string>
     <string name="transcript_follow_audio_label">Следовать за аудио</string>
     <string name="no_queue_items_inbox_has_items_label">Нет выпусков на очереди, но у вас есть новые выпуски!</string>
-    <string name="remove_archive_feed_label">Удалить / Архив</string>
-    <string name="archive_feed_label_verb">Архив</string>
+    <string name="remove_archive_feed_label">Отписаться / Архивировать</string>
+    <string name="archive_feed_label_verb">Архивировать</string>
     <string name="archive_feed_label_noun">Архив</string>
-    <string name="restore_archive_label">Восстанавливать</string>
+    <string name="restore_archive_label">Восстанановить</string>
     <string name="feed_delete_explanation_delete">При удалении подписка будет удалена вместе со всеми выпусками, загрузками, историей прослушивания и статистикой.</string>
     <string name="feed_delete_explanation_archive">Архивация скрывает подписку из списка и прекращает поиск новых серий. Сохраняются загрузки, статистика и состояние воспроизведения.</string>
     <string name="please_wait_before_refreshing">Пожалуйста, подождите некоторое время, прежде чем снова обновлять подкасты.</string>
@@ -930,7 +930,7 @@
     <string name="release_schedule_multiple_per_day">несколько раз в день</string>
     <string name="cover_as_background">Обложка в качестве фона</string>
     <string name="archiving_podcast_progress">Архивирование подкаста %1$d из %2$d…</string>
-    <string name="deleting_podcast_progress">Удаление подкаста %1$d из %2$d…</string>
+    <string name="deleting_podcast_progress">Отписка от %1$d подкаста из %2$d…</string>
     <plurals name="num_subscriptions">
         <item quantity="one">%d подписка</item>
         <item quantity="few">%d подписки</item>
@@ -991,5 +991,28 @@
         <item quantity="few">Непрерывное воспроизведение выключено, и в этом выпуске остались %1$d минуты</item>
         <item quantity="many">Непрерывное воспроизведение выключено, и в этом выпуске осталось %1$d минут</item>
         <item quantity="other">Непрерывное воспроизведение выключено, и в этом выпуске осталось %1$d минут</item>
+    </plurals>
+    <string name="statistics_label_short">Данные</string>
+    <string name="favorite_episodes_label_short">Избранное</string>
+    <string name="feed_new_episodes_action_snackbar">Нельзя изменить при включённой автозагрузке.</string>
+    <string name="remove_restore_feed_label">Отписаться / Восстановить</string>
+    <string name="restoring_podcast_progress">Восстановление %1$d подкаста из %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d выпуск добавлен в избранное.</item>
+        <item quantity="few">%d выпуска добавлено в избранное.</item>
+        <item quantity="many">%d выпусков добавлено в избранное.</item>
+        <item quantity="other">%d выпусков добавлено в избранное.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d выпуск убран из избранных.</item>
+        <item quantity="few">%d выпуска убрано из избранных.</item>
+        <item quantity="many">%d выпусков убрано из избранных.</item>
+        <item quantity="other">%d выпусков убрано из избранных.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">Сброшена позиция для %d выпуска.</item>
+        <item quantity="few">Сброшена позиция для %d выпусков.</item>
+        <item quantity="many">Сброшена позиция для %d выпусков.</item>
+        <item quantity="other">Сброшена позиция для %d выпусков.</item>
     </plurals>
 </resources>
