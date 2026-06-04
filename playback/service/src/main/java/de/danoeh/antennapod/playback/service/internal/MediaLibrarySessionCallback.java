@@ -32,6 +32,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -78,9 +79,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("extend_sleep_timer", Bundle.EMPTY);
 
     private static final String EXTRA_VALUE = "value";
-    private static final String EXTRA_MEDIA_BUTTON_SOURCE =
-            "de.danoeh.antennapod.extra.MEDIA_BUTTON_SOURCE";
-    private static final String MEDIA_BUTTON_SOURCE_WIDGET = "widget";
 
     public static Bundle createBundle(boolean value) {
         Bundle args = new Bundle();
@@ -209,8 +207,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN
                 && keyEvent.getRepeatCount() == 0) {
-            boolean fromWidget = MEDIA_BUTTON_SOURCE_WIDGET.equals(
-                    intent.getStringExtra(EXTRA_MEDIA_BUTTON_SOURCE));
+            boolean fromWidget = MediaButtonStarter.MEDIA_BUTTON_SOURCE_WIDGET.equals(
+                    intent.getStringExtra(MediaButtonStarter.EXTRA_MEDIA_BUTTON_SOURCE));
             int keyCode = keyEvent.getKeyCode();
             if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
                 session.getPlayer().seekForward();
