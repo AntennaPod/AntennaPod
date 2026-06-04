@@ -26,15 +26,9 @@ public abstract class MediaButtonStarter {
 
     public static PendingIntent createPendingIntent(Context context, int eventCode) {
         if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-            KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
-            Intent intent = new Intent(Intent.ACTION_MEDIA_BUTTON)
+            Intent intent = createIntent(context, eventCode)
                     .setComponent(new ComponentName(context, MEDIA3_PLAYBACK_SERVICE))
-                    .putExtra(Intent.EXTRA_KEY_EVENT, event)
                     .putExtra(EXTRA_MEDIA_BUTTON_SOURCE, MEDIA_BUTTON_SOURCE_WIDGET);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                return PendingIntent.getForegroundService(context, eventCode, intent,
-                        PendingIntent.FLAG_IMMUTABLE);
-            }
             return PendingIntent.getService(context, eventCode, intent, PendingIntent.FLAG_IMMUTABLE);
         }
         return PendingIntent.getBroadcast(context, eventCode, createIntent(context, eventCode),

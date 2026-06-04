@@ -218,6 +218,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             } else if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND) {
                 session.getPlayer().seekBack();
                 return true;
+            } else if (fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                session.getPlayer().seekToNextMediaItem();
+                return true;
             } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
                 // Instead of skipping to the next episode, do a fast-forward.
