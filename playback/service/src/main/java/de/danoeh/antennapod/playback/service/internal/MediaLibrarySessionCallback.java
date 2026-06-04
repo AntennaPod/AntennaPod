@@ -33,6 +33,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -207,13 +208,24 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN
                 && keyEvent.getRepeatCount() == 0) {
+            boolean fromWidget = MediaButtonStarter.MEDIA_BUTTON_SOURCE_WIDGET.equals(
+                    intent.getStringExtra(MediaButtonStarter.EXTRA_MEDIA_BUTTON_SOURCE));
             int keyCode = keyEvent.getKeyCode();
-            if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+            if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+                session.getPlayer().seekForward();
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND) {
+                session.getPlayer().seekBack();
+                return true;
+            } else if (fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                session.getPlayer().seekToNextMediaItem();
+                return true;
+            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
                 // Instead of skipping to the next episode, do a fast-forward.
                 session.getPlayer().seekForward();
                 return true;
-            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                 // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
                 // Instead of going to the previous episode, do a rewind.
                 session.getPlayer().seekBack();

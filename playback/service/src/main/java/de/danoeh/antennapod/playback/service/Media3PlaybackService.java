@@ -162,6 +162,13 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
 
             @Override
+            public void seekToNextMediaItem() {
+                if (currentPlayable != null) {
+                    startNextInQueue(currentPlayable.getItem());
+                }
+            }
+
+            @Override
             public void seekTo(long positionMs) {
                 super.seekTo(positionMs);
                 EventBus.getDefault().post(
@@ -186,9 +193,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 setNextPlaybackSpeed();
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             } else if (customCommand.customAction.equals(SESSION_COMMAND_SKIP_TO_NEXT.customAction)) {
-                if (currentPlayable != null) {
-                    startNextInQueue(currentPlayable.getItem());
-                }
+                session.getPlayer().seekToNextMediaItem();
                 return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
             } else if (customCommand.customAction.equals(SESSION_COMMAND_NEXT_CHAPTER.customAction)) {
                 seekToNextChapter();
