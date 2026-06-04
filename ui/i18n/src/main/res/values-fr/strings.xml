@@ -979,7 +979,7 @@
     <plurals name="reset_position_message">
         <item quantity="one">%d position d\'épisode réinitialisée.</item>
         <item quantity="many">%d positions d\'épisodes réinitialisées.</item>
-        <item quantity="other">%d positions d\'épisodes réinitialisées..</item>
+        <item quantity="other">%d positions d\'épisodes réinitialisées.</item>
     </plurals>
     <string name="queue_time_left_label">Reste : %1$s • %2$s</string>
     <string name="no_fav_episodes_head_label">Aucun favori</string>

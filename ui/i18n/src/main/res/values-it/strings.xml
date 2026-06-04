@@ -154,7 +154,7 @@
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Svuota l\'inbox</string>
     <string name="removed_all_inbox_msg">Inbox svuotata</string>
-    <string name="remove_all_inbox_confirmation_msg">Conferma che vuoi rimuovere tutto dall\'inbox.</string>
+    <string name="remove_all_inbox_confirmation_msg">Conferma che vuoi svuotare l\'inbox.</string>
     <string name="multi_select_mark_played_confirmation">Conferma di voler contrassegnare tutti gli elementi selezionati come riprodotti.</string>
     <string name="multi_select_mark_unplayed_confirmation">Conferma di voler contrassegnare tutti gli elementi selezionati come non riprodotti.</string>
     <string name="show_info_label">Mostra informazioni</string>
@@ -381,7 +381,7 @@
     <string name="pref_tinted_theme_title">Colori dinamici</string>
     <string name="pref_tinted_theme_message">Adatta i colori dell\'app in base allo sfondo</string>
     <string name="pref_nav_drawer_feed_counter_title">Contatore</string>
-    <string name="pref_automatic_download_title">Download automatici</string>
+    <string name="pref_automatic_download_title">Download automatico</string>
     <string name="pref_automatic_download_sum">Configura il download automatico degli episodi</string>
     <string name="pref_automatic_download_on_battery_title">Download con batteria non in carica</string>
     <string name="pref_automatic_download_on_battery_sum">Permetti il download automatico quando il dispositivo non è in carica</string>
@@ -451,8 +451,8 @@
     <string name="pref_feed_settings_dialog_msg">Questa impostazione è univoca per ogni podcast. Puoi modificarla aprendo la pagina del podcast.</string>
     <string name="pref_contribute">Contribuisci</string>
     <string name="pref_show_subscription_title">Mostra titoli</string>
-    <string name="pref_new_episodes_action_title">Azioni nuovi episodi</string>
-    <string name="pref_new_episodes_action_sum">Azioni da svolgere sui nuovi episodi</string>
+    <string name="pref_new_episodes_action_title">Azione per i nuovi episodi</string>
+    <string name="pref_new_episodes_action_sum">Azione da svolgere sui nuovi episodi</string>
     <string name="episode_information">Informazioni sull\'episodio</string>
     <!--About screen-->
   <string name="about_pref">Informazioni</string>
