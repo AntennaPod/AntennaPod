@@ -83,6 +83,7 @@ public class ExceptFavoriteCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia()
                     && item.getMedia().isDownloaded()
+                    && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal())
                     && !item.isTagged(FeedItem.TAG_FAVORITE)) {
                 candidates.add(item);
             }
