@@ -28,7 +28,7 @@ public class FeedItemFilterQuery {
         String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOAD_DATE;
         String keyMediaId = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_ID;
         String keyItemId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID;
-        String keyFeedId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED;
+        final String keyFeedId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED;
         String keyFeedItem = PodDBAdapter.KEY_FEEDITEM;
         String tableQueue = PodDBAdapter.TABLE_NAME_QUEUE;
         String tableFavorites = PodDBAdapter.TABLE_NAME_FAVORITES;
