@@ -32,6 +32,17 @@
                 android:summary="@string/opml_import_summary"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/portcast">
+        <Preference
+                android:key="prefPortcastExport"
+                android:title="@string/portcast_export_label"
+                android:summary="@string/portcast_export_summary"/>
+        <Preference
+                android:key="prefPortcastImport"
+                android:title="@string/portcast_import_label"
+                android:summary="@string/portcast_import_summary"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/html">
         <Preference
                 android:key="prefHtmlExport"

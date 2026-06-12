@@ -657,6 +657,12 @@
     <string name="database">Database</string>
     <string name="opml">OPML</string>
     <string name="html">HTML</string>
+    <string name="portcast">PortCast</string>
+    <string name="portcast_export_label">PortCast export</string>
+    <string name="portcast_export_summary">Transfer subscriptions, play state and queue to another podcast app</string>
+    <string name="portcast_import_label">PortCast import</string>
+    <string name="portcast_import_summary">Import subscriptions, play state and queue from another podcast app</string>
+    <string name="portcast_reader_error">An error has occurred while reading the file. Make sure that you have actually selected a PortCast file and that the file is valid.</string>
     <string name="html_export_summary">Show your subscriptions to a friend</string>
     <string name="opml_export_summary">Transfer your subscriptions to another podcast app</string>
     <string name="opml_import_summary">Import your subscriptions from another podcast app</string>
