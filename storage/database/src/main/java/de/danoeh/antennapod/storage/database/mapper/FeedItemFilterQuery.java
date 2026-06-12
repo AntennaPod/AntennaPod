@@ -28,13 +28,10 @@ public class FeedItemFilterQuery {
         String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOAD_DATE;
         String keyMediaId = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_ID;
         String keyItemId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID;
+        String keyFeedId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED;
         String keyFeedItem = PodDBAdapter.KEY_FEEDITEM;
         String tableQueue = PodDBAdapter.TABLE_NAME_QUEUE;
         String tableFavorites = PodDBAdapter.TABLE_NAME_FAVORITES;
-        String keyFeedId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED;
-        String localFeedCondition = keyFeedId + " IN (SELECT " + PodDBAdapter.KEY_ID
-                + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
-                + " WHERE " + PodDBAdapter.KEY_DOWNLOAD_URL + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')";
 
         List<String> statements = new ArrayList<>();
         if (filter.showPlayed) {
@@ -54,10 +51,13 @@ public class FeedItemFilterQuery {
         } else if (filter.showNotQueued) {
             statements.add(keyItemId + " NOT IN (SELECT " + keyFeedItem + " FROM " + tableQueue + ") ");
         }
+        String localFeedCondition = keyFeedId + " IN (SELECT " + PodDBAdapter.KEY_ID
+                + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
+                + " WHERE " + PodDBAdapter.KEY_DOWNLOAD_URL + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')";
         if (filter.showDownloaded) {
-            statements.add(" (" + keyDownloaded + " > 0 OR " + localFeedCondition + ") ");
+            statements.add("(" + keyDownloaded + " > 0 OR (" + localFeedCondition + ")) ");
         } else if (filter.showNotDownloaded) {
-            statements.add(" (" + keyDownloaded + " = 0 AND NOT " + localFeedCondition + ") ");
+            statements.add("(" + keyDownloaded + " = 0 AND NOT (" + localFeedCondition + ")) ");
         }
         if (filter.showHasMedia) {
             statements.add(keyMediaId + " NOT NULL ");
