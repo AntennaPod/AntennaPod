@@ -16,6 +16,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 /**
  * A cleanup algorithm that removes any item that isn't in the queue and isn't a favorite
@@ -83,6 +84,7 @@ public class APQueueCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia()
                     && item.getMedia().isDownloaded()
+                    && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal())
                     && !item.isTagged(FeedItem.TAG_QUEUE)
                     && !item.isTagged(FeedItem.TAG_FAVORITE)) {
                 candidates.add(item);

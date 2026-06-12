@@ -86,9 +86,8 @@ public class FeedItemMenuHandler {
             canMarkPlayed |= !item.isPlayed();
             canMarkUnplayed |= item.isPlayed();
             canResetPosition |= hasMedia && item.getMedia().getPosition() != 0;
-            canDelete |= item.getFeed().isLocalFeed() || (hasMedia && item.getMedia().isDownloaded()) || isDownloading;
-            canDownload |= hasMedia && !item.getMedia().isDownloaded()
-                    && !item.getFeed().isLocalFeed() && !isDownloading;
+            canDelete |= (hasMedia && item.getMedia().isDownloaded()) || isDownloading;
+            canDownload |= hasMedia && !item.getMedia().isDownloaded() && !isDownloading;
             canAddFavorite |= !item.isTagged(FeedItem.TAG_FAVORITE);
             canRemoveFavorite |= item.isTagged(FeedItem.TAG_FAVORITE);
             canShowTranscript |= item.hasTranscript();

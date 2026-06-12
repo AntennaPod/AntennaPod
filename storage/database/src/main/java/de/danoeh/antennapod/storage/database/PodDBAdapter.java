@@ -1267,9 +1267,14 @@ public class PodDBAdapter {
                                 + " THEN (" + playedTime + ") ELSE 0 END), 0) AS played_time, "
                         + "IFNULL(SUM(" + TABLE_NAME_FEED_MEDIA + "." + KEY_DURATION + "), 0) AS total_time, "
                         + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + " > 0"
+                                + " OR " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL
+                                + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%'"
                                 + " THEN 1 ELSE 0 END) AS num_downloaded, "
                         + "SUM(CASE WHEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + " > 0"
-                                + " THEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_SIZE + " ELSE 0 END) AS download_size, "
+                                + " OR " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL
+                                + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%'"
+                                + " THEN " + TABLE_NAME_FEED_MEDIA + "." + KEY_SIZE
+                                + " ELSE 0 END) AS download_size, "
                         + "SUM(CASE WHEN " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " != " + FeedItem.PLAYED
                                 + " AND " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " >= " + sixMonthsAgo
                                 + " THEN 1 ELSE 0 END) AS num_recent_unplayed "
@@ -1309,6 +1314,8 @@ public class PodDBAdapter {
 
     public final Map<Long, Integer> getFeedCounters(FeedCounter setting, long... feedIds) {
         String whereRead;
+        String localFeedCondition = KEY_FEED + " IN (SELECT " + KEY_ID + " FROM " + TABLE_NAME_FEEDS
+                + " WHERE " + KEY_DOWNLOAD_URL + " LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')";
         switch (setting) {
             case SHOW_NEW:
                 whereRead = KEY_READ + "=" + FeedItem.NEW;
@@ -1318,12 +1325,12 @@ public class PodDBAdapter {
                         + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")";
                 break;
             case SHOW_DOWNLOADED:
-                whereRead = KEY_DOWNLOAD_DATE + ">0";
+                whereRead = "(" + KEY_DOWNLOAD_DATE + ">0 OR " + localFeedCondition + ")";
                 break;
             case SHOW_DOWNLOADED_UNPLAYED:
                 whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
                         + " OR " + KEY_READ + "=" + FeedItem.UNPLAYED + ")"
-                        + " AND " + KEY_DOWNLOAD_DATE + ">0";
+                        + " AND (" + KEY_DOWNLOAD_DATE + ">0 OR " + localFeedCondition + ")";
                 break;
             case SHOW_NONE:
                 // deliberate fall-through
