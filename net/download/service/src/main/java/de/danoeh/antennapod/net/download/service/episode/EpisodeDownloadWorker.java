@@ -99,8 +99,18 @@ public class EpisodeDownloadWorker extends Worker {
             e.printStackTrace();
             result = Result.failure();
         }
-        if (result.equals(Result.failure()) && downloader != null) {
-            FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+        if (result.equals(Result.failure())) {
+            if (downloader != null) {
+                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+            }
+            if (media.isMarkedForRedownload()) {
+                // Result.failure() under our contract means "give up" (permanent error or retries
+                // exhausted). Drop the redownload marker so RedownloadAlgorithm doesn't pick this
+                // up again on the next cold start.
+                media.setDownloaded(false, 0);
+                media.setLocalFileUrl(null);
+                DBWriter.setMediaDownloadInformation(media);
+            }
         }
         progressUpdaterThread.interrupt();
         try {
@@ -173,7 +183,7 @@ public class EpisodeDownloadWorker extends Worker {
         } catch (Exception e) {
             DBWriter.addDownloadStatus(downloader.getResult());
             sendErrorNotification(request.getTitle());
-            return Result.failure();
+            return retry3times();
         } finally {
             if (wifiLock != null) {
                 wifiLock.release();
