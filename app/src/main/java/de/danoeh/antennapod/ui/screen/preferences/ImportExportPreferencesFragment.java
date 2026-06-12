@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
@@ -219,9 +220,14 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
     }
 
     void showExportSuccessSnackbar(Uri uri, String mimeType) {
-        Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG)
+        View view = getView();
+        if (view == null) {
+            return;
+        }
+
+        Snackbar.make(view, R.string.export_success_title, Snackbar.LENGTH_LONG)
                 .setAction(R.string.share_label, v ->
-                        new ShareCompat.IntentBuilder(getContext())
+                        new ShareCompat.IntentBuilder(v.getContext())
                                 .setType(mimeType)
                                 .addStream(uri)
                                 .setChooserTitle(R.string.share_label)
