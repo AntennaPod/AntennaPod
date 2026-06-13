@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
 import androidx.core.util.Pair;
 import androidx.media3.common.ForwardingPlayer;
+import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.Player;
@@ -20,6 +21,7 @@ import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
 import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
+import com.google.common.collect.ImmutableList;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
@@ -436,6 +438,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             }
                             updatePlaybackPreferences();
                             EventBus.getDefault().post(new PlayerStatusEvent());
+                            loadQueueIntoPlayer();
                         },
                                 error -> Log.e(TAG, "Failed to load current media", error));
 
@@ -445,6 +448,60 @@ public class Media3PlaybackService extends MediaLibraryService {
                     ? player.getCurrentMediaItem().mediaId
                     : "null"), e);
         }
+    }
+
+    @UnstableApi
+    private void loadQueueIntoPlayer() {
+        if (player == null || currentPlayable == null) {
+            return;
+        }
+        if (player.getCurrentMediaItem() == null) {
+            return;
+        }
+        final long currentId;
+        try {
+            currentId = Long.parseLong(player.getCurrentMediaItem().mediaId);
+        } catch (NumberFormatException e) {
+            return;
+        }
+        if (currentPlayable.getId() != currentId) {
+            return;
+        }
+        Single.fromCallable(() -> {
+            List<FeedItem> queue = DBReader.getQueue();
+            int index = -1;
+            for (int i = 0; i < queue.size(); i++) {
+                if (queue.get(i).getId() == currentId) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index < 0 || queue.isEmpty()) {
+                return null;
+            }
+            return new Pair<>(MediaItemAdapter.fromItemList(Media3PlaybackService.this, queue), index);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        pair -> {
+                            ImmutableList<MediaItem> mediaItems = pair.first;
+                            final int startIndex = pair.second;
+                            PlaybackController.bindToMedia3Service(
+                                    Media3PlaybackService.this,
+                                    controller -> {
+                                        try {
+                                            controller.setMediaItems(
+                                                    mediaItems, startIndex,
+                                                    C.TIME_UNSET);
+                                            Log.d(TAG, "Loaded " + mediaItems.size() +
+                                                    " queue items into player (current=" + startIndex + ")");
+                                        } catch (Exception e) {
+                                            Log.w(TAG, "Failed to set media items", e);
+                                        }
+                                    });
+                        },
+                        error -> Log.e(TAG, "Failed to load queue for player", error));
     }
 
     private void updatePlaybackPreferences() {
