@@ -166,6 +166,12 @@
         </activity>
 
         <activity
+            android:name=".activity.PortcastImportActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/portcast_import_label"
+            android:exported="false"/>
+
+        <activity
             android:name=".ui.screen.playback.video.VideoplayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:supportsPictureInPicture="true"
