@@ -753,7 +753,7 @@
     <string name="statistics_release_schedule">calendario de lanzamiento</string>
     <string name="delete_downloads_played">Eliminar los reproducidos</string>
     <string name="discover_more">Descubrir más →</string>
-    <string name="home_new_empty_text">Los episodios nuvaos aparecerán aquí. Luego podrás decidir si te interesan.</string>
+    <string name="home_new_empty_text">Los episodios nuevos aparecerán aquí. Luego podrás decidir si te interesan.</string>
     <string name="home_downloads_empty_text">Puedes descargar cualquier episodio para escucharlo sin conexión.</string>
     <string name="section_shown">Visible</string>
     <string name="bottom_navigation">Navegación inferior</string>
