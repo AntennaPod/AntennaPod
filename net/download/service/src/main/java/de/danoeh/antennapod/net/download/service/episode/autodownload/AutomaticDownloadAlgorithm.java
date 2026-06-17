@@ -104,7 +104,7 @@ public class AutomaticDownloadAlgorithm {
                     Log.d(TAG, "Enqueueing " + itemsToDownload.size() + " items for download");
 
                     for (FeedItem episode : itemsToDownload) {
-                        DownloadServiceInterface.get().download(context, episode);
+                        DownloadServiceInterface.get().download(context, episode, false);
                     }
                 }
             }

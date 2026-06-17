@@ -24,6 +24,7 @@ import de.danoeh.antennapod.model.feed.FeedFunding;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -579,6 +580,31 @@ public class PodDBAdapter {
                     new String[]{String.valueOf(media.getId())});
         } else {
             Log.e(TAG, "setMediaDownloadInformation: ID of media was 0");
+        }
+    }
+
+    /**
+     * Clears the local file URL and sets the download date for every FeedMedia row whose ID is in
+     * the given list, in a single SQL UPDATE. Used for bulk reconciliation of stale download
+     * markers (post-import cleanup, etc.).
+     */
+    public void setDownloadStateForMediaIds(List<Long> mediaIds, long downloadDate) {
+        if (mediaIds.isEmpty()) {
+            return;
+        }
+        ContentValues values = new ContentValues();
+        values.putNull(KEY_FILE_URL);
+        values.put(KEY_DOWNLOAD_DATE, downloadDate);
+        // SQLite's default SQLITE_MAX_VARIABLE_NUMBER is 999; chunk well below that.
+        final int chunkSize = 500;
+        for (int start = 0; start < mediaIds.size(); start += chunkSize) {
+            List<Long> chunk = mediaIds.subList(start, Math.min(start + chunkSize, mediaIds.size()));
+            String placeholders = TextUtils.join(",", Collections.nCopies(chunk.size(), "?"));
+            String[] args = new String[chunk.size()];
+            for (int i = 0; i < chunk.size(); i++) {
+                args[i] = String.valueOf(chunk.get(i));
+            }
+            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + " IN (" + placeholders + ")", args);
         }
     }
 

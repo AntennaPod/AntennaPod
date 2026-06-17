@@ -61,7 +61,8 @@ public class DownloadActionButton extends ItemActionButton {
                     TIMEOUT_NETWORK_WARN_SECONDS / 60, TIMEOUT_NETWORK_WARN_SECONDS / 60), Toast.LENGTH_LONG).show();
         }
         if (NetworkUtils.isEpisodeDownloadAllowed() || shouldBypass) {
-            DownloadServiceInterface.get().downloadNow(context, item, bypassCellularNetworkType == BYPASS_TYPE_NOW);
+            DownloadServiceInterface.get().downloadNow(context, item,
+                    bypassCellularNetworkType == BYPASS_TYPE_NOW, false);
         } else {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                     .setTitle(R.string.confirm_mobile_download_dialog_title)
@@ -69,13 +70,13 @@ public class DownloadActionButton extends ItemActionButton {
                             (d, w) -> {
                                 bypassCellularNetworkType = BYPASS_TYPE_LATER;
                                 bypassCellularNetworkWarningTimer = System.currentTimeMillis() / 1000;
-                                DownloadServiceInterface.get().downloadNow(context, item, false);
+                                DownloadServiceInterface.get().downloadNow(context, item, false, false);
                             })
                     .setNeutralButton(R.string.confirm_mobile_download_dialog_allow_this_time,
                             (d, w) -> {
                                 bypassCellularNetworkType = BYPASS_TYPE_NOW;
                                 bypassCellularNetworkWarningTimer = System.currentTimeMillis() / 1000;
-                                DownloadServiceInterface.get().downloadNow(context, item, true);
+                                DownloadServiceInterface.get().downloadNow(context, item, true, false);
                             })
                     .setNegativeButton(R.string.cancel_label, null);
             if (NetworkUtils.isNetworkRestricted() && NetworkUtils.isVpnOverWifi()) {
