@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-import de.danoeh.antennapod.ui.statistics.R;
 
 import java.util.List;
 
@@ -60,10 +59,9 @@ public class BarChartView extends AppCompatImageView {
         private final Paint paintBars;
         private final Paint paintGridLines;
         private final Paint paintGridText;
-        private final int[] colors = {0, 0xff9c27b0};
+        private final int[] colors = {0xff3775e6, 0xff9c27b0};
 
         private BarChartDrawable() {
-            colors[0] = ThemeUtils.getColorFromAttr(getContext(), R.attr.colorAccent);
             paintBars = new Paint();
             paintBars.setStyle(Paint.Style.FILL);
             paintBars.setAntiAlias(true);
