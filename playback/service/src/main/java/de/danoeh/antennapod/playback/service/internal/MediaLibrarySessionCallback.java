@@ -66,7 +66,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("fast_forward", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_PLAYBACK_SPEED
             = new SessionCommand("playback_speed", Bundle.EMPTY);
-    protected static final SessionCommand SESSION_COMMAND_SKIP_TO_NEXT
+    public static final SessionCommand SESSION_COMMAND_SKIP_TO_NEXT
             = new SessionCommand("skip_to_next", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_NEXT_CHAPTER
             = new SessionCommand("next_chapter", Bundle.EMPTY);

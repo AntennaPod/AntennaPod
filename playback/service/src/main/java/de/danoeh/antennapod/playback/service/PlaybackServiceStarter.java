@@ -9,6 +9,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 
 public class PlaybackServiceStarter {
     private final Context context;
@@ -46,6 +47,7 @@ public class PlaybackServiceStarter {
             PlaybackController.bindToMedia3Service(context, controller -> {
                 if (controller.getCurrentMediaItem() != null && media instanceof FeedMedia
                         && ("" + ((FeedMedia) media).getId()).equals(controller.getCurrentMediaItem().mediaId)) {
+                    PlaybackPreferences.writeMediaPlaying((FeedMedia) media);
                     controller.play();
                     return;
                 }

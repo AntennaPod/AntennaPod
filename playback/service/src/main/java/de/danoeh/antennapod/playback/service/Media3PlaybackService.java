@@ -22,6 +22,8 @@ import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -164,7 +166,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             @Override
             public void seekToNextMediaItem() {
                 if (currentPlayable != null) {
-                    startNextInQueue(currentPlayable.getItem());
+                    startNextInQueue(currentPlayable.getItem(), true);
                 }
             }
 
@@ -269,7 +271,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                         return;
                     }
                 }
-                startNextInQueue(media.getItem());
+                startNextInQueue(media.getItem(), false);
             }
         }
 
@@ -456,6 +458,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 applyVolumeAdaption(1.0f);
                             }
                             updatePlaybackPreferences();
+                            EventBus.getDefault().post(new PlayerStatusEvent());
                         },
                                 error -> Log.e(TAG, "Failed to load current media", error));
 
@@ -556,7 +559,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         List<Chapter> chapters = currentPlayable.getChapters();
         if (chapters == null) {
             if (currentPlayable.getItem() != null) {
-                startNextInQueue(currentPlayable.getItem());
+                startNextInQueue(currentPlayable.getItem(), true);
             }
             return;
         }
@@ -565,7 +568,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         if (chapters.size() < nextChapter + 1) {
             if (currentPlayable.getItem() != null) {
-                startNextInQueue(currentPlayable.getItem());
+                startNextInQueue(currentPlayable.getItem(), true);
             }
             return;
         }
@@ -623,7 +626,7 @@ public class Media3PlaybackService extends MediaLibraryService {
      * Loads the next item, and starts it if continuous playback is enabled.
      */
     @UnstableApi
-    private void startNextInQueue(FeedItem item) {
+    private void startNextInQueue(FeedItem item, boolean wasSkipped) {
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
         }
@@ -665,11 +668,18 @@ public class Media3PlaybackService extends MediaLibraryService {
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
                         () -> {
+                            if (wasSkipped && !UserPreferences.shouldSkipKeepEpisode()) {
+                                DBWriter.markItemsPlayed(FeedItem.PLAYED, false, Collections.singletonList(item));
+                                DBWriter.removeQueueItem(this, false, item);
+                            }
                             player.stop();
                             player.clearMediaItems();
                             PlaybackPreferences.writeNoMediaPlaying();
                             EventBus.getDefault().post(
                                     new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                            if (wasSkipped) {
+                                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_following_in_queue)));
+                            }
                         });
     }
 
