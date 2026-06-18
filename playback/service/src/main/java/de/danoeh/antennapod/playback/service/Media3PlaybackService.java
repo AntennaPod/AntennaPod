@@ -22,6 +22,8 @@ import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -119,6 +121,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             public Player.Commands getAvailableCommands() {
                 return super.getAvailableCommands()
                         .buildUpon()
+                        .add(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
                         .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
                         .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
                         .build();
@@ -164,7 +167,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             @Override
             public void seekToNextMediaItem() {
                 if (currentPlayable != null) {
-                    startNextInQueue(currentPlayable.getItem());
+                    startNextInQueue(currentPlayable, true);
                 }
             }
 
@@ -269,7 +272,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                         return;
                     }
                 }
-                startNextInQueue(media.getItem());
+                startNextInQueue(media, false);
             }
         }
 
@@ -503,6 +506,10 @@ public class Media3PlaybackService extends MediaLibraryService {
     }
 
     private void onPlaybackEnd(FeedMedia media) {
+        finalizePlayback(media, true, false, false);
+    }
+
+    private void finalizePlayback(FeedMedia media, boolean ended, boolean skipped, boolean playingNext) {
         if (media == null) {
             return;
         }
@@ -512,11 +519,11 @@ public class Media3PlaybackService extends MediaLibraryService {
         boolean almostEnded = media.getDuration() > 0
                 && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
 
-        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, almostEnded);
-        if (almostEnded) {
-            if (item != null) {
-                DBWriter.markItemsPlayed(FeedItem.PLAYED, true, Collections.singletonList(item));
-                DBWriter.removeQueueItem(this, true, item);
+        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, ended || almostEnded);
+        if (item != null) {
+            if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
+                DBWriter.markItemsPlayed(FeedItem.PLAYED, ended || (skipped && almostEnded), Collections.singletonList(item));
+                DBWriter.removeQueueItem(this, ended, item);
                 FeedPreferences.AutoDeleteAction action = item.getFeed().getPreferences().getCurrentAutoDelete();
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
@@ -527,6 +534,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                     DBWriter.deleteFeedMediaOfItem(this, media);
                 }
             }
+        }
+        if (ended || skipped || playingNext) {
             DBWriter.addItemToPlaybackHistory(media);
         }
     }
@@ -561,7 +570,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         List<Chapter> chapters = currentPlayable.getChapters();
         if (chapters == null) {
             if (currentPlayable.getItem() != null) {
-                startNextInQueue(currentPlayable.getItem());
+                startNextInQueue(currentPlayable, true);
             }
             return;
         }
@@ -570,7 +579,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         if (chapters.size() < nextChapter + 1) {
             if (currentPlayable.getItem() != null) {
-                startNextInQueue(currentPlayable.getItem());
+                startNextInQueue(currentPlayable, true);
             }
             return;
         }
@@ -628,10 +637,14 @@ public class Media3PlaybackService extends MediaLibraryService {
      * Loads the next item, and starts it if continuous playback is enabled.
      */
     @UnstableApi
-    private void startNextInQueue(FeedItem item) {
+    private void startNextInQueue(FeedMedia media, boolean wasSkipped) {
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
         }
+        if (media == null) {
+            return;
+        }
+        FeedItem item = media.getItem();
         if (item == null) {
             return;
         }
@@ -654,10 +667,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 return;
                             }
                             allowStreamingThisTime = false;
+                            finalizePlayback(media, false, wasSkipped, true);
 
                             currentPlayable = nextMedia;
                             currentPlayable.onPlaybackStart();
-                            PlaybackPreferences.writeMediaPlaying(nextMedia);
+                            updatePlaybackPreferences();
                             if (nextMedia.getItem() != null && nextMedia.getItem().getFeed() != null) {
                                 volumeAdaptionFactor = nextMedia.getItem().getFeed()
                                         .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
@@ -670,12 +684,17 @@ public class Media3PlaybackService extends MediaLibraryService {
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
                         () -> {
+                            finalizePlayback(media, false, wasSkipped, false);
+                            currentPlayable = null;
                             player.stop();
                             player.clearMediaItems();
                             PlaybackPreferences.writeNoMediaPlaying();
                             EventBus.getDefault().post(new PlayerStatusEvent());
                             EventBus.getDefault().post(
                                     new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                            if (wasSkipped) {
+                                EventBus.getDefault().post(new MessageEvent(getString(R.string.no_following_in_queue)));
+                            }
                         });
     }
 

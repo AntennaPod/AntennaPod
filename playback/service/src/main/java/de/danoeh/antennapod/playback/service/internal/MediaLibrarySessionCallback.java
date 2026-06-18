@@ -132,7 +132,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .build();
         return new MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
-                .setCustomLayout(buildCustomLayout())
+                .setMediaButtonPreferences(buildCustomLayout())
                 .setAvailablePlayerCommands(playerCommands)
                 .build();
     }
@@ -140,12 +140,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     @Override
     @UnstableApi
     public void onPostConnect(@NonNull MediaSession session, @NonNull MediaSession.ControllerInfo controller) {
-        session.setCustomLayout(buildCustomLayout());
+        session.setMediaButtonPreferences(buildCustomLayout());
     }
 
     @UnstableApi
     public void refreshNotification(MediaLibraryService.MediaLibrarySession session) {
-        session.setCustomLayout(buildCustomLayout());
+        session.setMediaButtonPreferences(buildCustomLayout());
     }
 
     @UnstableApi
@@ -180,6 +180,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
 
         if (UserPreferences.showSkipOnFullNotification()) {
             buttons.add(new CommandButton.Builder(CommandButton.ICON_NEXT)
+                    .setSlots(CommandButton.SLOT_OVERFLOW)
                     .setSessionCommand(SESSION_COMMAND_SKIP_TO_NEXT)
                     .setDisplayName(context.getString(R.string.skip_episode_label))
                     .build());
