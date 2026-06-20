@@ -67,6 +67,7 @@ public class MediaItemAdapter {
             FeedMedia feedMedia = (FeedMedia) playable;
             mediaId = String.valueOf(feedMedia.getId());
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
+            metadataBuilder.setArtist(feedMedia.getFeedTitle());
         }
         int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
         Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
