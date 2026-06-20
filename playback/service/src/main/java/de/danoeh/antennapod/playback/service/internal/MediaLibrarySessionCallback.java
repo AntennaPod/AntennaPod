@@ -337,7 +337,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                     (int) startPosition, media.getLastPlayedTimeStatistics());
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
-                                            Collections.singletonList(MediaItemAdapter.fromPlayable(context, media)),
+                                            Collections.singletonList(
+                                                    MediaItemAdapter.fromPlayable(context, media, false)),
                                             0, startPosition);
                             future.set(result);
                         },
@@ -485,7 +486,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             try {
                 long mediaId = Long.parseLong(item.mediaId);
                 FeedMedia media = DBReader.getFeedMedia(mediaId);
-                builder.add(MediaItemAdapter.fromPlayable(context, media));
+                builder.add(MediaItemAdapter.fromPlayable(context, media, false));
             } catch (NumberFormatException e) {
                 Log.e(TAG, "Invalid media ID: " + item.mediaId, e);
             }

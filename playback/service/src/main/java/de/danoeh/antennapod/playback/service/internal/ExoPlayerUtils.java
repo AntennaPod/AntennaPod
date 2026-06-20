@@ -115,15 +115,14 @@ public class ExoPlayerUtils {
         @NonNull
         @Override
         public MediaSource createMediaSource(@NonNull MediaItem mediaItem) {
-            DefaultMediaSourceFactory factory = new DefaultMediaSourceFactory(
-                    buildDataSourceFactory(mediaItem), extractorsFactory);
+            defaultFactory.setDataSourceFactory(buildDataSourceFactory(mediaItem));
             if (loadErrorHandlingPolicy != null) {
-                factory.setLoadErrorHandlingPolicy(loadErrorHandlingPolicy);
+                defaultFactory.setLoadErrorHandlingPolicy(loadErrorHandlingPolicy);
             }
             if (drmSessionManagerProvider != null) {
-                factory.setDrmSessionManagerProvider(drmSessionManagerProvider);
+                defaultFactory.setDrmSessionManagerProvider(drmSessionManagerProvider);
             }
-            return factory.createMediaSource(mediaItem);
+            return defaultFactory.createMediaSource(mediaItem);
         }
 
         private DataSource.Factory buildDataSourceFactory(MediaItem mediaItem) {
