@@ -2,9 +2,10 @@ package de.danoeh.antennapod.model.feed;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FeedFunding {
+public class FeedFunding implements Serializable {
     public static final String FUNDING_ENTRIES_SEPARATOR = "\u001e";
     public static final String FUNDING_TITLE_SEPARATOR = "\u001f";
 

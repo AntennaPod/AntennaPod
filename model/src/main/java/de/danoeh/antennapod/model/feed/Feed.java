@@ -2,6 +2,7 @@ package de.danoeh.antennapod.model.feed;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author daniel
  */
-public class Feed {
+public class Feed implements Serializable {
 
     public static final int FEEDFILETYPE_FEED = 0;
     public static final int STATE_SUBSCRIBED = 0;
