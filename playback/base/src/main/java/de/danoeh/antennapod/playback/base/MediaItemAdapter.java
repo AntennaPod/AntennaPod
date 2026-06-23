@@ -69,18 +69,18 @@ public class MediaItemAdapter {
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
             metadataBuilder.setArtist(feedMedia.getFeedTitle());
         }
-        boolean useUri = true;
         if (!forBrowse) {
             int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
             Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
             if (bitmap != null) {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+                // media3 prefers artworkData over artworkUri for local playback.
+                // Chromecast ignores artworkData and needs artworkUri.
                 metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
-                useUri = false;
             }
         }
-        if (useUri && playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
+        if (playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
             metadataBuilder.setArtworkUri(Uri.parse(playable.getImageLocation()));
         }
         Bundle extras = new Bundle();
