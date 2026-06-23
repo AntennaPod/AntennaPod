@@ -278,12 +278,12 @@ public class FeedItemMenuHandler {
                 } else {
                     //was played
                     message = fragment.getResources().getQuantityString(
-                            R.plurals.marked_as_unplayed_message, 1);
+                            R.plurals.marked_as_unplayed_message, 1, 1);
                 }
                 break;
             case FeedItem.PLAYED:
                 message = fragment.getResources().getQuantityString(
-                        R.plurals.marked_as_played_message, 1);
+                        R.plurals.marked_as_played_message, 1, 1);
                 break;
         }
 
