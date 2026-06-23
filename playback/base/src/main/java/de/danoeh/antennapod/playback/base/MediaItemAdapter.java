@@ -55,7 +55,7 @@ public class MediaItemAdapter {
      * Create a media item and load all its metadata, including cover art using Glide.
      * Do NOT use this method on the main thread.
      */
-    public static MediaItem fromPlayable(Context context, Playable playable) {
+    public static MediaItem fromPlayable(Context context, Playable playable, boolean forBrowse) {
         ThreadUtils.assertNotMainThread();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(playable.getEpisodeTitle());
@@ -69,13 +69,18 @@ public class MediaItemAdapter {
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
             metadataBuilder.setArtist(feedMedia.getFeedTitle());
         }
-        int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
-        Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
-        if (bitmap != null) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bos);
-            metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
-        } else if (playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
+        boolean useUri = true;
+        if (!forBrowse) {
+            int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
+            Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
+            if (bitmap != null) {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+                metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
+                useUri = false;
+            }
+        }
+        if (useUri && playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
             metadataBuilder.setArtworkUri(Uri.parse(playable.getImageLocation()));
         }
         Bundle extras = new Bundle();
@@ -226,7 +231,7 @@ public class MediaItemAdapter {
         for (FeedItem item : feedItems) {
             FeedMedia media = item.getMedia();
             if (media != null && (media.localFileAvailable() || media.getStreamUrl() != null)) {
-                itemsBuilder.add(MediaItemAdapter.fromPlayable(context, media));
+                itemsBuilder.add(fromPlayable(context, media, true));
             }
         }
         return itemsBuilder.build();
