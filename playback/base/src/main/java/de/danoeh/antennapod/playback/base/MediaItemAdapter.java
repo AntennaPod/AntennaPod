@@ -221,11 +221,40 @@ public class MediaItemAdapter {
                 .build();
     }
 
-    public static ImmutableList<MediaItem> fromItemList(Context context, List<FeedItem> feedItems) {
+    /**
+     * Create a lightweight media item for display in a browsable list. Unlike {@link #fromPlayable},
+     * this performs no blocking work (no redirect resolution, no artwork download). The playback URI
+     * and full metadata are resolved later from the media id when the item is actually selected
+     * (see enrichMediaItems). This keeps browsing large lists responsive, which especially matters
+     * when streaming, where every item would otherwise trigger a network request just to be listed.
+     */
+    public static MediaItem fromPlayableForBrowsing(Playable playable) {
+        MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
+        metadataBuilder.setTitle(playable.getEpisodeTitle());
+        metadataBuilder.setIsPlayable(true);
+        metadataBuilder.setIsBrowsable(false);
+        metadataBuilder.setMediaType(MediaMetadata.MEDIA_TYPE_PODCAST_EPISODE);
+        String mediaId = "0";
+        if (playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            mediaId = String.valueOf(feedMedia.getId());
+            metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
+        }
+        String imageLocation = playable.getImageLocation();
+        if (imageLocation != null && imageLocation.startsWith("http")) {
+            metadataBuilder.setArtworkUri(Uri.parse(imageLocation));
+        }
+        return new MediaItem.Builder()
+                .setMediaId(mediaId)
+                .setMediaMetadata(metadataBuilder.build())
+                .build();
+    }
+
+    public static ImmutableList<MediaItem> fromItemList(List<FeedItem> feedItems) {
         ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
         for (FeedItem item : feedItems) {
             if (item.getMedia() != null) {
-                itemsBuilder.add(MediaItemAdapter.fromPlayable(context, item.getMedia()));
+                itemsBuilder.add(fromPlayableForBrowsing(item.getMedia()));
             }
         }
         return itemsBuilder.build();

@@ -374,7 +374,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         .subscribeOn(Schedulers.io())
                         .subscribe(
                                 items -> future.set(LibraryResult.ofItemList(
-                                        MediaItemAdapter.fromItemList(context, items), params)),
+                                        MediaItemAdapter.fromItemList(items), params)),
                                 error -> {
                                     Log.e(TAG, "Failed to load continue listening", error);
                                     future.set(LibraryResult.ofItemList(ImmutableList.of(), params));
@@ -400,7 +400,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 })
                         .subscribeOn(Schedulers.io())
                         .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                        MediaItemAdapter.fromItemList(context, items), params)),
+                                        MediaItemAdapter.fromItemList(items), params)),
                                 future::setException));
                 return future;
         }
@@ -416,7 +416,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
                 .subscribeOn(Schedulers.io())
                 .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                MediaItemAdapter.fromItemList(context, items), params)),
+                                MediaItemAdapter.fromItemList(items), params)),
                         future::setException));
         return future;
     }
