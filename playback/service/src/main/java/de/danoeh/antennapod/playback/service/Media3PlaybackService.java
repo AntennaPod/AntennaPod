@@ -357,6 +357,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             player.removeListener(playerListener);
             player.release();
         }
+        ExoPlayerUtils.releaseCache();
         if (mediaSession != null) {
             mediaSession.release();
         }

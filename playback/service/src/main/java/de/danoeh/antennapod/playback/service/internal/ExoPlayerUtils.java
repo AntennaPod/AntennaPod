@@ -9,11 +9,15 @@ import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.util.UnstableApi;
+import androidx.media3.database.StandaloneDatabaseProvider;
 import androidx.media3.datasource.DataSource;
 import androidx.media3.datasource.DefaultDataSource;
 import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.datasource.HttpDataSource;
 import androidx.media3.datasource.ResolvingDataSource;
+import androidx.media3.datasource.cache.CacheDataSource;
+import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
+import androidx.media3.datasource.cache.SimpleCache;
 import de.danoeh.antennapod.net.common.RedirectChecker;
 import androidx.media3.exoplayer.DefaultLoadControl;
 import androidx.media3.exoplayer.ExoPlayer;
@@ -30,30 +34,46 @@ import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
+@OptIn(markerClass = UnstableApi.class)
 public class ExoPlayerUtils {
+    private static volatile SimpleCache simpleCache;
+
     @OptIn(markerClass = UnstableApi.class)
     public static ExoPlayer buildPlayer(Context context) {
+        if (simpleCache == null) {
+            simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
+                    new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024),
+                    new StandaloneDatabaseProvider(context));
+        }
         return new ExoPlayer.Builder(context)
                 .setLoadControl(new DefaultLoadControl.Builder()
                         .setBufferDurationsMs(
-                                (int) (UserPreferences.getFastForwardSecs() * 1000L),
-                                Math.max(DefaultLoadControl.DEFAULT_MAX_BUFFER_MS,
-                                        (int) (UserPreferences.getFastForwardSecs() * 1000L)),
+                                (int) TimeUnit.HOURS.toMillis(1),
+                                (int) TimeUnit.HOURS.toMillis(3),
                                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS)
-                        .setBackBuffer((int) (3 * UserPreferences.getRewindSecs() * 1000L), true)
+                        .setBackBuffer((int) TimeUnit.MINUTES.toMillis(5), true)
                         .build())
                 .setAudioAttributes(new AudioAttributes.Builder()
                         .setUsage(C.USAGE_MEDIA)
                         .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
                         .build(), true)
-                .setMediaSourceFactory(new ApMediaSourceFactory(context))
+                .setMediaSourceFactory(new ApMediaSourceFactory(context, simpleCache))
                 .setSeekParameters(SeekParameters.EXACT)
                 .setHandleAudioBecomingNoisy(UserPreferences.isPauseOnHeadsetDisconnect())
                 .build();
+    }
+
+    public static void releaseCache() {
+        if (simpleCache != null) {
+            simpleCache.release();
+            simpleCache = null;
+        }
     }
 
     public static String translateErrorReason(@NonNull PlaybackException error, Context context) {
@@ -86,11 +106,13 @@ public class ExoPlayerUtils {
         private final DefaultExtractorsFactory extractorsFactory;
         private final DefaultMediaSourceFactory defaultFactory;
         private final Context context;
+        private final SimpleCache simpleCache;
         private final ConcurrentHashMap<String, String> redirectCache = new ConcurrentHashMap<>();
 
-        public ApMediaSourceFactory(Context context) {
+        public ApMediaSourceFactory(Context context, SimpleCache simpleCache) {
             super();
             this.context = context;
+            this.simpleCache = simpleCache;
             this.extractorsFactory = new DefaultExtractorsFactory();
             this.extractorsFactory.setConstantBitrateSeekingEnabled(true);
             this.extractorsFactory.setMp3ExtractorFlags(Mp3Extractor.FLAG_DISABLE_ID3_METADATA);
@@ -140,7 +162,7 @@ public class ExoPlayerUtils {
                         Collections.singletonMap("Authorization", authHeader));
             }
             DataSource.Factory dataSourceFactory = new DefaultDataSource.Factory(context, httpDataSourceFactory);
-            return new ResolvingDataSource.Factory(dataSourceFactory, dataSpec -> {
+            DataSource.Factory resolvingFactory = new ResolvingDataSource.Factory(dataSourceFactory, dataSpec -> {
                 String originalUrl = dataSpec.uri.toString();
                 if (!originalUrl.startsWith("http")) {
                     return dataSpec;
@@ -155,6 +177,14 @@ public class ExoPlayerUtils {
                 }
                 return dataSpec.withUri(Uri.parse(resolvedUrl));
             });
+            String uri = mediaItem.localConfiguration != null
+                    ? mediaItem.localConfiguration.uri.toString() : "";
+            if (uri.startsWith("http")) {
+                return new CacheDataSource.Factory()
+                        .setCache(simpleCache)
+                        .setUpstreamDataSourceFactory(resolvingFactory);
+            }
+            return resolvingFactory;
         }
 
         @NonNull
