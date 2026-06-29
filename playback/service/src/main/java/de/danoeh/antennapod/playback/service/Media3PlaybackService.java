@@ -290,7 +290,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                     PlaybackService.isRunning ? PlayerStatus.PLAYING : PlayerStatus.PAUSED,
                     (int) player.getContentPosition(), (int) player.getDuration(),
                     player.getPlaybackParameters().speed);
-            WidgetUpdater.updateWidget(Media3PlaybackService.this, widgetState);
+            Schedulers.io().scheduleDirect(() ->
+                    WidgetUpdater.updateWidget(Media3PlaybackService.this, widgetState));
             updatePlaybackPreferences();
 
             // Auto-enable sleep timer when playback starts
@@ -385,7 +386,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
                                         Util.shouldShowPlayButton(player) ? PlayerStatus.PAUSED : PlayerStatus.PLAYING,
                                         (int) position, (int) duration, speed);
-                                WidgetUpdater.updateWidget(this, widgetState);
+                                Schedulers.io().scheduleDirect(() ->
+                                        WidgetUpdater.updateWidget(this, widgetState));
                                 long currentTime = System.currentTimeMillis();
                                 if (currentTime - lastPositionSaveTime >= POSITION_SAVE_INTERVAL_MS) {
                                     saveCurrentPosition();
