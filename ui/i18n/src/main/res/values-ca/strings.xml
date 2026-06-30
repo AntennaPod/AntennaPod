@@ -275,7 +275,6 @@
     <string name="smart_shuffle">Mescla intel·ligent</string>
     <string name="size">Mida</string>
     <string name="clear_queue_confirmation_msg">Confirmeu que voleu eliminar TOTS els episodis de la cua.</string>
-    <string name="time_left_label">"Temps restant: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Valors predeterminats</string>
     <string name="preset_already_exists">%1$.2fx ja està guardat com a valor predeterminat.</string>
@@ -579,8 +578,6 @@
   <string name="choose_data_directory">Selecciona carpeta de dades</string>
     <string name="choose_data_directory_message">Seleccioneu l\'arreu del vostre directori d\'informació. AntennaPod crearà els subdirectoris pertinents.</string>
     <string name="choose_data_directory_available_space">%1$s de %2$s lliures</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Pausa la reproducció en lloc de baixar el volum quan una altra app necessiti reproduir sons</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pausa per interrupcions</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Des del %1$sheu reproduït %2$s%3$d%4$shores de pòdcasts.</string>
     <string name="rating_contribute_label">Us voleu unir? Tant si voleu traduir, ajudar, dissenyar o programar, serem molt feliços de tenir-vos amb nosaltres!</string>
@@ -755,7 +752,6 @@
     <string name="visit_social_interact_label">Mostra els comentaris</string>
     <string name="preference_search_clear_input">Neteja</string>
     <string name="rss_address">Adreça RSS</string>
-    <string name="inbox_label_more">Safata d\'entrada →</string>
     <string name="discover_more">Descubriu-ne més →</string>
     <string name="statistics_view_all">Tots els pòdcasts →</string>
     <string name="bottom_navigation">Navegació a sota</string>
@@ -767,12 +763,8 @@
     <string name="inbox_label_short">Safata d\'entrada</string>
     <string name="downloads_label_short">Baixades</string>
     <string name="playback_history_label_short">Historial</string>
-    <string name="queue_label_more">Cua →</string>
-    <string name="subscriptions_label_more">Subscripcions →</string>
     <string name="echo_thanks_large">Gràcies</string>
     <string name="subscriptions_label_short">Subscripcions</string>
-    <string name="episodes_label_more">Episodis →</string>
-    <string name="downloads_label_more">Baixades →</string>
     <string name="add_feed_label_short">Afegiu</string>
     <string name="delete_tag_confirmation">Confirmeu que voleu suprimir l\'etiqueta «%1$s».</string>
     <string name="overflow_more">Més</string>
@@ -883,7 +875,6 @@
         <item quantity="other">S\'han mogut %d episodis al final.</item>
     </plurals>
     <string name="no_queue_items_inbox_has_items_button_label">Ves a la safata d\'entrada</string>
-    <string name="auto_download_inbox_category">Baixa automàticament els episodis de la safata d\'entrada</string>
     <plurals name="added_to_queue_message">
         <item quantity="one">S\'ha afegit %d episodi a la cua.</item>
         <item quantity="many">S\'han afegit %d episodis a la cua.</item>

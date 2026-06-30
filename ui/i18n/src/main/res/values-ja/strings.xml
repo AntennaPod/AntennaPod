@@ -256,7 +256,6 @@
     <string name="random">ランダム</string>
     <string name="smart_shuffle">スマートシャッフル</string>
     <string name="size">サイズ</string>
-    <string name="time_left_label">"残り時間: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">プリセット</string>
     <string name="preset_already_exists">%1$.2f 倍は既にプリセットとして保存されています。</string>
@@ -526,8 +525,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">データフォルダーの選択</string>
     <string name="choose_data_directory_available_space">%1$s / %2$s 空き</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">他のアプリがサウンドを再生したい時に、音量を下げる代わりに再生を一時停止します</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">割り込み時に一時停止</string>
     <!--Rating dialog-->
   <string name="rating_tagline">%1$s から、%2$s%3$d%4$s 時間のポッドキャストを再生しました。</string>
     <string name="rating_contribute_label">翻訳、サポート、デザイン、またはコーディングといった形で貢献してくれると嬉しいです!</string>
@@ -670,7 +667,6 @@
     <string name="shortcut_subscription_label">購読のショートカット</string>
     <string name="shortcut_select_subscription">購読を選択</string>
     <string name="add_shortcut">ショートカットの追加</string>
-    <string name="inbox_label_more">受信トレイ »</string>
     <string name="enabled">有効</string>
     <string name="disabled">無効</string>
     <string name="global_default_with_value">全般のデフォルト (%1$s)</string>
@@ -720,10 +716,6 @@
     <string name="home_continue_empty_text">エピソードを追加するには、エピソードをダウンロードするか、エピソードを長時間押して「キューに追加」を選択してください。</string>
     <string name="home_downloads_empty_text">好きなエピソードをダウンロードして、オフラインで聴くことができます。</string>
     <string name="section_shown">表示</string>
-    <string name="episodes_label_more">エピソード »</string>
-    <string name="queue_label_more">キュー »</string>
-    <string name="downloads_label_more">ダウンロード »</string>
-    <string name="subscriptions_label_more">購読 »</string>
     <plurals name="episode_cleanup_days_after_listening">
         <item quantity="other">完了後 %d 日</item>
     </plurals>

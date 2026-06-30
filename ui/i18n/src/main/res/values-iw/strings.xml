@@ -161,7 +161,7 @@
     <string name="show_feed_settings_label">הצגת הגדרות הסכת</string>
     <string name="feed_settings_label">הגדרות הסכת</string>
     <string name="rename_feed_label">שינוי שם</string>
-    <string name="remove_feed_label">מחיקה</string>
+    <string name="remove_feed_label">הסרת מינוי</string>
     <string name="share_label">שיתוף</string>
     <string name="share_file_label">שיתוף קובץ</string>
     <string name="load_complete_feed">רענון מלא של ההסכת</string>
@@ -285,7 +285,6 @@
     <string name="smart_shuffle">ערבול חכם</string>
     <string name="size">גודל</string>
     <string name="clear_queue_confirmation_msg">נא לאשר את הסרת כל הפרקים מהתור.</string>
-    <string name="time_left_label">"זמן שנותר: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">ערכות מוגדרות</string>
     <string name="preset_already_exists">%1$.2fx כבר נשמרה כערכה מוגדרת.</string>
@@ -341,7 +340,7 @@
     <string name="pref_auto_delete_title">מחיקה אוטומטית</string>
     <string name="pref_auto_delete_sum">למחוק פרקים אוטומטית לאחר נגינתם או כאשר ההורדה האוטומטית צריכה עוד מקום</string>
     <string name="pref_auto_local_delete_title">מחיקה אוטומטית מהתיקיות המקומיות</string>
-    <string name="pref_auto_local_delete_sum">לכלול את התיקיות המקומיות ביכולת המחיקה האוטומטית</string>
+    <string name="pref_auto_local_delete_sum">בנוסף למחוק קבצים שנוספו דרך „הוספת תיקייה מקומית”. נא לשים לב שההורדה שלהם לא מתבצעת על ידי אנטנה־פּוֹד ואי אפשר להוריד אותם מחדש</string>
     <string name="pref_auto_local_delete_dialog_body">נא לשים לב שעבור תיקיות מקומיות פעולה זו תסיר פרקים מאנטנה־פּוֹד ותמחק את קובצי המדיה שלהן מאחסון המכשיר שלך. אי אפשר להוריד אותם שום דרך אנטנה־פּוֹד. להפעיל מחיקה אוטומטית?</string>
     <string name="pref_smart_mark_as_played_sum">סימון פרקים כנוגנו אפילו אם נשארו כמה שניות לנגינה</string>
     <string name="pref_smart_mark_as_played_title">סימון חכם כנוגנו</string>
@@ -589,8 +588,6 @@
   <string name="choose_data_directory">בחירת תיקיית נתונים</string>
     <string name="choose_data_directory_message">נא לבחור את בסיס תיקיית הנתונים שלך. אנטנה־פּוֹד ייצור את תת־התיקיות בהתאמה.</string>
     <string name="choose_data_directory_available_space">%1$s מתוך %2$s פנויים</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">השהיית הניגון במקום הנמכת עצמת השמע כאשר יישומון אחר מעוניין לנגן צלילים</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">השהיה במהלך הפרעות</string>
     <!--Rating dialog-->
   <string name="rating_tagline">מאז %1$s, ניגנת %2$s%3$d%4$s שעות של הסכתים.</string>
     <string name="rating_contribute_label">מעניין אותך להצטרף? בין אם למטרות תרגום, תמיכה, עיצוב או פיתוח, נשמח לקבל את עזרתך!</string>
@@ -793,11 +790,6 @@
     <string name="episodes_label_short">פרקים</string>
     <string name="queue_label_short">תור</string>
     <string name="subscriptions_label_short">מינויים</string>
-    <string name="episodes_label_more">פרקים »</string>
-    <string name="queue_label_more">תור »</string>
-    <string name="inbox_label_more">דואר נכנס »</string>
-    <string name="downloads_label_more">הורדות »</string>
-    <string name="subscriptions_label_more">מינויים »</string>
     <string name="enabled">פעיל</string>
     <string name="disabled">כבוי</string>
     <string name="global_default_with_value">ברירת מחדל גלובלית (%1$s)</string>
@@ -911,7 +903,6 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">אין פרקים שממתינים בתור, אך יש פרקים חדשים שממתינים לך!</string>
     <string name="no_queue_items_inbox_has_items_button_label">מעבר לדואר הנכנס</string>
-    <string name="auto_download_inbox_category">להוריד פרקים מהדואר הנכנס אוטומטית</string>
     <string name="tag_all">הכול</string>
     <string name="please_wait_before_refreshing">נא להמתין לפני ריענון ההסכתים שוב.</string>
     <string name="already_downloaded">הפרק כבר ירד</string>
@@ -921,13 +912,13 @@
     <string name="archive_feed_label_verb">העברה לארכיון</string>
     <string name="archive_feed_label_noun">ארכיון</string>
     <string name="restore_archive_label">שחזור</string>
-    <string name="remove_archive_feed_label">מחיקה / ארכיון</string>
+    <string name="remove_archive_feed_label">הסרת מינוי / ארכיון</string>
     <plurals name="num_subscriptions">
         <item quantity="one">מינוי</item>
         <item quantity="two">שני מינויים</item>
         <item quantity="other">%d מינויים</item>
     </plurals>
-    <string name="feed_delete_explanation_delete">מחיקה תסיר את המינוי לרבות ﬤﬥ הפרקים, ההורדות, היסטוריית הנגינה והסטטיסטיקה שלו.</string>
+    <string name="feed_delete_explanation_delete">ביטול מינוי יסיר את המינוי לרבות ﬤﬥ הפרקים, ההורדות, היסטוריית הנגינה והסטטיסטיקה שלו.</string>
     <string name="tag_untagged">ללא תיוג</string>
     <string name="feed_delete_explanation_archive">העברה לארכיון תסתיר מהרשימה ותפסיק לחפש פרקים חדשים. הורדות, סטטיסטיקות ומצב הנגינה יישמרו.</string>
     <string name="no_archive_head_label">שום דבר לא הועבר לארכיון</string>
@@ -941,7 +932,7 @@
     <string name="general_expand_button">הרחבה</string>
     <string name="general_collapse_button">צמצום</string>
     <string name="archiving_podcast_progress">הסכת %1$d מתוך %2$d מועבר לארכיון…</string>
-    <string name="deleting_podcast_progress">הסכת %1$d מתוך %2$d נמחק…</string>
+    <string name="deleting_podcast_progress">המינוי להסכת %1$d מתוך %2$d מבוטל…</string>
     <string name="download_log_details_human_readable_reason_title">מצב</string>
     <string name="download_log_details_technical_reason_title">פרטים טכניים</string>
     <string name="download_log_details_file_url_title">כתובת הקובץ</string>
@@ -970,4 +961,41 @@
         <item quantity="two">נותרו רק שני פרקים בתור שלך</item>
         <item quantity="other">נותרו רק %1$d פרקים בתור שלך</item>
     </plurals>
+    <string name="statistics_label_short">סטטיסטיקה</string>
+    <string name="favorite_episodes_label_short">מועדפים</string>
+    <string name="feed_new_episodes_action_snackbar">אי אפשר לשנות כשהורדה אוטומטית פעילה.</string>
+    <string name="remove_restore_feed_label">הסרת מינוי / שיחזור</string>
+    <string name="restoring_podcast_progress">ההסכת %1$d מתוך %2$d משוחזר…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">פרק נוסף למועדפים.</item>
+        <item quantity="two">שני פרקים נוספו למועדפים.</item>
+        <item quantity="other">%d פרקים נוספו למועדפים.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">פרק הוסר מהמועדפים.</item>
+        <item quantity="two">שני פרקים הוסרו מהמועדפים.</item>
+        <item quantity="other">%d פרקים הוסרו מהמועדפים.</item>
+    </plurals>
+    <string name="queue_time_left_label">%1$s • נותרו %2$s</string>
+    <string name="no_fav_episodes_head_label">אין מועדפים</string>
+    <string name="no_fav_episodes_label">לחיצה על סמל הכוכב תסמן פרקים כמועדפים.</string>
+    <string name="pref_advanced">מתקדם</string>
+    <string name="pref_display">תצוגה</string>
+    <string name="import_error_label">שגיאת ייבוא</string>
+    <string name="show_password_accessibility">הצגת סיסמה</string>
+    <string name="rss_address_invalid">כתובת ה־RSS שמילאת לא תקפה.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">מחובר אל %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">גרסה %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">הטלפון לא נתמך. נא לוודא שהגרסה שמותקנת אצלך היא הגרסה העדכנית ביותר של אנטנה־פּוֹד מ־Google Play בטלפון שלך.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">אין פריטים</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">לא ניתן לתקשר עם הטלפון. נא לוודא שהטלפון שלך בקרבת מקום ושהיישומון אנטנה־פּוֹד מותקן.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">נגינה בטלפון</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">עיון בטלפון</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">פתיחה בטלפון</string>
+    <plurals name="reset_position_message">
+        <item quantity="one">נקודת הנגינה של פרק אחד התאפסה.</item>
+        <item quantity="two">נקודת הנגינה של שני פרקים התאפסה.</item>
+        <item quantity="other">נקודת הנגינה של %d פרקים התאפסה.</item>
+    </plurals>
+    <string name="bottom_navigation_deprecation_warning">לרוע המזל עלינו להסיר את ניווט הצד בעדכונים עתידיים. הפיתוח של אנטנה־פּוֹד נעשה על ידי קבוצה קטנה של מתנדבים ולאחר תחזוקה של שני סגנונות הניווט במשך שנים זה החל להכביד יותר ויותר.\n\nאם ניווט צד הכרחי לך, נא להשבית עדכונים של אנטנה־פּוֹד בחנות היישומונים שלך.</string>
 </resources>

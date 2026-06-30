@@ -27,14 +27,19 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
+import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
+import org.greenrobot.eventbus.EventBus;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -139,6 +144,11 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     @UnstableApi
+    public void refreshNotification(MediaLibraryService.MediaLibrarySession session) {
+        session.setCustomLayout(buildCustomLayout());
+    }
+
+    @UnstableApi
     private ImmutableList<CommandButton> buildCustomLayout() {
         ImmutableList.Builder<CommandButton> buttons = ImmutableList.builder();
 
@@ -175,6 +185,19 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     .build());
         }
 
+        if (UserPreferences.showSleepTimerOnFullNotification()) {
+            SleepTimerUpdatedEvent sleepEvent = EventBus.getDefault().getStickyEvent(SleepTimerUpdatedEvent.class);
+            boolean sleepTimerActive = sleepEvent != null && !sleepEvent.isCancelled() && !sleepEvent.isOver();
+            int sleepIcon = sleepTimerActive ? R.drawable.ic_notification_sleep_off : R.drawable.ic_notification_sleep;
+            SessionCommand sleepCommand = sleepTimerActive
+                    ? SESSION_COMMAND_DISABLE_SLEEP_TIMER : SESSION_COMMAND_SET_SLEEP_TIMER;
+            buttons.add(new CommandButton.Builder(CommandButton.ICON_UNDEFINED)
+                    .setSessionCommand(sleepCommand)
+                    .setCustomIconResId(sleepIcon)
+                    .setDisplayName(context.getString(R.string.sleep_timer_label))
+                    .build());
+        }
+
         return buttons.build();
     }
 
@@ -185,13 +208,24 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN
                 && keyEvent.getRepeatCount() == 0) {
+            boolean fromWidget = MediaButtonStarter.MEDIA_BUTTON_SOURCE_WIDGET.equals(
+                    intent.getStringExtra(MediaButtonStarter.EXTRA_MEDIA_BUTTON_SOURCE));
             int keyCode = keyEvent.getKeyCode();
-            if (keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+            if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+                session.getPlayer().seekForward();
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND) {
+                session.getPlayer().seekBack();
+                return true;
+            } else if (fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                session.getPlayer().seekToNextMediaItem();
+                return true;
+            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
                 // Instead of skipping to the next episode, do a fast-forward.
                 session.getPlayer().seekForward();
                 return true;
-            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
+            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                 // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
                 // Instead of going to the previous episode, do a rewind.
                 session.getPlayer().seekBack();
@@ -278,8 +312,23 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-        disposables.add(Single.fromCallable(() ->
-                        DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId()))
+        disposables.add(Single.fromCallable(() -> {
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            // If there is no media to resume, media3 crashes. So instead of crashing, just play something random.
+            if (media == null) {
+                List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
+                if (!recentQueue.isEmpty()) {
+                    media = recentQueue.get(0).getMedia();
+                }
+            }
+            if (media == null) {
+                List<FeedItem> items = DBReader.getEpisodes(0, 1, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
+                if (!items.isEmpty()) {
+                    media = items.get(0).getMedia();
+                }
+            }
+            return media;
+        })
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         media -> {
@@ -288,7 +337,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                     (int) startPosition, media.getLastPlayedTimeStatistics());
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
-                                            Collections.singletonList(MediaItemAdapter.fromPlayable(context, media)),
+                                            Collections.singletonList(
+                                                    MediaItemAdapter.fromPlayable(context, media, false)),
                                             0, startPosition);
                             future.set(result);
                         },
@@ -436,7 +486,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             try {
                 long mediaId = Long.parseLong(item.mediaId);
                 FeedMedia media = DBReader.getFeedMedia(mediaId);
-                builder.add(MediaItemAdapter.fromPlayable(context, media));
+                builder.add(MediaItemAdapter.fromPlayable(context, media, false));
             } catch (NumberFormatException e) {
                 Log.e(TAG, "Invalid media ID: " + item.mediaId, e);
             }

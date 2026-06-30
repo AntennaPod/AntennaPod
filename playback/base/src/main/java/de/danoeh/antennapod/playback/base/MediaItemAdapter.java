@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
-import de.danoeh.antennapod.net.common.RedirectChecker;
 import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -56,7 +55,7 @@ public class MediaItemAdapter {
      * Create a media item and load all its metadata, including cover art using Glide.
      * Do NOT use this method on the main thread.
      */
-    public static MediaItem fromPlayable(Context context, Playable playable) {
+    public static MediaItem fromPlayable(Context context, Playable playable, boolean forBrowse) {
         ThreadUtils.assertNotMainThread();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(playable.getEpisodeTitle());
@@ -68,14 +67,20 @@ public class MediaItemAdapter {
             FeedMedia feedMedia = (FeedMedia) playable;
             mediaId = String.valueOf(feedMedia.getId());
             metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
+            metadataBuilder.setArtist(feedMedia.getFeedTitle());
         }
-        int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
-        Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
-        if (bitmap != null) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bos);
-            metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
-        } else if (playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
+        if (!forBrowse) {
+            int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
+            Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
+            if (bitmap != null) {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+                // media3 prefers artworkData over artworkUri for local playback.
+                // Chromecast ignores artworkData and needs artworkUri.
+                metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
+            }
+        }
+        if (playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
             metadataBuilder.setArtworkUri(Uri.parse(playable.getImageLocation()));
         }
         Bundle extras = new Bundle();
@@ -85,7 +90,7 @@ public class MediaItemAdapter {
         if (playable.localFileAvailable()) {
             localPlaybackUri = playable.getLocalFileUrl();
         } else {
-            localPlaybackUri = RedirectChecker.getFinalUrl(playable.getStreamUrl());
+            localPlaybackUri = playable.getStreamUrl();
         }
         Bundle requestExtras = new Bundle();
         if (!playable.localFileAvailable() && playable instanceof FeedMedia) {
@@ -224,8 +229,9 @@ public class MediaItemAdapter {
     public static ImmutableList<MediaItem> fromItemList(Context context, List<FeedItem> feedItems) {
         ImmutableList.Builder<MediaItem> itemsBuilder = ImmutableList.builder();
         for (FeedItem item : feedItems) {
-            if (item.getMedia() != null) {
-                itemsBuilder.add(MediaItemAdapter.fromPlayable(context, item.getMedia()));
+            FeedMedia media = item.getMedia();
+            if (media != null && (media.localFileAvailable() || media.getStreamUrl() != null)) {
+                itemsBuilder.add(fromPlayable(context, media, true));
             }
         }
         return itemsBuilder.build();

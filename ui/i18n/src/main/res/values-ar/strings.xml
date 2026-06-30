@@ -312,7 +312,6 @@
     <string name="smart_shuffle">الخلط الذكي</string>
     <string name="size">الحجم</string>
     <string name="clear_queue_confirmation_msg">أكد رغبتك في إزالة جميع الحلقات من الطابور.</string>
-    <string name="time_left_label">"الوقت المتبقى: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">إعدادات أولية</string>
     <string name="preset_already_exists">%1$.2fx محفوظة كإعداد أولي.</string>
@@ -628,8 +627,6 @@
   <string name="choose_data_directory">إختيار مجلد البيانات</string>
     <string name="choose_data_directory_message">اختر قاعدة مجلد البيانات الخاص بك. سينشئ أنتنابد المجلدات الفرعية المناسبة.</string>
     <string name="choose_data_directory_available_space">%1$sمن %2$sفاضي</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">اوقف التشغيل بدل اخفات الصوت عند رغبة برنامج آخر بتشغيل أصوات</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">توقف للمقاطعات</string>
     <!--Rating dialog-->
   <string name="rating_tagline">منذ %1$s، استمعت إلى %2$s%3$d%4$s ساعة من المسموعيَّات.</string>
     <string name="rating_contribute_label">هل تود الأنضمام؟ سواء كنت تود الترجمة أو الدعم أو التصميم أو التطوير، سنكون سعداء بك!</string>
@@ -827,11 +824,6 @@
     <string name="downloads_label_short">التنزيلات</string>
     <string name="subscriptions_label_short">الاشتراكات</string>
     <string name="playback_history_label_short">سجل</string>
-    <string name="episodes_label_more">حلقات »</string>
-    <string name="queue_label_more">الطابور »</string>
-    <string name="inbox_label_more">صندوق الوارد »</string>
-    <string name="downloads_label_more">التنزيلات »</string>
-    <string name="subscriptions_label_more">الاشتراكات »</string>
     <string name="enabled">مفعّلة</string>
     <string name="disabled">معطّلة</string>
     <string name="global_default_with_value">الافتراضي العام (%1$s)</string>

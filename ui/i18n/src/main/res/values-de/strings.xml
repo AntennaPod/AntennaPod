@@ -155,7 +155,7 @@
     <string name="show_feed_settings_label">Podcast-Einstellungen anzeigen</string>
     <string name="feed_settings_label">Podcast-Einstellungen</string>
     <string name="rename_feed_label">Umbenennen</string>
-    <string name="remove_feed_label">Löschen</string>
+    <string name="remove_feed_label">Deabonnieren</string>
     <string name="share_label">Teilen</string>
     <string name="share_file_label">Datei teilen</string>
     <string name="load_complete_feed">Kompletten Podcast aktualisieren</string>
@@ -276,7 +276,6 @@
     <string name="smart_shuffle">Schlaues Mischen</string>
     <string name="size">Größe</string>
     <string name="clear_queue_confirmation_msg">Bitte bestätige, dass du ALLE Episoden aus der Warteschlange entfernen möchtest.</string>
-    <string name="time_left_label">"Verbleibende Zeit: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Voreinstellungen</string>
     <string name="preset_already_exists">%1$.2fx ist bereits als Voreinstellung gespeichert.</string>
@@ -332,7 +331,7 @@
     <string name="pref_auto_delete_title">Automatisches Löschen</string>
     <string name="pref_auto_delete_sum">Episoden nach der Wiedergabe oder wenn beim automatischen Herunterladen Speicherplatz benötigt wird löschen</string>
     <string name="pref_auto_local_delete_title">Automat. Löschen aus lokalen Ordnern</string>
-    <string name="pref_auto_local_delete_sum">Lokale Ordner in die automatische Löschfunktion einbeziehen</string>
+    <string name="pref_auto_local_delete_sum">Lösche auch Dateien, die über „Lokalen Ordner hinzufügen“ hinzugefügt wurden. Beachte, dass diese nicht von AntennaPod heruntergeladen wurden und nicht erneut heruntergeladen werden können</string>
     <string name="pref_auto_local_delete_dialog_body">Beachte, dass bei lokalen Ordnern die Episoden aus AntennaPod entfernt und die zugehörigen Mediendateien aus dem Gerätespeicher gelöscht werden. Sie können dann nicht mehr über AntennaPod heruntergeladen werden. Automatisches Löschen aktivieren?</string>
     <string name="pref_smart_mark_as_played_sum">Episoden als abgespielt markieren, auch wenn weniger als eine bestimmte Anzahl von Sekunden an Restspielzeit verbleibt</string>
     <string name="pref_smart_mark_as_played_title">Intelligentes „als abgespielt markieren“</string>
@@ -576,8 +575,6 @@
   <string name="choose_data_directory">Datenordner auswählen</string>
     <string name="choose_data_directory_message">Bitte wähle das Basisverzeichnis deines Datenordners aus. AntennaPod erstellt dann die entsprechenden Unterverzeichnisse.</string>
     <string name="choose_data_directory_available_space">%1$s von %2$s frei</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Wiedergabe pausieren, anstatt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Seit %1$s, hast du %2$s%3$d%4$s Stunden Podcasts gehört.</string>
     <string name="rating_contribute_label">Möchtest du mitmachen? Egal, ob du übersetzen, unterstützen, entwerfen oder programmieren möchtest, wir würden uns freuen, wenn du dabei bist!</string>
@@ -693,7 +690,7 @@
     <string name="host_label">Host</string>
     <string name="port_label">Port</string>
     <string name="proxy_test_label">Testen</string>
-    <string name="proxy_checking">Prüfe…</string>
+    <string name="proxy_checking">Wird geprüft…</string>
     <string name="proxy_test_successful">Test erfolgreich</string>
     <string name="proxy_test_failed">Test fehlgeschlagen</string>
     <string name="proxy_host_empty_error">Host darf nicht leer sein</string>
@@ -770,9 +767,9 @@
     </plurals>
     <string name="episode_download_failed">Download der Episode fehlgeschlagen</string>
     <string name="echo_home_header">Jahresrückblick</string>
-    <string name="echo_home_subtitle">Deine Lieblings-Podcasts und Statistiken aus dem letzten Jahr. Exklusiv auf deinem Telefon.</string>
+    <string name="echo_home_subtitle">Deine Lieblings-Podcasts und Statistiken aus dem letzten Jahr. Exklusiv auf deinem Smartphone.</string>
     <string name="echo_intro_your_year">Dein Jahr</string>
-    <string name="echo_intro_locally">privat auf deinem Telefon generiert</string>
+    <string name="echo_intro_locally">privat auf deinem Smartphone generiert</string>
     <string name="echo_hours_this_year">Dieses Jahr hast du</string>
     <plurals name="echo_hours_podcasts">
         <item quantity="one">Stunden an Episoden\nvon %1$d Podcast abgespielt</item>
@@ -812,11 +809,6 @@
     <string name="downloads_label_short">Downloads</string>
     <string name="subscriptions_label_short">Abos</string>
     <string name="playback_history_label_short">Verlauf</string>
-    <string name="episodes_label_more">Episoden »</string>
-    <string name="queue_label_more">Warteschlange »</string>
-    <string name="inbox_label_more">Posteingang »</string>
-    <string name="downloads_label_more">Downloads »</string>
-    <string name="subscriptions_label_more">Abonnements »</string>
     <string name="enabled">Aktiviert</string>
     <string name="disabled">Deaktiviert</string>
     <string name="global_default_with_value">Globaler Standard (%1$s)</string>
@@ -883,7 +875,6 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Es sind keine Episoden eingereiht, aber es warten neue Episoden auf dich!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Zum Posteingang gehen</string>
-    <string name="auto_download_inbox_category">Automatisches Herunterladen von Episoden aus dem Posteingang</string>
     <string name="please_wait_before_refreshing">Bitte warte etwas, bevor du die Podcasts erneut aktualisierst.</string>
     <string name="already_downloaded">Episode wurde bereits heruntergeladen</string>
     <string name="statistics_expected_next_episode_any_time">Jederzeit</string>
@@ -893,12 +884,12 @@
     <string name="archive_feed_label_verb">Archivieren</string>
     <string name="archive_feed_label_noun">Archiv</string>
     <string name="restore_archive_label">Wiederherstellen</string>
-    <string name="remove_archive_feed_label">Löschen / archivieren</string>
+    <string name="remove_archive_feed_label">Deabonnieren / archivieren</string>
     <plurals name="num_subscriptions">
         <item quantity="one">%d Abonnement</item>
         <item quantity="other">%d Abonnements</item>
     </plurals>
-    <string name="feed_delete_explanation_delete">Durch das Löschen wird das Abonnement einschließlich Episoden, Downloads, Wiedergabeverlauf und Statistiken entfernt.</string>
+    <string name="feed_delete_explanation_delete">Durch das Deabonnieren werden das Abonnement sowie alle dazugehörigen Episoden, Downloads, der Wiedergabeverlauf und die Statistiken gelöscht.</string>
     <string name="feed_delete_explanation_archive">Durch das Archivieren wird das Abonnement aus der Liste ausgeblendet und es wird nicht mehr nach neuen Episoden gesucht. Downloads, Statistiken und Abspielstatus bleiben erhalten.</string>
     <string name="tag_untagged">Ohne Tags</string>
     <string name="no_archive_head_label">Nichts archiviert</string>
@@ -914,8 +905,8 @@
     <string name="report_bug_forum_title">Forum</string>
     <string name="report_bug_title">Fehler melden</string>
     <string name="general_collapse_button">Einklappen</string>
-    <string name="archiving_podcast_progress">Podcast %1$d von %2$d wird archiviert …</string>
-    <string name="deleting_podcast_progress">Podcast %1$d von %2$d wird gelöscht …</string>
+    <string name="archiving_podcast_progress">Podcast %1$d von %2$d wird archiviert…</string>
+    <string name="deleting_podcast_progress">Podcast %1$d von %2$d wird deabonniert…</string>
     <string name="download_log_details_human_readable_reason_title">Status</string>
     <string name="download_log_details_technical_reason_title">Technische Details</string>
     <string name="download_log_details_file_url_title">Datei-URL</string>
@@ -939,4 +930,38 @@
         <item quantity="one">Es ist nur noch %1$d Folge in der Warteschlange vorhanden</item>
         <item quantity="other">Es sind nur noch %1$d Folgen in der Warteschlange vorhanden</item>
     </plurals>
+    <string name="statistics_label_short">Statistiken</string>
+    <string name="favorite_episodes_label_short">Favoriten</string>
+    <string name="feed_new_episodes_action_snackbar">Kann nicht geändert werden, wenn automatisches Herunterladen aktiviert ist.</string>
+    <string name="remove_restore_feed_label">Deabonnieren / wiederherstellen</string>
+    <string name="restoring_podcast_progress">Podcast %1$d von %2$d wird wiederhergestellt…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d Episode zu den Favoriten hinzugefügt.</item>
+        <item quantity="other">%d Episoden zu den Favoriten hinzugefügt.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d Episode aus den Favoriten entfernt.</item>
+        <item quantity="other">%d Episoden aus den Favoriten entfernt.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">%d Episoden-Position zurückgesetzt.</item>
+        <item quantity="other">%d Episoden-Positionen zurückgesetzt.</item>
+    </plurals>
+    <string name="no_fav_episodes_head_label">Keine Favoriten</string>
+    <string name="no_fav_episodes_label">Markiere Episoden als Favoriten, indem du auf das Sternsymbol tippst.</string>
+    <string name="bottom_navigation_deprecation_warning">Leider müssen wir die Seitenleiste in einem zukünftigen Update entfernen. AntennaPod wird von einer kleinen Gruppe von Freiwilligen entwickelt, und nachdem wir jahrelang beide Navigationsarten beibehalten haben, ist der Aufwand mittlerweile zu groß geworden.\n\nWenn du unbedingt auf die Seitenleiste angewiesen bist, deaktiviere bitte die Updates für AntennaPod in deinem App-Store.</string>
+    <string name="pref_advanced">Erweitert</string>
+    <string name="pref_display">Anzeige</string>
+    <string name="import_error_label">Importfehler</string>
+    <string name="show_password_accessibility">Passwort anzeigen</string>
+    <string name="rss_address_invalid">Die von dir eingegebene RSS-Adresse ist ungültig.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Verbunden mit %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Version %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Das Smartphone ist nicht kompatibel. Bitte stelle sicher, dass auf deinem Smartphone die aktuellste Version von AntennaPod aus dem Google Play Store installiert ist.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Keine Einträge</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Das Smartphone konnte nicht erreicht werden. Bitte stelle sicher, dass sich dein Smartphone in der Nähe befindet und AntennaPod installiert ist.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Auf dem Smartphone abspielen</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Smartphone durchsuchen</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Auf dem Smartphone öffnen</string>
+    <string name="queue_time_left_label">%1$s • %2$s verbleibend</string>
 </resources>

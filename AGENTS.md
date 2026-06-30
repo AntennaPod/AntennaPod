@@ -10,8 +10,10 @@ If you have to use shell commands, prefer dedicated tools (such as `jq` for json
 AntennaPod uses a highly modularized Gradle architecture with modules organized by domain.
 Each module is stored in a folder of the same name (for example `:net:discovery` in `./net/discovery`)
 and contains a `README.md` file with a brief explanation of the module's purpose and internal structure.
-If it took you long to figure out something basic, suggest updating the corresponding `README.md` file to make it easier to find in the future.
-Keep your changes minimal, focused on the relevant module, and generalized (do not update with highly specific changes for a single use case).
+Before looking at code in a module, always read its `README.md` first.
+When you discover something broadly useful about a module, such as the correct API to use, or a pattern all callers should follow, update that module's `README.md` proactively.
+Only add information that is long-term stable and generic (patterns, APIs, conventions), not task-specific details or things already obvious from reading the code.
+
 Several functional areas follow a service-interface/service split: the interface module is depended on by consumers, and the implementation is registered at app startup via `ClientConfigurator`.
 - `:app` - Main application module that integrates all features
 - `:event` - EventBus events used for cross-component communication throughout the app

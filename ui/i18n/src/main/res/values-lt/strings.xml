@@ -163,7 +163,6 @@
     <string name="episode_title">Epizodo pavadinimas</string>
     <string name="feed_title">Tinklalaidės pavadinimas</string>
     <string name="random">Atsitiktinai</string>
-    <string name="time_left_label">"Liko laiko: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Išsaugotos reikšmės</string>
     <string name="preset_already_exists">%1$.2fx jau yra tarp išsaugotų reikšmių.</string>
@@ -349,7 +348,6 @@
     <string name="gpodnetsync_pref_report_failed">Nepavyko</string>
     <string name="gpodnetsync_username_characters_error">Naudotojo vardą sudaryti gali tik raidės, skaitmenys, brūkšniai ir pabraukimo brūkšniai.</string>
     <string name="choose_data_directory_available_space">%1$s iš %2$s laisva</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Kai kita programėlė nori atkurti garsus, pristabdyti atkūrimą vietoje garsio sumažinimo</string>
     <!--Online feed view-->
   <string name="subscribe_label">Prenumeruoti</string>
     <!--Content descriptions for image buttons-->
@@ -487,7 +485,6 @@
     <string name="pref_default_page">Numatytasis puslapis</string>
     <string name="search_online">Paieška internete</string>
     <string name="synchronization_login_butLabel">Prisijungti</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Sustojimas dėl pertraukų</string>
     <string name="search_itunes_label">Paieška Apple Podcasts</string>
     <string name="search_podcastindex_label">Paieška Podcast Index</string>
     <string name="home_welcome_text">Dar nesate užsiprenumeravę jokių podcast\'ų. Atidarykite šoninį meniu ir pridėkite podkastą.</string>
@@ -717,11 +714,6 @@
     <string name="downloads_label_short">Atsisiuntimai</string>
     <string name="subscriptions_label_short">Prenumeratos</string>
     <string name="playback_history_label_short">Istorija</string>
-    <string name="episodes_label_more">Epizodai »</string>
-    <string name="queue_label_more">Eilė »</string>
-    <string name="inbox_label_more">Gautieji »</string>
-    <string name="downloads_label_more">Atsisiuntimai »</string>
-    <string name="subscriptions_label_more">Prenumeratos »</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Bendras %d epizodo dydis įrenginyje</item>
         <item quantity="few">Bendras %d epizodų dydis įrenginyje</item>
@@ -848,7 +840,6 @@
         <item quantity="few">%d dienos</item>
         <item quantity="other">%d dienų</item>
     </plurals>
-    <string name="auto_download_inbox_category">Automatiškai atsisiųsti epizodus iš gautųjų</string>
     <string name="statistics_time_total">iš viso</string>
     <string name="statistics_time_played">leistų</string>
     <string name="rss_address">RSS adresas</string>

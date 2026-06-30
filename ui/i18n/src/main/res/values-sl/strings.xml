@@ -270,7 +270,6 @@
     <string name="random">Naključno</string>
     <string name="smart_shuffle">Pametno mešanje</string>
     <string name="size">Velikost</string>
-    <string name="time_left_label">"Preostali čas: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Prednastavitve</string>
     <string name="preset_already_exists">%1$.2fx je že shranjeno kot prednastavitev.</string>
@@ -527,8 +526,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Izberite podatkovno mapo</string>
     <string name="choose_data_directory_available_space">%1$s od %2$s prostega</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Začasno ustavite predvajanje, namesto da zmanjšate glasnost, ko želi druga aplikacija predvajati zvoke</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Premor med prekinitvami</string>
     <!--Online feed view-->
   <string name="subscribe_label">Naročite se</string>
     <!--Content descriptions for image buttons-->
@@ -645,7 +642,6 @@
     <string name="shortcut_subscription_label">Bližnica do naročnine</string>
     <string name="shortcut_select_subscription">Izberi naročnino</string>
     <string name="add_shortcut">Dodaj bližnjico</string>
-    <string name="queue_label_more">Čakalna vrsta »</string>
     <string name="delete_tag_label">Izbriši oznako</string>
     <string name="statistics_expected_next_episode_unknown">Neznano</string>
     <string name="feed_new_episodes_action_summary_autodownload">Avtomatski prenosi omogočeni. Epizode bodo dodane v nabiralnik in po prenosu premaknjene v čakalno vrsto.</string>
@@ -736,10 +732,6 @@
     <string name="subscriptions_label_short">Naročnine</string>
     <string name="playback_history_label_short">Zgodovina</string>
     <string name="section_hidden">Skrito</string>
-    <string name="episodes_label_more">Epizode »</string>
-    <string name="inbox_label_more">Nabiralnik »</string>
-    <string name="downloads_label_more">Prenosi »</string>
-    <string name="subscriptions_label_more">Naročnine »</string>
     <string name="go_to_position_label">Pojdi na to točko</string>
     <string name="enabled">Omogočeno</string>
     <string name="disabled">Onemogočeno</string>

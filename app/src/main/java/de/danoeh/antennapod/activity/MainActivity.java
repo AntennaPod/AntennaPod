@@ -51,7 +51,6 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.databasemaintenanceservice.DatabaseMaintenanceWorker;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -59,7 +58,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
-import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.common.NavigationToolbarActivity;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
@@ -312,8 +310,10 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                 onSlide(view, 1.0f);
                 bottomSheetBackPressedCallback.setEnabled(true);
             } else if (state == BottomSheetBehavior.STATE_HIDDEN) {
-                IntentUtils.sendLocalBroadcast(MainActivity.this,
-                        PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                PlaybackController.bindToMedia3Service(MainActivity.this, controller -> {
+                    controller.clearMediaItems();
+                    controller.stop();
+                });
                 PlaybackPreferences.writeNoMediaPlaying();
                 setPlayerVisible(false);
                 bottomSheetBackPressedCallback.setEnabled(false);
