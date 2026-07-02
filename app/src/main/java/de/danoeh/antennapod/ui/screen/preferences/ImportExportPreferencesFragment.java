@@ -27,7 +27,9 @@ import androidx.core.content.FileProvider;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.activity.PortcastImportActivity;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -36,6 +38,7 @@ import de.danoeh.antennapod.storage.importexport.DatabaseExporter;
 import de.danoeh.antennapod.storage.importexport.FavoritesWriter;
 import de.danoeh.antennapod.storage.importexport.HtmlWriter;
 import de.danoeh.antennapod.storage.importexport.OpmlWriter;
+import de.danoeh.antennapod.storage.importexport.PortcastWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import io.reactivex.rxjava3.core.Completable;
@@ -52,13 +55,17 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String TAG = "ImportExPrefFragment";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
     private static final String PREF_OPML_IMPORT = "prefOpmlImport";
+    private static final String PREF_PORTCAST_EXPORT = "prefPortcastExport";
+    private static final String PREF_PORTCAST_IMPORT = "prefPortcastImport";
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String PREF_DATABASE_IMPORT = "prefDatabaseImport";
     private static final String PREF_DATABASE_EXPORT = "prefDatabaseExport";
@@ -66,6 +73,8 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
     private static final String PREF_FAVORITE_EXPORT = "prefFavoritesExport";
     private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds-%s.opml";
     private static final String CONTENT_TYPE_OPML = "text/x-opml";
+    private static final String DEFAULT_PORTCAST_OUTPUT_NAME = "antennapod-%s.portcast.json";
+    private static final String CONTENT_TYPE_PORTCAST = "application/json";
     private static final String DEFAULT_HTML_OUTPUT_NAME = "antennapod-feeds-%s.html";
     private static final String CONTENT_TYPE_HTML = "text/html";
     private static final String DEFAULT_FAVORITES_OUTPUT_NAME = "antennapod-favorites-%s.html";
@@ -80,6 +89,17 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
     private final ActivityResultLauncher<Intent> chooseFavoritesExportPathLauncher =
             registerForActivityResult(new StartActivityForResult(),
                     result -> exportToDocument(result, Export.FAVORITES));
+    private final ActivityResultLauncher<Intent> choosePortcastExportPathLauncher =
+            registerForActivityResult(new StartActivityForResult(),
+                    result -> exportToDocument(result, Export.PORTCAST));
+    private final ActivityResultLauncher<String> choosePortcastImportPathLauncher =
+            registerForActivityResult(new GetContent(), uri -> {
+                if (uri != null) {
+                    final Intent intent = new Intent(getContext(), PortcastImportActivity.class);
+                    intent.setData(uri);
+                    startActivity(intent);
+                }
+            });
     private final ActivityResultLauncher<Intent> restoreDatabaseLauncher =
             registerForActivityResult(new StartActivityForResult(), this::restoreDatabaseResult);
     private final ActivityResultLauncher<String> backupDatabaseLauncher =
@@ -137,6 +157,21 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
                 preference -> {
                     try {
                         chooseOpmlImportPathLauncher.launch("*/*");
+                    } catch (ActivityNotFoundException e) {
+                        Snackbar.make(getView(), R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG)
+                                .show();
+                    }
+                    return true;
+                });
+        findPreference(PREF_PORTCAST_EXPORT).setOnPreferenceClickListener(
+                preference -> {
+                    openExportPathPicker(Export.PORTCAST, choosePortcastExportPathLauncher);
+                    return true;
+                });
+        findPreference(PREF_PORTCAST_IMPORT).setOnPreferenceClickListener(
+                preference -> {
+                    try {
+                        choosePortcastImportPathLauncher.launch("*/*");
                     } catch (ActivityNotFoundException e) {
                         Snackbar.make(getView(), R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG)
                                 .show();
@@ -364,6 +399,19 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
                 case OPML:
                     OpmlWriter.writeDocument(DBReader.getFeedList(), writer);
                     break;
+                case PORTCAST:
+                    List<Feed> feeds = DBReader.getFeedList();
+                    for (Feed feed : feeds) {
+                        feed.setItems(DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                                SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE));
+                    }
+                    Set<Long> favoriteIds = new HashSet<>();
+                    for (FeedItem favorite : DBReader.getEpisodes(0, Integer.MAX_VALUE,
+                            new FeedItemFilter(FeedItemFilter.IS_FAVORITE), SortOrder.DATE_NEW_OLD)) {
+                        favoriteIds.add(favorite.getId());
+                    }
+                    PortcastWriter.writeDocument(feeds, DBReader.getQueue(), favoriteIds, writer, getContext());
+                    break;
                 case FAVORITES:
                     List<FeedItem> allFavorites = DBReader.getEpisodes(0, Integer.MAX_VALUE,
                             new FeedItemFilter(FeedItemFilter.IS_FAVORITE), SortOrder.DATE_NEW_OLD);
@@ -422,6 +470,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
 
     private enum Export {
         OPML(CONTENT_TYPE_OPML, DEFAULT_OPML_OUTPUT_NAME, R.string.opml_export_label),
+        PORTCAST(CONTENT_TYPE_PORTCAST, DEFAULT_PORTCAST_OUTPUT_NAME, R.string.portcast_export_label),
         HTML(CONTENT_TYPE_HTML, DEFAULT_HTML_OUTPUT_NAME, R.string.html_export_label),
         FAVORITES(CONTENT_TYPE_HTML, DEFAULT_FAVORITES_OUTPUT_NAME, R.string.favorites_export_label);
 
