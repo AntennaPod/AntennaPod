@@ -36,6 +36,7 @@ import androidx.wear.compose.material3.LinearProgressIndicator
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScrollIndicator
 import androidx.wear.compose.material3.Text
+import androidx.wear.compose.material3.dynamicColorScheme
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.ui.common.Converter
 import de.danoeh.antennapod.ui.common.DateFormatter
@@ -53,13 +54,15 @@ class EpisodeDetailActivity : ComponentActivity() {
             .get(EpisodeDetailViewModel::class.java)
 
         setContent {
-            val uiState by viewModel.uiState.collectAsState()
-            EpisodeDetailScreen(
-                uiState = uiState,
-                onPlay = { viewModel.play() },
-                onPause = { viewModel.pause() },
-                onOpenOnPhone = { viewModel.openOnPhone() }
-            )
+            MaterialTheme(colorScheme = dynamicColorScheme(this) ?: MaterialTheme.colorScheme) {
+                val uiState by viewModel.uiState.collectAsState()
+                EpisodeDetailScreen(
+                    uiState = uiState,
+                    onPlay = { viewModel.play() },
+                    onPause = { viewModel.pause() },
+                    onOpenOnPhone = { viewModel.openOnPhone() }
+                )
+            }
         }
     }
 
