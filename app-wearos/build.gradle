@@ -63,6 +63,7 @@ afterEvaluate {
 dependencies {
     implementation project(":model")
     implementation project(":ui:common")
+    implementation project(":ui:notifications")
     implementation project(":net:sync:wear-interface")
 
     // NOTE: DO NOT INCLUDE a dependency on androidx.compose.material:material, the watch version is a replacement
