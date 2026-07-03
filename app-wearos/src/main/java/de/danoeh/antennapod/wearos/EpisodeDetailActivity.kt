@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.Hyphens
 import androidx.compose.ui.text.style.LineBreak
@@ -32,6 +34,9 @@ import androidx.core.content.IntentCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
+import androidx.wear.compose.material3.FilledIconButton
+import androidx.wear.compose.material3.FilledTonalIconButton
+import androidx.wear.compose.material3.Icon
 import androidx.wear.compose.material3.LinearProgressIndicator
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScrollIndicator
@@ -41,6 +46,7 @@ import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.ui.common.Converter
 import de.danoeh.antennapod.ui.common.DateFormatter
 import de.danoeh.antennapod.ui.common.R as CommonR
+import de.danoeh.antennapod.ui.notifications.R as NotificationsR
 import de.danoeh.antennapod.wearos.composable.ListItem
 
 class EpisodeDetailActivity : ComponentActivity() {
@@ -60,6 +66,8 @@ class EpisodeDetailActivity : ComponentActivity() {
                     uiState = uiState,
                     onPlay = { viewModel.play() },
                     onPause = { viewModel.pause() },
+                    onSkipForward = { viewModel.skipForward() },
+                    onSkipBackward = { viewModel.skipBackward() },
                     onOpenOnPhone = { viewModel.openOnPhone() }
                 )
             }
@@ -76,6 +84,8 @@ fun EpisodeDetailScreen(
     uiState: EpisodeDetailUiState,
     onPlay: () -> Unit,
     onPause: () -> Unit,
+    onSkipForward: () -> Unit,
+    onSkipBackward: () -> Unit,
     onOpenOnPhone: () -> Unit
 ) {
     val item = uiState.item
@@ -112,7 +122,7 @@ fun EpisodeDetailScreen(
                         lineBreak = LineBreak.Paragraph
                     ),
                     textAlign = TextAlign.Center,
-                    maxLines = if (titleExpanded) Int.MAX_VALUE else 3,
+                    maxLines = if (titleExpanded) Int.MAX_VALUE else 2,
                     overflow = if (titleExpanded) TextOverflow.Clip else TextOverflow.Ellipsis
                 )
             }
@@ -131,7 +141,12 @@ fun EpisodeDetailScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 8.dp, top = 2.dp, end = 8.dp, bottom = 16.dp),
+                            .padding(
+                                start = 8.dp,
+                                top = 2.dp,
+                                end = 8.dp,
+                                bottom = if (uiState.hasStartedPlaying) 8.dp else 16.dp
+                            ),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
@@ -149,12 +164,47 @@ fun EpisodeDetailScreen(
             }
 
             item {
-                if (uiState.isCurrentlyPlaying) {
-                    ListItem(
-                        text = stringResource(CommonR.string.pause_label),
-                        iconRes = CommonR.drawable.ic_pause_black,
-                        onClick = onPause
-                    )
+                if (uiState.hasStartedPlaying) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+                    ) {
+                        FilledTonalIconButton(onClick = onSkipBackward, modifier = Modifier.size(48.dp)) {
+                            Icon(
+                                painter = painterResource(NotificationsR.drawable.ic_notification_fast_rewind),
+                                contentDescription = stringResource(CommonR.string.rewind_label),
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                        val playIcon = if (uiState.isCurrentlyPlaying) {
+                            CommonR.drawable.ic_pause_black
+                        } else {
+                            CommonR.drawable.ic_play_48dp_black
+                        }
+                        val playLabel = if (uiState.isCurrentlyPlaying) {
+                            CommonR.string.pause_label
+                        } else {
+                            CommonR.string.play_label
+                        }
+                        FilledIconButton(
+                            onClick = if (uiState.isCurrentlyPlaying) onPause else onPlay,
+                            modifier = Modifier.size(60.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(playIcon),
+                                contentDescription = stringResource(playLabel),
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                        FilledTonalIconButton(onClick = onSkipForward, modifier = Modifier.size(48.dp)) {
+                            Icon(
+                                painter = painterResource(NotificationsR.drawable.ic_notification_fast_forward),
+                                contentDescription = stringResource(CommonR.string.fast_forward_label),
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
                 } else {
                     ListItem(
                         text = stringResource(CommonR.string.wearos_play_on_phone),
