@@ -22,6 +22,7 @@ public final class WearSerializer {
     private static final String KEY_DURATION = "duration";
     private static final String KEY_POSITION = "position";
     private static final String KEY_IS_PLAYING = "is_playing";
+    private static final String KEY_COVER_URL = "cover_url";
 
     private WearSerializer() {
     }
@@ -115,10 +116,13 @@ public final class WearSerializer {
     }
 
     @NonNull
-    public static byte[] nowPlayingToBytes(@NonNull FeedItem item, boolean isPlaying) {
+    public static byte[] nowPlayingToBytes(@NonNull FeedItem item, boolean isPlaying, @Nullable String coverUrl) {
         try {
             JSONObject obj = episodeToJson(item);
             obj.put(KEY_IS_PLAYING, isPlaying);
+            if (coverUrl != null) {
+                obj.put(KEY_COVER_URL, coverUrl);
+            }
             return obj.toString().getBytes(StandardCharsets.UTF_8);
         } catch (JSONException e) {
             return new byte[0];
@@ -134,7 +138,8 @@ public final class WearSerializer {
             JSONObject obj = new JSONObject(new String(data, StandardCharsets.UTF_8));
             FeedItem item = episodeFromJson(obj);
             boolean isPlaying = obj.optBoolean(KEY_IS_PLAYING, false);
-            return new WearNowPlaying(item, isPlaying);
+            String coverUrl = obj.optString(KEY_COVER_URL, null);
+            return new WearNowPlaying(item, isPlaying, coverUrl);
         } catch (JSONException e) {
             return null;
         }

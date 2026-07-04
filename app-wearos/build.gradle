@@ -79,6 +79,7 @@ dependencies {
     implementation libs.kotlinx.coroutines.play.services
     implementation libs.androidx.activity.compose
     implementation libs.androidx.appcompat
+    implementation libs.coil.compose
 
     testImplementation libs.junit
 }

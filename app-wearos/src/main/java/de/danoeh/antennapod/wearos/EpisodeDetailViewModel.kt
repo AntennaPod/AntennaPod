@@ -23,7 +23,8 @@ data class EpisodeDetailUiState(
     val position: Int = 0,
     val duration: Int = 0,
     val isCurrentlyPlaying: Boolean = false,
-    val hasStartedPlaying: Boolean = false
+    val hasStartedPlaying: Boolean = false,
+    val coverUrl: String? = null
 )
 
 class EpisodeDetailViewModel(application: Application, private val episode: FeedItem) : AndroidViewModel(application) {
@@ -52,12 +53,14 @@ class EpisodeDetailViewModel(application: Application, private val episode: Feed
                 val position = liveData?.item?.media?.position ?: episode.media?.position ?: 0
                 val duration = liveData?.item?.media?.duration?.takeIf { it > 0 } ?: episode.media?.duration ?: 0
                 val isCurrentlyPlaying = liveData?.isPlaying == true
+                val coverUrl = liveData?.coverUrl
                 _uiState.update {
                     it.copy(
                         position = position,
                         duration = duration,
                         isCurrentlyPlaying = isCurrentlyPlaying,
-                        hasStartedPlaying = it.hasStartedPlaying || isCurrentlyPlaying
+                        hasStartedPlaying = it.hasStartedPlaying || isCurrentlyPlaying,
+                        coverUrl = coverUrl ?: it.coverUrl
                     )
                 }
             }

@@ -46,9 +46,14 @@ public class WearListenerService extends WearableListenerService {
                 if (media == null) {
                     return;
                 }
+                FeedItem nowPlayingItem = media.getItem();
+                String itemImageUrl = nowPlayingItem != null ? nowPlayingItem.getImageUrl() : null;
+                String feedImageUrl = nowPlayingItem != null && nowPlayingItem.getFeed() != null
+                        ? nowPlayingItem.getFeed().getImageUrl() : null;
+                String coverUrl = itemImageUrl != null ? itemImageUrl : feedImageUrl;
                 if (!PlaybackService.isRunning) {
                     reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
-                            WearSerializer.nowPlayingToBytes(media.getItem(), false));
+                            WearSerializer.nowPlayingToBytes(nowPlayingItem, false, coverUrl));
                     return;
                 }
                 PlaybackController.bindToMedia3Service(this, controller -> {
@@ -57,7 +62,7 @@ public class WearListenerService extends WearableListenerService {
                         media.setDuration((int) controller.getDuration());
                     }
                     reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
-                            WearSerializer.nowPlayingToBytes(media.getItem(), true));
+                            WearSerializer.nowPlayingToBytes(nowPlayingItem, true, coverUrl));
                 });
                 break;
             case WearDataPaths.PAUSE:
