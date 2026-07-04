@@ -1293,7 +1293,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     skipEnd,
                     skipEnd
             );
-            Toast toast = Toast.makeText(context, skipMesg, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(context, skipMsg, Toast.LENGTH_LONG);
             toast.show();
 
             this.autoSkippedFeedMediaId = feedMedia.getItem().getIdentifyingValue();
