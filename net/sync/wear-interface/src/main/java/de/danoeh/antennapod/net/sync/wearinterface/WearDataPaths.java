@@ -11,10 +11,15 @@ public final class WearDataPaths {
     public static final String PAUSE = "/pause";
     public static final String SKIP_FORWARD = "/skip_forward";
     public static final String SKIP_BACKWARD = "/skip_backward";
+    public static final String SET_SPEED_PREFIX = "/set_speed/";
     public static final String OPEN_ON_PHONE_PREFIX = "/open_on_phone/";
 
     public static String playPath(long itemId) {
         return PLAY_PREFIX + itemId;
+    }
+
+    public static String setSpeedPath(float speed) {
+        return SET_SPEED_PREFIX + speed;
     }
 
     public static String openOnPhonePath(long itemId) {

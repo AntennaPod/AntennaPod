@@ -47,8 +47,10 @@ public class WearListenerService extends WearableListenerService {
                     return;
                 }
                 if (!PlaybackService.isRunning) {
+                    float tempSpeed = PlaybackPreferences.getCurrentlyPlayingTemporaryPlaybackSpeed();
+                    float stoppedSpeed = tempSpeed < 0 ? 1.0f : tempSpeed;
                     reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
-                            WearSerializer.nowPlayingToBytes(media.getItem(), false));
+                            WearSerializer.nowPlayingToBytes(media.getItem(), false, stoppedSpeed));
                     return;
                 }
                 PlaybackController.bindToMedia3Service(this, controller -> {
@@ -56,8 +58,9 @@ public class WearListenerService extends WearableListenerService {
                     if (controller.getDuration() > 0) {
                         media.setDuration((int) controller.getDuration());
                     }
+                    float speed = controller.getPlaybackParameters().speed;
                     reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
-                            WearSerializer.nowPlayingToBytes(media.getItem(), true));
+                            WearSerializer.nowPlayingToBytes(media.getItem(), true, speed));
                 });
                 break;
             case WearDataPaths.PAUSE:
@@ -99,6 +102,13 @@ public class WearListenerService extends WearableListenerService {
                         reply(sourceNodeId, path, WearSerializer.episodesToBytes(feedItems));
                     } catch (NumberFormatException e) {
                         Log.w(TAG, "Ignoring malformed feed episodes path: " + path, e);
+                    }
+                } else if (path.startsWith(WearDataPaths.SET_SPEED_PREFIX)) {
+                    try {
+                        float speed = Float.parseFloat(path.substring(WearDataPaths.SET_SPEED_PREFIX.length()));
+                        PlaybackController.bindToMedia3Service(this, controller -> controller.setPlaybackSpeed(speed));
+                    } catch (NumberFormatException e) {
+                        Log.w(TAG, "Ignoring malformed set_speed path: " + path, e);
                     }
                 } else if (path.startsWith(WearDataPaths.OPEN_ON_PHONE_PREFIX)) {
                     try {
