@@ -610,8 +610,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (skipIntro * 1000 < duration || duration <= 0) {
                 Log.d(TAG, "skipIntro " + playable.getEpisodeTitle());
                 mediaPlayer.seekTo(skipIntro * 1000);
-                String skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast,
-                        skipIntro);
+                String skipIntroMesg = context.getResources().getQuantityString(
+                        R.plurals.pref_feed_skip_intro_toast,
+                        skipIntro,
+                        skipIntro
+                );
                 Toast toast = Toast.makeText(context, skipIntroMesg,
                         Toast.LENGTH_LONG);
                 toast.show();
@@ -1285,7 +1288,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 && ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
             Log.d(TAG, "skipEndingIfNecessary: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());
             Context context = getApplicationContext();
-            String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast, skipEnd);
+            String skipMsg = context.getResources().getQuantityString(
+                    R.plurals.pref_feed_skip_ending_toast,
+                    skipEnd,
+                    skipEnd
+            );
             Toast toast = Toast.makeText(context, skipMesg, Toast.LENGTH_LONG);
             toast.show();
 
