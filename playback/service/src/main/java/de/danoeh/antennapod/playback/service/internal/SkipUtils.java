@@ -34,7 +34,7 @@ public final class SkipUtils {
             Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
             EventBus.getDefault().post(new MessageEvent(
                     context.getResources().getQuantityString(
-                            R.plurals.pref_feed_skip_intro_toast,
+                            R.plurals.pref_feed_skip_intro_snackbar,
                             (int) (startPosition / 1000),
                             (int) (startPosition / 1000)
                     )));
