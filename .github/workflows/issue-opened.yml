@@ -1,0 +1,54 @@
+name: Issue opened
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  issue-opened:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const body = context.payload.issue.body || '';
+            const isBugReport = body.includes('### Steps to reproduce') || body.includes('### App version');
+            const isFeatureRequest = body.includes('### Feature or improvement you want');
+            const existingLabels = context.payload.issue.labels.map(l => l.name);
+
+            const addMissing = async (labels) => {
+              const missing = labels.filter(l => !existingLabels.includes(l));
+              if (missing.length > 0) {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.issue.number,
+                  labels: missing,
+                });
+              }
+            };
+
+            if (isBugReport) {
+              await addMissing(['Type: Possible bug']);
+            } else if (isFeatureRequest) {
+              await addMissing(['Needs: Triage', 'Type: Feature request']);
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                body: 'Please use one of the issue templates when opening an issue. '
+                  + 'You can find them at https://github.com/AntennaPod/AntennaPod/issues/new/choose\n\n'
+                  + 'This issue has been closed automatically.',
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                state: 'closed',
+                state_reason: 'not_planned',
+              });
+            }

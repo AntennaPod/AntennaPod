@@ -1,0 +1,29 @@
+name: Issue comment
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+
+jobs:
+  issue-comment:
+    if: github.event.issue.pull_request == null
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v8
+        with:
+          script: |
+            const body = context.payload.comment.body || '';
+            const assignmentRequest = /\b(please|can|could|would)\b.{0,40}\bassign\b|\bassign (me|this|it)\b|\bbe assigned\b/i;
+            if (!assignmentRequest.test(body)) return;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: 'Thanks for your interest! It looks like you asked to be assigned to this issue. '
+                + 'We do not assign issues. Anyone is free to open a pull request at any time. '
+                + 'Please have a look at our [contribution guidelines](https://github.com/AntennaPod/AntennaPod/blob/develop/CONTRIBUTING.md) before getting started.',
+            });
