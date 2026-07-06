@@ -402,8 +402,8 @@
     <string name="pref_feed_skip_sum">Saltar introducción y créditos finales</string>
     <string name="pref_feed_skip_ending">Saltar los últimos</string>
     <string name="pref_feed_skip_intro">Saltar los primeros</string>
-    <string name="pref_feed_skip_ending_toast">Saltados los últimos %d segundos</string>
-    <string name="pref_feed_skip_intro_toast">Saltados los primeros %d segundos</string>
+    <string name="pref_feed_skip_ending_snackbar">Saltados los últimos %d segundos</string>
+    <string name="pref_feed_skip_intro_snackbar">Saltados los primeros %d segundos</string>
     <string name="pref_playback_time_respects_speed_title">Ajustar la información del medio según la velocidad de reproducción</string>
     <string name="pref_playback_time_respects_speed_sum">La posición y duración que se muestran están adaptadas a la velocidad de reproducción</string>
     <string name="pref_fast_forward">Intervalo de avance rápido</string>

@@ -411,8 +411,8 @@
     <string name="pref_feed_skip_sum">Пропустити вступні та кінцеві титри</string>
     <string name="pref_feed_skip_ending">Пропуск в кінці</string>
     <string name="pref_feed_skip_intro">Пропуск спочатку</string>
-    <string name="pref_feed_skip_ending_toast">Пропущено в кінці %d секунд</string>
-    <string name="pref_feed_skip_intro_toast">Пропущено спочатку %d секунд</string>
+    <string name="pref_feed_skip_ending_snackbar">Пропущено в кінці %d секунд</string>
+    <string name="pref_feed_skip_intro_snackbar">Пропущено спочатку %d секунд</string>
     <string name="pref_playback_time_respects_speed_title">Налаштування метаданних під швидкість відтворення</string>
     <string name="pref_playback_time_respects_speed_sum">Відображувана позиція та тривалість адаптовані до швидкості відтворення</string>
     <string name="pref_fast_forward">Проміжок часу для перемотки вперед</string>

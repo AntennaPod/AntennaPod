@@ -371,8 +371,8 @@
     <string name="pref_feed_skip_sum">Sla introducties en aftitelingen over</string>
     <string name="pref_feed_skip_ending">Laatste overslaan</string>
     <string name="pref_feed_skip_intro">Eerste overslaan</string>
-    <string name="pref_feed_skip_ending_toast">Laatste %d seconden overgeslagen</string>
-    <string name="pref_feed_skip_intro_toast">Eerste %d seconden overgeslagen</string>
+    <string name="pref_feed_skip_ending_snackbar">Laatste %d seconden overgeslagen</string>
+    <string name="pref_feed_skip_intro_snackbar">Eerste %d seconden overgeslagen</string>
     <string name="pref_playback_time_respects_speed_title">Pas media-info aan op afspeelsnelheid</string>
     <string name="pref_playback_time_respects_speed_sum">Weergegeven positie en duur worden aangepast aan afspeelsnelheid</string>
     <string name="pref_rewind">Terugspoelduur</string>

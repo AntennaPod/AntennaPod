@@ -364,8 +364,8 @@
     <string name="pref_feed_skip_sum">イントロダクションとエンディングクレジットをスキップします</string>
     <string name="pref_feed_skip_ending">最後をスキップ</string>
     <string name="pref_feed_skip_intro">最初をスキップ</string>
-    <string name="pref_feed_skip_ending_toast">最後の %d 秒をスキップしました</string>
-    <string name="pref_feed_skip_intro_toast">最初の %d 秒をスキップしました</string>
+    <string name="pref_feed_skip_ending_snackbar">最後の %d 秒をスキップしました</string>
+    <string name="pref_feed_skip_intro_snackbar">最初の %d 秒をスキップしました</string>
     <string name="pref_playback_time_respects_speed_title">メディア情報を再生速度に合わせる</string>
     <string name="pref_playback_time_respects_speed_sum">表示位置と時間が再生速度に合わせて調整されます</string>
     <string name="pref_rewind">巻き戻しのスキップ時間</string>

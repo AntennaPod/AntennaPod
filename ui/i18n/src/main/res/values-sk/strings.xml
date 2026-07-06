@@ -403,8 +403,8 @@
     <string name="pref_feed_skip_sum">Preskočiť úvod a záver</string>
     <string name="pref_feed_skip_ending">Preskočiť posledných</string>
     <string name="pref_feed_skip_intro">Preskočiť prvých</string>
-    <string name="pref_feed_skip_ending_toast">Posledných %d sekúnd bolo preskočených</string>
-    <string name="pref_feed_skip_intro_toast">Prvých %d sekúnd bolo preskočených</string>
+    <string name="pref_feed_skip_ending_snackbar">Posledných %d sekúnd bolo preskočených</string>
+    <string name="pref_feed_skip_intro_snackbar">Prvých %d sekúnd bolo preskočených</string>
     <string name="pref_playback_time_respects_speed_title">Zohľadniť rýchlosti prehrávania média</string>
     <string name="pref_playback_time_respects_speed_sum">Zobrazená dĺžka a pozícia sú upravené zohľadňujúc rýchlosť prehrávania</string>
     <string name="pref_fast_forward">Dĺžka času posunu vpred</string>

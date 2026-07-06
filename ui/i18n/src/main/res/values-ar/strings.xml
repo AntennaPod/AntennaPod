@@ -429,8 +429,8 @@
     <string name="pref_feed_skip_sum">تخطى المقدمة والختام</string>
     <string name="pref_feed_skip_ending">تخطى الآخر</string>
     <string name="pref_feed_skip_intro">تخطى الأول</string>
-    <string name="pref_feed_skip_ending_toast">تخطى آخر %d ثانية</string>
-    <string name="pref_feed_skip_intro_toast">تخطى أول %d ثانية</string>
+    <string name="pref_feed_skip_ending_snackbar">تخطى آخر %d ثانية</string>
+    <string name="pref_feed_skip_intro_snackbar">تخطى أول %d ثانية</string>
     <string name="pref_playback_time_respects_speed_title">عدل بيانات الوسائط مع سرعة التشغيل</string>
     <string name="pref_playback_time_respects_speed_sum">الوقت المنقضي والمتبقي يتناسب مع سرعة التشغيل</string>
     <string name="pref_fast_forward">وقت التخطي للتقدم السريع</string>

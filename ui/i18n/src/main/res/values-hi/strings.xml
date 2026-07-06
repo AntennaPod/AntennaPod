@@ -374,8 +374,8 @@
     <string name="pref_feed_skip_sum">परिचय और क्रेडिट छोड़ें</string>
     <string name="pref_feed_skip_ending">आखिरी का छोड़ें</string>
     <string name="pref_feed_skip_intro">शुरूआत का छोड़ें</string>
-    <string name="pref_feed_skip_ending_toast">आखिरी %d सेकंड छोड़े गए</string>
-    <string name="pref_feed_skip_intro_toast">शुरूआत के %d सेकंड छोड़े गए</string>
+    <string name="pref_feed_skip_ending_snackbar">आखिरी %d सेकंड छोड़े गए</string>
+    <string name="pref_feed_skip_intro_snackbar">शुरूआत के %d सेकंड छोड़े गए</string>
     <string name="pref_playback_time_respects_speed_title">मीडिया जानकारी को प्लेबैक स्पीड के हिसाब से अडजेस्ट करें</string>
     <string name="pref_playback_time_respects_speed_sum">पोज़ीशन और लंबाई प्लेबैक स्पीड के हिसाब से दिखाए जाते है</string>
     <string name="pref_rewind">रिवाइंड से टाइम स्किप करें</string>

@@ -356,8 +356,8 @@
     <string name="pref_feed_skip_sum">Ohita esittelyt ja loppukiitokset</string>
     <string name="pref_feed_skip_ending">Ohita lopusta</string>
     <string name="pref_feed_skip_intro">Ohita alusta</string>
-    <string name="pref_feed_skip_ending_toast">Ohitettiin viimeiset %d sekuntia</string>
-    <string name="pref_feed_skip_intro_toast">Ohitettiin ensimmäiset %d sekuntia</string>
+    <string name="pref_feed_skip_ending_snackbar">Ohitettiin viimeiset %d sekuntia</string>
+    <string name="pref_feed_skip_intro_snackbar">Ohitettiin ensimmäiset %d sekuntia</string>
     <string name="pref_playback_time_respects_speed_title">Mukauta mediatietoja toiston nopeuteen</string>
     <string name="pref_playback_time_respects_speed_sum">Näytetty aika ja kesto mukautuvat toiston nopeuteen</string>
     <string name="pref_rewind_sum">Mukauta sekunnit jonka verran hypätään takaisin kun painat taakse kelaus -painiketta</string>

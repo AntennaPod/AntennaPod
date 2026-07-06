@@ -393,8 +393,8 @@
     <string name="pref_feed_skip_sum">Tanıtımları ve bitiş jeneriklerini atla</string>
     <string name="pref_feed_skip_ending">Sonuncuyu atla</string>
     <string name="pref_feed_skip_intro">Birinciyi atla</string>
-    <string name="pref_feed_skip_ending_toast">Son %d seatlas atlandı</string>
-    <string name="pref_feed_skip_intro_toast">İlk %d saniyeyi atladı</string>
+    <string name="pref_feed_skip_ending_snackbar">Son %d seatlas atlandı</string>
+    <string name="pref_feed_skip_intro_snackbar">İlk %d saniyeyi atladı</string>
     <string name="pref_playback_time_respects_speed_title">Medya bilgisini oynatma hızına göre ayarlayın</string>
     <string name="pref_playback_time_respects_speed_sum">Görüntülenen konum ve süre oynatma hızına uyarlanır</string>
     <string name="pref_fast_forward">Hızlı ileri atlama zamanı</string>

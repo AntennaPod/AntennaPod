@@ -393,8 +393,8 @@
     <string name="pref_feed_skip_sum">Omitir presentacións e créditos finais</string>
     <string name="pref_feed_skip_ending">Omitir o final</string>
     <string name="pref_feed_skip_intro">Omitir o principio</string>
-    <string name="pref_feed_skip_ending_toast">Omitidos os últimos %d segundos</string>
-    <string name="pref_feed_skip_intro_toast">Omitidos os primeiros %d segundos</string>
+    <string name="pref_feed_skip_ending_snackbar">Omitidos os últimos %d segundos</string>
+    <string name="pref_feed_skip_intro_snackbar">Omitidos os primeiros %d segundos</string>
     <string name="pref_playback_time_respects_speed_title">Axustar info dos medios a velocidade de reprodución</string>
     <string name="pref_playback_time_respects_speed_sum">A posición mostrada e a duración están adaptadas a velocidade de reprodución</string>
     <string name="pref_fast_forward">Intervalo do avance rápido</string>

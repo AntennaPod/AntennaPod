@@ -63,7 +63,7 @@ public final class SkipUtils {
             EventBus.getDefault().post(
                     new MessageEvent(
                             context.getResources().getQuantityString(
-                                    R.plurals.pref_feed_skip_ending_toast,
+                                    R.plurals.pref_feed_skip_ending_snackbar,
                                     skipEnd,
                                     skipEnd
                             )));

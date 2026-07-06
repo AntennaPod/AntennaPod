@@ -365,8 +365,8 @@
     <string name="pref_feed_skip_sum">소개 및 마지막 크레디트 건너뛰기</string>
     <string name="pref_feed_skip_ending">마지막 건너뛰기</string>
     <string name="pref_feed_skip_intro">처음 건너뛰기</string>
-    <string name="pref_feed_skip_ending_toast">마지막 %d초 건너뜀</string>
-    <string name="pref_feed_skip_intro_toast">처음 %d초 건너뜀</string>
+    <string name="pref_feed_skip_ending_snackbar">마지막 %d초 건너뜀</string>
+    <string name="pref_feed_skip_intro_snackbar">처음 %d초 건너뜀</string>
     <string name="pref_playback_time_respects_speed_title">미디어 정보를 재생 속도에 맞게 조정</string>
     <string name="pref_playback_time_respects_speed_sum">재생 속도에 맞춰 재생 위치와 재생 시간을 표시합니다</string>
     <string name="pref_rewind">뒤로 건너뛰기 시간</string>

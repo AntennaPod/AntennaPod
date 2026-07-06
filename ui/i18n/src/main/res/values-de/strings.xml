@@ -393,8 +393,8 @@
     <string name="pref_feed_skip_sum">Einleitung und Ende überspringen</string>
     <string name="pref_feed_skip_ending">Ende überspringen</string>
     <string name="pref_feed_skip_intro">Anfang überspringen</string>
-    <string name="pref_feed_skip_ending_toast">Letzte %d Sekunden übersprungen</string>
-    <string name="pref_feed_skip_intro_toast">Erste %d Sekunden übersprungen</string>
+    <string name="pref_feed_skip_ending_snackbar">Letzte %d Sekunden übersprungen</string>
+    <string name="pref_feed_skip_intro_snackbar">Erste %d Sekunden übersprungen</string>
     <string name="pref_playback_time_respects_speed_title">Medieninfo an Abspielgeschw. anpassen</string>
     <string name="pref_playback_time_respects_speed_sum">Position und Dauer der Wiedergabe werden an die Abspielgeschwindigkeit angepasst</string>
     <string name="pref_fast_forward">Vorspulzeit</string>

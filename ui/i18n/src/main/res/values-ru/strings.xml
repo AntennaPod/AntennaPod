@@ -411,8 +411,8 @@
     <string name="pref_feed_skip_sum">Проматывать вступительную и заключительную часть</string>
     <string name="pref_feed_skip_ending">Промотать последние</string>
     <string name="pref_feed_skip_intro">Промотать первые</string>
-    <string name="pref_feed_skip_ending_toast">Промотаны последние %d с</string>
-    <string name="pref_feed_skip_intro_toast">Промотаны первые %d с</string>
+    <string name="pref_feed_skip_ending_snackbar">Промотаны последние %d с</string>
+    <string name="pref_feed_skip_intro_snackbar">Промотаны первые %d с</string>
     <string name="pref_playback_time_respects_speed_title">Подстройка метаданных под скорость воспроизведения</string>
     <string name="pref_playback_time_respects_speed_sum">Отображаемые позиция и продолжительность меняются в зависимости от скорости воспроизведения</string>
     <string name="pref_fast_forward">Интервал перемотки вперёд</string>

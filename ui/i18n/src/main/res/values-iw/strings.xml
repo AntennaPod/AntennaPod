@@ -402,8 +402,8 @@
     <string name="pref_feed_skip_sum">לדלג על הקדמה ותודות בסיום</string>
     <string name="pref_feed_skip_ending">לדלג על האחרון</string>
     <string name="pref_feed_skip_intro">לדלג על הראשון</string>
-    <string name="pref_feed_skip_ending_toast">%d השניות האחרונות דולגו</string>
-    <string name="pref_feed_skip_intro_toast">%d השניות הראשונות דולגו</string>
+    <string name="pref_feed_skip_ending_snackbar">%d השניות האחרונות דולגו</string>
+    <string name="pref_feed_skip_intro_snackbar">%d השניות הראשונות דולגו</string>
     <string name="pref_playback_time_respects_speed_title">להתאים את פרטי המדיה למהירות הנגינה</string>
     <string name="pref_playback_time_respects_speed_sum">המיקום המוצג והמשך מותאמים למהירות הנגינה</string>
     <string name="pref_fast_forward">זמן דילוג להרצה מהירה קדימה</string>

@@ -393,8 +393,8 @@
     <string name="pref_feed_skip_sum">Hoppa över inledningar och eftertexter</string>
     <string name="pref_feed_skip_ending">Hoppa över slut</string>
     <string name="pref_feed_skip_intro">Hoppa över början</string>
-    <string name="pref_feed_skip_ending_toast">Hoppade över %d sista sekunderna</string>
-    <string name="pref_feed_skip_intro_toast">Hoppade över %d första sekunderna</string>
+    <string name="pref_feed_skip_ending_snackbar">Hoppade över %d sista sekunderna</string>
+    <string name="pref_feed_skip_intro_snackbar">Hoppade över %d första sekunderna</string>
     <string name="pref_playback_time_respects_speed_title">Justera mediainfo till uppspelningshastigheten</string>
     <string name="pref_playback_time_respects_speed_sum">Visad position och totallängd anpassas till uppspelningshastigheten</string>
     <string name="pref_fast_forward">Längd att spola fram</string>

@@ -384,8 +384,8 @@
     <string name="pref_feed_skip_sum">跳过开头介绍和结尾致谢</string>
     <string name="pref_feed_skip_ending">跳过结尾</string>
     <string name="pref_feed_skip_intro">跳过开头</string>
-    <string name="pref_feed_skip_ending_toast">已跳过结尾 %d 秒</string>
-    <string name="pref_feed_skip_intro_toast">已跳过开头 %d 秒</string>
+    <string name="pref_feed_skip_ending_snackbar">已跳过结尾 %d 秒</string>
+    <string name="pref_feed_skip_intro_snackbar">已跳过开头 %d 秒</string>
     <string name="pref_playback_time_respects_speed_title">根据播放速度调整媒体信息</string>
     <string name="pref_playback_time_respects_speed_sum">显示的位置和时长会根据播放速度调整</string>
     <string name="pref_fast_forward">快进跳转时间</string>

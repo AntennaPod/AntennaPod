@@ -163,8 +163,8 @@
     <string name="pref_feed_skip_sum">Salta les introducciones y los creitos del final</string>
     <string name="pref_feed_skip_ending">Saltar los caberos</string>
     <string name="pref_feed_skip_intro">Saltar los primeros</string>
-    <string name="pref_feed_skip_ending_toast">Saltáronse los últimos %d segundos</string>
-    <string name="pref_feed_skip_intro_toast">Saltáronse los primeros %d segundos</string>
+    <string name="pref_feed_skip_ending_snackbar">Saltáronse los últimos %d segundos</string>
+    <string name="pref_feed_skip_intro_snackbar">Saltáronse los primeros %d segundos</string>
     <string name="pref_enqueue_location_sum">Los episodios amiéstense: %1$s</string>
     <string name="enqueue_location_back">A lo cabero</string>
     <string name="enqueue_location_front">Al comienzu</string>
