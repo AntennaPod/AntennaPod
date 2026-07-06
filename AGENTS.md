@@ -103,4 +103,6 @@ Never create commits directly on the `develop` or `master` branch. Always checko
 
 # Issue Conventions
 When creating an issue, always follow one of the issue templates in `.github/ISSUE_TEMPLATE/`.
-Apply the corresponding labels and always mention in the technical info box that the issue was AI generated.
+Apply the corresponding labels that are marked in the issue template yaml file.
+Always mention in the technical info box that the issue was AI generated.
+If you do not follow these, the issue gets closed automatically.
