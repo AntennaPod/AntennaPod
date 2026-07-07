@@ -277,7 +277,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
                 }, error -> {
                     Log.e(TAG, "Failed to load media", error);
-                    future.set(new MediaSession.MediaItemsWithStartPosition(mediaItems, index, startPositionMs));
+                    future.set(new MediaSession.MediaItemsWithStartPosition(
+                            Collections.emptyList(), index, startPositionMs));
                 });
         return future;
     }
@@ -484,6 +485,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             try {
                 long mediaId = Long.parseLong(item.mediaId);
                 FeedMedia media = DBReader.getFeedMedia(mediaId);
+                if (media == null) {
+                    Log.e(TAG, "Media not found for ID: " + mediaId);
+                    continue;
+                }
                 builder.add(MediaItemAdapter.fromPlayable(context, media, false));
             } catch (NumberFormatException e) {
                 Log.e(TAG, "Invalid media ID: " + item.mediaId, e);
