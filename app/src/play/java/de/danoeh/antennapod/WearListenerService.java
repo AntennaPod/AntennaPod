@@ -2,7 +2,9 @@ package de.danoeh.antennapod;
 
 import android.util.Log;
 import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
+import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import io.reactivex.rxjava3.core.Completable;
@@ -20,12 +22,43 @@ import de.danoeh.antennapod.net.sync.wearinterface.WearDataPaths;
 import de.danoeh.antennapod.net.sync.wearinterface.WearSerializer;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
 public class WearListenerService extends WearableListenerService {
     private static final String TAG = "WearListenerService";
     private static final int MAX_ITEMS = 100;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onPlayerStatusEvent(PlayerStatusEvent event) {
+        FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+        if (media == null || media.getItem() == null) {
+            return;
+        }
+        boolean isPlaying = PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING;
+        byte[] payload = WearSerializer.nowPlayingToBytes(media.getItem(), isPlaying);
+        Wearable.getNodeClient(this).getConnectedNodes()
+                .addOnSuccessListener(nodes -> {
+                    for (Node node : nodes) {
+                        Wearable.getMessageClient(this).sendMessage(node.getId(), WearDataPaths.NOW_PLAYING, payload);
+                    }
+                });
+    }
 
     @Override
     public void onMessageReceived(MessageEvent event) {
