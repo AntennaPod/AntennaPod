@@ -664,8 +664,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 applyVolumeAdaption(1.0f);
                             }
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
-                            player.setMediaItem(nextMediaItem);
-                            player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia));
+                            player.setMediaItem(nextMediaItem,
+                                    SkipUtils.skipIntroIfNecessary(this, nextMedia));
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
