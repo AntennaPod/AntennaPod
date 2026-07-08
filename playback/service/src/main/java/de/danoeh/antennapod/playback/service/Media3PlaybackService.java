@@ -649,7 +649,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             final FeedMedia nextMedia = pair.first;
                             final MediaItem nextMediaItem = pair.second;
                             if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime && UserPreferences.isFollowQueue()) {
+                                    && !allowStreamingThisTime) {
                                 showStreamingConfirmation(nextMedia);
                                 return;
                             }
