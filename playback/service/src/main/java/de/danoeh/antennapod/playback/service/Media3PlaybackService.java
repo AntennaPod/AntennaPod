@@ -22,6 +22,7 @@ import androidx.media3.session.SessionCommand;
 import androidx.media3.session.SessionResult;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -743,6 +744,23 @@ public class Media3PlaybackService extends MediaLibraryService {
                     .setVolumeAdaptionSetting(event.getVolumeAdaptionSetting());
             volumeAdaptionFactor = event.getVolumeAdaptionSetting().getAdaptionFactor();
             applyVolumeAdaption(1.0f);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void feedItemsUpdated(FeedItemEvent event) {
+        if (currentPlayable == null || !currentPlayable.localFileAvailable()) {
+            return;
+        }
+        int index = FeedItemEvent.indexOfItemWithId(event.items, currentPlayable.getItemId());
+        if (index >= 0 && event.items.get(index).getMedia() != null
+                && !event.items.get(index).getMedia().localFileAvailable()) {
+            player.stop();
+            player.clearMediaItems();
+            currentPlayable = null;
+            PlaybackPreferences.writeNoMediaPlaying();
+            EventBus.getDefault().post(new PlayerStatusEvent());
         }
     }
 
