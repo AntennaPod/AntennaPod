@@ -492,20 +492,17 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
 
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        // clear back stack
-        for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
-            fragmentManager.popBackStack();
-        }
+        // Clear all synchronously to avoid conflicting with predictive back gesture cancellation
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         FragmentTransaction t = fragmentManager.beginTransaction();
         t.replace(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG);
-        fragmentManager.popBackStack();
         // TODO: we have to allow state loss here
         // since this function can get called from an AsyncTask which
         // could be finishing after our app has already committed state
         // and is about to get shutdown.  What we *should* do is
         // not commit anything in an AsyncTask, but that's a bigger
         // change than we want now.
-        t.commitAllowingStateLoss();
+        t.commitNowAllowingStateLoss();
 
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             drawerLayout.closeDrawer(navDrawer);
