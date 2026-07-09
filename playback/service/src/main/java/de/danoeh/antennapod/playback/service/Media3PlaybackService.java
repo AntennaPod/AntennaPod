@@ -310,8 +310,6 @@ public class Media3PlaybackService extends MediaLibraryService {
         public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
             if (mediaItem == null) {
                 currentPlayable = null;
-                PlaybackPreferences.writeNoMediaPlaying();
-                EventBus.getDefault().post(new PlayerStatusEvent());
             } else {
                 ensureCurrentMediaLoaded();
             }
