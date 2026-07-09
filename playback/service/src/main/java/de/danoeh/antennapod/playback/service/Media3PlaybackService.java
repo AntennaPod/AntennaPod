@@ -24,6 +24,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
@@ -175,7 +176,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             public void seekTo(long positionMs) {
                 super.seekTo(positionMs);
                 EventBus.getDefault().post(
-                        new PlaybackPositionEvent((int) player.getCurrentPosition(), (int) player.getDuration()));
+                        new PlaybackPositionEvent((int) positionMs, (int) player.getDuration()));
             }
         };
         player.addListener(playerListener);
@@ -310,8 +311,6 @@ public class Media3PlaybackService extends MediaLibraryService {
         public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
             if (mediaItem == null) {
                 currentPlayable = null;
-                PlaybackPreferences.writeNoMediaPlaying();
-                EventBus.getDefault().post(new PlayerStatusEvent());
             } else {
                 ensureCurrentMediaLoaded();
             }
@@ -673,8 +672,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 applyVolumeAdaption(1.0f);
                             }
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
-                            player.setMediaItem(nextMediaItem);
-                            player.seekTo(SkipUtils.skipIntroIfNecessary(this, nextMedia));
+                            player.setMediaItem(nextMediaItem,
+                                    SkipUtils.skipIntroIfNecessary(this, nextMedia));
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
@@ -759,6 +758,23 @@ public class Media3PlaybackService extends MediaLibraryService {
                     .setVolumeAdaptionSetting(event.getVolumeAdaptionSetting());
             volumeAdaptionFactor = event.getVolumeAdaptionSetting().getAdaptionFactor();
             applyVolumeAdaption(1.0f);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void feedItemsUpdated(FeedItemEvent event) {
+        if (currentPlayable == null || !currentPlayable.localFileAvailable()) {
+            return;
+        }
+        int index = FeedItemEvent.indexOfItemWithId(event.items, currentPlayable.getItemId());
+        if (index >= 0 && event.items.get(index).getMedia() != null
+                && !event.items.get(index).getMedia().localFileAvailable()) {
+            player.stop();
+            player.clearMediaItems();
+            currentPlayable = null;
+            PlaybackPreferences.writeNoMediaPlaying();
+            EventBus.getDefault().post(new PlayerStatusEvent());
         }
     }
 
