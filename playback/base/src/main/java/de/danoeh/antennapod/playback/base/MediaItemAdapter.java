@@ -116,10 +116,11 @@ public class MediaItemAdapter {
 
     private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
         try {
+            String imageLocation = playable.getImageLocation();
             return Glide.with(context)
                     .asBitmap()
-                    .onlyRetrieveFromCache(true)
-                    .load(playable.getImageLocation())
+                    .onlyRetrieveFromCache(imageLocation != null && imageLocation.startsWith("http"))
+                    .load(imageLocation)
                     .submit(iconSize, iconSize)
                     .get(500, TimeUnit.MILLISECONDS);
         } catch (Exception tr1) {
@@ -139,7 +140,7 @@ public class MediaItemAdapter {
         try {
             return Glide.with(context)
                     .asBitmap()
-                    .onlyRetrieveFromCache(true)
+                    .onlyRetrieveFromCache(fallback.startsWith("http"))
                     .load(fallback)
                     .submit(iconSize, iconSize)
                     .get(500, TimeUnit.MILLISECONDS);
