@@ -372,8 +372,8 @@
     <string name="pref_feed_skip_sum">Bevezetők és lezárások kihagyása</string>
     <string name="pref_feed_skip_ending">Utolsó másodpercek átugrása</string>
     <string name="pref_feed_skip_intro">Első másodpercek átugrása</string>
-    <string name="pref_feed_skip_ending_snackbar">Utolsó %d másodperc kihagyva</string>
-    <string name="pref_feed_skip_intro_snackbar">Első %d másodperc kihagyva</string>
+    <string name="pref_feed_skip_ending_toast">Utolsó %d másodperc kihagyva</string>
+    <string name="pref_feed_skip_intro_toast">Első %d másodperc kihagyva</string>
     <string name="pref_playback_time_respects_speed_title">Médiainformáció hozzáigazítása a lejátszási sebességhez</string>
     <string name="pref_playback_time_respects_speed_sum">A megjelenített pozíció és hossz a lejátszási sebességhez lesz igazítva</string>
     <string name="pref_rewind">Visszatekerés mértéke</string>

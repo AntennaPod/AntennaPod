@@ -396,8 +396,8 @@
     <string name="pref_feed_skip_sum">Pomijaj wstęp i zakończenie</string>
     <string name="pref_feed_skip_ending">Pomijaj na końcu</string>
     <string name="pref_feed_skip_intro">Pomijaj na początku</string>
-    <string name="pref_feed_skip_ending_snackbar">Pominięto ostatnie %d sekund(y)</string>
-    <string name="pref_feed_skip_intro_snackbar">Pominięto pierwsze %d sekund(y)</string>
+    <string name="pref_feed_skip_ending_toast">Pominięto ostatnie %d sekund(y)</string>
+    <string name="pref_feed_skip_intro_toast">Pominięto pierwsze %d sekund(y)</string>
     <string name="pref_playback_time_respects_speed_title">Dostosuj informacje do prędkości odtwarzania</string>
     <string name="pref_playback_time_respects_speed_sum">Wyświetlana pozycja i czas trwania są dostosowane do prędkości odtwarzania</string>
     <string name="pref_fast_forward">Długość czasu przewijania do przodu</string>

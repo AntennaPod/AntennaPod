@@ -392,8 +392,8 @@
     <string name="pref_feed_skip_sum">Omet les introduccions i els crèdits finals</string>
     <string name="pref_feed_skip_ending">Omet els darrers</string>
     <string name="pref_feed_skip_intro">Omet els primers</string>
-    <string name="pref_feed_skip_ending_snackbar">Omesos els últims %dsegons</string>
-    <string name="pref_feed_skip_intro_snackbar">Omesos els primers %d segons</string>
+    <string name="pref_feed_skip_ending_toast">Omesos els últims %dsegons</string>
+    <string name="pref_feed_skip_intro_toast">Omesos els primers %d segons</string>
     <string name="pref_playback_time_respects_speed_title">Ajusta la informació dels medis a la velocitat de reproducció</string>
     <string name="pref_playback_time_respects_speed_sum">La posició i la duració son adaptades a la velocitat de reproducció</string>
     <string name="pref_fast_forward">Interval d\'avanç</string>

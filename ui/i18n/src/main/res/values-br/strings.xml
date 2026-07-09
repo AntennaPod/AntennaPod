@@ -376,8 +376,8 @@
     <string name="pref_feed_skip_sum">Tremen penn-kentañ ha dibenn ar rannoù</string>
     <string name="pref_feed_skip_ending">Tremen an dibenn</string>
     <string name="pref_feed_skip_intro">Tremen ar penn-kentañ</string>
-    <string name="pref_feed_skip_ending_snackbar">Tremenet an %d eilenn diwezhañ</string>
-    <string name="pref_feed_skip_intro_snackbar">Tremenet an %d eilenn kentañ</string>
+    <string name="pref_feed_skip_ending_toast">Tremenet an %d eilenn diwezhañ</string>
+    <string name="pref_feed_skip_intro_toast">Tremenet an %d eilenn kentañ</string>
     <string name="pref_playback_time_respects_speed_title">Azasaat titouroù ar media hervez an tizh lenn</string>
     <string name="pref_playback_time_respects_speed_sum">Al lec\'hiadur hag ar padelezh diskouezet a zo azasaet d\'an tizh lenn</string>
     <string name="pref_rewind">Padelezh al lamm a-dreñv</string>

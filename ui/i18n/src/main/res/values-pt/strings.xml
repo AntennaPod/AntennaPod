@@ -511,8 +511,8 @@
     <string name="pref_feed_skip_sum">Ignorar introduções e créditos finais</string>
     <string name="pref_feed_skip_ending">Ignorar os últimos</string>
     <string name="pref_feed_skip_intro">Ignorar os primeiros</string>
-    <string name="pref_feed_skip_ending_snackbar">Últimos %d segundos ignorados</string>
-    <string name="pref_feed_skip_intro_snackbar">Primeiros %d segundos ignorados</string>
+    <string name="pref_feed_skip_ending_toast">Últimos %d segundos ignorados</string>
+    <string name="pref_feed_skip_intro_toast">Primeiros %d segundos ignorados</string>
     <string name="pref_playback_time_respects_speed_title">Ajustar informações multimédia à velocidade de reprodução</string>
     <string name="pref_playback_time_respects_speed_sum">A posição e a duração serão ajustadas automaticamente à velocidade de reprodução</string>
     <string name="pref_fast_forward">Tempo para avanço</string>

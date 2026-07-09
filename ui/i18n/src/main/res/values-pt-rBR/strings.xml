@@ -403,8 +403,8 @@
     <string name="pref_feed_skip_sum">Pular introduções e créditos finais</string>
     <string name="pref_feed_skip_ending">Pular os últimos</string>
     <string name="pref_feed_skip_intro">Pular os primeiros</string>
-    <string name="pref_feed_skip_ending_snackbar">Pulou os últimos %d segundos</string>
-    <string name="pref_feed_skip_intro_snackbar">Pulou os primeiros %d segundos</string>
+    <string name="pref_feed_skip_ending_toast">Pulou os últimos %d segundos</string>
+    <string name="pref_feed_skip_intro_toast">Pulou os primeiros %d segundos</string>
     <string name="pref_playback_time_respects_speed_title">Ajustar as informações da mídia para a velocidade de reprodução</string>
     <string name="pref_playback_time_respects_speed_sum">A posição e a duração exibidas são adaptadas à velocidade de reprodução</string>
     <string name="pref_fast_forward">Tempo do Avançar</string>

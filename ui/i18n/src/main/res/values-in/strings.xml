@@ -280,8 +280,8 @@
     <string name="pref_feed_skip_sum">Lewati Pembukaan dan Penutup/Persembahan siniar</string>
     <string name="pref_feed_skip_ending">Lewati bagian akhir</string>
     <string name="pref_feed_skip_intro">Lewati bagian awal</string>
-    <string name="pref_feed_skip_ending_snackbar">Selama %d detik terakhir dilewati</string>
-    <string name="pref_feed_skip_intro_snackbar">Selama %d detik pertama dilewati</string>
+    <string name="pref_feed_skip_ending_toast">Selama %d detik terakhir dilewati</string>
+    <string name="pref_feed_skip_intro_toast">Selama %d detik pertama dilewati</string>
     <string name="pref_playback_time_respects_speed_title">Atur info media ke kecepatan pemutaran</string>
     <string name="pref_playback_time_respects_speed_sum">Posisi dan durasi yang ditampilkan disesuaikan dengan kecepatan pemutaran</string>
     <string name="pref_rewind">Undur ke belakang</string>

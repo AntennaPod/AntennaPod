@@ -377,8 +377,8 @@
     <string name="pref_feed_skip_sum">Preskočite uvodno in končno špico</string>
     <string name="pref_feed_skip_ending">Preskoči na zadnjo</string>
     <string name="pref_feed_skip_intro">Preskoči na prvo</string>
-    <string name="pref_feed_skip_ending_snackbar">Preskočenih zadnjih %d sekund</string>
-    <string name="pref_feed_skip_intro_snackbar">Preskočenih prvih %d sekund</string>
+    <string name="pref_feed_skip_ending_toast">Preskočenih zadnjih %d sekund</string>
+    <string name="pref_feed_skip_intro_toast">Preskočenih prvih %d sekund</string>
     <string name="pref_playback_time_respects_speed_title">Prilagodite informacije o hitrosti predvajanja medijev</string>
     <string name="pref_playback_time_respects_speed_sum">Prikazani položaj in trajanje sta prilagojena hitrosti predvajanja</string>
     <string name="pref_rewind">Čas skoka nazaj</string>

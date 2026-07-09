@@ -392,8 +392,8 @@
     <string name="pref_feed_skip_sum">Sari peste introducere și genericul de final</string>
     <string name="pref_feed_skip_ending">Ignoră ultimele secunde</string>
     <string name="pref_feed_skip_intro">Ignoră primele secunde</string>
-    <string name="pref_feed_skip_ending_snackbar">Ultimele %dsecunde au fost ignorate</string>
-    <string name="pref_feed_skip_intro_snackbar">Primele %dsecunde au fost ignorate</string>
+    <string name="pref_feed_skip_ending_toast">Ultimele %dsecunde au fost ignorate</string>
+    <string name="pref_feed_skip_intro_toast">Primele %dsecunde au fost ignorate</string>
     <string name="pref_playback_time_respects_speed_title">Ajustarea informațiilor media la viteza de redare</string>
     <string name="pref_playback_time_respects_speed_sum">Pozitiile afișate și durata sunt adaptate la viteza de redare</string>
     <string name="pref_fast_forward">Durată de derurale pentru funcţia fast-forward</string>

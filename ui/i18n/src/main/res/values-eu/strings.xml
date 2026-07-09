@@ -371,8 +371,8 @@
     <string name="pref_feed_skip_sum">Saltatu sarrera eta amaierako kredituak</string>
     <string name="pref_feed_skip_ending">Saltatu azkena</string>
     <string name="pref_feed_skip_intro">Saltatu lehenengoa</string>
-    <string name="pref_feed_skip_ending_snackbar">Azken%d segundoak saltatu dira</string>
-    <string name="pref_feed_skip_intro_snackbar">Lehen%d segundoak saltatu dira</string>
+    <string name="pref_feed_skip_ending_toast">Azken%d segundoak saltatu dira</string>
+    <string name="pref_feed_skip_intro_toast">Lehen%d segundoak saltatu dira</string>
     <string name="pref_playback_time_respects_speed_title">Doitu multimediaren informazioa erreprodukzio-abiaduraren arabera</string>
     <string name="pref_playback_time_respects_speed_sum">Posizioa eta iraupena erreprodukzio-abiadurara egokituta bistaratzen dira</string>
     <string name="pref_rewind">Atzera egiteko denbora tartea</string>

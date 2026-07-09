@@ -226,8 +226,8 @@
     <string name="pref_feed_skip_sum">Praleisti įvadą ir pabaigos žodį</string>
     <string name="pref_feed_skip_ending">Praleisti pirmas</string>
     <string name="pref_feed_skip_intro">Praleisti paskutines</string>
-    <string name="pref_feed_skip_ending_snackbar">Praleistos paskutinės %d sekundžių</string>
-    <string name="pref_feed_skip_intro_snackbar">Praleistos pirmos %d sekundžių</string>
+    <string name="pref_feed_skip_ending_toast">Praleistos paskutinės %d sekundžių</string>
+    <string name="pref_feed_skip_intro_toast">Praleistos pirmos %d sekundžių</string>
     <string name="pref_playback_time_respects_speed_title">Derinti medijos informaciją pagal atkūrimo spartą</string>
     <string name="pref_playback_time_respects_speed_sum">Atvaizduojama pozicija ir trukmė yra pritakyta prie atkūrimo spartos</string>
     <string name="pref_rewind_sum">Derinkite, per kiek sekundžių šoktelėti atgal kai paspaudžiamas atsukimo atgal mygtukas</string>

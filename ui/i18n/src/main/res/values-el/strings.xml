@@ -393,8 +393,8 @@
     <string name="pref_feed_skip_sum">Παραλείψτε τις εισαγωγές και τους τίτλους τέλους</string>
     <string name="pref_feed_skip_ending">Παράλειψη τελευταίου</string>
     <string name="pref_feed_skip_intro">Παράλειψη αρχικού</string>
-    <string name="pref_feed_skip_ending_snackbar">Παραλείφθηκαν τα τελευταία %d δευτερόλεπτα</string>
-    <string name="pref_feed_skip_intro_snackbar">Παραλείφθηκαν τα πρώτα %d δευτερόλεπτα</string>
+    <string name="pref_feed_skip_ending_toast">Παραλείφθηκαν τα τελευταία %d δευτερόλεπτα</string>
+    <string name="pref_feed_skip_intro_toast">Παραλείφθηκαν τα πρώτα %d δευτερόλεπτα</string>
     <string name="pref_playback_time_respects_speed_title">Προσαρμογή των αρχείων πολυμέσων στη ταχύτητα αναπαραγωγής</string>
     <string name="pref_playback_time_respects_speed_sum">Η εμφανιζόμενη θέση και διάρκεια έχουν προσαρμοστεί στην ταχύτητα αναπαραγωγής</string>
     <string name="pref_fast_forward">Χρόνος παράλειψης στο fast-forward</string>

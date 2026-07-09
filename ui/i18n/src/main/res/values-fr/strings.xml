@@ -403,8 +403,8 @@
     <string name="pref_feed_skip_sum">Sauter le début et la fin des épisodes</string>
     <string name="pref_feed_skip_ending">Sauter à la fin</string>
     <string name="pref_feed_skip_intro">Sauter au début</string>
-    <string name="pref_feed_skip_ending_snackbar">%d dernières secondes sautées</string>
-    <string name="pref_feed_skip_intro_snackbar">%d premières secondes sautées</string>
+    <string name="pref_feed_skip_ending_toast">%d dernières secondes sautées</string>
+    <string name="pref_feed_skip_intro_toast">%d premières secondes sautées</string>
     <string name="pref_playback_time_respects_speed_title">Tenir compte de la vitesse de lecture</string>
     <string name="pref_playback_time_respects_speed_sum">La position et la durée affichée tiendront compte de la vitesse de lecture</string>
     <string name="pref_fast_forward">Durée du saut avant</string>

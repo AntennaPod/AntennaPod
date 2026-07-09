@@ -371,8 +371,8 @@
     <string name="pref_feed_skip_sum">پرش از معرّفی‌ها و تیتراژ پایانی</string>
     <string name="pref_feed_skip_ending">پرش به آخر</string>
     <string name="pref_feed_skip_intro">پرش به اول</string>
-    <string name="pref_feed_skip_ending_snackbar">پرش از %d ثانیه آخر</string>
-    <string name="pref_feed_skip_intro_snackbar">پرش از %d ثانیه اول</string>
+    <string name="pref_feed_skip_ending_toast">پرش از %d ثانیه آخر</string>
+    <string name="pref_feed_skip_intro_toast">پرش از %d ثانیه اول</string>
     <string name="pref_playback_time_respects_speed_title">اطلاعات رسانه را برای سرعت بازپخش تنظیم کنید</string>
     <string name="pref_playback_time_respects_speed_sum">موقعیت و مدت نمایش داده شده با سرعت پخش سازگار شده</string>
     <string name="pref_rewind">زمان پرش در پس‌روی</string>

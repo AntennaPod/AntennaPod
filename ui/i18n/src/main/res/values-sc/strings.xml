@@ -393,8 +393,8 @@
     <string name="pref_feed_skip_sum">Omite introdutziones e crèditos finales</string>
     <string name="pref_feed_skip_ending">Brinca is ùrtimos</string>
     <string name="pref_feed_skip_intro">Brinca is primos</string>
-    <string name="pref_feed_skip_ending_snackbar">Ùrtimos %d segundos omìtidos</string>
-    <string name="pref_feed_skip_intro_snackbar">Primu %d segundos omìtidos</string>
+    <string name="pref_feed_skip_ending_toast">Ùrtimos %d segundos omìtidos</string>
+    <string name="pref_feed_skip_intro_toast">Primu %d segundos omìtidos</string>
     <string name="pref_playback_time_respects_speed_title">Acontza s\'informatzione de su cuntenutu multimediale a sa lestresa de riprodutzione</string>
     <string name="pref_playback_time_respects_speed_sum">Sa positzione e sa durada ammustradas ant a èssere acontzadas a sa lestresa de riprodutzione</string>
     <string name="pref_fast_forward">Durada de s\'omissione in s\'avantzamentu lestru</string>

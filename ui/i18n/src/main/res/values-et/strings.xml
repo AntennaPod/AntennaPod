@@ -371,8 +371,8 @@
     <string name="pref_feed_skip_sum">Sissejuhatuse ja lõputänu vahele jätmine</string>
     <string name="pref_feed_skip_ending">Jäta vahele lõpust</string>
     <string name="pref_feed_skip_intro">Jäta vahele algusest</string>
-    <string name="pref_feed_skip_ending_snackbar">Lõpust jäeti vahele %d sekundit</string>
-    <string name="pref_feed_skip_intro_snackbar">Algusest jäeti vahele %d sekundit</string>
+    <string name="pref_feed_skip_ending_toast">Lõpust jäeti vahele %d sekundit</string>
+    <string name="pref_feed_skip_intro_toast">Algusest jäeti vahele %d sekundit</string>
     <string name="pref_playback_time_respects_speed_title">Meedia info kohandamine esituse kiirusega</string>
     <string name="pref_playback_time_respects_speed_sum">Kuvatav asukoht ja kestus kohandatakse esituse kiiruse järgi</string>
     <string name="pref_rewind">Tagasi kerimise hüpe</string>
