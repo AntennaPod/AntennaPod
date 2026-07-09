@@ -33,11 +33,8 @@ public final class SkipUtils {
         if (startPosition != media.getPosition()) {
             Log.d(TAG, "skipIntro " + media.getEpisodeTitle());
             EventBus.getDefault().post(new MessageEvent(
-                    context.getResources().getQuantityString(
-                            R.plurals.pref_feed_skip_intro_snackbar,
-                            (int) (startPosition / 1000),
-                            (int) (startPosition / 1000)
-                    )));
+                    context.getResources().getQuantityString(R.plurals.pref_feed_skip_intro_snackbar,
+                            (int) (startPosition / 1000), (int) (startPosition / 1000))));
         }
         return startPosition;
     }
@@ -63,10 +60,7 @@ public final class SkipUtils {
             EventBus.getDefault().post(
                     new MessageEvent(
                             context.getResources().getQuantityString(
-                                    R.plurals.pref_feed_skip_ending_snackbar,
-                                    skipEnd,
-                                    skipEnd
-                            )));
+                                    R.plurals.pref_feed_skip_ending_snackbar, skipEnd, skipEnd)));
             return true;
         }
         return false;
