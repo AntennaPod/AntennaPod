@@ -550,12 +550,12 @@
     <string name="pref_feed_skip_sum">Skip introductions and ending credits</string>
     <string name="pref_feed_skip_ending">Skip last</string>
     <string name="pref_feed_skip_intro">Skip first</string>
-    <plurals name="pref_feed_skip_ending_toast">
+    <plurals name="pref_feed_skip_ending_snackbar">
         <item quantity="one">Skipped last %d second</item>
         <item quantity="other">Skipped last %d seconds</item>
     </plurals>
 
-    <plurals name="pref_feed_skip_intro_toast">
+    <plurals name="pref_feed_skip_intro_snackbar">
         <item quantity="one">Skipped first %d second</item>
         <item quantity="other">Skipped first %d seconds</item>
     </plurals>
