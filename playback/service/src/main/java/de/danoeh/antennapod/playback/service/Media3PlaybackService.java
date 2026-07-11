@@ -720,6 +720,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (sleepTimer != null) {
             sleepTimer.stop();
             sleepTimer = null;
+        } else if (!BuildConfig.DEBUG) {
+            // Unblock user in case we somehow got into an inconsistent state
+            EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.cancelled());
         }
         if (player != null) {
             applyVolumeAdaption(1.0f);
