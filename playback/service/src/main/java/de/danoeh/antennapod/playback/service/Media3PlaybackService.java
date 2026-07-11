@@ -513,7 +513,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, ended || almostEnded);
         if (item != null) {
-            if (almostEnded) {
+            if (ended || almostEnded) {
                 DBWriter.markItemsPlayed(FeedItem.PLAYED, true, Collections.singletonList(item));
             }
             if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
@@ -644,8 +644,11 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         queueLoaderDisposable = Maybe.fromCallable(() -> {
             FeedItem nextItem = DBReader.getNextInQueue(item);
-            if (nextItem != null && nextItem.getMedia() != null) {
-                return new Pair<>(nextItem.getMedia(), MediaItemAdapter.fromPlayable(Media3PlaybackService.this, nextItem.getMedia(), false));
+            boolean hasNext = nextItem != null && nextItem.getMedia() != null;
+            finalizePlayback(media, ended, wasSkipped, hasNext);
+            if (hasNext) {
+                return new Pair<>(nextItem.getMedia(),
+                        MediaItemAdapter.fromPlayable(Media3PlaybackService.this, nextItem.getMedia(), false));
             }
             return null;
         })
@@ -661,7 +664,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 return;
                             }
                             allowStreamingThisTime = false;
-                            finalizePlayback(media, ended, wasSkipped, true);
 
                             currentPlayable = nextMedia;
                             currentPlayable.onPlaybackStart();
@@ -678,7 +680,6 @@ public class Media3PlaybackService extends MediaLibraryService {
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
                         () -> {
-                            finalizePlayback(media, ended, wasSkipped, false);
                             currentPlayable = null;
                             player.stop();
                             player.clearMediaItems();
