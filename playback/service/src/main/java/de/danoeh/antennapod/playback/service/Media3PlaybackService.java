@@ -617,7 +617,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         player.setMediaItem(confirmItem);
         player.setPlayWhenReady(false);
         player.prepare();
+        PlaybackService.isRunning = false;
         EventBus.getDefault().post(new StreamingConfirmationEvent());
+        EventBus.getDefault().post(new PlayerStatusEvent());
     }
 
     private static boolean needsStreaming(FeedMedia media) {
