@@ -201,26 +201,26 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (castMediaLoaderDisposable != null) {
             castMediaLoaderDisposable.dispose();
         }
-castMediaLoaderDisposable = Single.fromCallable(() -> {
-    FeedMedia media = DBReader.getFeedMedia(mediaId);
-    if (media == null) {
-        return null;
-    }
-    return new Pair<>(media, MediaItemAdapter.fromPlayable(this, media, false));
-})
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(pair -> {
-            if (pair == null || player.getCurrentMediaItem() != null || !isCasting()) {
-                return;
+        castMediaLoaderDisposable = Single.fromCallable(() -> {
+            FeedMedia media = DBReader.getFeedMedia(mediaId);
+            if (media == null) {
+                return null;
             }
-            long startPosition = SkipUtils.skipIntroIfNecessary(this, pair.first);
-            startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                    (int) startPosition, pair.first.getLastPlayedTimeStatistics());
-            player.setPlayWhenReady(false);
-            player.setMediaItem(pair.second, startPosition);
-            player.prepare();
-        }, error -> Log.e(TAG, "Failed to load current media for casting", error));
+            return new Pair<>(media, MediaItemAdapter.fromPlayable(this, media, false));
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(pair -> {
+                    if (pair == null || player.getCurrentMediaItem() != null || !isCasting()) {
+                        return;
+                    }
+                    long startPosition = SkipUtils.skipIntroIfNecessary(this, pair.first);
+                    startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                            (int) startPosition, pair.first.getLastPlayedTimeStatistics());
+                    player.setPlayWhenReady(false);
+                    player.setMediaItem(pair.second, startPosition);
+                    player.prepare();
+                }, error -> Log.e(TAG, "Failed to load current media for casting", error));
     }
 
     /**
