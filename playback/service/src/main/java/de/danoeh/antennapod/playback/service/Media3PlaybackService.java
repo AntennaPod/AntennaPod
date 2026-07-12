@@ -255,22 +255,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 saveCurrentPosition();
             }
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
-                FeedMedia media = currentPlayable;
-                currentPlayable = null; // To avoid position updater saving position after we already reset it
-                if (sleepTimer != null && sleepTimer.isActive()) {
-                    sleepTimer.episodeFinishedPlayback();
-                    if (!sleepTimer.shouldContinueToNextEpisode()) {
-                        finalizePlayback(media, true, false, false);
-                        player.stop();
-                        player.clearMediaItems();
-                        PlaybackPreferences.writeNoMediaPlaying();
-                        EventBus.getDefault().post(
-                                new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
-                        EventBus.getDefault().post(new PlayerStatusEvent());
-                        return;
-                    }
-                }
-                startNextInQueue(media, false, true);
+                handlePlaybackEnded();
             }
         }
 
@@ -310,7 +295,12 @@ public class Media3PlaybackService extends MediaLibraryService {
         @Override
         public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
             if (mediaItem == null) {
-                currentPlayable = null;
+                if (currentPlayable != null
+                        && CastPlayerWrapper.hasPlaybackJustFinished(Media3PlaybackService.this)) {
+                    handlePlaybackEnded();
+                } else {
+                    currentPlayable = null;
+                }
             } else {
                 ensureCurrentMediaLoaded();
             }
@@ -501,7 +491,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         PlayableUtils.saveCurrentPosition(currentPlayable, (int) position, timestamp);
     }
 
-    private void finalizePlayback(FeedMedia media, boolean ended, boolean skipped, boolean playingNext) {
+    private void updateDatabaseAfterPlayback(FeedMedia media, boolean ended, boolean skipped, boolean playingNext) {
         if (media == null) {
             return;
         }
@@ -629,6 +619,26 @@ public class Media3PlaybackService extends MediaLibraryService {
         return !media.localFileAvailable() && !URLUtil.isContentUrl(media.getStreamUrl());
     }
 
+    @UnstableApi
+    private void handlePlaybackEnded() {
+        FeedMedia media = currentPlayable;
+        currentPlayable = null; // To avoid position updater saving position after we already reset it
+        if (sleepTimer != null && sleepTimer.isActive()) {
+            sleepTimer.episodeFinishedPlayback();
+            if (!sleepTimer.shouldContinueToNextEpisode()) {
+                updateDatabaseAfterPlayback(media, true, false, false);
+                player.stop();
+                player.clearMediaItems();
+                PlaybackPreferences.writeNoMediaPlaying();
+                EventBus.getDefault().post(
+                        new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                EventBus.getDefault().post(new PlayerStatusEvent());
+                return;
+            }
+        }
+        startNextInQueue(media, false, true);
+    }
+
     /**
      * Loads the next item, and starts it if continuous playback is enabled.
      */
@@ -647,7 +657,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         queueLoaderDisposable = Maybe.fromCallable(() -> {
             FeedItem nextItem = DBReader.getNextInQueue(item);
             boolean hasNext = nextItem != null && nextItem.getMedia() != null;
-            finalizePlayback(media, ended, wasSkipped, hasNext);
+            updateDatabaseAfterPlayback(media, ended, wasSkipped, hasNext);
             if (hasNext) {
                 return new Pair<>(nextItem.getMedia(),
                         MediaItemAdapter.fromPlayable(Media3PlaybackService.this, nextItem.getMedia(), false));
