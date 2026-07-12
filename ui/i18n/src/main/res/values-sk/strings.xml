@@ -937,4 +937,28 @@
     <string name="statistics_label_short">Štatistiky</string>
     <string name="favorite_episodes_label_short">Obľúbené</string>
     <string name="feed_new_episodes_action_snackbar">Nedá sa zmeniť, keď je povolené automatické sťahovanie.</string>
+    <string name="remove_restore_feed_label">Odhlásiť / obnoviť</string>
+    <string name="restoring_podcast_progress">Obnovuje sa podcast %1$d z %2$d…</string>
+    <string name="deleting_podcast_progress">Odhlasovanie z podcastu %1$d z %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d epizóda pridaná do obľúbených.</item>
+        <item quantity="few">%d epizódy pridané do obľúbených.</item>
+        <item quantity="many">%d epizód pridaných do obľúbených.</item>
+        <item quantity="other">%d epizód pridaných do obľúbených.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d epizóda odstránená z obľúbených.</item>
+        <item quantity="few">%d epizódy odstránené z obľúbených.</item>
+        <item quantity="many">%d epizód odstránených z obľúbených.</item>
+        <item quantity="other">%d epizód odstránených z obľúbených.</item>
+    </plurals>
+    <string name="download_log_details_human_readable_reason_title">Stav</string>
+    <string name="download_log_details_technical_reason_title">Technické detaily</string>
+    <string name="download_log_details_file_url_title">URL adresa súboru</string>
+    <string name="download_log_open_feed">Otvoriť</string>
+    <string name="no_following_in_queue">Toto bola posledná epizóda v poradí</string>
+    <string name="report_bug_device_info_title">Zariadenie</string>
+    <string name="report_bug_attrib_app_version">Verzia aplikácie</string>
+    <string name="report_bug_attrib_android_version">Verzia systému</string>
+    <string name="report_bug_attrib_device_name">Názov zariadenia</string>
 </resources>

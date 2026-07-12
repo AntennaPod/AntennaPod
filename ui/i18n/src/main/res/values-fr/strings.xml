@@ -340,9 +340,9 @@
     <string name="pref_auto_delete_playback_title">Suppression après lecture</string>
     <string name="pref_auto_delete_title">Suppression automatique</string>
     <string name="pref_auto_delete_sum">Supprimer les épisodes après la lecture ou si le téléchargement automatique a besoin de plus de place</string>
-    <string name="pref_auto_local_delete_title">Suppression automatique pour dossiers locaux</string>
-    <string name="pref_auto_local_delete_sum">Supprimer aussi les fichiers des dossiers locaux ajoutés ; attention, ces fichiers ne sont pas téléchargés par AntennaPod et ne peuvent pas être retéléchargés</string>
-    <string name="pref_auto_local_delete_dialog_body">Attention la suppression des épisodes des dossiers locaux dans AntennaPod les suppriment aussi de votre appareil. Ils seront définitivement perdus et ne pourront pas être \"retélécharger\" à partir d\'AntennaPod. Activer quand même l\'option ?</string>
+    <string name="pref_auto_local_delete_title">Suppression automatique des dossiers locaux</string>
+    <string name="pref_auto_local_delete_sum">Supprimer les fichiers des dossiers locaux ajoutés. Ces fichiers ne sont pas téléchargés par AntennaPod et ne pourront pas être retéléchargés</string>
+    <string name="pref_auto_local_delete_dialog_body">Attention la suppression des épisodes des dossiers locaux dans AntennaPod les suppriment de votre appareil. Ils seront définitivement perdus et ne pourront pas être \"retéléchargés\" avec AntennaPod. Activer quand même l\'option ?</string>
     <string name="pref_smart_mark_as_played_sum">En dessous de la durée choisie les épisodes seront marqués comme lus même s\'ils n\'ont pas été terminés</string>
     <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligemment</string>
     <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
@@ -981,10 +981,10 @@
         <item quantity="many">%d positions d\'épisodes réinitialisées.</item>
         <item quantity="other">%d positions d\'épisodes réinitialisées.</item>
     </plurals>
-    <string name="queue_time_left_label">Reste : %1$s • %2$s</string>
+    <string name="queue_time_left_label">%1$s • %2$s restant</string>
     <string name="no_fav_episodes_head_label">Aucun favori</string>
     <string name="no_fav_episodes_label">Marquer des épisodes comme favori à l\'aide de l’icône en forme d\'étoile.</string>
-    <string name="bottom_navigation_deprecation_warning">Malheureusement la navigation latérale va être retirée dans une prochaine version. AntennaPod est développé par un petit nombre de volontaires et, après plusieurs années de support pour les 2 types de navigations, la maintenance des 2 est devenu trop lourde.\n\nSi vous avez absolument besoin de la navigation latérale, désactivez les mises à jour d\'AntennaPod.</string>
+    <string name="bottom_navigation_deprecation_warning">Malheureusement la navigation latérale va être retirée dans une prochaine version. AntennaPod est développé par un petit nombre de volontaires et, après plusieurs années de support pour les 2 types de navigations, la maintenance des 2 est trop lourde.\n\nSi vous avez absolument besoin de la navigation latérale, désactivez les mises à jour d\'AntennaPod.</string>
     <string name="pref_advanced">Avancé</string>
     <string name="pref_display">Affichage</string>
     <string name="import_error_label">Erreur d\'import</string>
