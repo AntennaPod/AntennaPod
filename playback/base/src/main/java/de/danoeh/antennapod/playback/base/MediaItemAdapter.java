@@ -37,16 +37,12 @@ public class MediaItemAdapter {
      * Create a basic media item without attached metadata.
      * Should be used when initiating playback from outside the service.
      */
-    public static MediaItem fromPlayableStub(Playable playable) {
+    public static MediaItem fromMediaIdStub(long mediaId) {
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setIsPlayable(true);
         metadataBuilder.setIsBrowsable(false);
-        String mediaId = "0";
-        if (playable instanceof FeedMedia) {
-            mediaId = String.valueOf(((FeedMedia) playable).getId());
-        }
         return new MediaItem.Builder()
-                .setMediaId(mediaId)
+                .setMediaId(String.valueOf(mediaId))
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
     }

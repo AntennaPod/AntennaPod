@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.playback.service;
 
+import android.content.Intent;
 import android.media.audiofx.LoudnessEnhancer;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
 import androidx.core.util.Pair;
+import androidx.media3.common.DeviceInfo;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
@@ -183,6 +185,39 @@ public class Media3PlaybackService extends MediaLibraryService {
         mediaSession = new MediaLibraryService.MediaLibrarySession.Builder(this, player, sessionCallback)
                 .setSessionActivity(new MainActivityStarter(this).withOpenPlayer().getPendingIntent())
                 .build();
+        if (isCasting()) {
+            keepServiceRunningWhileCasting();
+            loadCurrentMediaWhileCasting();
+        }
+    }
+
+    private void loadCurrentMediaWhileCasting() {
+        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+        if (mediaId == PlaybackPreferences.NO_MEDIA_PLAYING) {
+            return;
+        }
+        PlaybackController.bindToMedia3Service(this, controller -> {
+            if (player.getCurrentMediaItem() != null || !isCasting()) {
+                return;
+            }
+            controller.setPlayWhenReady(false);
+            controller.setMediaItem(MediaItemAdapter.fromMediaIdStub(mediaId));
+            controller.prepare();
+        });
+    }
+
+    /**
+     * When freshly binding to the service to start playback (while chromecast is already connected),
+     * the service gets started but casting does not transition to PLAYING fast enough. So when unbinding,
+     * the service gets destroyed again and releases the session, which stops casting again.
+     * This method manually starts the service, to be used when connected to chromecast.
+     */
+    private void keepServiceRunningWhileCasting() {
+        try {
+            startService(new Intent(this, Media3PlaybackService.class));
+        } catch (IllegalStateException e) {
+            Log.e(TAG, "Unable to keep service running while casting", e);
+        }
     }
 
     MediaLibrarySessionCallback sessionCallback = new MediaLibrarySessionCallback(this) {
@@ -289,6 +324,14 @@ public class Media3PlaybackService extends MediaLibraryService {
                         currentHour)) {
                     startSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
                 }
+            }
+        }
+
+        @Override
+        public void onDeviceInfoChanged(@NonNull DeviceInfo deviceInfo) {
+            if (deviceInfo.playbackType == DeviceInfo.PLAYBACK_TYPE_REMOTE) {
+                keepServiceRunningWhileCasting();
+                loadCurrentMediaWhileCasting();
             }
         }
 
@@ -425,7 +468,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 return;
                             }
                             if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime) {
+                                    && !allowStreamingThisTime && !isCasting()) {
                                 showStreamingConfirmation(media);
                                 return;
                             }
@@ -576,7 +619,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                 && (player.getPlaybackState() == Player.STATE_READY
                     || player.getPlaybackState() == Player.STATE_BUFFERING)
                 && needsStreaming(currentPlayable)
-                && !NetworkUtils.isStreamingAllowed();
+                && !NetworkUtils.isStreamingAllowed()
+                && !isCasting();
     }
 
     private boolean handleStreamingConfirmation() {
@@ -639,6 +683,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         startNextInQueue(media, false, true);
     }
 
+    private boolean isCasting() {
+        return player.getDeviceInfo().playbackType == DeviceInfo.PLAYBACK_TYPE_REMOTE;
+    }
+
     /**
      * Loads the next item, and starts it if continuous playback is enabled.
      */
@@ -671,7 +719,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             final FeedMedia nextMedia = pair.first;
                             final MediaItem nextMediaItem = pair.second;
                             if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime) {
+                                    && !allowStreamingThisTime && !isCasting()) {
                                 showStreamingConfirmation(nextMedia);
                                 return;
                             }
