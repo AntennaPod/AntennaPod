@@ -620,7 +620,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         player.setMediaItem(confirmItem);
         player.setPlayWhenReady(false);
         player.prepare();
+        PlaybackService.isRunning = false;
         EventBus.getDefault().post(new StreamingConfirmationEvent());
+        EventBus.getDefault().post(new PlayerStatusEvent());
     }
 
     private static boolean needsStreaming(FeedMedia media) {
@@ -659,7 +661,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             final FeedMedia nextMedia = pair.first;
                             final MediaItem nextMediaItem = pair.second;
                             if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime && UserPreferences.isFollowQueue()) {
+                                    && !allowStreamingThisTime) {
                                 showStreamingConfirmation(nextMedia);
                                 return;
                             }
