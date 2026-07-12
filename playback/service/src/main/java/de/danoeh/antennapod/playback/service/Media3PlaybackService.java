@@ -439,6 +439,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
+    @OptIn(markerClass = UnstableApi.class)
     private boolean confirmStreamingIfNeeded(FeedMedia media) {
         if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed() && !allowStreamingThisTime) {
             showStreamingConfirmation(media);
@@ -448,6 +449,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         return false;
     }
 
+    @OptIn(markerClass = UnstableApi.class)
     private void switchToPlayable(FeedMedia media) {
         currentPlayable = media;
         currentPlayable.onPlaybackStart();
