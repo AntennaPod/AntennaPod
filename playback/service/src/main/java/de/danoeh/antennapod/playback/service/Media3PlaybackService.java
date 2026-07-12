@@ -420,35 +420,14 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(media -> {
-                            currentPlayable = media;
-                            if (player == null) {
+                            if (player == null || confirmStreamingIfNeeded(media)) {
                                 return;
                             }
-                            if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime) {
-                                showStreamingConfirmation(media);
-                                return;
+                            media.setPosition((int) player.getCurrentPosition());
+                            if (media.getItem() != null && !media.getItem().isTagged(FeedItem.TAG_QUEUE)) {
+                                DBWriter.addQueueItem(this, media.getItem());
                             }
-                            allowStreamingThisTime = false;
-                            currentPlayable.setPosition((int) player.getCurrentPosition());
-                            currentPlayable.onPlaybackStart();
-                            if (currentPlayable.getItem() != null
-                                    && !currentPlayable.getItem().isTagged(FeedItem.TAG_QUEUE)) {
-                                DBWriter.addQueueItem(this, currentPlayable.getItem());
-                            }
-                            float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
-                            player.setPlaybackSpeed(speed);
-                            boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(
-                                    currentPlayable) == FeedPreferences.SkipSilence.AGGRESSIVE;
-                            PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
-                            exoPlayer.setSkipSilenceEnabled(enabled);
-                            if (currentPlayable.getItem() != null
-                                    && currentPlayable.getItem().getFeed() != null) {
-                                volumeAdaptionFactor = currentPlayable.getItem().getFeed()
-                                        .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
-                                applyVolumeAdaption(1.0f);
-                            }
-                            updatePlaybackPreferences();
+                            switchToPlayable(media);
                         },
                                 error -> Log.e(TAG, "Failed to load current media", error));
 
@@ -458,6 +437,33 @@ public class Media3PlaybackService extends MediaLibraryService {
                     ? player.getCurrentMediaItem().mediaId
                     : "null"), e);
         }
+    }
+
+    private boolean confirmStreamingIfNeeded(FeedMedia media) {
+        if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed() && !allowStreamingThisTime) {
+            showStreamingConfirmation(media);
+            return true;
+        }
+        allowStreamingThisTime = false;
+        return false;
+    }
+
+    private void switchToPlayable(FeedMedia media) {
+        currentPlayable = media;
+        currentPlayable.onPlaybackStart();
+
+        float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
+        player.setPlaybackSpeed(speed);
+        boolean enabled = PlaybackSpeedUtils.getCurrentSkipSilencePreference(currentPlayable)
+                == FeedPreferences.SkipSilence.AGGRESSIVE;
+        PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(enabled);
+        exoPlayer.setSkipSilenceEnabled(enabled);
+        if (currentPlayable.getItem() != null && currentPlayable.getItem().getFeed() != null) {
+            volumeAdaptionFactor = currentPlayable.getItem().getFeed()
+                    .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
+            applyVolumeAdaption(1.0f);
+        }
+        updatePlaybackPreferences();
     }
 
     private void updatePlaybackPreferences() {
@@ -670,24 +676,12 @@ public class Media3PlaybackService extends MediaLibraryService {
                         pair -> {
                             final FeedMedia nextMedia = pair.first;
                             final MediaItem nextMediaItem = pair.second;
-                            if (needsStreaming(nextMedia) && !NetworkUtils.isStreamingAllowed()
-                                    && !allowStreamingThisTime) {
-                                showStreamingConfirmation(nextMedia);
+                            if (player == null || confirmStreamingIfNeeded(nextMedia)) {
                                 return;
                             }
-                            allowStreamingThisTime = false;
-
-                            currentPlayable = nextMedia;
-                            currentPlayable.onPlaybackStart();
-                            updatePlaybackPreferences();
-                            if (nextMedia.getItem() != null && nextMedia.getItem().getFeed() != null) {
-                                volumeAdaptionFactor = nextMedia.getItem().getFeed()
-                                        .getPreferences().getVolumeAdaptionSetting().getAdaptionFactor();
-                                applyVolumeAdaption(1.0f);
-                            }
+                            switchToPlayable(nextMedia);
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
-                            player.setMediaItem(nextMediaItem,
-                                    SkipUtils.skipIntroIfNecessary(this, nextMedia));
+                            player.setMediaItem(nextMediaItem, SkipUtils.skipIntroIfNecessary(this, nextMedia));
                             player.prepare();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
