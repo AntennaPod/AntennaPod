@@ -92,7 +92,6 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
-    private Disposable castMediaLoaderDisposable;
     private long lastPositionSaveTime = 0;
     private SleepTimer sleepTimer;
     @Nullable
@@ -192,35 +191,19 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
-    @UnstableApi
     private void loadCurrentMediaWhileCasting() {
         long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
-        if (player.getCurrentMediaItem() != null || mediaId == PlaybackPreferences.NO_MEDIA_PLAYING) {
+        if (mediaId == PlaybackPreferences.NO_MEDIA_PLAYING) {
             return;
         }
-        if (castMediaLoaderDisposable != null) {
-            castMediaLoaderDisposable.dispose();
-        }
-        castMediaLoaderDisposable = Single.fromCallable(() -> {
-            FeedMedia media = DBReader.getFeedMedia(mediaId);
-            if (media == null) {
-                return null;
+        PlaybackController.bindToMedia3Service(this, controller -> {
+            if (player.getCurrentMediaItem() != null || !isCasting()) {
+                return;
             }
-            return new Pair<>(media, MediaItemAdapter.fromPlayable(this, media, false));
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(pair -> {
-                    if (pair == null || player.getCurrentMediaItem() != null || !isCasting()) {
-                        return;
-                    }
-                    long startPosition = SkipUtils.skipIntroIfNecessary(this, pair.first);
-                    startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                            (int) startPosition, pair.first.getLastPlayedTimeStatistics());
-                    player.setPlayWhenReady(false);
-                    player.setMediaItem(pair.second, startPosition);
-                    player.prepare();
-                }, error -> Log.e(TAG, "Failed to load current media for casting", error));
+            controller.setPlayWhenReady(false);
+            controller.setMediaItem(MediaItemAdapter.fromMediaIdStub(mediaId));
+            controller.prepare();
+        });
     }
 
     /**
@@ -398,10 +381,6 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
             queueLoaderDisposable = null;
-        }
-        if (castMediaLoaderDisposable != null) {
-            castMediaLoaderDisposable.dispose();
-            castMediaLoaderDisposable = null;
         }
         saveCurrentPosition();
         if (loudnessEnhancer != null) {
