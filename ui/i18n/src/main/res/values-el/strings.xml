@@ -50,7 +50,7 @@
     <string name="home_welcome_title">Καλωσήρθατε στο Antennapod!</string>
     <string name="home_welcome_text">Δεν έχετε εγγραφεί ακόμα σε κανένα podcast. Ανοίξτε το μενού για να προσθέσετε ένα podcast.</string>
     <string name="notification_permission_denied">Αρνηθήκατε τη πρόσβαση.</string>
-    <string name="configure_home">Διαμόρφωση Αρχικής Οθόνης</string>
+    <string name="configure_home">Διαμόρφωση αρχικής οθόνης</string>
     <string name="section_hidden">Κρυμμένο</string>
     <!--Main activity-->
   <string name="drawer_open">Άνοιγμα μενού</string>
@@ -154,8 +154,8 @@
     <string name="show_info_label">Εμφάνιση πληροφοριών</string>
     <string name="show_feed_settings_label">Εμφάνιση ρυθμίσεων podcast</string>
     <string name="feed_settings_label">Ρυθμίσεις podcast</string>
-    <string name="rename_feed_label">Μετονομασία podcast</string>
-    <string name="remove_feed_label">Αφαίρεση podcast</string>
+    <string name="rename_feed_label">Μετονομασία</string>
+    <string name="remove_feed_label">Απεγγραφή</string>
     <string name="share_label">Κοινοποίηση</string>
     <string name="share_file_label">Κοινοποίηση αρχείου</string>
     <string name="load_complete_feed">Ανανέωση όλου του podcast</string>
@@ -839,4 +839,17 @@
     <string name="general_expand_button">Εξάπλωση</string>
     <string name="general_collapse_button">Κλείσιμο</string>
     <string name="no_items_selected_message">Κανένα δεν έχει επιλεχθεί</string>
+    <string name="statistics_label_short">Στατ</string>
+    <string name="favorite_episodes_label_short">Αγαπημένα</string>
+    <string name="feed_new_episodes_action_snackbar">Δεν μπορεί να αλλαχθεί όταν είναι ενεργή η αυτόματη λήψη.</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d εγγραφή</item>
+        <item quantity="other">%d εγγραφές</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Αρχειοθέτηση</string>
+    <string name="archive_feed_label_noun">Αρχείο</string>
+    <string name="restore_archive_label">Επαναφορά</string>
+    <string name="remove_archive_feed_label">Απεγγραφή / αρχειοθέτηση</string>
+    <string name="remove_restore_feed_label">Απεγγραφή / επαναφορά</string>
+    <string name="feed_delete_explanation_delete">Η απεγγραφή αφαιρεί την εγγραφή μαζί με όλα τα επεισόδια, λήψεις, ιστορικό αναπαραγωγής και στατιστικά.</string>
 </resources>

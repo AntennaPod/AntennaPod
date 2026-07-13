@@ -147,7 +147,7 @@
     <string name="show_feed_settings_label">Vis podkastinnstillinger</string>
     <string name="feed_settings_label">Podkastinnstillinger</string>
     <string name="rename_feed_label">Gi nytt navn</string>
-    <string name="remove_feed_label">Slett</string>
+    <string name="remove_feed_label">Avslutt abonnement</string>
     <string name="share_label">Del</string>
     <string name="share_file_label">Del fil</string>
     <string name="load_complete_feed">Oppdater hele podkasten</string>
@@ -888,8 +888,8 @@
     <string name="archive_feed_label_verb">Arkiver</string>
     <string name="archive_feed_label_noun">Arkiv</string>
     <string name="restore_archive_label">Gjenopprett</string>
-    <string name="remove_archive_feed_label">Slett/arkiver</string>
-    <string name="feed_delete_explanation_delete">Sletting fjerner abonnementet i tillegg til alle episoder, nedlastinger, avspillingshistorikk og statistikk.</string>
+    <string name="remove_archive_feed_label">Avslutt abonnement / arkiver</string>
+    <string name="feed_delete_explanation_delete">Abonnementsavslutting fjerner abonnementet i tillegg til alle episoder, nedlastinger, avspillingshistorikk og statistikk.</string>
     <string name="feed_delete_explanation_archive">Arkivering skjuler den fra abonnementslisten og slutter å se etter nye episoder. Nedlastinger, statistikk og avspillingsstatus bevares.</string>
     <string name="tag_untagged">Ikke merket</string>
     <string name="general_expand_button">Utvid</string>
@@ -930,4 +930,8 @@
         <item quantity="other">Det er kun %1$d episoder igjen i køen din</item>
     </plurals>
     <string name="download_log_open_feed">Åpne</string>
+    <string name="statistics_label_short">Statistikk</string>
+    <string name="favorite_episodes_label_short">Favoritter</string>
+    <string name="feed_new_episodes_action_snackbar">Kan ikke endres når automatisk nedlastning er aktivert.</string>
+    <string name="remove_restore_feed_label">Avslutt abonnement / gjenopprett</string>
 </resources>

@@ -1015,4 +1015,21 @@
         <item quantity="many">Сброшена позиция для %d выпусков.</item>
         <item quantity="other">Сброшена позиция для %d выпусков.</item>
     </plurals>
+    <string name="queue_time_left_label">%1$s • %2$s влево</string>
+    <string name="no_fav_episodes_head_label">Нет избранных</string>
+    <string name="no_fav_episodes_label">Добавьте выпуски в избранное нажатием на иконку с звездой.</string>
+    <string name="bottom_navigation_deprecation_warning">К сожалению, мы удалим навигацию по сторонам в следующем обновлении. AntennaPod разрабатывается небольшой группой волонтёров и поддержка обеих способов навигации на протяжении стала затруднительной.\n\nЕсли вам абсолютно необходима навигация по сторонам, отключите обновления AntennaPod в вашем магазине приложений.</string>
+    <string name="pref_advanced">Продвинутые</string>
+    <string name="pref_display">Дисплей</string>
+    <string name="import_error_label">Ошибка импорта</string>
+    <string name="show_password_accessibility">Показать пароль</string>
+    <string name="rss_address_invalid">Предоставленный адрес RSS не является действительным.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Подключено к %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Версия %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Смартфон не совместим. Убедитесь, что вы используете самую актуальную версию AntennaPod из Google Play на вашем смартфоне.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Нет элементов</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Невозможно подключиться к телефону. Убедитесь, что телефон находится поблизости и AntennaPod установлен.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Воспроизвести на телефоне</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Данные на телефоне</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Открыть на телефоне</string>
 </resources>

@@ -126,7 +126,7 @@
         <item quantity="other">%dепизода</item>
     </plurals>
     <string name="episode_notification">Известия за епизоди</string>
-    <string name="episode_notification_summary">Покажи известие, когато нов епизод е издаден.</string>
+    <string name="episode_notification_summary">Покажи известие, когато нов епизод е издаден</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s има нов епизод</item>
         <item quantity="other">%2$s има %1$d нови епизода</item>
@@ -145,8 +145,8 @@
     <string name="show_info_label">Покажи информация</string>
     <string name="show_feed_settings_label">Покажи настройки за подкаста</string>
     <string name="feed_settings_label">Настройки за подкаста</string>
-    <string name="rename_feed_label">Преименувай подкаста</string>
-    <string name="remove_feed_label">Премахни подкаста</string>
+    <string name="rename_feed_label">Преименувай</string>
+    <string name="remove_feed_label">Отписване</string>
     <string name="share_label">Сподели</string>
     <string name="share_file_label">Сподели файл</string>
     <string name="load_complete_feed">Обнови целия подкаст</string>
@@ -160,7 +160,7 @@
     <string name="edit_tags">Редактирай етикетите</string>
     <string name="add_tag">Добави етикет</string>
     <string name="rename_tag_label">Преименувай етикета</string>
-    <string name="confirm_mobile_feed_refresh_dialog_message">Презареждането на подкасти докато използвате мобилен интернет е изключено в настройките. Искаш ли да презаредиш все пак?</string>
+    <string name="confirm_mobile_feed_refresh_dialog_message">Презареждането на подкасти докато използвате мобилен интернет е изключено в настройките.\n\nИскаш ли да презаредиш все пак?</string>
     <string name="confirm_mobile_feed_refresh_dialog_message_vpn">Твоето VPN приложение се преструва на мобилен интернет (ограничена връзка). Обновяването на подкасти докато използваш мобилен интернет е изключено в настройките. \n\nИскаш ли да обновиш все пак? Ако искаш този проблем да се разреши, свържи се със създателя на VPN приложението ти.</string>
     <!--actions on feeditems-->
   <string name="download_label">Изтегли</string>
@@ -196,7 +196,7 @@
     <string name="download_log_title_unknown">Неизветно заглавие</string>
     <string name="download_type_feed">Емисия</string>
     <string name="download_type_media">Медия файл</string>
-    <string name="authentication_notification_title">Необходимо удостоверяване</string>
+    <string name="authentication_notification_title">Необходима е автентификация</string>
     <string name="confirm_mobile_download_dialog_download_later">Изтегли по-късно</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">Изтегли все пак</string>
     <string name="confirm_mobile_streaming_button_always">Винаги</string>
@@ -320,4 +320,56 @@
         <item quantity="one">Пълен размер на %d епизод на устройството</item>
         <item quantity="other">Пълен размер на %d епизоди на устройството</item>
     </plurals>
+    <string name="general_expand_button">Разшири</string>
+    <string name="general_collapse_button">Съкрати</string>
+    <string name="statistics_label_short">Статистики</string>
+    <string name="favorite_episodes_label_short">Любими</string>
+    <string name="feed_new_episodes_action_nothing">Няма нищо</string>
+    <string name="feed_new_episodes_action_snackbar">Не може да бъде променено докато автоматичното изтегляне е включено.</string>
+    <string name="archive_feed_label_verb">Архивирай</string>
+    <string name="archive_feed_label_noun">Архив</string>
+    <string name="restore_archive_label">Реставриране</string>
+    <string name="remove_archive_feed_label">Отписване / Архивиране</string>
+    <string name="remove_restore_feed_label">Отписване / Реставрация</string>
+    <string name="delete_tag_confirmation">Моля потвърдете, че искате да изтриете тага \"%1$s\".</string>
+    <string name="delete_downloads_played">Изтрий гледани</string>
+    <string name="delete_downloads_played_confirmation">Моля потвърдете, че искате да изтриете всички от гледаните изтеглени.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Теглене на %d епизод.</item>
+        <item quantity="other">Теглене на %d епизоди.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d изтеглен епизод изтрит.</item>
+        <item quantity="other">%d изтеглени епизоди изтрити.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Премахнато от входящи</string>
+    <string name="mark_as_played_label">Маркиране като изслушано</string>
+    <string name="play_this_to_seek_position_message">За да преминете към позиции, трябва да пуснете епизода</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">%d епизод маркиран като изслушан.</item>
+        <item quantity="other">%d епизоди маркирани като изслушани.</item>
+    </plurals>
+    <string name="mark_as_unplayed_label">Маркирай като неизслушан</string>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">%d епизод маркиран като неизслушан.</item>
+        <item quantity="other">%d епизода маркирани като неизслушани.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d епизод премахнат от опашката.</item>
+        <item quantity="other">%d епизоди премахнати от опашката.</item>
+    </plurals>
+    <plurals name="removed_from_inbox_batch_label">
+        <item quantity="one">%d епизод премахнат от входящи.</item>
+        <item quantity="other">%d епизоди премахнати от входящи.</item>
+    </plurals>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d епизод добавен към любими.</item>
+        <item quantity="other">%d епизоди добавени към любими.</item>
+    </plurals>
+    <string name="null_value_podcast_error">Този линк няма валиден подкаст URL. Моля потвърди линка и пробвай пак, или потърси подкаста ръчно.</string>
+    <string name="no_feed_url_podcast_found_by_search">Предложения подкаст няма RSS линк, но АнтенаПод намери един, който може да съвпада</string>
+    <string name="confirm_mobile_download_dialog_title">Потвърди мобилно изтегляне</string>
+    <string name="confirm_mobile_download_dialog_message">Изтегляне на мобилно данни е спряно в настройките. АнтенаПод може да изтегли епизода после автоматично, когато има достъп до Wi-Fi.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- Използвате VPN? Вашето VPN приложение се преструва на мобилна мрежа (връзка с измерване). Ако искате този проблем да бъде решен, свържете се със създателите на вашето VPN приложение.\n- Не използвате VPN? Отворете настройките за Wi-Fi на Android и променете типа на вашата Wi-Fi мрежа на „без измерване“.</string>
+    <string name="confirm_mobile_streaming_notification_title">Потвърди мобилен стрийминг</string>
 </resources>
