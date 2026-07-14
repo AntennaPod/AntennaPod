@@ -1,0 +1,13 @@
+configurations {
+    mockitoAgent
+}
+
+dependencies {
+    mockitoAgent("org.mockito:mockito-core:$mockitoVersion") {
+        transitive = false
+    }
+}
+
+tasks.withType(Test).configureEach {
+    jvmArgs "-javaagent:${configurations.mockitoAgent.asPath}"
+}

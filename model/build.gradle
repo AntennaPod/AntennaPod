@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
 }
 apply from: "../common.gradle"
+apply from: "../mockitoAgent.gradle"
 
 android {
     namespace "de.danoeh.antennapod.model"

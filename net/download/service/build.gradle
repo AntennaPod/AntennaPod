@@ -4,6 +4,7 @@ plugins {
 }
 apply from: "../../../common.gradle"
 apply from: "../../../playFlavor.gradle"
+apply from: "../../../mockitoAgent.gradle"
 
 android {
     namespace "de.danoeh.antennapod.net.download.service"
