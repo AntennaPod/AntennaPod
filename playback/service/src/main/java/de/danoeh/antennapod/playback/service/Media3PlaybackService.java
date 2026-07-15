@@ -164,7 +164,15 @@ public class Media3PlaybackService extends MediaLibraryService {
 
             @Override
             public void seekForward() {
-                seekTo(Math.min(getDuration(), getCurrentPosition() + UserPreferences.getFastForwardSecs() * 1000L));
+                long duration = getDuration();
+                long target = getCurrentPosition() + UserPreferences.getFastForwardSecs() * 1000L;
+
+                if (duration > 0 && target >= duration) {
+                    handlePlaybackEnded();
+                    return;
+                }
+
+                seekTo(target);
             }
 
             @Override
