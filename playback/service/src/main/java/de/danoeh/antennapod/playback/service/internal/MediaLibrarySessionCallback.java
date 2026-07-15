@@ -40,6 +40,7 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import org.greenrobot.eventbus.EventBus;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -259,6 +260,38 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             return Futures.immediateFuture(new MediaSession.MediaItemsWithStartPosition(
                     mediaItems, index, startPositionMs));
         }
+        String searchQuery = mediaItems.get(index).requestMetadata.searchQuery;
+        if (searchQuery != null) {
+            if ("".equals(searchQuery)) {
+                return onPlaybackResumption(mediaSession, controller); // "Play something" voice action
+            }
+            SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
+            Maybe.fromCallable(() -> {
+                List<FeedItem> results = DBReader.searchFeedItems(0, searchQuery, FeedItemFilter.unfiltered());
+                for (FeedItem result : results) {
+                    if (result.getMedia() != null) {
+                        return result.getMedia();
+                    }
+                }
+                return null;
+            })
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(media -> {
+                        long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
+                        startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                (int) startPosition, media.getLastPlayedTimeStatistics());
+                        future.set(new MediaSession.MediaItemsWithStartPosition(
+                                Collections.singletonList(MediaItemAdapter.fromPlayable(context, media, false)),
+                                0, startPosition));
+                    }, error -> {
+                        Log.e(TAG, "Voice search failed", error);
+                        future.set(new MediaSession.MediaItemsWithStartPosition(
+                                Collections.emptyList(), index, startPositionMs));
+                    },
+                        () -> future.set(new MediaSession.MediaItemsWithStartPosition(
+                                Collections.emptyList(), index, startPositionMs)));
+            return future;
+        }
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
         Single.fromCallable(
                 () -> {
@@ -473,6 +506,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<Void>> onSearch(@NonNull MediaLibraryService.MediaLibrarySession session,
               @NonNull MediaSession.ControllerInfo browser, @NonNull String query,
               @Nullable MediaLibraryService.LibraryParams params) {
+        if (query.isEmpty()) {
+            session.notifySearchResultChanged(browser, query, 0, params);
+            return Futures.immediateFuture(LibraryResult.ofVoid());
+        }
+        Single.fromCallable(() -> DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        items -> session.notifySearchResultChanged(browser, query, items.size(), params),
+                        error -> {
+                            Log.e(TAG, "Search failed", error);
+                            session.notifySearchResultChanged(browser, query, 0, params);
+                        });
         return Futures.immediateFuture(LibraryResult.ofVoid());
     }
 

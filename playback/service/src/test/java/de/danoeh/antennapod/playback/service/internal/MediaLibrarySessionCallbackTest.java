@@ -74,6 +74,36 @@ public class MediaLibrarySessionCallbackTest {
         assertEquals(String.valueOf(media.getId()), result.mediaItems.get(0).mediaId);
     }
 
+    @Test
+    public void onAndroidAutoVoiceSearchQuery() throws Exception {
+        long mediaId = seedEpisode().getId();
+        MediaItem searchItem = MediaItem.EMPTY.buildUpon()
+                .setRequestMetadata(new MediaItem.RequestMetadata.Builder().setSearchQuery(EPISODE_TITLE).build())
+                .build();
+        MediaSession.MediaItemsWithStartPosition result = callback.onSetMediaItems(session, controllerInfo,
+                Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
+        assertEquals(1, result.mediaItems.size());
+        assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
+
+        // No match: nothing to play
+        searchItem = MediaItem.EMPTY.buildUpon()
+                .setRequestMetadata(new MediaItem.RequestMetadata.Builder().setSearchQuery("Unrelated").build())
+                .build();
+        result = callback.onSetMediaItems(session, controllerInfo,
+                Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
+        assertEquals(0, result.mediaItems.size());
+
+        // Empty query ("play something"): fall back to playing something rather than nothing, per
+        // Android Auto/Assistant voice action guidelines.
+        searchItem = MediaItem.EMPTY.buildUpon()
+                .setRequestMetadata(new MediaItem.RequestMetadata.Builder().setSearchQuery("").build())
+                .build();
+        result = callback.onSetMediaItems(session, controllerInfo,
+                Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
+        assertEquals(1, result.mediaItems.size());
+        assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
+    }
+
     private FeedMedia seedEpisode() {
         Feed feed = new Feed("url", null, null);
         feed.setItems(new ArrayList<>());
