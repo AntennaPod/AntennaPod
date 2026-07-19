@@ -83,37 +83,42 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
 
         SharedPreferences prefs = getContext().getSharedPreferences(HomeFragment.PREF_NAME, Context.MODE_PRIVATE);
         if (EchoConfig.isCurrentlyVisible() && prefs.getInt(PREF_HIDE_ECHO, 0) != EchoConfig.RELEASE_YEAR) {
-            addSection(new EchoSection());
+            addSection(new EchoSection(), R.id.home_section_echo);
         }
 
         List<String> sectionTags = HomePreferences.getSortedSectionTags(getContext());
         for (String sectionTag : sectionTags) {
-            addSection(getSection(sectionTag));
+            addSection(getSection(sectionTag), getSectionContainerId(sectionTag));
         }
     }
 
-    private void addSection(Fragment section) {
+    private void addSection(Fragment section, int id) {
         FragmentContainerView containerView = new FragmentContainerView(getContext());
-        containerView.setId(View.generateViewId());
+        containerView.setId(id);
         viewBinding.homeContainer.addView(containerView);
         getChildFragmentManager().beginTransaction().replace(containerView.getId(), section).commit();
     }
 
+    private int getSectionContainerId(String sectionTag) {
+        return switch (sectionTag) {
+            case QueueSection.TAG -> R.id.home_section_queue;
+            case InboxSection.TAG -> R.id.home_section_inbox;
+            case EpisodesSurpriseSection.TAG -> R.id.home_section_surprise;
+            case SubscriptionsSection.TAG -> R.id.home_section_subscriptions;
+            case DownloadsSection.TAG -> R.id.home_section_downloads;
+            default -> throw new IllegalArgumentException("Unknown section tag: " + sectionTag);
+        };
+    }
+
     private Fragment getSection(String tag) {
-        switch (tag) {
-            case QueueSection.TAG:
-                return new QueueSection();
-            case InboxSection.TAG:
-                return new InboxSection();
-            case EpisodesSurpriseSection.TAG:
-                return new EpisodesSurpriseSection();
-            case SubscriptionsSection.TAG:
-                return new SubscriptionsSection();
-            case DownloadsSection.TAG:
-                return new DownloadsSection();
-            default:
-                return null;
-        }
+        return switch (tag) {
+            case QueueSection.TAG -> new QueueSection();
+            case InboxSection.TAG -> new InboxSection();
+            case EpisodesSurpriseSection.TAG -> new EpisodesSurpriseSection();
+            case SubscriptionsSection.TAG -> new SubscriptionsSection();
+            case DownloadsSection.TAG -> new DownloadsSection();
+            default -> null;
+        };
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
