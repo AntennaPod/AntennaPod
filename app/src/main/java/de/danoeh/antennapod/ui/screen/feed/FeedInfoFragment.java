@@ -23,7 +23,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedinfoBinding;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.common.ClipboardUtils;
@@ -107,8 +106,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                         .show(getChildFragmentManager().beginTransaction(), "FeedStatistics"));
 
         viewBinding.statisticsButton.setOnClickListener(view -> {
-            StatisticsFragment fragment = new StatisticsFragment();
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            ((MainActivity) getActivity()).loadChildFragment(new StatisticsFragment());
         });
         viewBinding.header.txtvTitle.setOnLongClickListener(v -> {
             ClipboardUtils.copyText(viewBinding.header.txtvTitle);
@@ -241,8 +239,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                     .commitAllowingStateLoss();
 
             viewBinding.statisticsButton.setOnClickListener(view -> {
-                StatisticsFragment fragment = new StatisticsFragment();
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+                ((MainActivity) getActivity()).loadChildFragment(new StatisticsFragment());
             });
         }
 

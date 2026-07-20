@@ -55,7 +55,6 @@ import de.danoeh.antennapod.storage.databasemaintenanceservice.DatabaseMaintenan
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.NavigationToolbarActivity;
@@ -513,24 +512,12 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         updateMainBackCallbackEnabledState();
     }
 
-    public void loadChildFragment(Fragment fragment, TransitionEffect transition, String navigationTag) {
+    public void loadChildFragment(Fragment fragment, String navigationTag) {
         Objects.requireNonNull(fragment);
         if (navigationTag != null && bottomNavigation != null) {
             bottomNavigation.updateSelectedItem(navigationTag);
         }
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (transition == TransitionEffect.FADE) {
-            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        } else if (transition == TransitionEffect.SLIDE) {
-            transaction.setCustomAnimations(
-                    R.anim.slide_right_in,
-                    R.anim.slide_left_out,
-                    R.anim.slide_left_in,
-                    R.anim.slide_right_out);
-        }
-
-        transaction
+        getSupportFragmentManager().beginTransaction()
                 .hide(getSupportFragmentManager().findFragmentByTag(MAIN_FRAGMENT_TAG))
                 .add(R.id.main_content_view, fragment, MAIN_FRAGMENT_TAG)
                 .addToBackStack(null)
@@ -538,12 +525,8 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         updateMainBackCallbackEnabledState();
     }
 
-    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
-        loadChildFragment(fragment, transition, null);
-    }
-
     public void loadChildFragment(Fragment fragment) {
-        loadChildFragment(fragment, TransitionEffect.NONE);
+        loadChildFragment(fragment, null);
     }
 
     @Override
@@ -760,7 +743,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                 if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CLEAR_BACK_STACK, true)) {
                     loadFragment(tag, null);
                 } else {
-                    loadChildFragment(createFragmentInstance(tag, args), TransitionEffect.NONE, tag);
+                    loadChildFragment(createFragmentInstance(tag, args), tag);
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
