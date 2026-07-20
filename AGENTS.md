@@ -79,12 +79,12 @@ Only then run the application or the tests to verify it.
 Usually you will need to run the application, but if there are existing tests that cover the code you wrote, you can run those instead.
 For installing and running the application, use the command
 `./gradlew --console=plain :app:installPlayDebug && adb shell monkey -p de.danoeh.antennapod.debug 1`.
-Then confirm with the user that the application is running correctly.
+If needed, you can grab a textual representation of the screen using `adb shell uiautomator dump /sdcard/ui.xml; adb shell cat /sdcard/ui.xml`.
+You can even control connected devices using `adb shell input tap <x> <y>` and `adb shell input swipe <x1> <y1> <x2> <y2> <duration ms>`.
 If there is a crash, read the logs using `adb logcat -d | grep "de.danoeh.antennapod" | tail -20` and fix the issue.
 For running tests, use the command `./gradlew --console=plain` and use the task `:test` of the relevant module.
 As a final style check before opening a PR (or if a user explicitly asks for it), check the code style using:
 `./gradlew checkstyle lint`.
-If any command does not give any output, it is likely that it failed, so abort.
 
 # PR Conventions
 When creating a PR, always read the PR template at `.github/pull_request_template.md` before starting and strictly follow it.
