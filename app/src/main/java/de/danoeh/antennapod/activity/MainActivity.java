@@ -29,7 +29,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
@@ -113,7 +112,6 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
     private LockableBottomSheetBehavior<FragmentContainerView> sheetBehavior;
     private BottomSheetBackPressedCallback bottomSheetBackPressedCallback;
     private OnBackPressedCallback openDefaultPageBackPressedCallback;
-    private final RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
 
@@ -127,7 +125,6 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        recycledViewPool.setMaxRecycledViews(R.id.view_type_episode_item, 25);
         checkFirstLaunch();
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -417,10 +414,6 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         playerView.setLayoutParams(playerParams);
         RelativeLayout playerContent = findViewById(R.id.playerContent);
         playerContent.setPadding(systemBarInsets.left, systemBarInsets.top, systemBarInsets.right, 0);
-    }
-
-    public RecyclerView.RecycledViewPool getRecycledViewPool() {
-        return recycledViewPool;
     }
 
     public Fragment createFragmentInstance(String tag, Bundle args) {

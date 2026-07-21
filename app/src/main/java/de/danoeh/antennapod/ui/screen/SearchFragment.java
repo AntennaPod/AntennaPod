@@ -151,7 +151,6 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         progressBar = layout.findViewById(R.id.progressBar);
         recyclerView = layout.findViewById(R.id.recyclerView);
         floatingSelectMenu = layout.findViewById(R.id.floatingSelectMenu);
-        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
         adapter = new EpisodeItemListAdapter(getActivity()) {
             @Override

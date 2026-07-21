@@ -159,7 +159,6 @@ public abstract class EpisodesListFragment extends Fragment
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
         recyclerView = root.findViewById(R.id.recyclerView);
-        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         setupLoadMoreScrollListener();
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
 
