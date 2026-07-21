@@ -128,6 +128,11 @@
         <item name="android:color">@color/white</item>
         <item name="android:colorBackground">@color/black</item>
         <item name="colorSurface">@color/black</item>
+        <item name="colorSurfaceContainer">@color/black</item>
+        <item name="colorSurfaceContainerHigh">@color/black</item>
+        <item name="colorSurfaceContainerHighest">@color/black</item>
+        <item name="colorSurfaceContainerLow">@color/black</item>
+        <item name="colorSurfaceContainerLowest">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
     </style>
@@ -137,6 +142,11 @@
         <item name="android:color">@color/white</item>
         <item name="android:colorBackground">@color/black</item>
         <item name="colorSurface">@color/black</item>
+        <item name="colorSurfaceContainer">@color/black</item>
+        <item name="colorSurfaceContainerHigh">@color/black</item>
+        <item name="colorSurfaceContainerHighest">@color/black</item>
+        <item name="colorSurfaceContainerLow">@color/black</item>
+        <item name="colorSurfaceContainerLowest">@color/black</item>
         <item name="background_color">@color/black</item>
         <item name="background_elevated">@color/black</item>
         <item name="colorPrimaryContainer">#0D182B</item>
