@@ -106,7 +106,6 @@ public class CompletedDownloadsFragment extends Fragment
         swipeRefreshLayout.setOnRefreshListener(() -> FeedUpdateManager.getInstance().runOnceOrAsk(requireContext()));
 
         recyclerView = root.findViewById(R.id.recyclerView);
-        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         adapter = new CompletedDownloadsListAdapter(getActivity());
         adapter.setOnSelectModeListener(this);
         recyclerView.setAdapter(adapter);

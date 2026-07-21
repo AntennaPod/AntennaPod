@@ -143,7 +143,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).setupToolbarToggle(viewBinding.toolbar, displayUpArrow);
-            viewBinding.recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         } else {
             viewBinding.toolbar.setNavigationIcon(R.drawable.ic_close);
             viewBinding.toolbar.setNavigationOnClickListener(view -> getActivity().finish());
