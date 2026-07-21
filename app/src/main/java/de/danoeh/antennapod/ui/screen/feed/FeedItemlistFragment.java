@@ -43,7 +43,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.CoverLoader;
 import de.danoeh.antennapod.ui.FeedItemFilterDialog;
 import de.danoeh.antennapod.ui.MenuItemUtils;
-import de.danoeh.antennapod.ui.TransitionEffect;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.ui.common.ClipboardUtils;
@@ -567,8 +566,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             if (feed == null) {
                 return;
             }
-            FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            ((MainActivity) getActivity()).loadChildFragment(FeedSettingsFragment.newInstance(feed));
         });
         viewBinding.header.butFilter.setOnClickListener(v -> {
             if (feed == null) {
@@ -611,7 +609,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
         if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            ((MainActivity) getActivity()).loadChildFragment(fragment);
         } else {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
