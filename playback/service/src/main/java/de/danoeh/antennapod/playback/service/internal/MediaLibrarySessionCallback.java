@@ -56,6 +56,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final String MEDIA_ID_SUBSCRIPTIONS = "subscriptions";
     private static final String MEDIA_ID_CONTINUE_LISTENING = "continue_listening";
     private static final int CONTINUE_LISTENING_NUM_EPISODES = 8;
+    private static final int CONTINUE_LISTENING_NUM_NEW = 22;
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
             MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
             MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CONTINUE_LISTENING);
@@ -419,8 +420,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                 future::setException));
                 return future;
             case MEDIA_ID_CONTINUE_LISTENING:
-                disposables.add(Single.fromCallable(
-                                () -> DBReader.getPausedQueue(CONTINUE_LISTENING_NUM_EPISODES))
+                disposables.add(Single.fromCallable(this::loadContinueListeningEpisodes)
                         .subscribeOn(Schedulers.io())
                         .subscribe(
                                 items -> future.set(LibraryResult.ofItemList(
@@ -492,6 +492,14 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             }
         }
         return builder.build();
+    }
+
+    @WorkerThread
+    private List<FeedItem> loadContinueListeningEpisodes() {
+        List<FeedItem> inProgress = DBReader.getPausedQueue(CONTINUE_LISTENING_NUM_EPISODES);
+        List<FeedItem> fresh = DBReader.getEpisodes(0, CONTINUE_LISTENING_NUM_NEW,
+                new FeedItemFilter(FeedItemFilter.NEW), UserPreferences.getInboxSortedOrder());
+        return ForYouBlender.blend(inProgress, fresh);
     }
 
     @WorkerThread
