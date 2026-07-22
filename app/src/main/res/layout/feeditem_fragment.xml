@@ -24,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/imgvCover"
-                android:layout_width="@dimen/thumbnail_length_queue_item"
-                android:layout_height="@dimen/thumbnail_length_queue_item"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/open_podcast"
                 android:foreground="?attr/selectableItemBackground"
@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="16dp"
+                android:paddingBottom="8dp"
                 android:layout_marginStart="16dp">
 
                 <TextView
@@ -44,17 +45,19 @@
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
                     android:importantForAccessibility="no"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                    android:textColor="?attr/colorPrimary"
+                    android:paddingTop="8dp"
+                    style="@style/TextAppearance.Material3.LabelMedium"
                     tools:text="Podcast title" />
 
                 <TextView
                     android:id="@+id/txtvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:ellipsize="end"
                     android:maxLines="5"
+                    style="@style/TextAppearance.Material3.TitleMedium"
                     tools:text="@sample/episodes.json/data/title" />
 
                 <LinearLayout
@@ -65,7 +68,7 @@
                         android:id="@+id/txtvDuration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle"
                         tools:text="@sample/episodes.json/data/duration" />
 
                     <TextView
@@ -78,13 +81,13 @@
                         android:layout_marginEnd="4dp"
                         android:importantForAccessibility="no"
                         android:text="·"
-                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle" />
+                        style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle" />
 
                     <TextView
                         android:id="@+id/txtvPublished"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle"
                         tools:text="Jan 23" />
 
                 </LinearLayout>
@@ -98,42 +101,53 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:paddingVertical="4dp"
             android:baselineAligned="false">
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/butAction1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center">
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                app:iconGravity="textStart"
+                tools:text="Button 1"
+                app:iconPadding="8dp"
+                tools:icon="@drawable/ic_settings" />
 
-                <ImageView
-                    android:id="@+id/butAction1Icon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    tools:src="@drawable/ic_settings" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butAction4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:iconGravity="textStart"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_download"
+                tools:icon="@drawable/ic_settings" />
 
-                <TextView
-                    android:id="@+id/butAction1Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:text="Button 1" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butAction5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:iconGravity="textStart"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_settings"
+                tools:icon="@drawable/ic_settings" />
 
-            </LinearLayout>
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butAction6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:iconGravity="textStart"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_share"
+                tools:icon="@drawable/ic_settings" />
             <LinearLayout
                 android:id="@+id/butAction2"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="0dp"
                 android:orientation="horizontal"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center">
