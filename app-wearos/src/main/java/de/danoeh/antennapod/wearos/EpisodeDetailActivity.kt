@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -68,6 +69,8 @@ class EpisodeDetailActivity : ComponentActivity() {
                     onPause = { viewModel.pause() },
                     onSkipForward = { viewModel.skipForward() },
                     onSkipBackward = { viewModel.skipBackward() },
+                    onSpeedPickerOpen = { viewModel.openSpeedPicker() },
+                    onSpeedSelected = { speed -> viewModel.setSpeed(speed) },
                     onOpenOnPhone = { viewModel.openOnPhone() }
                 )
             }
@@ -86,11 +89,18 @@ fun EpisodeDetailScreen(
     onPause: () -> Unit,
     onSkipForward: () -> Unit,
     onSkipBackward: () -> Unit,
+    onSpeedPickerOpen: () -> Unit,
+    onSpeedSelected: (Float) -> Unit,
     onOpenOnPhone: () -> Unit
 ) {
     val item = uiState.item
     val scrollState = rememberScalingLazyListState()
     var titleExpanded by remember { mutableStateOf(false) }
+
+    if (uiState.isSpeedPickerOpen) {
+        SpeedPickerScreen(onSpeedSelected = onSpeedSelected)
+        return
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         ScalingLazyColumn(
@@ -170,6 +180,19 @@ fun EpisodeDetailScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
                     ) {
+                        FilledTonalIconButton(onClick = onSpeedPickerOpen, modifier = Modifier.size(48.dp)) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    painter = painterResource(NotificationsR.drawable.ic_notification_playback_speed),
+                                    contentDescription = stringResource(CommonR.string.playback_speed),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Text(
+                                    text = "%.2f".format(uiState.playbackSpeed),
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
+                        }
                         FilledTonalIconButton(onClick = onSkipBackward, modifier = Modifier.size(48.dp)) {
                             Icon(
                                 painter = painterResource(NotificationsR.drawable.ic_notification_fast_rewind),
@@ -224,6 +247,30 @@ fun EpisodeDetailScreen(
 
             item {
                 Spacer(modifier = Modifier.height(32.dp))
+            }
+        }
+        ScrollIndicator(state = scrollState, modifier = Modifier.align(Alignment.CenterEnd))
+    }
+}
+
+@Composable
+private fun SpeedPickerScreen(onSpeedSelected: (Float) -> Unit) {
+    val speeds = listOf(0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f)
+    val scrollState = rememberScalingLazyListState()
+    Box(modifier = Modifier.fillMaxSize()) {
+        ScalingLazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            state = scrollState,
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 32.dp),
+            autoCentering = null
+        ) {
+            speeds.forEach { speed ->
+                item {
+                    ListItem(
+                        text = "%.2f×".format(speed),
+                        onClick = { onSpeedSelected(speed) }
+                    )
+                }
             }
         }
         ScrollIndicator(state = scrollState, modifier = Modifier.align(Alignment.CenterEnd))
