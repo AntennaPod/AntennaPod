@@ -420,6 +420,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         boolean isGlobal = speed == FeedPreferences.SPEED_USE_GLOBAL;
         viewBinding.useGlobalCheckbox.setChecked(isGlobal);
         viewBinding.seekBar.updateSpeed(isGlobal ? 1 : speed);
+        viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", isGlobal ? 1 : speed));
         viewBinding.skipSilenceFeed.setChecked(!isGlobal
                 && skipSilence == FeedPreferences.SkipSilence.AGGRESSIVE);
         new MaterialAlertDialogBuilder(getContext())
