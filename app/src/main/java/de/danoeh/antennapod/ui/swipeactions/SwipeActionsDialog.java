@@ -56,6 +56,8 @@ public class SwipeActionsDialog {
 
         keys = new ArrayList<>();
         if (tag.equals(QueueFragment.TAG)) {
+            keys.add(new MoveToTopSwipeAction());
+            keys.add(new MoveToBottomSwipeAction());
             keys.add(new RemoveFromQueueSwipeAction());
         } else {
             keys.add(new AddToQueueSwipeAction());
