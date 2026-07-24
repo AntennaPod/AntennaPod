@@ -6,6 +6,7 @@ wear-compose = "1.6.0"
 compose = "1.7.5"
 lifecycle-runtime-compose = "2.8.7"
 glide = "4.16.0"
+coil = "2.7.0"
 okhttp = "4.12.0"
 espresso = "3.5.0"
 androidx-test = "1.5.0"
@@ -60,6 +61,7 @@ commons-lang3 = { module = "org.apache.commons:commons-lang3", version = "3.18.0
 commons-io = { module = "commons-io:commons-io", version = "2.5" }
 jsoup = { module = "org.jsoup:jsoup", version = "1.15.1" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 glide-okhttp3-integration = { module = "com.github.bumptech.glide:okhttp3-integration", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }

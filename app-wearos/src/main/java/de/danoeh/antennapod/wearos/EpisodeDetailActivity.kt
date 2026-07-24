@@ -42,6 +42,7 @@ import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScrollIndicator
 import androidx.wear.compose.material3.Text
 import androidx.wear.compose.material3.dynamicColorScheme
+import coil.compose.AsyncImage
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.ui.common.Converter
 import de.danoeh.antennapod.ui.common.DateFormatter
@@ -100,6 +101,16 @@ fun EpisodeDetailScreen(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 32.dp),
             autoCentering = null
         ) {
+            if (uiState.coverUrl != null) {
+                item {
+                    AsyncImage(
+                        model = uiState.coverUrl,
+                        contentDescription = null,
+                        modifier = Modifier.size(80.dp)
+                    )
+                }
+            }
+
             item {
                 val dateStr = DateFormatter.formatAbbrev(LocalContext.current, item.getPubDate())
                 Text(
