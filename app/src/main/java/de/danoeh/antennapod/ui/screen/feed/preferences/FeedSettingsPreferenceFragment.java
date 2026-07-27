@@ -416,10 +416,11 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
             viewBinding.skipSilenceFeed.setAlpha(isChecked ? 0.4f : 1f);
         });
         float speed = feedPreferences.getFeedPlaybackSpeed();
-        FeedPreferences.SkipSilence skipSilence = feedPreferences.getFeedSkipSilence();
         boolean isGlobal = speed == FeedPreferences.SPEED_USE_GLOBAL;
         viewBinding.useGlobalCheckbox.setChecked(isGlobal);
         viewBinding.seekBar.updateSpeed(isGlobal ? 1 : speed);
+        viewBinding.currentSpeedLabel.setText(String.format(Locale.getDefault(), "%.2fx", isGlobal ? 1 : speed));
+        FeedPreferences.SkipSilence skipSilence = feedPreferences.getFeedSkipSilence();
         viewBinding.skipSilenceFeed.setChecked(!isGlobal
                 && skipSilence == FeedPreferences.SkipSilence.AGGRESSIVE);
         new MaterialAlertDialogBuilder(getContext())
