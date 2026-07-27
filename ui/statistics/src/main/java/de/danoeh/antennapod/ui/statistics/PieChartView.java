@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
 public class PieChartView extends AppCompatImageView {
-    private static final long ANIMATION_DURATION = 600L;
+    private static final long ANIMATION_DURATION = 500L;
     private static final long ANIMATION_START_DELAY = 200L;
     private PieChartDrawable drawable;
     private ValueAnimator animator;
@@ -48,18 +48,20 @@ public class PieChartView extends AppCompatImageView {
      */
     public void setData(PieChartData data) {
         drawable.data = data;
-        if (animator != null) {
-            animator.cancel();
+        if (drawable.animationProgress == 0f) {
+            if (animator != null) {
+                animator.cancel();
+            }
+            animator = ValueAnimator.ofFloat(0f, 1f);
+            animator.setDuration(ANIMATION_DURATION);
+            animator.setStartDelay(ANIMATION_START_DELAY);
+            animator.setInterpolator(new DecelerateInterpolator());
+            animator.addUpdateListener(animation -> {
+                drawable.animationProgress = (float) animation.getAnimatedValue();
+                drawable.invalidateSelf();
+            });
+            animator.start();
         }
-        animator = ValueAnimator.ofFloat(0f, 1f);
-        animator.setDuration(ANIMATION_DURATION);
-        animator.setStartDelay(ANIMATION_START_DELAY);
-        animator.setInterpolator(new DecelerateInterpolator());
-        animator.addUpdateListener(animation -> {
-            drawable.animationProgress = (float) animation.getAnimatedValue();
-            drawable.invalidateSelf();
-        });
-        animator.start();
     }
 
     @Override

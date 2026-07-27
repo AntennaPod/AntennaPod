@@ -20,7 +20,7 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 import java.util.List;
 
 public class BarChartView extends AppCompatImageView {
-    private static final long ANIMATION_DURATION = 600L;
+    private static final long ANIMATION_DURATION = 500L;
     private static final long ANIMATION_START_DELAY = 200L;
     private BarChartDrawable drawable;
     private ValueAnimator animator;
@@ -55,18 +55,20 @@ public class BarChartView extends AppCompatImageView {
         for (DBReader.MonthlyStatisticsItem item : data) {
             drawable.maxValue = Math.max(drawable.maxValue, item.getTimePlayed());
         }
-        if (animator != null) {
-            animator.cancel();
+        if (drawable.animationProgress == 0f) {
+            if (animator != null) {
+                animator.cancel();
+            }
+            animator = ValueAnimator.ofFloat(0f, 1f);
+            animator.setDuration(ANIMATION_DURATION);
+            animator.setStartDelay(ANIMATION_START_DELAY);
+            animator.setInterpolator(new LinearInterpolator());
+            animator.addUpdateListener(animation -> {
+                drawable.animationProgress = (float) animation.getAnimatedValue();
+                drawable.invalidateSelf();
+            });
+            animator.start();
         }
-        animator = ValueAnimator.ofFloat(0f, 1f);
-        animator.setDuration(ANIMATION_DURATION);
-        animator.setStartDelay(ANIMATION_START_DELAY);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.addUpdateListener(animation -> {
-            drawable.animationProgress = (float) animation.getAnimatedValue();
-            drawable.invalidateSelf();
-        });
-        animator.start();
     }
 
     private class BarChartDrawable extends Drawable {
@@ -127,7 +129,8 @@ public class BarChartView extends AppCompatImageView {
                 }
 
                 float valuePercentage = (float) Math.max(0.005, (float) data.get(i).getTimePlayed() / maxValue);
-                float barProgress = Math.min(1f, Math.max(0f, (animationProgress * (data.size() + 8) - i) / 8f));
+                float barStart = 0.6f * i / Math.max(1, data.size() - 1);
+                float barProgress = Math.min(1f, Math.max(0f, (animationProgress - barStart) / 0.4f));
                 float y = (1 - valuePercentage * barProgress) * barHeight;
                 canvas.drawRect(x, y, x + stepSize * 0.95f, barHeight, paintBars);
             }
