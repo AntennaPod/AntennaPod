@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
 public class PieChartView extends AppCompatImageView {
-    private static final long ANIMATION_DURATION = 500L;
+    private static final long ANIMATION_DURATION = 400L;
     private static final long ANIMATION_START_DELAY = 200L;
     private PieChartDrawable drawable;
     private ValueAnimator animator;

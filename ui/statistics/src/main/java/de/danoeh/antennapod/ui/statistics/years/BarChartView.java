@@ -20,7 +20,7 @@ import de.danoeh.antennapod.ui.common.ThemeUtils;
 import java.util.List;
 
 public class BarChartView extends AppCompatImageView {
-    private static final long ANIMATION_DURATION = 500L;
+    private static final long ANIMATION_DURATION = 400L;
     private static final long ANIMATION_START_DELAY = 200L;
     private BarChartDrawable drawable;
     private ValueAnimator animator;
