@@ -88,7 +88,7 @@
     <string name="show_feed_settings_label">Rodyti tinklalaidės nustatymus</string>
     <string name="feed_settings_label">Tinklalaidės nustatymai</string>
     <string name="rename_feed_label">Pervadinti</string>
-    <string name="remove_feed_label">Ištrinti</string>
+    <string name="remove_feed_label">Nebeprenumeruoti</string>
     <string name="share_label">Dalintis</string>
     <string name="load_complete_feed">Atnaujinti visą tinklalaidę</string>
     <string name="multi_select">Pažymėti keletą</string>
@@ -701,7 +701,7 @@
     <string name="pref_auto_local_delete_dialog_body">Atkreipkite dėmesį, kad vietinių aplankų atveju tai pašalins epizodus iš „AntennaPod“ ir ištrins jų medijos failus iš įrenginio saugyklos. Jų nebus galima vėl atsisiųsti per „AntennaPod“. įjungti automatinį ištrynimą?</string>
     <string name="pref_auto_delete_sum">Ištrinkite epizodus po atkūrimo arba kai reikia vietos automatiškai atsisiunčiant</string>
     <string name="bottom_navigation_summary">Vienu bakstelėjimu pasiekite svarbiausius ekranus bet kur</string>
-    <string name="pref_auto_local_delete_sum">Į automatinio ištrynimo funkciją įtraukite vietinius aplankus</string>
+    <string name="pref_auto_local_delete_sum">Taip pat ištrina per funkciją „pridėti vietinį aplanką“ įtrauktus failus. Atkreipiame dėmesį, kad jie nėra atsiųsti AntennaPod ir negali būti atsisiųsti iš naujo</string>
     <string name="multi_select_mark_unplayed_confirmation">Patvirtinkite, kad norite pažymėti visus pasirinktus elementus kaip neatkurtus.</string>
     <string name="multi_select_mark_played_confirmation">Patvirtinkite, kad norite pažymėti visus pasirinktus elementus kaip atkurtus.</string>
     <string name="removed_all_inbox_msg">Pašalinta visa iš gautųjų</string>
@@ -889,9 +889,9 @@
     <string name="archive_feed_label_verb">Archyvuoti</string>
     <string name="archive_feed_label_noun">Archyvas</string>
     <string name="restore_archive_label">Atstatyti</string>
-    <string name="remove_archive_feed_label">Ištrinti / archyvuoti</string>
-    <string name="feed_delete_explanation_delete">Ištrynus bus pašalinti VISI jos epizodai, įskaitant atsisiuntimus, atkūrimo istoriją ir statistiką.</string>
-    <string name="feed_delete_explanation_archive">Archyvavus ji neberodoma prenumeratų sąraše ir negaunami atnaujinimai. Išsaugojami atsisiuntimai, statistika ir atkūrimo būsena.</string>
+    <string name="remove_archive_feed_label">Nebeprenumeruoti / archyvuoti</string>
+    <string name="feed_delete_explanation_delete">Nutraukus prenumeratą pašalinami visi tos tinklalaidės epizodai, įskaitant atsisiuntimus, atkūrimo istoriją ir statistiką.</string>
+    <string name="feed_delete_explanation_archive">Archyvavus ji neberodoma prenumeratų sąraše ir negaunami nauji epizodai. Išsaugojami atsisiuntimai, statistika ir atkūrimo būsena.</string>
     <plurals name="mobile_download_notice">
         <item quantity="one">Atsiunčiama naudojant mobiliųjų duomenų ryšį dar %d minutę</item>
         <item quantity="few">Atsiunčiama naudojant mobiliųjų duomenų ryšį dar %d minutes</item>
@@ -919,4 +919,84 @@
         <item quantity="many">atsisiųsta</item>
         <item quantity="other">atsisiųsta</item>
     </plurals>
+    <string name="general_expand_button">Išskleisti</string>
+    <string name="general_collapse_button">Suskleisti</string>
+    <string name="statistics_label_short">Statistika</string>
+    <string name="favorite_episodes_label_short">Mėgstami</string>
+    <string name="feed_new_episodes_action_snackbar">Negalima keisti, kai įjungtas automatinis atsiuntimas.</string>
+    <string name="remove_restore_feed_label">Nebeprenumeruoti / atstatyti</string>
+    <string name="archiving_podcast_progress">Archyvuojama tinklalaidė, %1$d iš %2$d…</string>
+    <string name="restoring_podcast_progress">Atstatoma tinklalaidė, %1$d iš %2$d…</string>
+    <string name="deleting_podcast_progress">Nutraukiama tinklalaidžių prenumerata, %1$d iš %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d epizodas pridėtas į mėgstamiausius.</item>
+        <item quantity="few">%d epizodai pridėti į mėgstamiausius.</item>
+        <item quantity="many">%d epizodų pridėta į mėgstamiausius.</item>
+        <item quantity="other">%d epizodų pridėta į mėgstamiausius.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d epizodas pašalintas iš mėgstamiausių.</item>
+        <item quantity="few">%d epizodai pašalinti iš mėgstamiausių.</item>
+        <item quantity="many">%d epizodų pašalinta iš mėgstamiausių.</item>
+        <item quantity="other">%d epizodų pašalinta iš mėgstamiausių.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">Atkurta %d epizodo pozicija.</item>
+        <item quantity="few">Atkurtos %d epizodų pozicijos.</item>
+        <item quantity="many">Atkurtos %d epizodų pozicijos.</item>
+        <item quantity="other">Atkurtos %d epizodų pozicijos.</item>
+    </plurals>
+    <string name="download_log_details_human_readable_reason_title">Būsena</string>
+    <string name="download_log_details_technical_reason_title">Techniniai duomenys</string>
+    <string name="download_log_details_file_url_title">Failo URL</string>
+    <string name="download_log_open_feed">Atverti</string>
+    <string name="no_following_in_queue">Tai buvo paskutinis epizodas eilėje</string>
+    <string name="episode">Epizodas</string>
+    <string name="feed">Tinklalaidė</string>
+    <string name="queue_time_left_label">%1$s • liko %2$s</string>
+    <string name="no_fav_episodes_head_label">Nėra mėgstamiausių</string>
+    <string name="no_fav_episodes_label">Pažymėkite epizodus kaip mėgstamiausius paliesdami žvaigždutės piktogramą.</string>
+    <string name="bottom_navigation_deprecation_warning">Deja, artimiausiu metu pašalinsime šoninės navigacijos funkciją. AntennaPod yra mažos grupės savanorių kūrinys, todėl dviejų navigacijos stilių palaikymas tapo per didele našta. \n\nJei norite išvengti šio pakeitimo, išjunkite AntennaPod atnaujinimus savo naudojamoje programėlių parduotuvėje.</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Numatytoji rūšiavimo tvarka</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Pasirinkite numatytąją tvarką tinklalaidės ekrane esančioms tinklalaidėms</string>
+    <string name="report_bug_title">Pranešti apie klaidą</string>
+    <string name="report_bug_message">Apgailestaujame, kad kažkas neveikia. Mums praverstų jūsų pagalba, kad patobulintume AntennaPod. Apsilankykite mūsų forume arba GitHub ir sužinokite, ar jau pranešta apie klaidą. Jei ne, praneškite, o mes patikrinsime.</string>
+    <string name="report_bug_device_info_title">Įrenginys</string>
+    <string name="report_bug_attrib_app_version">Programos versija</string>
+    <string name="report_bug_attrib_android_version">Android versija</string>
+    <string name="report_bug_attrib_device_name">Įrenginio pavadinimas</string>
+    <string name="report_bug_crash_log_title">Trikčių žurnalas</string>
+    <string name="report_bug_crash_log_message">Sukurta: %1$s.</string>
+    <string name="report_bug_forum_title">Forumas</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="pref_advanced">Išplėstinis</string>
+    <string name="pref_display">Ekranas</string>
+    <string name="import_error_label">Importavimo klaida</string>
+    <string name="sleep_timer_episodes_label">epizodai</string>
+    <string name="sleep_timer_without_continuous_playback">Išjungti nepertraukiamą atkūrimą</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Keisti valandas</string>
+    <string name="sleep_timer_without_continuous_playback_message">Nebenaudokite automatiškai įsijungiančio miego laikmačio po vieno epizodo – nustatymuose išjunkite funkciją „nepertraukiamas atkūrimas“.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">Nepertraukiamas atkūrimas išjungtas ir dabar grojančiame epizode liko tik %1$d minutė</item>
+        <item quantity="few">Nepertraukiamas atkūrimas išjungtas ir dabar grojančiame epizode liko tik %1$d minutės</item>
+        <item quantity="many">Nepertraukiamas atkūrimas išjungtas ir dabar grojančiame epizode liko tik %1$d minučių</item>
+        <item quantity="other">Nepertraukiamas atkūrimas išjungtas ir dabar grojančiame epizode liko tik %1$d minučių</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Nepertraukiamas atkūrimas yra išjungtas nustatymuose. Visada sustojama pasibaigus epizodui.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Teliko %1$d epizodas eilėje</item>
+        <item quantity="few">Teliko %1$d epizodai eilėje</item>
+        <item quantity="many">Teliko %1$d epizodų eilėje</item>
+        <item quantity="other">Teliko %1$d epizodų eilėje</item>
+    </plurals>
+    <string name="show_password_accessibility">Rodyti slaptažodį</string>
+    <string name="rss_address_invalid">Jūsų įvestas RSS adresas negalioja.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Prisijungta prie %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Versija %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Telefonas nesuderinamas. Įsitikinkite, kad telefone turite naujausią AntennaPod versiją iš „Google Play“ parduotuvės.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Nėra elementų</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Nepavyko pasiekti telefono. Įsitikinkite, kad telefonas netoliese ir AntennaPod yra įdiegta.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Groti telefone</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Naršyti telefone</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Atverti telefone</string>
 </resources>
