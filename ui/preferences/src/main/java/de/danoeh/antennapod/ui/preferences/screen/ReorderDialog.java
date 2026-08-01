@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.screen.preferences;
+package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.databinding.ReorderDialogBinding;
+import de.danoeh.antennapod.ui.preferences.R;
+import de.danoeh.antennapod.ui.preferences.databinding.ReorderDialogBinding;
 
 import java.util.ArrayList;
 import java.util.Collections;

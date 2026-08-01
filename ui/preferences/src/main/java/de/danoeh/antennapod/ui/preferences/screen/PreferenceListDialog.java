@@ -1,10 +1,10 @@
-package de.danoeh.antennapod.ui.screen.preferences;
+package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.content.Context;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.preferences.R;
 
 public class PreferenceListDialog {
     protected Context context;

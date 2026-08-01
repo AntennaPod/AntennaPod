@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.screen.preferences;
+package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -10,8 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.databinding.ReorderDialogEntryBinding;
-import de.danoeh.antennapod.databinding.ReorderDialogHeaderBinding;
+import de.danoeh.antennapod.ui.preferences.databinding.ReorderDialogEntryBinding;
+import de.danoeh.antennapod.ui.preferences.databinding.ReorderDialogHeaderBinding;
 
 import java.util.List;
 

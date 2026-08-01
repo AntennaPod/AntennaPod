@@ -33,7 +33,7 @@ import de.danoeh.antennapod.storage.importexport.OpmlElement;
 import de.danoeh.antennapod.storage.importexport.OpmlReader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
-import de.danoeh.antennapod.ui.screen.preferences.ParentalControlDialog;
+import de.danoeh.antennapod.ui.preferences.screen.ParentalControlDialog;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
