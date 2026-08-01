@@ -22,7 +22,7 @@ import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
+import de.danoeh.antennapod.ui.common.ItemOffsetDecoration;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;

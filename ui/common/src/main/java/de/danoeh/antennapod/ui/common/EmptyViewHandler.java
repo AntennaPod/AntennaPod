@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.view;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import de.danoeh.antennapod.R;
 
 public class EmptyViewHandler {
     private boolean layoutAdded = false;

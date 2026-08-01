@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.view;
+package de.danoeh.antennapod.ui.common;
 
 import android.animation.ValueAnimator;
 import android.view.View;
@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 /**
  * Workaround for app:liftOnScroll flickering when in SwipeRefreshLayout
