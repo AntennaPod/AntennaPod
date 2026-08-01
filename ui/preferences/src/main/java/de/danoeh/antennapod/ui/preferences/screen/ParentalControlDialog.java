@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.screen.preferences;
+package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.content.Context;
 import android.text.InputType;
@@ -8,9 +8,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.preferences.R;
 import de.danoeh.antennapod.ui.common.Keyboard;
-import de.danoeh.antennapod.databinding.EditTextDialogBinding;
+import de.danoeh.antennapod.ui.common.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class ParentalControlDialog {

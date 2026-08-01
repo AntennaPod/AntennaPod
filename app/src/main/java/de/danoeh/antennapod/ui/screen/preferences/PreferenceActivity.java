@@ -18,6 +18,7 @@ import de.danoeh.antennapod.ui.common.Keyboard;
 import de.danoeh.antennapod.ui.common.ToolbarActivity;
 import de.danoeh.antennapod.ui.preferences.databinding.SettingsActivityBinding;
 import de.danoeh.antennapod.ui.preferences.screen.AutoDownloadPreferencesFragment;
+import de.danoeh.antennapod.ui.preferences.screen.AutomaticDeletionPreferencesFragment;
 import de.danoeh.antennapod.ui.preferences.screen.NotificationPreferencesFragment;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.SynchronizationPreferencesFragment;
 import org.greenrobot.eventbus.EventBus;

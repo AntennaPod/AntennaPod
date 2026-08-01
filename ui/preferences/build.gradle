@@ -20,10 +20,15 @@ android {
         }
         buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')
     }
+
+    lint {
+        disable 'UseCompoundDrawables', 'ClickableViewAccessibility'
+    }
 }
 
 dependencies {
     implementation project(":event")
+    implementation project(":model")
     implementation project(":net:common")
     implementation project(":net:sync:gpoddernet")
     implementation project(":storage:preferences")
@@ -39,6 +44,7 @@ dependencies {
     implementation libs.androidx.fragment
     implementation libs.google.material
     implementation libs.androidx.preference
+    implementation libs.androidx.recyclerview
     implementation libs.androidx.work.runtime
 
     implementation libs.rxandroid

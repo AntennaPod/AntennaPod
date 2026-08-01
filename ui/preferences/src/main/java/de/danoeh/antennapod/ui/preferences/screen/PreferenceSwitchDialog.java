@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.screen.preferences;
+package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.View;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
-import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.preferences.R;
 
 public class PreferenceSwitchDialog {
     protected Context context;
