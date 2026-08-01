@@ -17,7 +17,7 @@
  * And modified for our need
  */
 
-package de.danoeh.antennapod.ui.view;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -31,8 +31,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager2.widget.ViewPager2;
-
-import de.danoeh.antennapod.R;
 
 import static androidx.viewpager2.widget.ViewPager2.ORIENTATION_HORIZONTAL;
 import static androidx.viewpager2.widget.ViewPager2.ORIENTATION_VERTICAL;

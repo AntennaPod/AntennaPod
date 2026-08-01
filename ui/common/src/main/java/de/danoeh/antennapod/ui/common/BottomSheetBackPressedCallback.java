@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.view;
+package de.danoeh.antennapod.ui.common;
 
 import android.view.View;
 import android.view.animation.Animation;

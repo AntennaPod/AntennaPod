@@ -38,10 +38,10 @@ import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 
-import de.danoeh.antennapod.ui.view.EmptyViewHandler;
+import de.danoeh.antennapod.ui.common.EmptyViewHandler;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
-import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
-import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
+import de.danoeh.antennapod.ui.common.ItemOffsetDecoration;
+import de.danoeh.antennapod.ui.common.LiftOnScrollListener;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
