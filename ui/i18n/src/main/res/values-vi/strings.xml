@@ -189,4 +189,6 @@
     <string name="time_hours">tiếng</string>
     <string name="time_seconds">giây</string>
     <string name="time_minutes">phút</string>
+    <string name="statistics_label_short">Th.kê</string>
+    <string name="favorite_episodes_label_short">Thích</string>
 </resources>

@@ -50,7 +50,7 @@
     <string name="home_welcome_title">Καλωσήρθατε στο Antennapod!</string>
     <string name="home_welcome_text">Δεν έχετε εγγραφεί ακόμα σε κανένα podcast. Ανοίξτε το μενού για να προσθέσετε ένα podcast.</string>
     <string name="notification_permission_denied">Αρνηθήκατε τη πρόσβαση.</string>
-    <string name="configure_home">Διαμόρφωση Αρχικής Οθόνης</string>
+    <string name="configure_home">Διαμόρφωση αρχικής οθόνης</string>
     <string name="section_hidden">Κρυμμένο</string>
     <!--Main activity-->
   <string name="drawer_open">Άνοιγμα μενού</string>
@@ -154,8 +154,8 @@
     <string name="show_info_label">Εμφάνιση πληροφοριών</string>
     <string name="show_feed_settings_label">Εμφάνιση ρυθμίσεων podcast</string>
     <string name="feed_settings_label">Ρυθμίσεις podcast</string>
-    <string name="rename_feed_label">Μετονομασία podcast</string>
-    <string name="remove_feed_label">Αφαίρεση podcast</string>
+    <string name="rename_feed_label">Μετονομασία</string>
+    <string name="remove_feed_label">Απεγγραφή</string>
     <string name="share_label">Κοινοποίηση</string>
     <string name="share_file_label">Κοινοποίηση αρχείου</string>
     <string name="load_complete_feed">Ανανέωση όλου του podcast</string>
@@ -839,4 +839,33 @@
     <string name="general_expand_button">Εξάπλωση</string>
     <string name="general_collapse_button">Κλείσιμο</string>
     <string name="no_items_selected_message">Κανένα δεν έχει επιλεχθεί</string>
+    <string name="statistics_label_short">Στατ</string>
+    <string name="favorite_episodes_label_short">Αγαπημένα</string>
+    <string name="feed_new_episodes_action_snackbar">Δεν μπορεί να αλλαχθεί όταν είναι ενεργή η αυτόματη λήψη.</string>
+    <plurals name="num_subscriptions">
+        <item quantity="one">%d εγγραφή</item>
+        <item quantity="other">%d εγγραφές</item>
+    </plurals>
+    <string name="archive_feed_label_verb">Αρχειοθέτηση</string>
+    <string name="archive_feed_label_noun">Αρχείο</string>
+    <string name="restore_archive_label">Επαναφορά</string>
+    <string name="remove_archive_feed_label">Απεγγραφή / αρχειοθέτηση</string>
+    <string name="remove_restore_feed_label">Απεγγραφή / επαναφορά</string>
+    <string name="feed_delete_explanation_delete">Η απεγγραφή αφαιρεί την εγγραφή μαζί με όλα τα επεισόδια, λήψεις, ιστορικό αναπαραγωγής και στατιστικά.</string>
+    <string name="feed_delete_explanation_archive">Η αρχειοθέτηση κρύβει τις συνδρομές από τη λίστα και σταματάει να ψάχνει για επεισόδια. Λήψεις, στατιστικά και κατάσταση αναπαραγωγής διατηρούνται.</string>
+    <string name="archiving_podcast_progress">Αρχειοθέτηση podcast %1$d από %2$d…</string>
+    <string name="restoring_podcast_progress">Επαναφορά podcast %1$d από %2$d…</string>
+    <string name="deleting_podcast_progress">Απεγγραφή podcast %1$d από %2$d…</string>
+    <string name="please_wait_before_refreshing">Παρακαλώ περίμενε λίγη ώρα πριν ανανεώσεις τα podcasts ξανά.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="one">Γίνεται λήψη %d επεισοδίου.</item>
+        <item quantity="other">Γίνεται λήψη %d επεισοδίων.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="one">%d κατεβασμένο επεισόδιο διαγράφηκε.</item>
+        <item quantity="other">%d κατεβασμένα επεισόδια διαγράφηκαν.</item>
+    </plurals>
+    <string name="removed_from_inbox_message">Αφαιρέθηκε από τα εισερχόμενα</string>
+    <string name="mark_as_played_label">Επισήμανση ως παιγμένο</string>
+    <string name="play_this_to_seek_position_message">Για να μεταπιδήσετε σε συγκεκριμένες θέσεις, πρέπει να αναπαράγετε το επεισόδιο</string>
 </resources>

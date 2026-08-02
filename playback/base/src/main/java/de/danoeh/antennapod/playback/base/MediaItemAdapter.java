@@ -37,16 +37,12 @@ public class MediaItemAdapter {
      * Create a basic media item without attached metadata.
      * Should be used when initiating playback from outside the service.
      */
-    public static MediaItem fromPlayableStub(Playable playable) {
+    public static MediaItem fromMediaIdStub(long mediaId) {
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setIsPlayable(true);
         metadataBuilder.setIsBrowsable(false);
-        String mediaId = "0";
-        if (playable instanceof FeedMedia) {
-            mediaId = String.valueOf(((FeedMedia) playable).getId());
-        }
         return new MediaItem.Builder()
-                .setMediaId(mediaId)
+                .setMediaId(String.valueOf(mediaId))
                 .setMediaMetadata(metadataBuilder.build())
                 .build();
     }
@@ -116,10 +112,11 @@ public class MediaItemAdapter {
 
     private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
         try {
+            String imageLocation = playable.getImageLocation();
             return Glide.with(context)
                     .asBitmap()
-                    .onlyRetrieveFromCache(true)
-                    .load(playable.getImageLocation())
+                    .onlyRetrieveFromCache(imageLocation != null && imageLocation.startsWith("http"))
+                    .load(imageLocation)
                     .submit(iconSize, iconSize)
                     .get(500, TimeUnit.MILLISECONDS);
         } catch (Exception tr1) {
@@ -139,7 +136,7 @@ public class MediaItemAdapter {
         try {
             return Glide.with(context)
                     .asBitmap()
-                    .onlyRetrieveFromCache(true)
+                    .onlyRetrieveFromCache(fallback.startsWith("http"))
                     .load(fallback)
                     .submit(iconSize, iconSize)
                     .get(500, TimeUnit.MILLISECONDS);

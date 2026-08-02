@@ -44,9 +44,9 @@
     <!--Home fragment-->
   <string name="home_surprise_title">Lass dich überraschen</string>
     <string name="home_classics_title">Genieße deine Klassiker</string>
-    <string name="home_continue_title">Höre weiter</string>
+    <string name="home_continue_title">Weiterhören</string>
     <string name="home_new_title">Was gibt\'s Neues</string>
-    <string name="home_downloads_title">Verwalte Downloads</string>
+    <string name="home_downloads_title">Downloads verwalten</string>
     <string name="home_welcome_title">Willkommen bei AntennaPod!</string>
     <string name="home_welcome_text">Du hast noch keinen Podcast abonniert. Öffne das Menü, um einen Podcast hinzuzufügen.</string>
     <string name="notification_permission_denied">Du hast die Berechtigung abgelehnt.</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">Wische nach oben, um die Shownotes zu lesen</string>
     <string name="close_label">Schließen</string>
     <string name="retry_label">Erneut versuchen</string>
-    <string name="auto_download_label">Automatisch herunterladen</string>
+    <string name="auto_download_label">In automatisches Herunterladen einbeziehen</string>
     <string name="feed_volume_adapdation">Lautstärkeanpassung</string>
     <string name="feed_volume_adaptation_summary">Lautstärke für Episoden dieses Podcasts lauter oder leiser stellen: %1$s</string>
     <string name="feed_volume_reduction_off">Keine Anpassung</string>

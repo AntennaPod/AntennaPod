@@ -3,6 +3,7 @@ plugins {
 }
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
+apply from: "../../mockitoAgent.gradle"
 
 android {
     namespace "de.danoeh.antennapod.playback.service"
@@ -48,4 +49,6 @@ dependencies {
 
     testImplementation libs.junit
     testImplementation libs.mockito.core
+    testImplementation libs.androidx.test.core
+    testImplementation libs.robolectric
 }

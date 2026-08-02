@@ -937,4 +937,57 @@
     <string name="statistics_label_short">Štatistiky</string>
     <string name="favorite_episodes_label_short">Obľúbené</string>
     <string name="feed_new_episodes_action_snackbar">Nedá sa zmeniť, keď je povolené automatické sťahovanie.</string>
+    <string name="remove_restore_feed_label">Odhlásiť / obnoviť</string>
+    <string name="restoring_podcast_progress">Obnovuje sa podcast %1$d z %2$d…</string>
+    <string name="deleting_podcast_progress">Odhlasovanie z podcastu %1$d z %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d epizóda pridaná do obľúbených.</item>
+        <item quantity="few">%d epizódy pridané do obľúbených.</item>
+        <item quantity="many">%d epizód pridaných do obľúbených.</item>
+        <item quantity="other">%d epizód pridaných do obľúbených.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d epizóda odstránená z obľúbených.</item>
+        <item quantity="few">%d epizódy odstránené z obľúbených.</item>
+        <item quantity="many">%d epizód odstránených z obľúbených.</item>
+        <item quantity="other">%d epizód odstránených z obľúbených.</item>
+    </plurals>
+    <string name="download_log_details_human_readable_reason_title">Stav</string>
+    <string name="download_log_details_technical_reason_title">Technické detaily</string>
+    <string name="download_log_details_file_url_title">URL adresa súboru</string>
+    <string name="download_log_open_feed">Otvoriť</string>
+    <string name="no_following_in_queue">Toto bola posledná epizóda v poradí</string>
+    <string name="report_bug_device_info_title">Zariadenie</string>
+    <string name="report_bug_attrib_app_version">Verzia aplikácie</string>
+    <string name="report_bug_attrib_android_version">Verzia systému</string>
+    <string name="report_bug_attrib_device_name">Názov zariadenia</string>
+    <string name="pref_advanced">Pokročilé</string>
+    <string name="pref_display">Obrazovka</string>
+    <string name="sleep_timer_episodes_label">epizódy</string>
+    <string name="sleep_timer_without_continuous_playback">Zakázať nepretržité prehrávanie</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Zmeniť hodiny</string>
+    <string name="sleep_timer_without_continuous_playback_message">Namiesto automatického zapínania časovača spánku pri jednej epizóde radšej vypnite v nastaveniach možnosť „nepretržité prehrávanie\".</string>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Nepretržité prehrávanie je zakázané v nastaveniach. Prehrávanie sa vždy zastaví na konci epizódy.</string>
+    <string name="import_error_label">Chyba importu</string>
+    <string name="show_password_accessibility">Zobraziť heslo</string>
+    <string name="rss_address_invalid">RSS adresa, ktorú ste zadali, nie je platná.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Pripojené k %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Verzia %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Zariadenie nie je kompatibilné. Uistite sa, že máte v telefóne poslednú verziu aplikácie AntennaPod z obchodu Google Play.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Žiadne položky</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Telefón nie je v dosahu. Uistite sa, že váš telefón je v blízkosti a má nainštalovanú aplikáciu AntennaPod.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Prehrať na telefóne</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Prehliadať telefón</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Otvoriť s telefónom</string>
+    <string name="episode">Epizóda</string>
+    <string name="feed">Podcast</string>
+    <string name="queue_time_left_label">%1$s • %2$s zostáva</string>
+    <string name="no_fav_episodes_head_label">Žiadne obľúbené</string>
+    <string name="no_fav_episodes_label">Označte epizódy ako obľúbené kliknutím na ikonu hviezdy.</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Predvolené poradie</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Zvoľte si predvolené poradie pre epizód na obrazovke s podcastmi</string>
+    <string name="report_bug_title">Nahlásiť chybu</string>
+    <string name="report_bug_crash_log_title">Záznam chýb</string>
+    <string name="report_bug_crash_log_message">Vytvorené: %1$s.</string>
+    <string name="report_bug_forum_title">Fórum</string>
 </resources>

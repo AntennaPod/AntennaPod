@@ -67,7 +67,7 @@
     <!--Bug report activity-->
   <string name="log_file_share_exception">Ni bilo najdenih združljivih aplikacij</string>
     <string name="export_logs_menu_title">Izvozi podrobne dnevnike</string>
-    <string name="confirm_export_log_dialog_message">POdrobni dnevniki lahko vsebujejo občutljive podatke, naprimer vaše sezname naročnin</string>
+    <string name="confirm_export_log_dialog_message">Podrobni dnevniki lahko vsebujejo občutljive podatke, naprimer vaše sezname naročnin</string>
     <!--Webview actions-->
   <string name="open_in_browser_label">Odpri v brskalniku</string>
     <string name="copy_url_label">Kopiraj URL naslov</string>
@@ -152,7 +152,7 @@
     <string name="show_feed_settings_label">Prikaži nastavitve poddaje</string>
     <string name="feed_settings_label">Nastavitve poddaje</string>
     <string name="rename_feed_label">Preimenuj poddajo</string>
-    <string name="remove_feed_label">Izbriši</string>
+    <string name="remove_feed_label">Prekliči naročnino</string>
     <string name="share_label">Deli</string>
     <string name="share_file_label">Deli datoteko</string>
     <string name="load_complete_feed">Osveži poddajo v celoti</string>
@@ -296,8 +296,8 @@
     <string name="synchronization_sum">Sinhroniziraj z drugimi napravami</string>
     <string name="automation">Avtomatizacija</string>
     <string name="download_pref_details">Podrobnosti</string>
-    <string name="import_export_pref">Uvozi/Izvozi</string>
-    <string name="import_export_search_keywords">varnostno kopiranje, varnostna obnovitev</string>
+    <string name="import_export_pref">Varnostne kopije</string>
+    <string name="import_export_search_keywords">Izdelava in obnova varnostnih kopij</string>
     <string name="external_elements">Zunanji elementi</string>
     <string name="interruptions">Prekinitve</string>
     <string name="playback_control">Predvajalne kontrole</string>
@@ -306,7 +306,7 @@
     <string name="preference_search_no_results">Ni rezultatov</string>
     <string name="preference_search_clear_history">Pobriši zgodovino</string>
     <string name="pref_episode_cleanup_summary">Epizode, ki bi morale biti primerne za odstranitev, če samodejni prenos potrebuje prostor za nove epizode</string>
-    <string name="pref_pauseOnDisconnect_sum">Začasno ustavite predvajanje, ko se slušalke ali bluetooth odklopi</string>
+    <string name="pref_pauseOnDisconnect_sum">Začasno ustavite predvajanje, ko se povezava bluetooth naprave prekine</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Nadaljujte s predvajanjem, ko se slušalke znova priključijo</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Nadaljujte s predvajanjem, ko se bluetooth znova poveže</string>
     <string name="pref_hardware_forward_button_title">Gumb za naprej</string>
@@ -797,8 +797,8 @@
     <string name="general_expand_button">Razširi</string>
     <string name="general_collapse_button">Strni</string>
     <string name="archiving_podcast_progress">Arhiviranje poddaje %1$d od %2$d…</string>
-    <string name="deleting_podcast_progress">Brisanje poddaje %1$d od %2$d…</string>
-    <string name="feed_delete_explanation_delete">Brisanje odstrani naročnino vključno z epizodami, prenosi, zgovodino predvajanj in statistiko.</string>
+    <string name="deleting_podcast_progress">Preklic naročnine poddaje %1$d od %2$d…</string>
+    <string name="feed_delete_explanation_delete">Preklic naročnine odstrani naročnino vključno z epizodami, prenosi, zgovodino predvajanj in statistiko.</string>
     <string name="feed_delete_explanation_archive">Arhiviranje skrije naročnino iz seznama in preneha slediti novim epizodam. Prenosi, statistika in predvajanje se ne spremeni.</string>
     <string name="multi_select_started_talkback">Možnost izbire večih elementov je prikazana na dnu</string>
     <string name="please_wait_before_refreshing">Prosim počakajte trenutek preden ponovno osvežite poddajo.</string>
@@ -811,4 +811,69 @@
     <string name="download_log_details_technical_reason_title">Tehnične podrobnosti</string>
     <string name="download_log_details_file_url_title">URL datoteke</string>
     <string name="download_log_open_feed">Odpri</string>
+    <string name="statistics_label_short">Statistike</string>
+    <string name="favorite_episodes_label_short">Priljubljene</string>
+    <string name="feed_new_episodes_action_snackbar">Ne more biti spreminjano dokler so avtomatski prenosi omogočeni.</string>
+    <string name="remove_restore_feed_label">Odnaroči / obnovi</string>
+    <string name="restoring_podcast_progress">Obnavljam podcast %1$d od %2$d…</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="one">%d epizoda označena kot predvajana.</item>
+        <item quantity="two">%d epizodi označeni kot predvajani.</item>
+        <item quantity="few">%d epizode označene kot predvajane.</item>
+        <item quantity="other">%d epizod označenih kot predvajanih.</item>
+    </plurals>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="one">%d epizoda označena kot nepredvajana.</item>
+        <item quantity="two">%d epizodi označeni kot nepredvajani.</item>
+        <item quantity="few">%d epizode označene kot nepredvajane.</item>
+        <item quantity="other">%d epizod označenih kot nepredvajanih.</item>
+    </plurals>
+    <plurals name="added_to_queue_message">
+        <item quantity="one">%d epizoda dodana v čakalno vrsto.</item>
+        <item quantity="two">%d epizodi dodani v čakalno vrsto.</item>
+        <item quantity="few">%d epizode dodane v čakalno vrsto.</item>
+        <item quantity="other">%d epizod dodanih v čakalno vrsto.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="one">%d epizoda odstranjena iz čakalne vrste.</item>
+        <item quantity="two">%d epizodi odstranjeni iz čakalne vrste.</item>
+        <item quantity="few">%d epizode odstranjene iz čakalne vrste.</item>
+        <item quantity="other">%d epizod odstranjenih iz čakalne vrste.</item>
+    </plurals>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d epizoda dodana k priljubljenim.</item>
+        <item quantity="two">%d epizodi dodani k priljubljenim.</item>
+        <item quantity="few">%d epizode dodane k priljubljenim.</item>
+        <item quantity="other">%d epizod dodanih k priljubljenim.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d epizoda odstranjena iz prljubljenih.</item>
+        <item quantity="two">%d epizodi odstranjeni iz prljubljenih.</item>
+        <item quantity="few">%d epizode odstranjene iz prljubljenih.</item>
+        <item quantity="other">%d epizod odstranjenih iz prljubljenih.</item>
+    </plurals>
+    <string name="visit_social_interact_confirm_dialog_message">Prosim preveri, da zaupaš tej spletni strani \"%1$s\".</string>
+    <string name="already_downloaded">Epizoda je že prenešena</string>
+    <plurals name="move_to_top_message">
+        <item quantity="one">%d epizoda premaknjen na vrh.</item>
+        <item quantity="two">%d epizodi premaknjeni na vrh.</item>
+        <item quantity="few">%d epizode premaknjene na vrh.</item>
+        <item quantity="other">%d epizod premaknjenih na vrh.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="one">%d epizoda premaknjen na dno.</item>
+        <item quantity="two">%d epizode premaknjeni na dno.</item>
+        <item quantity="few">%d epizode premaknjene na dno.</item>
+        <item quantity="other">%d epizod premaknjenih na dno.</item>
+    </plurals>
+    <string name="episode">Epizoda</string>
+    <string name="feed">Podcast</string>
+    <string name="queue_time_left_label">%1$s • %2$s preostane</string>
+    <string name="no_queue_items_inbox_has_items_label">Ni epizod v čakalni vrsti, vendar so nove epizode, ki čakajo nate!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">Pojdi v nabiralnik</string>
+    <string name="no_fav_episodes_head_label">Ni priljubljenih</string>
+    <string name="no_fav_episodes_label">Označi epizode kot priljubljen, tako da se dotakneš ikone zvezdice.</string>
+    <string name="no_archive_head_label">Nič ni arhivirano</string>
+    <string name="no_archive_label">Podkaste lahko arhiviraš iz glavnega zaslona naročnin.</string>
+    <string name="theming">Preobleke</string>
 </resources>

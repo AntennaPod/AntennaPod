@@ -40,8 +40,8 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import org.greenrobot.eventbus.EventBus;
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.Collections;
@@ -66,8 +66,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("fast_forward", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_PLAYBACK_SPEED
             = new SessionCommand("playback_speed", Bundle.EMPTY);
-    protected static final SessionCommand SESSION_COMMAND_SKIP_TO_NEXT
-            = new SessionCommand("skip_to_next", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_NEXT_CHAPTER
             = new SessionCommand("next_chapter", Bundle.EMPTY);
     public static final SessionCommand SESSION_COMMAND_SKIP_SILENCE
@@ -102,7 +100,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private final Context context;
-    private final CompositeDisposable disposables = new CompositeDisposable();
 
     public MediaLibrarySessionCallback(Context context) {
         this.context = context;
@@ -118,7 +115,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_REWIND)
                 .add(SESSION_COMMAND_FAST_FORWARD)
                 .add(SESSION_COMMAND_PLAYBACK_SPEED)
-                .add(SESSION_COMMAND_SKIP_TO_NEXT)
                 .add(SESSION_COMMAND_NEXT_CHAPTER)
                 .add(SESSION_COMMAND_SKIP_SILENCE)
                 .add(SESSION_COMMAND_SET_SLEEP_TIMER)
@@ -132,7 +128,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .build();
         return new MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
-                .setCustomLayout(buildCustomLayout())
+                .setMediaButtonPreferences(buildCustomLayout())
                 .setAvailablePlayerCommands(playerCommands)
                 .build();
     }
@@ -140,12 +136,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     @Override
     @UnstableApi
     public void onPostConnect(@NonNull MediaSession session, @NonNull MediaSession.ControllerInfo controller) {
-        session.setCustomLayout(buildCustomLayout());
+        session.setMediaButtonPreferences(buildCustomLayout());
     }
 
     @UnstableApi
     public void refreshNotification(MediaLibraryService.MediaLibrarySession session) {
-        session.setCustomLayout(buildCustomLayout());
+        session.setMediaButtonPreferences(buildCustomLayout());
     }
 
     @UnstableApi
@@ -180,7 +176,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
 
         if (UserPreferences.showSkipOnFullNotification()) {
             buttons.add(new CommandButton.Builder(CommandButton.ICON_NEXT)
-                    .setSessionCommand(SESSION_COMMAND_SKIP_TO_NEXT)
+                    .setSlots(CommandButton.SLOT_OVERFLOW)
+                    .setPlayerCommand(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
                     .setDisplayName(context.getString(R.string.skip_episode_label))
                     .build());
         }
@@ -263,8 +260,40 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             return Futures.immediateFuture(new MediaSession.MediaItemsWithStartPosition(
                     mediaItems, index, startPositionMs));
         }
+        String searchQuery = mediaItems.get(index).requestMetadata.searchQuery;
+        if (searchQuery != null) {
+            if ("".equals(searchQuery)) {
+                return onPlaybackResumption(mediaSession, controller); // "Play something" voice action
+            }
+            SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
+            Maybe.fromCallable(() -> {
+                List<FeedItem> results = DBReader.searchFeedItems(0, searchQuery, FeedItemFilter.unfiltered());
+                for (FeedItem result : results) {
+                    if (result.getMedia() != null) {
+                        return result.getMedia();
+                    }
+                }
+                return null;
+            })
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(media -> {
+                        long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
+                        startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                (int) startPosition, media.getLastPlayedTimeStatistics());
+                        future.set(new MediaSession.MediaItemsWithStartPosition(
+                                Collections.singletonList(MediaItemAdapter.fromPlayable(context, media, false)),
+                                0, startPosition));
+                    }, error -> {
+                        Log.e(TAG, "Voice search failed", error);
+                        future.set(new MediaSession.MediaItemsWithStartPosition(
+                                Collections.emptyList(), index, startPositionMs));
+                    },
+                        () -> future.set(new MediaSession.MediaItemsWithStartPosition(
+                                Collections.emptyList(), index, startPositionMs)));
+            return future;
+        }
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-        disposables.add(Single.fromCallable(
+        Single.fromCallable(
                 () -> {
                     List<MediaItem> updatedItems = onAddMediaItems(mediaSession, controller, mediaItems).get();
                     long mediaId = Long.parseLong(updatedItems.get(index).mediaId);
@@ -279,8 +308,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
                 }, error -> {
                     Log.e(TAG, "Failed to load media", error);
-                    future.set(new MediaSession.MediaItemsWithStartPosition(mediaItems, index, startPositionMs));
-                }));
+                    future.set(new MediaSession.MediaItemsWithStartPosition(
+                            Collections.emptyList(), index, startPositionMs));
+                });
         return future;
     }
 
@@ -294,7 +324,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         }
 
         SettableFuture<List<MediaItem>> future = SettableFuture.create();
-        disposables.add(Single.fromCallable(() -> enrichMediaItems(mediaItems))
+        Single.fromCallable(() -> enrichMediaItems(mediaItems))
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         items -> future.set(items.isEmpty() ? Collections.emptyList() : items),
@@ -302,7 +332,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                             Log.e(TAG, "Failed to load media items", error);
                             future.set(Collections.emptyList());
                         }
-                ));
+                );
         return future;
     }
 
@@ -312,7 +342,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-        disposables.add(Single.fromCallable(() -> {
+        Single.fromCallable(() -> {
             FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             // If there is no media to resume, media3 crashes. So instead of crashing, just play something random.
             if (media == null) {
@@ -343,7 +373,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                             future.set(result);
                         },
                         future::setException
-                ));
+                );
         return future;
     }
 
@@ -373,10 +403,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull MediaSession.ControllerInfo browser, @NonNull String mediaId) {
         if (BROWSABLE_MEDIA_IDS.contains(mediaId) || mediaId.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
             SettableFuture<LibraryResult<MediaItem>> future = SettableFuture.create();
-            disposables.add(Single.fromCallable(() -> createBrowsableMediaItem(mediaId))
+            Single.fromCallable(() -> createBrowsableMediaItem(mediaId))
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> future.set(LibraryResult.ofItem(item, null)),
-                            future::setException));
+                            future::setException);
             return future;
         }
         return MediaLibraryService.MediaLibrarySession.Callback.super.onGetItem(session, browser, mediaId);
@@ -393,7 +423,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
 
         switch (parentId) {
             case MEDIA_ID_ROOT:
-                disposables.add(Single.fromCallable(() -> ImmutableList.of(
+                Single.fromCallable(() -> ImmutableList.of(
                                 createBrowsableMediaItem(MEDIA_ID_CONTINUE_LISTENING),
                                 createBrowsableMediaItem(MEDIA_ID_QUEUE),
                                 createBrowsableMediaItem(MEDIA_ID_DOWNLOADS),
@@ -401,10 +431,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                 createBrowsableMediaItem(MEDIA_ID_SUBSCRIPTIONS)))
                         .subscribeOn(Schedulers.io())
                         .subscribe(items -> future.set(LibraryResult.ofItemList(items, params)),
-                                future::setException));
+                                future::setException);
                 return future;
             case MEDIA_ID_SUBSCRIPTIONS:
-                disposables.add(Single.fromCallable(DBReader::getFeedList)
+                Single.fromCallable(DBReader::getFeedList)
                         .subscribeOn(Schedulers.io())
                         .subscribe(
                                 items -> {
@@ -416,10 +446,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                     }
                                     future.set(LibraryResult.ofItemList(builder.build(), params));
                                 },
-                                future::setException));
+                                future::setException);
                 return future;
             case MEDIA_ID_CONTINUE_LISTENING:
-                disposables.add(Single.fromCallable(
+                Single.fromCallable(
                                 () -> DBReader.getPausedQueue(CONTINUE_LISTENING_NUM_EPISODES))
                         .subscribeOn(Schedulers.io())
                         .subscribe(
@@ -429,10 +459,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                     Log.e(TAG, "Failed to load continue listening", error);
                                     future.set(LibraryResult.ofItemList(ImmutableList.of(), params));
                                 }
-                        ));
+                        );
                 return future;
             default: // Episodes lists
-                disposables.add(Single.fromCallable(() -> {
+                Single.fromCallable(() -> {
                     if (parentId.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
                         long feedId = Long.parseLong(parentId.split(":")[1]);
                         return DBReader.getFeed(feedId, true, page * pageSize, pageSize).getItems();
@@ -451,7 +481,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         .subscribeOn(Schedulers.io())
                         .subscribe(items -> future.set(LibraryResult.ofItemList(
                                         MediaItemAdapter.fromItemList(context, items), params)),
-                                future::setException));
+                                future::setException);
                 return future;
         }
     }
@@ -462,12 +492,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull MediaLibraryService.MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
             @NonNull String query, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
         SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
-        disposables.add(Single.fromCallable(() ->
+        Single.fromCallable(() ->
                         DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
                 .subscribeOn(Schedulers.io())
                 .subscribe(items -> future.set(LibraryResult.ofItemList(
                                 MediaItemAdapter.fromItemList(context, items), params)),
-                        future::setException));
+                        future::setException);
         return future;
     }
 
@@ -476,6 +506,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<Void>> onSearch(@NonNull MediaLibraryService.MediaLibrarySession session,
               @NonNull MediaSession.ControllerInfo browser, @NonNull String query,
               @Nullable MediaLibraryService.LibraryParams params) {
+        if (query.isEmpty()) {
+            session.notifySearchResultChanged(browser, query, 0, params);
+            return Futures.immediateFuture(LibraryResult.ofVoid());
+        }
+        Single.fromCallable(() -> DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        items -> session.notifySearchResultChanged(browser, query, items.size(), params),
+                        error -> {
+                            Log.e(TAG, "Search failed", error);
+                            session.notifySearchResultChanged(browser, query, 0, params);
+                        });
         return Futures.immediateFuture(LibraryResult.ofVoid());
     }
 
@@ -486,6 +528,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             try {
                 long mediaId = Long.parseLong(item.mediaId);
                 FeedMedia media = DBReader.getFeedMedia(mediaId);
+                if (media == null) {
+                    Log.e(TAG, "Media not found for ID: " + mediaId);
+                    continue;
+                }
                 builder.add(MediaItemAdapter.fromPlayable(context, media, false));
             } catch (NumberFormatException e) {
                 Log.e(TAG, "Invalid media ID: " + item.mediaId, e);

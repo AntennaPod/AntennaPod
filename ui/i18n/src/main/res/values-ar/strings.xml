@@ -179,7 +179,7 @@
     <string name="show_feed_settings_label">أظهِر إعدادات المسموعيَّة</string>
     <string name="feed_settings_label">إعدادات المسموعيَّة</string>
     <string name="rename_feed_label">غيّر الاسم</string>
-    <string name="remove_feed_label">احذِف</string>
+    <string name="remove_feed_label">ألغِ الاشتراك</string>
     <string name="share_label">مشاركة</string>
     <string name="share_file_label">مشاركة ملف</string>
     <string name="load_complete_feed">حدِّث كامل المسموعيَّة</string>
@@ -367,7 +367,7 @@
     <string name="pref_auto_delete_title">الحذف التلقائي</string>
     <string name="pref_auto_delete_sum">احذف الحلقات بعد تشغيلها أو عند احتياج التنزيل التلقائي لمساحة</string>
     <string name="pref_auto_local_delete_title">احذف من المجلدات المحلية تلقائيًا</string>
-    <string name="pref_auto_local_delete_sum">ضمّن المجلدات المحلية في خاصية الحذف التلقائي</string>
+    <string name="pref_auto_local_delete_sum">أيضًا احذف الملفات المضافة عبر «أضف مجلد محلي». لاحظ أن تلك الملفات لم يتم تنزيلها من AntennaPod ولا يمكن إعادة تنزيلها</string>
     <string name="pref_auto_local_delete_dialog_body">فيما يخص المجلدات المحلية، يرجى ملاحظة أن الحلقات ستزال من أنْتِنَابُد وستحذف ملفاتها من ذاكرة تخزين جهازك، ولن تتمكن من تنزيلها عن طريق أنْتِنَابُد مرة أخرى. هل تود بأن تفعل الحذف التلقائي؟</string>
     <string name="pref_smart_mark_as_played_sum">علم على الحلقات على أنها إنتهت حتى لو بقي أقل من مقدار ثوانٍ معين من وقت التشغيل</string>
     <string name="pref_smart_mark_as_played_title">علم بذكاء أنها انتهت</string>
@@ -599,7 +599,7 @@
     <string name="synchronization_nextcloud_authenticate_browser">امنح الوصول باستخدام المتصفح المفتوح ثم ارجع إلى أنتنابد.</string>
     <string name="gpodnetauth_login_butLabel">تسجيل الدخول</string>
     <string name="synchronization_credentials_explanation">الرجاء إضافة بيانات الدخول لحسابك على خادم المزامنة.</string>
-    <string name="gpodnetauth_encryption_warning">كلمة السر والبيانات غير مشفرة!</string>
+    <string name="gpodnetauth_encryption_warning">كلمة المرور والبيانات غير مشفرة!</string>
     <string name="username_label">اسم المستخدم</string>
     <string name="password_label">كلمة المرور</string>
     <string name="synchronization_login_butLabel">سجّل الدخول</string>
@@ -755,7 +755,7 @@
   <string name="notification_group_errors">أخطاء</string>
     <string name="notification_group_news">الأخبار</string>
     <string name="notification_channel_user_action">مطلوب اتخاذ إجراء</string>
-    <string name="notification_channel_user_action_description">يظهر إذا كان الإجراء المطلوب منك ، على سبيل المثال إذا كنت بحاجة إلى إدخال كلمة مرور.</string>
+    <string name="notification_channel_user_action_description">يظهر إذا كان الإجراء المطلوب منك، على سبيل المثال إذا كنت بحاجة إلى إدخال كلمة مرور.</string>
     <string name="notification_channel_downloading">جارٍ تنزيل الحلقات</string>
     <string name="notification_channel_downloading_description">تظهر أثناء تنزيل الحلقات حالياً.</string>
     <string name="notification_channel_playing">يشغل حاليا</string>
@@ -890,8 +890,8 @@
     <string name="archive_feed_label_verb">أرشِف</string>
     <string name="archive_feed_label_noun">الأرشيف</string>
     <string name="restore_archive_label">استعِد</string>
-    <string name="remove_archive_feed_label">احذف / أرشِف</string>
-    <string name="feed_delete_explanation_delete">يؤدي الحذف إلى إزالة الاشتراك وجميع حلقاته، وتنزيلاته، وسجل تشغيله، وإحصائياته.</string>
+    <string name="remove_archive_feed_label">ألغِ الاشتراك / أرشِف</string>
+    <string name="feed_delete_explanation_delete">يؤدي إلغاء الاشتراك إلى إزالته وجميع حلقاته، وتنزيلاته، وسجل تشغيله، وإحصائياته.</string>
     <string name="feed_delete_explanation_archive">تؤدي الأرشفة إلى إخفاء الاشتراك من القائمة وتجنب تحديثه. ستبقى التنزيلات، والإحصائيات، وسجل التشغيل.</string>
     <string name="please_wait_before_refreshing">انتظر قبل أن تنعش الاشتراكات مرة أخرى.</string>
     <plurals name="downloading_episodes_message">
@@ -905,7 +905,7 @@
     <string name="general_expand_button">وسّع</string>
     <string name="general_collapse_button">صغّر</string>
     <string name="archiving_podcast_progress">جارٍ أرشفة المسموعية %1$d من %2$d…</string>
-    <string name="deleting_podcast_progress">جارٍ حذف المسموعية %1$d من %2$d…</string>
+    <string name="deleting_podcast_progress">جارٍ إلغاء اشتراك المسموعية %1$d من %2$d…</string>
     <plurals name="deleted_episode_message">
         <item quantity="zero">لم تحذف أي حلقات منزلة.</item>
         <item quantity="one">حذفت حلقة منزلة واحدة.</item>
@@ -935,12 +935,12 @@
         <item quantity="other">%d حلقة عُلّمت كغير مُشغّلة.</item>
     </plurals>
     <plurals name="added_to_queue_message">
-        <item quantity="zero">%d حلقة أُضيفت لقائمة الانتظار.</item>
-        <item quantity="one">حلقة واحدة أُضيفت لقائمة الانتظار.</item>
-        <item quantity="two">حلقتان أُضيفتان لقائمة الانتظار.</item>
-        <item quantity="few">%d حلقات أُضيفت لقائمة الانتظار.</item>
-        <item quantity="many">%d حلقة أُضيفت لقائمة الانتظار.</item>
-        <item quantity="other">%d حلقة أُضيفت لقائمة الانتظار.</item>
+        <item quantity="zero">أُضيفت %d حلقة لقائمة الانتظار.</item>
+        <item quantity="one">أُضيفت حلقة واحدة لقائمة الانتظار.</item>
+        <item quantity="two">أُضيفت حلقتان لقائمة الانتظار.</item>
+        <item quantity="few">أُضيفت %d حلقات لقائمة الانتظار.</item>
+        <item quantity="many">أُضيفت %d حلقة لقائمة الانتظار.</item>
+        <item quantity="other">أُضيفت %d حلقة لقائمة الانتظار.</item>
     </plurals>
     <plurals name="removed_from_queue_message">
         <item quantity="zero">حُذفت %d حلقة من قائمة الانتظار.</item>
@@ -995,4 +995,101 @@
     <string name="pref_global_default_episode_list_sort_order_title">ترتيب الفرز الافتراضي</string>
     <string name="pref_global_default_episode_list_sort_order_sum">اختر الترتيب الافتراضي للحلقات في صفحة المسموعية</string>
     <string name="report_bug_title">أبلغ عن علة</string>
+    <string name="statistics_label_short">إحصائيات</string>
+    <string name="favorite_episodes_label_short">مفضلات</string>
+    <string name="feed_new_episodes_action_snackbar">لا يمكن تغيره والتنزيل التلقائي مفعل.</string>
+    <string name="remove_restore_feed_label">ألغِ الاشتراك / استعِد</string>
+    <string name="restoring_podcast_progress">يستعيد المسموعية %1$d من %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="zero">تمت إضافة %d حلقة إلى المفضلات.</item>
+        <item quantity="one">تمت إضافة %d حلقة إلى المفضلات.</item>
+        <item quantity="two">تمت إضافة حلقتان إلى المفضلات.</item>
+        <item quantity="few">تمت إضافة %d حلقات إلى المفضلات.</item>
+        <item quantity="many">تمت إضافة %d حلقة إلى المفضلات.</item>
+        <item quantity="other">تمت إضافة %d حلقة إلى المفضلات.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="zero">تم حذف %d حلقة من المفضلات.</item>
+        <item quantity="one">تم حذف %d حلقة من المفضلات.</item>
+        <item quantity="two">تم حذف حلقتان من المفضلات.</item>
+        <item quantity="few">تم حذف %d حلقات من المفضلات.</item>
+        <item quantity="many">تم حذف %d حلقة من المفضلات.</item>
+        <item quantity="other">تم حذف %d حلقة من المفضلات.</item>
+    </plurals>
+    <string name="queue_time_left_label">%1$s • %2$s متبقي</string>
+    <string name="no_fav_episodes_head_label">لا توجد مفضلات</string>
+    <string name="no_fav_episodes_label">علّم الحلقات كمفضلة عبر النقر على أيقونة النجمة.</string>
+    <string name="bottom_navigation_deprecation_warning">للأسف نحن مضطرون إلى حذف التنقل الجانبي في تحديث مستقبلي. يتم تطوير AntennaPod من قبل فريق صغير من المتطوعين، وبعد الحفاظ على كلا أسلوبي التنقل لسنوات، اصبح الحفاظ على كلاهما حملًا زائدًا.\n\nإذا كنت تعتمد على التنقل الجانبي بشكل كبير، عطّل التحديثات التلقائية لـAntennaPod في متجر التطبيقات خاصتك.</string>
+    <string name="report_bug_message">نعتذر لعدم عمل وظيفة على نحوها المطلوب. نود مساعدتك لتحسين AntennaPod. بالرجاء زيارة منتدياتنا أو صفحتنا على GitHub للتحقق ما إذا تم الإبلاغ عن مشكلتك بالفعل. إذا لم يكن كذلك، اطلعنا وسنتحقق.</string>
+    <string name="report_bug_device_info_title">الجهاز</string>
+    <string name="report_bug_attrib_app_version">إصدار التطبيق</string>
+    <string name="report_bug_attrib_android_version">إصدار Android</string>
+    <string name="report_bug_attrib_device_name">اسم الجهاز</string>
+    <string name="report_bug_crash_log_title">سجل الأعطال</string>
+    <string name="report_bug_crash_log_message">تم أنشأه: %1$s.</string>
+    <string name="report_bug_forum_title">المنتدى</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="pref_advanced">متقدم</string>
+    <string name="pref_display">العرض</string>
+    <string name="import_error_label">استيراد الخطأ</string>
+    <string name="sleep_timer_episodes_label">حلقات</string>
+    <string name="sleep_timer_without_continuous_playback">تعطيل التشغيل المستمر</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">تغيير عدد الساعات</string>
+    <string name="sleep_timer_without_continuous_playback_message">بدلًا من التفعيل التلقائي الدائم لمؤقت النوم مع الحلقة الواحدة، عطّل «تشغيل مستمر» في الإعدادات.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="zero">التشغيل المستمر معطّل وتبقى على الحلقة الحالية %1$d دقيقة متبقية</item>
+        <item quantity="one">التشغيل المستمر معطّل وتبقى على الحلقة الحالية %1$d دقيقة فقط</item>
+        <item quantity="two">التشغيل المستمر معطّل وتبقى على الحلقة الحالية دقيقتان فقط</item>
+        <item quantity="few">التشغيل المستمر معطّل وتبقى على الحلقة الحالية %1$d دقائق فقط</item>
+        <item quantity="many">التشغيل المستمر معطّل وتبقى على الحلقة الحالية %1$d دقيقة فقط</item>
+        <item quantity="other">التشغيل المستمر معطّل وتبقى على الحلقة الحالية %1$d دقيقة فقط</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">التشغيل المستمر معطّل في الإعدادات. يتوقف التشغيل دائمًا عند انتهاء الحلقة.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="zero">تبقت %1$d حلقة فقط في طابورك</item>
+        <item quantity="one">تبقت %1$d حلقة فقط في طابورك</item>
+        <item quantity="two">تبقت حلقتان فقط في طابورك</item>
+        <item quantity="few">تبقت %1$d حلقات فقط في طابورك</item>
+        <item quantity="many">تبقت %1$d حلقة فقط في طابورك</item>
+        <item quantity="other">تبقت %1$d حلقة فقط في طابورك</item>
+    </plurals>
+    <string name="show_password_accessibility">عرض كلمة المرور</string>
+    <string name="tag_all">الكل</string>
+    <string name="tag_untagged">غير موسوم</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="zero">بدأتها</item>
+        <item quantity="one">بدأتها</item>
+        <item quantity="two">بدأتها</item>
+        <item quantity="few">بدأتها</item>
+        <item quantity="many">بدأتها</item>
+        <item quantity="other">بدأتها</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="zero">إجمالي</item>
+        <item quantity="one">إجمالي</item>
+        <item quantity="two">إجمالي</item>
+        <item quantity="few">إجمالي</item>
+        <item quantity="many">إجمالي</item>
+        <item quantity="other">إجمالي</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="zero">تم تنزيلها</item>
+        <item quantity="one">تم تنزيلها</item>
+        <item quantity="two">تم تنزيلهما</item>
+        <item quantity="few">تم تنزيلهم</item>
+        <item quantity="many">تم تنزيلها</item>
+        <item quantity="other">تم تنزيلها</item>
+    </plurals>
+    <string name="statistics_expected_next_episode_any_time">في أي وقت الآن</string>
+    <string name="release_schedule_multiple_per_day">أوقات متنوعة كل يوم</string>
+    <string name="rss_address_invalid">عنوان RSS الذي أدخلته غير صالح.</string>
+    <string name="cover_as_background">الغلاف كخلفية</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">متصل بـ%s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">إصدار %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">الهاتف غير مُتوافَق. تأكد من استخدام احدث إصدار لـAntennaPod من Google Play على هاتفك.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">لا توجد عناصر</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">تعذّر الوصول للهاتف. تأكد من أنه هاتفك قريب وأن AntennaPod مثبّت.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">تشغيل على الهاتف</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">تصفح الهاتف</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">فتح على الهاتف</string>
 </resources>

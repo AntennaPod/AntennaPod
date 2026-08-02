@@ -93,6 +93,9 @@ public class HomeFragment extends Fragment implements Toolbar.OnMenuItemClickLis
     }
 
     private void addSection(Fragment section, int id) {
+        if (section == null) { // Can happen when stored settings reference a section that no longer exists
+            return;
+        }
         FragmentContainerView containerView = new FragmentContainerView(getContext());
         containerView.setId(id);
         viewBinding.homeContainer.addView(containerView);

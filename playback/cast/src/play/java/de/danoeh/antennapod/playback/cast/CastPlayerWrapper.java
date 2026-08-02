@@ -13,6 +13,12 @@ import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaQueueItem;
+import com.google.android.gms.cast.MediaStatus;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.media.RemoteMediaClient;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.images.WebImage;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 
@@ -29,6 +35,31 @@ public class CastPlayerWrapper {
                 .setLocalPlayer(player)
                 .setRemotePlayer(remotePlayer)
                 .build();
+    }
+
+    public static boolean hasPlaybackJustFinished(Context context) {
+        // When Cast finishes, it unloads the media session, so the Media3 CastPlayer reports IDLE, not ENDED.
+        // Media3 never reads the Cast SDK's idle reason, so "finished naturally" and "stopped by user" look identical.
+        // This method reads the idle reason directly from the Cast SDK to make that distinction.
+        // It only gives a meaningful result while the idle status is still current, i.e. when called synchronously
+        // from a Player listener callback reacting to the unload.
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) != ConnectionResult.SUCCESS) {
+            return false;
+        }
+        try {
+            CastSession castSession = CastContext.getSharedInstance(context)
+                    .getSessionManager().getCurrentCastSession();
+            if (castSession == null) {
+                return false;
+            }
+            RemoteMediaClient remoteMediaClient = castSession.getRemoteMediaClient();
+            return remoteMediaClient != null
+                    && remoteMediaClient.getPlayerState() == MediaStatus.PLAYER_STATE_IDLE
+                    && remoteMediaClient.getIdleReason() == MediaStatus.IDLE_REASON_FINISHED;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
