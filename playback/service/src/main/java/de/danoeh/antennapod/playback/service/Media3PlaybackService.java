@@ -464,6 +464,10 @@ public class Media3PlaybackService extends MediaLibraryService {
                     mediaLoaderDisposable.dispose();
                 }
                 mediaLoaderDisposable = Single.fromCallable(() -> {
+                    long previousMediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+                    if (previousMediaId != PlaybackPreferences.NO_MEDIA_PLAYING && previousMediaId != mediaId) {
+                        updateDatabaseAfterPlayback(DBReader.getFeedMedia(previousMediaId), false, false, true);
+                    }
                     FeedMedia media = DBReader.getFeedMedia(mediaId);
                     ChapterUtils.loadChapters(media, this, false);
                     return media;
