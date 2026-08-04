@@ -556,6 +556,11 @@ public class Media3PlaybackService extends MediaLibraryService {
     }
 
     private void updateDatabaseAfterPlayback(FeedMedia media, boolean ended, boolean skipped, boolean playingNext) {
+        updateDatabaseAfterPlayback(media, ended, skipped, playingNext, false);
+    }
+
+    private void updateDatabaseAfterPlayback(FeedMedia media, boolean ended, boolean skipped, boolean playingNext,
+                                             boolean keepCompletedEpisodes) {
         if (media == null) {
             return;
         }
@@ -570,8 +575,14 @@ public class Media3PlaybackService extends MediaLibraryService {
             if (ended || almostEnded) {
                 DBWriter.markItemsPlayed(FeedItem.PLAYED, true, Collections.singletonList(item));
             }
-            if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
+            boolean finished = ended || almostEnded;
+            boolean keepCompleted = keepCompletedEpisodes || (finished && sleepTimer != null && sleepTimer.isActive()
+                    && SleepTimerPreferences.keepCompletedEpisodes());
+            if (!keepCompleted
+                    && (finished || (skipped && !UserPreferences.shouldSkipKeepEpisode()))) {
                 DBWriter.removeQueueItem(this, ended, item);
+            }
+            if (!keepCompleted && (finished || (skipped && !UserPreferences.shouldSkipKeepEpisode()))) {
                 FeedPreferences.AutoDeleteAction action = item.getFeed().getPreferences().getCurrentAutoDelete();
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
@@ -689,9 +700,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         FeedMedia media = currentPlayable;
         currentPlayable = null; // To avoid position updater saving position after we already reset it
         if (sleepTimer != null && sleepTimer.isActive()) {
+            boolean keepCompletedEpisodes = SleepTimerPreferences.keepCompletedEpisodes();
             sleepTimer.episodeFinishedPlayback();
             if (!sleepTimer.shouldContinueToNextEpisode()) {
-                updateDatabaseAfterPlayback(media, true, false, false);
+                updateDatabaseAfterPlayback(media, true, false, false, keepCompletedEpisodes);
                 player.stop();
                 player.clearMediaItems();
                 PlaybackPreferences.writeNoMediaPlaying();

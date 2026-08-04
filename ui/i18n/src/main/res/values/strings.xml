@@ -716,6 +716,7 @@
     </plurals>
     <string name="shake_to_reset_label">Shake to reset</string>
     <string name="timer_vibration_label">Vibrate shortly before end</string>
+    <string name="keep_completed_episodes">Keep completed episodes</string>
     <string name="time_seconds">seconds</string>
     <string name="time_minutes">minutes</string>
     <string name="time_hours">hours</string>

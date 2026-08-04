@@ -22,6 +22,7 @@ public class SleepTimerPreferences {
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
     private static final String PREF_AUTO_ENABLE_FROM = "AutoEnableFrom";
     private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
+    private static final String PREF_KEEP_COMPLETED_EPISODES = "KeepCompletedEpisodes";
 
     private static final int DEFAULT_TIMER_TYPE = 0;
     private static final int DEFAULT_AUTO_ENABLE_FROM = 22;
@@ -73,6 +74,14 @@ public class SleepTimerPreferences {
 
     public static boolean vibrate() {
         return prefs.getBoolean(PREF_VIBRATE, false);
+    }
+
+    public static void setKeepCompletedEpisodes(boolean keepCompletedEpisodes) {
+        prefs.edit().putBoolean(PREF_KEEP_COMPLETED_EPISODES, keepCompletedEpisodes).apply();
+    }
+
+    public static boolean keepCompletedEpisodes() {
+        return prefs.getBoolean(PREF_KEEP_COMPLETED_EPISODES, false);
     }
 
     public static void setShakeToReset(boolean shakeToReset) {

@@ -19,4 +19,12 @@ public class SleepTimerPreferencesTest {
         assertFalse(SleepTimerPreferences.isInTimeRange(1, 6, 6));
         assertFalse(SleepTimerPreferences.isInTimeRange(20, 6, 8));
     }
+
+    @Test
+    public void testKeepCompletedEpisodes() {
+        SleepTimerPreferences.setKeepCompletedEpisodes(true);
+        assertTrue(SleepTimerPreferences.keepCompletedEpisodes());
+        SleepTimerPreferences.setKeepCompletedEpisodes(false);
+        assertFalse(SleepTimerPreferences.keepCompletedEpisodes());
+    }
 }

@@ -211,12 +211,15 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         viewBinding.autoEnableCheckbox.setChecked(SleepTimerPreferences.autoEnable());
         viewBinding.shakeToResetCheckbox.setChecked(SleepTimerPreferences.shakeToReset());
         viewBinding.vibrateCheckbox.setChecked(SleepTimerPreferences.vibrate());
+        viewBinding.keepCompletedEpisodesCheckbox.setChecked(SleepTimerPreferences.keepCompletedEpisodes());
         refreshAutoEnableControls(SleepTimerPreferences.autoEnable());
 
         viewBinding.shakeToResetCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setShakeToReset(isChecked));
         viewBinding.vibrateCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setVibrate(isChecked));
+        viewBinding.keepCompletedEpisodesCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
+                -> SleepTimerPreferences.setKeepCompletedEpisodes(isChecked));
         viewBinding.autoEnableCheckbox.setOnCheckedChangeListener((compoundButton, isChecked)
                 -> {
             boolean mostOfDay = isSleepTimerConfiguredForMostOfTheDay();
