@@ -259,6 +259,18 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
             return super.onCustomCommand(session, controller, customCommand, args);
         }
+
+        @Override
+        @UnstableApi
+        protected void skipChapterForward(MediaSession session) {
+            seekToNextChapterOrForward();
+        }
+
+        @Override
+        @UnstableApi
+        protected void skipChapterBack(MediaSession session) {
+            seekToPreviousChapterOrRewind();
+        }
     };
 
     @UnstableApi
@@ -633,6 +645,50 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
 
         player.seekTo(chapters.get(nextChapter).getStart());
+    }
+
+    @UnstableApi
+    private void seekToNextChapterOrForward() {
+        if (currentPlayable == null || player == null) {
+            return;
+        }
+        List<Chapter> chapters = currentPlayable.getChapters();
+        if (chapters == null || chapters.isEmpty()) {
+            player.seekForward();
+            return;
+        }
+
+        int nextChapter = Chapter.getAfterPosition(chapters, (int) player.getCurrentPosition()) + 1;
+
+        if (chapters.size() < nextChapter + 1) {
+            player.seekForward();
+            return;
+        }
+
+        player.seekTo(chapters.get(nextChapter).getStart());
+    }
+
+    @UnstableApi
+    private void seekToPreviousChapterOrRewind() {
+        if (currentPlayable == null || player == null) {
+            return;
+        }
+        List<Chapter> chapters = currentPlayable.getChapters();
+        if (chapters == null || chapters.isEmpty()) {
+            player.seekBack();
+            return;
+        }
+
+        int chapterIndex = Chapter.getAfterPosition(chapters, (int) player.getCurrentPosition());
+        if (chapterIndex < 0) {
+            player.seekBack();
+            return;
+        }
+        if (chapters.get(chapterIndex).getStart() == player.getCurrentPosition() && chapterIndex > 0) {
+            chapterIndex--;
+        }
+
+        player.seekTo(chapters.get(chapterIndex).getStart());
     }
 
     private boolean shouldBlockForStreamingConfirmation() {

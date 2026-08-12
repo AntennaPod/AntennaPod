@@ -27,4 +27,11 @@
         android:layout_marginTop="8dp"
         android:text="@string/synchronization_sync_changes_title" />
 
+    <Button
+        android:id="@id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/back_label" />
+
 </LinearLayout>

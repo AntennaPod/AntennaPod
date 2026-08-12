@@ -68,6 +68,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
 
         View root = View.inflate(getContext(), R.layout.gpodnetauth_dialog, null);
         viewFlipper = root.findViewById(R.id.viewflipper);
+        root.findViewById(R.id.backButton).setOnClickListener(v -> previous());
         advance();
         dialog.setView(root);
 
@@ -152,15 +153,17 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         MaterialButton createDeviceButton = view.findViewById(R.id.createDeviceButton);
         createDeviceButton.setOnClickListener(v -> createDevice(view));
 
-        for (GpodnetDevice device : devices) {
-            View row = View.inflate(getContext(), R.layout.gpodnetauth_device_row, null);
-            Button selectDeviceButton = row.findViewById(R.id.selectDeviceButton);
-            selectDeviceButton.setOnClickListener(v -> {
-                selectedDevice = device;
-                advance();
-            });
-            selectDeviceButton.setText(device.getCaption());
-            devicesContainer.addView(row);
+        if (devicesContainer.getChildCount() == 0) {
+            for (GpodnetDevice device : devices) {
+                View row = View.inflate(getContext(), R.layout.gpodnetauth_device_row, null);
+                Button selectDeviceButton = row.findViewById(R.id.selectDeviceButton);
+                selectDeviceButton.setOnClickListener(v -> {
+                    selectedDevice = device;
+                    advance();
+                });
+                selectDeviceButton.setText(device.getCaption());
+                devicesContainer.addView(row);
+            }
         }
     }
 
@@ -266,6 +269,13 @@ public class GpodderAuthenticationFragment extends DialogFragment {
             currentStep++;
         } else {
             dismiss();
+        }
+    }
+
+    private void previous() {
+        if (currentStep > STEP_HOSTNAME) {
+            viewFlipper.showPrevious();
+            currentStep--;
         }
     }
 

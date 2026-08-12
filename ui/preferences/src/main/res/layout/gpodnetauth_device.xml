@@ -64,4 +64,10 @@
         android:textColor="?attr/icon_red"
         android:visibility="gone" />
 
+    <Button
+        android:id="@id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/back_label" />
+
 </LinearLayout>

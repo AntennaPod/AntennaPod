@@ -69,7 +69,11 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
         } else {
             // Give it some time, so other possible actions can be queued.
             builder.setInitialDelay(20L, TimeUnit.SECONDS);
-            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+            if (UserPreferences.isAllowMobileSync()) {
+                EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+            } else {
+                EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_waiting_for_wifi));
+            }
         }
         return builder;
     }

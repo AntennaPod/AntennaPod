@@ -77,6 +77,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public static final SessionCommand SESSION_COMMAND_EXTEND_SLEEP_TIMER
             = new SessionCommand("extend_sleep_timer", Bundle.EMPTY);
 
+    private static final int KEYCODE_SKIP_CHAPTER_FORWARD = 91;
+    private static final int KEYCODE_SKIP_CHAPTER_BACK = 92;
+
     private static final String EXTRA_VALUE = "value";
 
     public static Bundle createBundle(boolean value) {
@@ -219,17 +222,48 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 return true;
             } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
-                // Instead of skipping to the next episode, do a fast-forward.
-                session.getPlayer().seekForward();
-                return true;
+                // Handle remapped button as notification button which is not remapped again.
+                return handleKeycode(session, UserPreferences.getHardwareForwardButton());
             } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                 // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
-                // Instead of going to the previous episode, do a rewind.
-                session.getPlayer().seekBack();
-                return true;
+                // Handle remapped button as notification button which is not remapped again.
+                return handleKeycode(session, UserPreferences.getHardwarePreviousButton());
             }
         }
         return false;
+    }
+
+    private boolean handleKeycode(MediaSession session, int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+                session.getPlayer().seekForward();
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                session.getPlayer().seekBack();
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+                session.getPlayer().seekToNextMediaItem();
+                return true;
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                session.getPlayer().seekTo(0);
+                return true;
+            case KEYCODE_SKIP_CHAPTER_FORWARD:
+                skipChapterForward(session);
+                return true;
+            case KEYCODE_SKIP_CHAPTER_BACK:
+                skipChapterBack(session);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    protected void skipChapterForward(MediaSession session) {
+        session.getPlayer().seekForward();
+    }
+
+    protected void skipChapterBack(MediaSession session) {
+        session.getPlayer().seekBack();
     }
 
     @Override

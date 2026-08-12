@@ -2,8 +2,11 @@ package de.danoeh.antennapod.ui.preferences.screen.synchronization;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.format.DateUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.text.HtmlCompat;
@@ -32,6 +36,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
@@ -161,6 +168,12 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
     private void chooseProviderAndLogin() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.dialog_choose_sync_service_title);
+        String intro = getString(R.string.synchronization_choose_provider_intro);
+        String moreInformation = getString(R.string.synchronization_more_information);
+        SpannableString message = new SpannableString(intro + "\n\n" + moreInformation);
+        message.setSpan(new URLSpan(getLocalizedWebsiteLink()), intro.length() + 2, message.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setMessage(message);
 
         SynchronizationProvider[] providers = SynchronizationProvider.values();
         ListAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
@@ -206,7 +219,20 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
             updateScreen();
         });
 
-        builder.show();
+        AlertDialog dialog = builder.show();
+        TextView messageView = dialog.findViewById(android.R.id.message);
+        if (messageView != null) {
+            messageView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+    }
+
+    private String getLocalizedWebsiteLink() {
+        String language = Locale.getDefault().getLanguage();
+        if (!"en".equals(language)
+                && Arrays.asList("da", "de", "es", "fr", "it", "nl", "fa", "ja").contains(language)) {
+            return "https://antennapod.org/" + language + "/s/sync-help";
+        }
+        return "https://antennapod.org/s/sync-help";
     }
 
     private boolean isProviderSelected(@NonNull SynchronizationProvider provider) {
