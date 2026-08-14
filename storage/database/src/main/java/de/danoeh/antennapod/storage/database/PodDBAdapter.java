@@ -1125,6 +1125,25 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled) {
+        String feedAutoDownloadCondition = globalAutoDownloadEnabled
+                ? "!=" + FeedPreferences.AutoDownloadSetting.DISABLED.code
+                : "=" + FeedPreferences.AutoDownloadSetting.ENABLED.code;
+        final String query = SELECT_FEED_ITEMS_AND_MEDIA
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
+                + " AND " + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ENABLED + "!=0"
+                + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " IS NOT NULL"
+                + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + "=0"
+                + " AND " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
+                + " IN (SELECT " + KEY_ID + " FROM " + TABLE_NAME_FEEDS
+                + " WHERE " + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED
+                + " AND (" + KEY_DOWNLOAD_URL + " IS NULL OR " + KEY_DOWNLOAD_URL
+                + " NOT LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')"
+                + " AND " + KEY_AUTO_DOWNLOAD_ENABLED + feedAutoDownloadCondition + ")"
+                + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC";
+        return db.rawQuery(query, null);
+    }
+
     public final Cursor getEpisodeCountCursor(FeedItemFilter filter) {
         String filterQuery = FeedItemFilterQuery.generateFrom(filter);
         String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
