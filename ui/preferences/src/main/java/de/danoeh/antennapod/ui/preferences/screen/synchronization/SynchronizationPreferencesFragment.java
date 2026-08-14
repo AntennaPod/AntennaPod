@@ -23,17 +23,26 @@ import com.google.android.material.snackbar.Snackbar;
 
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.R;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Locale;
+import java.util.Set;
+
 import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 
 public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragment {
+    private static final String ANTENNAPOD_WEBSITE = "https://antennapod.org";
+    private static final String SYNC_HELP_PATH = "/s/sync-help";
+    private static final Set<String> WEBSITE_LANGUAGES = Set.of(
+            "ca", "da", "de", "es", "fa", "fr", "gl", "it", "ja", "nb_NO", "nl", "tr");
+
     private static final String PREFERENCE_SYNCHRONIZATION_DESCRIPTION = "preference_synchronization_description";
     private static final String PREFERENCE_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     private static final String PREFERENCE_SYNC = "pref_synchronization_sync";
@@ -161,6 +170,10 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
     private void chooseProviderAndLogin() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.dialog_choose_sync_service_title);
+        View header = View.inflate(getContext(), R.layout.dialog_sync_provider_chooser_header, null);
+        header.findViewById(R.id.syncHelpLink).setOnClickListener(v ->
+                IntentUtils.openInBrowser(getContext(), getLocalizedWebsiteLink(SYNC_HELP_PATH)));
+        builder.setView(header);
 
         SynchronizationProvider[] providers = SynchronizationProvider.values();
         ListAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
@@ -207,6 +220,17 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
         });
 
         builder.show();
+    }
+
+    private String getLocalizedWebsiteLink(String path) {
+        String deviceLanguage = Locale.getDefault().getLanguage();
+        if ("nb".equals(deviceLanguage)) {
+            deviceLanguage = "nb_NO";
+        }
+        if (WEBSITE_LANGUAGES.contains(deviceLanguage)) {
+            return ANTENNAPOD_WEBSITE + "/" + deviceLanguage + path;
+        }
+        return ANTENNAPOD_WEBSITE + path;
     }
 
     private boolean isProviderSelected(@NonNull SynchronizationProvider provider) {

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.button.MaterialButton;
@@ -42,6 +43,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
     public static final String TAG = "GpodnetAuthActivity";
 
     private ViewFlipper viewFlipper;
+    private Button backButton;
 
     private static final int STEP_DEFAULT = -1;
     private static final int STEP_HOSTNAME = 0;
@@ -63,6 +65,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         dialog.setTitle(R.string.gpodnetauth_login_butLabel);
         dialog.setNegativeButton(R.string.cancel_label, null);
+        dialog.setNeutralButton(R.string.enqueue_location_back, null);
         dialog.setCancelable(false);
         this.setCancelable(false);
 
@@ -71,7 +74,13 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         advance();
         dialog.setView(root);
 
-        return dialog.create();
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.setOnShowListener(dialogInterface -> {
+            backButton = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+            backButton.setOnClickListener(view -> showPreviousStep());
+            updateBackButtonVisibility();
+        });
+        return alertDialog;
     }
 
     private void setupHostView(View view) {
@@ -264,8 +273,25 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                 viewFlipper.showNext();
             }
             currentStep++;
+            updateBackButtonVisibility();
         } else {
             dismiss();
+        }
+    }
+
+    private void showPreviousStep() {
+        if (currentStep <= STEP_HOSTNAME || currentStep >= STEP_FINISH) {
+            return;
+        }
+        currentStep--;
+        viewFlipper.showPrevious();
+        updateBackButtonVisibility();
+    }
+
+    private void updateBackButtonVisibility() {
+        if (backButton != null) {
+            backButton.setVisibility(currentStep > STEP_HOSTNAME && currentStep < STEP_FINISH
+                    ? View.VISIBLE : View.GONE);
         }
     }
 
