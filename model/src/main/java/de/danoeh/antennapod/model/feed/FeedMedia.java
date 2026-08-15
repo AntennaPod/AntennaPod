@@ -412,7 +412,10 @@ public class FeedMedia implements Playable {
         startPosition = Math.max(position, 0);
         playedDurationWhenStarted = playedDuration;
     }
-
+    public void resetPlayedDurationBaseline() {
+        startPosition = Math.max(position, 0);
+        playedDurationWhenStarted = playedDuration;
+    }
     @Override
     public int getPlayableType() {
         return PLAYABLE_TYPE_FEEDMEDIA;

@@ -185,6 +185,12 @@ public class Media3PlaybackService extends MediaLibraryService {
             @Override
             public void seekTo(long positionMs) {
                 super.seekTo(positionMs);
+
+                if (currentPlayable != null) {
+                    currentPlayable.setPosition((int) positionMs);
+                    currentPlayable.resetPlayedDurationBaseline();
+                }
+
                 EventBus.getDefault().post(
                         new PlaybackPositionEvent((int) positionMs, (int) player.getDuration()));
             }
