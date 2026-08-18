@@ -18,6 +18,16 @@ public class BasicAuthorizationInterceptor implements Interceptor {
     private static final String TAG = "BasicAuthInterceptor";
     private static final String HEADER_AUTHORIZATION = "Authorization";
 
+    public interface CredentialProvider {
+        String getCredentials(String url);
+    }
+
+    private static volatile CredentialProvider credentialProvider;
+
+    public static void setCredentialProvider(CredentialProvider provider) {
+        credentialProvider = provider;
+    }
+
     @Override
     @NonNull
     public Response intercept(Chain chain) throws IOException {
@@ -51,6 +61,10 @@ public class BasicAuthorizationInterceptor implements Interceptor {
                         || !TextUtils.isEmpty(downloadRequest.getPassword()))) {
                 userInfo = downloadRequest.getUsername() + ":" + downloadRequest.getPassword();
             }
+        }
+
+        if (TextUtils.isEmpty(userInfo) && credentialProvider != null) {
+            userInfo = credentialProvider.getCredentials(request.url().toString());
         }
 
         if (TextUtils.isEmpty(userInfo)) {
