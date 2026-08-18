@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.core.text.HtmlCompat;
 import androidx.preference.Preference;
@@ -24,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.ui.preferences.R;
+import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -162,6 +165,17 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.dialog_choose_sync_service_title);
 
+        View content = View.inflate(
+                getContext(),
+                R.layout.dialog_sync_provider_chooser,
+                null
+        );
+        builder.setView(content);
+        MaterialButton moreInformation = content.findViewById(R.id.more_information);
+        moreInformation.setOnClickListener(v ->
+                IntentUtils.openInBrowser(getContext(), "https://antennapod.org/s/sync-help")
+        );
+
         SynchronizationProvider[] providers = SynchronizationProvider.values();
         ListAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
 
@@ -189,9 +203,11 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
                 return convertView;
             }
         };
+        ListView providerList = content.findViewById(R.id.provider_list);
+        providerList.setAdapter(adapter);
 
-        builder.setAdapter(adapter, (dialog, which) -> {
-            switch (providers[which]) {
+        providerList.setOnItemClickListener((parent, view, position, id) -> {
+            switch (providers[position]) {
                 case GPODDER_NET:
                     new GpodderAuthenticationFragment()
                             .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
