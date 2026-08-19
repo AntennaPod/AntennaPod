@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.ui.glide;
 
+import android.content.ContentResolver;
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.load.Options;
@@ -9,6 +11,8 @@ import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
+import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 
 import java.io.InputStream;
@@ -36,7 +40,12 @@ class AuthenticatedImageUrlLoader implements ModelLoader<AuthenticatedImageUrl, 
 
     @Override
     public boolean handles(@NonNull AuthenticatedImageUrl model) {
-        return true;
+        String url = model.getUrl();
+        return !TextUtils.isEmpty(url)
+                && !url.startsWith(Feed.PREFIX_GENERATIVE_COVER)
+                && !url.startsWith(FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER)
+                && !url.startsWith(ContentResolver.SCHEME_CONTENT)
+                && !url.startsWith(ContentResolver.SCHEME_ANDROID_RESOURCE);
     }
 
     public static class Factory implements ModelLoaderFactory<AuthenticatedImageUrl, InputStream> {
