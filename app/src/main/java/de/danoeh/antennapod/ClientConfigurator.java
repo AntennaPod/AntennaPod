@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.net.common.BasicAuthorizationInterceptor;
+import de.danoeh.antennapod.ui.glide.GlideCredentialProvider;
 import de.danoeh.antennapod.net.download.service.episode.autodownload.AutoDownloadManagerImpl;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
@@ -60,7 +60,7 @@ public class ClientConfigurator {
         SynchronizationQueue.setInstance(new SynchronizationQueueImpl(context));
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         AntennapodHttpClient.setProxyConfig(UserPreferences.getProxyConfig());
-        BasicAuthorizationInterceptor.setCredentialProvider(
+        GlideCredentialProvider.setCredentialProvider(
                 ClientConfigurator::getCredentialsForUrl);
         SleepTimerPreferences.init(context);
         NotificationUtils.createChannels(context);
@@ -73,18 +73,38 @@ public class ClientConfigurator {
         if (TextUtils.isEmpty(requestHost)) {
             return null;
         }
+        String requestPath = requestUri.getPath();
+        if (requestPath == null) {
+            requestPath = "/";
+        }
         List<Feed> feeds = DBReader.getFeedList();
+        String pathPrefixMatch = null;
         for (Feed feed : feeds) {
             FeedPreferences prefs = feed.getPreferences();
             if (prefs == null || TextUtils.isEmpty(prefs.getUsername())) {
                 continue;
             }
+            String credentials = prefs.getUsername() + ":" + prefs.getPassword();
+            if (url.equals(feed.getImageUrl())) {
+                return credentials;
+            }
             Uri feedUri = Uri.parse(feed.getDownloadUrl());
-            if (requestHost.equals(feedUri.getHost())
-                    && requestUri.getPort() == feedUri.getPort()) {
-                return prefs.getUsername() + ":" + prefs.getPassword();
+            if (!requestHost.equals(feedUri.getHost())
+                    || requestUri.getPort() != feedUri.getPort()) {
+                continue;
+            }
+            if (pathPrefixMatch == null) {
+                String feedPath = feedUri.getPath();
+                if (feedPath == null) {
+                    feedPath = "/";
+                }
+                int lastSlash = feedPath.lastIndexOf('/');
+                String feedDir = feedPath.substring(0, lastSlash + 1);
+                if (requestPath.startsWith(feedDir)) {
+                    pathPrefixMatch = credentials;
+                }
             }
         }
-        return null;
+        return pathPrefixMatch;
     }
 }
