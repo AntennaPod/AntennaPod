@@ -31,6 +31,7 @@ import de.danoeh.antennapod.ui.share.ShareUtils;
 import de.danoeh.antennapod.ui.cleaner.HtmlToPlainText;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedFunding;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.statistics.feed.FeedStatisticsDialogFragment;
@@ -155,8 +156,9 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
         Log.d(TAG, "Language is " + feed.getLanguage());
         Log.d(TAG, "Author is " + feed.getAuthor());
         Log.d(TAG, "URL is " + feed.getDownloadUrl());
+        Object imageModel = AuthenticatedImageUrl.create(feed.getImageUrl(), feed.getPreferences());
         Glide.with(this)
-                .load(feed.getImageUrl())
+                .load(imageModel)
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
@@ -164,7 +166,7 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
                         .dontAnimate())
                 .into(viewBinding.header.imgvCover);
         Glide.with(this)
-                .load(feed.getImageUrl())
+                .load(imageModel)
                 .apply(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)
                         .error(R.color.image_readability_tint)

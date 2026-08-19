@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
@@ -14,7 +13,6 @@ import com.bumptech.glide.signature.ObjectKey;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
-import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import okhttp3.Interceptor;
@@ -39,7 +37,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         private static volatile OkHttpClient internalClient;
         private final OkHttpClient client;
 
-        private static OkHttpClient getInternalClient() {
+        static OkHttpClient getInternalClient() {
             if (internalClient == null) {
                 synchronized (Factory.class) {
                     if (internalClient == null) {
@@ -82,21 +80,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     @Nullable
     @Override
     public LoadData<InputStream> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
-        GlideUrl glideUrl;
-        GlideCredentialProvider.CredentialProvider provider = GlideCredentialProvider.getCredentialProvider();
-        String userInfo = provider != null ? provider.getCredentials(model) : null;
-        if (userInfo != null && userInfo.contains(":")) {
-            String username = userInfo.substring(0, userInfo.indexOf(':'));
-            String password = userInfo.substring(userInfo.indexOf(':') + 1);
-            LazyHeaders headers = new LazyHeaders.Builder()
-                    .addHeader("Authorization",
-                            HttpCredentialEncoder.encode(username, password, "ISO-8859-1"))
-                    .build();
-            glideUrl = new GlideUrl(model, headers);
-        } else {
-            glideUrl = new GlideUrl(model);
-        }
-        return new LoadData<>(new ObjectKey(model), new ResizingOkHttpStreamFetcher(client, glideUrl));
+        return new LoadData<>(new ObjectKey(model), new ResizingOkHttpStreamFetcher(client, new GlideUrl(model)));
     }
 
     @Override
@@ -110,7 +94,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                 && !model.startsWith(ContentResolver.SCHEME_ANDROID_RESOURCE);
     }
 
-    private static class NetworkAllowanceInterceptor implements Interceptor {
+    static class NetworkAllowanceInterceptor implements Interceptor {
 
         @NonNull
         @Override
