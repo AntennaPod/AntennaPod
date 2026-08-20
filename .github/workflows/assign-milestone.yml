@@ -65,3 +65,31 @@ jobs:
               issue_number: context.payload.pull_request.number,
               milestone: ${{ steps.get-milestone.outputs.result }},
             });
+
+      - name: Assign milestone to linked issues
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const query = `query ($owner: String!, $repo: String!, $number: Int!) {
+              repository(owner: $owner, name: $repo) {
+                pullRequest(number: $number) {
+                  closingIssuesReferences(first: 100) {
+                    nodes { number }
+                  }
+                }
+              }
+            }`;
+            const result = await github.graphql(query, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              number: context.payload.pull_request.number,
+            });
+            const issues = result.repository.pullRequest.closingIssuesReferences.nodes;
+            for (const issue of issues) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                milestone: ${{ steps.get-milestone.outputs.result }},
+              });
+            }
