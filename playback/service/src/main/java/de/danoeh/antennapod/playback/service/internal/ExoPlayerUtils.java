@@ -53,11 +53,12 @@ public class ExoPlayerUtils {
         return new ExoPlayer.Builder(context)
                 .setLoadControl(new DefaultLoadControl.Builder()
                         .setBufferDurationsMs(
-                                (int) TimeUnit.HOURS.toMillis(1),
-                                (int) TimeUnit.HOURS.toMillis(3),
+                                (int) TimeUnit.MINUTES.toMillis(2),
+                                (int) TimeUnit.MINUTES.toMillis(10),
                                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS)
                         .setBackBuffer((int) TimeUnit.MINUTES.toMillis(5), true)
+                        .setPrioritizeTimeOverSizeThresholds(true)
                         .build())
                 .setAudioAttributes(new AudioAttributes.Builder()
                         .setUsage(C.USAGE_MEDIA)
