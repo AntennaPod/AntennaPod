@@ -8,9 +8,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import androidx.media3.common.Player;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Transformation;
@@ -107,21 +108,21 @@ public abstract class WidgetUpdater {
                 views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.play_label));
             }
             views.setOnClickPendingIntent(R.id.butPlay,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butRew,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_REWIND));
+                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_SEEK_BACK));
             views.setOnClickPendingIntent(R.id.butFastForward,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_SEEK_FORWARD));
             views.setOnClickPendingIntent(R.id.butSkip,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
+                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM));
         } else {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    MediaButtonStarter.createPendingIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_PLAY_PAUSE));
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);

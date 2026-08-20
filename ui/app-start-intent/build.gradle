@@ -9,4 +9,6 @@ android {
 
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.media3:media3-common:$media3Version"
+    implementation "androidx.media3:media3-session:$media3Version"
 }
