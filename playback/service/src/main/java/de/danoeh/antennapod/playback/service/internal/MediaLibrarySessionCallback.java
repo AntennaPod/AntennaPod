@@ -219,17 +219,34 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 return true;
             } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
-                // Instead of skipping to the next episode, do a fast-forward.
-                session.getPlayer().seekForward();
+                performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwareForwardButton());
                 return true;
             } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                 // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
-                // Instead of going to the previous episode, do a rewind.
-                session.getPlayer().seekBack();
+                performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwarePreviousButton());
                 return true;
             }
         }
         return false;
+    }
+
+    @UnstableApi
+    private void performHardwareButtonAction(Player player, int action) {
+        switch (action) {
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+                player.seekToNextMediaItem();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                player.seekTo(0);
+                break;
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                player.seekBack();
+                break;
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+            default:
+                player.seekForward();
+                break;
+        }
     }
 
     @Override
