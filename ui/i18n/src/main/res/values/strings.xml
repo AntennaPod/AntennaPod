@@ -655,6 +655,7 @@
     <string name="sync_status_upload_played">Uploading played status…</string>
     <string name="sync_status_subscriptions">Synchronizing subscriptions…</string>
     <string name="sync_status_wait_for_downloads">Waiting for subscriptions refresh…</string>
+    <string name="sync_status_wait_for_wifi">Waiting for Wi-Fi to sync subscriptions…</string>
     <string name="sync_status_success">Synchronization successful</string>
     <string name="sync_status_error">Synchronization failed</string>
 
