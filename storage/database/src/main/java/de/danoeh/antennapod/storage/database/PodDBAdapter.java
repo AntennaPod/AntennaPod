@@ -1125,7 +1125,7 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled) {
+    public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled, boolean includeQueue) {
         String feedAutoDownloadCondition = globalAutoDownloadEnabled
                 ? "!=" + FeedPreferences.AutoDownloadSetting.DISABLED.code
                 : "=" + FeedPreferences.AutoDownloadSetting.ENABLED.code;
@@ -1135,12 +1135,13 @@ public class PodDBAdapter {
                 + " AND (" + KEY_DOWNLOAD_URL + " IS NULL OR " + KEY_DOWNLOAD_URL
                 + " NOT LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')"
                 + " AND " + KEY_AUTO_DOWNLOAD_ENABLED + feedAutoDownloadCondition + ")";
+        String queueCondition = includeQueue ? " OR " + SELECT_KEY_IS_IN_QUEUE : "";
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
+                + " WHERE (" + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
                 + " AND " + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ENABLED + "!=0"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " IS NOT NULL"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + "=0"
-                + " AND " + feedHasAutoDownload
+                + " AND " + feedHasAutoDownload + queueCondition + ")"
                 + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC";
         return db.rawQuery(query, null);
     }

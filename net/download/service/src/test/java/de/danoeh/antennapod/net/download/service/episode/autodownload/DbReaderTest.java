@@ -345,13 +345,14 @@ public class DbReaderTest {
                 feed.getItems().get(0).setNew();
                 adapter.setCompleteFeed(feed);
             }
+            adapter.setQueue(Arrays.asList(feeds.get(0).getItems().get(0), feeds.get(2).getItems().get(0)));
             adapter.close();
 
-            List<FeedItem> candidates = DBReader.getAutoDownloadCandidates(false);
+            List<FeedItem> candidates = DBReader.getAutoDownloadCandidates(false, false);
             assertEquals(1, candidates.size());
             assertEquals(feeds.get(0).getItems().get(0).getId(), candidates.get(0).getId());
 
-            candidates = DBReader.getAutoDownloadCandidates(true);
+            candidates = DBReader.getAutoDownloadCandidates(true, false);
             assertEquals(2, candidates.size());
             List<Long> candidateIds = new ArrayList<>();
             for (FeedItem candidate : candidates) {
@@ -359,6 +360,15 @@ public class DbReaderTest {
             }
             assertTrue(candidateIds.contains(feeds.get(0).getItems().get(0).getId()));
             assertTrue(candidateIds.contains(feeds.get(1).getItems().get(0).getId()));
+
+            candidates = DBReader.getAutoDownloadCandidates(false, true);
+            assertEquals(2, candidates.size());
+            candidateIds.clear();
+            for (FeedItem candidate : candidates) {
+                candidateIds.add(candidate.getId());
+            }
+            assertTrue(candidateIds.contains(feeds.get(0).getItems().get(0).getId()));
+            assertTrue(candidateIds.contains(feeds.get(2).getItems().get(0).getId()));
         }
 
         @Test

@@ -7,10 +7,8 @@ import android.os.BatteryManager;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -52,27 +50,18 @@ public class AutomaticDownloadAlgorithm {
                 Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 
                 boolean globalAutoDownloadEnabled = UserPreferences.isEnableAutodownloadGlobal();
-                final List<FeedItem> newItems = DBReader.getAutoDownloadCandidates(globalAutoDownloadEnabled);
+                boolean autoDownloadQueueEnabled = UserPreferences.isEnableAutodownloadQueue();
+                final List<FeedItem> newItems = DBReader.getAutoDownloadCandidates(
+                        globalAutoDownloadEnabled, autoDownloadQueueEnabled);
                 final List<FeedItem> candidates = new ArrayList<>();
-                final Set<Long> candidateIds = new HashSet<>();
 
                 for (FeedItem newItem : newItems) {
                     FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
-                    boolean shouldAdd = feedPrefs.isAutoDownload(globalAutoDownloadEnabled)
-                            && feedPrefs.getFilter().shouldAutoDownload(newItem)
-                            && candidateIds.add(newItem.getId());
+                    boolean shouldAdd = (autoDownloadQueueEnabled && newItem.isTagged(FeedItem.TAG_QUEUE))
+                            || (feedPrefs.isAutoDownload(globalAutoDownloadEnabled)
+                            && feedPrefs.getFilter().shouldAutoDownload(newItem));
                     if (shouldAdd) {
                         candidates.add(newItem);
-                    }
-                }
-
-                if (UserPreferences.isEnableAutodownloadQueue()) {
-                    final List<FeedItem> queue = DBReader.getQueue();
-                    for (FeedItem item : queue) {
-                        boolean notYetAdded = candidateIds.add(item.getId());
-                        if (notYetAdded) {
-                            candidates.add(item);
-                        }
                     }
                 }
 

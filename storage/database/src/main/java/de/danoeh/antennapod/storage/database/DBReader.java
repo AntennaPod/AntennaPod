@@ -235,19 +235,21 @@ public final class DBReader {
     }
 
     /**
-     * Loads new, undownloaded episodes that are eligible for automatic download, newest first.
+     * Loads episodes that are eligible for automatic download, newest first.
      * This should be preferred over loading all new episodes and filtering them in Java.
      *
      * @param globalAutoDownloadEnabled Whether automatic download is enabled in the global settings.
+     * @param includeQueue Whether episodes in the queue should be included.
      * @return A list of FeedItems that are candidates for automatic download.
      *         The Feed-attribute of the FeedItems will already be set correctly.
      */
     @NonNull
-    public static synchronized List<FeedItem> getAutoDownloadCandidates(boolean globalAutoDownloadEnabled) {
+    public static synchronized List<FeedItem> getAutoDownloadCandidates(boolean globalAutoDownloadEnabled,
+                                                                         boolean includeQueue) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (FeedItemCursor cursor = new FeedItemCursor(
-                adapter.getAutoDownloadCandidatesCursor(globalAutoDownloadEnabled))) {
+                adapter.getAutoDownloadCandidatesCursor(globalAutoDownloadEnabled, includeQueue))) {
             List<FeedItem> items = extractItemlistFromCursor(cursor);
             if (!items.isEmpty()) {
                 loadFeedDataOfFeedItemList(items);
