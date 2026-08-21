@@ -1129,17 +1129,18 @@ public class PodDBAdapter {
         String feedAutoDownloadCondition = globalAutoDownloadEnabled
                 ? "!=" + FeedPreferences.AutoDownloadSetting.DISABLED.code
                 : "=" + FeedPreferences.AutoDownloadSetting.ENABLED.code;
+        String feedHasAutoDownload = TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
+                + " IN (SELECT " + KEY_ID + " FROM " + TABLE_NAME_FEEDS
+                + " WHERE " + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED
+                + " AND (" + KEY_DOWNLOAD_URL + " IS NULL OR " + KEY_DOWNLOAD_URL
+                + " NOT LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')"
+                + " AND " + KEY_AUTO_DOWNLOAD_ENABLED + feedAutoDownloadCondition + ")";
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
                 + " AND " + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ENABLED + "!=0"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " IS NOT NULL"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + "=0"
-                + " AND " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
-                + " IN (SELECT " + KEY_ID + " FROM " + TABLE_NAME_FEEDS
-                + " WHERE " + KEY_STATE + "=" + Feed.STATE_SUBSCRIBED
-                + " AND (" + KEY_DOWNLOAD_URL + " IS NULL OR " + KEY_DOWNLOAD_URL
-                + " NOT LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')"
-                + " AND " + KEY_AUTO_DOWNLOAD_ENABLED + feedAutoDownloadCondition + ")"
+                + " AND " + feedHasAutoDownload
                 + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC";
         return db.rawQuery(query, null);
     }
