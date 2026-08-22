@@ -188,6 +188,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 EventBus.getDefault().post(
                         new PlaybackPositionEvent((int) positionMs, (int) player.getDuration()));
             }
+
         };
         player.addListener(playerListener);
         mediaSession = new MediaLibraryService.MediaLibrarySession.Builder(this, player, sessionCallback)
@@ -197,6 +198,15 @@ public class Media3PlaybackService extends MediaLibraryService {
             keepServiceRunningWhileCasting();
             loadCurrentMediaWhileCasting();
         }
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        if (!isCasting() && player != null) {
+            player.pause();
+            player.stop();
+        }
+        super.onTaskRemoved(rootIntent);
     }
 
     private void loadCurrentMediaWhileCasting() {
