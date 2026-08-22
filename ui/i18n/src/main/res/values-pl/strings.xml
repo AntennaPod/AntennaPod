@@ -334,7 +334,7 @@
     <string name="pref_auto_delete_title">Automatyczne usuwanie</string>
     <string name="pref_auto_delete_sum">Usuń odcinki kiedy ich odtwarzanie zostanie zakończone lub gdy automatyczne pobieranie wymaga dodatkowej przestrzeni</string>
     <string name="pref_auto_local_delete_title">Automatyczne usuwanie z folderów lokalnych</string>
-    <string name="pref_auto_local_delete_sum">Uwzględnij lokalne foldery w funkcji automatycznego usuwania</string>
+    <string name="pref_auto_local_delete_sum">Usuń też pliki dodane za pomocą opcji \"dodaj folder lokalny\". Pamiętaj że te pliki nie są pobrane przez AntennaPod i nie mogą zostać pobrane ponownie po usunięciu</string>
     <string name="pref_auto_local_delete_dialog_body">Uwaga! W przypadku folderów lokalnych usunięcie spowoduje skasowanie odcinków z AntennaPod oraz plików z twojego urządzenia. Nie można będzie ich pobrać ponownie za pomocą AntennaPod. Aktywować automatyczne usuwanie?</string>
     <string name="pref_smart_mark_as_played_sum">Oznacz odcinek jako odtworzony, jeśli do końca pozostało mniej niż określona ilość czasu</string>
     <string name="pref_smart_mark_as_played_title">Inteligentnie oznacz jako odtworzone</string>
@@ -991,4 +991,25 @@
         <item quantity="many">Pozostało tylko %1$d odcinków w kolejce</item>
         <item quantity="other">Pozostało tylko %1$d odcinków w kolejce</item>
     </plurals>
+    <string name="favorite_episodes_label_short">Ulubione</string>
+    <string name="feed_new_episodes_action_snackbar">Nie może zostać zmienione kiedy automatyczne pobieranie jest włączone.</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">Dodano %d odcinek do ulubionych.</item>
+        <item quantity="few">Dodano %d odcinki do ulubionych.</item>
+        <item quantity="many">Dodano %d odcinków do ulubionych.</item>
+        <item quantity="other">Dodano %d odcinków do ulubionych.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">Usunięto %d odcinek z ulubionych.</item>
+        <item quantity="few">Usunięto %d odcinki z ulubionych.</item>
+        <item quantity="many">Usunięto %d odcinków z ulubionych.</item>
+        <item quantity="other">Usunięto %d odcinków z ulubionych.</item>
+    </plurals>
+    <string name="queue_time_left_label">Pozostało %1$s • %2$s</string>
+    <string name="no_fav_episodes_head_label">Brak ulubionych</string>
+    <string name="pref_advanced">Zaawansowane</string>
+    <string name="import_error_label">Błąd importu</string>
+    <string name="show_password_accessibility">Pokaż hasło</string>
+    <string name="rss_address_invalid">Wprowadzony adres RSS jest nieprawidłowy.</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Wersja %s</string>
 </resources>
