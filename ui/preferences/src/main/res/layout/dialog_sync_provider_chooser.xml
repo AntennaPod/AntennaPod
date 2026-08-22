@@ -10,15 +10,17 @@
         android:id="@+id/explanation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="8dp"
         android:text="@string/synchronization_provider_chooser_explanation" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/more_information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="12dp"
         android:text="@string/synchronization_more_information"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton"
         app:icon="@drawable/ic_open_in_new"
         app:iconGravity="textEnd"
         app:iconPadding="4dp" />

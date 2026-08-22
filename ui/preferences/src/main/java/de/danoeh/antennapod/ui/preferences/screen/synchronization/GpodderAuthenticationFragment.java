@@ -87,12 +87,10 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         if (alertDialog == null) {
             return;
         }
-
         Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
         if (negativeButton == null) {
             return;
         }
-
         if (currentStep == 0) {
             negativeButton.setText(R.string.cancel_label);
             negativeButton.setOnClickListener(v -> dismiss());
@@ -106,11 +104,9 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         if (currentStep > 0) {
             currentStep--;
             viewFlipper.showPrevious();
-
             if (currentStep == 0) {
                 getDialog().setTitle(R.string.gpodnetauth_login_butLabel);
             }
-
             updateNavigationButton();
         }
     }
@@ -198,7 +194,6 @@ public class GpodderAuthenticationFragment extends DialogFragment {
 
         MaterialButton createDeviceButton = view.findViewById(R.id.createDeviceButton);
         createDeviceButton.setOnClickListener(v -> createDevice(view));
-
         devicesContainer.removeAllViews();
 
         for (GpodnetDevice device : devices) {
