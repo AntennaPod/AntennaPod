@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.preferences.screen.synchronization;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Spanned;
 import android.text.format.DateUtils;
@@ -24,6 +25,8 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationProvider;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.ui.preferences.R;
+import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.preferences.databinding.DialogSyncProviderChooserBinding;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -162,6 +165,12 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle(R.string.dialog_choose_sync_service_title);
 
+        DialogSyncProviderChooserBinding viewBinding = DialogSyncProviderChooserBinding.inflate(getLayoutInflater());
+        builder.setView(viewBinding.getRoot());
+        viewBinding.moreInformation.setOnClickListener(v ->
+                IntentUtils.openInBrowser(getContext(), "https://antennapod.org/s/sync-help"));
+        Dialog dialog = builder.show();
+
         SynchronizationProvider[] providers = SynchronizationProvider.values();
         ListAdapter adapter = new ArrayAdapter<>(getContext(), R.layout.alertdialog_sync_provider_chooser, providers) {
 
@@ -189,9 +198,9 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
                 return convertView;
             }
         };
-
-        builder.setAdapter(adapter, (dialog, which) -> {
-            switch (providers[which]) {
+        viewBinding.providerList.setAdapter(adapter);
+        viewBinding.providerList.setOnItemClickListener((parent, view, position, id) -> {
+            switch (providers[position]) {
                 case GPODDER_NET:
                     new GpodderAuthenticationFragment()
                             .show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
@@ -203,10 +212,10 @@ public class SynchronizationPreferencesFragment extends AnimatedPreferenceFragme
                 default:
                     break;
             }
+            dialog.dismiss();
             updateScreen();
         });
 
-        builder.show();
     }
 
     private boolean isProviderSelected(@NonNull SynchronizationProvider provider) {
