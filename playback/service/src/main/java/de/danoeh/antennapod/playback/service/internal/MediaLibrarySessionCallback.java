@@ -358,17 +358,20 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     @NonNull
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
+        Log.d(TAG, "onPlaybackResumption() called");
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
         Single.fromCallable(() -> {
             FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             // If there is no media to resume, media3 crashes. So instead of crashing, just play something random.
             if (media == null) {
+                Log.d(TAG, "onPlaybackResumption: trying paused queue now");
                 List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
                 if (!recentQueue.isEmpty()) {
                     media = recentQueue.get(0).getMedia();
                 }
             }
             if (media == null) {
+                Log.d(TAG, "onPlaybackResumption: trying recent episodes now");
                 List<FeedItem> items = DBReader.getEpisodes(0, 1, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
                 if (!items.isEmpty()) {
                     media = items.get(0).getMedia();
@@ -382,6 +385,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                             long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
                             startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                                     (int) startPosition, media.getLastPlayedTimeStatistics());
+                            Log.d(TAG, "onPlaybackResumption: resuming id=" + media.getId()
+                                    + ", title=" + (media.getItem() != null ? media.getItem().getTitle() : "null")
+                                    + ", startPosition=" + startPosition);
                             MediaSession.MediaItemsWithStartPosition result =
                                     new MediaSession.MediaItemsWithStartPosition(
                                             Collections.singletonList(
