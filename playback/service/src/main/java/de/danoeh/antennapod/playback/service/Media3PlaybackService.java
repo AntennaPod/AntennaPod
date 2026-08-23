@@ -550,6 +550,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         } catch (NumberFormatException e) {
             return;
         }
+        if (player.isCurrentMediaItemSeekable() && player.getDuration() > 0) {
+            currentPlayable.setDuration((int) player.getDuration());
+        }
         long position = player.getCurrentPosition();
         long timestamp = System.currentTimeMillis();
         PlayableUtils.saveCurrentPosition(currentPlayable, (int) position, timestamp);
