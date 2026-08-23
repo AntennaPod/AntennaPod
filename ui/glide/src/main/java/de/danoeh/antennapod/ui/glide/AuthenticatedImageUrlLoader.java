@@ -52,8 +52,7 @@ class AuthenticatedImageUrlLoader implements ModelLoader<AuthenticatedImageUrl, 
 
         @NonNull
         @Override
-        public ModelLoader<AuthenticatedImageUrl, InputStream> build(
-                @NonNull MultiModelLoaderFactory multiFactory) {
+        public ModelLoader<AuthenticatedImageUrl, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
             return new AuthenticatedImageUrlLoader();
         }
 
