@@ -26,9 +26,7 @@ class AuthenticatedImageUrlLoader implements ModelLoader<AuthenticatedImageUrl, 
         GlideUrl glideUrl;
         if (model.hasCredentials()) {
             LazyHeaders headers = new LazyHeaders.Builder()
-                    .addHeader("Authorization",
-                            HttpCredentialEncoder.encode(model.getUsername(),
-                                    model.getPassword(), "ISO-8859-1"))
+                    .addHeader("Authorization", HttpCredentialEncoder.encode(model.getUsername(), model.getPassword(), "ISO-8859-1"))
                     .build();
             glideUrl = new GlideUrl(model.getUrl(), headers);
         } else {
