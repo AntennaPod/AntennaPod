@@ -68,6 +68,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("playback_speed", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_NEXT_CHAPTER
             = new SessionCommand("next_chapter", Bundle.EMPTY);
+    protected static final SessionCommand SESSION_COMMAND_SKIP_EPISODE
+            = new SessionCommand("skip_episode", Bundle.EMPTY);
     public static final SessionCommand SESSION_COMMAND_SKIP_SILENCE
             = new SessionCommand("skip_silence", Bundle.EMPTY);
     public static final SessionCommand SESSION_COMMAND_SET_SLEEP_TIMER
@@ -116,6 +118,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_FAST_FORWARD)
                 .add(SESSION_COMMAND_PLAYBACK_SPEED)
                 .add(SESSION_COMMAND_NEXT_CHAPTER)
+                .add(SESSION_COMMAND_SKIP_EPISODE)
                 .add(SESSION_COMMAND_SKIP_SILENCE)
                 .add(SESSION_COMMAND_SET_SLEEP_TIMER)
                 .add(SESSION_COMMAND_DISABLE_SLEEP_TIMER)
@@ -123,8 +126,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .build();
         Player.Commands playerCommands = new Player.Commands.Builder()
                 .addAllCommands()
-                .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
-                .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
                 .build();
         return new MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
@@ -177,7 +178,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         if (UserPreferences.showSkipOnFullNotification()) {
             buttons.add(new CommandButton.Builder(CommandButton.ICON_NEXT)
                     .setSlots(CommandButton.SLOT_OVERFLOW)
-                    .setPlayerCommand(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+                    .setSessionCommand(SESSION_COMMAND_SKIP_EPISODE)
                     .setDisplayName(context.getString(R.string.skip_episode_label))
                     .build());
         }
@@ -230,6 +231,23 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         return false;
     }
 
+    @Override
+    @UnstableApi
+    public int onPlayerCommandRequest(@NonNull MediaSession session,
+            @NonNull MediaSession.ControllerInfo controllerInfo, int playerCommand) {
+        // Some controllers (e.g. Gadgetbridge) call seekToNext()/seekToPrevious() directly, bypassing
+        // onMediaButtonEvent, so the remap needs to apply here too.
+        if (playerCommand == Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM || playerCommand == Player.COMMAND_SEEK_TO_NEXT) {
+            performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwareForwardButton());
+            return SessionError.ERROR_NOT_SUPPORTED;
+        } else if (playerCommand == Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM
+                || playerCommand == Player.COMMAND_SEEK_TO_PREVIOUS) {
+            performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwarePreviousButton());
+            return SessionError.ERROR_NOT_SUPPORTED;
+        }
+        return SessionResult.RESULT_SUCCESS;
+    }
+
     @UnstableApi
     private void performHardwareButtonAction(Player player, int action) {
         switch (action) {
@@ -261,6 +279,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         } else if (customCommand.customAction.equals(SESSION_COMMAND_FAST_FORWARD.customAction)) {
             session.getPlayer().seekForward();
+            return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+        } else if (customCommand.customAction.equals(SESSION_COMMAND_SKIP_EPISODE.customAction)) {
+            session.getPlayer().seekToNextMediaItem();
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         }
         return Futures.immediateFuture(new SessionResult(SessionError.ERROR_NOT_SUPPORTED));

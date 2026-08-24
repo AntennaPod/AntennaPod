@@ -125,8 +125,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 return super.getAvailableCommands()
                         .buildUpon()
                         .add(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
-                        .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
-                        .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+                        .add(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
                         .remove(Player.COMMAND_SET_REPEAT_MODE)
                         .remove(Player.COMMAND_SET_SHUFFLE_MODE)
                         .build();
