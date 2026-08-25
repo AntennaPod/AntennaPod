@@ -345,7 +345,9 @@ public class DbReaderTest {
                 feed.getItems().get(0).setNew();
                 adapter.setCompleteFeed(feed);
             }
-            adapter.setQueue(Arrays.asList(feeds.get(0).getItems().get(0), feeds.get(2).getItems().get(0)));
+            adapter.setQueue(Arrays.asList(feeds.get(0).getItems().get(0), feeds.get(2).getItems().get(0),
+                    feeds.get(3).getItems().get(0), feeds.get(4).getItems().get(0),
+                    feeds.get(5).getItems().get(0), noMediaFeed.getItems().get(0)));
             adapter.close();
 
             List<FeedItem> candidates = DBReader.getAutoDownloadCandidates(false, false);
