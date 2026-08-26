@@ -18,7 +18,9 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedOrder;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
@@ -311,6 +313,64 @@ public class DbReaderTest {
                 }
                 assertTrue(found);
             }
+        }
+
+        @Test
+        public void testGetAutoDownloadCandidates() {
+            List<Feed> feeds = saveFeedlist(7, 1, true);
+            Feed noMediaFeed = saveFeedlist(1, 1, false).get(0);
+            feeds.add(noMediaFeed);
+            for (Feed feed : feeds) {
+                feed.setPreferences(new FeedPreferences(feed.getId(), FeedPreferences.AutoDownloadSetting.GLOBAL,
+                        FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF,
+                        FeedPreferences.NewEpisodesAction.GLOBAL, null, null));
+            }
+
+            feeds.get(0).getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
+            feeds.get(1).getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.GLOBAL);
+            feeds.get(2).getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.DISABLED);
+            feeds.get(3).getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
+            feeds.get(3).getItems().get(0).getMedia().setDownloaded(true, System.currentTimeMillis());
+            feeds.get(4).getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
+            feeds.get(4).getItems().get(0).disableAutoDownload();
+            feeds.get(5).getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
+            feeds.get(5).setDownloadUrl(Feed.PREFIX_LOCAL_FOLDER + "test");
+            feeds.get(6).getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
+            feeds.get(6).setState(Feed.STATE_ARCHIVED);
+            noMediaFeed.getPreferences().setAutoDownload(FeedPreferences.AutoDownloadSetting.ENABLED);
+
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            for (Feed feed : feeds) {
+                feed.getItems().get(0).setNew();
+                adapter.setCompleteFeed(feed);
+            }
+            adapter.setQueue(Arrays.asList(feeds.get(0).getItems().get(0), feeds.get(2).getItems().get(0),
+                    feeds.get(3).getItems().get(0), feeds.get(4).getItems().get(0),
+                    feeds.get(5).getItems().get(0), noMediaFeed.getItems().get(0)));
+            adapter.close();
+
+            List<FeedItem> candidates = DBReader.getAutoDownloadCandidates(false, false);
+            assertEquals(1, candidates.size());
+            assertEquals(feeds.get(0).getItems().get(0).getId(), candidates.get(0).getId());
+
+            candidates = DBReader.getAutoDownloadCandidates(true, false);
+            assertEquals(2, candidates.size());
+            List<Long> candidateIds = new ArrayList<>();
+            for (FeedItem candidate : candidates) {
+                candidateIds.add(candidate.getId());
+            }
+            assertTrue(candidateIds.contains(feeds.get(0).getItems().get(0).getId()));
+            assertTrue(candidateIds.contains(feeds.get(1).getItems().get(0).getId()));
+
+            candidates = DBReader.getAutoDownloadCandidates(false, true);
+            assertEquals(2, candidates.size());
+            candidateIds.clear();
+            for (FeedItem candidate : candidates) {
+                candidateIds.add(candidate.getId());
+            }
+            assertTrue(candidateIds.contains(feeds.get(0).getItems().get(0).getId()));
+            assertTrue(candidateIds.contains(feeds.get(2).getItems().get(0).getId()));
         }
 
         @Test
