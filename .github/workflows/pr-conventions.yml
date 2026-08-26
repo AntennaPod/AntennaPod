@@ -5,40 +5,33 @@ on:
     types: [ opened, synchronize, reopened, edited, labeled, unlabeled ]
 
 jobs:
-  pr-title:
+  check:
     name: "Check"
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
     steps:
-      - name: Check PR Conventions
+      - name: PR title
         uses: actions/github-script@v8
         with:
           script: |
             const issueRegex = /#\d+/i;
             if (issueRegex.test(context.payload.pull_request.title)) {
               core.setFailed("Please mention the issue number in the PR description, not in the title. Make sure to write 'closes #<number>'.");
-              return;
             }
 
-            const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\s+#\d+/i;
-            if (issueRegex.test(context.payload.pull_request.body) && !closingRegex.test(context.payload.pull_request.body)) {
-              core.setFailed("The PR description must contain 'closes #<number>' to link to the issue that it closes.");
-              return;
-            }
-
+      - name: PR template
+        uses: actions/github-script@v8
+        with:
+          script: |
             const body = context.payload.pull_request.body || "";
             const descriptionMatch = body.match(/###\s*Description\s*\n([\s\S]*?)###\s*Checklist/i);
             if (!descriptionMatch || descriptionMatch[1].replace(/\s/g, "").length < 10) {
               core.setFailed("It looks like you did not follow the PR template. Please add a description in the Description section, above the checklist.");
-              return;
             }
 
-  convert-to-draft:
-    name: "Convert to draft if issue not ready"
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Convert to draft if linked issue is not ready
+      - name: Close keyword
         uses: actions/github-script@v8
         with:
           script: |
@@ -51,7 +44,7 @@ jobs:
               issueNumbers.push(parseInt(match[2]));
             }
 
-            if (issueNumbers.length === 0) {
+            const convertToDraft = async (reason) => {
               if (!context.payload.pull_request.draft) {
                 await github.rest.pulls.update({
                   owner: context.repo.owner,
@@ -59,8 +52,18 @@ jobs:
                   pull_number: context.payload.pull_request.number,
                   draft: true,
                 });
-                core.notice("Converted PR to draft because it does not link to any issue with an action keyword.");
               }
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: reason,
+              });
+              core.setFailed(reason);
+            };
+
+            if (issueNumbers.length === 0) {
+              await convertToDraft("This PR does not link to any issue with an action keyword (e.g. 'closes #123'). Please link to an issue or explain why no issue exists. The PR has been converted to draft.");
               return;
             }
 
@@ -74,15 +77,7 @@ jobs:
               const labels = issue.labels.map(l => l.name);
               const hasNeedsLabel = needsLabels.some(nl => labels.includes(nl));
               if (hasNeedsLabel) {
-                if (!context.payload.pull_request.draft) {
-                  await github.rest.pulls.update({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    pull_number: context.payload.pull_request.number,
-                    draft: true,
-                  });
-                  core.notice(`Converted PR to draft because issue #${issueNumber} has a 'Needs:' label.`);
-                }
+                await convertToDraft(`Issue #${issueNumber} still has a 'Needs:' label, meaning it is not ready to be worked on. The PR has been converted to draft.`);
                 return;
               }
             }
