@@ -68,7 +68,7 @@ jobs:
               return;
             }
 
-            const needsLabels = ["Needs: decision", "Needs: triage"];
+            const needsLabels = ["Needs: Decision", "Needs: Triage"];
             for (const issueNumber of issueNumbers) {
               const { data: issue } = await github.rest.issues.get({
                 owner: context.repo.owner,
