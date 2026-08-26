@@ -31,3 +31,58 @@ jobs:
               core.setFailed("It looks like you did not follow the PR template. Please add a description in the Description section, above the checklist.");
               return;
             }
+
+  convert-to-draft:
+    name: "Convert to draft if issue not ready"
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Convert to draft if linked issue is not ready
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const body = context.payload.pull_request.body || "";
+            const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\s+#(\d+)/ig;
+
+            const issueNumbers = [];
+            let match;
+            while ((match = closingRegex.exec(body)) !== null) {
+              issueNumbers.push(parseInt(match[2]));
+            }
+
+            if (issueNumbers.length === 0) {
+              if (!context.payload.pull_request.draft) {
+                await github.rest.pulls.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: context.payload.pull_request.number,
+                  draft: true,
+                });
+                core.notice("Converted PR to draft because it does not link to any issue with an action keyword.");
+              }
+              return;
+            }
+
+            const needsLabels = ["Needs: decision", "Needs: triage"];
+            for (const issueNumber of issueNumbers) {
+              const { data: issue } = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+              });
+              const labels = issue.labels.map(l => l.name);
+              const hasNeedsLabel = needsLabels.some(nl => labels.includes(nl));
+              if (hasNeedsLabel) {
+                if (!context.payload.pull_request.draft) {
+                  await github.rest.pulls.update({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    pull_number: context.payload.pull_request.number,
+                    draft: true,
+                  });
+                  core.notice(`Converted PR to draft because issue #${issueNumber} has a 'Needs:' label.`);
+                }
+                return;
+              }
+            }
