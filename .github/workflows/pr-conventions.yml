@@ -7,6 +7,7 @@ on:
 jobs:
   check:
     name: "Check"
+    if: github.event.pull_request.author_association != 'MEMBER' && github.event.pull_request.author_association != 'OWNER'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
