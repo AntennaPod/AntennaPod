@@ -127,7 +127,19 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .add(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
                         .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
                         .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+                        .remove(Player.COMMAND_SET_REPEAT_MODE)
+                        .remove(Player.COMMAND_SET_SHUFFLE_MODE)
                         .build();
+            }
+
+            @Override
+            public void setRepeatMode(int repeatMode) {
+                // Ignored, some car stereos set this via Bluetooth, which would make episodes loop forever
+            }
+
+            @Override
+            public void setShuffleModeEnabled(boolean shuffleModeEnabled) {
+                // Ignored, some car stereos set this via Bluetooth
             }
 
             @Override
