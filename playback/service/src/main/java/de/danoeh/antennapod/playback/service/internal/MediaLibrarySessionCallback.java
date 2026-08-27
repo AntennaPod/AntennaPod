@@ -342,8 +342,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-        Single.fromCallable(() -> {
-            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+        Maybe.fromCallable(() -> {
+            long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+            FeedMedia media = (mediaId != PlaybackPreferences.NO_MEDIA_PLAYING) ? DBReader.getFeedMedia(mediaId) : null;
             // If there is no media to resume, media3 crashes. So instead of crashing, just play something random.
             if (media == null) {
                 List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
@@ -372,7 +373,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                             0, startPosition);
                             future.set(result);
                         },
-                        future::setException
+                        future::setException,
+                        () -> future.setException(new Exception("No media found"))
                 );
         return future;
     }
