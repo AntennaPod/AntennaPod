@@ -108,6 +108,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                 NotificationUtils.CHANNEL_ID_PLAYING, R.string.notification_channel_playing);
         notificationProvider.setSmallIcon(R.drawable.ic_notification);
         setMediaNotificationProvider(notificationProvider);
+        setForegroundServiceTimeoutMs(UserPreferences.isPersistNotify()
+                ? DEFAULT_FOREGROUND_SERVICE_TIMEOUT_MS : 0);
 
         exoPlayer = ExoPlayerUtils.buildPlayer(this);
         exoPlayer.addListener(new Player.Listener() {
@@ -365,6 +367,13 @@ public class Media3PlaybackService extends MediaLibraryService {
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
     };
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        if (!UserPreferences.isPersistNotify()) {
+            super.onTaskRemoved(rootIntent);
+        }
+    }
 
     @Nullable
     @Override
