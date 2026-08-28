@@ -22,6 +22,7 @@ public interface SwipeAction {
     String REMOVE_FROM_QUEUE = "REMOVE_FROM_QUEUE";
     String DELETE = "DELETE";
     String REMOVE_FROM_HISTORY = "REMOVE_FROM_HISTORY";
+    String SHARE = "SHARE";
 
     String getId();
 

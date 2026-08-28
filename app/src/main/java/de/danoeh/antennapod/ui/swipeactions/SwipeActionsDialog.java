@@ -84,6 +84,7 @@ public class SwipeActionsDialog {
         if (!tag.equals(InboxFragment.TAG)) {
             keys.add(new TogglePlaybackStateSwipeAction());
         }
+        keys.add(new ShareSwipeAction());
 
         String forFragment = "";
         switch (tag) {
