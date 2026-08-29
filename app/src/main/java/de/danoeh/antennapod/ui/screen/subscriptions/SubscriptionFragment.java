@@ -448,7 +448,9 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void updateFilterVisibility() {
-        if (!UserPreferences.getSubscriptionsFilter().isEnabled()) {
+        if (stateToShow != Feed.STATE_SUBSCRIBED) {
+            feedsFilteredMsg.setVisibility(View.GONE);
+        } else if (!UserPreferences.getSubscriptionsFilter().isEnabled()) {
             feedsFilteredMsg.setVisibility(View.GONE);
         } else if (subscriptionAdapter.inActionMode()) {
             feedsFilteredMsg.setVisibility(View.INVISIBLE);
