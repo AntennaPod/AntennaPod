@@ -326,6 +326,9 @@ public class SubscriptionFragment extends Fragment
         if (stateToShow == Feed.STATE_ARCHIVED) {
             emptyView.setTitle(R.string.no_archive_head_label);
             emptyView.setMessage(R.string.no_archive_label);
+        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
+            emptyView.setTitle(R.string.no_subscriptions_head_label);
+            emptyView.setMessage(R.string.no_subscriptions_filtered_label);
         } else {
             emptyView.setTitle(R.string.no_subscriptions_head_label);
             emptyView.setMessage(R.string.no_subscriptions_label);
@@ -384,17 +387,11 @@ public class SubscriptionFragment extends Fragment
                         if (FeedPreferences.TAG_ROOT.equals(tagAdapter.getSelectedTag())) {
                             openedFolderFeeds = result.first.feeds;
                         } else {
-                            boolean tagExists = false;
                             for (NavDrawerData.TagItem tag : result.first.tags) { // Filtered list
                                 if (tag.getTitle().equals(tagAdapter.getSelectedTag())) {
                                     openedFolderFeeds = tag.getFeeds();
-                                    tagExists = true;
                                     break;
                                 }
-                            }
-                            if (!tagExists) {
-                                tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
-                                openedFolderFeeds = result.first.feeds;
                             }
                         }
 
