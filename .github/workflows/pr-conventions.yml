@@ -54,18 +54,18 @@ jobs:
 
             const convertToDraft = async (reason) => {
               if (!context.payload.pull_request.draft) {
-                await github.graphql(`
-                  mutation($id: ID!) {
-                    convertPullRequestToDraft(input: { pullRequestId: $id }) {
-                      pullRequest { isDraft }
-                    }
-                  }`, { id: context.payload.pull_request.node_id });
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: context.payload.pull_request.number,
                   body: reason,
                 });
+                await github.graphql(`
+                  mutation($id: ID!) {
+                    convertPullRequestToDraft(input: { pullRequestId: $id }) {
+                      pullRequest { isDraft }
+                    }
+                  }`, { id: context.payload.pull_request.node_id });
               }
               core.setFailed(reason);
             };
