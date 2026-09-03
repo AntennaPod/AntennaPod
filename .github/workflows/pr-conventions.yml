@@ -53,13 +53,13 @@ jobs:
                   pull_number: context.payload.pull_request.number,
                   draft: true,
                 });
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  body: reason,
+                });
               }
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-                body: reason,
-              });
               core.setFailed(reason);
             };
 
