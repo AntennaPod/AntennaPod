@@ -64,7 +64,7 @@ jobs:
             };
 
             if (issueNumbers.length === 0) {
-              await convertToDraft("This PR does not link to any issue with an action keyword (e.g. 'closes #123'). Please link to an issue or explain why no issue exists. The PR has been converted to draft.");
+              await convertToDraft("This PR does not link to any issue with an action keyword (e.g. `closes #123`). Please link to an issue or explain why no issue exists. The PR has been converted to draft.");
               return;
             }
 
@@ -78,7 +78,7 @@ jobs:
               const labels = issue.labels.map(l => l.name);
               const hasNeedsLabel = needsLabels.some(nl => labels.includes(nl));
               if (hasNeedsLabel) {
-                await convertToDraft(`Issue #${issueNumber} still has a 'Needs:' label, meaning it is not ready to be worked on. The PR has been converted to draft.`);
+                await convertToDraft("Issue #" + issueNumber + " still has a `Needs:` label, meaning it is not ready to be worked on. The PR has been converted to draft.");
                 return;
               }
             }
