@@ -8,17 +8,9 @@ jobs:
   issue-opened:
     runs-on: ubuntu-latest
     steps:
-      - name: App token
-        id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
-        with:
-          client-id: ${{ secrets.PR_BOT_CLIENT_ID }}
-          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
-          permission-issues: write
-
       - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
-          github-token: ${{ steps.app-token.outputs.token }}
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             const body = context.payload.issue.body || '';
             const isBugReport = body.includes('### Steps to reproduce');

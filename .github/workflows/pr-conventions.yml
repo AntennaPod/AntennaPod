@@ -9,15 +9,6 @@ jobs:
     name: "Check"
     runs-on: ubuntu-latest
     steps:
-      - name: App token
-        id: app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
-        with:
-          client-id: ${{ secrets.PR_BOT_CLIENT_ID }}
-          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
-          permission-pull-requests: write
-          permission-issues: write
-
       - name: PR title
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
@@ -41,7 +32,7 @@ jobs:
         if: github.event.pull_request.author_association != 'MEMBER' && github.event.pull_request.author_association != 'OWNER'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
-          github-token: ${{ steps.app-token.outputs.token }}
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             const body = context.payload.pull_request.body || "";
             const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\s+#(\d+)/ig;
@@ -54,18 +45,18 @@ jobs:
 
             const convertToDraft = async (reason) => {
               if (!context.payload.pull_request.draft) {
-                await github.rest.issues.createComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: context.payload.pull_request.number,
-                  body: reason,
-                });
                 await github.graphql(`
                   mutation($id: ID!) {
                     convertPullRequestToDraft(input: { pullRequestId: $id }) {
                       pullRequest { isDraft }
                     }
                   }`, { id: context.payload.pull_request.node_id });
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  body: reason,
+                });
               }
               core.setFailed(reason);
             };
