@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/stale@1e223db275d687790206a7acac4d1a11bd6fe629 # v10
         with:
+          repo-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           days-before-stale: 7
           days-before-close: 7
           only-labels: 'Needs: Reply'

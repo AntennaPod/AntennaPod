@@ -43,20 +43,30 @@ jobs:
               issueNumbers.push(parseInt(match[2]));
             }
 
+            const marker = "<!-- pr-conventions -->";
+
             const convertToDraft = async (reason) => {
               if (!context.payload.pull_request.draft) {
-                await github.graphql(`
-                  mutation($id: ID!) {
-                    convertPullRequestToDraft(input: { pullRequestId: $id }) {
-                      pullRequest { isDraft }
-                    }
-                  }`, { id: context.payload.pull_request.node_id });
-                await github.rest.issues.createComment({
+                const comments = await github.paginate(github.rest.issues.listComments, {
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: context.payload.pull_request.number,
-                  body: reason,
+                  per_page: 100,
                 });
+                if (!comments.some(comment => (comment.body || "").includes(marker))) {
+                  await github.graphql(`
+                    mutation($id: ID!) {
+                      convertPullRequestToDraft(input: { pullRequestId: $id }) {
+                        pullRequest { isDraft }
+                      }
+                    }`, { id: context.payload.pull_request.node_id });
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    body: reason + "\n\n" + marker,
+                  });
+                }
               }
               core.setFailed(reason);
             };
