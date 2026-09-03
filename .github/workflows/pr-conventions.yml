@@ -13,8 +13,15 @@ jobs:
       pull-requests: write
       issues: write
     steps:
+      - name: App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          client-id: ${{ secrets.PR_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
       - name: PR title
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
             const issueRegex = /#\d+/i;
@@ -23,7 +30,7 @@ jobs:
             }
 
       - name: PR template
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
             const body = context.payload.pull_request.body || "";
@@ -34,8 +41,9 @@ jobs:
 
       - name: Close keyword
         if: github.event.pull_request.author_association != 'MEMBER' && github.event.pull_request.author_association != 'OWNER'
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const body = context.payload.pull_request.body || "";
             const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\s+#(\d+)/ig;
