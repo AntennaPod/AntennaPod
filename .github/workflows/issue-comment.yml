@@ -4,9 +4,6 @@ on:
   issue_comment:
     types: [created]
 
-permissions:
-  issues: write
-
 jobs:
   issue-comment:
     if: github.event.issue.pull_request == null
@@ -18,6 +15,7 @@ jobs:
         with:
           client-id: ${{ secrets.PR_BOT_CLIENT_ID }}
           private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+          permission-issues: write
 
       - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
