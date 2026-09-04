@@ -58,6 +58,7 @@ import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Maybe;
@@ -68,7 +69,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -162,6 +162,19 @@ public class ItemFragment extends Fragment {
             }
             actionButton2.onClick(getContext());
         });
+        viewBinding.butAction3.setOnClickListener(v -> {
+            if (item == null) {
+                return; // Not loaded yet
+            }
+            FeedItemMenuHandler.onMenuItemClicked(this, item.isTagged(FeedItem.TAG_FAVORITE)
+                    ? R.id.remove_from_favorites_item : R.id.add_to_favorites_item, item);
+        });
+        viewBinding.butAction4.setOnClickListener(v -> {
+            if (item == null) {
+                return; // Not loaded yet
+            }
+            FeedItemMenuHandler.onMenuItemClicked(this, R.id.share_item, item);
+        });
         viewBinding.txtvPodcast.setOnLongClickListener(v -> {
             ClipboardUtils.copyText(viewBinding.txtvPodcast);
             return true;
@@ -174,12 +187,15 @@ public class ItemFragment extends Fragment {
     }
 
     private void showOnDemandConfigBalloon(boolean offerStreaming) {
-        final boolean isLocaleRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault())
-                == View.LAYOUT_DIRECTION_RTL;
+        final View anchor = offerStreaming ? viewBinding.butAction1 : viewBinding.butAction2;
+        final int[] anchorLocation = new int[2];
+        anchor.getLocationOnScreen(anchorLocation);
+        final float margin = 8 * getResources().getDisplayMetrics().density;
+        final float balloonWidth = getResources().getDisplayMetrics().widthPixels - 2 * margin;
         final Balloon balloon = new Balloon.Builder(getContext())
                 .setArrowOrientation(ArrowOrientation.TOP)
                 .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
-                .setArrowPosition(0.25f + ((isLocaleRtl ^ offerStreaming) ? 0f : 0.5f))
+                .setArrowPosition((anchorLocation[0] + anchor.getWidth() / 2f - margin) / balloonWidth)
                 .setWidthRatio(1.0f)
                 .setMarginLeft(8)
                 .setMarginRight(8)
@@ -265,7 +281,7 @@ public class ItemFragment extends Fragment {
             viewBinding.nonSubscribedWarningLabel.setVisibility(View.VISIBLE);
             viewBinding.nonSubscribedWarningLabel.setOnClickListener(v -> openPodcast());
         }
-        float radius = 8 * getResources().getDisplayMetrics().density;
+        float radius = 12 * getResources().getDisplayMetrics().density;
         RequestOptions options = new RequestOptions()
                 .error(ImagePlaceholder.getDrawable(getContext(), radius))
                 .transform(new FitCenter(),
@@ -327,15 +343,21 @@ public class ItemFragment extends Fragment {
             }
         }
 
-        viewBinding.butAction1Text.setText(actionButton1.getLabel());
-        viewBinding.butAction1Text.setTransformationMethod(null);
-        viewBinding.butAction1Icon.setImageResource(actionButton1.getDrawable());
+        viewBinding.butAction1.setText(actionButton1.getLabel());
+        viewBinding.butAction1.setIconResource(actionButton1.getDrawable());
         viewBinding.butAction1.setVisibility(actionButton1.getVisibility());
 
-        viewBinding.butAction2Text.setText(actionButton2.getLabel());
-        viewBinding.butAction2Text.setTransformationMethod(null);
-        viewBinding.butAction2Icon.setImageResource(actionButton2.getDrawable());
+        viewBinding.butAction2.setContentDescription(getString(actionButton2.getLabel()));
+        viewBinding.butAction2.setIconResource(actionButton2.getDrawable());
         viewBinding.butAction2.setVisibility(actionButton2.getVisibility());
+
+        boolean isFavorite = item.isTagged(FeedItem.TAG_FAVORITE);
+        viewBinding.butAction3.setContentDescription(getString(isFavorite
+                ? R.string.remove_from_favorite_label : R.string.add_to_favorite_label));
+        viewBinding.butAction3.setIconResource(isFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);
+
+        viewBinding.butAction4.setContentDescription(getString(R.string.share_label));
+        viewBinding.butAction4.setVisibility(item.getFeed().isLocalFeed() ? View.GONE : View.VISIBLE);
     }
 
     @Override
