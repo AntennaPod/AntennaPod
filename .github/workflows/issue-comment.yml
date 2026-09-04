@@ -4,16 +4,14 @@ on:
   issue_comment:
     types: [created]
 
-permissions:
-  issues: write
-
 jobs:
   issue-comment:
-    if: github.event.issue.pull_request == null
+    if: github.event.issue.pull_request == null && github.event.comment.user.login != 'antennapod-bot'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             const body = context.payload.comment.body || '';
             const assignmentRequest = /\b(please|can|could|would)\b.{0,40}\bassign\b|\bassign (me|this|it)\b|\bbe assigned\b/i;

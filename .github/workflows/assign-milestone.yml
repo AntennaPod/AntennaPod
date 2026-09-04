@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout master
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: master
           sparse-checkout: app/build.gradle
@@ -34,8 +34,9 @@ jobs:
 
       - name: Get or create milestone
         id: get-milestone
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             const title = '${{ steps.milestone.outputs.name }}';
             const milestones = await github.rest.issues.listMilestones({
@@ -56,8 +57,9 @@ jobs:
             return milestone.number;
 
       - name: Assign milestone to PR
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             await github.rest.issues.update({
               owner: context.repo.owner,
@@ -67,8 +69,9 @@ jobs:
             });
 
       - name: Assign milestone to linked issues
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             const query = `query ($owner: String!, $repo: String!, $number: Int!) {
               repository(owner: $owner, name: $repo) {

@@ -1,33 +1,92 @@
 name: PR Conventions
 
 on:
-  pull_request:
+  pull_request_target:
     types: [ opened, synchronize, reopened, edited, labeled, unlabeled ]
 
 jobs:
-  pr-title:
+  check:
     name: "Check"
     runs-on: ubuntu-latest
     steps:
-      - name: Check PR Conventions
-        uses: actions/github-script@v8
+      - name: PR title
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
             const issueRegex = /#\d+/i;
             if (issueRegex.test(context.payload.pull_request.title)) {
               core.setFailed("Please mention the issue number in the PR description, not in the title. Make sure to write 'closes #<number>'.");
-              return;
             }
 
-            const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\s+#\d+/i;
-            if (issueRegex.test(context.payload.pull_request.body) && !closingRegex.test(context.payload.pull_request.body)) {
-              core.setFailed("The PR description must contain 'closes #<number>' to link to the issue that it closes.");
-              return;
-            }
-
+      - name: PR template
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
             const body = context.payload.pull_request.body || "";
             const descriptionMatch = body.match(/###\s*Description\s*\n([\s\S]*?)###\s*Checklist/i);
             if (!descriptionMatch || descriptionMatch[1].replace(/\s/g, "").length < 10) {
               core.setFailed("It looks like you did not follow the PR template. Please add a description in the Description section, above the checklist.");
+            }
+
+      - name: Close keyword
+        if: github.event.pull_request.author_association != 'MEMBER' && github.event.pull_request.author_association != 'OWNER'
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
+          script: |
+            const body = context.payload.pull_request.body || "";
+            const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\s+#(\d+)/ig;
+
+            const issueNumbers = [];
+            let match;
+            while ((match = closingRegex.exec(body)) !== null) {
+              issueNumbers.push(parseInt(match[2]));
+            }
+
+            const marker = "<!-- pr-conventions -->";
+
+            const convertToDraft = async (reason) => {
+              if (!context.payload.pull_request.draft) {
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  per_page: 100,
+                });
+                if (!comments.some(comment => (comment.body || "").includes(marker))) {
+                  await github.graphql(`
+                    mutation($id: ID!) {
+                      convertPullRequestToDraft(input: { pullRequestId: $id }) {
+                        pullRequest { isDraft }
+                      }
+                    }`, { id: context.payload.pull_request.node_id });
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    body: reason + "\n\n" + marker,
+                  });
+                }
+              }
+              core.setFailed(reason);
+            };
+
+            if (issueNumbers.length === 0) {
+              await convertToDraft("This PR does not link to any issue with an action keyword (e.g. `closes #123`). Please link to an issue or explain why no issue exists. The PR has been converted to draft.");
               return;
+            }
+
+            const needsLabels = ["Needs: Decision", "Needs: Triage"];
+            for (const issueNumber of issueNumbers) {
+              const { data: issue } = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+              });
+              const labels = issue.labels.map(l => l.name);
+              const hasNeedsLabel = needsLabels.some(nl => labels.includes(nl));
+              if (hasNeedsLabel) {
+                await convertToDraft("Issue #" + issueNumber + " still has a `Needs:` label, meaning it is not ready to be worked on. The PR has been converted to draft.");
+                return;
+              }
             }
