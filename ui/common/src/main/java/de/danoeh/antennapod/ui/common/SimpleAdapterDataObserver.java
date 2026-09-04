@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.view;
+package de.danoeh.antennapod.ui.common;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;

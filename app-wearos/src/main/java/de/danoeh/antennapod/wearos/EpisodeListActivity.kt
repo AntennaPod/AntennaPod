@@ -10,6 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
+import androidx.wear.compose.material3.MaterialTheme
+import androidx.wear.compose.material3.dynamicColorScheme
 import de.danoeh.antennapod.model.feed.FeedItem
 import de.danoeh.antennapod.wearos.composable.ListItem
 import de.danoeh.antennapod.wearos.composable.ListScaffold
@@ -24,16 +26,18 @@ class EpisodeListActivity : ComponentActivity() {
         val viewModel = ViewModelProvider(this, EpisodeListViewModel.factory(path))[EpisodeListViewModel::class.java]
 
         setContent {
-            val uiState by viewModel.uiState.collectAsState()
-            EpisodeListScreen(
-                uiState = uiState,
-                onOpenEpisodeDetail = { episode ->
-                    val intent = Intent(this, EpisodeDetailActivity::class.java).apply {
-                        putExtra(EpisodeDetailActivity.EXTRA_EPISODE, episode)
+            MaterialTheme(colorScheme = dynamicColorScheme(this) ?: MaterialTheme.colorScheme) {
+                val uiState by viewModel.uiState.collectAsState()
+                EpisodeListScreen(
+                    uiState = uiState,
+                    onOpenEpisodeDetail = { episode ->
+                        val intent = Intent(this, EpisodeDetailActivity::class.java).apply {
+                            putExtra(EpisodeDetailActivity.EXTRA_EPISODE, episode)
+                        }
+                        startActivity(intent)
                     }
-                    startActivity(intent)
-                }
-            )
+                )
+            }
         }
     }
 

@@ -51,6 +51,5 @@
     <string name="download_label">Íoslódáil</string>
     <string name="play_label">Seinn</string>
     <string name="opml">OPML</string>
-    <string name="inbox_label_more">Bosca Isteach</string>
     <string name="is_played">Seinnte</string>
 </resources>

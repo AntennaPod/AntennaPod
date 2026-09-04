@@ -22,7 +22,7 @@ import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
+import de.danoeh.antennapod.ui.common.ItemOffsetDecoration;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -191,15 +191,13 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             });
             holder.chip.setOnClickListener(v -> {
                 UserPreferences.setPlaybackSpeed(speed);
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                        PlaybackController.bindToMedia3Service(getContext(),
-                                controller -> controller.setPlaybackSpeed(speed));
-                    } else if (controller != null) {
-                        controller.setPlaybackSpeed(speed);
-                    }
-                    dismiss();
-                }, 200);
+                if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                    PlaybackController.bindToMedia3Service(getContext(),
+                            controller -> controller.setPlaybackSpeed(speed));
+                } else if (controller != null) {
+                    controller.setPlaybackSpeed(speed);
+                }
+                new Handler(Looper.getMainLooper()).postDelayed(() -> dismiss(), 200);
             });
         }
 

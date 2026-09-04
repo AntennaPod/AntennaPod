@@ -82,6 +82,7 @@ public abstract class WidgetUpdater {
         if (widgetState.media != null) {
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
+            views.setOnClickPendingIntent(R.id.imgvCoverLarge, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlaybackSpeed, startPlaybackSpeedDialog);
 
             views.setTextViewText(R.id.txtvTitle, widgetState.media.getEpisodeTitle());
@@ -164,6 +165,7 @@ public abstract class WidgetUpdater {
 
             if (showCoverAsBcg) {
                 views.setViewVisibility(R.id.imgvCover, View.GONE);
+                views.setViewVisibility(R.id.imgvCoverLarge, View.GONE);
                 views.setViewVisibility(R.id.imgvBackground, View.VISIBLE);
                 int iconSize = 4 * context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
                 Bitmap icon = null;
@@ -176,18 +178,23 @@ public abstract class WidgetUpdater {
                     views.setViewVisibility(R.id.imgvBackground, View.GONE);
                 }
             } else {
-                views.setViewVisibility(R.id.imgvCover, View.VISIBLE);
+                int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+                boolean largeCover = minHeight >= 100 && columns >= 2;
+                views.setViewVisibility(R.id.imgvCover, largeCover ? View.GONE : View.VISIBLE);
+                views.setViewVisibility(R.id.imgvCoverLarge, largeCover ? View.VISIBLE : View.GONE);
                 views.setViewVisibility(R.id.imgvBackground, View.GONE);
-                int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+                int iconSize = largeCover
+                        ? context.getResources().getDimensionPixelSize(R.dimen.widget_cover_large)
+                        : context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
                 int radius = context.getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
                 Bitmap icon = null;
                 if (widgetState.media != null) {
                     icon = loadCover(context, iconSize, widgetState.media, new RoundedCorners(radius));
                 }
                 if (icon != null) {
-                    views.setImageViewBitmap(R.id.imgvCover, icon);
+                    views.setImageViewBitmap(largeCover ? R.id.imgvCoverLarge : R.id.imgvCover, icon);
                 } else {
-                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
+                    views.setImageViewResource(largeCover ? R.id.imgvCoverLarge : R.id.imgvCover, R.mipmap.ic_launcher);
                 }
             }
             int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);

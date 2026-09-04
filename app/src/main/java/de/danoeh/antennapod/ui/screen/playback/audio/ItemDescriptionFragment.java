@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -49,9 +50,15 @@ public class ItemDescriptionFragment extends Fragment {
         Log.d(TAG, "Creating view");
         View root = inflater.inflate(R.layout.item_description_fragment, container, false);
         webvDescription = root.findViewById(R.id.webview);
-        webvDescription.setTimecodeSelectedListener(time ->
+        webvDescription.setTimecodeSelectedListener(time -> {
+            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+                PlaybackController.bindToMedia3Service(getActivity(), controller ->
+                        controller.seekTo(time));
+            } else {
                 PlaybackController.bindToService(getActivity(), playbackService ->
-                        playbackService.seekTo(time)));
+                        playbackService.seekTo(time));
+            }
+        });
         webvDescription.setPageFinishedListener(() -> {
             // Restoring the scroll position might not always work
             webvDescription.postDelayed(ItemDescriptionFragment.this::restoreFromPreference, 50);

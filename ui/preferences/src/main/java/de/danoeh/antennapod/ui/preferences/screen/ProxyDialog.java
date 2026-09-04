@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.ui.screen.preferences;
+package de.danoeh.antennapod.ui.preferences.screen;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.preferences.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
 import de.danoeh.antennapod.model.download.ProxyConfig;

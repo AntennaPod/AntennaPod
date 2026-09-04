@@ -257,7 +257,6 @@
     <string name="random">임의 순서</string>
     <string name="smart_shuffle">똑똑한 무작위 순서</string>
     <string name="size">크기</string>
-    <string name="time_left_label">"남은 시간: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">프리셋</string>
     <string name="preset_already_exists">%1$.2f배속이 이미 프리셋으로 저장되었습니다.</string>
@@ -527,8 +526,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">데이터 폴더 선택</string>
     <string name="choose_data_directory_available_space">%1$s 비어 있음 (전체 %2$s)</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">다른 앱이 소리를 낼 때 볼륨을 줄이지 않고 재생을 일시 중지</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">끼어들면 일시 중지</string>
     <!--Rating dialog-->
   <string name="rating_tagline">%1$s 이후, %2$s%3$d%4$s 시간의 팟캐스트를 재생했습니다.</string>
     <string name="rating_contribute_label">참여하고 싶으십니까? 번역, 지원, 디자인, 코딩 중 하나를 하고 싶다면, 얼마든지 환영합니다!</string>

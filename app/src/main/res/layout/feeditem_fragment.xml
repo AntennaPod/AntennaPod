@@ -186,7 +186,7 @@
 
     </LinearLayout>
 
-    <de.danoeh.antennapod.ui.view.NestedScrollableHost
+    <de.danoeh.antennapod.ui.common.NestedScrollableHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/header"
@@ -198,7 +198,7 @@
             android:layout_height="match_parent"
             android:foreground="?android:windowContentOverlay" />
 
-    </de.danoeh.antennapod.ui.view.NestedScrollableHost>
+    </de.danoeh.antennapod.ui.common.NestedScrollableHost>
 
     <FrameLayout
         android:layout_width="match_parent"

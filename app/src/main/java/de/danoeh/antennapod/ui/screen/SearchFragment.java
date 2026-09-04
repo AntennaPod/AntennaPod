@@ -42,10 +42,10 @@ import de.danoeh.antennapod.net.discovery.CombinedSearcher;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.discovery.OnlineSearchFragment;
-import de.danoeh.antennapod.ui.view.EmptyViewHandler;
+import de.danoeh.antennapod.ui.common.EmptyViewHandler;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
-import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
+import de.danoeh.antennapod.ui.common.LiftOnScrollListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -151,7 +151,6 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
         progressBar = layout.findViewById(R.id.progressBar);
         recyclerView = layout.findViewById(R.id.recyclerView);
         floatingSelectMenu = layout.findViewById(R.id.floatingSelectMenu);
-        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
         adapter = new EpisodeItemListAdapter(getActivity()) {
             @Override

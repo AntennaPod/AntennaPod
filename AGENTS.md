@@ -10,8 +10,10 @@ If you have to use shell commands, prefer dedicated tools (such as `jq` for json
 AntennaPod uses a highly modularized Gradle architecture with modules organized by domain.
 Each module is stored in a folder of the same name (for example `:net:discovery` in `./net/discovery`)
 and contains a `README.md` file with a brief explanation of the module's purpose and internal structure.
-If it took you long to figure out something basic, suggest updating the corresponding `README.md` file to make it easier to find in the future.
-Keep your changes minimal, focused on the relevant module, and generalized (do not update with highly specific changes for a single use case).
+Before looking at code in a module, always read its `README.md` first.
+When you discover something broadly useful about a module, such as the correct API to use, or a pattern all callers should follow, update that module's `README.md` proactively.
+Only add information that is long-term stable and generic (patterns, APIs, conventions), not task-specific details or things already obvious from reading the code.
+
 Several functional areas follow a service-interface/service split: the interface module is depended on by consumers, and the implementation is registered at app startup via `ClientConfigurator`.
 - `:app` - Main application module that integrates all features
 - `:event` - EventBus events used for cross-component communication throughout the app
@@ -77,12 +79,12 @@ Only then run the application or the tests to verify it.
 Usually you will need to run the application, but if there are existing tests that cover the code you wrote, you can run those instead.
 For installing and running the application, use the command
 `./gradlew --console=plain :app:installPlayDebug && adb shell monkey -p de.danoeh.antennapod.debug 1`.
-Then confirm with the user that the application is running correctly.
+If needed, you can grab a textual representation of the screen using `adb shell uiautomator dump /sdcard/ui.xml; adb shell cat /sdcard/ui.xml`.
+You can even control connected devices using `adb shell input tap <x> <y>` and `adb shell input swipe <x1> <y1> <x2> <y2> <duration ms>`.
 If there is a crash, read the logs using `adb logcat -d | grep "de.danoeh.antennapod" | tail -20` and fix the issue.
 For running tests, use the command `./gradlew --console=plain` and use the task `:test` of the relevant module.
 As a final style check before opening a PR (or if a user explicitly asks for it), check the code style using:
 `./gradlew checkstyle lint`.
-If any command does not give any output, it is likely that it failed, so abort.
 
 # PR Conventions
 When creating a PR, always read the PR template at `.github/pull_request_template.md` before starting and strictly follow it.
@@ -101,4 +103,6 @@ Never create commits directly on the `develop` or `master` branch. Always checko
 
 # Issue Conventions
 When creating an issue, always follow one of the issue templates in `.github/ISSUE_TEMPLATE/`.
-Apply the corresponding labels and always mention in the technical info box that the issue was AI generated.
+Apply the corresponding labels that are marked in the issue template yaml file.
+Always mention in the technical info box that the issue was AI generated.
+If you do not follow these, the issue gets closed automatically.

@@ -141,7 +141,7 @@ public class EpisodeMultiSelectActionHandler {
         // download the check episodes in the same order as they are currently displayed
         int downloaded = 0;
         for (FeedItem episode : items) {
-            if (episode.hasMedia() && !episode.isDownloaded() && !episode.getFeed().isLocalFeed()) {
+            if (episode.hasMedia() && !episode.isDownloaded()) {
                 DownloadServiceInterface.get().download(activity, episode);
                 downloaded++;
             }
@@ -155,7 +155,7 @@ public class EpisodeMultiSelectActionHandler {
             if (!feedItem.hasMedia()) {
                 continue;
             }
-            if (feedItem.getMedia().isDownloaded() || feedItem.getFeed().isLocalFeed()) {
+            if (feedItem.getMedia().isDownloaded()) {
                 countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(activity, feedItem.getMedia());
             } else if (DownloadServiceInterface.get().isDownloadingEpisode(feedItem.getMedia().getDownloadUrl())) {

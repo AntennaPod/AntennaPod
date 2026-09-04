@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
     <string name="drawer_close">Chiudi il menù</string>
-    <string name="drawer_preferences">Preferenze del menu</string>
+    <string name="drawer_preferences">Preferenze del riquadro di navigazione</string>
     <string name="drawer_feed_order_unplayed_episodes">Ordina per contatore</string>
     <string name="drawer_feed_order_alphabetical">Ordina alfabeticamente</string>
     <string name="drawer_feed_order_last_update">Ordina per data di pubblicazione</string>
@@ -154,14 +154,14 @@
     <!--Actions on feeds-->
   <string name="remove_all_inbox_label">Svuota l\'inbox</string>
     <string name="removed_all_inbox_msg">Inbox svuotata</string>
-    <string name="remove_all_inbox_confirmation_msg">Conferma che vuoi rimuovere tutto dall\'inbox.</string>
+    <string name="remove_all_inbox_confirmation_msg">Conferma che vuoi svuotare l\'inbox.</string>
     <string name="multi_select_mark_played_confirmation">Conferma di voler contrassegnare tutti gli elementi selezionati come riprodotti.</string>
     <string name="multi_select_mark_unplayed_confirmation">Conferma di voler contrassegnare tutti gli elementi selezionati come non riprodotti.</string>
     <string name="show_info_label">Mostra informazioni</string>
     <string name="show_feed_settings_label">Mostra impostazioni podcast</string>
     <string name="feed_settings_label">Impostazioni podcast</string>
     <string name="rename_feed_label">Rinomina</string>
-    <string name="remove_feed_label">Elimina</string>
+    <string name="remove_feed_label">Disiscriviti</string>
     <string name="share_label">Condividi</string>
     <string name="share_file_label">Condividi il file</string>
     <string name="load_complete_feed">Aggiorna podcast completo</string>
@@ -285,7 +285,6 @@
     <string name="smart_shuffle">Casuale intelligente</string>
     <string name="size">Dimensione</string>
     <string name="clear_queue_confirmation_msg">Conferma che vuoi rimuovere dalla coda TUTTI gli episodi presenti.</string>
-    <string name="time_left_label">"Tempo residuo: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Preimpostazioni</string>
     <string name="preset_already_exists">%1$.2fx è già salvato come preimpostazione.</string>
@@ -341,7 +340,7 @@
     <string name="pref_auto_delete_title">Eliminazione automatica</string>
     <string name="pref_auto_delete_sum">Elimina gli episodi al termine della riproduzione o quando il download automatico richiede spazio</string>
     <string name="pref_auto_local_delete_title">Elimina da cartelle locali</string>
-    <string name="pref_auto_local_delete_sum">Includi le cartelle locali nella funzione di eliminazione automatica</string>
+    <string name="pref_auto_local_delete_sum">Elimina anche i file aggiunti tramite \"aggiungi cartella locale\". Tieni presente che questi file non sono scaricati da AntennaPod e non possono essere riscaricati</string>
     <string name="pref_auto_local_delete_dialog_body">Ricorda che questa funzione rimuoverà gli episodi da AntennaPod ed eliminerà i file multimediali dallo spazio di archiviazione del tuo dispositivo. Non potranno essere scaricati di nuovo attraverso AntennaPod. Sei sicuro di voler abilitare l\'eliminazione automatica?</string>
     <string name="pref_smart_mark_as_played_sum">Contrassegna gli episodi come riprodotti anche se rimangono alcuni secondi da riprodurre</string>
     <string name="pref_smart_mark_as_played_title">Contrassegna come riprodotto in modo intelligente</string>
@@ -382,7 +381,7 @@
     <string name="pref_tinted_theme_title">Colori dinamici</string>
     <string name="pref_tinted_theme_message">Adatta i colori dell\'app in base allo sfondo</string>
     <string name="pref_nav_drawer_feed_counter_title">Contatore</string>
-    <string name="pref_automatic_download_title">Download automatici</string>
+    <string name="pref_automatic_download_title">Download automatico</string>
     <string name="pref_automatic_download_sum">Configura il download automatico degli episodi</string>
     <string name="pref_automatic_download_on_battery_title">Download con batteria non in carica</string>
     <string name="pref_automatic_download_on_battery_sum">Permetti il download automatico quando il dispositivo non è in carica</string>
@@ -452,8 +451,8 @@
     <string name="pref_feed_settings_dialog_msg">Questa impostazione è univoca per ogni podcast. Puoi modificarla aprendo la pagina del podcast.</string>
     <string name="pref_contribute">Contribuisci</string>
     <string name="pref_show_subscription_title">Mostra titoli</string>
-    <string name="pref_new_episodes_action_title">Azioni nuovi episodi</string>
-    <string name="pref_new_episodes_action_sum">Azioni da svolgere sui nuovi episodi</string>
+    <string name="pref_new_episodes_action_title">Azione per i nuovi episodi</string>
+    <string name="pref_new_episodes_action_sum">Azione da svolgere sui nuovi episodi</string>
     <string name="episode_information">Informazioni sull\'episodio</string>
     <!--About screen-->
   <string name="about_pref">Informazioni</string>
@@ -589,8 +588,6 @@
   <string name="choose_data_directory">Scegli la cartella per i dati</string>
     <string name="choose_data_directory_message">Scegli dove salvare la tua cartella dati. AntennaPod creerà le sottocartelle appropriate.</string>
     <string name="choose_data_directory_available_space">%1$s di %2$s liberi</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Quando un\'altra app emette un suono, sospendi la riproduzione invece di abbassare il volume</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pausa su interruzione</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Dal %1$s, hai riprodotto %2$s%3$d%4$s ore di podcast.</string>
     <string name="rating_contribute_label">Vuoi partecipare? Saremmo felici di averti con noi per tradurre, supportare, sviluppare o occuparti di design!</string>
@@ -832,11 +829,6 @@
     <string name="inbox_label_short">Inbox</string>
     <string name="downloads_label_short">Download</string>
     <string name="subscriptions_label_short">Iscrizioni</string>
-    <string name="episodes_label_more">Episodi »</string>
-    <string name="queue_label_more">Coda »</string>
-    <string name="inbox_label_more">Inbox »</string>
-    <string name="downloads_label_more">Download »</string>
-    <string name="subscriptions_label_more">Iscrizioni »</string>
     <string name="enabled">Abilitato</string>
     <string name="disabled">Disabilitato</string>
     <string name="statistics_time_total">totale</string>
@@ -871,7 +863,6 @@
     </plurals>
     <string name="removed_from_inbox_message">Rimosso dall\'inbox</string>
     <string name="no_queue_items_inbox_has_items_button_label">Vai all\'inbox</string>
-    <string name="auto_download_inbox_category">Scarica automaticamente gli episodi dall\'inbox</string>
     <string name="mark_as_played_label">Contrassegna come riprodotto</string>
     <plurals name="marked_as_played_message">
         <item quantity="one">%d episodio contrassegnato come riprodotto.</item>
@@ -926,8 +917,8 @@
     <string name="archive_feed_label_verb">Archivia</string>
     <string name="archive_feed_label_noun">Archivio</string>
     <string name="restore_archive_label">Ripristina</string>
-    <string name="remove_archive_feed_label">Elimina / Archivia</string>
-    <string name="feed_delete_explanation_delete">Eliminandola rimuoverai l\'iscrizione, compresi tutti i suoi episodi, download, cronologia riproduzioni e statistiche.</string>
+    <string name="remove_archive_feed_label">Disiscriviti / Archivia</string>
+    <string name="feed_delete_explanation_delete">Disiscrivendoti rimuoverai l\'iscrizione, compresi tutti i suoi episodi, download, cronologia riproduzioni e statistiche.</string>
     <string name="feed_delete_explanation_archive">Archiviandola nasconderai l\'iscrizione dall\'elenco e smetterai di cercarne nuovi episodi. Download, statistiche e stato di riproduzione saranno mantenuti.</string>
     <string name="tag_untagged">Senza tag</string>
     <string name="no_archive_label">È possibile archiviare i podcast dalla schermata principale delle iscrizioni.</string>
@@ -935,7 +926,7 @@
     <string name="general_expand_button">Espandi</string>
     <string name="general_collapse_button">Comprimi</string>
     <string name="archiving_podcast_progress">Archiviando podcast %1$d di %2$d…</string>
-    <string name="deleting_podcast_progress">Eliminando podcast %1$d di %2$d…</string>
+    <string name="deleting_podcast_progress">Disiscrizione dal podcast %1$d di %2$d in corso…</string>
     <string name="download_log_details_human_readable_reason_title">Stato</string>
     <string name="download_log_details_technical_reason_title">Dettagli tecnici</string>
     <string name="download_log_details_file_url_title">URL del file</string>
@@ -970,4 +961,41 @@
         <item quantity="many">Rimangono solo %1$d di episodi nella tua coda</item>
         <item quantity="other">Rimangono solo %1$d episodi nella tua coda</item>
     </plurals>
+    <string name="statistics_label_short">Statistiche</string>
+    <string name="favorite_episodes_label_short">Preferiti</string>
+    <string name="feed_new_episodes_action_snackbar">Non può essere modificato quando il download automatico è abilitato.</string>
+    <string name="remove_restore_feed_label">Disiscriviti / Ripristina</string>
+    <string name="restoring_podcast_progress">Ripristino podcast %1$d di %2$d in corso…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d episodio aggiunto ai preferiti.</item>
+        <item quantity="many">%d di episodi aggiunti ai preferiti.</item>
+        <item quantity="other">%d episodi aggiunti ai preferiti.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d episodio rimosso dai preferiti.</item>
+        <item quantity="many">%d di episodi rimossi dai preferiti.</item>
+        <item quantity="other">%d episodi rimossi dai preferiti.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">%d posizione di episodio reimpostata.</item>
+        <item quantity="many">%d di posizioni di episodi reimpostate.</item>
+        <item quantity="other">%d posizioni di episodi reimpostate.</item>
+    </plurals>
+    <string name="queue_time_left_label">%1$s • %2$s rimanenti</string>
+    <string name="no_fav_episodes_head_label">Nessun preferito</string>
+    <string name="no_fav_episodes_label">Contrassegna gli episodi come preferiti toccando l\'icona della stella.</string>
+    <string name="pref_advanced">Avanzate</string>
+    <string name="pref_display">Visualizzazione</string>
+    <string name="import_error_label">Errore d\'importazione</string>
+    <string name="show_password_accessibility">Mostra password</string>
+    <string name="rss_address_invalid">L\'indirizzo RSS che hai inserito non è valido.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Connesso a %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Versione %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Telefono non compatibile. Assicurati di stare utilizzando sul tuo telefono la versione più recente di AntennaPod disponibile su Google Play.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Nessun elemento</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Impossibile raggiungere il telefono. Assicurati che il tuo telefono sia nei paraggi e che AntennaPod sia installato.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Riproduci sul telefono</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Esplora il telefono</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Apri sul telefono</string>
+    <string name="bottom_navigation_deprecation_warning">Sfortunatamente, in una versione futura dovremo rimuovere la navigazione laterale. AntennaPod è sviluppato da un piccolo gruppo di volontari e, dopo aver supportato per anni entrambi i tipi di navigazione, continuare a farlo comporta troppo lavoro aggiuntivo. \n\nSe hai assolutamente bisogno della navigazione laterale, disabilita gli aggiornamenti di AntennaPod nel tuo app store.</string>
 </resources>

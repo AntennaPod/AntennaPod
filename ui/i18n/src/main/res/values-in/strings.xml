@@ -106,7 +106,7 @@
     <string name="show_feed_settings_label">Tampilkan pengaturan siniar</string>
     <string name="feed_settings_label">Pengaturan siniar</string>
     <string name="rename_feed_label">Ubah nama</string>
-    <string name="remove_feed_label">Hapus</string>
+    <string name="remove_feed_label">Berhenti berlangganan</string>
     <string name="share_label">Bagikan</string>
     <string name="load_complete_feed">Pembaruan podcast selesai</string>
     <string name="multi_select">Pilih banyak</string>
@@ -189,7 +189,6 @@
     <string name="episode_title">Judul episode</string>
     <string name="feed_title">Judul siniar</string>
     <string name="random">Acak</string>
-    <string name="time_left_label">"Waktu tersisa: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Praatur</string>
     <string name="preset_already_exists">%1$.2fx sudah tersimpan sebagai praatur.</string>
@@ -420,8 +419,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Pilih folder data</string>
     <string name="choose_data_directory_available_space">%1$s dari %2$s kosong</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Saat aplikasi lain memutar suara, jeda pemutaran suara alih-alih menurunkan volume suara</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Jeda untuk gangguan</string>
     <!--Online feed view-->
   <string name="subscribe_label">Langganan</string>
     <!--Content descriptions for image buttons-->
@@ -585,11 +582,6 @@
     <string name="home_new_empty_text">Episode-episode baru akan muncul di sini. Anda bisa memutuskan apakah Anda tertarik atau tidak menontonnya.</string>
     <string name="home_downloads_empty_text">Anda bisa mengunduh episode apa pun agar dapat didengarkan secara luring.</string>
     <string name="notification_permission_denied">Anda menolak izin.</string>
-    <string name="episodes_label_more">Episode »</string>
-    <string name="queue_label_more">Antrean »</string>
-    <string name="inbox_label_more">Kotak masuk »</string>
-    <string name="downloads_label_more">Unduhan »</string>
-    <string name="subscriptions_label_more">Langganan »</string>
     <string name="go_to_position_label">Pergi ke posisi ini</string>
     <string name="clear_history_label">Hapus riwayat</string>
     <string name="enabled">Diaktifkan</string>
@@ -711,7 +703,7 @@
     <string name="theming">Penemaan</string>
     <string name="pref_auto_delete_playback_title">Hapus setelah putar</string>
     <string name="pref_hardware_previous_button_title">Tombol Sebelumnya</string>
-    <string name="pref_auto_local_delete_sum">Sertakan folder lokal dalam fungsi penghapusan otomatis</string>
+    <string name="pref_auto_local_delete_sum">Hapus juga file yang ditambahkan melalui \"tambahkan folder lokal\". Perlu diketahui bahwa file-file ini tidak diunduh oleh AntennaPod dan tidak dapat diunduh ulang</string>
     <string name="pref_auto_local_delete_title">Hapus secara otomatis dari folder lokal</string>
     <string name="downloads_pref">Unduhan</string>
     <string name="bottom_navigation_summary">Akses layar-layar terpenting dari mana saja, hanya dengan satu ketukan</string>
@@ -817,8 +809,8 @@
     <string name="archive_feed_label_verb">Arsip</string>
     <string name="archive_feed_label_noun">Arsip</string>
     <string name="restore_archive_label">Pulihkan</string>
-    <string name="remove_archive_feed_label">Hapus / arsipkan</string>
-    <string name="feed_delete_explanation_delete">Menghapus akan menghapus langganan termasuk semua episodenya, unduhan, riwayat pemutaran, dan statistik.</string>
+    <string name="remove_archive_feed_label">Berhenti berlangganan / arsipkan</string>
+    <string name="feed_delete_explanation_delete">Berhenti berlangganan akan menghapus langganan beserta semua episodenya, unduhan, riwayat pemutaran, dan statistik.</string>
     <string name="feed_delete_explanation_archive">Pengarsipan menyembunyikan langganan dari daftar dan berhenti mencari episode baru. Unduhan, statistik, dan status pemutaran tetap disimpan.</string>
     <string name="please_wait_before_refreshing">Tolong tunggu sebentar sebelum memperbarui podcast lagi.</string>
     <plurals name="downloading_episodes_message">
@@ -862,14 +854,13 @@
     <string name="no_archive_label">Anda dapat mengarsipkan podcast dari layar langganan utama.</string>
     <string name="tag_all">Semua</string>
     <string name="tag_untagged">Tanpa tag</string>
-    <string name="auto_download_inbox_category">Unduh episode secara otomatis dari kotak masuk</string>
     <string name="statistics_expected_next_episode_any_time">Segera saja</string>
     <string name="release_schedule_multiple_per_day">berkali-kali dalam sehari</string>
     <string name="cover_as_background">Sampul sebagai latar belakang</string>
     <string name="general_expand_button">Perluas</string>
     <string name="general_collapse_button">Ciutkan</string>
     <string name="archiving_podcast_progress">Mengarsipkan podcast %1$d dari %2$d…</string>
-    <string name="deleting_podcast_progress">Menghapus podcast %1$d dari %2$d…</string>
+    <string name="deleting_podcast_progress">Berhenti berlangganan dari podcast %1$d dari %2$d…</string>
     <string name="download_log_details_human_readable_reason_title">Status</string>
     <string name="download_log_details_technical_reason_title">Detail teknis</string>
     <string name="download_log_details_file_url_title">URL file</string>
@@ -894,4 +885,40 @@
     <string name="sleep_timer_without_continuous_playback_change_hours">Ubah jam</string>
     <string name="sleep_timer_without_continuous_playback_message">Alih-alih selalu mengaktifkan timer tidur secara otomatis dengan satu episode, silakan nonaktifkan \"pemutaran berkelanjutan\" di pengaturan.</string>
     <string name="multiple_sleep_episodes_while_continuous_playback_disabled">Pemutaran berkelanjutan dinonaktifkan di pengaturan. Selalu berhenti di akhir episode.</string>
+    <string name="statistics_label_short">Statistik</string>
+    <string name="favorite_episodes_label_short">Favorit</string>
+    <string name="feed_new_episodes_action_snackbar">Tidak dapat diubah saat unduhan otomatis diaktifkan.</string>
+    <string name="remove_restore_feed_label">Berhenti berlangganan / pulihkan</string>
+    <string name="restoring_podcast_progress">Memulihkan podcast %1$d dari %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="other">%d episode ditambahkan ke favorit.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="other">%d episode dihapus dari favorit.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="other">Posisi %d episode diatur ulang.</item>
+    </plurals>
+    <string name="no_fav_episodes_head_label">Tidak ada favorit</string>
+    <string name="no_fav_episodes_label">Tandai episode sebagai favorit dengan mengetuk ikon bintang.</string>
+    <string name="bottom_navigation_deprecation_warning">Sayangnya kami harus menghapus navigasi samping pada pembaruan mendatang. AntennaPod dikembangkan oleh sekelompok kecil sukarelawan, dan setelah bertahun-tahun memelihara kedua gaya navigasi, hal itu menjadi beban yang terlalu besar. \n\nJika Anda benar-benar bergantung pada navigasi samping, silakan nonaktifkan pembaruan untuk AntennaPod di toko aplikasi Anda.</string>
+    <string name="pref_advanced">Lanjutan</string>
+    <string name="pref_display">Tampilan</string>
+    <string name="import_error_label">Kesalahan impor</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="other">Pemutaran berkelanjutan dinonaktifkan dan episode saat ini hanya memiliki sisa %1$d menit</item>
+    </plurals>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="other">Hanya tersisa %1$d episode di antrean Anda</item>
+    </plurals>
+    <string name="show_password_accessibility">Tampilkan kata sandi</string>
+    <string name="rss_address_invalid">Alamat RSS yang Anda masukkan tidak valid.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Terhubung ke %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Versi %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Ponsel tidak kompatibel. Pastikan Anda menjalankan AntennaPod versi terbaru dari Google Play di ponsel Anda.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Tidak ada item</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Tidak dapat menjangkau ponsel. Pastikan ponsel Anda berada di dekat dan AntennaPod terpasang.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Putar di ponsel</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Jelajahi ponsel</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Buka di ponsel</string>
 </resources>

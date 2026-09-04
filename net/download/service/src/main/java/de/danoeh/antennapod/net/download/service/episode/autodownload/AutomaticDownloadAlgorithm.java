@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.danoeh.antennapod.model.feed.FeedItemFilter;
-import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -50,24 +49,19 @@ public class AutomaticDownloadAlgorithm {
 
                 Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 
-                final List<FeedItem> newItems = DBReader.getEpisodes(0, Integer.MAX_VALUE,
-                        new FeedItemFilter(FeedItemFilter.NEW), SortOrder.DATE_NEW_OLD);
+                boolean globalAutoDownloadEnabled = UserPreferences.isEnableAutodownloadGlobal();
+                boolean autoDownloadQueueEnabled = UserPreferences.isEnableAutodownloadQueue();
+                final List<FeedItem> newItems = DBReader.getAutoDownloadCandidates(
+                        globalAutoDownloadEnabled, autoDownloadQueueEnabled);
                 final List<FeedItem> candidates = new ArrayList<>();
+
                 for (FeedItem newItem : newItems) {
                     FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
-                    if (feedPrefs.isAutoDownload(UserPreferences.isEnableAutodownloadGlobal())
-                            && !candidates.contains(newItem)
-                            && feedPrefs.getFilter().shouldAutoDownload(newItem)) {
+                    boolean shouldAdd = (autoDownloadQueueEnabled && newItem.isTagged(FeedItem.TAG_QUEUE))
+                            || (feedPrefs.isAutoDownload(globalAutoDownloadEnabled)
+                            && feedPrefs.getFilter().shouldAutoDownload(newItem));
+                    if (shouldAdd) {
                         candidates.add(newItem);
-                    }
-                }
-
-                if (UserPreferences.isEnableAutodownloadQueue()) {
-                    final List<FeedItem> queue = DBReader.getQueue();
-                    for (FeedItem item : queue) {
-                        if (!candidates.contains(item)) {
-                            candidates.add(item);
-                        }
                     }
                 }
 

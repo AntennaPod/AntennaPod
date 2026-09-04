@@ -7,4 +7,8 @@ public class CastPlayerWrapper {
     public static Player wrap(Player player, Context context) {
         return player;
     }
+
+    public static boolean hasPlaybackJustFinished(Context context) {
+        return false;
+    }
 }

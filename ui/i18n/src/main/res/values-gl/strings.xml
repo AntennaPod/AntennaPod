@@ -155,7 +155,7 @@
     <string name="show_feed_settings_label">Mostrar axustes do podcast</string>
     <string name="feed_settings_label">Axustes do podcast</string>
     <string name="rename_feed_label">Cambiar nome</string>
-    <string name="remove_feed_label">Eliminar</string>
+    <string name="remove_feed_label">Dar de baixa</string>
     <string name="share_label">Compartir</string>
     <string name="share_file_label">Compartir ficheiro</string>
     <string name="load_complete_feed">Actualizar o podcast completo</string>
@@ -276,7 +276,6 @@
     <string name="smart_shuffle">Barallado intelixente</string>
     <string name="size">Tamaño</string>
     <string name="clear_queue_confirmation_msg">Por favor confirma que queres desbotar TODOS os episodios da cola.</string>
-    <string name="time_left_label">"Tempo restante: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Axustes establecidos</string>
     <string name="preset_already_exists">%1$.2fx xa está gardado como un axuste previo.</string>
@@ -332,7 +331,7 @@
     <string name="pref_auto_delete_title">Eliminación automática</string>
     <string name="pref_auto_delete_sum">Elimina os episodios despois de reproducilos ou cando precisa espazo para a descarga automática</string>
     <string name="pref_auto_local_delete_title">Eliminación automática dende cartafoles locais</string>
-    <string name="pref_auto_local_delete_sum">Incluír cartafoles locais na ferramenta Eliminación Automática</string>
+    <string name="pref_auto_local_delete_sum">Tamén elimina os ficheiros engadidos a través de «engadir cartafol local». Estes ficheiros non os descargou AntennaPod e non se poden volver descargar</string>
     <string name="pref_auto_local_delete_dialog_body">Ten en conta que respecto dos cartafoles locais eliminarás os episodios de AntennaPod e elimnarás os ficheiros multimedia da almacenaxe do dispositivo. Non poderás descargalos de novo usando AntennaPod. Activar eliminación automática?</string>
     <string name="pref_smart_mark_as_played_sum">Marcar episodios como reproducidos se aínda quedan un determinado número de segundos por reproducir</string>
     <string name="pref_smart_mark_as_played_title">Marcado intelixente como escoitado</string>
@@ -419,8 +418,8 @@
     <string name="visit_user_forum">Foro de usuarias</string>
     <string name="copy_to_clipboard">Copiar ó portapapeis</string>
     <string name="copied_to_clipboard">Copiado ó portapapeis</string>
-    <string name="pref_proxy_title">Proxy</string>
-    <string name="pref_proxy_sum">Establecer un proxy para a rede</string>
+    <string name="pref_proxy_title">Mandatario</string>
+    <string name="pref_proxy_sum">Establecer un mandatario para a rede</string>
     <string name="pref_no_browser_found">Non se atopou un navegador web.</string>
     <string name="pref_enqueue_downloaded_title">Pór na cola os descargados</string>
     <string name="pref_enqueue_downloaded_summary">Engadir os episodios descargados á cola</string>
@@ -576,8 +575,6 @@
   <string name="choose_data_directory">Elixe cartafol de datos</string>
     <string name="choose_data_directory_message">Elixe o cartafol base para os datos. AntennaPod creará os subdirectorios que precise.</string>
     <string name="choose_data_directory_available_space">%1$s de %2$s libre</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Pausar a reprodución en lugar de baixar o volume cando outra aplicación quere reproducir un son</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pausa para interrupcións</string>
     <!--Rating dialog-->
   <string name="rating_tagline">Desde %1$s, reproduciches %2$s%3$d%4$s horas de podcasts.</string>
     <string name="rating_contribute_label">Queres unirte? Tanto para traducir, axudar, deseñar ou escribir código, agradecemos a túa colaboración!</string>
@@ -777,11 +774,6 @@
     <string name="downloads_label_short">Descargas</string>
     <string name="subscriptions_label_short">Subscricións</string>
     <string name="playback_history_label_short">Historial</string>
-    <string name="episodes_label_more">Episodios »</string>
-    <string name="queue_label_more">Cola »</string>
-    <string name="inbox_label_more">Novidades »</string>
-    <string name="downloads_label_more">Descargas »</string>
-    <string name="subscriptions_label_more">Subscricións »</string>
     <string name="enabled">Activado</string>
     <string name="disabled">Desactivado</string>
     <string name="global_default_with_value">Predeterminado (%1$s)</string>
@@ -867,7 +859,6 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Sen episodios preparados, pero hai novos episodios agardando por ti!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Ir ás novidades</string>
-    <string name="auto_download_inbox_category">Descarga automatica das novidades</string>
     <string name="please_wait_before_refreshing">Agarda uns minutos antes de volver actualizar os podcasts.</string>
     <string name="already_downloaded">O episodio xa está descargado</string>
     <string name="tag_all">Todo</string>
@@ -881,8 +872,8 @@
     <string name="archive_feed_label_verb">Arquivar</string>
     <string name="archive_feed_label_noun">Arquivo</string>
     <string name="restore_archive_label">Restablecer</string>
-    <string name="remove_archive_feed_label">Eliminar / arquivar</string>
-    <string name="feed_delete_explanation_delete">A eliminación retira a subscrición incluíndo todos os seus episodios, descargas, historial de reprodución e estatísticas.</string>
+    <string name="remove_archive_feed_label">Dar de baixa / arquivar</string>
+    <string name="feed_delete_explanation_delete">Dando de baixa o podcast retiras a subscrición incluíndo todos os seus episodios, descargas, historial de reprodución e estatísticas.</string>
     <string name="feed_delete_explanation_archive">Ao arquivar ocultas a subscrición na lista e deixas de buscar novos episodios. Emporiso, as descargas, estatísticas e historial de reprodución consérvanse.</string>
     <string name="tag_untagged">Sen etiquetar</string>
     <plurals name="mobile_download_notice">
@@ -906,7 +897,7 @@
     <string name="general_expand_button">Despregar</string>
     <string name="general_collapse_button">Pregar</string>
     <string name="archiving_podcast_progress">Arquivando podcast %1$d de %2$d…</string>
-    <string name="deleting_podcast_progress">Eliminando podcast %1$d de %2$d…</string>
+    <string name="deleting_podcast_progress">Dando de baixa o podcast %1$d de %2$d…</string>
     <string name="download_log_details_human_readable_reason_title">Estado</string>
     <string name="download_log_details_technical_reason_title">Detalles técnicos</string>
     <string name="download_log_details_file_url_title">URL do ficheiro</string>
@@ -939,4 +930,38 @@
         <item quantity="one">Só queda %1$d episodio na cola</item>
         <item quantity="other">Só quedan %1$d episodios na cola</item>
     </plurals>
+    <string name="statistics_label_short">Estatísticas</string>
+    <string name="favorite_episodes_label_short">Favoritos</string>
+    <string name="feed_new_episodes_action_snackbar">Non se pode cambiar cando a descarga automática está activada.</string>
+    <string name="remove_restore_feed_label">Dar de baixa / restablecer</string>
+    <string name="restoring_podcast_progress">Restablecendo o podcast %1$d de %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d episodio engadido aos favoritos.</item>
+        <item quantity="other">%d episodios engadidos aos favoritos.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d episodio retirado dos favoritos.</item>
+        <item quantity="other">%d episodios retirados dos favoritos.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">Restablecida %d posición do episodio.</item>
+        <item quantity="other">Restablecidas %d posicións do episodio.</item>
+    </plurals>
+    <string name="queue_time_left_label">Quedan %1$s • %2$s</string>
+    <string name="no_fav_episodes_head_label">Sen favoritos</string>
+    <string name="no_fav_episodes_label">Marca os episodios como favoritos tocando na icona da estrela.</string>
+    <string name="bottom_navigation_deprecation_warning">Desafortunadamente temos que eliminar o panel lateral de navegación en futuras versións. AntennaPod créana un pequeno grupo de persoas voluntarias, e mantivemos os dous estilos de navegación durante anos, pero converteuse nun crebacabezas complicado.\n\nSe dependes absolutamente do panel de navegación lateral, desactiva as actualizacións de AntennaPod no xestor de aplicacións do dispositivo.</string>
+    <string name="pref_advanced">Avanzados</string>
+    <string name="pref_display">Pantalla</string>
+    <string name="import_error_label">Erro ao importar</string>
+    <string name="show_password_accessibility">Mostrar contrasinal</string>
+    <string name="rss_address_invalid">O enderezo RSS escrito non é válido.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Conectado con %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Versión %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">Teléfono incompatíbel. Comproba que estás utilizando a versión máis recente de AntennaPod desde Google Play no teu teléfono.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Sen elementos</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Non se acadou o teléfono. Comproba que o teléfono está preto e AntennaPod instalada.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Reproducir no teléfono</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Buscar o teléfono</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Abrir no teléfono</string>
 </resources>

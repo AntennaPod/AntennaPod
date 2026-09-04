@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -79,12 +78,6 @@ public class ExternalPlayerFragment extends Fragment {
                 }
             }
         });
-        return root;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         butPlay.setOnClickListener(v -> {
             if (PlaybackService.isRunning
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
@@ -100,7 +93,7 @@ public class ExternalPlayerFragment extends Fragment {
                         .start();
             }
         });
-        loadMediaInfo();
+        return root;
     }
 
     @Override

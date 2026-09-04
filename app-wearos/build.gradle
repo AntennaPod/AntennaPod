@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ktlint)
 }
@@ -9,6 +8,7 @@ apply from: "../playFlavor.gradle"
 
 android {
     namespace "de.danoeh.antennapod.wearos"
+    enableKotlin true
 
     defaultConfig {
         applicationId "de.danoeh.antennapod"
@@ -45,10 +45,6 @@ android {
         compose true
     }
 
-    kotlinOptions {
-        jvmTarget = "21"
-    }
-
     lint {
         disable "UnusedResources"
     }
@@ -63,6 +59,7 @@ afterEvaluate {
 dependencies {
     implementation project(":model")
     implementation project(":ui:common")
+    implementation project(":ui:notifications")
     implementation project(":net:sync:wear-interface")
 
     // NOTE: DO NOT INCLUDE a dependency on androidx.compose.material:material, the watch version is a replacement

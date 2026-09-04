@@ -92,6 +92,11 @@ public class HttpDownloader extends Downloader {
                 request.setSoFar(destination.length());
                 httpReq.addHeader("Range", "bytes=" + request.getSoFar() + "-");
                 Log.d(TAG, "Adding range header: " + request.getSoFar());
+                // Only continue if the etag matches, otherwise the file might have changed
+                if (!TextUtils.isEmpty(request.getLastModified())) {
+                    httpReq.addHeader("If-Range", request.getLastModified());
+                    Log.d(TAG, "Adding If-Range header: " + request.getLastModified());
+                }
             }
 
             Response response = newCall(httpReq);

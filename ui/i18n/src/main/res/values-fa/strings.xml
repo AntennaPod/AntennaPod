@@ -147,7 +147,7 @@
     <string name="show_feed_settings_label">نمایش تنظیمات پادپخش</string>
     <string name="feed_settings_label">تنظیمات پادپخش</string>
     <string name="rename_feed_label">تغییر نام</string>
-    <string name="remove_feed_label">حذف</string>
+    <string name="remove_feed_label">لغو اشتراک</string>
     <string name="share_label">هم‌رسانی</string>
     <string name="share_file_label">هم‌رسانی پرونده</string>
     <string name="load_complete_feed">نوسازی پادپخش کامل</string>
@@ -263,7 +263,6 @@
     <string name="random">تصادفی</string>
     <string name="smart_shuffle">بر زدن هوشمند</string>
     <string name="size">اندازه</string>
-    <string name="time_left_label">"زمان مانده: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">پیش تنظیم‌ها</string>
     <string name="preset_already_exists">%1$.2f از پیش به عنوان یک پیش تنظیم ذخیره شده.</string>
@@ -312,7 +311,7 @@
     <string name="button_action_restart_episode">آغاز دوبارهٔ قسمت</string>
     <string name="pref_followQueue_sum">پس از پایان پخش ، به مورد صف بعدی بروید</string>
     <string name="pref_auto_local_delete_title">پاک‌کردن خودکار از پوشه‌های محلی</string>
-    <string name="pref_auto_local_delete_sum">پوشه های محلی را در فهرست پاک‌کردن خودکار قرار دهید</string>
+    <string name="pref_auto_local_delete_sum">همچنین حذف پرونده‌های افزوده با «افزودن شاخهٔ محلی». به خاطر داشته باشید که این پرونده‌ها با آنتاپاد بارگیری نشده و نمی‌توانند دوباره بارگیری شوند</string>
     <string name="pref_auto_local_delete_dialog_body">توجه داشته باشید که برای پوشه‌های محلی، این گزینه قسمت‌ها را از آنتناپاد برمی‌دارد و پرونده‌هایشان را از حافظه دستگاه شما پاک می‌کند. طوری که آنها را نمی‌توان دوباره از آنتناپاد بارگیری کرد. آیا پاک‌کردن خودکار فعال شود؟</string>
     <string name="pref_smart_mark_as_played_sum">علامت زدن قسمت‌ها به پخش شده حتا اگر کم‌تر از مقدار مشخّصی از آن مانده باشد</string>
     <string name="pref_smart_mark_as_played_title">علامت گذاری هوشمند به پخش شده</string>
@@ -533,8 +532,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">گزینش پوشه داده</string>
     <string name="choose_data_directory_available_space">%1$s از %2$s آزاد</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">وقتی برنامه دیگری می خواهد صداها را پخش کند ، به جای کاهش میزان صدا ، پخش را متوقف کن</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">مکث برای وقفه‌ها</string>
     <!--Rating dialog-->
   <string name="rating_tagline">از %1$s، %2$s%3$d%4$s ساعت پادپخش پخش کرده‌اید.</string>
     <string name="rating_contribute_label">می‌خواهید بپیوندید؟ چه بخواهید ترجمه، پشتیبانی، طراحی یا کدزنی کنید از داشتن‌تان خوشحال خواهیم بود!</string>
@@ -769,14 +766,9 @@
     <string name="rating_volunteers_label">آنتناپاد به دست داوطلبانی در زمان آزادشان توسعه یافته. با دادن رتبه خوب از آنان قدردانی کنید.</string>
     <string name="state_deleted_not_subscribed">هنوز مشترک این پادپخش نیستید. برای دسترسی آسان‌تر و نگه‌داشتن تاریخچه پخش‌اش، رایگان مشترک شوید.</string>
     <string name="edit_url_confirmation_msg">تغییر دادن نشانی خوراک می‌تواند وضعیت پخش و فهرست کردن پادپخش را به آسانی خراب کند. تغییرش را توصیه نکرده و در صورت خراب شدن چیزی پشتیبانی ارائه نخواهیم داد. این کار بازگشت‌پذیر نیست. اشتراک‌های خراب نمی‌توانند با تغییر دوبارهٔ نشانی درست شوند. توصیه می‌کنیم پیش از ادامه، پشتیبان بگیرید.</string>
-    <string name="inbox_label_more">صندوق »</string>
-    <string name="downloads_label_more">بارگیری‌ها »</string>
-    <string name="subscriptions_label_more">اشتراک‌ها »</string>
     <string name="notification_channel_refreshing">نو ساختن پادپخش‌ها</string>
     <string name="echo_queue_hours_clean">که یعنی روزانه %1$s تا آغاز %2$d.</string>
     <string name="queue_label_short">صف</string>
-    <string name="queue_label_more">صف »</string>
-    <string name="episodes_label_more">قسمت‌ها »</string>
     <string name="add_feed_label_short">افزودن</string>
     <string name="delete_tag_confirmation">تأیید درخواست پاک‌کردن برچسب «%1$s».</string>
     <string name="preference_search_clear_input">پاک سازی</string>
@@ -868,7 +860,6 @@
         <item quantity="one">بارگرفتن %d قسمت.</item>
         <item quantity="other">بارگرفتن %d قسمت.</item>
     </plurals>
-    <string name="auto_download_inbox_category">بارگیری خودکار قسمت‌ها از صندوق ورودی</string>
     <plurals name="deleted_episode_message">
         <item quantity="one">%d قسمت بارگرفته حذف شد.</item>
         <item quantity="other">%d قسمت بارگرفته حذف شدند.</item>
@@ -897,8 +888,8 @@
     <string name="archive_feed_label_verb">بایگانی</string>
     <string name="archive_feed_label_noun">بایگانی</string>
     <string name="restore_archive_label">بازگردانی</string>
-    <string name="remove_archive_feed_label">حذف یا بایگانی</string>
-    <string name="feed_delete_explanation_delete">حذف کردن اشتراک تمامی قسمت‌ها، بارگیری‌ها، تاریخچهٔ پخش و آمارهایش را برمی‌دارد.</string>
+    <string name="remove_archive_feed_label">بایگانی یا لغو اشتراک</string>
+    <string name="feed_delete_explanation_delete">لغو کردن اشتراک تمامی قسمت‌ها، بارگیری‌ها، تاریخچهٔ پخش و آمارهایش را برمی‌دارد.</string>
     <string name="feed_delete_explanation_archive">بایگانی کردن اشتراک را از سیاهه نهفته و گشتن به دنبال قسمت‌های جدید را متوقّف می‌کند. بارگیری‌ها، آمارها و وضعیت پخش نگه داشته خواهد شد.</string>
     <string name="tag_untagged">برچسب نخورده</string>
     <string name="no_archive_head_label">هیچ چیزی بایگانی نشده</string>
@@ -925,7 +916,7 @@
     <string name="pref_global_default_episode_list_sort_order_title">ترتیب چینش پیش‌گزیده</string>
     <string name="sleep_timer_without_continuous_playback">از کار انداختن پخش ادامه دار</string>
     <string name="archiving_podcast_progress">بایگانی کردن پادپخش %1$d از %2$d…</string>
-    <string name="deleting_podcast_progress">حذف کردن پادپخش %1$d از %2$d…</string>
+    <string name="deleting_podcast_progress">لغو کردن اشتراک پادپخش %1$d از %2$d…</string>
     <string name="no_following_in_queue">آخرین قسمت در صف بود</string>
     <string name="pref_global_default_episode_list_sort_order_sum">گزینش ترتیب پیش‌گزیدهٔ قسمت‌ها روی صفحهٔ پادپخش</string>
     <string name="multiple_sleep_episodes_while_continuous_playback_disabled">پخش ادامه دار در تنظیمات از کار افتاده. همواره در پایان قسمت‌ها متوقّف می‌شود.</string>
@@ -939,4 +930,38 @@
         <item quantity="one">پخش ادامه‌دار از کار افتاده و از قسمت کنونی تنها %1$d دقیقه مانده</item>
         <item quantity="other">پخش ادامه‌دار از کار افتاده و از قسمت کنونی تنها %1$d دقیقه مانده</item>
     </plurals>
+    <string name="statistics_label_short">آمارها</string>
+    <string name="favorite_episodes_label_short">برگزیده‌ها</string>
+    <string name="feed_new_episodes_action_snackbar">نمی‌تواند هنگام به کار افتادن بارگیری خودکار تغییر کند.</string>
+    <string name="remove_restore_feed_label">بازگردانی یا لغو اشتراک</string>
+    <string name="restoring_podcast_progress">بازگردانی پادپخش %1$d از %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d قسمت به برگزیده‌ها افزوده شد.</item>
+        <item quantity="other">%d قسمت به برگزیده‌ها افزوده شدند.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d قسمت از برگزیده‌ها برداشته شد.</item>
+        <item quantity="other">%d قسمت از برگزیده‌ها برداشته شدند.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">موقعیت %d قسمت بازنشانی شد.</item>
+        <item quantity="other">موقعیت %d قسمت بازنشانی شد.</item>
+    </plurals>
+    <string name="queue_time_left_label">%1$s‏ • %2$s مانده</string>
+    <string name="no_fav_episodes_head_label">بدون برگزیده</string>
+    <string name="no_fav_episodes_label">علامت زدن قسمت‌ها به برگزیده با زدن روی نقشک ستاره.</string>
+    <string name="pref_advanced">پیش‌رفته</string>
+    <string name="pref_display">نمایش</string>
+    <string name="import_error_label">خطای درون‌ریزی</string>
+    <string name="show_password_accessibility">نمایش گذرواژه</string>
+    <string name="rss_address_invalid">نشانی خوراکی که وارد کردید معتبر نیست.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">وصل شده به %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">نگارش %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">تلفن سازگار نیست. مطمئن شوید جدیدترین نگارش آنتاپاد را نصب کرده‌اید.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">بدون مورد</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">نمی‌توان به تلفن رسید. مطمئن شوید تلفنتان نزدیک بوده و آنتناپاد نصب شده باشد.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">پخش روی تلفن</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">مرور تلفن</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">گشودن روی تلفن</string>
+    <string name="bottom_navigation_deprecation_warning">متأسفانه باید نوار کناری را در به‌روز رسانی بعدی برداریم. آنتاپاد به دست گروهی کوچک از داوطلبان توسعه داده شده و نگه‌داری هر دو سبک پیمایش برای سال‌ها دردسر زیادی شده است.\n\nاگر مطلقاُ به پیمایش کناری وابسته‌اید لطفاً به‌روز رسانی آنتاپاد را در فروشگاه کاره‌تان از کار بیندازید.</string>
 </resources>

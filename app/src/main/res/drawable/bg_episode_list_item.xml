@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:insetLeft="8dp"
-    android:insetRight="8dp"
+    android:insetLeft="4dp"
+    android:insetRight="4dp"
     android:insetTop="2dp"
     android:insetBottom="2dp">
     <ripple android:color="?attr/colorControlHighlight">

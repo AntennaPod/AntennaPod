@@ -151,7 +151,7 @@
     <string name="show_feed_settings_label">Arată setările pentru podcst</string>
     <string name="feed_settings_label">Setări podcast</string>
     <string name="rename_feed_label">Redenumire</string>
-    <string name="remove_feed_label">Șterge</string>
+    <string name="remove_feed_label">Dezabonare</string>
     <string name="share_label">Trimiteți</string>
     <string name="share_file_label">Trimite fișier</string>
     <string name="load_complete_feed">Reîncarcă tot podcastul</string>
@@ -275,7 +275,6 @@
     <string name="smart_shuffle">Smart shuffle</string>
     <string name="size">Mărime</string>
     <string name="clear_queue_confirmation_msg">Te rugăm să confirmi că doreşti să elimini TOATE episoadele din coada de redare.</string>
-    <string name="time_left_label">"Timp rămas: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Presetări</string>
     <string name="preset_already_exists">%1$.2fx este deja o presetare salvată.</string>
@@ -559,8 +558,6 @@
   <string name="choose_data_directory">Alege fișier date</string>
     <string name="choose_data_directory_message">Te rugăm să selectezi folderul de date. AntennaPod va creea subfolderele corespunzătoare.</string>
     <string name="choose_data_directory_available_space">%1$s din %2$s libere</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Oprește redarea în locul micșorării volumului când o altă aplicație dorește sa redea sunete</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Pauză pentru întreruperi</string>
     <!--Rating dialog-->
   <string name="rating_tagline">De la %1$s ai ascultat %2$s%3$d%4$s de ore de podcast.</string>
     <string name="rating_contribute_label">Vrei să ni te alături ? Indiferent dacă dorești să traduci, să programezi sau să susții comunitatea, am fii bucuroși să vă avem!</string>
@@ -743,8 +740,6 @@
     <string name="downloads_label_short">Descărcări</string>
     <string name="subscriptions_label_short">Abonamente</string>
     <string name="playback_history_label_short">Istoric</string>
-    <string name="inbox_label_more">Inbox »</string>
-    <string name="subscriptions_label_more">Abonamente »</string>
     <string name="disabled">Dezactivat</string>
     <string name="global_default_with_value">Setări implicite generale (%1$s)</string>
     <string name="delete_tag_confirmation">Te rugăm să confirmi că vrei să ștergi eticheta „%1$s”.</string>
@@ -772,9 +767,6 @@
     <string name="add_feed_label_short">Adaugă</string>
     <string name="delete_downloads_played_confirmation">Te rugăm să confirmi că dorești să ștergi toate episoadele descărcate și redate.</string>
     <string name="home_continue_empty_text">Poți să adăuga episoade prin descărcare sau apăsând lung apoi selectând „Adaugă la queue”.</string>
-    <string name="episodes_label_more">Episoade »</string>
-    <string name="queue_label_more">Coadă de redare »</string>
-    <string name="downloads_label_more">Descărcări »</string>
     <plurals name="total_size_downloaded_podcasts">
         <item quantity="one">Mărimea totală ocupată de un episod pe acest dispozitiv</item>
         <item quantity="few">Mărimea totală ocupată de %d episode pe acest dispozitiv</item>
@@ -857,8 +849,8 @@
     <string name="archive_feed_label_verb">Arhivare</string>
     <string name="archive_feed_label_noun">Arhivă</string>
     <string name="restore_archive_label">Restabilire</string>
-    <string name="remove_archive_feed_label">Șterge / arhivează</string>
-    <string name="feed_delete_explanation_delete">Ștergerea va elimina toate episoadele, inclusiv descărcările, istoricul redărilor și statisticile.</string>
+    <string name="remove_archive_feed_label">Dezabonează / arhivează</string>
+    <string name="feed_delete_explanation_delete">Dezabonarea va elimina abonamentul, incluzându-i toate episoadele, descărcările, istoricul redărilor și statisticile.</string>
     <plurals name="downloading_episodes_message">
         <item quantity="one">Se descarcă %d episod.</item>
         <item quantity="few">Se descarcă %d episoade.</item>
@@ -869,7 +861,7 @@
     <string name="section_shown">Afișate</string>
     <string name="feed_delete_explanation_archive">Arhivarea ascunde abonamentele din listă și căutarea de noi episoade va fi oprită. Descărcările, statisticile și starea de redare sunt păstrate.</string>
     <string name="archiving_podcast_progress">Se arhivează podcastul %1$d din %2$d…</string>
-    <string name="deleting_podcast_progress">Se șterge podcastul %1$d din %2$d…</string>
+    <string name="deleting_podcast_progress">Se dezabonează de la podcast %1$d din %2$d…</string>
     <string name="please_wait_before_refreshing">Vă rugăm așteptați un moment înainte de a reîmprospăta lista de podcastul din nou.</string>
     <plurals name="deleted_episode_message">
         <item quantity="one">%d episod descărcat a fost șters.</item>
@@ -946,7 +938,6 @@
     <string name="sleep_timer_without_continuous_playback_change_hours">Schimbă cronometrul</string>
     <string name="tag_all">Toate</string>
     <string name="tag_untagged">Fără etichetă</string>
-    <string name="auto_download_inbox_category">Descarcă automat episoadele din inbox</string>
     <string name="statistics_expected_next_episode_any_time">Oricând din acest moment</string>
     <string name="release_schedule_multiple_per_day">de mai multe ori pe zi</string>
     <string name="rss_address">Adresa RSS</string>
@@ -969,5 +960,20 @@
         <item quantity="one">A mai rămas numai %1$d episod în coada de redare</item>
         <item quantity="few">Au mai rămas numai %1$d episoade în coada de redare</item>
         <item quantity="other">Au mai rămas numai %1$d de episoade în coada de redare</item>
+    </plurals>
+    <string name="statistics_label_short">Statistici</string>
+    <string name="favorite_episodes_label_short">Favorite</string>
+    <string name="feed_new_episodes_action_snackbar">Nu se poate modifica atunci când descărcarea automată este activă.</string>
+    <string name="remove_restore_feed_label">Dezabonare / dezarhivare</string>
+    <string name="restoring_podcast_progress">Dezarhivare podcast %1$d of %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d episod adăugat la favorite.</item>
+        <item quantity="few">%d episoade adăugate la favorite.</item>
+        <item quantity="other">%d de episoade adăugate la favorite.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d episod scos de la favorite.</item>
+        <item quantity="few">%d episoade scoase de la favorite.</item>
+        <item quantity="other">%d de episoade scoase de la favorite.</item>
     </plurals>
 </resources>

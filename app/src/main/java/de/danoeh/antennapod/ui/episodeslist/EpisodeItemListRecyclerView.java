@@ -32,7 +32,6 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
 
     private void setup() {
         layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setRecycleChildrenOnDetach(true);
         setLayoutManager(layoutManager);
         setHasFixedSize(true);
         setClipToPadding(false);

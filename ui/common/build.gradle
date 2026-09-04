@@ -7,7 +7,7 @@ android {
     namespace "de.danoeh.antennapod.ui.common"
 
     lint {
-        disable 'VectorPath'
+        disable 'VectorPath', 'ContentDescription'
     }
 }
 

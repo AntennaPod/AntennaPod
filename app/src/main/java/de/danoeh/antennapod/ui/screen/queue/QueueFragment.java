@@ -64,9 +64,9 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
-import de.danoeh.antennapod.ui.view.EmptyViewHandler;
+import de.danoeh.antennapod.ui.common.EmptyViewHandler;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemListRecyclerView;
-import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
+import de.danoeh.antennapod.ui.common.LiftOnScrollListener;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -156,8 +156,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
             case REMOVED:
             case IRREVERSIBLE_REMOVED:
                 position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
-                queue.remove(position);
-                recyclerAdapter.notifyItemRemoved(position);
+                if (position >= 0) {
+                    queue.remove(position);
+                    recyclerAdapter.notifyItemRemoved(position);
+                }
                 break;
             case CLEARED:
                 queue.clear();
@@ -165,8 +167,10 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
                 break;
             case MOVED:
                 position = FeedItemEvent.indexOfItemWithId(queue, event.item.getId());
-                queue.add(event.position, queue.remove(position));
-                recyclerAdapter.notifyItemMoved(position, event.position);
+                if (position >= 0) {
+                    queue.add(event.position, queue.remove(position));
+                    recyclerAdapter.notifyItemMoved(position, event.position);
+                }
                 break;
             default:
                 return;
@@ -431,7 +435,6 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
-        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
         recyclerView.addOnScrollListener(new LiftOnScrollListener(root.findViewById(R.id.appbar)));
 

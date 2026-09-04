@@ -264,7 +264,6 @@
     <string name="random">Véletlenszerű</string>
     <string name="smart_shuffle">Okos keverés</string>
     <string name="size">Méret</string>
-    <string name="time_left_label">"Hátralévő idő: "</string>
     <!--Variable Speed-->
   <string name="speed_presets">Előbeállítások</string>
     <string name="preset_already_exists">Már mentve lett előbeállításként: %1$.2fx.</string>
@@ -534,8 +533,6 @@
     <!--Directory chooser-->
   <string name="choose_data_directory">Válasszon adatmappát</string>
     <string name="choose_data_directory_available_space">%1$s / %2$s szabad</string>
-    <string name="pref_pausePlaybackForFocusLoss_sum">Lejátszás szüneteltetése a hangerő csökkentése helyett, ha egy másik alkalmazás akar hangot lejátszani</string>
-    <string name="pref_pausePlaybackForFocusLoss_title">Megszakítások esetén szüneteltetés</string>
     <!--Rating dialog-->
   <string name="rating_tagline">%1$s óta %2$s%3$d%4$s órányi podcastot hallgatott.</string>
     <string name="rating_contribute_label">Csatlakozna? Akár a fordításba, a támogatásba, a dizájnba vagy a kódolásba szállna be, örömmel látjuk!</string>
@@ -762,11 +759,6 @@
     <string name="downloads_label_short">Letöltések</string>
     <string name="subscriptions_label_short">Feliratkozások</string>
     <string name="playback_history_label_short">Előzmények</string>
-    <string name="episodes_label_more">Epizódok »</string>
-    <string name="queue_label_more">Sor »</string>
-    <string name="inbox_label_more">Beérkezett »</string>
-    <string name="downloads_label_more">Letöltések »</string>
-    <string name="subscriptions_label_more">Feliratkozások »</string>
     <string name="enabled">Engedélyezve</string>
     <string name="disabled">Letiltva</string>
     <string name="global_default_with_value">Globális alapértelmezés (%1$s)</string>
@@ -868,7 +860,6 @@
     </plurals>
     <string name="no_queue_items_inbox_has_items_label">Nincs epizód bekészítve, de új epizódok várnak Önre!</string>
     <string name="no_queue_items_inbox_has_items_button_label">Ugrás a beérkezettekhez</string>
-    <string name="auto_download_inbox_category">Az epizódok automatikus letöltése a beérkezettekből</string>
     <string name="please_wait_before_refreshing">Kérjük, várjon egy kis időt, mielőtt újra frissíti a podcastokat.</string>
     <string name="already_downloaded">Az epizód már le van töltve</string>
     <string name="tag_all">Összes</string>

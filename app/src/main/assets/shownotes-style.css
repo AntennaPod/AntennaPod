@@ -7,9 +7,6 @@ a {
      font-weight: normal;
      color: %s;
 }
-a.timecode {
-     color: #669900;
-}
 img, iframe {
      display: block;
      margin: 10 auto;

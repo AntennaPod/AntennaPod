@@ -32,7 +32,7 @@
 | Italian | Champ0999, Giovanni Donisi, Luca |
 | Japanese | Shuuji TAKAHASHI (shuuji3) |
 | Kannada (India) | Anonymous |
-| Ko | DY |
+| Korean | DY |
 | Lithuanian | Marija Grineviciute, kalchen6666 |
 | Macedonian | AND, Kristijan \Fremen\ Velkovski |
 | Malayalam | Nikhil Krishnakumar |
