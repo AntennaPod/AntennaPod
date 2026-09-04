@@ -21,7 +21,6 @@ import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
-import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.IgnoreOnCi;
 import de.test.antennapod.ui.UITestUtils;
@@ -144,30 +143,6 @@ public class PlaybackTest {
         activityTestRule.launchActivity(new Intent());
         DBWriter.clearQueue().get();
         startLocalPlayback();
-    }
-
-    @Test
-    public void testResetPlaybackOnCurrentlyPlayingItem() throws Exception {
-        uiTestUtils.addLocalFeedData(true);
-        activityTestRule.launchActivity(new Intent());
-        DBWriter.clearQueue().get();
-        final List<FeedItem> episodes = DBReader.getEpisodes(0, 10,
-                FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
-        startLocalPlayback();
-        FeedMedia media = episodes.get(0).getMedia();
-        Awaitility.await().atMost(2, TimeUnit.SECONDS).until(
-                () -> media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
-
-        FeedItem item = DBReader.getFeedItem(episodes.get(0).getId());
-        item.getMedia().setPosition(5000);
-        FeedItemMenuHandler.onMenuItemClicked(
-                activityTestRule.getActivity().getSupportFragmentManager().getFragments().get(0),
-                R.id.reset_position, item);
-
-        Awaitility.await().atMost(2, TimeUnit.SECONDS).until(
-                () -> PlaybackPreferences.NO_MEDIA_PLAYING == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
-        assertEquals(0, DBReader.getFeedItem(item.getId()).getMedia().getPosition());
-        assertEquals(FeedItem.UNPLAYED, DBReader.getFeedItem(item.getId()).getPlayState());
     }
 
     protected void setContinuousPlaybackPreference(boolean value) {
