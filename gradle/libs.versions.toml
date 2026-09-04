@@ -85,6 +85,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-spotbugs = { id = "com.github.spotbugs", version = "6.4.8" }
+spotbugs = { id = "com.github.spotbugs", version = "6.5.11" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.3.0" }
 triplet-play = { id = "com.github.triplet.play", version = "4.0.0" }
