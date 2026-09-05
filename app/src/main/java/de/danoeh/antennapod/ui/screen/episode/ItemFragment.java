@@ -127,8 +127,15 @@ public class ItemFragment extends Fragment {
                 return;
             }
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getActivity(), controller ->
-                        controller.seekTo(time));
+                PlaybackController.bindToMedia3Service(getActivity(), controller -> {
+                    if (item.getMedia() != null && controller.getCurrentMediaItem() != null
+                            && ("" + item.getMedia().getId()).equals(controller.getCurrentMediaItem().mediaId)) {
+                        controller.seekTo(time);
+                    } else {
+                        EventBus.getDefault().post(
+                                new MessageEvent(getString(R.string.play_this_to_seek_position_message)));
+                    }
+                });
                 return;
             }
             PlaybackController.bindToService(getActivity(), playbackService -> {
