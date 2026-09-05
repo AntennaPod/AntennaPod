@@ -146,9 +146,9 @@ jobs:
       - name: Create keystore for the release build
         if: matrix.version.build-type == 'release'
         run: keytool -genkeypair -dname "cn=AntennaPod CI, o=AntennaPod, c=DE" -alias alias -keystore app/keystore -storepass password -keypass password -keyalg RSA -keysize 2048 -validity 10000
-      - name: Build with Gradle
+      - name: Build with Gradle (debug)
         if: matrix.version.build-type == 'debug'
-        run: ./gradlew assemblePlayDebugAndroidTest
+        run: ./gradlew assemblePlayDebugAndroidTest -PtestBuildType=debug
       - name: Build with Gradle (release)
         if: matrix.version.build-type == 'release'
         run: ./gradlew assemblePlayReleaseAndroidTest -PtestBuildType=release

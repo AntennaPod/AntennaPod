@@ -10,7 +10,7 @@ runTests() {
         ./gradlew connectedPlayReleaseAndroidTest -PtestBuildType=release \
             -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
     else
-        ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest \
+        ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest -PtestBuildType=debug \
             -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
     fi
 }
