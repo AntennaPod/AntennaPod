@@ -326,9 +326,6 @@ public class SubscriptionFragment extends Fragment
         if (stateToShow == Feed.STATE_ARCHIVED) {
             emptyView.setTitle(R.string.no_archive_head_label);
             emptyView.setMessage(R.string.no_archive_label);
-        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
-            emptyView.setTitle(R.string.no_subscriptions_head_label);
-            emptyView.setMessage(R.string.no_subscriptions_filtered_label);
         } else {
             emptyView.setTitle(R.string.no_subscriptions_head_label);
             emptyView.setMessage(R.string.no_subscriptions_label);
@@ -405,6 +402,15 @@ public class SubscriptionFragment extends Fragment
                         subscriptionAdapter.setItems(feeds, result.first.feedCounters);
                         if (firstLoaded) {
                             restoreScrollPosition(scrollPosition);
+                        }
+                        if (feeds.isEmpty()) {
+                            if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
+                                emptyView.setTitle(R.string.no_subscriptions_head_label);
+                                emptyView.setMessage(R.string.no_subscriptions_filtered_label);
+                            } else {
+                                emptyView.setTitle(R.string.no_subscriptions_head_label);
+                                emptyView.setMessage(R.string.no_subscriptions_label);
+                            }
                         }
                         emptyView.updateVisibility();
                         shouldShowTags = false;
