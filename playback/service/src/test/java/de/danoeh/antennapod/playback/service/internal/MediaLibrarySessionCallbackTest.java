@@ -1,12 +1,9 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
-import android.view.KeyEvent;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
-import androidx.media3.common.Player;
 import androidx.media3.session.MediaSession;
-import androidx.media3.session.SessionError;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -30,8 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaLibrarySessionCallbackTest {
@@ -107,39 +102,6 @@ public class MediaLibrarySessionCallbackTest {
                 Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
         assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
-    }
-
-    @Test
-    public void onPlayerCommandRequest_appliesHardwareButtonRemapToDirectTransportControlCalls() {
-        Player player = mock(Player.class);
-        when(session.getPlayer()).thenReturn(player);
-
-        int nextResult = callback.onPlayerCommandRequest(
-                session, controllerInfo, Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM);
-        verify(player).seekForward();
-        assertEquals(SessionError.ERROR_NOT_SUPPORTED, nextResult);
-
-        int previousResult = callback.onPlayerCommandRequest(
-                session, controllerInfo, Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM);
-        verify(player).seekBack();
-        assertEquals(SessionError.ERROR_NOT_SUPPORTED, previousResult);
-    }
-
-    @Test
-    public void onPlayerCommandRequest_appliesSkipAndRestartEpisodeRemap() {
-        context.getSharedPreferences(context.getPackageName() + "_preferences", Context.MODE_PRIVATE).edit()
-                .putString(UserPreferences.PREF_HARDWARE_FORWARD_BUTTON, String.valueOf(KeyEvent.KEYCODE_MEDIA_NEXT))
-                .putString(UserPreferences.PREF_HARDWARE_PREVIOUS_BUTTON,
-                        String.valueOf(KeyEvent.KEYCODE_MEDIA_PREVIOUS))
-                .apply();
-        Player player = mock(Player.class);
-        when(session.getPlayer()).thenReturn(player);
-
-        callback.onPlayerCommandRequest(session, controllerInfo, Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM);
-        verify(player).seekToNextMediaItem();
-
-        callback.onPlayerCommandRequest(session, controllerInfo, Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM);
-        verify(player).seekTo(0);
     }
 
     private FeedMedia seedEpisode() {

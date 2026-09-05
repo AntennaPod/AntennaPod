@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.audiofx.LoudnessEnhancer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.URLUtil;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -188,8 +189,61 @@ public class Media3PlaybackService extends MediaLibraryService {
 
             @Override
             public void seekToNextMediaItem() {
+                if (mediaSession.getControllerForCurrentRequest() != null) {
+                    // Some controllers (e.g. Gadgetbridge) call this directly, bypassing
+                    // onMediaButtonEvent, so the remap needs to apply here too.
+                    performHardwareButtonAction(UserPreferences.getHardwareForwardButton());
+                    return;
+                }
                 if (currentPlayable != null) {
                     startNextInQueue(currentPlayable, true, false);
+                }
+            }
+
+            @Override
+            public void seekToNext() {
+                if (mediaSession.getControllerForCurrentRequest() != null) {
+                    performHardwareButtonAction(UserPreferences.getHardwareForwardButton());
+                    return;
+                }
+                super.seekToNext();
+            }
+
+            @Override
+            public void seekToPreviousMediaItem() {
+                if (mediaSession.getControllerForCurrentRequest() != null) {
+                    performHardwareButtonAction(UserPreferences.getHardwarePreviousButton());
+                    return;
+                }
+                super.seekToPreviousMediaItem();
+            }
+
+            @Override
+            public void seekToPrevious() {
+                if (mediaSession.getControllerForCurrentRequest() != null) {
+                    performHardwareButtonAction(UserPreferences.getHardwarePreviousButton());
+                    return;
+                }
+                super.seekToPrevious();
+            }
+
+            private void performHardwareButtonAction(int action) {
+                switch (action) {
+                    case KeyEvent.KEYCODE_MEDIA_NEXT:
+                        if (currentPlayable != null) {
+                            startNextInQueue(currentPlayable, true, false);
+                        }
+                        break;
+                    case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                        seekTo(0);
+                        break;
+                    case KeyEvent.KEYCODE_MEDIA_REWIND:
+                        seekBack();
+                        break;
+                    case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+                    default:
+                        seekForward();
+                        break;
                 }
             }
 

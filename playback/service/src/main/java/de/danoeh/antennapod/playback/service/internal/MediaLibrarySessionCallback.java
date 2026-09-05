@@ -231,23 +231,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         return false;
     }
 
-    @Override
-    @UnstableApi
-    public int onPlayerCommandRequest(@NonNull MediaSession session,
-            @NonNull MediaSession.ControllerInfo controllerInfo, int playerCommand) {
-        // Some controllers (e.g. Gadgetbridge) call seekToNext()/seekToPrevious() directly, bypassing
-        // onMediaButtonEvent, so the remap needs to apply here too.
-        if (playerCommand == Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM || playerCommand == Player.COMMAND_SEEK_TO_NEXT) {
-            performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwareForwardButton());
-            return SessionError.ERROR_NOT_SUPPORTED;
-        } else if (playerCommand == Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM
-                || playerCommand == Player.COMMAND_SEEK_TO_PREVIOUS) {
-            performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwarePreviousButton());
-            return SessionError.ERROR_NOT_SUPPORTED;
-        }
-        return SessionResult.RESULT_SUCCESS;
-    }
-
     @UnstableApi
     private void performHardwareButtonAction(Player player, int action) {
         switch (action) {
