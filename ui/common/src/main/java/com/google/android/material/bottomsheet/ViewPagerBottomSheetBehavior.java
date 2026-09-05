@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Override {@link #findScrollingChild(View)} to support {@link ViewPager}'s nested scrolling.
  * In order to override package level method and field.
@@ -52,10 +50,9 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends BottomSheetBeh
     }
 
     public void updateScrollingChild() {
-        if (viewRef == null) {
+        if (viewRef == null || viewRef.get() == null) {
             return;
         }
-        final View scrollingChild = findScrollingChild(viewRef.get());
-        nestedScrollingChildRef = new WeakReference<>(scrollingChild);
+        viewRef.get().requestLayout();
     }
 }
