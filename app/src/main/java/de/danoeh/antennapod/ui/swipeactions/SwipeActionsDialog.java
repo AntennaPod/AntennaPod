@@ -56,6 +56,8 @@ public class SwipeActionsDialog {
 
         keys = new ArrayList<>();
         if (tag.equals(QueueFragment.TAG)) {
+            keys.add(new MoveToTopSwipeAction());
+            keys.add(new MoveToBottomSwipeAction());
             keys.add(new RemoveFromQueueSwipeAction());
         } else {
             keys.add(new AddToQueueSwipeAction());
@@ -82,6 +84,7 @@ public class SwipeActionsDialog {
         if (!tag.equals(InboxFragment.TAG)) {
             keys.add(new TogglePlaybackStateSwipeAction());
         }
+        keys.add(new ShareSwipeAction());
 
         String forFragment = "";
         switch (tag) {
