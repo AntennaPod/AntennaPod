@@ -341,14 +341,30 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     @NonNull
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
+        return onPlaybackResumption(mediaSession, controller, true);
+    }
+
+    @UnstableApi
+    @Override
+    @NonNull
+    public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
+            @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller,
+            boolean isForPlayback) {
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-        Single.fromCallable(() -> {
-            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+        Maybe.fromCallable(() -> {
+            long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+            FeedMedia media = (mediaId != PlaybackPreferences.NO_MEDIA_PLAYING) ? DBReader.getFeedMedia(mediaId) : null;
             // If there is no media to resume, media3 crashes. So instead of crashing, just play something random.
             if (media == null) {
                 List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
                 if (!recentQueue.isEmpty()) {
                     media = recentQueue.get(0).getMedia();
+                }
+            }
+            if (media == null) {
+                List<FeedItem> queue = DBReader.getQueue();
+                if (!queue.isEmpty()) {
+                    media = queue.get(0).getMedia();
                 }
             }
             if (media == null) {
@@ -372,7 +388,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                             0, startPosition);
                             future.set(result);
                         },
-                        future::setException
+                        future::setException,
+                        () -> future.setException(new Exception("No media found"))
                 );
         return future;
     }

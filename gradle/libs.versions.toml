@@ -1,7 +1,7 @@
 [versions]
 agp = "9.0.1"
 kotlin = "2.3.20"
-media3 = "1.9.0"
+media3 = "1.11.0"
 wear-compose = "1.6.0"
 compose = "1.7.5"
 lifecycle-runtime-compose = "2.8.7"
