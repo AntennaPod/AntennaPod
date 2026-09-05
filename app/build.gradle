@@ -37,8 +37,11 @@ android {
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.releaseConfig
+            testProguardFiles "proguard-test.cfg"
         }
     }
+
+    testBuildType = project.findProperty("testBuildType") ?: "debug"
 
     lint {
         disable 'CheckResult', 'MissingMediaBrowserServiceIntentFilter', 'UnusedAttribute', 'InflateParams',

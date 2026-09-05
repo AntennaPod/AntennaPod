@@ -103,7 +103,7 @@ jobs:
           path: app/build/outputs/apk/play/debug/app-play-debug.apk
 
   emulator-test:
-    name: "Emulator Test API ${{ matrix.version.api-level }}"
+    name: "Emulator Test API ${{ matrix.version.api-level }} ${{ matrix.version.build-type }}"
     needs: static-analysis
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -112,10 +112,19 @@ jobs:
         version:
           - api-level: 23
             target: default
+            build-type: debug
           - api-level: 30
             target: aosp_atd
+            build-type: debug
           - api-level: 36
             target: aosp_atd
+            build-type: debug
+          - api-level: 23
+            target: default
+            build-type: release
+          - api-level: 36
+            target: aosp_atd
+            build-type: release
     steps:
       - name: Remove unused packages to save space
         run: sudo apt-get remove firefox google-chrome-stable microsoft-edge-stable snapd powershell azure-cli llvm-16 llvm-17 llvm-18 llvm-16-dev llvm-17-dev llvm-18-dev
@@ -134,8 +143,15 @@ jobs:
           key: gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
       - name: Configure parallel build
         run: echo "org.gradle.parallel=true" >> local.properties
+      - name: Create keystore for the release build
+        if: matrix.version.build-type == 'release'
+        run: keytool -genkeypair -dname "cn=AntennaPod CI, o=AntennaPod, c=DE" -alias alias -keystore app/keystore -storepass password -keypass password -keyalg RSA -keysize 2048 -validity 10000
       - name: Build with Gradle
+        if: matrix.version.build-type == 'debug'
         run: ./gradlew assemblePlayDebugAndroidTest
+      - name: Build with Gradle (release)
+        if: matrix.version.build-type == 'release'
+        run: ./gradlew assemblePlayReleaseAndroidTest -PtestBuildType=release
       - name: Enable KVM group perms
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -151,7 +167,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: bash .github/workflows/runEmulatorTests.sh
+          script: bash .github/workflows/runEmulatorTests.sh ${{ matrix.version.build-type }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: failure()
         with:
