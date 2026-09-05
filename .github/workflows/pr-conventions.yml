@@ -35,7 +35,8 @@ jobs:
           github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             const body = context.payload.pull_request.body || "";
-            const closingRegex = /\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\s+#(\d+)/ig;
+            const issueUrl = `https?:\\/\\/github\\.com\\/${context.repo.owner}\\/${context.repo.repo}\\/issues\\/`;
+            const closingRegex = new RegExp(`\\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved|contributes to):?\\s+(?:#|${issueUrl})(\\d+)`, "ig");
 
             const issueNumbers = [];
             let match;
@@ -83,6 +84,10 @@ jobs:
                 repo: context.repo.repo,
                 issue_number: issueNumber,
               });
+              if (issue.state === "closed") {
+                await convertToDraft("Issue #" + issueNumber + " is already closed. Please link to an open issue or explain why this PR is still needed. The PR has been converted to draft.");
+                return;
+              }
               const labels = issue.labels.map(l => l.name);
               const hasNeedsLabel = needsLabels.some(nl => labels.includes(nl));
               if (hasNeedsLabel) {
