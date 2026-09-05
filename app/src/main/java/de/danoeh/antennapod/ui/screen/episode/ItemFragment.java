@@ -58,6 +58,7 @@ import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Maybe;
@@ -272,9 +273,12 @@ public class ItemFragment extends Fragment {
                         new RoundedCorners((int) radius))
                 .dontAnimate();
         Glide.with(this)
-                .load(item.getImageLocation())
+                .load(AuthenticatedImageUrl.create(item.getImageLocation(),
+                        item.getFeed() != null ? item.getFeed().getPreferences() : null))
                 .error(Glide.with(this)
-                        .load(ImageResourceUtils.getFallbackImageLocation(item))
+                        .load(AuthenticatedImageUrl.create(
+                                ImageResourceUtils.getFallbackImageLocation(item),
+                                item.getFeed() != null ? item.getFeed().getPreferences() : null))
                         .apply(options))
                 .apply(options)
                 .into(viewBinding.imgvCover);
