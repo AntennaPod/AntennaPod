@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.net.download.service.feed.remote;
 
 import android.os.StatFs;
+import android.system.ErrnoException;
+import android.system.OsConstants;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -173,7 +175,13 @@ public class HttpDownloader extends Downloader {
                 }
             } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
+                if (isOutOfSpace(e)) {
+                    throw e;
+                }
             }
+            out.close(); // Catch ENOSPC, which may only surface on close
+            out = null;
+
             if (cancelled) {
                 onCancelled();
             } else {
@@ -215,6 +223,13 @@ public class HttpDownloader extends Downloader {
             String message = e.getMessage();
             if (message != null && message.contains("Trust anchor for certification path not found")) {
                 onFail(DownloadError.ERROR_CERTIFICATE, e.getMessage());
+                return;
+            }
+            if (isOutOfSpace(e)) {
+                if (!destination.delete()) {
+                    Log.d(TAG, "Could not delete partially downloaded file " + destination.getName());
+                }
+                onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, e.getMessage());
                 return;
             }
             onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
@@ -281,6 +296,16 @@ public class HttpDownloader extends Downloader {
             details = String.valueOf(response.code());
         }
         onFail(error, details);
+    }
+
+    private static boolean isOutOfSpace(IOException e) {
+        if (e.getCause() instanceof ErrnoException
+                && ((ErrnoException) e.getCause()).errno == OsConstants.ENOSPC) {
+            return true;
+        }
+        String message = e.getMessage();
+        return message != null
+                && (message.contains("ENOSPC") || message.contains("No space left on device"));
     }
 
     private static long getFreeSpaceAvailable() {
