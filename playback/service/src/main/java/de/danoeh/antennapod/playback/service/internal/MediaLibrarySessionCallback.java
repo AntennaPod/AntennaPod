@@ -34,6 +34,7 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
+import de.danoeh.antennapod.playback.service.HardwareButtonRemap;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -220,34 +221,17 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 return true;
             } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
-                performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwareForwardButton());
+                HardwareButtonRemap.apply(session.getPlayer(), UserPreferences.getHardwareForwardButton(),
+                        () -> session.getPlayer().seekToNextMediaItem());
                 return true;
             } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                 // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
-                performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwarePreviousButton());
+                HardwareButtonRemap.apply(session.getPlayer(), UserPreferences.getHardwarePreviousButton(),
+                        () -> session.getPlayer().seekToNextMediaItem());
                 return true;
             }
         }
         return false;
-    }
-
-    @UnstableApi
-    private void performHardwareButtonAction(Player player, int action) {
-        switch (action) {
-            case KeyEvent.KEYCODE_MEDIA_NEXT:
-                player.seekToNextMediaItem();
-                break;
-            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                player.seekTo(0);
-                break;
-            case KeyEvent.KEYCODE_MEDIA_REWIND:
-                player.seekBack();
-                break;
-            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-            default:
-                player.seekForward();
-                break;
-        }
     }
 
     @Override
