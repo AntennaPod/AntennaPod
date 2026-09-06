@@ -36,6 +36,7 @@ import androidx.media3.session.MediaController;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.ViewPagerBottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
@@ -81,7 +82,6 @@ import de.danoeh.antennapod.ui.screen.rating.RatingDialogManager;
 import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.common.BottomSheetBackPressedCallback;
-import de.danoeh.antennapod.ui.common.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -109,7 +109,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
     private @Nullable ActionBarDrawerToggle drawerToggle;
     private BottomNavigation bottomNavigation;
     private View navDrawer;
-    private LockableBottomSheetBehavior<FragmentContainerView> sheetBehavior;
+    private ViewPagerBottomSheetBehavior<FragmentContainerView> sheetBehavior;
     private BottomSheetBackPressedCallback bottomSheetBackPressedCallback;
     private OnBackPressedCallback openDefaultPageBackPressedCallback;
     private int lastTheme = 0;
@@ -208,7 +208,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         transaction.commit();
 
         FragmentContainerView bottomSheet = findViewById(R.id.audioplayerFragment);
-        sheetBehavior = (LockableBottomSheetBehavior<FragmentContainerView>) BottomSheetBehavior.from(bottomSheet);
+        sheetBehavior = (ViewPagerBottomSheetBehavior<FragmentContainerView>) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setHideable(false);
         sheetBehavior.addBottomSheetCallback(bottomSheetCallback);
         bottomSheetBackPressedCallback = new BottomSheetBackPressedCallback(false, sheetBehavior, bottomSheet);
@@ -378,7 +378,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
-    public LockableBottomSheetBehavior<FragmentContainerView> getBottomSheet() {
+    public ViewPagerBottomSheetBehavior<FragmentContainerView> getBottomSheet() {
         return sheetBehavior;
     }
 
@@ -387,9 +387,11 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
     }
 
     public void setPlayerVisible(boolean visible) {
-        getBottomSheet().setLocked(!visible);
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
         if (visible) {
+            if (getIntent().getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
+                handleNavIntent();
+            }
             bottomSheetCallback.onStateChanged(null, getBottomSheet().getState()); // Update toolbar visibility
         } else {
             getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -701,7 +703,8 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                     UserPreferences.setAllowMobileStreaming(true);
                     PlaybackController.bindToMedia3Service(this, MediaController::play);
                 })
-                .setNeutralButton(R.string.cancel_label, null)
+                .setNeutralButton(R.string.cancel_label, (dialog, which) -> dialog.cancel())
+                .setOnCancelListener(dialog -> getIntent().removeExtra(MainActivityStarter.EXTRA_OPEN_PLAYER))
                 .show();
     }
 
@@ -738,6 +741,9 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
+            if (findViewById(R.id.audioplayerFragment).getVisibility() != View.VISIBLE) {
+                return;
+            }
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             bottomSheetCallback.onSlide(null, 1.0f);
         } else {

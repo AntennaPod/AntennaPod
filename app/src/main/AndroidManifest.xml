@@ -185,7 +185,7 @@
             android:name=".ui.screen.playback.video.Media3VideoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
             android:supportsPictureInPicture="true"
-            android:screenOrientation="sensorLandscape"
+            android:screenOrientation="fullSensor"
             android:exported="true"
             tools:ignore="DiscouragedApi">
             <intent-filter>
