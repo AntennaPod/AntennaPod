@@ -68,6 +68,7 @@ import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -560,6 +561,12 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     public void fadePlayerToToolbar(float slideOffset) {
+        if (currentMedia != null && currentMedia.getMediaType() == MediaType.VIDEO) {
+            Fragment cover = getChildFragmentManager().findFragmentByTag("f" + POS_COVER);
+            if (cover instanceof CoverFragment) {
+                ((CoverFragment) cover).updateVideoPlayer();
+            }
+        }
         float playerFadeProgress = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
         View player = getView().findViewById(R.id.playerFragment);
         player.setAlpha(1 - playerFadeProgress);

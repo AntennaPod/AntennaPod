@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.res.Configuration;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -24,17 +25,28 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import androidx.fragment.app.Fragment;
+import androidx.media3.common.DeviceInfo;
+import androidx.media3.common.Player;
 import androidx.media3.session.MediaController;
+import androidx.media3.session.SessionToken;
+import androidx.media3.ui.PlayerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
+import de.danoeh.antennapod.event.playback.VideoPlayerViewAttachedEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.playback.service.Media3PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -42,6 +54,7 @@ import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.screen.chapter.ChaptersFragment;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -63,6 +76,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static android.widget.LinearLayout.LayoutParams.MATCH_PARENT;
 import static android.widget.LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -76,6 +90,9 @@ public class CoverFragment extends Fragment {
     private Disposable disposable;
     private int displayedChapterIndex = -1;
     private Playable media;
+    private PlayerView videoPlayerView;
+    private MediaController mediaController;
+    private ListenableFuture<MediaController> controllerFuture;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -145,6 +162,7 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
+        updateVideoPlayer();
         String pubDateStr = DateFormatter.formatAbbrev(getActivity(), media.getPubDate());
         viewBinding.txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
                 + "\u00A0"
@@ -284,10 +302,115 @@ public class CoverFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateVideoPlayer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (videoPlayerView != null) {
+            videoPlayerView.setPlayer(null);
+        }
+    }
+
+    void updateVideoPlayer() {
+        if (viewBinding == null) {
+            return;
+        }
+        boolean isVideo = BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE
+                && media != null && media.getMediaType() == MediaType.VIDEO;
+        if (!isVideo) {
+            releaseVideoPlayer();
+            if (videoPlayerView == null || videoPlayerView.getVisibility() == View.GONE) {
+                return;
+            }
+        } else if (isResumed() && controllerFuture == null) {
+            SessionToken token = new SessionToken(requireContext(),
+                    new ComponentName(requireContext(), Media3PlaybackService.class));
+            ListenableFuture<MediaController> future = new MediaController.Builder(requireContext(), token)
+                    .buildAsync();
+            controllerFuture = future;
+            future.addListener(() -> {
+                if (controllerFuture != future) {
+                    return;
+                }
+                try {
+                    mediaController = future.get();
+                    mediaController.addListener(new Player.Listener() {
+                        @Override
+                        public void onDeviceInfoChanged(@NonNull DeviceInfo deviceInfo) {
+                            updateVideoPlayer();
+                        }
+
+                        @Override
+                        public void onPlaybackStateChanged(int playbackState) {
+                            if (playbackState == Player.STATE_IDLE) {
+                                updateVideoPlayer();
+                            }
+                        }
+
+                        @Override
+                        public void onRenderedFirstFrame() {
+                            if (mediaController != null && videoPlayerView != null
+                                    && videoPlayerView.getPlayer() == mediaController) {
+                                videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(1);
+                                viewBinding.imgvCover.setVisibility(View.GONE);
+                            }
+                        }
+                    });
+                    updateVideoPlayer();
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(TAG, "Error getting media controller", e);
+                }
+            }, MoreExecutors.directExecutor());
+        }
+        boolean showVideo = isVideo
+                && (mediaController == null
+                || mediaController.getDeviceInfo().playbackType != DeviceInfo.PLAYBACK_TYPE_REMOTE);
+        if (showVideo && videoPlayerView == null) {
+            videoPlayerView = (PlayerView) viewBinding.videoPlayerStub.inflate();
+            videoPlayerView.setOnClickListener(v -> new VideoPlayerActivityStarter(requireContext()).start());
+        }
+        if (!showVideo) {
+            viewBinding.imgvCover.setVisibility(View.VISIBLE);
+        }
+        if (videoPlayerView != null) {
+            videoPlayerView.setVisibility(showVideo ? View.VISIBLE : View.GONE);
+            boolean expanded = ((MainActivity) requireActivity()).getBottomSheet().getState()
+                    == BottomSheetBehavior.STATE_EXPANDED;
+            Player player = showVideo && isResumed() && expanded ? mediaController : null;
+            if (player == null || videoPlayerView.getPlayer() != player
+                    || player.getPlaybackState() == Player.STATE_IDLE) {
+                videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(0);
+                viewBinding.imgvCover.setVisibility(View.VISIBLE);
+            }
+            if (player != null && videoPlayerView.getPlayer() != player) {
+                EventBus.getDefault().post(new VideoPlayerViewAttachedEvent());
+            }
+            videoPlayerView.setPlayer(player);
+            videoPlayerView.setContentDescription(getString(R.string.open_video_full_screen));
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
 
         EventBus.getDefault().unregister(this);
+        releaseVideoPlayer();
+    }
+
+    private void releaseVideoPlayer() {
+        if (controllerFuture != null) {
+            if (videoPlayerView != null) {
+                videoPlayerView.setPlayer(null);
+            }
+            mediaController = null;
+            MediaController.releaseFuture(controllerFuture);
+            controllerFuture = null;
+        }
     }
 
     @Override
@@ -297,6 +420,7 @@ public class CoverFragment extends Fragment {
             disposable.dispose();
         }
         viewBinding = null;
+        videoPlayerView = null;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
