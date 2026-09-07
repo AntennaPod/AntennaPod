@@ -3,9 +3,11 @@ package de.danoeh.antennapod.ui.swipeactions;
 import android.content.Context;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.ui.share.ShareDialog;
+import org.greenrobot.eventbus.EventBus;
 
 public class ShareSwipeAction implements SwipeAction {
 
@@ -31,6 +33,10 @@ public class ShareSwipeAction implements SwipeAction {
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
+        if (item.getFeed().isLocalFeed()) {
+            EventBus.getDefault().post(new MessageEvent(fragment.getString(R.string.share_not_supported_local_feed)));
+            return;
+        }
         ShareDialog shareDialog = ShareDialog.newInstance(item);
         shareDialog.show(fragment.getActivity().getSupportFragmentManager(), "ShareEpisodeDialog");
     }
