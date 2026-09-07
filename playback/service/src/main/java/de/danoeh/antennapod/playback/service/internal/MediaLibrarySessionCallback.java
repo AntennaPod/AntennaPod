@@ -34,7 +34,6 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
-import de.danoeh.antennapod.playback.service.HardwareButtonRemap;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -218,16 +217,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 return true;
             } else if (fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 session.getPlayer().seekToNextMediaItem();
-                return true;
-            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
-                // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
-                HardwareButtonRemap.apply(session.getPlayer(), UserPreferences.getHardwareForwardButton(),
-                        () -> session.getPlayer().seekToNextMediaItem());
-                return true;
-            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
-                // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
-                HardwareButtonRemap.apply(session.getPlayer(), UserPreferences.getHardwarePreviousButton(),
-                        () -> session.getPlayer().seekToNextMediaItem());
                 return true;
             }
         }

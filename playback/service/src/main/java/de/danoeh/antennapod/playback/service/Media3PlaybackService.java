@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.audiofx.LoudnessEnhancer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.URLUtil;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -126,6 +127,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                         .buildUpon()
                         .add(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
                         .add(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+                        .add(Player.COMMAND_SEEK_TO_NEXT)
                         .remove(Player.COMMAND_SET_REPEAT_MODE)
                         .remove(Player.COMMAND_SET_SHUFFLE_MODE)
                         .build();
@@ -188,11 +190,10 @@ public class Media3PlaybackService extends MediaLibraryService {
 
             @Override
             public void seekToNextMediaItem() {
-                if (mediaSession.getControllerForCurrentRequest() != null) {
+                if (isRequestOfOtherApp()) {
                     // Some controllers (e.g. Gadgetbridge) call this directly, bypassing
                     // onMediaButtonEvent, so the remap needs to apply here too.
-                    HardwareButtonRemap.apply(this, UserPreferences.getHardwareForwardButton(),
-                            this::skipToNextInQueue);
+                    performHardwareButtonAction(UserPreferences.getHardwareForwardButton());
                     return;
                 }
                 skipToNextInQueue();
@@ -200,19 +201,13 @@ public class Media3PlaybackService extends MediaLibraryService {
 
             @Override
             public void seekToNext() {
-                if (mediaSession.getControllerForCurrentRequest() != null) {
-                    HardwareButtonRemap.apply(this, UserPreferences.getHardwareForwardButton(),
-                            this::skipToNextInQueue);
-                    return;
-                }
-                super.seekToNext();
+                performHardwareButtonAction(UserPreferences.getHardwareForwardButton());
             }
 
             @Override
             public void seekToPreviousMediaItem() {
-                if (mediaSession.getControllerForCurrentRequest() != null) {
-                    HardwareButtonRemap.apply(this, UserPreferences.getHardwarePreviousButton(),
-                            this::skipToNextInQueue);
+                if (isRequestOfOtherApp()) {
+                    performHardwareButtonAction(UserPreferences.getHardwarePreviousButton());
                     return;
                 }
                 super.seekToPreviousMediaItem();
@@ -220,12 +215,25 @@ public class Media3PlaybackService extends MediaLibraryService {
 
             @Override
             public void seekToPrevious() {
-                if (mediaSession.getControllerForCurrentRequest() != null) {
-                    HardwareButtonRemap.apply(this, UserPreferences.getHardwarePreviousButton(),
-                            this::skipToNextInQueue);
-                    return;
+                performHardwareButtonAction(UserPreferences.getHardwarePreviousButton());
+            }
+
+            private void performHardwareButtonAction(int action) {
+                switch (action) {
+                    case KeyEvent.KEYCODE_MEDIA_NEXT:
+                        skipToNextInQueue();
+                        break;
+                    case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                        seekTo(0);
+                        break;
+                    case KeyEvent.KEYCODE_MEDIA_REWIND:
+                        seekBack();
+                        break;
+                    case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+                    default:
+                        seekForward();
+                        break;
                 }
-                super.seekToPrevious();
             }
 
             private void skipToNextInQueue() {
@@ -249,6 +257,13 @@ public class Media3PlaybackService extends MediaLibraryService {
             keepServiceRunningWhileCasting();
             loadCurrentMediaWhileCasting();
         }
+    }
+
+    @UnstableApi
+    private boolean isRequestOfOtherApp() {
+        MediaSession.ControllerInfo controller = mediaSession.getControllerForCurrentRequest();
+        // Skip buttons of the app itself (player screen, notification, widget) are not remapped
+        return controller != null && !getPackageName().equals(controller.getPackageName());
     }
 
     private void loadCurrentMediaWhileCasting() {
