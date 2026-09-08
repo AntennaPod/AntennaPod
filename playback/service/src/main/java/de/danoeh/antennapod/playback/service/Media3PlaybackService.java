@@ -272,7 +272,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         PlaybackController.bindToMedia3Service(this, controller -> {
-            if (player.getCurrentMediaItem() != null || !isCasting()) {
+            if (player.getCurrentMediaItem() != null || exoPlayer.getMediaItemCount() > 0 || !isCasting()) {
                 return;
             }
             controller.setPlayWhenReady(false);
@@ -367,6 +367,12 @@ public class Media3PlaybackService extends MediaLibraryService {
             if (playbackState == Player.STATE_ENDED && currentPlayable != null) {
                 handlePlaybackEnded();
             }
+        }
+
+        @Override
+        public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
+            PlaybackService.isRunning = !Util.shouldShowPlayButton(player);
+            updatePlaybackPreferences();
         }
 
         @Override
