@@ -90,7 +90,7 @@
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
-    <string name="drawer_preferences">Drawer preferences</string>
+    <string name="drawer_preferences">Navigation preferences</string>
     <string name="drawer_feed_order_unplayed_episodes">Sort by counter</string>
     <string name="drawer_feed_order_alphabetical">Sort alphabetically</string>
     <string name="drawer_feed_order_last_update">Sort by publication date</string>
@@ -145,7 +145,7 @@
     <string name="auto_download_label">Download automatically</string>
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
-    <string name="feed_volume_reduction_off">No adaption</string>
+    <string name="feed_volume_reduction_off">No adaptation</string>
     <string name="feed_volume_reduction_light">Light reduction</string>
     <string name="feed_volume_reduction_heavy">Heavy reduction</string>
     <string name="feed_volume_boost_light">Light boost</string>
