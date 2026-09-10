@@ -37,7 +37,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
         private static volatile OkHttpClient internalClient;
         private final OkHttpClient client;
 
-        private static OkHttpClient getInternalClient() {
+        static OkHttpClient getInternalClient() {
             if (internalClient == null) {
                 synchronized (Factory.class) {
                     if (internalClient == null) {
@@ -94,7 +94,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                 && !model.startsWith(ContentResolver.SCHEME_ANDROID_RESOURCE);
     }
 
-    private static class NetworkAllowanceInterceptor implements Interceptor {
+    static class NetworkAllowanceInterceptor implements Interceptor {
 
         @NonNull
         @Override

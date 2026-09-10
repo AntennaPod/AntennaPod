@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
 import de.danoeh.antennapod.ui.screen.feed.FeedItemlistFragment;
 import de.danoeh.antennapod.ui.common.SquareImageView;
 
@@ -85,7 +86,7 @@ public class HorizontalFeedListAdapter extends RecyclerView.Adapter<HorizontalFe
         });
 
         Glide.with(mainActivityRef.get())
-                .load(podcast.getImageUrl())
+                .load(AuthenticatedImageUrl.create(podcast.getImageUrl(), podcast.getPreferences()))
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .fitCenter()
