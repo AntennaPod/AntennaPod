@@ -122,6 +122,7 @@ public class FeedPreferences implements Serializable {
     private int feedSkipEnding;
     private SkipSilence feedSkipSilence;
     private boolean showEpisodeNotification;
+    private boolean removeUnlistedEpisodes;
     private final Set<String> tags = new HashSet<>();
 
     public FeedPreferences(long feedID, AutoDownloadSetting autoDownload, AutoDeleteAction autoDeleteAction,
@@ -129,7 +130,7 @@ public class FeedPreferences implements Serializable {
                            String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting, username, password,
                 new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, SkipSilence.GLOBAL,
-                false, newEpisodesAction, new HashSet<>());
+                false, newEpisodesAction, new HashSet<>(), false);
     }
 
     public FeedPreferences(long feedID, AutoDownloadSetting autoDownload, boolean keepUpdated,
@@ -137,7 +138,7 @@ public class FeedPreferences implements Serializable {
                             String username, String password, @NonNull FeedFilter filter,
                             float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, SkipSilence feedSkipSilence,
                             boolean showEpisodeNotification, NewEpisodesAction newEpisodesAction,
-                            Set<String> tags) {
+                            Set<String> tags, boolean removeUnlistedEpisodes) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -153,6 +154,7 @@ public class FeedPreferences implements Serializable {
         this.showEpisodeNotification = showEpisodeNotification;
         this.newEpisodesAction = newEpisodesAction;
         this.tags.addAll(tags);
+        this.removeUnlistedEpisodes = removeUnlistedEpisodes;
     }
 
     /**
@@ -176,6 +178,17 @@ public class FeedPreferences implements Serializable {
 
     public void setKeepUpdated(boolean keepUpdated) {
         this.keepUpdated = keepUpdated;
+    }
+
+    /**
+     * @return true if episodes that are no longer listed in the feed should be deleted when refreshing.
+     */
+    public boolean getRemoveUnlistedEpisodes() {
+        return removeUnlistedEpisodes;
+    }
+
+    public void setRemoveUnlistedEpisodes(boolean removeUnlistedEpisodes) {
+        this.removeUnlistedEpisodes = removeUnlistedEpisodes;
     }
 
     /**
