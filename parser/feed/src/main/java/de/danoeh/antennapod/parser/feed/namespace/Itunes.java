@@ -15,6 +15,7 @@ public class Itunes extends Namespace {
 
     public static final String NSTAG = "itunes";
     public static final String NSURI = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+    public static final String NSURI_LEGACY = "http://www.itunes.com/DTDs/Podcast-1.0.dtd";
 
     private static final String IMAGE = "image";
     private static final String IMAGE_HREF = "href";
