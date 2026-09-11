@@ -21,11 +21,15 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.system.utils.PackageUtils;
 import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import de.danoeh.antennapod.ui.common.ClipboardUtils;
 import de.danoeh.antennapod.ui.common.IntentUtils;
@@ -173,7 +177,23 @@ public class BugReportFragment extends AnimatedFragment {
         try {
             File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
             String cmd = "logcat -d -f " + filename.getAbsolutePath();
-            Runtime.getRuntime().exec(cmd);
+            Process process = Runtime.getRuntime().exec(cmd);
+            process.waitFor();
+
+            String versionInfo = "AntennaPod version: "
+                    + PackageUtils.getApplicationVersion(requireContext()) + System.lineSeparator();
+            ByteArrayOutputStream logContent = new ByteArrayOutputStream();
+            try (FileInputStream input = new FileInputStream(filename)) {
+                byte[] buffer = new byte[8192];
+                int count;
+                while ((count = input.read(buffer)) != -1) {
+                    logContent.write(buffer, 0, count);
+                }
+            }
+            try (FileOutputStream output = new FileOutputStream(filename)) {
+                output.write(versionInfo.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                logContent.writeTo(output);
+            }
 
             //share file
             try {
@@ -191,6 +211,11 @@ public class BugReportFragment extends AnimatedFragment {
                 Snackbar.make(viewBinding.getRoot(), R.string.log_file_share_exception, Snackbar.LENGTH_LONG).show();
             }
         } catch (IOException e) {
+            e.printStackTrace();
+
+            Snackbar.make(viewBinding.getRoot(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             e.printStackTrace();
 
             Snackbar.make(viewBinding.getRoot(), e.getMessage(), Snackbar.LENGTH_LONG).show();
