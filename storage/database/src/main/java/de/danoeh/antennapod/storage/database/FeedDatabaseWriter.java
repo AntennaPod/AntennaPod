@@ -188,6 +188,10 @@ public abstract class FeedDatabaseWriter {
                 Iterator<FeedItem> it = savedFeed.getItems().iterator();
                 while (it.hasNext()) {
                     FeedItem feedItem = it.next();
+                    if (!savedFeed.isLocalFeed() && feedItem.getMedia() != null
+                            && feedItem.getMedia().isDownloaded()) {
+                        continue;
+                    }
                     if (newFeedDuplicateGuesser.findById(feedItem) == null) {
                         unlistedItems.add(feedItem);
                         it.remove();

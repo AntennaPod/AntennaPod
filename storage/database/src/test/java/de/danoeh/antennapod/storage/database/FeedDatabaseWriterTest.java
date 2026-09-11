@@ -263,6 +263,30 @@ public class FeedDatabaseWriterTest {
     }
 
     @Test
+    public void testUpdateFeedRemoveUnlistedItemsKeepsDownloaded() {
+        final Feed feed = createFeed();
+        for (int i = 0; i < 10; i++) {
+            feed.getItems().add(
+                    new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
+        }
+        FeedItem downloaded = feed.getItemAtIndex(0);
+        downloaded.setMedia(new FeedMedia(downloaded, "download url 0", 123, "media/mp3"));
+        downloaded.getMedia().setDownloaded(true, System.currentTimeMillis());
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // remove the downloaded item and one other item from the feed
+        feed.getItems().subList(0, 2).clear();
+        Feed newFeed = FeedDatabaseWriter.updateFeed(context, feed, true);
+        assertEquals(9, newFeed.getItems().size()); // the downloaded item is kept
+
+        Feed feedFromDB = DBReader.getFeed(newFeed.getId(), false, 0, Integer.MAX_VALUE);
+        assertEquals(9, feedFromDB.getItems().size());
+    }
+
+    @Test
     public void testUpdateFeedSetDuplicate() {
         final Feed feed = createFeed();
         for (int i = 0; i < 10; i++) {

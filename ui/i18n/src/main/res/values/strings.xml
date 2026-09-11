@@ -844,6 +844,11 @@
     <string name="exclude_episodes_shorter_than">Exclude episodes shorter than</string>
     <string name="keep_updated">Keep updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
+    <string name="remove_unlisted_episodes">Remove unlisted episodes</string>
+    <string name="remove_unlisted_episodes_summary">Delete episodes that are no longer in the feed when refreshing this podcast</string>
+    <string name="cleanup_unlisted_episodes">Remove unlisted episodes now</string>
+    <string name="cleanup_unlisted_episodes_summary">Refresh this podcast and delete all episodes that are no longer in the feed</string>
+    <string name="remove_unlisted_episodes_confirmation_msg">Episodes that are no longer in the feed will be permanently deleted, including their playback history and statistics. Downloaded episodes are kept. This cannot be undone.</string>
     <plurals name="statistics_episodes_started">
         <item quantity="one">started</item>
         <item quantity="other">started</item>

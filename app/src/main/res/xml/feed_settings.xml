@@ -90,6 +90,18 @@
             android:summary="@string/episode_filters_description"
             android:title="@string/episode_filters_label" />
 
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:icon="@drawable/ic_delete"
+            android:key="removeUnlistedEpisodes"
+            android:summary="@string/remove_unlisted_episodes_summary"
+            android:title="@string/remove_unlisted_episodes" />
+
+        <Preference
+            android:key="cleanupUnlistedEpisodes"
+            android:summary="@string/cleanup_unlisted_episodes_summary"
+            android:title="@string/cleanup_unlisted_episodes" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
