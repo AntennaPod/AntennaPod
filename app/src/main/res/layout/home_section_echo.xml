@@ -15,12 +15,11 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
             android:layout_marginVertical="8dp"
             android:accessibilityHeading="true"
             android:layout_weight="1"
-            android:text="@string/echo_home_header" />
+            android:text="@string/echo_home_header"
+            style="@style/TextAppearance.Material3.TitleMedium" />
 
         <ImageView
             android:id="@+id/closeButton"

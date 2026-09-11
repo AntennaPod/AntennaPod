@@ -24,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/imgvCover"
-                android:layout_width="@dimen/thumbnail_length_queue_item"
-                android:layout_height="@dimen/thumbnail_length_queue_item"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/open_podcast"
                 android:foreground="?attr/selectableItemBackground"
@@ -44,17 +44,19 @@
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
                     android:importantForAccessibility="no"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                    android:textColor="?attr/colorPrimary"
+                    android:paddingTop="8dp"
+                    style="@style/TextAppearance.Material3.TitleSmall"
                     tools:text="Podcast title" />
 
                 <TextView
                     android:id="@+id/txtvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:ellipsize="end"
                     android:maxLines="5"
+                    style="@style/TextAppearance.Material3.TitleMedium"
                     tools:text="@sample/episodes.json/data/title" />
 
                 <LinearLayout
@@ -98,79 +100,60 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:paddingVertical="4dp"
             android:baselineAligned="false">
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/butAction1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center">
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                app:iconGravity="textStart"
+                tools:text="Button 1"
+                app:iconPadding="8dp"
+                tools:icon="@drawable/ic_settings" />
 
-                <ImageView
-                    android:id="@+id/butAction1Icon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
-                    tools:src="@drawable/ic_settings" />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/butAction1Text"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/butAction2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:text="Button 1" />
+                    style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                    app:iconGravity="textStart"
+                    app:cornerRadius="4dp"
+                    tools:icon="@drawable/ic_download" />
 
-            </LinearLayout>
+                <de.danoeh.antennapod.ui.common.CircularProgressBar
+                    android:id="@+id/circularProgressBar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:foregroundColor="?attr/colorOnSecondaryContainer" />
 
-            <LinearLayout
-                android:id="@+id/butAction2"
-                android:layout_width="0dp"
+            </FrameLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butAction3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center">
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:iconGravity="textStart"
+                app:cornerRadius="4dp"
+                tools:icon="@drawable/ic_star_border" />
 
-                <FrameLayout
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_gravity="bottom|end">
-
-                    <de.danoeh.antennapod.ui.common.CircularProgressBar
-                        android:id="@+id/circularProgressBar"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="center"
-                        android:visibility="gone"
-                        app:foregroundColor="?android:attr/textColorPrimary" />
-
-                    <ImageView
-                        android:id="@+id/butAction2Icon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        tools:src="@drawable/ic_settings" />
-
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/butAction2Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:text="Button 2" />
-
-            </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/butAction4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                app:iconGravity="textStart"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_share" />
 
         </LinearLayout>
 
@@ -178,7 +161,6 @@
             android:id="@+id/nonSubscribedWarningLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
             android:layout_marginBottom="8dp"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
