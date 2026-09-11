@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +12,7 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -35,6 +37,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Locale;
 
 public class VariableSpeedDialog extends BottomSheetDialogFragment {
@@ -42,6 +46,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private SpeedSelectionAdapter adapter;
     private PlaybackController controller;
     private final List<Float> selectedSpeeds;
+    private final Set<Float> pendingDeletion = new HashSet<>();
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
     private CheckBox skipSilenceCheckbox;
@@ -183,9 +188,20 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             float speed = selectedSpeeds.get(position);
 
             holder.chip.setText(String.format(Locale.getDefault(), "%1$.2f", speed));
+            boolean markedForDeletion = pendingDeletion.contains(speed);
+            holder.chip.setCloseIconVisible(markedForDeletion);
+            holder.chip.setCloseIconResource(android.R.drawable.ic_menu_delete);
+            holder.chip.setChipBackgroundColor(markedForDeletion
+                    ? ColorStateList.valueOf(ContextCompat.getColor(requireContext(),
+                    android.R.color.holo_red_light))
+                    : null);
             holder.chip.setOnLongClickListener(v -> {
-                selectedSpeeds.remove(speed);
-                UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                if (pendingDeletion.remove(speed)) {
+                    selectedSpeeds.remove(speed);
+                    UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                } else {
+                    pendingDeletion.add(speed);
+                }
                 notifyDataSetChanged();
                 return true;
             });
