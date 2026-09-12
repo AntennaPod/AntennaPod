@@ -2,6 +2,7 @@ package de.danoeh.antennapod.parser.media.vorbis;
 
 import android.util.Log;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,37 +26,38 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
     }
 
     @Override
-    public boolean handles(String key) {
-        return key.matches(CHAPTER_KEY);
-    }
-
-    @Override
-    public void onContentVectorValue(String key, String value) throws VorbisCommentReaderException {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Key: " + key + ", value: " + value);
-        }
-        String attribute = getAttributeTypeFromKey(key);
-        int id = getIdFromKey(key);
-        Chapter chapter = getChapterById(id);
-        if (attribute == null) {
-            if (getChapterById(id) == null) {
-                // new chapter
-                long start = getStartTimeFromValue(value);
-                chapter = new Chapter();
-                chapter.setChapterId("" + id);
-                chapter.setStart(start);
-                chapters.add(chapter);
-            } else {
-                throw new VorbisCommentReaderException("Found chapter with duplicate ID (" + key + ", " + value + ")");
+    protected void onContentVector(String key) throws IOException, VorbisCommentReaderException {
+        if (key.matches(CHAPTER_KEY)) {
+            String value = readValue();
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "Key: " + key + ", value: " + value);
             }
-        } else if (attribute.equals(CHAPTER_ATTRIBUTE_TITLE)) {
-            if (chapter != null) {
-                chapter.setTitle(value);
+            String attribute = getAttributeTypeFromKey(key);
+            int id = getIdFromKey(key);
+            Chapter chapter = getChapterById(id);
+            if (attribute == null) {
+                if (getChapterById(id) == null) {
+                    // new chapter
+                    long start = getStartTimeFromValue(value);
+                    chapter = new Chapter();
+                    chapter.setChapterId("" + id);
+                    chapter.setStart(start);
+                    chapters.add(chapter);
+                } else {
+                    throw new VorbisCommentReaderException(
+                            "Found chapter with duplicate ID (" + key + ", " + value + ")");
+                }
+            } else if (attribute.equals(CHAPTER_ATTRIBUTE_TITLE)) {
+                if (chapter != null) {
+                    chapter.setTitle(value);
+                }
+            } else if (attribute.equals(CHAPTER_ATTRIBUTE_LINK)) {
+                if (chapter != null) {
+                    chapter.setLink(value);
+                }
             }
-        } else if (attribute.equals(CHAPTER_ATTRIBUTE_LINK)) {
-            if (chapter != null) {
-                chapter.setLink(value);
-            }
+        } else {
+            super.onContentVector(key);
         }
     }
 
