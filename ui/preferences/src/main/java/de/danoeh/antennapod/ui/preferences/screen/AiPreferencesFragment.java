@@ -33,7 +33,8 @@ import de.danoeh.antennapod.ui.preferences.R;
 public class AiPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_CLOUD_AI_PROVIDER = "prefCloudAiProvider";
     private static final String PREF_OPENAI_API_KEY = "prefOpenAiApiKey";
-    private static final String PREF_OPENAI_MODEL = "prefOpenAiModel";
+    private static final String PREF_OPENAI_ANALYSIS_MODEL = "prefOpenAiAnalysisModel";
+    private static final String PREF_OPENAI_TRANSCRIPTION_MODEL = "prefOpenAiTranscriptionModel";
 
     // Azure OpenAI
     private static final String PREF_AZURE_ENDPOINT = "prefAzureEndpoint";
@@ -58,7 +59,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
 
         setupCloudProviderPreference();
         setupApiKeyPreference();
-        setupModelPreference();
+        setupOpenAiModelPreferences();
         setupAzurePreferences();
         setupLocalTranscriptionPreferences();
         setupDeleteAllTranscriptionModels();
@@ -111,7 +112,8 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
     private void updateCloudProviderVisibility() {
         boolean azure = CloudAiPreferences.isAzure(requireContext());
         setPreferenceVisible(PREF_OPENAI_API_KEY, !azure);
-        setPreferenceVisible(PREF_OPENAI_MODEL, !azure);
+        setPreferenceVisible(PREF_OPENAI_ANALYSIS_MODEL, !azure);
+        setPreferenceVisible(PREF_OPENAI_TRANSCRIPTION_MODEL, !azure);
         setPreferenceVisible(PREF_AZURE_ENDPOINT, azure);
         setPreferenceVisible(PREF_AZURE_API_KEY, azure);
         setPreferenceVisible(PREF_AZURE_CHAT_DEPLOYMENT, azure);
@@ -127,23 +129,23 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
     }
 
     private void setupAzurePreferences() {
-        setupAzureTextPreference(PREF_AZURE_ENDPOINT,
+        setupTextPreference(PREF_AZURE_ENDPOINT,
                 () -> AzureOpenAiPreferences.getEndpoint(requireContext()),
                 value -> AzureOpenAiPreferences.setEndpoint(requireContext(), value),
                 R.string.pref_azure_endpoint_summary,
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
         setupAzureApiKeyPreference();
-        setupAzureTextPreference(PREF_AZURE_CHAT_DEPLOYMENT,
+        setupTextPreference(PREF_AZURE_CHAT_DEPLOYMENT,
                 () -> AzureOpenAiPreferences.getChatDeployment(requireContext()),
                 value -> AzureOpenAiPreferences.setChatDeployment(requireContext(), value),
                 R.string.pref_azure_chat_deployment_summary,
                 InputType.TYPE_CLASS_TEXT);
-        setupAzureTextPreference(PREF_AZURE_WHISPER_DEPLOYMENT,
+        setupTextPreference(PREF_AZURE_WHISPER_DEPLOYMENT,
                 () -> AzureOpenAiPreferences.getTranscriptionDeployment(requireContext()),
                 value -> AzureOpenAiPreferences.setTranscriptionDeployment(requireContext(), value),
                 R.string.pref_azure_whisper_deployment_summary,
                 InputType.TYPE_CLASS_TEXT);
-        setupAzureTextPreference(PREF_AZURE_API_VERSION,
+        setupTextPreference(PREF_AZURE_API_VERSION,
                 () -> AzureOpenAiPreferences.getApiVersion(requireContext()),
                 value -> AzureOpenAiPreferences.setApiVersion(requireContext(), value),
                 R.string.pref_azure_api_version_summary,
@@ -158,7 +160,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         void set(String value);
     }
 
-    private void setupAzureTextPreference(String prefKey, ValueReader reader, ValueWriter writer,
+    private void setupTextPreference(String prefKey, ValueReader reader, ValueWriter writer,
             int emptySummaryRes, int inputType) {
         EditTextPreference pref = findPreference(prefKey);
         if (pref == null) {
@@ -170,14 +172,14 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         });
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             writer.set((String) newValue);
-            updateAzureTextSummary(pref, reader.get(), emptySummaryRes);
+            updateTextSummary(pref, reader.get(), emptySummaryRes);
             pref.setText("");
-            return false; // Stored via AzureOpenAiPreferences, not default shared preferences
+            return false; // Stored in encrypted preferences, not default shared preferences
         });
-        updateAzureTextSummary(pref, reader.get(), emptySummaryRes);
+        updateTextSummary(pref, reader.get(), emptySummaryRes);
     }
 
-    private void updateAzureTextSummary(EditTextPreference pref, String value, int emptySummaryRes) {
+    private void updateTextSummary(EditTextPreference pref, String value, int emptySummaryRes) {
         if (TextUtils.isEmpty(value)) {
             pref.setSummary(emptySummaryRes);
         } else {
@@ -230,17 +232,17 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         updateApiKeySummary(apiKeyPref);
     }
 
-    private void setupModelPreference() {
-        ListPreference modelPref = findPreference(PREF_OPENAI_MODEL);
-        if (modelPref == null) {
-            return;
-        }
-        modelPref.setValue(OpenAiPreferences.getModel(requireContext()));
-        modelPref.setOnPreferenceChangeListener((preference, newValue) -> {
-            OpenAiPreferences.setModel(requireContext(), (String) newValue);
-            modelPref.setValue((String) newValue);
-            return false;
-        });
+    private void setupOpenAiModelPreferences() {
+        setupTextPreference(PREF_OPENAI_ANALYSIS_MODEL,
+                () -> OpenAiPreferences.getAnalysisModel(requireContext()),
+                value -> OpenAiPreferences.setAnalysisModel(requireContext(), value),
+                R.string.pref_openai_analysis_model_summary,
+                InputType.TYPE_CLASS_TEXT);
+        setupTextPreference(PREF_OPENAI_TRANSCRIPTION_MODEL,
+                () -> OpenAiPreferences.getTranscriptionModel(requireContext()),
+                value -> OpenAiPreferences.setTranscriptionModel(requireContext(), value),
+                R.string.pref_openai_transcription_model_summary,
+                InputType.TYPE_CLASS_TEXT);
     }
 
     private void setupLocalTranscriptionPreferences() {

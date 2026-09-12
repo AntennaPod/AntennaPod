@@ -18,8 +18,10 @@ public final class OpenAiPreferences {
     private static final String TAG = "OpenAiPreferences";
     private static final String PREF_NAME = "openai_secure";
     private static final String PREF_API_KEY = "pref_openai_api_key";
-    private static final String PREF_MODEL = "pref_openai_model";
-    private static final String DEFAULT_MODEL = "gpt-5-nano";
+    private static final String PREF_ANALYSIS_MODEL = "pref_openai_model";
+    private static final String PREF_TRANSCRIPTION_MODEL = "pref_openai_transcription_model";
+    public static final String DEFAULT_ANALYSIS_MODEL = "gpt-5-nano";
+    public static final String DEFAULT_TRANSCRIPTION_MODEL = "whisper-1";
 
     private OpenAiPreferences() {
     }
@@ -53,23 +55,39 @@ public final class OpenAiPreferences {
         }
     }
 
-    public static String getModel(Context context) {
+    public static String getAnalysisModel(Context context) {
         SharedPreferences prefs = getEncryptedPrefs(context);
         if (prefs == null) {
-            return DEFAULT_MODEL;
+            return DEFAULT_ANALYSIS_MODEL;
         }
-        return prefs.getString(PREF_MODEL, DEFAULT_MODEL);
+        return prefs.getString(PREF_ANALYSIS_MODEL, DEFAULT_ANALYSIS_MODEL);
     }
 
-    public static void setModel(Context context, @Nullable String model) {
+    public static void setAnalysisModel(Context context, @Nullable String model) {
+        setModel(context, PREF_ANALYSIS_MODEL, model);
+    }
+
+    public static String getTranscriptionModel(Context context) {
+        SharedPreferences prefs = getEncryptedPrefs(context);
+        if (prefs == null) {
+            return DEFAULT_TRANSCRIPTION_MODEL;
+        }
+        return prefs.getString(PREF_TRANSCRIPTION_MODEL, DEFAULT_TRANSCRIPTION_MODEL);
+    }
+
+    public static void setTranscriptionModel(Context context, @Nullable String model) {
+        setModel(context, PREF_TRANSCRIPTION_MODEL, model);
+    }
+
+    private static void setModel(Context context, String preferenceKey, @Nullable String model) {
         SharedPreferences prefs = getEncryptedPrefs(context);
         if (prefs == null) {
             return;
         }
         if (model == null || model.trim().isEmpty()) {
-            prefs.edit().putString(PREF_MODEL, DEFAULT_MODEL).apply();
+            prefs.edit().remove(preferenceKey).apply();
         } else {
-            prefs.edit().putString(PREF_MODEL, model.trim()).apply();
+            prefs.edit().putString(preferenceKey, model.trim()).apply();
         }
     }
 

@@ -59,17 +59,17 @@ public final class CloudAiClientFactory {
         if (CloudAiPreferences.isAzure(context)) {
             return AzureOpenAiPreferences.getChatDeployment(context);
         }
-        return OpenAiPreferences.getModel(context);
+        return OpenAiPreferences.getAnalysisModel(context);
     }
 
     /**
-     * Model used for audio transcription: whisper-1 on OpenAI, or the
-     * transcription (Whisper) deployment name when Azure is selected.
+     * Model used for audio transcription: the configured OpenAI model, or the
+     * transcription deployment name when Azure is selected.
      */
     public static AudioModel getTranscriptionModel(Context context) {
         if (CloudAiPreferences.isAzure(context)) {
             return AudioModel.of(AzureOpenAiPreferences.getTranscriptionDeployment(context));
         }
-        return AudioModel.WHISPER_1;
+        return AudioModel.of(OpenAiPreferences.getTranscriptionModel(context));
     }
 }

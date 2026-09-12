@@ -208,20 +208,6 @@
         <item>azure</item>
     </string-array>
 
-    <string-array name="pref_openai_model_entries">
-        <item>@string/pref_openai_model_gpt51</item>
-        <item>@string/pref_openai_model_gpt54_mini</item>
-        <item>@string/pref_openai_model_gpt5_mini</item>
-        <item>@string/pref_openai_model_gpt5_nano</item>
-    </string-array>
-
-    <string-array name="pref_openai_model_values">
-        <item>gpt-5.1</item>
-        <item>gpt-5.4-mini</item>
-        <item>gpt-5-mini</item>
-        <item>gpt-5-nano</item>
-    </string-array>
-
     <string-array name="pref_local_transcription_model_entries">
         <item>@string/pref_local_transcription_model_small</item>
         <item>@string/pref_local_transcription_model_medium</item>

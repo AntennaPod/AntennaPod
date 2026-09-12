@@ -26,13 +26,17 @@
                 android:title="@string/pref_openai_api_key_title"
                 android:summary="@string/pref_openai_api_key_summary" />
 
-        <ListPreference
-                android:key="prefOpenAiModel"
-                android:defaultValue="@string/pref_openai_model_default"
-                android:title="@string/pref_openai_model_title"
-                android:entries="@array/pref_openai_model_entries"
-                android:entryValues="@array/pref_openai_model_values"
-                android:summary="%s" />
+        <EditTextPreference
+                android:key="prefOpenAiAnalysisModel"
+                android:persistent="false"
+                android:title="@string/pref_openai_analysis_model_title"
+                android:summary="@string/pref_openai_analysis_model_summary" />
+
+        <EditTextPreference
+                android:key="prefOpenAiTranscriptionModel"
+                android:persistent="false"
+                android:title="@string/pref_openai_transcription_model_title"
+                android:summary="@string/pref_openai_transcription_model_summary" />
 
         <EditTextPreference
                 android:key="prefAzureEndpoint"

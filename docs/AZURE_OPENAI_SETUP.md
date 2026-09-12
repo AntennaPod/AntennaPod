@@ -47,7 +47,8 @@ az cognitiveservices account create \
 
 Each model you want to call must be *deployed* on the resource. The **deployment name**
 is what the app sends as the "model" in API requests, so note down exactly what you
-name your deployments.
+name your deployments. The fields in the app are free-form, so you can switch either
+deployment later without updating the app.
 
 ### Using Azure AI Foundry portal
 
@@ -116,6 +117,9 @@ In AntennaPodSkipper, open **Settings → AI & Ad Skipping** and configure the
 | Azure API version | leave the default (`2024-10-21`) unless your deployment requires a newer preview version |
 
 The API key is stored in encrypted preferences on the device.
+Both deployment fields can be edited at any time. The selected ad-analysis deployment
+must support the Chat Completions API, and the selected transcription deployment must
+support the Audio Transcriptions API.
 
 You can still enable **On-Device Transcription** in the same screen; in that case only
 the ad analysis step calls your Azure deployment.
