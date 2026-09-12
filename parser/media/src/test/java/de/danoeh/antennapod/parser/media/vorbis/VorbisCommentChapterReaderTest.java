@@ -96,4 +96,56 @@ public class VorbisCommentChapterReaderTest {
         assertEquals("https://example.com/kefalaio-3", chapters.get(2).getLink());
         assertEquals("https://example.com/al-fasl-4", chapters.get(3).getLink());
     }
+
+    @Test
+    public void testRealFileFfmpegFlac() throws IOException, VorbisCommentReaderException {
+        InputStream inputStream = getClass().getClassLoader()
+                .getResource("ffmpeg.flac").openStream();
+        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(inputStream);
+        reader.readInputStream();
+        List<Chapter> chapters = reader.getChapters();
+
+        assertEquals(4, chapters.size());
+
+        assertEquals(0, chapters.get(0).getStart());
+        assertEquals(3000, chapters.get(1).getStart());
+        assertEquals(6000, chapters.get(2).getStart());
+        assertEquals(9000, chapters.get(3).getStart());
+
+        assertEquals("Chapter 1 – Ünïcödé ✨", chapters.get(0).getTitle());
+        assertEquals("第2章 – 日本語", chapters.get(1).getTitle());
+        assertEquals("Κεφάλαιο 3 – Ελληνικά", chapters.get(2).getTitle());
+        assertEquals("الفصل ٤ – العربية", chapters.get(3).getTitle());
+
+        assertEquals("https://example.com/chapter-1", chapters.get(0).getLink());
+        assertEquals("https://example.com/dai-2-sho", chapters.get(1).getLink());
+        assertEquals("https://example.com/kefalaio-3", chapters.get(2).getLink());
+        assertEquals("https://example.com/al-fasl-4", chapters.get(3).getLink());
+    }
+
+    @Test
+    public void testRealFileFfmpegOggFlac() throws IOException, VorbisCommentReaderException {
+        InputStream inputStream = getClass().getClassLoader()
+                .getResource("ffmpeg.oga").openStream();
+        VorbisCommentChapterReader reader = new VorbisCommentChapterReader(inputStream);
+        reader.readInputStream();
+        List<Chapter> chapters = reader.getChapters();
+
+        assertEquals(4, chapters.size());
+
+        assertEquals(0, chapters.get(0).getStart());
+        assertEquals(3000, chapters.get(1).getStart());
+        assertEquals(6000, chapters.get(2).getStart());
+        assertEquals(9000, chapters.get(3).getStart());
+
+        assertEquals("Chapter 1 – Ünïcödé ✨", chapters.get(0).getTitle());
+        assertEquals("第2章 – 日本語", chapters.get(1).getTitle());
+        assertEquals("Κεφάλαιο 3 – Ελληνικά", chapters.get(2).getTitle());
+        assertEquals("الفصل ٤ – العربية", chapters.get(3).getTitle());
+
+        assertEquals("https://example.com/chapter-1", chapters.get(0).getLink());
+        assertEquals("https://example.com/dai-2-sho", chapters.get(1).getLink());
+        assertEquals("https://example.com/kefalaio-3", chapters.get(2).getLink());
+        assertEquals("https://example.com/al-fasl-4", chapters.get(3).getLink());
+    }
 }

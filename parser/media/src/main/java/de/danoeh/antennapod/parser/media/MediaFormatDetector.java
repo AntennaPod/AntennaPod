@@ -11,7 +11,7 @@ public final class MediaFormatDetector {
     }
 
     public enum Format {
-        ID3, OGG, M4A, UNKNOWN
+        ID3, OGG, M4A, FLAC, UNKNOWN
     }
 
     public static Result detect(InputStream input) throws IOException {
@@ -33,6 +33,10 @@ public final class MediaFormatDetector {
                 && prefix[0] == 0x4F && prefix[1] == 0x67
                 && prefix[2] == 0x67 && prefix[3] == 0x53) {
             return Format.OGG;
+        } else if (prefix.length >= 4
+                && prefix[0] == 0x66 && prefix[1] == 0x4C
+                && prefix[2] == 0x61 && prefix[3] == 0x43) {
+            return Format.FLAC;
         } else if (prefix.length >= 8
                 && prefix[4] == 0x66 && prefix[5] == 0x74
                 && prefix[6] == 0x79 && prefix[7] == 0x70) {
