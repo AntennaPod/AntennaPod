@@ -26,4 +26,24 @@ public class VorbisCommentMetadataReaderTest {
         reader.readInputStream();
         assertEquals("Summary", reader.getDescription());
     }
+
+    @Test
+    public void testRealFileFfmpegOgg() throws IOException, VorbisCommentReaderException {
+        InputStream inputStream = getClass().getClassLoader()
+                .getResource("ffmpeg.ogg").openStream();
+        VorbisCommentMetadataReader reader = new VorbisCommentMetadataReader(inputStream);
+        reader.readInputStream();
+        assertEquals("Ünïcödé tëst — “smart quotes” ½ ≠ ⅓ · Ελληνικά · 日本語 · 한국어 · العربية 📝",
+                reader.getDescription());
+    }
+
+    @Test
+    public void testRealFileFfmpegOpus() throws IOException, VorbisCommentReaderException {
+        InputStream inputStream = getClass().getClassLoader()
+                .getResource("ffmpeg.opus").openStream();
+        VorbisCommentMetadataReader reader = new VorbisCommentMetadataReader(inputStream);
+        reader.readInputStream();
+        assertEquals("Ünïcödé tëst — “smart quotes” ½ ≠ ⅓ · Ελληνικά · 日本語 · 한국어 · العربية 📝",
+                reader.getDescription());
+    }
 }
