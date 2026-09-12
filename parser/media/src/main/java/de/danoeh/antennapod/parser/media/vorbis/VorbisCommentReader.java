@@ -21,6 +21,7 @@ public abstract class VorbisCommentReader {
     private static final int PACKET_TYPE_COMMENT = 3;
 
     private final VorbisInputStream input;
+    private long currentValueLength = 0;
 
     VorbisCommentReader(InputStream input) {
         this.input = new VorbisInputStream(input);
@@ -48,14 +49,9 @@ public abstract class VorbisCommentReader {
                         + "key=" + keyPart + ", length=" + vectorLength);
             }
             String key = readContentVectorKey(vectorLength).toLowerCase(Locale.US);
-            boolean shouldReadValue = handles(key);
-            Log.d(TAG, "key=" + key + ", length=" + vectorLength + ", handles=" + shouldReadValue);
-            if (shouldReadValue) {
-                String value = readUtf8String(vectorLength - key.length() - 1);
-                onContentVectorValue(key, value);
-            } else {
-                IOUtils.skipFully(input, vectorLength - key.length() - 1);
-            }
+            Log.d(TAG, "key=" + key + ", length=" + vectorLength);
+            currentValueLength = vectorLength - key.length() - 1;
+            onContentVector(key);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,13 +122,18 @@ public abstract class VorbisCommentReader {
     }
 
     /**
-     * Is called every time the Reader finds a content vector. The handler
-     * should return true if it wants to handle the content vector.
+     * Is called for every content vector that the reader finds. Implementations should call
+     * super for the keys they do not handle, which skips the value without loading it into
+     * memory. Values can be several megabytes large, for example embedded cover images.
      */
-    protected abstract boolean handles(String key);
+    protected void onContentVector(String key) throws IOException, VorbisCommentReaderException {
+        IOUtils.skipFully(input, currentValueLength);
+    }
 
     /**
-     * Is called if onContentVectorKey returned true for the key.
+     * Reads the value of the content vector that is currently being handled.
      */
-    protected abstract void onContentVectorValue(String key, String value) throws VorbisCommentReaderException;
+    protected final String readValue() throws IOException {
+        return readUtf8String(currentValueLength);
+    }
 }
