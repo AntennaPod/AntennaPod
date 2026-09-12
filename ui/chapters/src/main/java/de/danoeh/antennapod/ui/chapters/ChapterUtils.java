@@ -116,7 +116,8 @@ public class ChapterUtils {
                 if (hasLoadedChapters(chapters)) {
                     return chapters;
                 }
-            } else if (hint == MediaFormatDetector.Format.OGG) {
+            } else if (hint == MediaFormatDetector.Format.OGG
+                    || hint == MediaFormatDetector.Format.FLAC) {
                 List<Chapter> chapters = readOggChaptersFromInputStream(
                         new CountingInputStream(reconstructed));
                 if (hasLoadedChapters(chapters)) {
@@ -154,6 +155,8 @@ public class ChapterUtils {
                         -> MediaFormatDetector.Format.ID3;
                 case "audio/ogg", "application/ogg", "audio/opus", "application/opus"
                         -> MediaFormatDetector.Format.OGG;
+                case "audio/flac", "audio/x-flac"
+                        -> MediaFormatDetector.Format.FLAC;
                 case "audio/mp4", "audio/x-m4a", "audio/m4a", "video/mp4", "audio/x-m4b", "audio/m4b"
                         -> MediaFormatDetector.Format.M4A;
                 default -> format;
@@ -168,7 +171,8 @@ public class ChapterUtils {
                     String ext = filename.substring(dot + 1).toLowerCase(Locale.US);
                     format = switch (ext) {
                         case "mp3" -> MediaFormatDetector.Format.ID3;
-                        case "ogg", "opus" -> MediaFormatDetector.Format.OGG;
+                        case "ogg", "opus", "oga" -> MediaFormatDetector.Format.OGG;
+                        case "flac" -> MediaFormatDetector.Format.FLAC;
                         case "m4a", "mp4", "m4b" -> MediaFormatDetector.Format.M4A;
                         default -> format;
                     };
@@ -194,7 +198,7 @@ public class ChapterUtils {
             throws IOException, ID3ReaderException, VorbisCommentReaderException {
         return switch (format) {
             case ID3 -> readId3ChaptersFrom(input);
-            case OGG -> readOggChaptersFromInputStream(input);
+            case OGG, FLAC -> readOggChaptersFromInputStream(input);
             case M4A -> readM4AChaptersFromInputStream(input);
             default -> Collections.emptyList();
         };
