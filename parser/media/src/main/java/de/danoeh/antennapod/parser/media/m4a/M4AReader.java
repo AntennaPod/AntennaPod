@@ -40,6 +40,10 @@ public abstract class M4AReader {
      */
     protected abstract void onAtom(String path, long payloadLength) throws IOException;
 
+    protected int childAtomsOffset(String path) {
+        return 0;
+    }
+
     protected void readAtoms() throws IOException {
         assertM4A();
         try {
@@ -73,7 +77,9 @@ public abstract class M4AReader {
             if (pendingPaths.remove(path)) {
                 onAtom(path, payloadLength);
             } else if (hasPendingChildren(path)) {
-                readAtoms(path, payloadLength);
+                int offset = childAtomsOffset(path);
+                skipBytes(offset);
+                readAtoms(path, payloadLength - offset);
                 // Whatever is not inside this atom cannot be anywhere else in the file
                 removePendingChildren(path);
             }
