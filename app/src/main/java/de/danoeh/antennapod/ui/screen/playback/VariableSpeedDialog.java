@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
 import android.os.Bundle;
+import com.google.android.material.color.MaterialColors;
+import android.content.res.ColorStateList;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -42,6 +44,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private SpeedSelectionAdapter adapter;
     private PlaybackController controller;
     private final List<Float> selectedSpeeds;
+    private Float pendingDeleteSpeed;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
     private CheckBox skipSilenceCheckbox;
@@ -181,15 +184,45 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             float speed = selectedSpeeds.get(position);
+            boolean pendingDelete = pendingDeleteSpeed != null && pendingDeleteSpeed == speed;
 
             holder.chip.setText(String.format(Locale.getDefault(), "%1$.2f", speed));
+            if (pendingDelete) {
+                int error = MaterialColors.getColor(holder.chip, com.google.android.material.R.attr.colorError);
+                int onError = MaterialColors.getColor(holder.chip, com.google.android.material.R.attr.colorOnError);
+                holder.chip.setChipBackgroundColor(ColorStateList.valueOf(error));
+                holder.chip.setTextColor(onError);
+                holder.chip.setChipIconResource(android.R.drawable.ic_menu_delete);
+                holder.chip.setChipIconTint(ColorStateList.valueOf(onError));
+            } else {
+                holder.chip.setChipBackgroundColor(null);
+                holder.chip.setTextColor(MaterialColors.getColor(
+                        holder.chip, com.google.android.material.R.attr.colorOnSurface));
+                holder.chip.setChipIcon(null);
+            }
             holder.chip.setOnLongClickListener(v -> {
-                selectedSpeeds.remove(speed);
-                UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                if (pendingDeleteSpeed != null && pendingDeleteSpeed == speed) {
+                    selectedSpeeds.remove(speed);
+                    UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                    pendingDeleteSpeed = null;
+                } else {
+                    pendingDeleteSpeed = speed;
+                }
                 notifyDataSetChanged();
                 return true;
             });
             holder.chip.setOnClickListener(v -> {
+                if (pendingDeleteSpeed != null && pendingDeleteSpeed == speed) {
+                    selectedSpeeds.remove(speed);
+                    UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                    pendingDeleteSpeed = null;
+                    notifyDataSetChanged();
+                    return;
+                }
+                if (pendingDeleteSpeed != null) {
+                    pendingDeleteSpeed = null;
+                    notifyDataSetChanged();
+                }
                 UserPreferences.setPlaybackSpeed(speed);
                 if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
                     PlaybackController.bindToMedia3Service(getContext(),
