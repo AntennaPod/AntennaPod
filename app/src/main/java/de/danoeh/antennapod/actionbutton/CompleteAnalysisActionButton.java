@@ -23,7 +23,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.ai.service.ad.AdAnalysisWorkScheduler;
+import de.danoeh.antennapod.net.ai.service.ad.provider.AdAnalysisProviderFactory;
 import de.danoeh.antennapod.net.ai.service.ad.vosk.VoskTranscriptionManager;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.CloudAiPreferences;
 import de.danoeh.antennapod.storage.preferences.LocalAiPreferences;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
@@ -76,17 +78,17 @@ public class CompleteAnalysisActionButton extends ItemActionButton {
         if (item.getFeed() != null && item.getFeed().getPreferences() != null) {
             feedModelOverride = item.getFeed().getPreferences().getTranscriptionModel();
         }
-        boolean feedUsesCloudModel = feedModelOverride != null && feedModelOverride.startsWith("cloud:");
+        boolean usesCloudTranscription =
+                AdAnalysisProviderFactory.usesCloudTranscription(context, feedModelOverride);
 
-        // If feed uses cloud model, check for cloud credentials first
-        if (feedUsesCloudModel && !CloudAiPreferences.hasCredentials(context)) {
+        if (usesCloudTranscription && !CloudAiPreferences.hasCredentials(context)) {
             showApiKeyMissingDialog(context);
             return;
         }
 
-        // Check local model availability (only if not using feed cloud override)
-        if (!feedUsesCloudModel && LocalAiPreferences.isLocalTranscriptionEnabled(context)) {
-            String model = LocalAiPreferences.getLocalTranscriptionModel(context);
+        if (!usesCloudTranscription) {
+            String model = TextUtils.isEmpty(feedModelOverride)
+                    ? LocalAiPreferences.getLocalTranscriptionModel(context) : feedModelOverride;
             if (!new VoskTranscriptionManager(context).isModelDownloaded(model)) {
                 new MaterialAlertDialogBuilder(context)
                         .setTitle(R.string.ad_analysis_model_missing_title)
@@ -97,7 +99,7 @@ public class CompleteAnalysisActionButton extends ItemActionButton {
                             context.startActivity(intent);
                         })
                         .setNeutralButton(R.string.action_use_cloud, (d, w) -> {
-                            LocalAiPreferences.setLocalTranscriptionEnabled(context, false);
+                            useCloudTranscription(context);
                             enqueueAnalysis(context, media);
                         })
                         .setNegativeButton(android.R.string.cancel, null)
@@ -115,10 +117,26 @@ public class CompleteAnalysisActionButton extends ItemActionButton {
         enqueueAnalysis(context, media);
     }
 
+    private void useCloudTranscription(Context context) {
+        String feedModelOverride = item.getFeed() == null || item.getFeed().getPreferences() == null
+                ? null : item.getFeed().getPreferences().getTranscriptionModel();
+        if (!TextUtils.isEmpty(feedModelOverride) && !feedModelOverride.startsWith("cloud:")
+                && item.getFeed() != null && item.getFeed().getPreferences() != null) {
+            item.getFeed().getPreferences()
+                    .setTranscriptionModel(AdAnalysisProviderFactory.CLOUD_TRANSCRIPTION_OVERRIDE);
+            DBWriter.setFeedPreferences(item.getFeed().getPreferences());
+        } else {
+            LocalAiPreferences.setLocalTranscriptionEnabled(context, false);
+        }
+    }
+
     private void enqueueAnalysis(Context context, FeedMedia media) {
-        AdAnalysisWorkScheduler.enqueueManual(context, media);
-        Toast.makeText(context, R.string.ad_analysis_queued, Toast.LENGTH_SHORT).show();
-        maybePromptDisableBatteryOptimization(context);
+        if (AdAnalysisWorkScheduler.enqueueManual(context, media)) {
+            Toast.makeText(context, R.string.ad_analysis_queued, Toast.LENGTH_SHORT).show();
+            maybePromptDisableBatteryOptimization(context);
+        } else {
+            showApiKeyMissingDialog(context);
+        }
     }
 
     /**

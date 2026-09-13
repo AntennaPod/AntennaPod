@@ -22,9 +22,9 @@ import java.nio.file.Path;
 import java.util.Locale;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class OpenAiTranscriptionProvider implements TranscriptionProvider {
-    private static final String TAG = "OpenAiTranscriptionProv";
-    private static final long MAX_OPENAI_AUDIO_BYTES = 25L * 1024L * 1024L; // 25 MiB hard limit
+public class CloudTranscriptionProvider implements TranscriptionProvider {
+    private static final String TAG = "CloudTranscriptionProv";
+    private static final long MAX_CLOUD_AUDIO_BYTES = 25L * 1024L * 1024L; // 25 MiB hard limit
     private static final double PRICE_WHISPER_PER_MIN = 0.006;
     private static final int MAX_RATE_LIMIT_RETRIES = 10;
     private static final long DEFAULT_RATE_LIMIT_WAIT_SECONDS = 60L;
@@ -35,20 +35,20 @@ public class OpenAiTranscriptionProvider implements TranscriptionProvider {
     private final AudioModel audioModel;
     private final String languageOverride;
 
-    public OpenAiTranscriptionProvider(Context context) {
+    public CloudTranscriptionProvider(Context context) {
         this(context, null);
     }
 
-    public OpenAiTranscriptionProvider(Context context, String languageOverride) {
+    public CloudTranscriptionProvider(Context context, String languageOverride) {
         this.context = context;
         this.languageOverride = languageOverride;
-        this.client = CloudAiClientFactory.createClient(context);
+        this.client = CloudAiClientFactory.createTranscriptionClient(context);
         this.audioModel = CloudAiClientFactory.getTranscriptionModel(context);
     }
 
     @Override
     public long getMaxAudioBytes() {
-        return MAX_OPENAI_AUDIO_BYTES;
+        return MAX_CLOUD_AUDIO_BYTES;
     }
 
     @Override
@@ -149,7 +149,7 @@ public class OpenAiTranscriptionProvider implements TranscriptionProvider {
     public String buildErrorMessage(Throwable throwable) {
         String message = throwable.getMessage() == null ? "" : throwable.getMessage();
         if (shouldNotRetry(throwable)) {
-            return message + " (OpenAI supports limited audio formats up to 25 MB)";
+            return message + " (Cloud transcription supports limited audio formats up to 25 MB)";
         }
         return message;
     }

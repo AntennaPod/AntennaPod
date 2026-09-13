@@ -3,7 +3,6 @@ package de.danoeh.antennapod.net.ai.service.ad.provider;
 import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -15,11 +14,8 @@ import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.danoeh.antennapod.storage.preferences.CloudAiPreferences;
-
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class OpenAiTranscriptAnalysisProvider implements TranscriptAnalysisProvider {
-    private static final String TAG = "OpenAiTranscriptAnlysis";
+public class CloudTranscriptAnalysisProvider implements TranscriptAnalysisProvider {
     private static final String DEFAULT_MODEL_NAME = "gpt-5-nano";
 
     // Base system message for ad classification
@@ -61,13 +57,11 @@ public class OpenAiTranscriptAnalysisProvider implements TranscriptAnalysisProvi
             + "- Sort segments by startSeconds, do not overlap them, and ensure endSeconds > startSeconds.\n"
             + "- If there are no ads, respond exactly with {\"ads\":[]}.";
 
-    private final Context context;
     private final OpenAIClient client;
     private final String modelName;
 
-    public OpenAiTranscriptAnalysisProvider(Context context) {
-        this.context = context;
-        this.client = CloudAiClientFactory.createClient(context);
+    public CloudTranscriptAnalysisProvider(Context context) {
+        this.client = CloudAiClientFactory.createAnalysisClient(context);
         String storedModel = CloudAiClientFactory.getAnalysisModelName(context);
         this.modelName = TextUtils.isEmpty(storedModel) ? DEFAULT_MODEL_NAME : storedModel;
     }
@@ -95,11 +89,10 @@ public class OpenAiTranscriptAnalysisProvider implements TranscriptAnalysisProvi
         String systemMessage = buildSystemMessage(durationMs);
         String userMessage = buildUserMessage(prompt);
 
-        ChatModel chatModel = resolveChatModel(modelName);
         ChatCompletionCreateParams chatParams = ChatCompletionCreateParams.builder()
                 .addSystemMessage(systemMessage)
                 .addUserMessage(userMessage)
-                .model(chatModel)
+                .model(ChatModel.of(modelName))
                 .build();
         if (listener != null) {
             listener.onProgress(30);
@@ -148,29 +141,6 @@ public class OpenAiTranscriptAnalysisProvider implements TranscriptAnalysisProvi
             }
         }
         return 0;
-    }
-
-    private ChatModel resolveChatModel(String selectedModel) {
-        if (CloudAiPreferences.isAzure(context)) {
-            // On Azure the value is a deployment name, so pass it through as-is.
-            return ChatModel.of(selectedModel);
-        }
-        if (TextUtils.isEmpty(selectedModel)) {
-            return ChatModel.GPT_5_NANO;
-        }
-        switch (selectedModel) {
-            case "gpt-5.1": return ChatModel.GPT_5_1;
-            case "gpt-5.4-mini": return ChatModel.of("gpt-5.4-mini");
-            case "gpt-5-mini": return ChatModel.GPT_5_MINI;
-            case "gpt-5-nano": return ChatModel.GPT_5_NANO;
-            default:
-                try {
-                    return ChatModel.of(selectedModel);
-                } catch (Exception e) {
-                    Log.w(TAG, "Unknown model " + selectedModel + ", falling back to default", e);
-                    return ChatModel.GPT_5_NANO;
-                }
-        }
     }
 
     @Override

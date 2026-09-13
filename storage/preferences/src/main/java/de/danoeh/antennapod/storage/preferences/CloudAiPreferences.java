@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 /**
- * Stores which cloud AI provider (OpenAI or Azure OpenAI) is used for
+ * Stores which cloud AI provider (OpenAI or Azure AI Foundry) is used for
  * transcription and ad analysis. Local (on-device) transcription is configured
  * separately in {@link LocalAiPreferences}.
  */
@@ -58,8 +58,8 @@ public final class CloudAiPreferences {
      */
     public static boolean hasCredentials(Context context) {
         if (isAzure(context)) {
-            return !TextUtils.isEmpty(AzureOpenAiPreferences.getEndpoint(context))
-                    && !TextUtils.isEmpty(AzureOpenAiPreferences.getApiKey(context));
+            return !TextUtils.isEmpty(AzureAiPreferences.getEndpoint(context))
+                    && !TextUtils.isEmpty(AzureAiPreferences.getApiKey(context));
         }
         return !TextUtils.isEmpty(OpenAiPreferences.getApiKey(context));
     }

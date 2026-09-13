@@ -117,7 +117,7 @@ public class AdAnalysisProviderFactoryTest {
         try {
             TranscriptAnalysisProvider provider = AdAnalysisProviderFactory.createAnalysisProvider(context);
             assertNotNull(provider);
-            assertTrue(provider instanceof OpenAiTranscriptAnalysisProvider);
+            assertTrue(provider instanceof CloudTranscriptAnalysisProvider);
             provider.close();
         } catch (Exception e) {
             // Expected if API key validation is strict
@@ -174,32 +174,22 @@ public class AdAnalysisProviderFactoryTest {
 
     @Test
     public void testProviderResolution_cloudOverride_precedence() {
-        // Cloud override takes precedence over local setting
-        String modelOverride = "cloud:whisper-1";
-        boolean localEnabled = true; // Even if local is enabled
-
-        boolean useCloud = modelOverride != null && modelOverride.startsWith("cloud:");
-        assertTrue(useCloud); // Cloud override wins
+        assertTrue(AdAnalysisProviderFactory.usesCloudTranscription("cloud:whisper-1", true));
     }
 
     @Test
     public void testProviderResolution_noOverride_checksLocal() {
-        // When no cloud override, check local preference
-        String modelOverride = null;
-        boolean localEnabled = true;
-
-        boolean useLocal = (modelOverride == null || !modelOverride.startsWith("cloud:")) && localEnabled;
-        assertTrue(useLocal);
+        assertFalse(AdAnalysisProviderFactory.usesCloudTranscription(null, true));
     }
 
     @Test
     public void testProviderResolution_noOverride_noLocal_usesCloud() {
-        // When no override and local disabled, use cloud
-        String modelOverride = null;
-        boolean localEnabled = false;
+        assertTrue(AdAnalysisProviderFactory.usesCloudTranscription(null, false));
+    }
 
-        boolean useCloud = modelOverride == null || !modelOverride.startsWith("cloud:") || !localEnabled;
-        assertTrue(useCloud);
+    @Test
+    public void testProviderResolution_localOverride_ignoresGlobalCloudSetting() {
+        assertFalse(AdAnalysisProviderFactory.usesCloudTranscription("small", false));
     }
 
     // ==================== Error Handling Tests ====================

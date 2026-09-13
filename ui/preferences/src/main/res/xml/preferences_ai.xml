@@ -57,7 +57,7 @@
                 android:summary="@string/pref_azure_chat_deployment_summary" />
 
         <EditTextPreference
-                android:key="prefAzureWhisperDeployment"
+                android:key="prefAzureTranscriptionDeployment"
                 android:persistent="false"
                 android:title="@string/pref_azure_whisper_deployment_title"
                 android:summary="@string/pref_azure_whisper_deployment_summary" />

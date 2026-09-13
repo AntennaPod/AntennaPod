@@ -29,7 +29,7 @@ public final class LocalAiPreferences {
 
     public static boolean isLocalTranscriptionEnabled(Context context) {
         SharedPreferences prefs = getEncryptedPrefs(context);
-        return prefs != null && prefs.getBoolean(PREF_USE_LOCAL_TRANSCRIPTION, true);
+        return prefs != null && prefs.getBoolean(PREF_USE_LOCAL_TRANSCRIPTION, false);
     }
 
     public static void setLocalTranscriptionEnabled(Context context, boolean enabled) {

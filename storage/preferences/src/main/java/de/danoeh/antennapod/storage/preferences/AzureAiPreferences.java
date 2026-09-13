@@ -12,13 +12,14 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 /**
- * Secure storage for user-supplied Azure OpenAI connection settings.
+ * Secure storage for user-supplied Azure AI Foundry connection settings.
  * On Azure, models are addressed by the name of the deployment created in the
- * Azure AI Foundry portal, not by the underlying model id.
+ * Foundry portal, not by the underlying model id.
  */
-public final class AzureOpenAiPreferences {
-    private static final String TAG = "AzureOpenAiPreferences";
+public final class AzureAiPreferences {
+    private static final String TAG = "AzureAiPreferences";
     private static final String PREF_NAME = "openai_secure";
+    // Keep the existing keys so users do not lose their saved configuration.
     private static final String PREF_ENDPOINT = "pref_azure_openai_endpoint";
     private static final String PREF_API_KEY = "pref_azure_openai_api_key";
     private static final String PREF_API_VERSION = "pref_azure_openai_api_version";
@@ -29,7 +30,7 @@ public final class AzureOpenAiPreferences {
     public static final String DEFAULT_CHAT_DEPLOYMENT = "gpt-5-nano";
     public static final String DEFAULT_TRANSCRIPTION_DEPLOYMENT = "whisper";
 
-    private AzureOpenAiPreferences() {
+    private AzureAiPreferences() {
     }
 
     @Nullable

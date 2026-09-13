@@ -25,7 +25,7 @@
 
         <Preference
             android:key="feedTranscriptionModel"
-            android:title="@string/pref_local_transcription_model_title"
+            android:title="@string/pref_transcription_method_title"
             android:icon="@drawable/ic_transcribe_24dp" />
 
         <de.danoeh.antennapod.ui.preferences.preference.MaterialListPreference

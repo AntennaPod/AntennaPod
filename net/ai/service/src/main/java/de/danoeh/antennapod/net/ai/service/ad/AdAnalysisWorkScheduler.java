@@ -15,7 +15,6 @@ import androidx.work.WorkManager;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.storage.preferences.CloudAiPreferences;
-import de.danoeh.antennapod.storage.preferences.OpenAiPreferences;
 
 /**
  * Schedules combined transcription + ad analysis work.
@@ -34,8 +33,13 @@ public final class AdAnalysisWorkScheduler {
     private AdAnalysisWorkScheduler() {
     }
 
-    public static void enqueueManual(Context context, FeedMedia media) {
-        enqueue(context, media, false);
+    /**
+     * Queues a complete transcription and analysis run.
+     *
+     * @return true only when work was actually added to WorkManager
+     */
+    public static boolean enqueueManual(Context context, FeedMedia media) {
+        return enqueue(context, media, false);
     }
 
     /**
@@ -51,8 +55,7 @@ public final class AdAnalysisWorkScheduler {
             return false;
         }
         FeedItem item = media.getItem();
-        if (OpenAiPreferences.isApiKeyRequired(context)
-                && !CloudAiPreferences.hasCredentials(context)) {
+        if (!CloudAiPreferences.hasCredentials(context)) {
             return false;
         }
         if (TextUtils.isEmpty(media.getLocalFileUrl())) {

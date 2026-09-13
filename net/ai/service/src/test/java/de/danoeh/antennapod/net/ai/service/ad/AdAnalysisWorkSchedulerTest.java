@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.net.ai.service.ad;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;

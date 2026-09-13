@@ -23,12 +23,12 @@ This is the official repository of AntennaPod, the easy-to-use, flexible and ope
 
 This fork adds AI-powered transcription and ad analysis. Transcription can run fully
 on-device (Vosk) or via a cloud provider; ad analysis runs on a cloud provider. Both the
-public **OpenAI API** and your own **Azure OpenAI** deployments are supported — select the
+public **OpenAI API** and your own **Azure AI Foundry** deployments are supported — select the
 provider under **Settings → AI & Ad Skipping → Cloud AI provider**.
 
 To host the models yourself on Azure, see
-[docs/AZURE_OPENAI_SETUP.md](docs/AZURE_OPENAI_SETUP.md) for a step-by-step guide on
-creating the Azure OpenAI resource, deploying the Whisper and chat models, and
+[docs/AZURE_AI_FOUNDRY_SETUP.md](docs/AZURE_AI_FOUNDRY_SETUP.md) for a step-by-step guide on
+creating the Foundry resource, deploying transcription and chat models, and
 configuring the app.
 
 ## Feedback
@@ -53,4 +53,3 @@ If you want to translate AntennaPod into another language, you can visit our [We
 ## Building AntennaPod
 
 You can build AntennaPod just like any other Android project. Refer to the [instructions](https://github.com/AntennaPod/AntennaPod/blob/develop/CONTRIBUTING.md) for more details.
-

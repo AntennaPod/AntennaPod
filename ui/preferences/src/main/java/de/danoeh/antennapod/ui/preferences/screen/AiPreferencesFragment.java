@@ -23,7 +23,7 @@ import java.util.Locale;
 import de.danoeh.antennapod.event.ModelDownloadEvent;
 import de.danoeh.antennapod.net.ai.service.ad.vosk.VoskTranscriptionManager;
 import de.danoeh.antennapod.net.ai.service.ad.vosk.VoskModel;
-import de.danoeh.antennapod.storage.preferences.AzureOpenAiPreferences;
+import de.danoeh.antennapod.storage.preferences.AzureAiPreferences;
 import de.danoeh.antennapod.storage.preferences.CloudAiPreferences;
 import de.danoeh.antennapod.storage.preferences.LocalAiPreferences;
 import de.danoeh.antennapod.storage.preferences.OpenAiPreferences;
@@ -36,11 +36,11 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_OPENAI_ANALYSIS_MODEL = "prefOpenAiAnalysisModel";
     private static final String PREF_OPENAI_TRANSCRIPTION_MODEL = "prefOpenAiTranscriptionModel";
 
-    // Azure OpenAI
+    // Azure AI Foundry
     private static final String PREF_AZURE_ENDPOINT = "prefAzureEndpoint";
     private static final String PREF_AZURE_API_KEY = "prefAzureApiKey";
     private static final String PREF_AZURE_CHAT_DEPLOYMENT = "prefAzureChatDeployment";
-    private static final String PREF_AZURE_WHISPER_DEPLOYMENT = "prefAzureWhisperDeployment";
+    private static final String PREF_AZURE_TRANSCRIPTION_DEPLOYMENT = "prefAzureTranscriptionDeployment";
     private static final String PREF_AZURE_API_VERSION = "prefAzureApiVersion";
 
     // Local Transcription
@@ -117,7 +117,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         setPreferenceVisible(PREF_AZURE_ENDPOINT, azure);
         setPreferenceVisible(PREF_AZURE_API_KEY, azure);
         setPreferenceVisible(PREF_AZURE_CHAT_DEPLOYMENT, azure);
-        setPreferenceVisible(PREF_AZURE_WHISPER_DEPLOYMENT, azure);
+        setPreferenceVisible(PREF_AZURE_TRANSCRIPTION_DEPLOYMENT, azure);
         setPreferenceVisible(PREF_AZURE_API_VERSION, azure);
     }
 
@@ -130,24 +130,24 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
 
     private void setupAzurePreferences() {
         setupTextPreference(PREF_AZURE_ENDPOINT,
-                () -> AzureOpenAiPreferences.getEndpoint(requireContext()),
-                value -> AzureOpenAiPreferences.setEndpoint(requireContext(), value),
+                () -> AzureAiPreferences.getEndpoint(requireContext()),
+                value -> AzureAiPreferences.setEndpoint(requireContext(), value),
                 R.string.pref_azure_endpoint_summary,
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
         setupAzureApiKeyPreference();
         setupTextPreference(PREF_AZURE_CHAT_DEPLOYMENT,
-                () -> AzureOpenAiPreferences.getChatDeployment(requireContext()),
-                value -> AzureOpenAiPreferences.setChatDeployment(requireContext(), value),
+                () -> AzureAiPreferences.getChatDeployment(requireContext()),
+                value -> AzureAiPreferences.setChatDeployment(requireContext(), value),
                 R.string.pref_azure_chat_deployment_summary,
                 InputType.TYPE_CLASS_TEXT);
-        setupTextPreference(PREF_AZURE_WHISPER_DEPLOYMENT,
-                () -> AzureOpenAiPreferences.getTranscriptionDeployment(requireContext()),
-                value -> AzureOpenAiPreferences.setTranscriptionDeployment(requireContext(), value),
+        setupTextPreference(PREF_AZURE_TRANSCRIPTION_DEPLOYMENT,
+                () -> AzureAiPreferences.getTranscriptionDeployment(requireContext()),
+                value -> AzureAiPreferences.setTranscriptionDeployment(requireContext(), value),
                 R.string.pref_azure_whisper_deployment_summary,
                 InputType.TYPE_CLASS_TEXT);
         setupTextPreference(PREF_AZURE_API_VERSION,
-                () -> AzureOpenAiPreferences.getApiVersion(requireContext()),
-                value -> AzureOpenAiPreferences.setApiVersion(requireContext(), value),
+                () -> AzureAiPreferences.getApiVersion(requireContext()),
+                value -> AzureAiPreferences.setApiVersion(requireContext(), value),
                 R.string.pref_azure_api_version_summary,
                 InputType.TYPE_CLASS_TEXT);
     }
@@ -194,10 +194,10 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         }
         apiKeyPref.setOnBindEditTextListener(editText -> {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            editText.setText(AzureOpenAiPreferences.getApiKey(requireContext()));
+            editText.setText(AzureAiPreferences.getApiKey(requireContext()));
         });
         apiKeyPref.setOnPreferenceChangeListener((preference, newValue) -> {
-            AzureOpenAiPreferences.setApiKey(requireContext(), (String) newValue);
+            AzureAiPreferences.setApiKey(requireContext(), (String) newValue);
             updateAzureApiKeySummary(apiKeyPref);
             apiKeyPref.setText("");
             return false; // Avoid storing in default shared preferences
@@ -206,7 +206,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
     }
 
     private void updateAzureApiKeySummary(EditTextPreference apiKeyPref) {
-        String key = AzureOpenAiPreferences.getApiKey(requireContext());
+        String key = AzureAiPreferences.getApiKey(requireContext());
         if (TextUtils.isEmpty(key)) {
             apiKeyPref.setSummary(R.string.pref_azure_api_key_summary);
         } else {
@@ -255,6 +255,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         // Enable Switch
         SwitchPreferenceCompat transcriptionSwitch = findPreference(PREF_LOCAL_TRANSCRIPTION_ENABLED);
         if (transcriptionSwitch != null) {
+            transcriptionSwitch.setChecked(LocalAiPreferences.isLocalTranscriptionEnabled(requireContext()));
             transcriptionSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean enabled = (Boolean) newValue;
                 LocalAiPreferences.setLocalTranscriptionEnabled(requireContext(), enabled);
@@ -340,10 +341,12 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         // Update enable switch
         SwitchPreferenceCompat enabledPref = findPreference(PREF_LOCAL_TRANSCRIPTION_ENABLED);
         if (enabledPref != null) {
+            boolean localEnabled = LocalAiPreferences.isLocalTranscriptionEnabled(requireContext());
+            enabledPref.setChecked(localEnabled);
             enabledPref.setEnabled(isDownloaded);
             if (!isDownloaded) {
                 // Model was deleted - disable the feature and uncheck the toggle
-                if (enabledPref.isChecked()) {
+                if (localEnabled) {
                     enabledPref.setChecked(false);
                     LocalAiPreferences.setLocalTranscriptionEnabled(requireContext(), false);
                 }

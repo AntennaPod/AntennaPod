@@ -34,6 +34,7 @@ import de.danoeh.antennapod.model.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.preferences.LocalAiPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.preferences.screen.synchronization.AuthenticationDialog;
 import de.danoeh.antennapod.ui.screen.feed.RenameFeedDialog;
@@ -66,7 +67,9 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     private static final String PREF_FEED_AI_CATEGORY = "feedAiCategory";
     private static final String PREF_FEED_TRANSCRIPTION_MODEL = "feedTranscriptionModel";
     private static final String PREF_FEED_TRANSCRIPTION_LANGUAGE = "feedTranscriptionLanguage";
-    private static final String CLOUD_MODEL_OPENAI_WHISPER = "cloud:openai_whisper";
+    // Values are recognized by prefix, so older cloud selections remain compatible.
+    private static final String CLOUD_TRANSCRIPTION =
+            de.danoeh.antennapod.net.ai.service.ad.provider.AdAnalysisProviderFactory.CLOUD_TRANSCRIPTION_OVERRIDE;
 
     private Feed feed;
     private Disposable disposable;
@@ -320,14 +323,6 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
             String initialModel) {
 
         java.util.List<de.danoeh.antennapod.net.ai.service.ad.vosk.VoskModel> models = tm.getAvailableModels();
-        java.util.List<de.danoeh.antennapod.net.ai.service.ad.vosk.VoskModel> downloadedModels =
-                new java.util.ArrayList<>();
-        for (de.danoeh.antennapod.net.ai.service.ad.vosk.VoskModel model : models) {
-            if (tm.isModelDownloaded(model.getId())) {
-                downloadedModels.add(model);
-            }
-        }
-
         // Find current selection
         String currentModel = feedPreferences.getTranscriptionModel();
         if (currentModel == null) {
@@ -361,7 +356,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         radioGroup.addView(globalDefault);
 
         // Local models section
-        if (!downloadedModels.isEmpty()) {
+        if (!models.isEmpty()) {
             android.widget.TextView localHeader = new android.widget.TextView(requireContext());
             localHeader.setText(getString(R.string.transcription_section_local));
             localHeader.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_LabelMedium);
@@ -370,9 +365,13 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
                     com.google.android.material.R.color.material_on_surface_emphasis_medium));
             radioGroup.addView(localHeader);
 
-            for (de.danoeh.antennapod.net.ai.service.ad.vosk.VoskModel m : downloadedModels) {
+            for (de.danoeh.antennapod.net.ai.service.ad.vosk.VoskModel m : models) {
                 android.widget.RadioButton rb = new android.widget.RadioButton(requireContext());
-                rb.setText(m.getName());
+                String label = m.getName();
+                if (!tm.isModelDownloaded(m.getId())) {
+                    label += " (" + getString(R.string.not_downloaded) + ")";
+                }
+                rb.setText(label);
                 rb.setId(radioButtonId++);
                 rb.setTag(m.getId());
                 rb.setPadding(0, verticalPadding, 0, verticalPadding);
@@ -390,9 +389,9 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         radioGroup.addView(cloudHeader);
 
         android.widget.RadioButton whisperRb = new android.widget.RadioButton(requireContext());
-        whisperRb.setText(getString(R.string.transcription_cloud_openai_whisper));
+        whisperRb.setText(getString(R.string.transcription_cloud_configured_provider));
         whisperRb.setId(radioButtonId++);
-        whisperRb.setTag(CLOUD_MODEL_OPENAI_WHISPER);
+        whisperRb.setTag(CLOUD_TRANSCRIPTION);
         whisperRb.setPadding(0, verticalPadding, 0, verticalPadding);
         radioGroup.addView(whisperRb);
 
@@ -407,6 +406,9 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
                     rb.setChecked(true);
                 } else if (tag != null && tag.equals(finalCurrentModel)) {
                     rb.setChecked(true);
+                } else if (tag instanceof String && ((String) tag).startsWith("cloud:")
+                        && finalCurrentModel.startsWith("cloud:")) {
+                    rb.setChecked(true);
                 }
             }
         }
@@ -416,7 +418,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         layout.addView(scrollView);
 
         new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.pref_local_transcription_model_title)
+                .setTitle(R.string.pref_transcription_method_title)
                 .setView(layout)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     int checkedId = radioGroup.getCheckedRadioButtonId();
@@ -452,9 +454,12 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     private void updateTranscriptionModelSummary(Preference modelPref, String currentModel,
             de.danoeh.antennapod.net.ai.service.ad.vosk.VoskTranscriptionManager tm) {
         if ("global_default".equals(currentModel) || currentModel == null) {
-            modelPref.setSummary(getString(R.string.global_default));
-        } else if (CLOUD_MODEL_OPENAI_WHISPER.equals(currentModel)) {
-            modelPref.setSummary(getString(R.string.transcription_cloud_openai_whisper));
+            String globalValue = LocalAiPreferences.isLocalTranscriptionEnabled(requireContext())
+                    ? getString(R.string.transcription_global_local)
+                    : getString(R.string.transcription_global_cloud);
+            modelPref.setSummary(getString(R.string.global_default_with_value, globalValue));
+        } else if (currentModel.startsWith("cloud:")) {
+            modelPref.setSummary(getString(R.string.transcription_cloud_configured_provider));
         } else {
             de.danoeh.antennapod.net.ai.service.ad.vosk.VoskModel m = tm.getModelById(currentModel);
             String label = (m != null) ? m.getName() : currentModel;
@@ -475,7 +480,7 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setupTranscriptionLanguagePreference(ListPreference languagePref) {
-        // Language codes supported by OpenAI Whisper (ISO 639-1)
+        // ISO 639-1 language hints supported by cloud transcription.
         String[] languageCodes = {
             "", "en", "es", "fr", "de", "it", "pt", "nl", "pl", "ru",
             "zh", "ja", "ko", "ar", "hi", "tr", "vi", "th", "id", "sv",
