@@ -22,6 +22,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -172,10 +176,22 @@ public class BugReportFragment extends AnimatedFragment {
     private void exportLogcat() {
         try {
             File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
-            String cmd = "logcat -d -f " + filename.getAbsolutePath();
-            Runtime.getRuntime().exec(cmd);
+            // Same environment block shown on the bug report screen (includes AntennaPod version)
+            String header = viewModel.requireCurrentState().getEnvironmentInfoWithMarkup()
+                    + "\n\n## Logcat\n";
 
-            //share file
+            Process process = Runtime.getRuntime().exec(new String[] {"logcat", "-d"});
+            try (InputStream logIn = process.getInputStream();
+                    FileOutputStream out = new FileOutputStream(filename)) {
+                out.write(header.getBytes(StandardCharsets.UTF_8));
+                byte[] buffer = new byte[8192];
+                int read;
+                while ((read = logIn.read(buffer)) != -1) {
+                    out.write(buffer, 0, read);
+                }
+            }
+            process.waitFor();
+
             try {
                 String authority = getString(R.string.provider_authority);
                 Uri fileUri = FileProvider.getUriForFile(requireContext(), authority, filename);
@@ -190,10 +206,10 @@ public class BugReportFragment extends AnimatedFragment {
                 e.printStackTrace();
                 Snackbar.make(viewBinding.getRoot(), R.string.log_file_share_exception, Snackbar.LENGTH_LONG).show();
             }
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-
-            Snackbar.make(viewBinding.getRoot(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+            String message = e.getMessage() != null ? e.getMessage() : e.toString();
+            Snackbar.make(viewBinding.getRoot(), message, Snackbar.LENGTH_LONG).show();
         }
     }
 }
