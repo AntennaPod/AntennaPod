@@ -56,7 +56,7 @@ public class SubscriptionsFilterDialog extends BottomSheetDialogFragment {
             binding.filterButton1.setSingleLine(false);
             binding.filterButton2.setMaxLines(3);
             binding.filterButton2.setSingleLine(false);
-            rows.addView(binding.getRoot(), rows.getChildCount() - 1);
+            rows.addView(binding.getRoot());
         }
 
         final Set<String> filterValues = new HashSet<>(Arrays.asList(subscriptionsFilter.getValues()));
@@ -69,10 +69,6 @@ public class SubscriptionsFilterDialog extends BottomSheetDialogFragment {
             }
         }
 
-        dialogBinding.confirmFiltermenu.setOnClickListener(view -> {
-            updateFilter(getFilterValues());
-            dismiss();
-        });
         dialogBinding.resetFiltermenu.setOnClickListener(view -> {
             updateFilter(Collections.emptySet());
             for (int i = 0; i < rows.getChildCount(); i++) {
