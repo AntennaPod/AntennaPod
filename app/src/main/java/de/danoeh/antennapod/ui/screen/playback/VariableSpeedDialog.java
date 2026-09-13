@@ -1,11 +1,10 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
 import android.os.Bundle;
-import com.google.android.material.color.MaterialColors;
-import android.content.res.ColorStateList;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -188,17 +187,17 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
 
             holder.chip.setText(String.format(Locale.getDefault(), "%1$.2f", speed));
             if (pendingDelete) {
-                int error = MaterialColors.getColor(holder.chip, com.google.android.material.R.attr.colorError);
-                int onError = MaterialColors.getColor(holder.chip, com.google.android.material.R.attr.colorOnError);
-                holder.chip.setChipBackgroundColor(ColorStateList.valueOf(error));
-                holder.chip.setTextColor(onError);
+                holder.chip.setChipBackgroundColorResource(android.R.color.holo_red_dark);
+                holder.chip.setTextColor(0xFFFFFFFF);
                 holder.chip.setChipIconResource(android.R.drawable.ic_menu_delete);
-                holder.chip.setChipIconTint(ColorStateList.valueOf(onError));
+                holder.chip.setChipIconTintResource(android.R.color.white);
             } else {
                 holder.chip.setChipBackgroundColor(null);
-                holder.chip.setTextColor(MaterialColors.getColor(
-                        holder.chip, com.google.android.material.R.attr.colorOnSurface));
                 holder.chip.setChipIcon(null);
+                TypedValue typedValue = new TypedValue();
+                holder.chip.getContext().getTheme()
+                        .resolveAttribute(android.R.attr.textColorPrimary, typedValue, true);
+                holder.chip.setTextColor(typedValue.data);
             }
             holder.chip.setOnLongClickListener(v -> {
                 if (pendingDeleteSpeed != null && pendingDeleteSpeed == speed) {
