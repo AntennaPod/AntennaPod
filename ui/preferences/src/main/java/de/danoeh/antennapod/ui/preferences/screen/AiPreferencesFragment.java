@@ -35,6 +35,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_OPENAI_API_KEY = "prefOpenAiApiKey";
     private static final String PREF_OPENAI_ANALYSIS_MODEL = "prefOpenAiAnalysisModel";
     private static final String PREF_OPENAI_TRANSCRIPTION_MODEL = "prefOpenAiTranscriptionModel";
+    private static final String PREF_CLOUD_TRANSCRIPTION_PARALLELISM = "prefCloudTranscriptionParallelism";
 
     // Azure AI Foundry
     private static final String PREF_AZURE_ENDPOINT = "prefAzureEndpoint";
@@ -61,6 +62,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         setupApiKeyPreference();
         setupOpenAiModelPreferences();
         setupAzurePreferences();
+        setupCloudTranscriptionParallelismPreference();
         setupLocalTranscriptionPreferences();
         setupDeleteAllTranscriptionModels();
         updateCloudProviderVisibility();
@@ -185,6 +187,44 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         } else {
             pref.setSummary(value);
         }
+    }
+
+    private void setupCloudTranscriptionParallelismPreference() {
+        EditTextPreference preference = findPreference(PREF_CLOUD_TRANSCRIPTION_PARALLELISM);
+        if (preference == null) {
+            return;
+        }
+        preference.setOnBindEditTextListener(editText -> {
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            editText.setText(String.valueOf(
+                    CloudAiPreferences.getTranscriptionParallelism(requireContext())));
+            editText.selectAll();
+        });
+        preference.setOnPreferenceChangeListener((ignored, newValue) -> {
+            int value;
+            try {
+                value = Integer.parseInt(((String) newValue).trim());
+            } catch (NumberFormatException e) {
+                Toast.makeText(requireContext(),
+                        R.string.pref_cloud_transcription_parallelism_invalid, Toast.LENGTH_LONG).show();
+                return false;
+            }
+            if (!CloudAiPreferences.isValidTranscriptionParallelism(value)) {
+                Toast.makeText(requireContext(),
+                        R.string.pref_cloud_transcription_parallelism_invalid, Toast.LENGTH_LONG).show();
+                return false;
+            }
+            CloudAiPreferences.setTranscriptionParallelism(requireContext(), value);
+            updateCloudTranscriptionParallelismSummary(preference);
+            preference.setText("");
+            return false;
+        });
+        updateCloudTranscriptionParallelismSummary(preference);
+    }
+
+    private void updateCloudTranscriptionParallelismSummary(EditTextPreference preference) {
+        preference.setSummary(getString(R.string.pref_cloud_transcription_parallelism_summary,
+                CloudAiPreferences.getTranscriptionParallelism(requireContext())));
     }
 
     private void setupAzureApiKeyPreference() {

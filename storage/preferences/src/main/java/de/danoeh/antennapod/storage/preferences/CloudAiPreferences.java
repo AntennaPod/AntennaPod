@@ -24,6 +24,11 @@ public final class CloudAiPreferences {
     private static final String TAG = "CloudAiPreferences";
     private static final String PREF_NAME = "openai_secure";
     private static final String PREF_PROVIDER = "pref_cloud_ai_provider";
+    private static final String PREF_TRANSCRIPTION_PARALLELISM = "pref_cloud_transcription_parallelism";
+
+    public static final int DEFAULT_TRANSCRIPTION_PARALLELISM = 5;
+    public static final int MIN_TRANSCRIPTION_PARALLELISM = 1;
+    public static final int MAX_TRANSCRIPTION_PARALLELISM = 10;
 
     private CloudAiPreferences() {
     }
@@ -50,6 +55,34 @@ public final class CloudAiPreferences {
 
     public static boolean isAzure(Context context) {
         return PROVIDER_AZURE.equals(getProvider(context));
+    }
+
+    public static int getTranscriptionParallelism(Context context) {
+        SharedPreferences prefs = getEncryptedPrefs(context);
+        if (prefs == null) {
+            return DEFAULT_TRANSCRIPTION_PARALLELISM;
+        }
+        int value = prefs.getInt(PREF_TRANSCRIPTION_PARALLELISM, DEFAULT_TRANSCRIPTION_PARALLELISM);
+        if (!isValidTranscriptionParallelism(value)) {
+            Log.w(TAG, "Invalid stored transcription parallelism: " + value);
+            return DEFAULT_TRANSCRIPTION_PARALLELISM;
+        }
+        return value;
+    }
+
+    public static void setTranscriptionParallelism(Context context, int value) {
+        if (!isValidTranscriptionParallelism(value)) {
+            throw new IllegalArgumentException("Transcription parallelism must be between "
+                    + MIN_TRANSCRIPTION_PARALLELISM + " and " + MAX_TRANSCRIPTION_PARALLELISM);
+        }
+        SharedPreferences prefs = getEncryptedPrefs(context);
+        if (prefs != null) {
+            prefs.edit().putInt(PREF_TRANSCRIPTION_PARALLELISM, value).apply();
+        }
+    }
+
+    public static boolean isValidTranscriptionParallelism(int value) {
+        return value >= MIN_TRANSCRIPTION_PARALLELISM && value <= MAX_TRANSCRIPTION_PARALLELISM;
     }
 
     /**

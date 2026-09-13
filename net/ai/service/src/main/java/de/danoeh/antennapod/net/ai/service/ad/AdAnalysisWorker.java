@@ -388,13 +388,13 @@ public class AdAnalysisWorker extends Worker {
         long maxMemory = Runtime.getRuntime().maxMemory();
         long usedMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long availableMemory = maxMemory - usedMemory;
-        int threadCount = TranscriptionThreadCountPolicy.chooseThreadCount(availableProcessors, maxMemory, usedMemory);
-        // Respect provider concurrency limits (cloud Whisper deployments rate-limit aggressively).
-        threadCount = Math.max(1, Math.min(threadCount, provider.getMaxConcurrency()));
+        int requestedThreads = provider.getMaxConcurrency();
+        int threadCount = TranscriptionThreadCountPolicy.chooseThreadCount(
+                availableProcessors, maxMemory, usedMemory, requestedThreads);
 
         Log.i(TAG, "Memory stats: Max=" + (maxMemory / 1024 / 1024) + "MB, Used=" + (usedMemory / 1024 / 1024)
                 + "MB, Avail=" + (availableMemory / 1024 / 1024) + "MB. Threads: ByCPU=" + availableProcessors
-                + " -> Using " + threadCount + " threads");
+                + ", RequestedMax=" + requestedThreads + " -> Using " + threadCount + " threads");
 
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newFixedThreadPool(threadCount);
         List<java.util.concurrent.Future<String>> futures = new java.util.ArrayList<>();

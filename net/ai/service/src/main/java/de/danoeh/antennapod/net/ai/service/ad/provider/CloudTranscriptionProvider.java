@@ -20,12 +20,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
+import de.danoeh.antennapod.storage.preferences.CloudAiPreferences;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class CloudTranscriptionProvider implements TranscriptionProvider {
     private static final String TAG = "CloudTranscriptionProv";
     private static final long MAX_CLOUD_AUDIO_BYTES = 25L * 1024L * 1024L; // 25 MiB hard limit
-    private static final double PRICE_WHISPER_PER_MIN = 0.006;
     private static final int MAX_RATE_LIMIT_RETRIES = 10;
     private static final long DEFAULT_RATE_LIMIT_WAIT_SECONDS = 60L;
     private static final long MAX_RATE_LIMIT_WAIT_SECONDS = 120L;
@@ -34,10 +36,6 @@ public class CloudTranscriptionProvider implements TranscriptionProvider {
     private final OpenAIClient client;
     private final AudioModel audioModel;
     private final String languageOverride;
-
-    public CloudTranscriptionProvider(Context context) {
-        this(context, null);
-    }
 
     public CloudTranscriptionProvider(Context context, String languageOverride) {
         this.context = context;
@@ -53,9 +51,7 @@ public class CloudTranscriptionProvider implements TranscriptionProvider {
 
     @Override
     public int getMaxConcurrency() {
-        // Cloud Whisper deployments (especially Azure) enforce a low per-minute
-        // call-rate limit, so transcribe chunks serially to avoid bursts of 429s.
-        return 1;
+        return CloudAiPreferences.getTranscriptionParallelism(context);
     }
 
     @Override
@@ -101,14 +97,14 @@ public class CloudTranscriptionProvider implements TranscriptionProvider {
                 long waitSeconds = parseRetryAfterSeconds(e);
                 Log.w(TAG, "Transcription " + chunkLabel + " rate limited (429); waiting " + waitSeconds
                         + "s before retry " + rateLimitRetries + "/" + MAX_RATE_LIMIT_RETRIES);
-                Thread.sleep(waitSeconds * 1000L);
+                TimeUnit.SECONDS.sleep(waitSeconds);
             } catch (OpenAIIoException e) {
                 boolean last = attempt > maxRetries;
                 Log.w(TAG, "Transcription attempt " + attempt + " failed (" + e.getMessage() + ")", e);
                 if (last) {
                     throw e;
                 }
-                Thread.sleep(500L * attempt);
+                TimeUnit.MILLISECONDS.sleep(500L * attempt);
             }
         }
     }
@@ -121,7 +117,7 @@ public class CloudTranscriptionProvider implements TranscriptionProvider {
     private static long parseRetryAfterSeconds(RateLimitException e) {
         try {
             java.util.List<String> values = e.headers().values("retry-after");
-            if (values != null && !values.isEmpty()) {
+            if (!values.isEmpty()) {
                 long seconds = Long.parseLong(values.get(0).trim());
                 return Math.max(1L, Math.min(seconds, MAX_RATE_LIMIT_WAIT_SECONDS));
             }

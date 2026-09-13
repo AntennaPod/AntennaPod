@@ -23,9 +23,8 @@ public interface TranscriptionProvider extends AutoCloseable {
 
     /**
      * Maximum number of chunks that may be transcribed concurrently. Cloud
-     * providers with strict per-minute rate limits (e.g. Azure Whisper) return 1
-     * to force serial requests; local providers leave it unbounded so the
-     * memory-based policy decides.
+     * providers return the user-configured limit; local providers leave it
+     * unbounded so the CPU and memory policy decides.
      */
     default int getMaxConcurrency() {
         return Integer.MAX_VALUE;

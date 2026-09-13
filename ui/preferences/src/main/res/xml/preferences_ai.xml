@@ -21,6 +21,12 @@
                 android:summary="%s" />
 
         <EditTextPreference
+                android:key="prefCloudTranscriptionParallelism"
+                android:persistent="false"
+                android:title="@string/pref_cloud_transcription_parallelism_title"
+                android:summary="@string/pref_cloud_transcription_parallelism_default_summary" />
+
+        <EditTextPreference
                 android:key="prefOpenAiApiKey"
                 android:persistent="false"
                 android:title="@string/pref_openai_api_key_title"

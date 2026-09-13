@@ -25,13 +25,6 @@ public final class AdAnalysisProviderFactory {
 
     /**
      * Creates the appropriate transcription provider based on user preferences.
-     */
-    public static TranscriptionProvider createTranscriptionProvider(Context context) {
-        return createTranscriptionProvider(context, null, null);
-    }
-
-    /**
-     * Creates the appropriate transcription provider based on user preferences.
      *
      * @param modelOverride Optional model ID to override global preference
      * @param languageOverride Optional language code for cloud transcription
@@ -71,7 +64,7 @@ public final class AdAnalysisProviderFactory {
      * Creates the configured cloud transcript analysis provider.
      * Local ad analysis has been removed - always use cloud-based analysis.
      */
-    public static TranscriptAnalysisProvider createAnalysisProvider(Context context) throws IOException {
+    public static TranscriptAnalysisProvider createAnalysisProvider(Context context) {
         Log.i(TAG, "Creating CloudTranscriptAnalysisProvider");
         return new CloudTranscriptAnalysisProvider(context);
     }

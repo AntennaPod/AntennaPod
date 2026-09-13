@@ -1022,6 +1022,10 @@
     <string name="pref_cloud_ai_provider_title">Cloud provider</string>
     <string name="pref_cloud_ai_provider_openai">OpenAI</string>
     <string name="pref_cloud_ai_provider_azure">Azure AI Foundry</string>
+    <string name="pref_cloud_transcription_parallelism_title">Parallel transcription chunks</string>
+    <string name="pref_cloud_transcription_parallelism_default_summary">Run up to 5 cloud transcription chunks at once</string>
+    <string name="pref_cloud_transcription_parallelism_summary">Run up to %1$d cloud transcription chunks at once</string>
+    <string name="pref_cloud_transcription_parallelism_invalid">Enter a number from 1 to 10</string>
     <string name="pref_azure_endpoint_title">Foundry endpoint</string>
     <string name="pref_azure_endpoint_summary">Resource endpoint, e.g. https://myresource.services.ai.azure.com</string>
     <string name="pref_azure_api_key_title">Foundry API key</string>

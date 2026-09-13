@@ -589,6 +589,14 @@ public class AdAnalysisWorkerTest {
         assertEquals(8, threadCount);
     }
 
+    @Test
+    public void testTranscriptionThreadCountPolicy_limitsByConfiguredMaximum() {
+        int threadCount = TranscriptionThreadCountPolicy.chooseThreadCount(8, 1024L * 1024L * 1024L,
+                256L * 1024L * 1024L, 5);
+
+        assertEquals(5, threadCount);
+    }
+
     // ==================== Helper Methods (delegate to production utilities) ====================
 
     private String sanitizeJson(String raw) {

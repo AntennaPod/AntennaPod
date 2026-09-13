@@ -3,7 +3,7 @@ package de.danoeh.antennapod.net.ai.service.ad;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.model.ad.AdSegment;
@@ -26,7 +26,8 @@ public final class AdSegmentMerger {
             return new ArrayList<>();
         }
         List<AdSegment> sorted = new ArrayList<>(segments);
-        sorted.sort(Comparator.comparingDouble(AdSegment::getStartSeconds));
+        Collections.sort(sorted,
+                (first, second) -> Double.compare(first.getStartSeconds(), second.getStartSeconds()));
 
         List<AdSegment> merged = new ArrayList<>();
         AdSegment current = sorted.get(0);
