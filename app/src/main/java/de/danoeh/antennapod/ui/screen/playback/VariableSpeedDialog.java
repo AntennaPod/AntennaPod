@@ -188,10 +188,9 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
 
             holder.chip.setText(String.format(Locale.getDefault(), "%1$.2f", speed));
             if (pendingDelete) {
-                int error = ThemeUtils.getColorFromAttr(holder.chip.getContext(),
-                        com.google.android.material.R.attr.colorError);
+                int error = ThemeUtils.getColorFromAttr(holder.chip.getContext(), R.attr.icon_red);
                 int onError = ThemeUtils.getColorFromAttr(holder.chip.getContext(),
-                        com.google.android.material.R.attr.colorOnError);
+                        android.R.attr.textColorPrimaryInverse);
                 holder.chip.setChipBackgroundColor(ColorStateList.valueOf(error));
                 holder.chip.setTextColor(onError);
                 holder.chip.setChipIconResource(R.drawable.ic_delete);
