@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -187,17 +188,19 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
 
             holder.chip.setText(String.format(Locale.getDefault(), "%1$.2f", speed));
             if (pendingDelete) {
-                holder.chip.setChipBackgroundColorResource(android.R.color.holo_red_dark);
-                holder.chip.setTextColor(0xFFFFFFFF);
-                holder.chip.setChipIconResource(android.R.drawable.ic_menu_delete);
-                holder.chip.setChipIconTintResource(android.R.color.white);
+                int error = ThemeUtils.getColorFromAttr(holder.chip.getContext(),
+                        com.google.android.material.R.attr.colorError);
+                int onError = ThemeUtils.getColorFromAttr(holder.chip.getContext(),
+                        com.google.android.material.R.attr.colorOnError);
+                holder.chip.setChipBackgroundColor(ColorStateList.valueOf(error));
+                holder.chip.setTextColor(onError);
+                holder.chip.setChipIconResource(R.drawable.ic_delete);
+                holder.chip.setChipIconTint(ColorStateList.valueOf(onError));
             } else {
                 holder.chip.setChipBackgroundColor(null);
                 holder.chip.setChipIcon(null);
-                TypedValue typedValue = new TypedValue();
-                holder.chip.getContext().getTheme()
-                        .resolveAttribute(android.R.attr.textColorPrimary, typedValue, true);
-                holder.chip.setTextColor(typedValue.data);
+                holder.chip.setTextColor(ThemeUtils.getColorFromAttr(
+                        holder.chip.getContext(), android.R.attr.textColorPrimary));
             }
             holder.chip.setOnLongClickListener(v -> {
                 if (pendingDeleteSpeed != null && pendingDeleteSpeed == speed) {
@@ -211,16 +214,14 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
                 return true;
             });
             holder.chip.setOnClickListener(v -> {
-                if (pendingDeleteSpeed != null && pendingDeleteSpeed == speed) {
-                    selectedSpeeds.remove(speed);
-                    UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                if (pendingDeleteSpeed != null) {
+                    if (pendingDeleteSpeed == speed) {
+                        selectedSpeeds.remove(speed);
+                        UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                    }
                     pendingDeleteSpeed = null;
                     notifyDataSetChanged();
                     return;
-                }
-                if (pendingDeleteSpeed != null) {
-                    pendingDeleteSpeed = null;
-                    notifyDataSetChanged();
                 }
                 UserPreferences.setPlaybackSpeed(speed);
                 if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
