@@ -8,6 +8,17 @@
             android:summary="@string/pref_ad_skip_enabled_summary" />
 
     <PreferenceCategory
+            android:key="prefAnalysisQueueCategory">
+
+        <Preference
+                android:key="prefAnalysisQueue"
+                android:persistent="false"
+                android:title="@string/pref_analysis_queue_title_collapsed"
+                android:summary="@string/pref_analysis_queue_loading" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
             android:key="prefCloudAiCategory"
             android:title="@string/pref_cloud_ai_category">
 

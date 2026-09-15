@@ -12,15 +12,24 @@ import androidx.annotation.RequiresApi;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.SwitchPreferenceCompat;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
 import de.danoeh.antennapod.event.ModelDownloadEvent;
+import de.danoeh.antennapod.net.ai.service.ad.AdAnalysisProgressKeys;
+import de.danoeh.antennapod.net.ai.service.ad.AdAnalysisStages;
+import de.danoeh.antennapod.net.ai.service.ad.AdAnalysisWorkScheduler;
 import de.danoeh.antennapod.net.ai.service.ad.vosk.VoskTranscriptionManager;
 import de.danoeh.antennapod.net.ai.service.ad.vosk.VoskModel;
 import de.danoeh.antennapod.storage.preferences.AzureAiPreferences;
@@ -31,6 +40,8 @@ import de.danoeh.antennapod.ui.preferences.R;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class AiPreferencesFragment extends AnimatedPreferenceFragment {
+    private static final String PREF_ANALYSIS_QUEUE_CATEGORY = "prefAnalysisQueueCategory";
+    private static final String PREF_ANALYSIS_QUEUE = "prefAnalysisQueue";
     private static final String PREF_CLOUD_AI_PROVIDER = "prefCloudAiProvider";
     private static final String PREF_OPENAI_API_KEY = "prefOpenAiApiKey";
     private static final String PREF_OPENAI_ANALYSIS_MODEL = "prefOpenAiAnalysisModel";
@@ -51,6 +62,9 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
     private static final String PREF_DELETE_ALL_TRANSCRIPTION_MODELS = "prefDeleteAllTranscriptionModels";
 
     private VoskTranscriptionManager transcriptionManager;
+    private final List<Preference> analysisQueueRows = new ArrayList<>();
+    private List<AnalysisQueueItem> analysisQueueItems = Collections.emptyList();
+    private boolean analysisQueueExpanded;
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
@@ -58,6 +72,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
 
         transcriptionManager = new VoskTranscriptionManager(requireContext());
 
+        setupAnalysisQueuePreference();
         setupCloudProviderPreference();
         setupApiKeyPreference();
         setupOpenAiModelPreferences();
@@ -94,6 +109,167 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         if (event.getStatus() == ModelDownloadEvent.Status.COMPLETED) {
             updateLocalTranscriptionUI();
             updateDeleteAllTranscriptionModelsSummary();
+        }
+    }
+
+    private void setupAnalysisQueuePreference() {
+        Preference queuePreference = findPreference(PREF_ANALYSIS_QUEUE);
+        if (queuePreference == null) {
+            return;
+        }
+        queuePreference.setOrder(0);
+        queuePreference.setOnPreferenceClickListener(ignored -> {
+            if (!analysisQueueItems.isEmpty()) {
+                analysisQueueExpanded = !analysisQueueExpanded;
+                renderAnalysisQueue();
+            }
+            return true;
+        });
+        WorkManager.getInstance(requireContext())
+                .getWorkInfosForUniqueWorkLiveData(AdAnalysisWorkScheduler.QUEUE_NAME)
+                .observe(this, this::loadAnalysisQueue);
+    }
+
+    private void loadAnalysisQueue(@Nullable List<WorkInfo> workInfos) {
+        List<WorkInfo> activeWork = new ArrayList<>();
+        if (workInfos != null) {
+            for (WorkInfo workInfo : workInfos) {
+                WorkInfo.State state = workInfo.getState();
+                if (state == WorkInfo.State.RUNNING
+                        || state == WorkInfo.State.ENQUEUED
+                        || state == WorkInfo.State.BLOCKED) {
+                    activeWork.add(workInfo);
+                }
+            }
+        }
+        if (activeWork.isEmpty()) {
+            analysisQueueItems = Collections.emptyList();
+            analysisQueueExpanded = false;
+            renderAnalysisQueue();
+            return;
+        }
+        analysisQueueItems = createAnalysisQueueItems(activeWork);
+        renderAnalysisQueue();
+    }
+
+    private List<AnalysisQueueItem> createAnalysisQueueItems(List<WorkInfo> activeWork) {
+        List<AnalysisQueueItem> running = new ArrayList<>();
+        List<AnalysisQueueItem> waiting = new ArrayList<>();
+        for (WorkInfo workInfo : activeWork) {
+            long feedItemId = AdAnalysisWorkScheduler.getFeedItemId(workInfo.getTags());
+            if (feedItemId < 0) {
+                continue;
+            }
+            String title = AdAnalysisWorkScheduler.getEpisodeTitle(workInfo.getTags());
+            AnalysisQueueItem item = new AnalysisQueueItem(workInfo, feedItemId, title);
+            if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                running.add(item);
+            } else {
+                waiting.add(item);
+            }
+        }
+        running.addAll(waiting);
+        return running;
+    }
+
+    private void renderAnalysisQueue() {
+        PreferenceCategory category = findPreference(PREF_ANALYSIS_QUEUE_CATEGORY);
+        Preference queuePreference = findPreference(PREF_ANALYSIS_QUEUE);
+        if (category == null || queuePreference == null) {
+            return;
+        }
+        for (Preference row : analysisQueueRows) {
+            category.removePreference(row);
+        }
+        analysisQueueRows.clear();
+
+        queuePreference.setTitle(analysisQueueExpanded
+                ? R.string.pref_analysis_queue_title_expanded
+                : R.string.pref_analysis_queue_title_collapsed);
+        if (analysisQueueItems.isEmpty()) {
+            queuePreference.setSummary(R.string.pref_analysis_queue_empty);
+            return;
+        }
+
+        AnalysisQueueItem currentItem = null;
+        int waitingCount = 0;
+        for (AnalysisQueueItem item : analysisQueueItems) {
+            if (item.workInfo.getState() == WorkInfo.State.RUNNING && currentItem == null) {
+                currentItem = item;
+            } else {
+                waitingCount++;
+            }
+        }
+        if (currentItem != null) {
+            String currentStatus = getAnalysisQueueStatus(currentItem.workInfo);
+            queuePreference.setSummary(getResources().getQuantityString(
+                    R.plurals.pref_analysis_queue_active_summary,
+                    waitingCount, currentStatus, waitingCount));
+        } else {
+            queuePreference.setSummary(getResources().getQuantityString(
+                    R.plurals.pref_analysis_queue_waiting_summary,
+                    waitingCount, waitingCount));
+        }
+
+        if (!analysisQueueExpanded) {
+            return;
+        }
+        int waitingPosition = 0;
+        for (int i = 0; i < analysisQueueItems.size(); i++) {
+            AnalysisQueueItem item = analysisQueueItems.get(i);
+            Preference row = new Preference(requireContext());
+            row.setKey(PREF_ANALYSIS_QUEUE + "_" + item.workInfo.getId());
+            row.setPersistent(false);
+            row.setSelectable(false);
+            row.setIconSpaceReserved(false);
+            row.setOrder(i + 1);
+            row.setTitle(item.title == null
+                    ? getString(R.string.pref_analysis_queue_unknown_episode, item.feedItemId)
+                    : item.title);
+            if (item.workInfo.getState() == WorkInfo.State.RUNNING) {
+                row.setSummary(getString(R.string.pref_analysis_queue_current_status,
+                        getAnalysisQueueStatus(item.workInfo)));
+            } else {
+                waitingPosition++;
+                row.setSummary(getString(R.string.pref_analysis_queue_waiting_position, waitingPosition));
+            }
+            category.addPreference(row);
+            analysisQueueRows.add(row);
+        }
+    }
+
+    private String getAnalysisQueueStatus(WorkInfo workInfo) {
+        String stage = workInfo.getProgress().getString(AdAnalysisProgressKeys.STAGE);
+        int percent = workInfo.getProgress().getInt(AdAnalysisProgressKeys.PERCENT, -1);
+        int chunksDone = workInfo.getProgress().getInt(AdAnalysisProgressKeys.CHUNKS_DONE, 0);
+        int chunksTotal = workInfo.getProgress().getInt(AdAnalysisProgressKeys.CHUNKS_TOTAL, 0);
+        String label;
+        if (AdAnalysisStages.ANALYZING.equals(stage) || AdAnalysisStages.TRANSCRIPTION_DONE.equals(stage)) {
+            label = getString(R.string.pref_analysis_queue_analyzing);
+        } else if (AdAnalysisStages.TRANSCRIBING.equals(stage)) {
+            label = getString(R.string.pref_analysis_queue_transcribing);
+        } else {
+            label = getString(R.string.pref_analysis_queue_starting);
+        }
+        if (chunksTotal > 0 && percent >= 0) {
+            return getString(R.string.pref_analysis_queue_chunk_progress,
+                    label, chunksDone, chunksTotal, percent);
+        }
+        if (percent >= 0) {
+            return getString(R.string.pref_analysis_queue_progress, label, percent);
+        }
+        return label;
+    }
+
+    private static final class AnalysisQueueItem {
+        private final WorkInfo workInfo;
+        private final long feedItemId;
+        private final String title;
+
+        AnalysisQueueItem(WorkInfo workInfo, long feedItemId, String title) {
+            this.workInfo = workInfo;
+            this.feedItemId = feedItemId;
+            this.title = title;
         }
     }
 

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.net.ai.service.ad;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
@@ -15,6 +16,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Unit tests for {@link AdAnalysisWorkScheduler}.
@@ -49,6 +54,47 @@ public class AdAnalysisWorkSchedulerTest {
         String name1 = prefix + 100L;
         String name2 = prefix + 100L;
         assertEquals(name1, name2);
+    }
+
+    @Test
+    public void testGetFeedItemId_extractsAnalysisTag() {
+        Set<String> tags = new HashSet<>();
+        tags.add("de.danoeh.antennapod.net.ai.service.ad.AdAnalysisWorker");
+        tags.add(AdAnalysisWorkScheduler.TAG_PREFIX + "42");
+
+        assertEquals(42L, AdAnalysisWorkScheduler.getFeedItemId(tags));
+    }
+
+    @Test
+    public void testGetFeedItemId_ignoresMalformedTags() {
+        Set<String> tags = new HashSet<>();
+        tags.add(AdAnalysisWorkScheduler.TAG_PREFIX + "invalid");
+        tags.add("another-tag");
+
+        assertEquals(-1L, AdAnalysisWorkScheduler.getFeedItemId(tags));
+    }
+
+    @Test
+    public void testGetFeedItemId_handlesMissingTags() {
+        assertEquals(-1L, AdAnalysisWorkScheduler.getFeedItemId(Collections.emptySet()));
+        assertEquals(-1L, AdAnalysisWorkScheduler.getFeedItemId(null));
+    }
+
+    @Test
+    public void testGetEpisodeTitle_decodesTitleTag() {
+        String encoded = android.util.Base64.encodeToString(
+                "Episode title".getBytes(java.nio.charset.StandardCharsets.UTF_8),
+                android.util.Base64.URL_SAFE | android.util.Base64.NO_WRAP | android.util.Base64.NO_PADDING);
+        Set<String> tags = Collections.singleton("ad-analysis-title-" + encoded);
+
+        assertEquals("Episode title", AdAnalysisWorkScheduler.getEpisodeTitle(tags));
+    }
+
+    @Test
+    public void testGetEpisodeTitle_ignoresMalformedTags() {
+        assertNull(AdAnalysisWorkScheduler.getEpisodeTitle(
+                Collections.singleton("ad-analysis-title-%%%")));
+        assertNull(AdAnalysisWorkScheduler.getEpisodeTitle(null));
     }
 
     // ==================== Data Builder Tests ====================

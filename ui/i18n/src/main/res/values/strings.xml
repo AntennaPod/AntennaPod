@@ -1018,6 +1018,26 @@
     <string name="pref_ai_summary">Configure AI analysis and automatic ad skipping</string>
     <string name="pref_ad_skip_enabled_title">Enable AI Ad analysis</string>
     <string name="pref_ad_skip_enabled_summary">Show transcription and ad analysis features in episode details</string>
+    <string name="pref_analysis_queue_title_collapsed">Analysis queue \u25B8</string>
+    <string name="pref_analysis_queue_title_expanded">Analysis queue \u25BE</string>
+    <string name="pref_analysis_queue_loading">Loading queue\u2026</string>
+    <string name="pref_analysis_queue_empty">No episodes waiting or being analyzed</string>
+    <plurals name="pref_analysis_queue_active_summary">
+        <item quantity="one">%1$s \u2022 %2$d episode waiting</item>
+        <item quantity="other">%1$s \u2022 %2$d episodes waiting</item>
+    </plurals>
+    <plurals name="pref_analysis_queue_waiting_summary">
+        <item quantity="one">%1$d episode waiting</item>
+        <item quantity="other">%1$d episodes waiting</item>
+    </plurals>
+    <string name="pref_analysis_queue_current_status">Current \u2022 %1$s</string>
+    <string name="pref_analysis_queue_waiting_position">Waiting \u2022 Position %1$d</string>
+    <string name="pref_analysis_queue_starting">Starting\u2026</string>
+    <string name="pref_analysis_queue_transcribing">Transcribing\u2026</string>
+    <string name="pref_analysis_queue_analyzing">Analyzing\u2026</string>
+    <string name="pref_analysis_queue_progress">%1$s %2$d%%</string>
+    <string name="pref_analysis_queue_chunk_progress">%1$s %2$d/%3$d chunks (%4$d%%)</string>
+    <string name="pref_analysis_queue_unknown_episode">Episode #%1$d</string>
     <string name="pref_cloud_ai_category">Cloud AI provider</string>
     <string name="pref_cloud_ai_provider_title">Cloud provider</string>
     <string name="pref_cloud_ai_provider_openai">OpenAI</string>
