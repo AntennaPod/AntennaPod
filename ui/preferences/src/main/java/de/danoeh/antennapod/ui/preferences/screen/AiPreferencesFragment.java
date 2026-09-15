@@ -505,10 +505,8 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
                             .setMessage(
                                     "The selected model is not downloaded. "
                                             + "Please download it in 'Manage Models' first.")
-                            .setPositiveButton("Go to Manage Models", (d, w) -> {
-                                ((de.danoeh.antennapod.ui.preferences.PreferenceController) requireActivity())
-                                        .openScreen(new TranscriptionModelManagerFragment());
-                            })
+                            .setPositiveButton("Go to Manage Models", (d, w) -> ((de.danoeh.antennapod.ui.preferences.PreferenceController) requireActivity())
+                                    .openScreen(new TranscriptionModelManagerFragment()))
                             .setNegativeButton(android.R.string.cancel, null)
                             .show();
                 }
@@ -618,9 +616,7 @@ public class AiPreferencesFragment extends AnimatedPreferenceFragment {
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.pref_delete_all_transcription_models_confirm_title)
                 .setMessage(R.string.pref_delete_all_transcription_models_confirm_message)
-                .setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-                    deleteAllTranscriptionModels();
-                })
+                .setPositiveButton(R.string.confirm_label, (dialog, which) -> deleteAllTranscriptionModels())
                 .setNegativeButton(R.string.cancel_label, null)
                 .show();
     }
