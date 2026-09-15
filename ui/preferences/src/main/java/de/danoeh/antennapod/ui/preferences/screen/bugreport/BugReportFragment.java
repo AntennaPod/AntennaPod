@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.preferences.screen.bugreport;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +23,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -29,6 +33,7 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.AnimatedFragment;
 import de.danoeh.antennapod.ui.common.ClipboardUtils;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.system.utils.PackageUtils;
 import de.danoeh.antennapod.ui.preferences.R;
 import de.danoeh.antennapod.ui.preferences.databinding.BugReportFragmentBinding;
 
@@ -173,7 +178,21 @@ public class BugReportFragment extends AnimatedFragment {
         try {
             File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
             String cmd = "logcat -d -f " + filename.getAbsolutePath();
-            Runtime.getRuntime().exec(cmd);
+            Process process = Runtime.getRuntime().exec(cmd);
+            process.waitFor();
+
+            // Prepend app/system info so shared exports identify the build (#8739)
+            String header = "AntennaPod version: "
+                    + PackageUtils.getApplicationVersion(requireContext())
+                    + "\nAndroid: " + Build.VERSION.RELEASE
+                    + " (SDK " + Build.VERSION.SDK_INT + ")"
+                    + "\nDevice: " + Build.MANUFACTURER + " " + Build.MODEL
+                    + "\n\n";
+            byte[] existing = filename.exists() ? Files.readAllBytes(filename.toPath()) : new byte[0];
+            try (FileOutputStream fos = new FileOutputStream(filename)) {
+                fos.write(header.getBytes(StandardCharsets.UTF_8));
+                fos.write(existing);
+            }
 
             //share file
             try {
@@ -193,6 +212,9 @@ public class BugReportFragment extends AnimatedFragment {
         } catch (IOException e) {
             e.printStackTrace();
 
+            Snackbar.make(viewBinding.getRoot(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             Snackbar.make(viewBinding.getRoot(), e.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
