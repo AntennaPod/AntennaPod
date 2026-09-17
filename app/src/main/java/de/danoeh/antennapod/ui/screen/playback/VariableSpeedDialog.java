@@ -44,7 +44,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private SpeedSelectionAdapter adapter;
     private PlaybackController controller;
     private final List<Float> selectedSpeeds;
-    private Float pendingDeleteSpeed;
+    private float pendingDeleteSpeed = -1;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
     private CheckBox skipSilenceCheckbox;
@@ -184,17 +184,14 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             float speed = selectedSpeeds.get(position);
-            boolean pendingDelete = pendingDeleteSpeed != null && pendingDeleteSpeed == speed;
 
             holder.chip.setText(String.format(Locale.getDefault(), "%1$.2f", speed));
-            if (pendingDelete) {
-                int error = ThemeUtils.getColorFromAttr(holder.chip.getContext(), R.attr.icon_red);
-                int onError = ThemeUtils.getColorFromAttr(holder.chip.getContext(),
-                        android.R.attr.textColorPrimaryInverse);
-                holder.chip.setChipBackgroundColor(ColorStateList.valueOf(error));
-                holder.chip.setTextColor(onError);
+            if (pendingDeleteSpeed == speed) {
+                holder.chip.setChipBackgroundColor(ColorStateList.valueOf(
+                        ThemeUtils.getColorFromAttr(holder.chip.getContext(), R.attr.icon_red)));
+                holder.chip.setTextColor(0xffffffff);
                 holder.chip.setChipIconResource(R.drawable.ic_delete);
-                holder.chip.setChipIconTint(ColorStateList.valueOf(onError));
+                holder.chip.setChipIconTintResource(R.color.white);
             } else {
                 holder.chip.setChipBackgroundColor(null);
                 holder.chip.setChipIcon(null);
@@ -202,10 +199,8 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
                         holder.chip.getContext(), android.R.attr.textColorPrimary));
             }
             holder.chip.setOnLongClickListener(v -> {
-                if (pendingDeleteSpeed != null && pendingDeleteSpeed == speed) {
-                    selectedSpeeds.remove(speed);
-                    UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
-                    pendingDeleteSpeed = null;
+                if (pendingDeleteSpeed == speed) {
+                    pendingDeleteSpeed = -1;
                 } else {
                     pendingDeleteSpeed = speed;
                 }
@@ -213,12 +208,10 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
                 return true;
             });
             holder.chip.setOnClickListener(v -> {
-                if (pendingDeleteSpeed != null) {
-                    if (pendingDeleteSpeed == speed) {
-                        selectedSpeeds.remove(speed);
-                        UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
-                    }
-                    pendingDeleteSpeed = null;
+                if (pendingDeleteSpeed == speed) {
+                    selectedSpeeds.remove(speed);
+                    UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                    pendingDeleteSpeed = -1;
                     notifyDataSetChanged();
                     return;
                 }
