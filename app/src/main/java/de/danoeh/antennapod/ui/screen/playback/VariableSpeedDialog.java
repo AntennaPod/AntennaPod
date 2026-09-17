@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.screen.playback;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -42,6 +44,7 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private SpeedSelectionAdapter adapter;
     private PlaybackController controller;
     private final List<Float> selectedSpeeds;
+    private float pendingDeleteSpeed = -1;
     private PlaybackSpeedSeekBar speedSeekBar;
     private Chip addCurrentSpeedChip;
     private CheckBox skipSilenceCheckbox;
@@ -183,13 +186,35 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             float speed = selectedSpeeds.get(position);
 
             holder.chip.setText(String.format(Locale.getDefault(), "%1$.2f", speed));
+            if (pendingDeleteSpeed == speed) {
+                holder.chip.setChipBackgroundColor(ColorStateList.valueOf(
+                        ThemeUtils.getColorFromAttr(holder.chip.getContext(), R.attr.icon_red)));
+                holder.chip.setTextColor(0xffffffff);
+                holder.chip.setChipIconResource(R.drawable.ic_delete);
+                holder.chip.setChipIconTintResource(R.color.white);
+            } else {
+                holder.chip.setChipBackgroundColor(null);
+                holder.chip.setChipIcon(null);
+                holder.chip.setTextColor(ThemeUtils.getColorFromAttr(
+                        holder.chip.getContext(), android.R.attr.textColorPrimary));
+            }
             holder.chip.setOnLongClickListener(v -> {
-                selectedSpeeds.remove(speed);
-                UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                if (pendingDeleteSpeed == speed) {
+                    pendingDeleteSpeed = -1;
+                } else {
+                    pendingDeleteSpeed = speed;
+                }
                 notifyDataSetChanged();
                 return true;
             });
             holder.chip.setOnClickListener(v -> {
+                if (pendingDeleteSpeed == speed) {
+                    selectedSpeeds.remove(speed);
+                    UserPreferences.setPlaybackSpeedArray(selectedSpeeds);
+                    pendingDeleteSpeed = -1;
+                    notifyDataSetChanged();
+                    return;
+                }
                 UserPreferences.setPlaybackSpeed(speed);
                 if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
                     PlaybackController.bindToMedia3Service(getContext(),
