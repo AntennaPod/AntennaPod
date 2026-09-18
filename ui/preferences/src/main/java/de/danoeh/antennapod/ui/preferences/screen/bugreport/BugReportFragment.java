@@ -187,11 +187,11 @@ public class BugReportFragment extends AnimatedFragment {
                         .startChooser();
 
             } catch (Exception e) {
-                e.printStackTrace();
+                android.util.Log.e("BugReport", "failed", e);
                 Snackbar.make(viewBinding.getRoot(), R.string.log_file_share_exception, Snackbar.LENGTH_LONG).show();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            android.util.Log.e("BugReport", "failed", e);
 
             Snackbar.make(viewBinding.getRoot(), e.getMessage(), Snackbar.LENGTH_LONG).show();
         }
