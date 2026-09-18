@@ -172,10 +172,21 @@ public class BugReportFragment extends AnimatedFragment {
     private void exportLogcat() {
         try {
             File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
-            String cmd = "logcat -d -f " + filename.getAbsolutePath();
-            Runtime.getRuntime().exec(cmd);
+            // Prepend environment / app version so shared full-logs identify the build (#8739)
+            String header = viewModel.requireCurrentState().getEnvironmentInfoWithMarkup()
+                    + "\n\n---- logcat ----\n";
+            try (java.io.FileOutputStream out = new java.io.FileOutputStream(filename)) {
+                out.write(header.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                Process process = Runtime.getRuntime().exec(new String[] {"logcat", "-d"});
+                byte[] buffer = new byte[8192];
+                int n;
+                while ((n = process.getInputStream().read(buffer)) != -1) {
+                    out.write(buffer, 0, n);
+                }
+                process.waitFor();
+            }
 
-            //share file
+            // share file
             try {
                 String authority = getString(R.string.provider_authority);
                 Uri fileUri = FileProvider.getUriForFile(requireContext(), authority, filename);
@@ -187,13 +198,16 @@ public class BugReportFragment extends AnimatedFragment {
                         .startChooser();
 
             } catch (Exception e) {
-                e.printStackTrace();
+                android.util.Log.e("BugReport", "share failed", e);
                 Snackbar.make(viewBinding.getRoot(), R.string.log_file_share_exception, Snackbar.LENGTH_LONG).show();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            Snackbar.make(viewBinding.getRoot(), e.getMessage(), Snackbar.LENGTH_LONG).show();
+        } catch (IOException | InterruptedException e) {
+            android.util.Log.e("BugReport", "export failed", e);
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            String msg = e.getMessage() != null ? e.getMessage() : e.toString();
+            Snackbar.make(viewBinding.getRoot(), msg, Snackbar.LENGTH_LONG).show();
         }
     }
 }
