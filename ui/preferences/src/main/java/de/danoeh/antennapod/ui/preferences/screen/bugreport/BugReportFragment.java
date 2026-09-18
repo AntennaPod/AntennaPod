@@ -173,7 +173,8 @@ public class BugReportFragment extends AnimatedFragment {
         try {
             File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
             String cmd = "logcat -d -f " + filename.getAbsolutePath();
-            Runtime.getRuntime().exec(cmd);
+            Process process = Runtime.getRuntime().exec(cmd);
+            try { process.waitFor(); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
 
             //share file
             try {
