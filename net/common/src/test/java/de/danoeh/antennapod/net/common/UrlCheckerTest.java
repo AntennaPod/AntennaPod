@@ -18,6 +18,42 @@ import static org.junit.Assert.assertTrue;
 public class UrlCheckerTest {
 
     @Test
+    public void testValidLocalhostUrl() {
+        assertTrue(UrlChecker.isValidUrl("http://localhost:8080/feed"));
+    }
+
+    @Test
+    public void testValidSingleLabelHostUrl() {
+        assertTrue(UrlChecker.isValidUrl("https://podcast-server/feed"));
+        assertTrue(UrlChecker.isValidUrl("HTTP://podcast-server/feed"));
+    }
+
+    @Test
+    public void testValidIpv6Url() {
+        assertTrue(UrlChecker.isValidUrl("http://[::1]:8080/feed"));
+    }
+
+    @Test
+    public void testValidUrl() {
+        assertTrue(UrlChecker.isValidUrl("https://example.com/feed"));
+        assertTrue(UrlChecker.isValidUrl("example.com/feed"));
+        assertTrue(UrlChecker.isValidUrl("http://192.168.1.2:8080/feed"));
+        assertTrue(UrlChecker.isValidUrl("192.168.1.2:8080/feed"));
+    }
+
+    @Test
+    public void testInvalidUrl() {
+        assertFalse(UrlChecker.isValidUrl(""));
+        assertFalse(UrlChecker.isValidUrl(" "));
+        assertFalse(UrlChecker.isValidUrl("not a url"));
+        assertFalse(UrlChecker.isValidUrl("http://"));
+        assertFalse(UrlChecker.isValidUrl("http:localhost/feed"));
+        assertFalse(UrlChecker.isValidUrl("http:/localhost/feed"));
+        assertFalse(UrlChecker.isValidUrl("http://localhost:invalid/feed"));
+        assertFalse(UrlChecker.isValidUrl("http://podcast server/feed"));
+    }
+
+    @Test
     public void testCorrectURLHttp() {
         final String in = "http://example.com";
         final String out = UrlChecker.prepareUrl(in);

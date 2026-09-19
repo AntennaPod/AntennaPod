@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import android.util.Log;
+import android.util.Patterns;
+import okhttp3.HttpUrl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -29,6 +31,13 @@ public final class UrlChecker {
 
     private static final String AP_SUBSCRIBE = "antennapod-subscribe://";
     private static final String AP_SUBSCRIBE_DEEPLINK = "antennapod.org/deeplink/subscribe";
+
+    public static boolean isValidUrl(String url) {
+        String lowerCaseUrl = url.toLowerCase(Locale.ROOT);
+        return Patterns.WEB_URL.matcher(url).matches()
+                || ((lowerCaseUrl.startsWith("http://") || lowerCaseUrl.startsWith("https://"))
+                && HttpUrl.parse(url) != null);
+    }
 
     /**
      * Checks if URL is valid and modifies it if necessary.

@@ -12,7 +12,6 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +33,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -155,7 +155,7 @@ public class AddFeedFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (!TextUtils.isEmpty(dialogBinding.textInputLayout.getError())
-                        && editable.toString().matches(Patterns.WEB_URL.pattern())) {
+                        && UrlChecker.isValidUrl(editable.toString())) {
                     dialogBinding.textInputLayout.setError(null);
                 }
             }
@@ -185,7 +185,7 @@ public class AddFeedFragment extends Fragment {
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((view) -> {
             Editable inputText = dialogBinding.textInput.getText();
-            if (!inputText.toString().matches(Patterns.WEB_URL.pattern())) {
+            if (!UrlChecker.isValidUrl(inputText.toString())) {
                 dialogBinding.textInputLayout.setError(getText(R.string.rss_address_invalid));
                 return;
             }
