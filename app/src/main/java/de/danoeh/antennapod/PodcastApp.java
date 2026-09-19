@@ -31,5 +31,6 @@ public class PodcastApp extends Application {
         DynamicColors.applyToActivitiesIfAvailable(this);
         ClientConfigurator.initialize(this);
         PreferenceUpgrader.checkUpgrades(this);
+        ManagedConfiguration.install(this);
     }
 }
