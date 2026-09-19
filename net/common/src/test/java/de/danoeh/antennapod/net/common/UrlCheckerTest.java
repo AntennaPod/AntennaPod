@@ -42,6 +42,13 @@ public class UrlCheckerTest {
     }
 
     @Test
+    public void testSearchQueryIsNotUrl() {
+        assertFalse(UrlChecker.isValidUrl("podcast"));
+        assertFalse(UrlChecker.isValidUrl("some podcast"));
+        assertFalse(UrlChecker.isValidUrl("podcast-server"));
+    }
+
+    @Test
     public void testInvalidUrl() {
         assertFalse(UrlChecker.isValidUrl(""));
         assertFalse(UrlChecker.isValidUrl(" "));
