@@ -102,6 +102,30 @@ public class UrlCheckerTest {
     }
 
     @Test
+    public void testSubscribeOnAndroidUrl() {
+        assertEquals("https://Example.com/Feed?Token=AbC",
+                UrlChecker.prepareUrl("https://subscribeonandroid.com/Example.com/Feed?Token=AbC"));
+    }
+
+    @Test
+    public void testSubscribeOnAndroidUrlWithUppercaseHost() {
+        assertEquals("https://Example.com/Feed?Token=AbC",
+                UrlChecker.prepareUrl("https://SUBSCRIBEONANDROID.COM/Example.com/Feed?Token=AbC"));
+    }
+
+    @Test
+    public void testSubscribeOnAndroidUrlWithMixedCaseHost() {
+        assertEquals("https://Example.com/Feed?Token=AbC",
+                UrlChecker.prepareUrl("https://WwW.SuBsCrIbEoNaNdRoId.CoM/Example.com/Feed?Token=AbC"));
+    }
+
+    @Test
+    public void testSubscribeOnAndroidUrlWithoutScheme() {
+        assertEquals("http://Example.com/Feed?Token=AbC",
+                UrlChecker.prepareUrl("SUBSCRIBEONANDROID.COM/Example.com/Feed?Token=AbC"));
+    }
+
+    @Test
     public void testAntennaPodSubscribeDeeplink() throws UnsupportedEncodingException {
         final String feed = "http://example.org/podcast.rss";
         assertEquals(feed, UrlChecker.prepareUrl("https://antennapod.org/deeplink/subscribe?url=" + feed));
