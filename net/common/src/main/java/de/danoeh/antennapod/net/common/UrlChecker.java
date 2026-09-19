@@ -63,7 +63,7 @@ public final class UrlChecker {
                 return prepareUrl(query);
             }
         } else if (lowerCaseUrl.contains("subscribeonandroid.com")) {
-            return prepareUrl(url.replaceFirst("((www.)?(subscribeonandroid.com/))", ""));
+            return prepareUrl(url.replaceFirst("(?i)((www.)?(subscribeonandroid.com/))", ""));
         } else if (!(lowerCaseUrl.startsWith("http://") || lowerCaseUrl.startsWith("https://"))) {
             Log.d(TAG, "Adding http:// at the beginning of the URL");
             return "http://" + url;
