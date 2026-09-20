@@ -22,6 +22,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import de.danoeh.antennapod.ui.preferences.BuildConfig;
+import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+import android.content.pm.PackageInfo;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -172,8 +177,35 @@ public class BugReportFragment extends AnimatedFragment {
     private void exportLogcat() {
         try {
             File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
-            String cmd = "logcat -d -f " + filename.getAbsolutePath();
-            Runtime.getRuntime().exec(cmd);
+            String versionName = "?";
+            try {
+                PackageInfo packageInfo = requireContext().getPackageManager()
+                        .getPackageInfo(requireContext().getPackageName(), 0);
+                versionName = packageInfo.versionName;
+            } catch (Exception ignored) {
+                // keep placeholder
+            }
+            if ("free".equals(BuildConfig.FLAVOR)) {
+                versionName += "f";
+            }
+            String header = "AntennaPod version: "
+                    + String.format("%s (%s)", versionName, BuildConfig.COMMIT_HASH)
+                    + "\n\n";
+
+            try (FileOutputStream out = new FileOutputStream(filename)) {
+                out.write(header.getBytes(StandardCharsets.UTF_8));
+                Process process = Runtime.getRuntime().exec(new String[] {"logcat", "-d"});
+                try (InputStream in = process.getInputStream()) {
+                    byte[] buf = new byte[8192];
+                    int n;
+                    while ((n = in.read(buf)) > 0) {
+                        out.write(buf, 0, n);
+                    }
+                }
+                process.waitFor();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
 
             //share file
             try {
