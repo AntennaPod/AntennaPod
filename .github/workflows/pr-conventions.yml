@@ -7,6 +7,7 @@ on:
 jobs:
   check:
     name: "Check"
+    if: github.repository == 'AntennaPod/AntennaPod'
     runs-on: ubuntu-latest
     steps:
       - name: PR title

@@ -7,7 +7,7 @@ on:
 
 jobs:
   assign-milestone:
-    if: github.event.pull_request.merged == true
+    if: github.repository == 'AntennaPod/AntennaPod' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
