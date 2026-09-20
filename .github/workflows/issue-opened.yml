@@ -6,6 +6,7 @@ on:
 
 jobs:
   issue-opened:
+    if: github.repository == 'AntennaPod/AntennaPod'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
