@@ -19,14 +19,15 @@ public abstract class PlayableUtils {
      * @param timestamp  current time in ms
      */
     public static void saveCurrentPosition(Playable playable, int newPosition, long timestamp) {
+        FeedItem item = playable instanceof FeedMedia ? ((FeedMedia) playable).getItem() : null;
+        boolean itemWasNew = item != null && item.isNew();
         playable.setPosition(newPosition);
         playable.setLastPlayedTimeStatistics(timestamp);
 
         if (playable instanceof FeedMedia) {
             FeedMedia media = (FeedMedia) playable;
             media.setLastPlayedTimeHistory(new Date(timestamp));
-            FeedItem item = media.getItem();
-            if (item != null && item.isNew()) {
+            if (itemWasNew) {
                 DBWriter.markItemsPlayed(FeedItem.UNPLAYED, false, Collections.singletonList(item));
             }
             if (media.getStartPosition() >= 0 && playable.getPosition() > media.getStartPosition()) {
