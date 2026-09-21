@@ -313,16 +313,21 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         Single.fromCallable(
                 () -> {
                     List<MediaItem> updatedItems = onAddMediaItems(mediaSession, controller, mediaItems).get();
-                    long mediaId = Long.parseLong(updatedItems.get(index).mediaId);
+                    long mediaId = Long.parseLong(mediaItems.get(index).mediaId);
                     FeedMedia mediaDetails = DBReader.getFeedMedia(mediaId);
                     return new Pair<>(updatedItems, mediaDetails);
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                    long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
-                    startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                            (int) startPosition, result.second.getLastPlayedTimeStatistics());
-                    future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
+                    int playableIndex = Math.min(index, Math.max(0, result.first.size() - 1));
+                    long startPosition = startPositionMs;
+                    if (result.second != null) {
+                        startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
+                        startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
+                                (int) startPosition, result.second.getLastPlayedTimeStatistics());
+                    }
+                    future.set(new MediaSession.MediaItemsWithStartPosition(
+                            result.first, playableIndex, startPosition));
                 }, error -> {
                     Log.e(TAG, "Failed to load media", error);
                     future.set(new MediaSession.MediaItemsWithStartPosition(
