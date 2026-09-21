@@ -158,7 +158,7 @@ public class EpisodeAction {
         return started == that.started
                 && position == that.position
                 && total == that.total
-                && action != that.action
+                && action == that.action
                 && Objects.equals(podcast, that.podcast)
                 && Objects.equals(episode, that.episode)
                 && Objects.equals(timestamp, that.timestamp)
