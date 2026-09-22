@@ -595,6 +595,10 @@ public class Media3PlaybackService extends MediaLibraryService {
             applyVolumeAdaption(1.0f);
         }
         updatePlaybackPreferences();
+        WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
+                PlaybackService.isRunning ? PlayerStatus.PLAYING : PlayerStatus.PAUSED,
+                currentPlayable.getPosition(), currentPlayable.getDuration(), speed);
+        Schedulers.io().scheduleDirect(() -> WidgetUpdater.updateWidget(this, widgetState));
     }
 
     private void updatePlaybackPreferences() {
