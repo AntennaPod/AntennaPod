@@ -1,13 +1,18 @@
 package de.danoeh.antennapod.actionbutton;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Collections;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -38,8 +43,19 @@ public class DeleteActionButton extends ItemActionButton {
             return;
         }
 
-        LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(context, Collections.singletonList(item),
-                () -> DBWriter.deleteFeedMediaOfItem(context, media));
+        LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(context, Collections.singletonList(item), () -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+            Runnable deleteRunnable = () -> DBWriter.deleteFeedMediaOfItem(context, media);
+
+            handler.postDelayed(deleteRunnable, 5000);
+
+            String message = context.getResources().getQuantityString(R.plurals.deleted_episode_message, 1, 1);
+            EventBus.getDefault().post(new MessageEvent(
+                    message,
+                    ctx -> handler.removeCallbacks(deleteRunnable),
+                    context.getString(R.string.undo)
+            ));
+        });
     }
 
     @Override
