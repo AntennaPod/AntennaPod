@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Collections;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -44,15 +45,23 @@ public class DeleteActionButton extends ItemActionButton {
         }
 
         LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(context, Collections.singletonList(item), () -> {
-            Handler handler = new Handler(Looper.getMainLooper());
-            Runnable deleteRunnable = () -> DBWriter.deleteFeedMediaOfItem(context, media);
+            final Handler handler = new Handler(Looper.getMainLooper());
+            media.setDownloaded(false, 0);
+            DBWriter.setMediaDownloadInformation(media);
+            EventBus.getDefault().post(new FeedItemEvent(Collections.singletonList(item), false));
 
+            Runnable deleteRunnable = () -> DBWriter.deleteFeedMediaOfItem(context, media);
             handler.postDelayed(deleteRunnable, 5000);
 
             String message = context.getResources().getQuantityString(R.plurals.deleted_episode_message, 1, 1);
             EventBus.getDefault().post(new MessageEvent(
                     message,
-                    ctx -> handler.removeCallbacks(deleteRunnable),
+                    ctx -> {
+                        handler.removeCallbacks(deleteRunnable);
+                        media.setDownloaded(true, media.getDownloadDate());
+                        DBWriter.setMediaDownloadInformation(media);
+                        EventBus.getDefault().post(new FeedItemEvent(Collections.singletonList(item), false));
+                    },
                     context.getString(R.string.undo)
             ));
         });

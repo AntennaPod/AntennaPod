@@ -271,6 +271,9 @@ public class CompletedDownloadsFragment extends Fragment
                 } else {
                     adapter.notifyItemRemoved(pos);
                 }
+            } else if (item.hasMedia() && item.getMedia().isDownloaded()) {
+                loadItems();
+                return;
             }
         }
     }
