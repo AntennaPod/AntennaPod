@@ -110,6 +110,7 @@ public class ClockSleepTimer implements SleepTimer {
 
     @Override
     public void stop() {
+        isRunning = false;
         timeLeft = 0;
         EventBus.getDefault().unregister(this);
 

@@ -152,7 +152,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                     return;
                 }
 
-                if (currentPlayable != null && !getPlayWhenReady()) {
+                boolean wasPlaying = getPlayWhenReady();
+                if (currentPlayable != null && !wasPlaying) {
                     long savedPosition = getCurrentPosition();
                     long startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                             (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics());
@@ -161,6 +162,15 @@ public class Media3PlaybackService extends MediaLibraryService {
                     }
                 }
                 super.play();
+                if (!wasPlaying && sleepTimer == null && SleepTimerPreferences.autoEnable()) {
+                    int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                    if (SleepTimerPreferences.isInTimeRange(
+                            SleepTimerPreferences.autoEnableFrom(),
+                            SleepTimerPreferences.autoEnableTo(),
+                            currentHour)) {
+                        startSleepTimer(SleepTimerPreferences.timerMillisOrEpisodes());
+                    }
+                }
             }
 
             @Override
