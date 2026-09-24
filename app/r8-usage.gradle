@@ -1,0 +1,89 @@
+def r8UsageRequested = gradle.startParameter.taskNames.any { it == "r8Usage" || it.endsWith(":r8Usage") }
+if (r8UsageRequested) {
+    def projectKeepRules = file("proguard.cfg").readLines().findAll { it.contains("de.danoeh.antennapod**") }
+    if (projectKeepRules.isEmpty()) {
+        throw new GradleException("proguard.cfg no longer keeps all project code, so r8Usage cannot find unused code")
+    }
+    def usageRules = layout.buildDirectory.file("r8-usage/proguard.cfg").get().asFile
+    usageRules.parentFile.mkdirs()
+    usageRules.text = (file("proguard.cfg").readLines().findAll { !projectKeepRules.contains(it) }
+            + ["-dontoptimize", "-dontobfuscate"]).join("\n") + "\n"
+    android.buildTypes.release.setProguardFiles([android.getDefaultProguardFile("proguard-android-optimize.txt"), usageRules])
+}
+
+tasks.register('r8Usage') {
+    group = "verification"
+    description = "Lists project code that R8 finds unreachable from the app and that no other main source file references."
+    def usageFile = layout.buildDirectory.file("outputs/mapping/playRelease/usage.txt")
+    def reportFile = layout.buildDirectory.file("reports/r8-usage.txt")
+    def baselineFile = file("r8-usage-baseline.txt")
+    def sources = rootProject.fileTree(rootProject.projectDir) {
+        include "**/src/main/**/*.java", "**/src/main/**/*.kt", "**/src/*/res/**/*.xml", "**/src/main/AndroidManifest.xml"
+        exclude "**/build/**"
+    }
+    dependsOn tasks.named('minifyPlayReleaseWithR8')
+    inputs.file(usageFile)
+    inputs.files(sources)
+    inputs.file(baselineFile).optional()
+    outputs.file(reportFile)
+    doLast {
+        def texts = sources.files.collectEntries { [(it): it.text] }
+        def sourceFile = { String className ->
+            def path = "/" + className.split('\\$')[0].replace('.', '/')
+            texts.keySet().find { it.path.endsWith(path + ".java") || it.path.endsWith(path + ".kt") }
+        }
+        def occurrences = { String name, File file ->
+            (texts[file] =~ /\b${java.util.regex.Pattern.quote(name)}\b/).size()
+        }
+        def referencedElsewhere = { String name, File own ->
+            def names = [name]
+            def property = name =~ /^(?:get|is)([A-Z]\w*)$/
+            if (property.matches()) {
+                names << property.group(1)[0].toLowerCase() + property.group(1).substring(1)
+            }
+            texts.keySet().any { it != own && names.any { n -> occurrences(n, it) > 0 } }
+        }
+        def unused = []
+        def className = null
+        def wholeClass = false
+        usageFile.get().asFile.eachLine { line ->
+            if (!line.startsWith(" ")) {
+                wholeClass = !line.endsWith(":")
+                className = wholeClass ? line : line[0..-2]
+                if (!className.startsWith("de.danoeh.antennapod.") || className =~ /\.R(\$|$)|\.BuildConfig$|\.databinding\.|\$\$|-IA$/) {
+                    className = null
+                    return
+                }
+                def own = sourceFile(className)
+                def simpleName = className.tokenize('.$').last()
+                if (wholeClass && !className.contains('$') && own != null && !referencedElsewhere(simpleName, own)) {
+                    unused << className
+                }
+                return
+            }
+            if (className == null || line.contains("synthetic") || line.contains("<init>") || line.contains("<clinit>")) {
+                return
+            }
+            def member = (line =~ /(\w+)\(.*\)$/) ?: (line =~ /(\w+)$/)
+            if (!member.find()) {
+                return
+            }
+            def name = member.group(1)
+            def own = sourceFile(className)
+            if (own != null && occurrences(name, own) <= 1 && !referencedElsewhere(name, own)) {
+                unused << "${className}#${name}".toString()
+            }
+        }
+        unused = unused.unique().sort()
+        reportFile.get().asFile.text = unused.join("\n") + "\n"
+        def baseline = baselineFile.exists() ? baselineFile.readLines().findAll { it.trim() } : []
+        def added = unused - baseline
+        def fixed = baseline - unused
+        fixed.each { logger.lifecycle("No longer unused, remove from ${baselineFile.name}: ${it}") }
+        if (!added.isEmpty()) {
+            throw new GradleException("Unused code found. Remove it, or add it to ${baselineFile.name} if it must stay:\n"
+                    + added.join("\n"))
+        }
+        logger.lifecycle("No new unused code. Full list in ${reportFile.get().asFile}")
+    }
+}
