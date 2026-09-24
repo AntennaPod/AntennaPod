@@ -118,30 +118,12 @@ public class EpisodeAction {
     }
 
     /**
-     * Returns the position (in seconds) at which the client started playback.
-     *
-     * @return start position (in seconds)
-     */
-    public int getStarted() {
-        return this.started;
-    }
-
-    /**
      * Returns the position (in seconds) at which the client stopped playback.
      *
      * @return stop position (in seconds)
      */
     public int getPosition() {
         return this.position;
-    }
-
-    /**
-     * Returns the total length of the file in seconds.
-     *
-     * @return total length in seconds
-     */
-    public int getTotal() {
-        return this.total;
     }
 
     /**

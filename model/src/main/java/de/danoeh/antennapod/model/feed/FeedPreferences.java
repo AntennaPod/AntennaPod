@@ -98,13 +98,6 @@ public class FeedPreferences implements Serializable {
             }
             return GLOBAL;
         }
-
-        public static AutoDownloadSetting fromBoolean(boolean enabled) {
-            if (enabled) {
-                return ENABLED;
-            }
-            return DISABLED;
-        }
     }
 
     @NonNull
