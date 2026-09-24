@@ -16,10 +16,6 @@ class VorbisCommentHeader {
                 + ", userCommentLength=" + userCommentLength + "]";
     }
 
-    public String getVendorString() {
-        return vendorString;
-    }
-
     public long getUserCommentLength() {
         return userCommentLength;
     }
