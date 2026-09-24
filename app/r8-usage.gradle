@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 def r8UsageRequested = gradle.startParameter.taskNames.any { it == "r8Usage" || it.endsWith(":r8Usage") }
 if (r8UsageRequested) {
     def projectKeepRules = file("proguard.cfg").readLines().findAll { it.contains("de.danoeh.antennapod**") }
@@ -18,13 +20,14 @@ tasks.register('r8Usage') {
     def reportFile = layout.buildDirectory.file("reports/r8-usage.txt")
     def baselineFile = file("r8-usage-baseline.txt")
     def sources = rootProject.fileTree(rootProject.projectDir) {
-        include "**/src/main/**/*.java", "**/src/main/**/*.kt", "**/src/*/res/**/*.xml", "**/src/main/AndroidManifest.xml"
-        exclude "**/build/**"
+        include "**/src/*/java/**/*.java", "**/src/*/kotlin/**/*.kt", "**/src/*/java/**/*.kt", "**/src/*/res/**/*.xml",
+                "**/src/*/AndroidManifest.xml"
+        exclude "**/build/**", "**/src/test*/**", "**/src/androidTest*/**"
     }
     dependsOn tasks.named('minifyPlayReleaseWithR8')
     inputs.file(usageFile)
     inputs.files(sources)
-    inputs.file(baselineFile).optional()
+    inputs.file(baselineFile)
     outputs.file(reportFile)
     doLast {
         def texts = sources.files.collectEntries { [(it): it.text] }
@@ -33,15 +36,10 @@ tasks.register('r8Usage') {
             texts.keySet().find { it.path.endsWith(path + ".java") || it.path.endsWith(path + ".kt") }
         }
         def occurrences = { String name, File file ->
-            (texts[file] =~ /\b${java.util.regex.Pattern.quote(name)}\b/).size()
+            (texts[file] =~ /\b${Pattern.quote(name)}\b/).size()
         }
         def referencedElsewhere = { String name, File own ->
-            def names = [name]
-            def property = name =~ /^(?:get|is)([A-Z]\w*)$/
-            if (property.matches()) {
-                names << property.group(1)[0].toLowerCase() + property.group(1).substring(1)
-            }
-            texts.keySet().any { it != own && names.any { n -> occurrences(n, it) > 0 } }
+            texts.keySet().any { it != own && occurrences(name, it) > 0 }
         }
         def unused = []
         def className = null
@@ -64,9 +62,12 @@ tasks.register('r8Usage') {
             if (className == null || line.contains("synthetic") || line.contains("<init>") || line.contains("<clinit>")) {
                 return
             }
-            def member = (line =~ /(\w+)\(.*\)$/) ?: (line =~ /(\w+)$/)
+            def member = line =~ /(\w+)\(.*\)$/
             if (!member.find()) {
-                return
+                member = line =~ /(\w+)$/
+                if (!member.find()) {
+                    return
+                }
             }
             def name = member.group(1)
             def own = sourceFile(className)
@@ -76,7 +77,7 @@ tasks.register('r8Usage') {
         }
         unused = unused.unique().sort()
         reportFile.get().asFile.text = unused.join("\n") + "\n"
-        def baseline = baselineFile.exists() ? baselineFile.readLines().findAll { it.trim() } : []
+        def baseline = baselineFile.readLines().findAll { it.trim() }
         def added = unused - baseline
         def fixed = baseline - unused
         fixed.each { logger.lifecycle("No longer unused, remove from ${baselineFile.name}: ${it}") }
