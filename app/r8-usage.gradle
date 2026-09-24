@@ -41,6 +41,9 @@ tasks.register('r8Usage') {
         def referencedElsewhere = { String name, File own ->
             texts.keySet().any { it != own && occurrences(name, it) > 0 }
         }
+        def isOverride = { String name, File file ->
+            texts[file] =~ /@Override\s+(?:@\w+\s+)*(?:public |protected )?[\w<>\[\], .]+\s${Pattern.quote(name)}\s*\(|\boverride\s+fun\s+${Pattern.quote(name)}\b/
+        }
         def unused = []
         def className = null
         def wholeClass = false
@@ -71,7 +74,7 @@ tasks.register('r8Usage') {
             }
             def name = member.group(1)
             def own = sourceFile(className)
-            if (own != null && occurrences(name, own) <= 1 && !referencedElsewhere(name, own)) {
+            if (own != null && occurrences(name, own) <= 1 && !referencedElsewhere(name, own) && !isOverride(name, own)) {
                 unused << "${className}#${name}".toString()
             }
         }
