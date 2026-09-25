@@ -118,6 +118,7 @@ public abstract class UserPreferences {
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
     public static final String PREF_DOWNLOADS_BUTTON_ACTION = "prefDownloadsButtonAction";
     private static final String PREF_AUTOMATIC_EXPORT_FOLDER = "prefAutomaticExportFolder";
+    private static final String PREF_FIRST_SUBSCRIPTION_TIME = "prefFirstSubscriptionTime";
 
     // Mediaplayer
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
@@ -845,6 +846,18 @@ public abstract class UserPreferences {
         String str = prefs.getString(PREF_NEW_EPISODES_ACTION,
                 "" + FeedPreferences.NewEpisodesAction.ADD_TO_INBOX.code);
         return FeedPreferences.NewEpisodesAction.fromCode(Integer.parseInt(str));
+    }
+
+    public static boolean hasFirstSubscriptionTime() {
+        return prefs.contains(PREF_FIRST_SUBSCRIPTION_TIME);
+    }
+
+    public static long getFirstSubscriptionTime() {
+        return prefs.getLong(PREF_FIRST_SUBSCRIPTION_TIME, 0);
+    }
+
+    public static void setFirstSubscriptionTime(long time) {
+        prefs.edit().putLong(PREF_FIRST_SUBSCRIPTION_TIME, time).apply();
     }
 
     /**
