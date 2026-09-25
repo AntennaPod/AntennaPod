@@ -1,5 +1,6 @@
 package de.test.antennapod;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.IdRes;
@@ -7,6 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.preference.PreferenceManager;
 import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitor;
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import androidx.test.runner.lifecycle.Stage;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.espresso.PerformException;
 import androidx.test.espresso.UiController;
@@ -19,6 +23,8 @@ import android.view.View;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import junit.framework.AssertionFailedError;
+
+import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -187,6 +193,18 @@ public class EspressoTestUtils {
                 .edit()
                 .putString(UserPreferences.PREF_UPDATE_INTERVAL_MINUTES, "0")
                 .commit();
+    }
+
+    public static void finishOpenActivities() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+            ArrayList<Activity> openActivities = new ArrayList<>();
+            for (Stage stage : Stage.values()) {
+                openActivities.addAll(ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(stage));
+            }
+            for (Activity activity : openActivities) {
+                activity.finish();
+            }
+        });
     }
 
     public static void setLaunchScreen(String tag) {

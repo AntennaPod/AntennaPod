@@ -43,6 +43,7 @@ public class TextOnlyFeedsTest {
         uiTestUtils = new UITestUtils(InstrumentationRegistry.getInstrumentation().getTargetContext());
         uiTestUtils.setHostTextOnlyFeeds(true);
         uiTestUtils.setup();
+        EspressoTestUtils.finishOpenActivities();
 
     }
 
