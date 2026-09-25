@@ -79,6 +79,7 @@ public abstract class EpisodesListFragment extends Fragment
     @NonNull
     protected List<FeedItem> episodes = new ArrayList<>();
     protected Disposable disposable;
+    private int loadGeneration;
     protected TextView txtvInformation;
 
     @Override
@@ -334,6 +335,7 @@ public abstract class EpisodesListFragment extends Fragment
         for (FeedItem item : event.items) {
             int pos = FeedItemEvent.indexOfItemWithId(episodes, item.getId());
             if (pos >= 0) {
+                loadGeneration++;
                 episodes.remove(pos);
                 if (getFilter().matches(item)) {
                     episodes.add(pos, item);
@@ -401,11 +403,15 @@ public abstract class EpisodesListFragment extends Fragment
         if (disposable != null) {
             disposable.dispose();
         }
+        final int generation = ++loadGeneration;
         disposable = Observable.fromCallable(() -> new Pair<>(loadData(), loadTotalItemCount()))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         data -> {
+                            if (generation != loadGeneration) {
+                                return;
+                            }
                             final boolean firstLoaded = episodes.isEmpty();
                             episodes = data.first;
                             hasMoreItems = !(page == 1 && episodes.size() < EPISODES_PER_PAGE);
