@@ -29,6 +29,7 @@ import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
@@ -189,7 +190,15 @@ public class AudioPlayerFragment extends Fragment implements
     private void setupControlButtons() {
         butRev.setOnClickListener(v -> {
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getContext(), MediaController::seekBack);
+                final FeedMedia media = currentMedia;
+                PlaybackController.bindToMedia3Service(getContext(), controller -> {
+                    if (controller.getCurrentMediaItem() != null) {
+                        controller.seekBack();
+                    } else if (media != null) {
+                        seekWithoutPlaybackService(media,
+                                Math.max(0, media.getPosition() - UserPreferences.getRewindSecs() * 1000));
+                    }
+                });
             } else {
                 PlaybackController.bindToService(getActivity(), playbackService ->
                         playbackService.seekTo(playbackService.getCurrentPosition()
@@ -218,7 +227,15 @@ public class AudioPlayerFragment extends Fragment implements
         });
         butFF.setOnClickListener(v -> {
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getContext(), MediaController::seekForward);
+                final FeedMedia media = currentMedia;
+                PlaybackController.bindToMedia3Service(getContext(), controller -> {
+                    if (controller.getCurrentMediaItem() != null) {
+                        controller.seekForward();
+                    } else if (media != null) {
+                        seekWithoutPlaybackService(media, Math.min(media.getDuration(),
+                                media.getPosition() + UserPreferences.getFastForwardSecs() * 1000));
+                    }
+                });
             } else {
                 PlaybackController.bindToService(getActivity(), playbackService ->
                         playbackService.seekTo(playbackService.getCurrentPosition()
@@ -468,8 +485,14 @@ public class AudioPlayerFragment extends Fragment implements
         } else if (currentMedia != null) {
             final float prog = seekBar.getProgress() / ((float) seekBar.getMax());
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getContext(), controller ->
-                        controller.seekTo((long) (controller.getDuration() * prog)));
+                final FeedMedia media = currentMedia;
+                PlaybackController.bindToMedia3Service(getContext(), controller -> {
+                    if (controller.getCurrentMediaItem() != null) {
+                        controller.seekTo((long) (controller.getDuration() * prog));
+                    } else {
+                        seekWithoutPlaybackService(media, (int) (media.getDuration() * prog));
+                    }
+                });
             } else {
                 PlaybackController.bindToService(getActivity(), playbackService ->
                         playbackService.seekTo((int) (playbackService.getDuration() * prog)));
@@ -482,6 +505,12 @@ public class AudioPlayerFragment extends Fragment implements
                 .alpha(0f).scaleX(.8f).scaleY(.8f)
                 .setDuration(200)
                 .start();
+    }
+
+    private void seekWithoutPlaybackService(FeedMedia media, int position) {
+        media.setPosition(position);
+        DBWriter.setFeedMediaPlaybackInformation(media);
+        EventBus.getDefault().post(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
     }
 
     public void setupOptionsMenu() {
