@@ -21,7 +21,10 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
@@ -172,10 +175,15 @@ public class ExternalPlayerFragment extends Fragment {
                 .fitCenter()
                 .dontAnimate();
 
+        FeedPreferences prefs = (media instanceof FeedMedia && ((FeedMedia) media).getItem() != null
+                && ((FeedMedia) media).getItem().getFeed() != null)
+                ? ((FeedMedia) media).getItem().getFeed().getPreferences() : null;
         Glide.with(this)
-                .load(ImageResourceUtils.getEpisodeListImageLocation(media))
+                .load(AuthenticatedImageUrl.create(
+                        ImageResourceUtils.getEpisodeListImageLocation(media), prefs))
                 .error(Glide.with(this)
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
+                        .load(AuthenticatedImageUrl.create(
+                                ImageResourceUtils.getFallbackImageLocation(media), prefs))
                         .apply(options))
                 .apply(options)
                 .into(imgvCover);
