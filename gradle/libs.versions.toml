@@ -75,6 +75,7 @@ recyclerview-swipedecorator = { module = "it.xabaras.android:recyclerview-swiped
 nanohttpd = { module = "com.nanohttpd:nanohttpd", version = "2.1.1" }
 awaitility = { module = "org.awaitility:awaitility", version = "3.1.6" }
 junit = { module = "junit:junit", version = "4.13" }
+equalsverifier = { module = "nl.jqno.equalsverifier:equalsverifier", version = "4.5.2" }
 robolectric = { module = "org.robolectric:robolectric", version = "4.16" }
 mockito-core = { module = "org.mockito:mockito-core", version = "5.20.0" }
 hamcrest = { module = "org.hamcrest:hamcrest", version = "2.2" }

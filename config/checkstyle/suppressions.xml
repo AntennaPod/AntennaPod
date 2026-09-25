@@ -23,4 +23,6 @@
     <suppress checks="JavadocTagContinuationIndentation" files="(LongList.java|DBReader.java|LocalPSMP.java|GpodnetService.java|FeedDiscoverer.java|PlaybackServiceMediaPlayer.java)"/>
     <suppress checks="MemberName" files="(OpmlBackupAgent.java|ShakeListener.java|PlaybackController.java|AspectRatioVideoView.java|PlaybackService.java|PlaybackServiceMediaPlayerTest.java)"/>
     <suppress checks="LocalVariableName" files="(ShakeListener.java|ItemEnqueuePositionCalculatorTest.java)"/>
+
+    <suppress id="EqualsOverride" files="[\\/](DownloadRequest|EmbeddedChapterImage|Feed|FeedItem|FeedMedia|RemoteMedia|FastBlurTransformation)\.java$"/>
 </suppressions>

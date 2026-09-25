@@ -138,7 +138,6 @@ public class DownloadRequest implements Parcelable {
         result = 31 * result + (lastModified != null ? lastModified.hashCode() : 0);
         result = 31 * result + (int) (feedfileId ^ (feedfileId >>> 32));
         result = 31 * result + feedfileType;
-        result = 31 * result + arguments.hashCode();
         result = 31 * result + progressPercent;
         result = 31 * result + (int) (soFar ^ (soFar >>> 32));
         result = 31 * result + (int) (size ^ (size >>> 32));

@@ -235,5 +235,11 @@
         <module name="NestedForDepth">
             <property name="max" value="2"/>
         </module>
+        <module name="MatchXpath">
+            <property name="id" value="EqualsOverride"/>
+            <property name="query" value="//METHOD_DEF[./IDENT[@text='equals' or @text='hashCode']]"/>
+            <message key="matchxpath.match"
+                     value="Only override equals/hashCode if something needs value equality. Add a test in EqualsContractTest and list the file in suppressions.xml."/>
+        </module>
     </module>
 </module>

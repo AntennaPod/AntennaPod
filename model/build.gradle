@@ -18,6 +18,8 @@ dependencies {
     implementation libs.commons.lang3
 
     testImplementation libs.junit
+    testImplementation libs.equalsverifier
+    testImplementation libs.robolectric
     testImplementation libs.androidx.test.core
     testImplementation libs.mockito.core
 }
