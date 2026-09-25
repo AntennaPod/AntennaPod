@@ -18,6 +18,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -208,6 +209,7 @@ public class FeedItemMenuHandler {
             selectedItem.getMedia().setPosition(0);
             if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == selectedItem.getMedia().getId()) {
                 PlaybackPreferences.writeNoMediaPlaying();
+                EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
                 PlaybackController.bindToMedia3Service(context, controller -> {
                     controller.clearMediaItems();
                     controller.stop();
