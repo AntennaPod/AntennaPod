@@ -15,6 +15,8 @@ import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
 import com.bumptech.glide.Glide;
 import com.google.common.collect.ImmutableList;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -28,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MediaItemAdapter {
     private static final String TAG = "MediaItemAdapter";
+    private static final long CHAPTER_ARTWORK_TIMEOUT_MS = 2000;
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
     public static final String MEDIA_ID_CONFIRM_STREAMING = "confirm_streaming";
     public static final String KEY_STREAM_URL = "stream_url";
@@ -108,6 +111,52 @@ public class MediaItemAdapter {
                         .setExtras(requestExtras)
                         .build())
                 .build();
+    }
+
+    /**
+     * Create a copy of a media item that carries the artwork of the given chapter.
+     * Falls back to the episode cover if the chapter has no image or it cannot be loaded.
+     * Do NOT use this method on the main thread.
+     */
+    public static MediaItem withChapterArtwork(Context context, MediaItem item,
+                                               Playable playable, int chapterIndex) {
+        ThreadUtils.assertNotMainThread();
+        int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
+        Bitmap bitmap = loadChapterArtworkBitmap(context, playable, chapterIndex, iconSize);
+        if (bitmap == null) {
+            bitmap = loadArtworkBitmap(context, playable, iconSize);
+        }
+        if (bitmap == null) {
+            return item;
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        // The episode artworkUri would otherwise still point at the episode cover,
+        // which external processes may prefer over the chapter image bytes.
+        MediaMetadata metadata = item.mediaMetadata.buildUpon()
+                .setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+                .setArtworkUri(null)
+                .build();
+        return item.buildUpon().setMediaMetadata(metadata).build();
+    }
+
+    private static Bitmap loadChapterArtworkBitmap(Context context, Playable playable,
+                                                   int chapterIndex, int iconSize) {
+        List<Chapter> chapters = playable.getChapters();
+        if (chapters == null || chapterIndex < 0 || chapterIndex >= chapters.size()
+                || TextUtils.isEmpty(chapters.get(chapterIndex).getImageUrl())) {
+            return null;
+        }
+        try {
+            return Glide.with(context)
+                    .asBitmap()
+                    .load(EmbeddedChapterImage.getModelFor(playable, chapterIndex))
+                    .submit(iconSize, iconSize)
+                    .get(CHAPTER_ARTWORK_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+        } catch (Exception exception) {
+            Log.e(TAG, "Skipping to load chapter artwork bitmap: " + exception.getMessage());
+            return null;
+        }
     }
 
     private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
