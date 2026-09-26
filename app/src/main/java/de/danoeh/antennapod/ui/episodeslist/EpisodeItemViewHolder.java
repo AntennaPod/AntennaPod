@@ -32,6 +32,7 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * Holds the view which shows FeedItems.
@@ -62,6 +63,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     private final Activity activity;
     private FeedItem item;
+    private Disposable sizeDisposable;
 
     public EpisodeItemViewHolder(Activity activity, ViewGroup parent) {
         super(LayoutInflater.from(activity).inflate(R.layout.feeditemlist_item, parent, false));
@@ -91,6 +93,9 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(FeedItem item) {
+        if (sizeDisposable != null) {
+            sizeDisposable.dispose();
+        }
         this.item = item;
         placeholder.setText(item.getFeed().getTitle());
         title.setText(item.getTitle());
@@ -177,7 +182,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             size.setText(Formatter.formatShortFileSize(activity, media.getSize()));
         } else if (NetworkUtils.isEpisodeHeadDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
             size.setText("");
-            MediaSizeLoader.getFeedMediaSizeObservable(media).subscribe(
+            sizeDisposable = MediaSizeLoader.getFeedMediaSizeObservable(media).subscribe(
                     sizeValue -> {
                         if (sizeValue > 0) {
                             size.setText(Formatter.formatShortFileSize(activity, sizeValue));
@@ -194,6 +199,9 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindDummy() {
+        if (sizeDisposable != null) {
+            sizeDisposable.dispose();
+        }
         item = new FeedItem();
         item.setFeed(new Feed("", ""));
         container.setAlpha(0.1f);
