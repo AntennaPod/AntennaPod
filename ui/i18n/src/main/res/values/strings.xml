@@ -913,6 +913,7 @@
     <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
     <string name="unable_to_start_system_file_manager">Unable to start system file manager</string>
 
+    <!-- Filter dialog -->
     <string name="filter">Filter</string>
     <string name="hide_is_favorite_label">Is favorite</string>
     <string name="not_favorite">Not favorite</string>
@@ -927,6 +928,7 @@
     <string name="hide_played_episodes_label">Played</string>
     <string name="not_played">Not played</string>
     <string name="filename">File name</string>
+    <string name="clear_filters_label">Clear</string>
 
     <!-- Share episode dialog -->
     <string name="share_playback_position_dialog_label">Include playback position</string>
