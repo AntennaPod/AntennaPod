@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,28 +15,18 @@
         android:paddingRight="24dp"
         android:paddingBottom="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/resetFiltermenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/reset"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/confirmFiltermenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/confirm_label"
-                style="@style/Widget.MaterialComponents.Button.TextButton" />
-
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clearFilterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:icon="@drawable/ic_filter_cancel"
+            app:iconTint="?attr/colorOnSurfaceVariant"
+            app:iconGravity="textStart"
+            android:minWidth="0dp"
+            android:text="@string/clear_filters_label"
+            android:layout_gravity="end"
+            style="@style/Widget.Material3.Button.TextButton" />
 
     </LinearLayout>
 
