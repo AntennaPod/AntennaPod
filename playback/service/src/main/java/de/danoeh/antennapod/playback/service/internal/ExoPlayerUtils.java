@@ -178,7 +178,7 @@ public class ExoPlayerUtils {
                 String resolvedUrl = redirectCache.get(originalUrl);
                 if (resolvedUrl == null) {
                     resolvedUrl = RedirectChecker.getFinalUrl(originalUrl);
-                    redirectCache.putIfAbsent(originalUrl, resolvedUrl);
+                    redirectCache.put(originalUrl, resolvedUrl);
                 }
                 if (resolvedUrl.equals(originalUrl)) {
                     return dataSpec;
