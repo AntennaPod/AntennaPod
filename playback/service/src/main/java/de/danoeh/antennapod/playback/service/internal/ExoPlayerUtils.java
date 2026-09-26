@@ -36,7 +36,8 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @OptIn(markerClass = UnstableApi.class)
@@ -107,7 +108,14 @@ public class ExoPlayerUtils {
         private final DefaultMediaSourceFactory defaultFactory;
         private final Context context;
         private final SimpleCache simpleCache;
-        private final ConcurrentHashMap<String, String> redirectCache = new ConcurrentHashMap<>();
+        private static final int REDIRECT_CACHE_MAX_SIZE = 256;
+        private final Map<String, String> redirectCache = Collections.synchronizedMap(
+                new LinkedHashMap<String, String>(REDIRECT_CACHE_MAX_SIZE, 0.75f, true) {
+                    @Override
+                    protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
+                        return size() > REDIRECT_CACHE_MAX_SIZE;
+                    }
+                });
 
         public ApMediaSourceFactory(Context context, SimpleCache simpleCache) {
             super();
@@ -170,7 +178,7 @@ public class ExoPlayerUtils {
                 String resolvedUrl = redirectCache.get(originalUrl);
                 if (resolvedUrl == null) {
                     resolvedUrl = RedirectChecker.getFinalUrl(originalUrl);
-                    redirectCache.putIfAbsent(originalUrl, resolvedUrl);
+                    redirectCache.put(originalUrl, resolvedUrl);
                 }
                 if (resolvedUrl.equals(originalUrl)) {
                     return dataSpec;

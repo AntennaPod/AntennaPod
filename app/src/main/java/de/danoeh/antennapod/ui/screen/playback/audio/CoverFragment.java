@@ -288,6 +288,9 @@ public class CoverFragment extends Fragment {
         super.onStop();
 
         EventBus.getDefault().unregister(this);
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     @Override
