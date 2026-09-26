@@ -20,12 +20,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?attr/colorOnSurfaceVariant"
-            app:icon="@drawable/ic_filter_cancel"
-            app:iconTint="?attr/colorOnSurfaceVariant"
-            app:iconGravity="textStart"
             android:minWidth="0dp"
             android:text="@string/clear_filters_label"
             android:layout_gravity="end"
+            app:icon="@drawable/ic_filter_cancel"
+            app:iconTint="?attr/colorOnSurfaceVariant"
+            app:iconGravity="textStart"
             style="@style/Widget.Material3.Button.TextButton" />
 
     </LinearLayout>
