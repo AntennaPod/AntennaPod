@@ -121,8 +121,7 @@ public abstract class WidgetUpdater {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
-            views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_PLAY_PAUSE));
+            views.setOnClickPendingIntent(R.id.butPlayExtended, startMediaPlayer);
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
