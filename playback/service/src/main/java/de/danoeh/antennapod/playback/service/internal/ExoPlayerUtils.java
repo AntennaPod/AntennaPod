@@ -16,10 +16,8 @@ import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.datasource.HttpDataSource;
 import androidx.media3.datasource.ResolvingDataSource;
 import androidx.media3.datasource.cache.CacheDataSource;
-import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
 import androidx.media3.datasource.cache.SimpleCache;
 import de.danoeh.antennapod.net.common.RedirectChecker;
-import androidx.media3.exoplayer.DefaultLoadControl;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.SeekParameters;
 import androidx.media3.exoplayer.drm.DrmSessionManagerProvider;
@@ -37,7 +35,6 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import java.io.File;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 @OptIn(markerClass = UnstableApi.class)
 public class ExoPlayerUtils {
@@ -47,18 +44,11 @@ public class ExoPlayerUtils {
     public static ExoPlayer buildPlayer(Context context) {
         if (simpleCache == null) {
             simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
-                    new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024),
+                    new SlidingWindowCacheEvictor(),
                     new StandaloneDatabaseProvider(context));
         }
         return new ExoPlayer.Builder(context)
-                .setLoadControl(new DefaultLoadControl.Builder()
-                        .setBufferDurationsMs(
-                                (int) TimeUnit.HOURS.toMillis(1),
-                                (int) TimeUnit.HOURS.toMillis(3),
-                                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS)
-                        .setBackBuffer((int) TimeUnit.MINUTES.toMillis(5), true)
-                        .build())
+                .setLoadControl(PlaybackLoadControl.create())
                 .setAudioAttributes(new AudioAttributes.Builder()
                         .setUsage(C.USAGE_MEDIA)
                         .setContentType(C.AUDIO_CONTENT_TYPE_SPEECH)
@@ -182,7 +172,8 @@ public class ExoPlayerUtils {
             if (uri.startsWith("http")) {
                 return new CacheDataSource.Factory()
                         .setCache(simpleCache)
-                        .setUpstreamDataSourceFactory(resolvingFactory);
+                        .setUpstreamDataSourceFactory(resolvingFactory)
+                        .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR);
             }
             return resolvingFactory;
         }
