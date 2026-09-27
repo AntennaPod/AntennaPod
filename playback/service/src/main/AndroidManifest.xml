@@ -73,7 +73,7 @@
         </service>
 
         <receiver
-            android:name="androidx.media3.session.MediaButtonReceiver"
+            android:name="de.danoeh.antennapod.playback.service.Media3MediaButtonReceiver"
             android:enabled="${newServiceEnabled}"
             android:exported="true">
             <intent-filter>
