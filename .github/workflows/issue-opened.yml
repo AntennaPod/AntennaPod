@@ -17,8 +17,12 @@ jobs:
             const isBugReport = body.includes('### Steps to reproduce');
             const isFeatureRequest = body.includes('### Feature or improvement you want');
             const existingLabels = context.payload.issue.labels.map(l => l.name);
+            const isMaintainer = ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(context.payload.issue.author_association);
 
             const addMissing = async (labels) => {
+              if (isMaintainer && existingLabels.length > 0) {
+                return;
+              }
               const missing = labels.filter(l => !existingLabels.includes(l));
               if (missing.length > 0) {
                 await github.rest.issues.addLabels({
