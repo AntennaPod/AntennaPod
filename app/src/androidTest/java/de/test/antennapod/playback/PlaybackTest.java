@@ -1,20 +1,27 @@
 package de.test.antennapod.playback;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.KeyEvent;
 import android.view.View;
+import androidx.media3.common.Player;
+import androidx.media3.session.MediaController;
+import androidx.media3.session.SessionToken;
 import androidx.preference.PreferenceManager;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.playback.service.Media3PlaybackService;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.LongList;
@@ -30,9 +37,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
@@ -40,6 +51,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static de.test.antennapod.EspressoTestUtils.clickBottomNavItem;
 import static de.test.antennapod.EspressoTestUtils.clickBottomNavOverflow;
 import static de.test.antennapod.EspressoTestUtils.clickChildViewWithId;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
@@ -47,6 +59,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -54,6 +67,7 @@ import static org.junit.Assert.assertTrue;
  */
 @LargeTest
 @IgnoreOnCi
+@RunWith(AndroidJUnit4.class)
 public class PlaybackTest {
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, false, false);
@@ -93,6 +107,129 @@ public class PlaybackTest {
                 () -> first.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
         Awaitility.await().atMost(6, TimeUnit.SECONDS).until(
                 () -> second.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+    }
+
+    @Test
+    public void testContinuousPlaybackDoesNotAddNextEpisodeToHistory() throws Exception {
+        setContinuousPlaybackPreference(false);
+        uiTestUtils.addHostedFeedData();
+        for (Feed feed : uiTestUtils.hostedFeeds) {
+            for (FeedItem item : feed.getItems()) {
+                if (item.getMedia() != null) {
+                    item.getMedia().setId(0);
+                }
+            }
+        }
+        uiTestUtils.addLocalFeedData(true);
+
+        List<FeedItem> queue = DBReader.getQueue();
+        final FeedItem second = queue.get(2);
+        final long secondMediaId = second.getMedia().getId();
+
+        DBWriter.deleteFromPlaybackHistory(second).get();
+        assertNull(DBReader.getFeedMedia(secondMediaId).getLastPlayedTimeHistory());
+
+        activityTestRule.launchActivity(new Intent());
+
+        SessionToken sessionToken = new SessionToken(context,
+                new ComponentName(context, Media3PlaybackService.class));
+        MediaController mediaController = new MediaController.Builder(context, sessionToken)
+                .buildAsync().get(5, TimeUnit.SECONDS);
+
+        final AtomicBoolean episodeBReady = new AtomicBoolean(false);
+        final AtomicReference<Date> historyAtReady = new AtomicReference<>();
+
+        try {
+            mediaController.addListener(new Player.Listener() {
+                @Override
+                public void onPlaybackStateChanged(int playbackState) {
+                    if (mediaController.getCurrentMediaItem() != null
+                            && String.valueOf(secondMediaId).equals(mediaController.getCurrentMediaItem().mediaId)) {
+                        if (playbackState == Player.STATE_READY && !episodeBReady.get()) {
+                            FeedMedia media = DBReader.getFeedMedia(secondMediaId);
+                            if (media != null) {
+                                historyAtReady.set(media.getLastPlayedTimeHistory());
+                            }
+                            episodeBReady.set(true);
+                        }
+                    }
+                }
+            });
+
+            clickBottomNavItem(R.string.queue_label);
+            playFromQueue(1);
+
+            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(episodeBReady::get);
+
+            assertNull("Next episode should not be added to playback history when reaching STATE_READY",
+                    historyAtReady.get());
+        } finally {
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(mediaController::release);
+        }
+    }
+
+    @Test
+    public void testLoadedPausedEpisodeNotAddedToHistoryWhenSwitchingToAnotherEpisode() throws Exception {
+        setContinuousPlaybackPreference(false);
+        uiTestUtils.addHostedFeedData();
+        for (Feed feed : uiTestUtils.hostedFeeds) {
+            for (FeedItem item : feed.getItems()) {
+                if (item.getMedia() != null) {
+                    item.getMedia().setId(0);
+                }
+            }
+        }
+        uiTestUtils.addLocalFeedData(true);
+
+        List<FeedItem> queue = DBReader.getQueue();
+        final FeedItem second = queue.get(2);
+        final long secondMediaId = second.getMedia().getId();
+        final FeedItem third = queue.get(3);
+        final long thirdMediaId = third.getMedia().getId();
+
+        DBWriter.deleteFromPlaybackHistory(second).get();
+        assertNull(DBReader.getFeedMedia(secondMediaId).getLastPlayedTimeHistory());
+
+        activityTestRule.launchActivity(new Intent());
+
+        SessionToken sessionToken = new SessionToken(context,
+                new ComponentName(context, Media3PlaybackService.class));
+        MediaController mediaController = new MediaController.Builder(context, sessionToken)
+                .buildAsync().get(5, TimeUnit.SECONDS);
+
+        final AtomicBoolean episodeBReady = new AtomicBoolean(false);
+        final AtomicBoolean episodeCReady = new AtomicBoolean(false);
+
+        try {
+            mediaController.addListener(new Player.Listener() {
+                @Override
+                public void onPlaybackStateChanged(int playbackState) {
+                    if (mediaController.getCurrentMediaItem() != null) {
+                        String currentMediaId = mediaController.getCurrentMediaItem().mediaId;
+                        if (String.valueOf(secondMediaId).equals(currentMediaId) && playbackState == Player.STATE_READY) {
+                            episodeBReady.set(true);
+                        } else if (String.valueOf(thirdMediaId).equals(currentMediaId) && playbackState == Player.STATE_READY) {
+                            episodeCReady.set(true);
+                        }
+                    }
+                }
+            });
+
+            clickBottomNavItem(R.string.queue_label);
+            playFromQueue(1);
+
+            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(episodeBReady::get);
+            assertNull(DBReader.getFeedMedia(secondMediaId).getLastPlayedTimeHistory());
+
+            playFromQueue(2);
+
+            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(episodeCReady::get);
+
+            assertNull("Episode B should not be in history after switching away when it never played",
+                    DBReader.getFeedMedia(secondMediaId).getLastPlayedTimeHistory());
+        } finally {
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(mediaController::release);
+        }
     }
 
 

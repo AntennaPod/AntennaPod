@@ -322,7 +322,9 @@ public class Media3PlaybackService extends MediaLibraryService {
                 setupPositionObserver();
             } else {
                 cancelPositionObserver();
-                saveCurrentPosition();
+                if (lastPositionSaveTime > 0) {
+                    saveCurrentPosition();
+                }
                 if (currentPlayable != null) {
                     SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
                 }
@@ -402,7 +404,9 @@ public class Media3PlaybackService extends MediaLibraryService {
             queueLoaderDisposable.dispose();
             queueLoaderDisposable = null;
         }
-        saveCurrentPosition();
+        if (lastPositionSaveTime > 0) {
+            saveCurrentPosition();
+        }
         if (loudnessEnhancer != null) {
             loudnessEnhancer.release();
             loudnessEnhancer = null;
@@ -521,6 +525,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private void switchToPlayable(FeedMedia media) {
         currentPlayable = media;
         currentPlayable.onPlaybackStart();
+        lastPositionSaveTime = 0;
 
         float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
         player.setPlaybackSpeed(speed);
@@ -598,7 +603,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 }
             }
         }
-        if (ended || skipped || playingNext) {
+        if (ended || skipped || (playingNext && lastPositionSaveTime > 0)) {
             DBWriter.addItemToPlaybackHistory(media);
         }
     }
