@@ -94,6 +94,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
     private long lastPositionSaveTime = 0;
+    private String playedMediaId = null;
     private SleepTimer sleepTimer;
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
@@ -378,6 +379,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
             PlaybackService.isRunning = !Util.shouldShowPlayButton(player);
+            if (isPlaying && player.getCurrentMediaItem() != null) {
+                playedMediaId = player.getCurrentMediaItem().mediaId;
+                saveCurrentPosition();
+            }
             if (PlaybackService.isRunning) {
                 lastPositionSaveTime = System.currentTimeMillis();
                 setupPositionObserver();
@@ -621,7 +626,8 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         try {
             if (player.getCurrentMediaItem() == null
-                    || currentPlayable.getId() != Long.parseLong(player.getCurrentMediaItem().mediaId)) {
+                    || currentPlayable.getId() != Long.parseLong(player.getCurrentMediaItem().mediaId)
+                    || !player.getCurrentMediaItem().mediaId.equals(playedMediaId)) {
                 return;
             }
         } catch (NumberFormatException e) {
@@ -663,7 +669,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 }
             }
         }
-        if (ended || skipped || playingNext) {
+        if (ended || ((skipped || playingNext) && String.valueOf(media.getId()).equals(playedMediaId))) {
             DBWriter.addItemToPlaybackHistory(media);
         }
     }
