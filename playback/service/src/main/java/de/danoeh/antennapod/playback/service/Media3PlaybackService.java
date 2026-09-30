@@ -504,6 +504,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     private void updateChapterArtwork() {
         if (player == null || currentPlayable == null || isCasting()
+                || !UserPreferences.getUseEpisodeCoverSetting()
                 || !player.isCommandAvailable(Player.COMMAND_CHANGE_MEDIA_ITEMS)) {
             return;
         }

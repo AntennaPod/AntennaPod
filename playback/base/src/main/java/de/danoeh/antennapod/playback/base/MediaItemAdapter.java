@@ -22,6 +22,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.system.utils.ThreadUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -79,8 +80,9 @@ public class MediaItemAdapter {
                 metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
             }
         }
-        if (playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
-            metadataBuilder.setArtworkUri(Uri.parse(playable.getImageLocation()));
+        String artworkLocation = getArtworkLocation(playable);
+        if (artworkLocation != null && artworkLocation.startsWith("http")) {
+            metadataBuilder.setArtworkUri(Uri.parse(artworkLocation));
         }
         Bundle extras = new Bundle();
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
@@ -113,11 +115,6 @@ public class MediaItemAdapter {
                 .build();
     }
 
-    /**
-     * Create a copy of a media item that carries the artwork of the given chapter.
-     * Falls back to the episode cover if the chapter has no image or it cannot be loaded.
-     * Do NOT use this method on the main thread.
-     */
     public static MediaItem withChapterArtwork(Context context, MediaItem item,
                                                Playable playable, int chapterIndex) {
         ThreadUtils.assertNotMainThread();
@@ -131,8 +128,6 @@ public class MediaItemAdapter {
         }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
-        // The episode artworkUri would otherwise still point at the episode cover,
-        // which external processes may prefer over the chapter image bytes.
         MediaMetadata metadata = item.mediaMetadata.buildUpon()
                 .setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER)
                 .setArtworkUri(null)
@@ -159,9 +154,17 @@ public class MediaItemAdapter {
         }
     }
 
+    private static String getArtworkLocation(Playable playable) {
+        if (UserPreferences.getUseEpisodeCoverSetting() || !(playable instanceof FeedMedia)) {
+            return playable.getImageLocation();
+        }
+        FeedItem item = ((FeedMedia) playable).getItem();
+        return item != null && item.getFeed() != null ? item.getFeed().getImageUrl() : null;
+    }
+
     private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
         try {
-            String imageLocation = playable.getImageLocation();
+            String imageLocation = getArtworkLocation(playable);
             return Glide.with(context)
                     .asBitmap()
                     .onlyRetrieveFromCache(imageLocation != null && imageLocation.startsWith("http"))
