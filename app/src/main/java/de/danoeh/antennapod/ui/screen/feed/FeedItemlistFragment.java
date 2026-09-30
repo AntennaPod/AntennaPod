@@ -97,6 +97,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private long feedID;
     private Feed feed;
     private Disposable disposable;
+    private int loadGeneration;
     private FeedItemListFragmentBinding viewBinding;
     private Pair<Integer, Integer> scrollPosition = null;
 
@@ -405,6 +406,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             FeedItem item = event.items.get(i);
             int pos = FeedItemEvent.indexOfItemWithId(feed.getItems(), item.getId());
             if (pos >= 0) {
+                loadGeneration++;
                 feed.getItems().remove(pos);
                 feed.getItems().add(pos, item);
                 adapter.notifyItemChangedCompat(pos);
@@ -642,6 +644,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
+        final int generation = ++loadGeneration;
         disposable = Observable.fromCallable(
                 () -> {
                     feed = DBReader.getFeed(feedID, true, 0, page * EPISODES_PER_PAGE);
@@ -652,6 +655,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     result -> {
+                        if (generation != loadGeneration) {
+                            return;
+                        }
                         hasMoreItems = !(page == 1 && feed.getItems().size() < EPISODES_PER_PAGE);
                         swipeActions.setFilter(feed.getItemFilter());
                         refreshHeaderView();
