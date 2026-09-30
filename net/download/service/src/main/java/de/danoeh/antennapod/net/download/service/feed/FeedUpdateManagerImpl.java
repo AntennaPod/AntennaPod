@@ -31,6 +31,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     private static final String WORK_ID_FEED_UPDATE_MANUAL = "feedUpdateManual";
     public static final String EXTRA_FEED_ID = "feed_id";
     public static final String EXTRA_NEXT_PAGE = "next_page";
+    public static final String EXTRA_REMOVE_UNLISTED_ITEMS = "remove_unlisted_items";
     public static final String EXTRA_EVEN_ON_MOBILE = "even_on_mobile";
     public static final String EXTRA_MANUAL = "manual";
     private static final String TAG = "AutoUpdateManager";
@@ -67,6 +68,10 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
     }
 
     public void runOnce(Context context, Feed feed, boolean nextPage) {
+        runOnce(context, feed, nextPage, false);
+    }
+
+    public void runOnce(Context context, Feed feed, boolean nextPage, boolean removeUnlistedItems) {
         lastManualRefreshTime = System.currentTimeMillis();
         lastManualRefreshFeedId = feed != null ? feed.getId() : -1;
         OneTimeWorkRequest.Builder workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
@@ -83,6 +88,7 @@ public class FeedUpdateManagerImpl extends FeedUpdateManager {
         if (feed != null) {
             builder.putLong(EXTRA_FEED_ID, feed.getId());
             builder.putBoolean(EXTRA_NEXT_PAGE, nextPage);
+            builder.putBoolean(EXTRA_REMOVE_UNLISTED_ITEMS, removeUnlistedItems);
         }
         workRequest.setInputData(builder.build());
         WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE_MANUAL,
