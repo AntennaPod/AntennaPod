@@ -193,7 +193,6 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
                     if (position >= 0) {
                         currentMedia.setPosition(position);
                     }
-                    currentMedia.onPlaybackStart();
                 }
                 setPlayerStatus(PlayerStatus.PLAYING, currentMedia, position);
                 break;

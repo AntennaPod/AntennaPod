@@ -95,6 +95,8 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable queueLoaderDisposable;
     private long lastPositionSaveTime = 0;
     private String playedMediaId = null;
+    private int playbackStartPosition = -1;
+    private int playedDurationCountedUntil = -1;
     private SleepTimer sleepTimer;
     @Nullable
     private LoudnessEnhancer loudnessEnhancer = null;
@@ -239,6 +241,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
             private void skipToNextInQueue() {
                 if (currentPlayable != null) {
+                    saveCurrentPosition();
                     startNextInQueue(currentPlayable, true, false);
                 }
             }
@@ -371,6 +374,19 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
 
         @Override
+        public void onPositionDiscontinuity(@NonNull Player.PositionInfo oldPosition,
+                                            @NonNull Player.PositionInfo newPosition, int reason) {
+            if ((reason != Player.DISCONTINUITY_REASON_SEEK && reason != Player.DISCONTINUITY_REASON_SEEK_ADJUSTMENT)
+                    || currentPlayable == null || oldPosition.mediaItem == null || newPosition.mediaItem == null
+                    || !oldPosition.mediaItem.mediaId.equals(newPosition.mediaItem.mediaId)
+                    || !String.valueOf(currentPlayable.getId()).equals(newPosition.mediaItem.mediaId)) {
+                return;
+            }
+            checkpointPlayedDuration((int) oldPosition.positionMs);
+            playedDurationCountedUntil = (int) newPosition.positionMs;
+        }
+
+        @Override
         public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
             PlaybackService.isRunning = !Util.shouldShowPlayButton(player);
             updatePlaybackPreferences();
@@ -390,7 +406,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                 cancelPositionObserver();
                 saveCurrentPosition();
                 if (currentPlayable != null) {
-                    SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable, false);
+                    SynchronizationQueue.getInstance().enqueueEpisodePlayed(currentPlayable,
+                            playbackStartPosition, false);
                 }
             }
             WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
@@ -544,7 +561,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 mediaLoaderDisposable = Single.fromCallable(() -> {
                     long previousMediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
                     if (previousMediaId != PlaybackPreferences.NO_MEDIA_PLAYING && previousMediaId != mediaId) {
-                        updateDatabaseAfterPlayback(DBReader.getFeedMedia(previousMediaId), false, false, true);
+                        updateDatabaseAfterPlayback(DBReader.getFeedMedia(previousMediaId), -1, false, false, true);
                     }
                     FeedMedia media = DBReader.getFeedMedia(mediaId);
                     ChapterUtils.loadChapters(media, this, false);
@@ -586,7 +603,8 @@ public class Media3PlaybackService extends MediaLibraryService {
     @OptIn(markerClass = UnstableApi.class)
     private void switchToPlayable(FeedMedia media) {
         currentPlayable = media;
-        currentPlayable.onPlaybackStart();
+        playbackStartPosition = Math.max(currentPlayable.getPosition(), 0);
+        playedDurationCountedUntil = playbackStartPosition;
 
         float speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentPlayable);
         player.setPlaybackSpeed(speed);
@@ -638,10 +656,22 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         long position = player.getCurrentPosition();
         long timestamp = System.currentTimeMillis();
+        checkpointPlayedDuration((int) position);
         PlayableUtils.saveCurrentPosition(currentPlayable, (int) position, timestamp);
     }
 
-    private void updateDatabaseAfterPlayback(FeedMedia media, boolean ended, boolean skipped, boolean playingNext) {
+    private void checkpointPlayedDuration(int position) {
+        if (playedDurationCountedUntil < 0) {
+            return;
+        }
+        if (position > playedDurationCountedUntil) {
+            currentPlayable.incrementPlayedDuration(position - playedDurationCountedUntil);
+        }
+        playedDurationCountedUntil = position;
+    }
+
+    private void updateDatabaseAfterPlayback(FeedMedia media, int startPosition,
+                                             boolean ended, boolean skipped, boolean playingNext) {
         if (media == null) {
             return;
         }
@@ -651,7 +681,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         boolean almostEnded = media.getDuration() > 0
                 && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;
 
-        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, ended || almostEnded);
+        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, startPosition, ended || almostEnded);
         if (item != null) {
             if (ended || almostEnded) {
                 DBWriter.markItemsPlayed(FeedItem.PLAYED, true, Collections.singletonList(item));
@@ -777,7 +807,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (sleepTimer != null && sleepTimer.isActive()) {
             sleepTimer.episodeFinishedPlayback();
             if (!sleepTimer.shouldContinueToNextEpisode()) {
-                updateDatabaseAfterPlayback(media, true, false, false);
+                updateDatabaseAfterPlayback(media, playbackStartPosition, true, false, false);
                 player.stop();
                 player.clearMediaItems();
                 PlaybackPreferences.writeNoMediaPlaying();
@@ -809,10 +839,11 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (item == null) {
             return;
         }
+        int startPosition = playbackStartPosition;
         queueLoaderDisposable = Maybe.fromCallable(() -> {
             FeedItem nextItem = DBReader.getNextInQueue(item);
             boolean hasNext = nextItem != null && nextItem.getMedia() != null;
-            updateDatabaseAfterPlayback(media, ended, wasSkipped, hasNext);
+            updateDatabaseAfterPlayback(media, startPosition, ended, wasSkipped, hasNext);
             if (hasNext) {
                 return new Pair<>(nextItem.getMedia(),
                         MediaItemAdapter.fromPlayable(Media3PlaybackService.this, nextItem.getMedia(), false));

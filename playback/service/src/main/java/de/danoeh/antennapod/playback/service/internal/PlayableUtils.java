@@ -29,10 +29,6 @@ public abstract class PlayableUtils {
             if (item != null && item.isNew()) {
                 DBWriter.markItemsPlayed(FeedItem.UNPLAYED, false, Collections.singletonList(item));
             }
-            if (media.getStartPosition() >= 0 && playable.getPosition() > media.getStartPosition()) {
-                media.setPlayedDuration(media.getPlayedDurationWhenStarted()
-                        + playable.getPosition() - media.getStartPosition());
-            }
             DBWriter.setFeedMediaPlaybackInformation(media);
         }
     }

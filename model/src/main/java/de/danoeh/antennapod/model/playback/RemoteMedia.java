@@ -198,11 +198,6 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void onPlaybackStart() {
-        // no-op
-    }
-
-    @Override
     public int getPlayableType() {
         return PLAYABLE_TYPE_REMOTE_MEDIA;
     }

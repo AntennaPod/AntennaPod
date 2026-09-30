@@ -108,7 +108,7 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
         });
     }
 
-    public void enqueueEpisodePlayed(FeedMedia media, boolean completed) {
+    public void enqueueEpisodePlayed(FeedMedia media, int startPosition, boolean completed) {
         if (!SynchronizationSettings.isProviderConnected()) {
             return;
         }
@@ -116,12 +116,12 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
                 || media.getItem().getFeed().getState() == Feed.STATE_NOT_SUBSCRIBED) {
             return;
         }
-        if (media.getStartPosition() < 0 || (!completed && media.getStartPosition() >= media.getPosition())) {
+        if (startPosition < 0 || (!completed && startPosition >= media.getPosition())) {
             return;
         }
         EpisodeAction action = new EpisodeAction.Builder(media.getItem(), EpisodeAction.PLAY)
                 .currentTimestamp()
-                .started(media.getStartPosition() / 1000)
+                .started(startPosition / 1000)
                 .position((completed ? media.getDuration() : media.getPosition()) / 1000)
                 .total(media.getDuration() / 1000)
                 .build();

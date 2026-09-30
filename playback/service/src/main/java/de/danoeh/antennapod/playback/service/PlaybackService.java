@@ -965,7 +965,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             } else {
                 skipIntro(playable);
             }
-            playable.onPlaybackStart();
             taskManager.startPositionSaver();
         }
 
@@ -980,7 +979,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     // Don't store position after position is already reset
                     saveCurrentPosition(position == Playable.INVALID_TIME, playable, position);
                 }
-                SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, false);
+                SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, -1, false);
             }
         }
 
@@ -1203,7 +1202,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             autoSkipped = true;
         }
 
-        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, ended || almostEnded);
+        SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, -1, ended || almostEnded);
         if (item != null) {
             if (ended || almostEnded
                     || autoSkipped

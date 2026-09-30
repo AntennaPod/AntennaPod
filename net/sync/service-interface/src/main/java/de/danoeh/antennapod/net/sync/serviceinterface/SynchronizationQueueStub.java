@@ -36,6 +36,6 @@ public class SynchronizationQueueStub extends SynchronizationQueue {
     }
 
     @Override
-    public void enqueueEpisodePlayed(FeedMedia media, boolean completed) {
+    public void enqueueEpisodePlayed(FeedMedia media, int startPosition, boolean completed) {
     }
 }
