@@ -503,7 +503,9 @@ public class Media3PlaybackService extends MediaLibraryService {
     }
 
     private void updateChapterArtwork() {
-        if (player == null || currentPlayable == null || isCasting()
+        if (player == null
+                || currentPlayable == null
+                || isCasting()
                 || !UserPreferences.getUseEpisodeCoverSetting()
                 || !player.isCommandAvailable(Player.COMMAND_CHANGE_MEDIA_ITEMS)) {
             return;
@@ -531,7 +533,8 @@ public class Media3PlaybackService extends MediaLibraryService {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(updatedItem -> {
-                    if (player == null || player.getCurrentMediaItem() == null
+                    if (player == null
+                            || player.getCurrentMediaItem() == null
                             || !mediaId.equals(player.getCurrentMediaItem().mediaId)) {
                         return;
                     }
