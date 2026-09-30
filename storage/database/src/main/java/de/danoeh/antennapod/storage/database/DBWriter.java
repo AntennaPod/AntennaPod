@@ -878,6 +878,11 @@ public class DBWriter {
                         SynchronizationQueue.getInstance().enqueueEpisodePlayed(item.getMedia(), true);
                     }
                 }
+                FeedDatabaseWriter.recordFirstSubscription(feed);
+                if (FeedDatabaseWriter.isWithinFirstSubscriptionHour()) {
+                    FeedDatabaseWriter.performNewEpisodesAction(context, feed,
+                            feed.getItems().subList(0, Math.min(3, feed.getItems().size())));
+                }
             }
             adapter.close();
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
