@@ -15,11 +15,14 @@ import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
 import com.bumptech.glide.Glide;
 import com.google.common.collect.ImmutableList;
+import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.system.utils.ThreadUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -28,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MediaItemAdapter {
     private static final String TAG = "MediaItemAdapter";
+    private static final long CHAPTER_ARTWORK_TIMEOUT_MS = 2000;
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
     public static final String MEDIA_ID_CONFIRM_STREAMING = "confirm_streaming";
     public static final String KEY_STREAM_URL = "stream_url";
@@ -76,8 +80,9 @@ public class MediaItemAdapter {
                 metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
             }
         }
-        if (playable.getImageLocation() != null && playable.getImageLocation().startsWith("http")) {
-            metadataBuilder.setArtworkUri(Uri.parse(playable.getImageLocation()));
+        String artworkLocation = getArtworkLocation(playable);
+        if (artworkLocation != null && artworkLocation.startsWith("http")) {
+            metadataBuilder.setArtworkUri(Uri.parse(artworkLocation));
         }
         Bundle extras = new Bundle();
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
@@ -110,9 +115,56 @@ public class MediaItemAdapter {
                 .build();
     }
 
+    public static MediaItem withChapterArtwork(Context context, MediaItem item,
+                                               Playable playable, int chapterIndex) {
+        ThreadUtils.assertNotMainThread();
+        int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
+        Bitmap bitmap = loadChapterArtworkBitmap(context, playable, chapterIndex, iconSize);
+        if (bitmap == null) {
+            bitmap = loadArtworkBitmap(context, playable, iconSize);
+        }
+        if (bitmap == null) {
+            return item;
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+        MediaMetadata metadata = item.mediaMetadata.buildUpon()
+                .setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+                .setArtworkUri(null)
+                .build();
+        return item.buildUpon().setMediaMetadata(metadata).build();
+    }
+
+    private static Bitmap loadChapterArtworkBitmap(Context context, Playable playable,
+                                                   int chapterIndex, int iconSize) {
+        List<Chapter> chapters = playable.getChapters();
+        if (chapters == null || chapterIndex < 0 || chapterIndex >= chapters.size()
+                || TextUtils.isEmpty(chapters.get(chapterIndex).getImageUrl())) {
+            return null;
+        }
+        try {
+            return Glide.with(context)
+                    .asBitmap()
+                    .load(EmbeddedChapterImage.getModelFor(playable, chapterIndex))
+                    .submit(iconSize, iconSize)
+                    .get(CHAPTER_ARTWORK_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+        } catch (Exception exception) {
+            Log.e(TAG, "Skipping to load chapter artwork bitmap: " + exception.getMessage());
+            return null;
+        }
+    }
+
+    private static String getArtworkLocation(Playable playable) {
+        if (UserPreferences.getUseEpisodeCoverSetting() || !(playable instanceof FeedMedia)) {
+            return playable.getImageLocation();
+        }
+        FeedItem item = ((FeedMedia) playable).getItem();
+        return item != null && item.getFeed() != null ? item.getFeed().getImageUrl() : null;
+    }
+
     private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
         try {
-            String imageLocation = playable.getImageLocation();
+            String imageLocation = getArtworkLocation(playable);
             return Glide.with(context)
                     .asBitmap()
                     .onlyRetrieveFromCache(imageLocation != null && imageLocation.startsWith("http"))
