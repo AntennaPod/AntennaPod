@@ -97,21 +97,25 @@ public abstract class WidgetUpdater {
                 views.setTextViewText(R.id.txtvProgress, progressString);
             }
 
+            PendingIntent playPauseIntent = MediaButtonStarter.createPendingIntent(context, Player.COMMAND_PLAY_PAUSE);
             if (widgetState.status == PlayerStatus.PLAYING) {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_widget_pause);
                 views.setContentDescription(R.id.butPlay, context.getString(R.string.pause_label));
                 views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_widget_pause);
                 views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.pause_label));
+                views.setImageViewResource(R.id.butPlayCenter, R.drawable.ic_widget_pause);
+                views.setContentDescription(R.id.butPlayCenter, context.getString(R.string.pause_label));
             } else {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_widget_play);
                 views.setContentDescription(R.id.butPlay, context.getString(R.string.play_label));
                 views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_widget_play);
                 views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.play_label));
+                views.setImageViewResource(R.id.butPlayCenter, R.drawable.ic_widget_play);
+                views.setContentDescription(R.id.butPlayCenter, context.getString(R.string.play_label));
             }
-            views.setOnClickPendingIntent(R.id.butPlay,
-                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_PLAY_PAUSE));
-            views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    MediaButtonStarter.createPendingIntent(context, Player.COMMAND_PLAY_PAUSE));
+            views.setOnClickPendingIntent(R.id.butPlay, playPauseIntent);
+            views.setOnClickPendingIntent(R.id.butPlayExtended, playPauseIntent);
+            views.setOnClickPendingIntent(R.id.butPlayCenter, playPauseIntent);
             views.setOnClickPendingIntent(R.id.butRew,
                     MediaButtonStarter.createPendingIntent(context, Player.COMMAND_SEEK_BACK));
             views.setOnClickPendingIntent(R.id.butFastForward,
@@ -122,6 +126,7 @@ public abstract class WidgetUpdater {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
+            views.setOnClickPendingIntent(R.id.butPlayCenter, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlayExtended,
                     MediaButtonStarter.createPendingIntent(context, Player.COMMAND_PLAY_PAUSE));
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
@@ -129,20 +134,24 @@ public abstract class WidgetUpdater {
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
             views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher);
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_widget_play);
+            views.setImageViewResource(R.id.butPlayCenter, R.drawable.ic_widget_play);
             views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_widget_play);
         }
 
         ComponentName playerWidget = new ComponentName(context, PlayerWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         int[] widgetIds = manager.getAppWidgetIds(playerWidget);
+        Bitmap playProgressRing = null;
+        Bitmap extendedProgressRing = null;
 
         for (int id : widgetIds) {
             Bundle options = manager.getAppWidgetOptions(id);
             SharedPreferences prefs = context.getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int columns = getCellsForSize(minWidth);
-            if (columns < 3) {
-                views.setViewVisibility(R.id.layout_center, View.INVISIBLE);
+            boolean compactWidget = columns < 3;
+            if (compactWidget) {
+                views.setViewVisibility(R.id.layout_center, View.GONE);
             } else {
                 views.setViewVisibility(R.id.layout_center, View.VISIBLE);
             }
@@ -150,20 +159,41 @@ public abstract class WidgetUpdater {
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
-            boolean showCoverAsBcg = prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + id, false);
 
-            if (showPlaybackSpeed || showRewind || showSkip || showFastForward) {
+            boolean showPlayProgress = prefs.getBoolean(PlayerWidget.KEY_WIDGET_PLAY_PROGRESS + id, false);
+
+            boolean showExtended = showPlaybackSpeed || showRewind || showSkip || showFastForward;
+            if (showExtended) {
+                views.setViewVisibility(R.id.layout_left, View.VISIBLE);
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
-                views.setInt(R.id.butPlay, "setVisibility", View.GONE);
+                views.setInt(R.id.playButtonContainer, "setVisibility", View.GONE);
+                views.setInt(R.id.playButtonContainerCenter, "setVisibility", View.GONE);
                 views.setInt(R.id.butPlaybackSpeed, "setVisibility", showPlaybackSpeed ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
                 views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
-            } else {
+            } else if (compactWidget) {
+                views.setViewVisibility(R.id.layout_left, View.GONE);
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.GONE);
-                views.setInt(R.id.butPlay, "setVisibility", View.VISIBLE);
+                views.setInt(R.id.playButtonContainer, "setVisibility", View.GONE);
+                views.setInt(R.id.playButtonContainerCenter, "setVisibility", View.VISIBLE);
+            } else {
+                views.setViewVisibility(R.id.layout_left, View.VISIBLE);
+                views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.GONE);
+                views.setInt(R.id.playButtonContainer, "setVisibility", View.VISIBLE);
+                views.setInt(R.id.playButtonContainerCenter, "setVisibility", View.GONE);
             }
 
+            if (showPlayProgress && widgetState.media != null && widgetState.duration > 0
+                    && widgetState.position >= 0 && playProgressRing == null) {
+                float progress = (float) widgetState.position / widgetState.duration;
+                playProgressRing = WidgetPlayProgressBitmap.createPlaySizeRing(context, progress);
+                extendedProgressRing = WidgetPlayProgressBitmap.createExtendedPlayRing(context, progress);
+            }
+            setPlayProgressRing(views, showPlayProgress, showExtended, compactWidget,
+                    playProgressRing, extendedProgressRing);
+
+            boolean showCoverAsBcg = prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + id, false);
             if (showCoverAsBcg) {
                 views.setViewVisibility(R.id.imgvCover, View.GONE);
                 views.setViewVisibility(R.id.imgvCoverLarge, View.GONE);
@@ -242,6 +272,27 @@ public abstract class WidgetUpdater {
             ++n;
         }
         return n - 1;
+    }
+
+    private static void setPlayProgressRing(RemoteViews views, boolean showPlayProgress, boolean showExtended,
+                                            boolean compactWidget, Bitmap playProgressRing,
+                                            Bitmap extendedProgressRing) {
+        views.setViewVisibility(R.id.imgvPlayProgress, View.GONE);
+        views.setViewVisibility(R.id.imgvPlayProgressCenter, View.GONE);
+        views.setViewVisibility(R.id.imgvPlayExtendedProgress, View.GONE);
+        if (!showPlayProgress || playProgressRing == null) {
+            return;
+        }
+        if (showExtended) {
+            views.setImageViewBitmap(R.id.imgvPlayExtendedProgress, extendedProgressRing);
+            views.setViewVisibility(R.id.imgvPlayExtendedProgress, View.VISIBLE);
+        } else if (compactWidget) {
+            views.setImageViewBitmap(R.id.imgvPlayProgressCenter, playProgressRing);
+            views.setViewVisibility(R.id.imgvPlayProgressCenter, View.VISIBLE);
+        } else {
+            views.setImageViewBitmap(R.id.imgvPlayProgress, playProgressRing);
+            views.setViewVisibility(R.id.imgvPlayProgress, View.VISIBLE);
+        }
     }
 
     private static String getProgressString(int position, int duration, float speed) {
