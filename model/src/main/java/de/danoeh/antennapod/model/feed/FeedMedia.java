@@ -204,9 +204,6 @@ public class FeedMedia implements Playable {
 
     public void setPosition(int position) {
         this.position = position;
-        if (position > 0 && item != null && item.isNew()) {
-            this.item.setPlayed(false);
-        }
     }
 
     public long getSize() {
