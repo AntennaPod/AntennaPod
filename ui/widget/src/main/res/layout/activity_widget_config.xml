@@ -24,7 +24,7 @@
         <include
             android:id="@+id/widget_config_preview"
             android:layout_width="match_parent"
-            android:layout_height="96dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
             android:layout_margin="16dp"
             layout="@layout/player_widget" />
@@ -114,6 +114,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/cover_as_background" />
+
+                <CheckBox
+                    android:id="@+id/ckPlayProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/widget_play_progress" />
 
             </LinearLayout>
 

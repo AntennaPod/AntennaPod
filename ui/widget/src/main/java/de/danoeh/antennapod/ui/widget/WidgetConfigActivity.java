@@ -34,6 +34,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
     private CheckBox ckFastForward;
     private CheckBox ckSkip;
     private CheckBox ckCoverAsBcg;
+    private CheckBox ckPlayProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,8 @@ public class WidgetConfigActivity extends ToolbarActivity {
         ckSkip.setOnClickListener(v -> displayPreviewPanel());
         ckCoverAsBcg = findViewById(R.id.ckCoverAsBcg);
         ckCoverAsBcg.setOnClickListener(v -> displayPreviewPanel());
+        ckPlayProgress = findViewById(R.id.ckPlayProgress);
+        ckPlayProgress.setOnClickListener(v -> displayPreviewPanel());
 
         setInitialState();
     }
@@ -106,6 +109,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
         ckFastForward.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, false));
         ckSkip.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, false));
         ckCoverAsBcg.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + appWidgetId, false));
+        ckPlayProgress.setChecked(prefs.getBoolean(PlayerWidget.KEY_WIDGET_PLAY_PROGRESS + appWidgetId, false));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             int color = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, PlayerWidget.DEFAULT_COLOR);
             int opacity = Color.alpha(color) * 100 / 0xFF;
@@ -120,7 +124,9 @@ public class WidgetConfigActivity extends ToolbarActivity {
                 ckPlaybackSpeed.isChecked() || ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
         widgetPreview.findViewById(R.id.extendedButtonsContainer)
                 .setVisibility(showExtendedPreview ? View.VISIBLE : View.GONE);
-        widgetPreview.findViewById(R.id.butPlay).setVisibility(showExtendedPreview ? View.GONE : View.VISIBLE);
+        widgetPreview.findViewById(R.id.playButtonContainer)
+                .setVisibility(showExtendedPreview ? View.GONE : View.VISIBLE);
+        widgetPreview.findViewById(R.id.playButtonContainerCenter).setVisibility(View.GONE);
         widgetPreview.findViewById(R.id.butPlaybackSpeed)
                 .setVisibility(ckPlaybackSpeed.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butFastForward)
@@ -141,6 +147,27 @@ public class WidgetConfigActivity extends ToolbarActivity {
             opacitySeekBar.setEnabled(true);
             int radius = getResources().getDimensionPixelSize(R.dimen.widget_inner_radius);
             loadCover(R.id.imgvCover, new RoundedCorners(radius));
+        }
+        updatePlayProgressPreview();
+    }
+
+    private void updatePlayProgressPreview() {
+        ImageView playProgress = widgetPreview.findViewById(R.id.imgvPlayProgress);
+        ImageView playExtendedProgress = widgetPreview.findViewById(R.id.imgvPlayExtendedProgress);
+        playProgress.setVisibility(View.GONE);
+        playExtendedProgress.setVisibility(View.GONE);
+        if (!ckPlayProgress.isChecked()) {
+            return;
+        }
+        boolean showExtendedPreview =
+                ckPlaybackSpeed.isChecked() || ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
+        float progress = WidgetPlayProgressBitmap.PREVIEW_PROGRESS;
+        if (showExtendedPreview) {
+            playExtendedProgress.setImageBitmap(WidgetPlayProgressBitmap.createExtendedPlayRing(this, progress));
+            playExtendedProgress.setVisibility(View.VISIBLE);
+        } else {
+            playProgress.setImageBitmap(WidgetPlayProgressBitmap.createPlaySizeRing(this, progress));
+            playProgress.setVisibility(View.VISIBLE);
         }
     }
 
@@ -165,6 +192,7 @@ public class WidgetConfigActivity extends ToolbarActivity {
         editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastForward.isChecked());
         editor.putBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + appWidgetId, ckCoverAsBcg.isChecked());
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_PLAY_PROGRESS + appWidgetId, ckPlayProgress.isChecked());
         editor.apply();
 
         Intent resultValue = new Intent();
