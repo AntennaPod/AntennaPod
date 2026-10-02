@@ -548,7 +548,7 @@
     <string name="gpodnetauth_login_butLabel">Conexión</string>
     <string name="synchronization_credentials_explanation">Escribe as credenciais da túa conta para o servidor de sincronización.</string>
     <string name="gpodnetauth_encryption_warning">O contrasinal e os datos non están cifrados!</string>
-    <string name="username_label">Nome de usuaria</string>
+    <string name="username_label">Identificador</string>
     <string name="password_label">Contrasinal</string>
     <string name="synchronization_login_butLabel">Acceder</string>
     <string name="synchronization_selectDevice_explanation">Elixe o dispositivo que creaches no servidor de sincronización ou crea un novo.</string>
