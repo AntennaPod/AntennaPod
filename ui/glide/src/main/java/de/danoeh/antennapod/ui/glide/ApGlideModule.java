@@ -49,6 +49,8 @@ public class ApGlideModule extends AppGlideModule {
         registry.append(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
         registry.append(String.class, InputStream.class, new NoHttpStringLoader.StreamFactory());
 
+        registry.append(AuthenticatedImageUrl.class, InputStream.class,
+                new AuthenticatedImageUrlLoader.Factory());
         registry.append(EmbeddedChapterImage.class, ByteBuffer.class, new ChapterImageModelLoader.Factory(context));
     }
 }
