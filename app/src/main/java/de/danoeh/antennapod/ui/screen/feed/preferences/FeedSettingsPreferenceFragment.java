@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.core.content.ContextCompat;
 import androidx.preference.ListPreference;
@@ -71,6 +73,9 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
     private static final String PREF_TAGS = "tags";
     private static final String PREF_EDIT_FEED_URL = "editFeedUrl";
     private static final String PREF_RECONNECT_LOCAL_FOLDER = "reconnectLocalFolder";
+    private static final String PREF_REMOVE_UNLISTED_EPISODES = "removeUnlistedEpisodes";
+    private static final String PREF_CLEANUP_UNLISTED_EPISODES = "cleanupUnlistedEpisodes";
+    private static final int CONFIRMATION_COUNTDOWN_MS = 15000;
 
     private Feed feed;
     private Disposable disposable;
@@ -148,6 +153,8 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
                         findPreference(PREF_AUTODOWNLOAD).setVisible(false);
                         findPreference(PREF_EPISODE_FILTER).setVisible(false);
                         findPreference(PREF_EDIT_FEED_URL).setVisible(false);
+                        findPreference(PREF_REMOVE_UNLISTED_EPISODES).setVisible(false);
+                        findPreference(PREF_CLEANUP_UNLISTED_EPISODES).setVisible(false);
                     }
 
                     findPreference(PREF_SCREEN).setVisible(true);
@@ -306,6 +313,51 @@ public class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
             alert.show();
             return true;
         });
+        SwitchPreferenceCompat removeUnlisted = findPreference(PREF_REMOVE_UNLISTED_EPISODES);
+        removeUnlisted.setChecked(feedPreferences.getRemoveUnlistedEpisodes());
+        removeUnlisted.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean checked = Boolean.TRUE.equals(newValue);
+            if (!checked) {
+                feedPreferences.setRemoveUnlistedEpisodes(false);
+                DBWriter.setFeedPreferences(feedPreferences);
+                removeUnlisted.setChecked(false);
+                return false;
+            }
+            showRemoveUnlistedConfirmation(() -> {
+                feedPreferences.setRemoveUnlistedEpisodes(true);
+                DBWriter.setFeedPreferences(feedPreferences);
+                removeUnlisted.setChecked(true);
+            });
+            return false;
+        });
+        findPreference(PREF_CLEANUP_UNLISTED_EPISODES).setOnPreferenceClickListener(preference -> {
+            showRemoveUnlistedConfirmation(() ->
+                    FeedUpdateManager.getInstance().runOnce(getContext(), feed, false, true));
+            return true;
+        });
+    }
+
+    private void showRemoveUnlistedConfirmation(Runnable onConfirmed) {
+        AlertDialog dialog = new MaterialAlertDialogBuilder(getContext())
+                .setTitle(R.string.remove_unlisted_episodes)
+                .setMessage(R.string.remove_unlisted_episodes_confirmation_msg)
+                .setPositiveButton(android.R.string.ok, (d, which) -> onConfirmed.run())
+                .setNegativeButton(R.string.cancel_label, null)
+                .show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        new CountDownTimer(CONFIRMATION_COUNTDOWN_MS, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(String.format(Locale.getDefault(), "%s (%d)",
+                        getString(android.R.string.ok), millisUntilFinished / 1000 + 1));
+            }
+
+            @Override
+            public void onFinish() {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(android.R.string.ok);
+            }
+        }.start();
     }
 
     private void updateAutoDeleteSummary() {
