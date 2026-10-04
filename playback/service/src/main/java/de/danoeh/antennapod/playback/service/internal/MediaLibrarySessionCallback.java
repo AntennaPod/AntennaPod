@@ -68,6 +68,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             = new SessionCommand("playback_speed", Bundle.EMPTY);
     protected static final SessionCommand SESSION_COMMAND_NEXT_CHAPTER
             = new SessionCommand("next_chapter", Bundle.EMPTY);
+    protected static final SessionCommand SESSION_COMMAND_SKIP_EPISODE
+            = new SessionCommand("skip_episode", Bundle.EMPTY);
     public static final SessionCommand SESSION_COMMAND_SKIP_SILENCE
             = new SessionCommand("skip_silence", Bundle.EMPTY);
     public static final SessionCommand SESSION_COMMAND_SET_SLEEP_TIMER
@@ -116,6 +118,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .add(SESSION_COMMAND_FAST_FORWARD)
                 .add(SESSION_COMMAND_PLAYBACK_SPEED)
                 .add(SESSION_COMMAND_NEXT_CHAPTER)
+                .add(SESSION_COMMAND_SKIP_EPISODE)
                 .add(SESSION_COMMAND_SKIP_SILENCE)
                 .add(SESSION_COMMAND_SET_SLEEP_TIMER)
                 .add(SESSION_COMMAND_DISABLE_SLEEP_TIMER)
@@ -123,8 +126,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .build();
         Player.Commands playerCommands = new Player.Commands.Builder()
                 .addAllCommands()
-                .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
-                .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
                 .build();
         return new MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
@@ -177,7 +178,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         if (UserPreferences.showSkipOnFullNotification()) {
             buttons.add(new CommandButton.Builder(CommandButton.ICON_NEXT)
                     .setSlots(CommandButton.SLOT_OVERFLOW)
-                    .setPlayerCommand(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+                    .setSessionCommand(SESSION_COMMAND_SKIP_EPISODE)
                     .setDisplayName(context.getString(R.string.skip_episode_label))
                     .build());
         }
@@ -217,36 +218,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             } else if (fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                 session.getPlayer().seekToNextMediaItem();
                 return true;
-            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
-                // Media3 translates HEADSETHOOK double-tap to MEDIA_NEXT.
-                performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwareForwardButton());
-                return true;
-            } else if (!fromWidget && keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
-                // Media3 translates HEADSETHOOK triple-tap to MEDIA_PREVIOUS.
-                performHardwareButtonAction(session.getPlayer(), UserPreferences.getHardwarePreviousButton());
-                return true;
             }
         }
         return false;
-    }
-
-    @UnstableApi
-    private void performHardwareButtonAction(Player player, int action) {
-        switch (action) {
-            case KeyEvent.KEYCODE_MEDIA_NEXT:
-                player.seekToNextMediaItem();
-                break;
-            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                player.seekTo(0);
-                break;
-            case KeyEvent.KEYCODE_MEDIA_REWIND:
-                player.seekBack();
-                break;
-            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-            default:
-                player.seekForward();
-                break;
-        }
     }
 
     @Override
@@ -261,6 +235,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         } else if (customCommand.customAction.equals(SESSION_COMMAND_FAST_FORWARD.customAction)) {
             session.getPlayer().seekForward();
+            return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
+        } else if (customCommand.customAction.equals(SESSION_COMMAND_SKIP_EPISODE.customAction)) {
+            session.getPlayer().seekToNextMediaItem();
             return Futures.immediateFuture(new SessionResult(SessionResult.RESULT_SUCCESS));
         }
         return Futures.immediateFuture(new SessionResult(SessionError.ERROR_NOT_SUPPORTED));
@@ -280,7 +257,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         String searchQuery = mediaItems.get(index).requestMetadata.searchQuery;
         if (searchQuery != null) {
             if ("".equals(searchQuery)) {
-                return onPlaybackResumption(mediaSession, controller); // "Play something" voice action
+                return playbackResumption(true); // "Play something" voice action
             }
             SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
             Maybe.fromCallable(() -> {
@@ -359,10 +336,15 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
         Log.d(TAG, "onPlaybackResumption() called");
+        return playbackResumption(false);
+    }
+
+    @UnstableApi
+    private ListenableFuture<MediaSession.MediaItemsWithStartPosition> playbackResumption(
+            boolean fallbackToRecentEpisode) {
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-        Single.fromCallable(() -> {
+        Maybe.fromCallable(() -> {
             FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
-            // If there is no media to resume, media3 crashes. So instead of crashing, just play something random.
             if (media == null) {
                 Log.d(TAG, "onPlaybackResumption: trying paused queue now");
                 List<FeedItem> recentQueue = DBReader.getPausedQueue(1);
@@ -370,7 +352,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     media = recentQueue.get(0).getMedia();
                 }
             }
-            if (media == null) {
+            if (media == null && fallbackToRecentEpisode) {
                 Log.d(TAG, "onPlaybackResumption: trying recent episodes now");
                 List<FeedItem> items = DBReader.getEpisodes(0, 1, FeedItemFilter.unfiltered(), SortOrder.DATE_NEW_OLD);
                 if (!items.isEmpty()) {
@@ -395,7 +377,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                             0, startPosition);
                             future.set(result);
                         },
-                        future::setException
+                        future::setException,
+                        () -> {
+                            Log.d(TAG, "onPlaybackResumption: nothing to resume");
+                            future.set(new MediaSession.MediaItemsWithStartPosition(
+                                    Collections.emptyList(), C.INDEX_UNSET, C.TIME_UNSET));
+                        }
                 );
         return future;
     }

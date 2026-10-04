@@ -32,5 +32,5 @@ public abstract class SynchronizationQueue {
 
     public abstract void enqueueEpisodeAction(EpisodeAction action);
 
-    public abstract void enqueueEpisodePlayed(FeedMedia media, boolean completed);
+    public abstract void enqueueEpisodePlayed(FeedMedia media, int startPosition, boolean completed);
 }

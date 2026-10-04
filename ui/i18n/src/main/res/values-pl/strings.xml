@@ -334,7 +334,7 @@
     <string name="pref_auto_delete_title">Automatyczne usuwanie</string>
     <string name="pref_auto_delete_sum">Usuń odcinki kiedy ich odtwarzanie zostanie zakończone lub gdy automatyczne pobieranie wymaga dodatkowej przestrzeni</string>
     <string name="pref_auto_local_delete_title">Automatyczne usuwanie z folderów lokalnych</string>
-    <string name="pref_auto_local_delete_sum">Usuń też pliki dodane za pomocą opcji \"dodaj folder lokalny\". Pamiętaj że te pliki nie są pobrane przez AntennaPod i nie mogą zostać pobrane ponownie po usunięciu</string>
+    <string name="pref_auto_local_delete_sum">Usuń też pliki dodane za pomocą opcji \"dodaj folder lokalny\". Pamiętaj, że te pliki nie są pobrane przez AntennaPod i nie mogą zostać pobrane ponownie po usunięciu</string>
     <string name="pref_auto_local_delete_dialog_body">Uwaga! W przypadku folderów lokalnych usunięcie spowoduje skasowanie odcinków z AntennaPod oraz plików z twojego urządzenia. Nie można będzie ich pobrać ponownie za pomocą AntennaPod. Aktywować automatyczne usuwanie?</string>
     <string name="pref_smart_mark_as_played_sum">Oznacz odcinek jako odtworzony, jeśli do końca pozostało mniej niż określona ilość czasu</string>
     <string name="pref_smart_mark_as_played_title">Inteligentnie oznacz jako odtworzone</string>

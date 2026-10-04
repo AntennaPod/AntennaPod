@@ -112,7 +112,7 @@ public class DbWriterTest {
 
         media.setPosition(position);
         media.setLastPlayedTimeStatistics(lastPlayedTimeStatistics);
-        media.setPlayedDuration(playedDuration);
+        media.incrementPlayedDuration(playedDuration);
         media.setLastPlayedTimeHistory(lastPlayedTimeHistory);
 
         DBWriter.setFeedMediaPlaybackInformation(item.getMedia()).get(TIMEOUT, TimeUnit.SECONDS);
