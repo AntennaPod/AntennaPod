@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Creates and updates feeds in the database.
@@ -68,6 +69,9 @@ public abstract class FeedDatabaseWriter {
         if (savedFeed == null) {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
+            if (newFeed.getState() == Feed.STATE_SUBSCRIBED) {
+                recordFirstSubscription(newFeed);
+            }
 
             resultFeed = newFeed;
         } else {
@@ -156,7 +160,8 @@ public abstract class FeedDatabaseWriter {
                     boolean shouldPerformNewEpisodesAction = item.getPubDate() == null
                             || priorMostRecentDate == null
                             || priorMostRecentDate.before(item.getPubDate())
-                            || priorMostRecentDate.equals(item.getPubDate());
+                            || priorMostRecentDate.equals(item.getPubDate())
+                            || (priorMostRecent == null && idx < 3 && isWithinFirstSubscriptionHour());
                     if (savedFeed.getState() == Feed.STATE_SUBSCRIBED && shouldPerformNewEpisodesAction) {
                         FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
                         if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
@@ -236,5 +241,51 @@ public abstract class FeedDatabaseWriter {
         return "Title: " + item.getTitle()
                 + "\nID: " + item.getItemIdentifier()
                 + ((item.getMedia() == null) ? "" : "\nURL: " + item.getMedia().getDownloadUrl());
+    }
+
+    static void recordFirstSubscription(Feed feed) {
+        if (UserPreferences.hasFirstSubscriptionTime()) {
+            return;
+        }
+        for (Feed f : DBReader.getFeedList()) {
+            if (f.getId() != feed.getId() && f.getState() == Feed.STATE_SUBSCRIBED) {
+                UserPreferences.setFirstSubscriptionTime(0);
+                return;
+            }
+        }
+        UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
+    }
+
+    static boolean isWithinFirstSubscriptionHour() {
+        return System.currentTimeMillis() - UserPreferences.getFirstSubscriptionTime() < TimeUnit.HOURS.toMillis(1);
+    }
+
+    static void performNewEpisodesAction(Context context, Feed feed, List<FeedItem> items) {
+        FeedPreferences.NewEpisodesAction action = feed.getPreferences().getNewEpisodesAction();
+        if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
+            action = UserPreferences.getNewEpisodesAction();
+        }
+        FeedPreferences.AutoDownloadSetting autoDownload = feed.getPreferences().getAutoDownload();
+        if (!feed.isLocalFeed() && (autoDownload == FeedPreferences.AutoDownloadSetting.ENABLED
+                || (autoDownload == FeedPreferences.AutoDownloadSetting.GLOBAL
+                        && UserPreferences.isEnableAutodownloadGlobal()))) {
+            action = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
+        }
+        List<FeedItem> unplayedItems = new ArrayList<>();
+        for (FeedItem item : items) {
+            if (!item.isPlayed()) {
+                unplayedItems.add(item);
+            }
+        }
+        switch (action) {
+            case ADD_TO_INBOX:
+                DBWriter.markItemsPlayed(FeedItem.NEW, false, unplayedItems);
+                break;
+            case ADD_TO_QUEUE:
+                DBWriter.addQueueItem(context, unplayedItems.toArray(new FeedItem[0]));
+                break;
+            default:
+                break;
+        }
     }
 }
