@@ -55,7 +55,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 3110000;
+    public static final int VERSION = 3130000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -223,25 +223,28 @@ public class PodDBAdapter {
             + KEY_LINK + " TEXT," + KEY_IMAGE_URL + " TEXT)";
 
     // SQL Statements for creating indexes
+    static final String INDEX_NAME_FEEDITEMS_FEED = TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED;
     static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
-            + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
-            + KEY_FEED + ")";
+            + INDEX_NAME_FEEDITEMS_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
+            + KEY_FEED + ", " + KEY_PUBDATE + ", " + KEY_READ + ")";
 
     static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_PUBDATE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_PUBDATE + ")";
 
+    static final String INDEX_NAME_FEEDITEMS_READ = TABLE_NAME_FEED_ITEMS + "_" + KEY_READ;
     static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX "
-            + TABLE_NAME_FEED_ITEMS + "_" + KEY_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
-            + KEY_READ + ")";
+            + INDEX_NAME_FEEDITEMS_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
+            + KEY_READ + ", " + KEY_PUBDATE + ", " + KEY_FEED + ")";
 
     static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_QUEUE + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_QUEUE + " ("
             + KEY_FEEDITEM + ")";
 
+    static final String INDEX_NAME_FEEDMEDIA_FEEDITEM = TABLE_NAME_FEED_MEDIA + "_" + KEY_FEEDITEM;
     static final String CREATE_INDEX_FEEDMEDIA_FEEDITEM = "CREATE INDEX "
-            + TABLE_NAME_FEED_MEDIA + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_FEED_MEDIA + " ("
-            + KEY_FEEDITEM + ")";
+            + INDEX_NAME_FEEDMEDIA_FEEDITEM + " ON " + TABLE_NAME_FEED_MEDIA + " ("
+            + KEY_FEEDITEM + ", " + KEY_DOWNLOAD_DATE + ")";
 
     static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_SIMPLECHAPTERS + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_SIMPLECHAPTERS + " ("
