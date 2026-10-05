@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
 import de.danoeh.antennapod.storage.database.NavDrawerData;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
@@ -249,7 +250,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
         float radius = 4 * context.getResources().getDisplayMetrics().density;
         Glide.with(context)
-                .load(feed.getImageUrl())
+                .load(AuthenticatedImageUrl.create(feed.getImageUrl(), feed.getPreferences()))
                 .apply(new RequestOptions()
                     .placeholder(ImagePlaceholder.getDrawable(context, radius))
                     .error(ImagePlaceholder.getDrawable(context, radius))
