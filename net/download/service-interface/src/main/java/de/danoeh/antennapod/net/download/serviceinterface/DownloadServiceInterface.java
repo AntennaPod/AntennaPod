@@ -31,13 +31,22 @@ public abstract class DownloadServiceInterface {
 
     /**
      * Download immediately after user action.
+     *
+     * @param skipQueue if true, the item is not added to the playback queue even when
+     *                  {@code UserPreferences.enqueueDownloadedEpisodes()} would normally do so.
+     *                  Use this for post-import re-downloads that should not modify the user's queue.
      */
-    public abstract void downloadNow(Context context, FeedItem item, boolean ignoreConstraints);
+    public abstract void downloadNow(Context context, FeedItem item,
+                                     boolean ignoreConstraints, boolean skipQueue);
 
     /**
      * Download when device seems fit.
+     *
+     * @param skipQueue if true, the item is not added to the playback queue even when
+     *                  {@code UserPreferences.enqueueDownloadedEpisodes()} would normally do so.
+     *                  Use this for post-import re-downloads that should not modify the user's queue.
      */
-    public abstract void download(Context context, FeedItem item);
+    public abstract void download(Context context, FeedItem item, boolean skipQueue);
 
     public abstract void cancel(Context context, FeedMedia media);
 

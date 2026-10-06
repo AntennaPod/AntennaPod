@@ -36,6 +36,7 @@ public class SplashActivity extends Activity {
                 .subscribe(
                     () -> {
                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        intent.putExtras(getIntent());
                         startActivity(intent);
                         overridePendingTransition(0, 0);
                         finish();

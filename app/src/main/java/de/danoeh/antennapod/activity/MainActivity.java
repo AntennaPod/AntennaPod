@@ -43,6 +43,7 @@ import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.model.download.DownloadStatus;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.service.feed.FeedUpdateManagerImpl;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -50,8 +51,10 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.databasemaintenanceservice.DatabaseMaintenanceWorker;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
+import de.danoeh.antennapod.storage.importexport.StaleDownloadMarkers;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
@@ -82,12 +85,15 @@ import de.danoeh.antennapod.ui.screen.subscriptions.SubscriptionFragment;
 import de.danoeh.antennapod.ui.statistics.StatisticsFragment;
 import de.danoeh.antennapod.ui.common.BottomSheetBackPressedCallback;
 import de.danoeh.antennapod.ui.common.LockableBottomSheetBehavior;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.apache.commons.lang3.ArrayUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -705,6 +711,41 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                 .show();
     }
 
+    private void showMissingFilesDialog(List<Long> missingMediaIds) {
+        if (missingMediaIds.isEmpty()) {
+            return;
+        }
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(getResources().getQuantityString(R.plurals.import_missing_files_title,
+                missingMediaIds.size(), missingMediaIds.size()));
+        builder.setMessage(getString(R.string.import_missing_files_message));
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.import_redownload_label, (dialog, which) ->
+                redownloadItems(missingMediaIds));
+        builder.setNegativeButton(R.string.import_ignore_label, (dialog, which) ->
+                clearDownloadStateForItems(missingMediaIds));
+        builder.show();
+    }
+
+    private void redownloadItems(List<Long> mediaIds) {
+        Completable.fromAction(() -> {
+            for (Long mediaId : mediaIds) {
+                FeedMedia media = DBReader.getFeedMedia(mediaId);
+                if (media != null && media.getItem() != null) {
+                    DownloadServiceInterface.get().download(this, media.getItem(), true);
+                }
+            }
+        })
+                .subscribeOn(Schedulers.computation())
+                .subscribe(() -> { }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private void clearDownloadStateForItems(List<Long> mediaIds) {
+        Completable.fromAction(() -> StaleDownloadMarkers.clearDownloadStateForItems(mediaIds))
+                .subscribeOn(Schedulers.computation())
+                .subscribe(() -> { }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
@@ -749,6 +790,9 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         }
         if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_DOWNLOAD_LOGS, false)) {
             new DownloadLogFragment().show(getSupportFragmentManager(), DownloadLogFragment.TAG);
+        }
+        if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CHECK_MISSING_FILES_AFTER_IMPORT, false)) {
+            StaleDownloadMarkers.checkMissingFilesAfterImport(this::showMissingFilesDialog);
         }
         if (intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false)) {
             FeedUpdateManager.getInstance().runOnceOrAsk(this);

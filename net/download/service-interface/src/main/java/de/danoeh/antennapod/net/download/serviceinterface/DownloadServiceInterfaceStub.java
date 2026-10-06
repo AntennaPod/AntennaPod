@@ -7,11 +7,11 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 public class DownloadServiceInterfaceStub extends DownloadServiceInterface {
 
     @Override
-    public void downloadNow(Context context, FeedItem item, boolean ignoreConstraints) {
+    public void downloadNow(Context context, FeedItem item, boolean ignoreConstraints, boolean skipQueue) {
     }
 
     @Override
-    public void download(Context context, FeedItem item) {
+    public void download(Context context, FeedItem item, boolean skipQueue) {
     }
 
     @Override
