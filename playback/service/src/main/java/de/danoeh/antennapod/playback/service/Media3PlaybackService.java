@@ -93,6 +93,8 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
+    private Disposable chapterArtworkDisposable;
+    private int lastChapterArtworkIndex = -1;
     private long lastPositionSaveTime = 0;
     private String playedMediaId = null;
     private int playbackStartPosition = -1;
@@ -251,6 +253,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 super.seekTo(positionMs);
                 EventBus.getDefault().post(
                         new PlaybackPositionEvent((int) positionMs, (int) player.getDuration()));
+                updateChapterArtwork();
             }
         };
         player.addListener(playerListener);
@@ -440,6 +443,9 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         @Override
         public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
+            if (chapterArtworkDisposable != null) {
+                chapterArtworkDisposable.dispose();
+            }
             if (mediaItem == null) {
                 if (currentPlayable != null
                         && CastPlayerWrapper.hasPlaybackJustFinished(Media3PlaybackService.this)) {
@@ -484,6 +490,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
             queueLoaderDisposable = null;
+        }
+        if (chapterArtworkDisposable != null) {
+            chapterArtworkDisposable.dispose();
+            chapterArtworkDisposable = null;
         }
         saveCurrentPosition();
         if (loudnessEnhancer != null) {
@@ -533,6 +543,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     player.seekTo(player.getDuration());
                                 }
                             }
+                            updateChapterArtwork();
                         }, error -> Log.e(TAG, "Position observer error", error));
     }
 
@@ -589,6 +600,33 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
+    private void updateChapterArtwork() {
+        if (currentPlayable == null
+                || player == null
+                || player.getCurrentMediaItem() == null
+                || !String.valueOf(currentPlayable.getId()).equals(player.getCurrentMediaItem().mediaId)
+                || isCasting()
+                || !UserPreferences.getUseEpisodeCoverSetting()) {
+            return;
+        }
+        int chapterIndex = Chapter.getAfterPosition(currentPlayable.getChapters(), (int) player.getCurrentPosition());
+        if (chapterIndex < 0 || chapterIndex == lastChapterArtworkIndex) {
+            return;
+        }
+        lastChapterArtworkIndex = chapterIndex;
+        MediaItem currentItem = player.getCurrentMediaItem();
+        FeedMedia playable = currentPlayable;
+        if (chapterArtworkDisposable != null) {
+            chapterArtworkDisposable.dispose();
+        }
+        chapterArtworkDisposable = Single
+                .fromCallable(() -> MediaItemAdapter.withChapterArtwork(this, currentItem, playable, chapterIndex))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(updatedItem -> player.replaceMediaItem(player.getCurrentMediaItemIndex(), updatedItem),
+                        error -> Log.e(TAG, "Failed to update chapter artwork", error));
+    }
+
     @OptIn(markerClass = UnstableApi.class)
     private boolean confirmStreamingIfNeeded(FeedMedia media) {
         if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
@@ -603,6 +641,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     @OptIn(markerClass = UnstableApi.class)
     private void switchToPlayable(FeedMedia media) {
         currentPlayable = media;
+        lastChapterArtworkIndex = -1;
         playbackStartPosition = Math.max(currentPlayable.getPosition(), 0);
         playedDurationCountedUntil = playbackStartPosition;
 
