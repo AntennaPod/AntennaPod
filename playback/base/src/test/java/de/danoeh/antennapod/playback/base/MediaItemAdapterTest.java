@@ -37,16 +37,21 @@ public class MediaItemAdapterTest {
     }
 
     @Test
-    public void usesEpisodeCoverByDefault() {
+    public void usesEpisodeCoverWhenEnabled() {
+        setUseEpisodeCover(true);
         MediaItem mediaItem = MediaItemAdapter.fromPlayable(context, media, true);
         assertEquals(Uri.parse(EPISODE_COVER), mediaItem.mediaMetadata.artworkUri);
     }
 
     @Test
     public void usesPodcastCoverWhenEpisodeCoverDisabled() {
-        PreferenceManager.getDefaultSharedPreferences(context).edit()
-                .putBoolean(UserPreferences.PREF_USE_EPISODE_COVER, false).commit();
+        setUseEpisodeCover(false);
         MediaItem mediaItem = MediaItemAdapter.fromPlayable(context, media, true);
         assertEquals(Uri.parse(PODCAST_COVER), mediaItem.mediaMetadata.artworkUri);
+    }
+
+    private void setUseEpisodeCover(boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                .putBoolean(UserPreferences.PREF_USE_EPISODE_COVER, value).commit();
     }
 }

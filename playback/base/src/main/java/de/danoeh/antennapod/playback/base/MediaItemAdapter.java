@@ -22,8 +22,8 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.system.utils.ThreadUtils;
+import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -80,7 +80,7 @@ public class MediaItemAdapter {
                 metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER);
             }
         }
-        String artworkLocation = getArtworkLocation(playable);
+        String artworkLocation = ImageResourceUtils.getEpisodeListImageLocation(playable);
         if (artworkLocation != null && artworkLocation.startsWith("http")) {
             metadataBuilder.setArtworkUri(Uri.parse(artworkLocation));
         }
@@ -154,17 +154,9 @@ public class MediaItemAdapter {
         }
     }
 
-    private static String getArtworkLocation(Playable playable) {
-        if (UserPreferences.getUseEpisodeCoverSetting() || !(playable instanceof FeedMedia)) {
-            return playable.getImageLocation();
-        }
-        FeedItem item = ((FeedMedia) playable).getItem();
-        return item != null && item.getFeed() != null ? item.getFeed().getImageUrl() : null;
-    }
-
     private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
         try {
-            String imageLocation = getArtworkLocation(playable);
+            String imageLocation = ImageResourceUtils.getEpisodeListImageLocation(playable);
             return Glide.with(context)
                     .asBitmap()
                     .onlyRetrieveFromCache(imageLocation != null && imageLocation.startsWith("http"))
