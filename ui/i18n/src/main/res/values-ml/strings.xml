@@ -104,4 +104,12 @@
     <!--Subscriptions fragment-->
   <string name="subscription_num_columns">നിരകളുടെ എണ്ണം</string>
     <string name="notification_channel_downloading">ഡൗൺലോഡ് ചെയ്യുന്നു</string>
+    <string name="general_expand_button">വികസിപ്പിക്കുക</string>
+    <string name="general_collapse_button">ചുരുക്കുക</string>
+    <string name="add_feed_label">പോഡ്‌കാസ്റ്റ് ചേർക്കുക</string>
+    <string name="add_feed_label_short">ചേർക്കുക</string>
+    <string name="episodes_label_short">എപ്പിസോഡുകൾ</string>
+    <string name="favorite_episodes_label_short">പ്രിയപ്പെട്ടവ</string>
+    <string name="playback_history_label_short">ചരിത്രം</string>
+    <string name="years_statistics_label">വർഷങ്ങൾ</string>
 </resources>

@@ -29,6 +29,7 @@ dependencies {
     implementation project(':ui:glide')
 
     annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.media3.common
     implementation libs.androidx.appcompat
     implementation libs.androidx.work.runtime
     implementation libs.glide

@@ -93,7 +93,7 @@ public class SyndHandler extends DefaultHandler {
                     && prefix.equals(Content.NSTAG)) {
                 state.namespaces.put(uri, new Content());
                 Log.d(TAG, "Recognized Content namespace");
-            } else if (uri.equals(Itunes.NSURI)
+            } else if ((uri.equals(Itunes.NSURI) || uri.equals(Itunes.NSURI_LEGACY))
                     && prefix.equals(Itunes.NSTAG)) {
                 state.namespaces.put(uri, new Itunes());
                 Log.d(TAG, "Recognized ITunes namespace");

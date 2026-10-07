@@ -875,7 +875,7 @@ public class DBWriter {
                         SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
                 for (FeedItem item : feed.getItems()) {
                     if (item.isPlayed()) {
-                        SynchronizationQueue.getInstance().enqueueEpisodePlayed(item.getMedia(), true);
+                        SynchronizationQueue.getInstance().enqueueEpisodePlayed(item.getMedia(), -1, true);
                     }
                 }
             }

@@ -184,5 +184,8 @@ public class PreferenceUpgrader {
             UserPreferences.setUpdateInterval(60L * UserPreferences.getUpdateInterval());
             FeedUpdateManager.getInstance().restartUpdateAlarm(context, true);
         }
+        if (oldVersion < 3130000) {
+            UserPreferences.setBottomNavigationEnabled(true);
+        }
     }
 }

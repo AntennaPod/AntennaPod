@@ -63,6 +63,18 @@ public class ChapterUtilsTest {
     }
 
     @Test
+    public void testMimeFlac_selectsFlac() {
+        assertEquals(MediaFormatDetector.Format.FLAC,
+                ChapterUtils.detectHintFromMetadata("audio/flac", "http://example.com/file?token=abc"));
+    }
+
+    @Test
+    public void testExtensionFlac_selectsFlac() {
+        assertEquals(MediaFormatDetector.Format.FLAC,
+                ChapterUtils.detectHintFromMetadata(null, "http://example.com/file.flac"));
+    }
+
+    @Test
     public void testMimeM4a_selectsM4a() {
         assertEquals(MediaFormatDetector.Format.M4A,
                 ChapterUtils.detectHintFromMetadata("audio/mp4", "http://example.com/file?token=abc"));

@@ -46,6 +46,9 @@ android {
             "-Xlint:all,-deprecation,-serial,-this-escape,-unchecked,-processing,-classfile",
             "-Werror",
         ])
+        if (JavaVersion.current() >= JavaVersion.VERSION_22) {
+            options.compilerArgs.add("-Xlint:-dangling-doc-comments")
+        }
     }
 
     testOptions {

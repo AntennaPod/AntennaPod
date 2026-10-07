@@ -9,8 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.model.feed.Feed;
+import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -149,6 +151,23 @@ public class AddFeedFragment extends Fragment {
         dialogBinding.textInput.setHint(R.string.rss_address);
         dialogBinding.textInput.setInputType(InputType.TYPE_CLASS_TEXT
                 | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_VARIATION_URI);
+        dialogBinding.textInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!TextUtils.isEmpty(dialogBinding.textInputLayout.getError())
+                        && UrlChecker.isValidUrl(editable.toString())) {
+                    dialogBinding.textInputLayout.setError(null);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+        });
 
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         final ClipData clipData = clipboard.getPrimaryClip();
@@ -166,7 +185,7 @@ public class AddFeedFragment extends Fragment {
 
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener((view) -> {
             Editable inputText = dialogBinding.textInput.getText();
-            if (!inputText.toString().matches(Patterns.WEB_URL.pattern())) {
+            if (!UrlChecker.isValidUrl(inputText.toString())) {
                 dialogBinding.textInputLayout.setError(getText(R.string.rss_address_invalid));
                 return;
             }

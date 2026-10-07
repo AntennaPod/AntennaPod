@@ -68,8 +68,4 @@ public class GpodnetDevice {
         return type;
     }
 
-    public int getSubscriptions() {
-        return subscriptions;
-    }
-
 }

@@ -286,6 +286,9 @@ public class SyncService extends Worker {
             }
             FeedMedia media = feedItem.getMedia();
             media.setPosition(action.getPosition() * 1000);
+            if (media.getPosition() > 0 && feedItem.isNew()) {
+                feedItem.setPlayed(false);
+            }
             int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
             boolean almostEnded = media.getDuration() > 0
                     && media.getPosition() >= media.getDuration() - smartMarkAsPlayedSecs * 1000;

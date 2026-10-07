@@ -98,7 +98,8 @@ public class BottomNavigation {
         drawerItems.remove(NavListAdapter.SUBSCRIPTION_LIST_TAG);
 
         final List<MenuItem> popupMenuItems = new ArrayList<>();
-        for (int i = bottomNavigationView.getMaxItemCount() - 1; i < drawerItems.size(); i++) {
+        int maxItems = Math.min(5, bottomNavigationView.getMaxItemCount());
+        for (int i = maxItems - 1; i < drawerItems.size(); i++) {
             String tag = drawerItems.get(i);
             MenuItem item = new MenuBuilder(context).add(0, NavigationNames.getBottomNavigationItemId(tag),
                     0, context.getString(NavigationNames.getLabel(tag)));

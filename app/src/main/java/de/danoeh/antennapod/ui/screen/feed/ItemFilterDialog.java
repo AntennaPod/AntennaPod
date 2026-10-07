@@ -54,11 +54,10 @@ public abstract class ItemFilterDialog extends BottomSheetDialogFragment {
             rowBinding.filterButton1.setSingleLine(false);
             rowBinding.filterButton2.setMaxLines(3);
             rowBinding.filterButton2.setSingleLine(false);
-            rows.addView(rowBinding.getRoot(), rows.getChildCount() - 1);
+            rows.addView(rowBinding.getRoot());
         }
 
-        binding.confirmFiltermenu.setOnClickListener(view1 -> dismiss());
-        binding.resetFiltermenu.setOnClickListener(view1 -> {
+        binding.clearFilterButton.setOnClickListener(view1 -> {
             onFilterChanged(Collections.emptySet());
             for (int i = 0; i < rows.getChildCount(); i++) {
                 if (rows.getChildAt(i) instanceof MaterialButtonToggleGroup) {

@@ -90,7 +90,7 @@
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
-    <string name="drawer_preferences">Drawer preferences</string>
+    <string name="drawer_preferences">Navigation preferences</string>
     <string name="drawer_feed_order_unplayed_episodes">Sort by counter</string>
     <string name="drawer_feed_order_alphabetical">Sort alphabetically</string>
     <string name="drawer_feed_order_last_update">Sort by publication date</string>
@@ -145,7 +145,7 @@
     <string name="auto_download_label">Download automatically</string>
     <string name="feed_volume_adapdation">Volume adaptation</string>
     <string name="feed_volume_adaptation_summary">Turn volume for episodes of this podcast up or down: %1$s</string>
-    <string name="feed_volume_reduction_off">No adaption</string>
+    <string name="feed_volume_reduction_off">No adaptation</string>
     <string name="feed_volume_reduction_light">Light reduction</string>
     <string name="feed_volume_reduction_heavy">Heavy reduction</string>
     <string name="feed_volume_boost_light">Light boost</string>
@@ -212,6 +212,7 @@
     <string name="remove_feed_label">Unsubscribe</string>
     <string name="share_label">Share</string>
     <string name="share_file_label">Share file</string>
+    <string name="share_not_supported_local_feed">Sharing is not supported for local folders</string>
     <string name="feed_delete_explanation_delete">Unsubscribing removes the subscription including all its episodes, downloads, playback history, and statistics.</string>
     <string name="feed_delete_explanation_archive">Archiving hides the subscription from the list and stops looking for new episodes. Downloads, statistics and playback state are kept.</string>
     <string name="archiving_podcast_progress">Archiving podcast %1$d of %2$d…</string>
@@ -441,6 +442,7 @@
     <string name="no_inbox_head_label">No episodes in the inbox</string>
     <string name="no_subscriptions_head_label">No subscriptions</string>
     <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
+    <string name="no_subscriptions_filtered_label">Try clearing the filter to see more subscriptions.</string>
     <string name="no_archive_head_label">Nothing archived</string>
     <string name="no_archive_label">You can archive podcasts from the main subscriptions screen.</string>
 
@@ -911,6 +913,7 @@
     <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
     <string name="unable_to_start_system_file_manager">Unable to start system file manager</string>
 
+    <!-- Filter dialog -->
     <string name="filter">Filter</string>
     <string name="hide_is_favorite_label">Is favorite</string>
     <string name="not_favorite">Not favorite</string>
@@ -925,6 +928,7 @@
     <string name="hide_played_episodes_label">Played</string>
     <string name="not_played">Not played</string>
     <string name="filename">File name</string>
+    <string name="clear_filters_label">Clear</string>
 
     <!-- Share episode dialog -->
     <string name="share_playback_position_dialog_label">Include playback position</string>

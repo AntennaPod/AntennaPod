@@ -31,7 +31,7 @@
     <string name="individual_subscription">개별 구독</string>
     <!--Statistics fragment-->
   <string name="statistics_include_marked">재생함으로 표시만 한 에피소드의 재생 시간 포함</string>
-    <string name="statistics_speed_not_counted">주의: 재생 속도는 고려하지 않습니다</string>
+    <string name="statistics_speed_not_counted">주의: 재생 속도는 고려하지 않습니다.</string>
     <string name="statistics_from">시작</string>
     <string name="statistics_to">끝</string>
     <string name="statistics_today">오늘</string>
@@ -48,7 +48,7 @@
     <string name="home_new_title">새로운 사항 보기</string>
     <string name="home_downloads_title">다운로드 관리</string>
     <string name="home_welcome_title">안테나팟에 잘 오셨습니다!</string>
-    <string name="home_welcome_text">아직 어떤 팟캐스트도 구독하지 않았습니다. 가장자리 메뉴를 열어 팟캐스트를 추가하십시오.</string>
+    <string name="home_welcome_text">아직 구독한 팟캐스트가 없습니다. 메뉴를 열어 팟캐스트를 추가하십시오.</string>
     <string name="notification_permission_denied">권한을 거부했습니다.</string>
     <string name="configure_home">홈 화면 구성</string>
     <string name="section_hidden">감춤</string>
@@ -126,7 +126,7 @@
         <item quantity="other">%d개 에피소드</item>
     </plurals>
     <string name="episode_notification">에피소드 알림</string>
-    <string name="episode_notification_summary">새 에피소드가 나오면 알림을 표시합니다.</string>
+    <string name="episode_notification_summary">새 에피소드가 공개되면 알림 표시</string>
     <plurals name="new_episode_notification_message">
         <item quantity="other">%2$s에 새 에피소드 %1$d개</item>
     </plurals>
@@ -143,8 +143,8 @@
     <string name="show_info_label">정보 표시</string>
     <string name="show_feed_settings_label">팟캐스트 설정 표시</string>
     <string name="feed_settings_label">팟캐스트 설정</string>
-    <string name="rename_feed_label">팟캐스트 이름 바꾸기</string>
-    <string name="remove_feed_label">팟캐스트 제거</string>
+    <string name="rename_feed_label">이름 바꾸기</string>
+    <string name="remove_feed_label">구독 취소</string>
     <string name="share_label">공유</string>
     <string name="share_file_label">파일 공유</string>
     <string name="load_complete_feed">전체 팟캐스트 새로 고침</string>
@@ -196,7 +196,7 @@
     <string name="download_error_insufficient_space">장치에 남은 공간이 충분하지 않습니다.</string>
     <string name="download_error_http_data_error">HTTP 데이터 오류</string>
     <string name="download_error_error_unknown">알 수 없는 오류</string>
-    <string name="download_error_parser_exception">팟캐스트 호스트 서버에서 깨진 팟캐스트 피드를 보냈습니다.</string>
+    <string name="download_error_parser_exception">팟캐스트 호스트 서버에서 깨진 팟캐스트 피드를 보냈습니다. castfeedvalidator.com 같은 팟캐스트 검사 도구로 확인해 보고, 팟캐스트 제작자에게 알려주시기를 권합니다.</string>
     <string name="download_error_unsupported_type">지원하지 않는 피드 종류</string>
     <string name="download_error_unsupported_type_html">팟캐스트 호스트 서버에서 팟캐스트가 아닌 웹사이트를 보냈습니다.</string>
     <string name="download_error_not_found">팟캐스트 호스트 서버가 파일 위치를 알지 못합니다. 파일이 삭제된 것 같습니다.</string>
@@ -225,7 +225,7 @@
     <string name="authentication_notification_title">인증이 필요합니다</string>
     <string name="confirm_mobile_download_dialog_title">휴대전화 망 다운로드 확인</string>
     <string name="confirm_mobile_download_dialog_message">휴대전화 데이터 연결을 통한 다운로드는 설정에서 사용 중지되어 있습니다. 다음에 Wi-Fi가 연결되면 자동으로 에피소드를 다운로드할 수 있습니다.</string>
-    <string name="confirm_mobile_download_dialog_message_vpn">여러분의 VPN 앱이 휴대전화 네트워크인 척 (종량제 연결) 하고 있습니다. 설정에서 휴대전화 연결을 통한 다운로드는 사용하지 않고 있습니다. 이 문제를 바로잡고 싶으면, 여러분의 VPN 앱 제작자에게 연락해 보십시오.</string>
+    <string name="confirm_mobile_download_dialog_message_vpn">- VPN을 사용 중이신가요? VPN 앱이 휴대전화 네트워크(종량제 연결)인 척하고 있습니다. 이 문제를 바로잡으려면 VPN 앱 제작자에게 문의하십시오.\n- VPN을 사용하지 않으시나요? Android Wi-Fi 설정을 열어 Wi-Fi가 종량제로 인식되지 않도록 유형을 변경하십시오.</string>
     <string name="confirm_mobile_download_dialog_download_later">나중에 다운로드</string>
     <string name="confirm_mobile_download_dialog_allow_this_time">그래도 다운로드</string>
     <string name="confirm_mobile_streaming_notification_title">휴대전화 망 스트리밍 확인</string>
@@ -233,7 +233,7 @@
     <string name="confirm_mobile_streaming_button_always">항상</string>
     <string name="confirm_mobile_streaming_button_once">한번만</string>
     <!--Mediaplayer messages-->
-  <string name="playback_error_generic"><![CDATA[미디어 파일을 재생할 수 없습니다.\n\n- 해당 에피소드를 삭제하고 다시 다운로드해 보십시오.\n- 네트워크 연결이 올바른지 확인하고, VPN이나 로그인 페이지가 접근을 막고 있는 것은 아닌지 확인해 보십시오.\n- 길게 눌러 \"미디어 주소\"를 웹브라우저에 공유해 브라우저에서는 재생되는지 보십시오. 재생되지 않으면, 팟캐스트 제작자에게 연락하십시오.]]></string>
+  <string name="playback_error_generic">미디어 파일을 재생할 수 없습니다.\n\n- 해당 에피소드를 삭제하고 다시 다운로드해 보세요.\n- 네트워크 연결이 올바른지 확인하고, VPN이나 로그인 페이지가 접근을 막고 있는 것은 아닌지 확인하세요.\n- \"미디어 주소\"를 길게 눌러 웹브라우저에 공유해 브라우저에서는 재생되는지 확인하세요. 재생되지 않으면, 팟캐스트 제작자에게 문의하세요.</string>
     <string name="no_media_playing_label">재생 중인 미디어 없음</string>
     <string name="unknown_media_key">안테나팟 - 알 수 없는 미디어 키: %1$d</string>
     <string name="error_file_not_found">파일이 없습니다</string>
@@ -283,8 +283,8 @@
     <string name="synchronization_sum">다른 장치와 동기화</string>
     <string name="automation">자동</string>
     <string name="download_pref_details">자세히</string>
-    <string name="import_export_pref">가져오기/내보내기</string>
-    <string name="import_export_search_keywords">백업, 복구</string>
+    <string name="import_export_pref">백업 및 복원</string>
+    <string name="import_export_search_keywords">가져오기, 내보내기</string>
     <string name="external_elements">외부 항목</string>
     <string name="interruptions">끼어들기</string>
     <string name="playback_control">재생 조작</string>
@@ -293,19 +293,19 @@
     <string name="preference_search_no_results">결과 없음</string>
     <string name="preference_search_clear_history">기록 지우기</string>
     <string name="pref_episode_cleanup_summary">자동 다운로드에서 새 에피소드에 공간이 더 필요할 때 삭제될 수 있는 에피소드</string>
-    <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스가 연결 해제되었을 경우 일시정지합니다.</string>
-    <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생을 계속합니다.</string>
-    <string name="pref_unpauseOnBluetoothReconnect_sum">블루투스가 다시 연결되면 재생을 계속합니다.</string>
+    <string name="pref_pauseOnDisconnect_sum">헤드폰이나 블루투스 장치의 연결이 끊기면 재생 일시정지</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰이 다시 연결되면 재생 계속</string>
+    <string name="pref_unpauseOnBluetoothReconnect_sum">블루투스가 다시 연결되면 재생 계속</string>
     <string name="pref_hardware_forward_button_title">앞으로 가기 버튼</string>
     <string name="pref_hardware_forward_button_summary">다음 버튼의 동작을 직접 설정합니다</string>
     <string name="pref_hardware_previous_button_title">이전 버튼</string>
     <string name="pref_hardware_previous_button_summary">이전 버튼의 동작을 직접 설정합니다</string>
-    <string name="button_action_rewind">뒤로 감기</string>
+    <string name="button_action_rewind">뒤로 건너뛰기</string>
     <string name="button_action_skip_episode">에피소드 건너뛰기</string>
     <string name="button_action_restart_episode">에피소드 다시 시작</string>
     <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
     <string name="pref_auto_local_delete_title">로컬 폴더에서 자동 삭제</string>
-    <string name="pref_auto_local_delete_sum">자동 삭제 기능에 로컬 폴더 포함</string>
+    <string name="pref_auto_local_delete_sum">\"로컬 폴더 추가\"로 넣은 파일도 함께 삭제합니다. 이 파일들은 안테나팟이 다운로드한 것이 아니라서 다시 받을 수 없습니다</string>
     <string name="pref_auto_local_delete_dialog_body">로컬 폴더의 경우 자동 삭제 기능은 안테나팟에서 에피소드도 제거하고, 장치 저장소에서 미디어 파일도 삭제합니다. 안테나팟을 통해 다시 다운로드할 수 없게 됩니다. 자동 삭제를 사용하시겠습니까?</string>
     <string name="pref_smart_mark_as_played_sum">재생이 일정한 시간보다 (초 단위) 적게 남으면 에피소드를 재생한 것으로 표시</string>
     <string name="pref_smart_mark_as_played_title">똑똑하게 재생한 것으로 표시</string>
@@ -334,7 +334,7 @@
     <string name="pref_stream_over_download_title">스트리밍 선호</string>
     <string name="pref_stream_over_download_sum">목록에서 다운로드 버튼 대신 스트리밍 버튼 표시</string>
     <string name="pref_mobileUpdate_title">휴대전화 망 업데이트</string>
-    <string name="pref_mobileUpdate_sum">휴대전화 데이터 연결을 통해 무엇을 허용할지 선택합니다.</string>
+    <string name="pref_mobileUpdate_sum">휴대전화 데이터 연결에서 허용할 항목 선택</string>
     <string name="pref_mobileUpdate_refresh">팟캐스트 새로 고침</string>
     <string name="pref_mobileUpdate_images">커버 이미지</string>
     <string name="pref_mobileUpdate_episode_download">에피소드 다운로드</string>
@@ -345,7 +345,7 @@
     <string name="pref_black_theme_message">다크모드에서 완전 검정 사용</string>
     <string name="pref_tinted_theme_title">동적으로 색깔 바꾸기</string>
     <string name="pref_tinted_theme_message">배경에 따라 앱의 색 맞추기</string>
-    <string name="pref_nav_drawer_feed_counter_title">구독 카운터 설정</string>
+    <string name="pref_nav_drawer_feed_counter_title">카운터</string>
     <string name="pref_automatic_download_title">자동 다운로드</string>
     <string name="pref_automatic_download_sum">에피소드 자동 다운로드 설정</string>
     <string name="pref_automatic_download_on_battery_title">충전하지 않을 때 다운로드</string>
@@ -369,7 +369,7 @@
     <string name="pref_playback_time_respects_speed_title">미디어 정보를 재생 속도에 맞게 조정</string>
     <string name="pref_playback_time_respects_speed_sum">재생 속도에 맞춰 재생 위치와 재생 시간을 표시합니다</string>
     <string name="pref_rewind">뒤로 건너뛰기 시간</string>
-    <string name="pref_rewind_sum">뒤로 감기 버튼을 눌렀을 때 뒤로 넘어갈 초를 지정합니다.</string>
+    <string name="pref_rewind_sum">뒤로 건너뛰기 버튼을 눌렀을 때 뒤로 넘어갈 시간(초) 지정</string>
     <string name="pref_expandNotify_title">높은 알림 우선순위</string>
     <string name="pref_expandNotify_sum">알림에서 재생 버튼이 표시되도록 확장합니다.</string>
     <string name="pref_persistNotify_title">재생 조작 항상 표시</string>
@@ -417,7 +417,7 @@
   <string name="about_pref">정보</string>
     <string name="antennapod_version">안테나팟 버전</string>
     <string name="contributors">기여한 분들</string>
-    <string name="contributors_summary">코드, 번역, 포럼에서 사용자를 돕는 일 등, 안테나팟을 더 좋게 만드는데 누구나 도움을 주실 수 있습니다.</string>
+    <string name="contributors_summary">코드, 번역, 포럼에서 사용자를 돕는 일 등 누구나 안테나팟을 더 좋게 만드는 데 도움을 줄 수 있습니다</string>
     <string name="developers">개발자</string>
     <string name="translators">번역자</string>
     <string name="special_thanks">특별히 감사</string>
@@ -477,7 +477,7 @@
     <string name="extend_sleep_timer_label">+%d분</string>
     <string name="sleep_timer_always">항상</string>
     <string name="sleep_timer_label">취침 타이머</string>
-    <string name="time_dialog_invalid_input">입력이 잘못되었습니다. 시간으로 숫자를 입력해야 합니다.</string>
+    <string name="time_dialog_invalid_input">입력이 잘못되었습니다. 시간은 정수로 입력해야 합니다</string>
     <string name="shake_to_reset_label">흔들어서 타이머 초기화</string>
     <string name="timer_vibration_label">진동</string>
     <string name="time_seconds">초</string>
@@ -492,7 +492,7 @@
     <string name="synchronization_summary_unchoosen">구독 및 에피소드 재생 상태를 동기화할 때 사용할 여러 프로바이더를 선택할 수 있습니다</string>
     <string name="dialog_choose_sync_service_title">동기화 프로바이더 선택</string>
     <string name="gpodnet_description">Gpodder.net은 오픈소스 팟캐스트 동기화 서비스로 여러분 서버에 직접 설치할 수 있습니다. Gpodder.net은 안테나팟 프로젝트와 별개의 서비스입니다.</string>
-    <string name="synchronization_summary_nextcloud">Gpoddersync는 오픈소스 Nextcloud 앱으로 여러분 서버에 쉽게 설치할 수 있습니다. 앱은 안테나팟 프로젝트와는 별개입니다.</string>
+    <string name="synchronization_summary_nextcloud">Gpodder Sync는 오픈소스 Nextcloud 앱으로, 여러분의 서버에 쉽게 설치할 수 있습니다. Gpodder Sync는 안테나팟 프로젝트와는 별개입니다.</string>
     <string name="synchronization_host_explanation">동기화할 때 사용할 여러분 서버를 고를 수 있습니다. 사용할 동기화 서버를 알고 있으면, 여기에 그 주소를 입력하십시오.</string>
     <string name="synchronization_host_label">서버 주소</string>
     <string name="proceed_to_login_butLabel">계속 로그인</string>
@@ -516,7 +516,7 @@
     <string name="synchronization_full_sync_title">강제 전체 동기화</string>
     <string name="synchronization_force_sync_summary">모든 구독 및 에피소드 상태 다시 동기화</string>
     <string name="synchronization_logout">로그아웃</string>
-    <string name="synchronization_login_status"><![CDATA[<i>%1$s</i> 사용자로 (위치 <i>%2$s</i>) 로그인되어 있습니다. <br/><br/>로그아웃한 뒤에 동기화 프로바이더를 다시 선택할 수 있습니다]]></string>
+    <string name="synchronization_login_status"><i>%1$s</i> 사용자로 (위치 <i>%2$s</i>) 로그인되어 있습니다.\n\n<br/><br/>로그아웃한 뒤에 동기화 프로바이더를 다시 선택할 수 있습니다.</string>
     <string name="pref_synchronization_logout_toast">성공적으로 로그아웃</string>
     <string name="gpodnetsync_error_title">gpodder.net 동기화 오류</string>
     <string name="gpodnetsync_error_descr">"동기화 중에 오류가 발생했습니다: "</string>
@@ -536,7 +536,7 @@
   <string name="subscribe_label">구독</string>
     <!--Content descriptions for image buttons-->
   <string name="toolbar_back_button_content_description">뒤로</string>
-    <string name="rewind_label">뒤로 감기</string>
+    <string name="rewind_label">뒤로 건너뛰기</string>
     <string name="increase_speed">속도 증가</string>
     <string name="decrease_speed">속도 감소</string>
     <string name="media_type_video_label">비디오</string>
@@ -555,10 +555,10 @@
     <string name="add_preset">미리 정해진 값 추가</string>
     <!--Feed settings/information screen-->
   <string name="authentication_label">인증</string>
-    <string name="authentication_descr">이 팟캐스트와 에피소드에 대한 사용자 이름과 비밀번호를 바꿉니다.</string>
+    <string name="authentication_descr">이 팟캐스트와 에피소드의 사용자 이름과 비밀번호 변경</string>
     <string name="feed_tags_label">태그</string>
     <string name="feed_tags_summary">구독 정리에 도움이 되도록 이 팟캐스트의 태그 바꾸기</string>
-    <string name="feed_folders_include_root">주 목록에 이 팟캐스트 표시</string>
+    <string name="feed_folders_include_root">태그 위에 표시 (사이드 메뉴에서만)</string>
     <string name="multi_feed_common_tags_info">선택한 구독 중에 일반적인 태그만 표시됩니다. 기타 태그는 영향을 받지 않습니다.</string>
     <string name="episode_filters_label">에피소드 필터</string>
     <string name="episode_filters_description">자동 다운로드를 할 때 에피소드가 포함되어야할지 제외되어야할지 결정하는 규칙의 목록</string>
@@ -568,7 +568,7 @@
     <string name="exclude_episodes_shorter_than">이보다 짧은 에피소드 제외</string>
     <string name="keep_updated">최신 업데이트 유지</string>
     <string name="keep_updated_summary">모든 팟캐스트를 (자동) 새로 고칠 때 이 팟캐스트 포함</string>
-    <string name="statistics_expected_next_episode_any_day">지금 언제든지</string>
+    <string name="statistics_expected_next_episode_any_day">조만간</string>
     <string name="statistics_expected_next_episode_unknown">알 수 없음</string>
     <string name="edit_url_menu">피드 URL 편집</string>
     <!--Podcast release schedules-->
@@ -647,8 +647,8 @@
     <string name="notification_group_news">뉴스</string>
     <string name="notification_channel_user_action">사용자 조작 필요</string>
     <string name="notification_channel_user_action_description">사용자 조작이 필요할 때 표시됩니다. 예를 들어 비밀번호를 입력해야 할 때 표시됩니다.</string>
-    <string name="notification_channel_downloading">다운로드 중</string>
-    <string name="notification_channel_downloading_description">현재 다운로드 중일 때 표시됩니다.</string>
+    <string name="notification_channel_downloading">에피소드 다운로드 중</string>
+    <string name="notification_channel_downloading_description">에피소드를 다운로드하는 중일 때 표시됩니다.</string>
     <string name="notification_channel_playing">현재 재생 중</string>
     <string name="notification_channel_playing_description">재생을 조작할 수 있습니다 .팟캐스트를 재생할 때 볼 수 있는 메인 알림입니다.</string>
     <string name="notification_channel_download_error">다운로드 실패</string>
@@ -656,7 +656,7 @@
     <string name="notification_channel_sync_error">동기화 실패</string>
     <string name="notification_channel_sync_error_description">gpodder 동기화가 실패할 때 표시.</string>
     <string name="notification_channel_new_episode">새 에피소드</string>
-    <string name="notification_channel_new_episode_description">알림 기능을 켰을 경우, 팟캐스트의 새 에피소드를 찾으면 표시됩니다.</string>
+    <string name="notification_channel_new_episode_description">알림을 켠 팟캐스트에서 새 에피소드를 찾으면 표시</string>
     <!--Widget settings-->
   <string name="widget_settings">위젯 설정</string>
     <string name="widget_create_button">위젯 만들기</string>
@@ -676,4 +676,259 @@
     <string name="downloads_label_short">다운로드</string>
     <string name="subscriptions_label_short">구독</string>
     <string name="playback_history_label_short">기록</string>
+    <string name="preference_search_clear_input">지우기</string>
+    <string name="pref_auto_delete_playback_sum">재생이 끝나면 에피소드 삭제</string>
+    <string name="pref_episode_cleanup_title">자동 다운로드 전 삭제</string>
+    <string name="pref_auto_delete_playback_title">재생 후 삭제</string>
+    <string name="pref_auto_delete_title">자동 삭제</string>
+    <string name="pref_nav_drawer_items_title">탐색 메뉴 설정</string>
+    <string name="pref_auto_delete_sum">재생을 마쳤거나 자동 다운로드 시 공간이 필요할 때 에피소드 삭제</string>
+    <string name="pref_automatic_download_global_description">새 에피소드를 자동으로 다운로드합니다. 팟캐스트별로 다르게 설정할 수 있습니다.</string>
+    <string name="pref_nav_drawer_items_sum">사이드 메뉴나 하단 탐색 바에 표시할 항목 변경</string>
+    <string name="pref_automatic_download_queue_title">대기열 다운로드</string>
+    <string name="pref_automatic_download_queue_description">대기열에 있는 에피소드를 자동으로 다운로드</string>
+    <string name="pref_episode_cache_title">에피소드 개수 제한</string>
+    <string name="pref_episode_cache_summary">이 개수에 도달하면 자동 다운로드 중지</string>
+    <string name="pref_fast_forward_sum">앞으로 건너뛰기 버튼을 눌렀을 때 앞으로 넘어갈 시간(초) 지정</string>
+    <string name="pref_fast_forward">앞으로 건너뛰기 시간</string>
+    <string name="pref_downloads_button_action_title">다운로드 화면에서 재생</string>
+    <string name="pref_downloads_button_action_sum">다운로드 화면에 삭제 버튼 대신 재생 버튼 표시</string>
+    <string name="pref_show_subscription_title">제목 표시</string>
+    <string name="pref_global_default_episode_list_sort_order_title">기본 정렬 순서</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">팟캐스트 화면의 에피소드 기본 정렬 순서 선택</string>
+    <string name="pref_advanced">고급</string>
+    <string name="pref_display">화면</string>
+    <string name="statistics_label_short">통계</string>
+    <string name="favorite_episodes_label_short">즐겨찾기</string>
+    <string name="home_no_recent_unplayed_episodes_text">최근 에피소드를 모두 재생했습니다. 여기는 더 볼 것이 없네요 ;)</string>
+    <string name="home_downloads_empty_text">에피소드를 다운로드하면 오프라인에서 들을 수 있습니다.</string>
+    <plurals name="total_size_downloaded_podcasts">
+        <item quantity="other">장치에 있는 에피소드 %d개의 전체 크기</item>
+    </plurals>
+    <string name="feed_new_episodes_action_summary_autodownload">자동 다운로드가 켜져 있습니다. 에피소드는 새로 받음 목록에 추가되고, 다운로드되면 대기열로 이동합니다.</string>
+    <string name="feed_new_episodes_action_snackbar">자동 다운로드가 켜져 있으면 변경할 수 없습니다.</string>
+    <plurals name="episode_cleanup_hours_after_listening">
+        <item quantity="other">끝나고 %d시간 후</item>
+    </plurals>
+    <plurals name="episode_cleanup_days_after_listening">
+        <item quantity="other">끝나고 %d일 후</item>
+    </plurals>
+    <string name="delete_downloads_played">재생한 항목 삭제</string>
+    <string name="delete_downloads_played_confirmation">정말로 재생한 다운로드를 모두 삭제할지 확인하십시오.</string>
+    <plurals name="downloading_episodes_message">
+        <item quantity="other">에피소드 %d개를 다운로드하는 중입니다.</item>
+    </plurals>
+    <plurals name="deleted_episode_message">
+        <item quantity="other">다운로드한 에피소드 %d개를 삭제했습니다.</item>
+    </plurals>
+    <string name="download_log_details_human_readable_reason_title">상태</string>
+    <string name="download_log_details_technical_reason_title">기술 정보</string>
+    <string name="download_log_details_file_url_title">파일 URL</string>
+    <string name="download_log_open_feed">열기</string>
+    <string name="download_error_unsupported_type_html_manual">입력하신 주소는 팟캐스트 RSS 주소가 아니라 웹사이트 주소입니다.</string>
+    <string name="episode_download_failed">에피소드 다운로드 실패</string>
+    <plurals name="mobile_download_notice">
+        <item quantity="other">앞으로 %d분 동안 휴대전화 데이터로 다운로드합니다</item>
+    </plurals>
+    <string name="already_downloaded">이미 다운로드한 에피소드입니다</string>
+    <string name="episode">에피소드</string>
+    <string name="no_fav_episodes_head_label">즐겨찾기 없음</string>
+    <string name="no_fav_episodes_label">별 아이콘을 눌러 에피소드를 즐겨찾기로 표시할 수 있습니다.</string>
+    <string name="episode_lists">에피소드 목록</string>
+    <string name="episode_information">에피소드 정보</string>
+    <string name="sync_status_wait_for_downloads">구독 새로고침을 기다리는 중…</string>
+    <string name="sleep_timer_episodes_label">에피소드</string>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">설정에서 연속 재생이 꺼져 있습니다. 항상 에피소드가 끝날 때 정지합니다.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="other">대기열에 에피소드가 %1$d개만 남아 있습니다</item>
+    </plurals>
+    <string name="preview_episodes">에피소드 미리 보기</string>
+    <string name="download_started_talkback">%1$s 다운로드를 시작했습니다</string>
+    <string name="download_completed_talkback">%1$s 다운로드를 완료했습니다</string>
+    <plurals name="statistics_episodes_started">
+        <item quantity="other">시작함</item>
+    </plurals>
+    <plurals name="statistics_episodes_total">
+        <item quantity="other">전체</item>
+    </plurals>
+    <plurals name="statistics_episodes_downloaded">
+        <item quantity="other">다운로드함</item>
+    </plurals>
+    <string name="statistics_time_total">전체</string>
+    <string name="statistics_time_played">재생함</string>
+    <string name="statistics_episodes_space">차지한 공간</string>
+    <string name="statistics_release_schedule">공개 일정</string>
+    <string name="statistics_release_next">다음 에피소드 (예상)</string>
+    <string name="statistics_expected_next_episode_any_time">오늘 중 언제든</string>
+    <string name="statistics_view_all">모든 팟캐스트 »</string>
+    <string name="statistics_years_barchart_description">월별 재생 시간</string>
+    <string name="archive_feed_label_verb">보관</string>
+    <string name="archive_feed_label_noun">보관함</string>
+    <string name="restore_archive_label">복원</string>
+    <string name="remove_archive_feed_label">구독 취소 / 보관</string>
+    <string name="remove_restore_feed_label">구독 취소 / 복원</string>
+    <string name="feed_delete_explanation_delete">구독을 취소하면 에피소드, 다운로드, 재생 기록, 통계까지 모두 함께 삭제됩니다.</string>
+    <string name="feed_delete_explanation_archive">보관하면 목록에서 숨기고 새 에피소드를 더 이상 확인하지 않습니다. 다운로드, 통계, 재생 상태는 유지됩니다.</string>
+    <string name="archiving_podcast_progress">팟캐스트 보관 중 %1$d/%2$d…</string>
+    <string name="restoring_podcast_progress">팟캐스트 복원 중 %1$d/%2$d…</string>
+    <string name="delete_tag_label">태그 삭제</string>
+    <string name="delete_tag_confirmation">정말로 \"%1$s\" 태그를 삭제할지 확인하십시오.</string>
+    <string name="removed_from_inbox_message">새로 받음 목록에서 제거했습니다</string>
+    <string name="mark_as_played_label">재생함으로 표시</string>
+    <plurals name="marked_as_played_message">
+        <item quantity="other">%d개 에피소드를 재생함으로 표시했습니다.</item>
+    </plurals>
+    <string name="mark_as_unplayed_label">재생하지 않음으로 표시</string>
+    <plurals name="marked_as_unplayed_message">
+        <item quantity="other">%d개 에피소드를 재생하지 않음으로 표시했습니다.</item>
+    </plurals>
+    <plurals name="added_to_queue_message">
+        <item quantity="other">%d개 에피소드를 대기열에 추가했습니다.</item>
+    </plurals>
+    <plurals name="removed_from_queue_message">
+        <item quantity="other">%d개 에피소드를 대기열에서 제거했습니다.</item>
+    </plurals>
+    <plurals name="added_to_favorites_message">
+        <item quantity="other">%d개 에피소드를 즐겨찾기에 추가했습니다.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="other">%d개 에피소드를 즐겨찾기에서 제거했습니다.</item>
+    </plurals>
+    <string name="no_transcript_label">스크립트 없음</string>
+    <string name="no_items_selected_message">선택한 항목 없음</string>
+    <string name="delete_local_feed_confirmation_dialog_message">삭제하면 안테나팟에서 에피소드가 제거되고 장치 저장소의 미디어 파일도 삭제됩니다. 안테나팟을 통해 다시 다운로드할 수 없습니다.</string>
+    <string name="no_following_in_queue">대기열의 마지막 에피소드였습니다</string>
+    <plurals name="move_to_top_message">
+        <item quantity="other">%d개 에피소드를 맨 위로 옮겼습니다.</item>
+    </plurals>
+    <plurals name="move_to_bottom_message">
+        <item quantity="other">%d개 에피소드를 맨 아래로 옮겼습니다.</item>
+    </plurals>
+    <string name="no_queue_items_inbox_has_items_label">재생할 에피소드가 없지만, 새로 받은 에피소드가 기다리고 있습니다!</string>
+    <string name="no_queue_items_inbox_has_items_button_label">새로 받음으로 이동</string>
+    <string name="no_archive_head_label">보관한 항목 없음</string>
+    <string name="no_archive_label">구독 화면에서 팟캐스트를 보관할 수 있습니다.</string>
+    <string name="state_deleted_not_subscribed">아직 이 팟캐스트를 구독하지 않았습니다. 무료로 구독하면 더 쉽게 이용하고 재생 기록도 유지할 수 있습니다.</string>
+    <string name="tag_all">전체</string>
+    <string name="tag_untagged">태그 없음</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">항목 없음</string>
+    <string name="deleting_podcast_progress">팟캐스트 구독 취소 중 %1$d/%2$d…</string>
+    <string name="show_transcript">스크립트 보기</string>
+    <string name="transcript">스크립트</string>
+    <string name="transcript_follow_audio_label">오디오 따라가기</string>
+    <string name="general_expand_button">펼치기</string>
+    <string name="general_collapse_button">접기</string>
+    <string name="home_continue_empty_text">에피소드를 다운로드하거나, 길게 눌러 \"대기열에 추가\"를 선택해 추가할 수 있습니다.</string>
+    <string name="home_new_empty_text">새 에피소드가 여기에 표시됩니다. 관심 있는 에피소드인지 여기서 정하면 됩니다.</string>
+    <string name="section_shown">보임</string>
+    <string name="enabled">사용함</string>
+    <string name="disabled">사용 안 함</string>
+    <string name="global_default_with_value">전체 기본값 (%1$s)</string>
+    <plurals name="num_subscriptions">
+        <item quantity="other">%d개 구독</item>
+    </plurals>
+    <string name="multi_select_started_talkback">여러 항목 선택 동작이 아래에 표시됩니다</string>
+    <string name="please_wait_before_refreshing">팟캐스트를 다시 새로고침하기 전에 잠시 기다리십시오.</string>
+    <string name="play_this_to_seek_position_message">특정 위치로 이동하려면 에피소드를 재생해야 합니다</string>
+    <string name="visit_social_interact_label">댓글 보기</string>
+    <string name="visit_social_interact_confirm_dialog_title">안테나팟을 벗어납니다</string>
+    <string name="visit_social_interact_confirm_dialog_message">\"%1$s\" 웹사이트를 신뢰할 수 있는지 확인하십시오.</string>
+    <string name="reset_playback_position_label">재생 위치 초기화</string>
+    <plurals name="reset_position_message">
+        <item quantity="other">%d개 에피소드의 재생 위치를 초기화했습니다.</item>
+    </plurals>
+    <string name="null_value_podcast_error">누르신 링크에 올바른 팟캐스트 URL이 없습니다. 링크를 확인한 뒤 다시 시도하거나, 팟캐스트를 직접 검색해 보십시오.</string>
+    <string name="feed">팟캐스트</string>
+    <string name="clear_queue_confirmation_msg">정말로 대기열에서 모든 에피소드를 제거할지 확인하십시오.</string>
+    <string name="queue_time_left_label">%1$s • %2$s 남음</string>
+    <string name="theming">테마</string>
+    <string name="overflow_more">더보기</string>
+    <string name="button_action_fast_forward">앞으로 건너뛰기</string>
+    <string name="bottom_navigation">하단 탐색 바</string>
+    <string name="bottom_navigation_summary">가장 중요한 화면을 어디서든 한 번에 열기</string>
+    <string name="bottom_navigation_deprecation_warning">아쉽지만 앞으로의 업데이트에서 사이드 메뉴를 없애야 합니다. 안테나팟은 소수의 자원봉사자가 개발하고 있는데, 두 가지 탐색 방식을 몇 년간 함께 유지하다 보니 부담이 너무 커졌습니다.\n\n사이드 메뉴가 꼭 필요하시다면, 앱 스토어에서 안테나팟의 업데이트를 꺼 두십시오.</string>
+    <string name="import_error_label">가져오기 오류</string>
+    <string name="sleep_timer_without_continuous_playback">연속 재생 끄기</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">시간 변경</string>
+    <string name="sleep_timer_without_continuous_playback_message">에피소드 하나로 취침 타이머를 항상 자동으로 켜는 대신, 설정에서 \"연속 재생\"을 꺼 주십시오.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="other">연속 재생이 꺼져 있고 현재 에피소드가 %1$d분밖에 남지 않았습니다</item>
+    </plurals>
+    <plurals name="time_seconds_quantified">
+        <item quantity="other">%d초</item>
+    </plurals>
+    <plurals name="time_minutes_quantified">
+        <item quantity="other">%d분</item>
+    </plurals>
+    <plurals name="time_hours_quantified">
+        <item quantity="other">%d시간</item>
+    </plurals>
+    <plurals name="time_days_quantified">
+        <item quantity="other">%d일</item>
+    </plurals>
+    <string name="show_password_accessibility">비밀번호 표시</string>
+    <string name="nextcloud_login_error_generic">Nextcloud에 로그인할 수 없습니다.\n\n- 네트워크 연결을 확인하십시오.\n- 서버 주소가 올바른지 확인하십시오.\n- Gpodder Sync Nextcloud 플러그인이 설치되어 있는지 확인하십시오.</string>
+    <string name="choose_data_directory_message">데이터 폴더의 기준 위치를 선택하십시오. 안테나팟이 알맞은 하위 폴더를 만듭니다.</string>
+    <string name="rating_volunteers_label">안테나팟은 자원봉사자들이 여가 시간에 개발하고 있습니다. 좋은 평점을 남겨 그들의 노고에 감사를 표해 주십시오.</string>
+    <string name="fast_forward_label">앞으로 건너뛰기</string>
+    <string name="edit_url_confirmation_msg">RSS 주소를 바꾸면 팟캐스트의 재생 상태와 에피소드 목록이 쉽게 깨질 수 있습니다. 변경을 권장하지 않으며, 문제가 생겨도 지원하지 않습니다. 이 작업은 되돌릴 수 없습니다. 한번 깨진 구독은 주소를 원래대로 되돌려도 복구할 수 없습니다. 계속하기 전에 백업을 만드시기 바랍니다.</string>
+    <string name="release_schedule_multiple_per_day">하루 여러 번</string>
+    <string name="rss_address">RSS 주소</string>
+    <string name="rss_address_invalid">입력하신 RSS 주소가 올바르지 않습니다.</string>
+    <string name="discover_more">더 발견하기 »</string>
+    <string name="subscription_display_list">목록</string>
+    <string name="notification_channel_refreshing">팟캐스트 새로고침 중</string>
+    <string name="notification_channel_refreshing_description">새 에피소드를 확인하는 중일 때 표시됩니다.</string>
+    <string name="cover_as_background">표지를 배경으로</string>
+    <string name="report_bug_title">버그 신고</string>
+    <string name="report_bug_message">무언가 제대로 동작하지 않는다니 안타깝습니다. 안테나팟을 개선하는 데 도움을 주시면 감사하겠습니다. 이미 신고된 문제인지 포럼이나 GitHub에서 먼저 확인해 주십시오. 없다면 알려 주시면 저희가 살펴보겠습니다.</string>
+    <string name="report_bug_device_info_title">장치</string>
+    <string name="report_bug_attrib_app_version">앱 버전</string>
+    <string name="report_bug_attrib_android_version">Android 버전</string>
+    <string name="report_bug_attrib_device_name">장치 이름</string>
+    <string name="report_bug_crash_log_title">충돌 로그</string>
+    <string name="report_bug_crash_log_message">생성: %1$s.</string>
+    <string name="report_bug_forum_title">포럼</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">%s에 연결됨</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">버전 %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">휴대전화가 호환되지 않습니다. 휴대전화에서 Google Play의 최신 버전 안테나팟을 사용 중인지 확인하십시오.</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">휴대전화에 연결할 수 없습니다. 휴대전화가 가까이 있고 안테나팟이 설치되어 있는지 확인하십시오.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">휴대전화에서 재생</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">휴대전화 둘러보기</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">휴대전화에서 열기</string>
+    <string name="echo_home_header">한 해 돌아보기</string>
+    <string name="echo_home_subtitle">지난 한 해 동안 가장 많이 들은 팟캐스트와 통계입니다. 휴대전화 안에서만 처리됩니다.</string>
+    <string name="echo_intro_your_year">여러분의</string>
+    <string name="echo_intro_in_podcasts">년 팟캐스트 기록</string>
+    <string name="echo_intro_locally">휴대전화에서 비공개로 생성됨</string>
+    <string name="echo_hours_this_year">올해 재생한 분량</string>
+    <plurals name="echo_hours_podcasts">
+        <item quantity="other">시간\n팟캐스트 %1$d개의 에피소드</item>
+    </plurals>
+    <string name="echo_queue_title_clean">새해를 깔끔하게 시작할 수 있습니다. 대기열에는</string>
+    <string name="echo_queue_title_many">올해 들을 것이 아직 많이 남았습니다. 대기열에는</string>
+    <plurals name="echo_queue_hours_waiting">
+        <item quantity="other">시간이 남아 있습니다\n에피소드 %1$d개</item>
+    </plurals>
+    <string name="echo_queue_hours_clean">%2$d년이 시작될 때까지 하루 약 %1$s입니다.</string>
+    <string name="echo_queue_hours_normal">%2$d년이 시작될 때까지 하루 약 %1$s입니다. 몇 편을 건너뛰면 새해를 깔끔하게 시작할 수 있습니다.</string>
+    <string name="echo_queue_hours_much">%2$d년이 시작될 때까지 하루 약 %1$s입니다. 상당히 많지 않나요?</string>
+    <string name="echo_listened_after_title">에피소드가 공개된 시점과 다 들은 시점을 분석해 봤습니다. 결론은?</string>
+    <string name="echo_listened_after_comment_easy">여유롭게 듣는 편입니다</string>
+    <string name="echo_listened_after_time">보통 공개된 지 %1$s 만에 에피소드를 다 들었습니다.</string>
+    <string name="echo_listened_after_comment_addict">공개되면 바로 듣는 편입니다</string>
+    <string name="echo_hoarder_title">구독한 팟캐스트를 실제로 듣고 계실까요?</string>
+    <string name="echo_hoarder_subtitle_hoarder">수치로 보면 쌓아두는 편입니다</string>
+    <string name="echo_hoarder_comment_hoarder">숫자는 거짓말하지 않는다고 합니다. 활성 구독 %2$d개 중 올해 재생한 것은 %1$d%%뿐입니다.</string>
+    <string name="echo_hoarder_subtitle_medium">쌓아두는 편은 아닙니다.</string>
+    <string name="echo_hoarder_comment_medium">올해 활성 구독 %2$d개 중 %1$d%%에서 에피소드를 재생했습니다. \"%3$s\"을(를) 다시 들어보는 건 어떨까요?</string>
+    <string name="echo_hoarder_subtitle_clean">깔끔합니다!</string>
+    <string name="echo_hoarder_comment_clean">올해 활성 구독 %2$d개 중 %1$d%%에서 에피소드를 재생했습니다. 책상도 깔끔하게 정리하시는 편일 것 같습니다!</string>
+    <string name="echo_thanks_large">감사합니다</string>
+    <string name="echo_thanks_we_are_glad_old">올해도 함께해 주셔서!\n\n%1$s에 저희와 첫 에피소드를 재생하셨습니다. 그 이후로 함께할 수 있어 영광이었습니다.</string>
+    <string name="echo_thanks_we_are_glad_new">올해 함께하게 되어서!\n\n다른 앱에서 옮겨오셨든 저희와 팟캐스트를 처음 시작하셨든, 만나 뵙게 되어 반갑습니다!</string>
+    <string name="echo_thanks_now_favorite">이제 즐겨 들은 팟캐스트를 살펴보겠습니다…</string>
+    <string name="echo_share_heading">내가 즐겨 들은 팟캐스트</string>
+    <string name="echo_share">팟캐스트로 돌아본 나의 %d년. #AntennaPodEcho</string>
 </resources>

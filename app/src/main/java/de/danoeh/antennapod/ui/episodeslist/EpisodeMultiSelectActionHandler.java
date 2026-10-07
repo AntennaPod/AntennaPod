@@ -12,17 +12,17 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
-import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
+import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
-import de.danoeh.antennapod.ui.common.IntentUtils;
 import de.danoeh.antennapod.ui.share.ShareDialog;
 import de.danoeh.antennapod.ui.view.LocalDeleteModal;
 
@@ -197,7 +197,11 @@ public class EpisodeMultiSelectActionHandler {
             episode.getMedia().setPosition(0);
             if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == episode.getMedia().getId()) {
                 PlaybackPreferences.writeNoMediaPlaying();
-                IntentUtils.sendLocalBroadcast(activity, PlaybackServiceInterface.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                EventBus.getDefault().post(new PlaybackServiceEvent(PlaybackServiceEvent.Action.SERVICE_SHUT_DOWN));
+                PlaybackController.bindToMedia3Service(activity, controller -> {
+                    controller.clearMediaItems();
+                    controller.stop();
+                });
             }
             toReset.add(episode);
         }

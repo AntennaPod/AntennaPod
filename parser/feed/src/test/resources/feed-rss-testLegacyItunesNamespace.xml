@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/DTDs/Podcast-1.0.dtd">
+    <channel>
+        <title>title</title>
+        <description>description</description>
+        <link>https://example.com</link>
+        <itunes:image href="https://example.com/image.png" />
+    </channel>
+</rss>

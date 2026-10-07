@@ -21,6 +21,12 @@ public class MediaFormatDetectorTest {
     }
 
     @Test
+    public void testMagicFlac_detectsFlac() throws Exception {
+        assertEquals(MediaFormatDetector.Format.FLAC,
+                MediaFormatDetector.detect(new ByteArrayInputStream(new byte[] {0x66, 0x4C, 0x61, 0x43})).format);
+    }
+
+    @Test
     public void testMagicM4a_detectsM4a() throws Exception {
         assertEquals(MediaFormatDetector.Format.M4A,
                 MediaFormatDetector.detect(new ByteArrayInputStream(new byte[] {0, 0, 0, 0, 0x66, 0x74, 0x79, 0x70})).format);

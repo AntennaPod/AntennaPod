@@ -3,7 +3,6 @@ package de.danoeh.antennapod.ui.appstartintent;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 /**
  * Launches the main activity of the app with specific arguments.
@@ -22,7 +21,6 @@ public class MainActivityStarter {
 
     private final Intent intent;
     private final Context context;
-    private Bundle fragmentArgs = null;
 
     public MainActivityStarter(Context context) {
         this.context = context;
@@ -32,9 +30,6 @@ public class MainActivityStarter {
     }
 
     public Intent getIntent() {
-        if (fragmentArgs != null) {
-            intent.putExtra(EXTRA_FRAGMENT_ARGS, fragmentArgs);
-        }
         return intent;
     }
 
@@ -84,14 +79,6 @@ public class MainActivityStarter {
 
     public MainActivityStarter withClearTop() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return this;
-    }
-
-    public MainActivityStarter withFragmentArgs(String name, boolean value) {
-        if (fragmentArgs == null) {
-            fragmentArgs = new Bundle();
-        }
-        fragmentArgs.putBoolean(name, value);
         return this;
     }
 }

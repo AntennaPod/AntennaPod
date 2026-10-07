@@ -7,23 +7,30 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PushbackInputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Locale;
 
 public abstract class VorbisCommentReader {
     private static final String TAG = "VorbisCommentReader";
-    private static final int FIRST_OGG_PAGE_LENGTH = 58;
-    private static final int FIRST_OPUS_PAGE_LENGTH = 47;
     private static final int SECOND_PAGE_MAX_LENGTH = 64 * 1024 * 1024;
-    private static final int PACKET_TYPE_IDENTIFICATION = 1;
     private static final int PACKET_TYPE_COMMENT = 3;
+    private static final byte[] FLAC_MAGIC = {'f', 'L', 'a', 'C'};
+    private static final byte[] FLAC_IN_OGG_MAGIC = {0x7F, 'F', 'L', 'A', 'C'};
+    private static final int FLAC_IN_OGG_HEADER_LENGTH = 8;
+    private static final int FLAC_LAST_BLOCK_FLAG = 0x80;
+    private static final int FLAC_BLOCK_TYPE_MASK = 0x7F;
+    private static final int FLAC_BLOCK_TYPE_COMMENT = 4;
+    private static final int FLAC_METADATA_MAX_LENGTH = 16 * 1024 * 1024;
 
-    private final VorbisInputStream input;
+    private InputStream input;
+    private long currentValueLength = 0;
 
     VorbisCommentReader(InputStream input) {
-        this.input = new VorbisInputStream(input);
+        this.input = input;
     }
 
     public void readInputStream() throws VorbisCommentReaderException {
@@ -48,14 +55,9 @@ public abstract class VorbisCommentReader {
                         + "key=" + keyPart + ", length=" + vectorLength);
             }
             String key = readContentVectorKey(vectorLength).toLowerCase(Locale.US);
-            boolean shouldReadValue = handles(key);
-            Log.d(TAG, "key=" + key + ", length=" + vectorLength + ", handles=" + shouldReadValue);
-            if (shouldReadValue) {
-                String value = readUtf8String(vectorLength - key.length() - 1);
-                onContentVectorValue(key, value);
-            } else {
-                IOUtils.skipFully(input, vectorLength - key.length() - 1);
-            }
+            Log.d(TAG, "key=" + key + ", length=" + vectorLength);
+            currentValueLength = vectorLength - key.length() - 1;
+            onContentVector(key);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,6 +71,18 @@ public abstract class VorbisCommentReader {
     }
 
     private void findCommentHeader() throws IOException {
+        PushbackInputStream sniffedInput = new PushbackInputStream(input, FLAC_MAGIC.length);
+        byte[] magic = new byte[FLAC_MAGIC.length];
+        IOUtils.readFully(sniffedInput, magic);
+        if (Arrays.equals(magic, FLAC_MAGIC)) {
+            // Native FLAC keeps the comments in a metadata block instead of an ogg page
+            input = sniffedInput;
+            findFlacCommentBlock();
+            return;
+        }
+        sniffedInput.unread(magic);
+        input = new VorbisInputStream(sniffedInput);
+
         byte[] buffer = new byte[64]; // Enough space for some bytes. Used circularly.
         final byte[] oggCommentHeader = new byte[]{ PACKET_TYPE_COMMENT, 'v', 'o', 'r', 'b', 'i', 's' };
         for (int bytesRead = 0; bytesRead < SECOND_PAGE_MAX_LENGTH; bytesRead++) {
@@ -77,9 +91,34 @@ public abstract class VorbisCommentReader {
                 return;
             } else if (bufferMatches(buffer, "OpusTags".getBytes(), bytesRead)) {
                 return;
+            } else if (bufferMatches(buffer, FLAC_IN_OGG_MAGIC, bytesRead)) {
+                IOUtils.skipFully(input, FLAC_IN_OGG_HEADER_LENGTH);
+                findFlacCommentBlock();
+                return;
             }
         }
         throw new IOException("No comment header found");
+    }
+
+    /**
+     * Skips the FLAC metadata blocks until the one holding the comments is reached.
+     */
+    private void findFlacCommentBlock() throws IOException {
+        byte[] header = new byte[4]; // Last-block flag and type, followed by the length
+        long bytesRead = 0;
+        while (true) {
+            IOUtils.readFully(input, header);
+            if ((header[0] & FLAC_BLOCK_TYPE_MASK) == FLAC_BLOCK_TYPE_COMMENT) {
+                return;
+            }
+            // 24 bit big endian
+            long blockLength = ((header[1] & 0xffL) << 16) | ((header[2] & 0xffL) << 8) | (header[3] & 0xffL);
+            bytesRead += header.length + blockLength;
+            if ((header[0] & FLAC_LAST_BLOCK_FLAG) != 0 || bytesRead > FLAC_METADATA_MAX_LENGTH) {
+                throw new IOException("No comment block found");
+            }
+            IOUtils.skipFully(input, blockLength);
+        }
     }
 
     /**
@@ -126,13 +165,18 @@ public abstract class VorbisCommentReader {
     }
 
     /**
-     * Is called every time the Reader finds a content vector. The handler
-     * should return true if it wants to handle the content vector.
+     * Is called for every content vector that the reader finds. Implementations should call
+     * super for the keys they do not handle, which skips the value without loading it into
+     * memory. Values can be several megabytes large, for example embedded cover images.
      */
-    protected abstract boolean handles(String key);
+    protected void onContentVector(String key) throws IOException, VorbisCommentReaderException {
+        IOUtils.skipFully(input, currentValueLength);
+    }
 
     /**
-     * Is called if onContentVectorKey returned true for the key.
+     * Reads the value of the content vector that is currently being handled.
      */
-    protected abstract void onContentVectorValue(String key, String value) throws VorbisCommentReaderException;
+    protected final String readValue() throws IOException {
+        return readUtf8String(currentValueLength);
+    }
 }

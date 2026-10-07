@@ -9,4 +9,6 @@ android {
 
 dependencies {
     annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.media3.common
+    implementation libs.androidx.media3.session
 }
