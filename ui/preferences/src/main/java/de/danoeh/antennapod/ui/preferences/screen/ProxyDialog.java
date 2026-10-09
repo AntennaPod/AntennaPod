@@ -9,7 +9,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -25,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.ui.preferences.R;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.UrlChecker;
 import de.danoeh.antennapod.model.download.ProxyConfig;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.preferences.databinding.ProxySettingsBinding;
@@ -190,7 +190,7 @@ public class ProxyDialog {
             viewBinding.hostText.setError(context.getString(R.string.proxy_host_empty_error));
             return false;
         }
-        if (!"localhost".equals(host) && !Patterns.DOMAIN_NAME.matcher(host).matches()) {
+        if (!UrlChecker.isValidHost(host)) {
             viewBinding.hostText.setError(context.getString(R.string.proxy_host_invalid_error));
             return false;
         }
