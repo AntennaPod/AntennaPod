@@ -18,7 +18,6 @@ public class VideoPlayerActivityStarter {
         this.context = context;
         intent = new Intent(BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE ? INTENT_MEDIA3 : INTENT);
         intent.setPackage(context.getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
     }
 
     public Intent getIntent() {

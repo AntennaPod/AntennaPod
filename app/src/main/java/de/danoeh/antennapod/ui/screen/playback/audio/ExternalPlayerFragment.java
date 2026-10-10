@@ -70,7 +70,7 @@ public class ExternalPlayerFragment extends Fragment {
             Log.d(TAG, "layoutInfo was clicked");
 
             if (currentMedia != null) {
-                if (currentMedia.getMediaType() == MediaType.AUDIO) {
+                if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE || currentMedia.getMediaType() == MediaType.AUDIO) {
                     ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
                 } else {
                     Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), currentMedia);
@@ -180,7 +180,7 @@ public class ExternalPlayerFragment extends Fragment {
                 .apply(options)
                 .into(imgvCover);
 
-        if (currentMedia.getMediaType() == MediaType.VIDEO) {
+        if (!BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE && currentMedia.getMediaType() == MediaType.VIDEO) {
             butPlay.setVisibility(View.GONE);
             ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
             ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
