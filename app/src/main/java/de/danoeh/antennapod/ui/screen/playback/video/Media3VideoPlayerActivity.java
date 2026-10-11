@@ -1,10 +1,14 @@
 package de.danoeh.antennapod.ui.screen.playback.video;
 
 import android.app.PictureInPictureParams;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 import android.util.Rational;
 import android.view.MenuItem;
@@ -14,16 +18,18 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.media3.common.Player;
+import androidx.media3.common.VideoSize;
 import androidx.media3.common.util.Util;
 import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.Media3VideoPlayerActivityBinding;
 import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.playback.VideoPlayerViewAttachedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.service.Media3PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -57,6 +63,15 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     private ListenableFuture<MediaController> controllerFuture;
     private FeedMedia currentMedia;
     private Disposable mediaLoadDisposable;
+    private final BroadcastReceiver screenOffReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction()) && mediaController != null && !isFinishing()
+                    && PlaybackPreferences.getCurrentEpisodeIsVideo()) {
+                mediaController.pause();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +96,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
         Toolbar toolbar = viewBinding.controlsView.getToolbar();
         toolbar.inflateMenu(R.menu.mediaplayer);
         toolbar.setOnMenuItemClickListener(this);
-        toolbar.setNavigationOnClickListener(v -> {
-            Intent intent = new Intent(Media3VideoPlayerActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        });
-        toolbar.getMenu().findItem(R.id.player_switch_to_audio_only).setVisible(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.getMenu().findItem(R.id.playback_speed).setVisible(true);
         toolbar.getMenu().findItem(R.id.player_show_chapters).setVisible(true);
         toolbar.getMenu().findItem(R.id.audio_controls).setVisible(true);
@@ -137,7 +146,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     }
 
     private void setupPictureInPicture() {
-        if (Build.VERSION.SDK_INT < 26) {
+        if (Build.VERSION.SDK_INT < 26 || !PictureInPictureUtil.supportsPictureInPicture(this)) {
             return;
         }
 
@@ -149,7 +158,9 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
             if (videoWidth > 0 && videoHeight > 0) {
                 if (Build.VERSION.SDK_INT >= 33) {
                     Rational aspectRatio = new Rational(videoWidth, videoHeight);
-                    builder.setAspectRatio(aspectRatio);
+                    if (aspectRatio.doubleValue() >= 1.0 / 2.39 && aspectRatio.doubleValue() <= 2.39) {
+                        builder.setAspectRatio(aspectRatio);
+                    }
                 }
             }
         }
@@ -186,12 +197,18 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        ContextCompat.registerReceiver(this, screenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF),
+                ContextCompat.RECEIVER_NOT_EXPORTED);
         SessionToken sessionToken = new SessionToken(this,
                 new ComponentName(this, Media3PlaybackService.class));
-        controllerFuture = new MediaController.Builder(this, sessionToken).buildAsync();
-        controllerFuture.addListener(() -> {
+        ListenableFuture<MediaController> future = new MediaController.Builder(this, sessionToken).buildAsync();
+        controllerFuture = future;
+        future.addListener(() -> {
+            if (controllerFuture != future || isFinishing()) {
+                return;
+            }
             try {
-                mediaController = controllerFuture.get();
+                mediaController = future.get();
                 viewBinding.playerView.setPlayer(mediaController);
                 setupPictureInPicture();
                 setupMedia3Listeners();
@@ -204,6 +221,11 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     @Override
     protected void onStop() {
         super.onStop();
+        if (mediaController != null && !getSystemService(PowerManager.class).isInteractive() && !isFinishing()
+                && PlaybackPreferences.getCurrentEpisodeIsVideo()) {
+            mediaController.pause();
+        }
+        unregisterReceiver(screenOffReceiver);
         EventBus.getDefault().unregister(this);
         if (mediaLoadDisposable != null) {
             mediaLoadDisposable.dispose();
@@ -226,11 +248,24 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
         viewBinding.playerView.setUseController(false);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            viewBinding.playerView.setPlayer(null);
+        }
+    }
+
     private void setupMedia3Listeners() {
         if (mediaController == null) {
             return;
         }
         mediaController.addListener(new Player.Listener() {
+            @Override
+            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
+                setupPictureInPicture();
+            }
+
             @Override
             public void onIsPlayingChanged(boolean isPlaying) {
                 viewBinding.controlsView.setPlayButtonShowsPlay(Util.shouldShowPlayButton(mediaController));
@@ -252,6 +287,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
                 }
             }
         });
+        viewBinding.controlsView.setPlayButtonShowsPlay(Util.shouldShowPlayButton(mediaController));
         loadMediaInfo();
     }
 
@@ -313,6 +349,14 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
             return false;
         }
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onVideoPlayerViewAttached(VideoPlayerViewAttachedEvent event) {
+        if (PictureInPictureUtil.isInPictureInPictureMode(this)) {
+            viewBinding.playerView.setPlayer(null);
+            finish();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

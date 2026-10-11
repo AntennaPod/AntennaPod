@@ -33,6 +33,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:src="@android:drawable/sym_def_app_icon" />
 
+        <ViewStub
+            android:id="@+id/videoPlayerStub"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="32dp"
+            android:layout="@layout/cover_video_player"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
