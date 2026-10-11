@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
@@ -13,6 +14,7 @@ import com.bumptech.glide.signature.ObjectKey;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.common.AntennapodHttpClient;
+import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.common.UserAgentInterceptor;
 import okhttp3.Interceptor;
@@ -27,12 +29,12 @@ import java.io.InputStream;
 /**
  * {@see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader}.
  */
-class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
+class ApOkHttpUrlLoader<T> implements ModelLoader<T, InputStream> {
 
     /**
      * The default factory for {@link ApOkHttpUrlLoader}s.
      */
-    public static class Factory implements ModelLoaderFactory<String, InputStream> {
+    public static class Factory<T> implements ModelLoaderFactory<T, InputStream> {
 
         private static volatile OkHttpClient internalClient;
         private final OkHttpClient client;
@@ -61,8 +63,8 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
         @NonNull
         @Override
-        public ModelLoader<String, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
-            return new ApOkHttpUrlLoader(client);
+        public ModelLoader<T, InputStream> build(@NonNull MultiModelLoaderFactory multiFactory) {
+            return new ApOkHttpUrlLoader<>(client);
         }
 
         @Override
@@ -79,19 +81,36 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
     @Nullable
     @Override
-    public LoadData<InputStream> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
-        return new LoadData<>(new ObjectKey(model), new ResizingOkHttpStreamFetcher(client, new GlideUrl(model)));
+    public LoadData<InputStream> buildLoadData(@NonNull T model, int width, int height, @NonNull Options options) {
+        String url = getUrl(model);
+        GlideUrl glideUrl = new GlideUrl(url);
+        if (model instanceof AuthenticatedImageUrl) {
+            AuthenticatedImageUrl imageUrl = (AuthenticatedImageUrl) model;
+            if (imageUrl.hasCredentials()) {
+                LazyHeaders headers = new LazyHeaders.Builder()
+                        .addHeader("Authorization", HttpCredentialEncoder.encode(
+                                imageUrl.getUsername(), imageUrl.getPassword(), "ISO-8859-1"))
+                        .build();
+                glideUrl = new GlideUrl(url, headers);
+            }
+        }
+        return new LoadData<>(new ObjectKey(url), new ResizingOkHttpStreamFetcher(client, glideUrl));
     }
 
     @Override
-    public boolean handles(@NonNull String model) {
-        return !TextUtils.isEmpty(model)
+    public boolean handles(@NonNull T model) {
+        String url = getUrl(model);
+        return !TextUtils.isEmpty(url)
                 // If the other loaders fail, do not attempt to load as web resource
-                && !model.startsWith(Feed.PREFIX_GENERATIVE_COVER)
-                && !model.startsWith(FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER)
+                && !url.startsWith(Feed.PREFIX_GENERATIVE_COVER)
+                && !url.startsWith(FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER)
                 // Leave content URIs to Glide's default loaders
-                && !model.startsWith(ContentResolver.SCHEME_CONTENT)
-                && !model.startsWith(ContentResolver.SCHEME_ANDROID_RESOURCE);
+                && !url.startsWith(ContentResolver.SCHEME_CONTENT)
+                && !url.startsWith(ContentResolver.SCHEME_ANDROID_RESOURCE);
+    }
+
+    private String getUrl(T model) {
+        return model instanceof AuthenticatedImageUrl ? ((AuthenticatedImageUrl) model).getUrl() : (String) model;
     }
 
     static class NetworkAllowanceInterceptor implements Interceptor {
