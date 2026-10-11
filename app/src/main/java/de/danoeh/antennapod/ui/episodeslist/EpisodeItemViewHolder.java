@@ -32,6 +32,8 @@ import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
+import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
 
 /**
  * Holds the view which shows FeedItems.
@@ -151,22 +153,25 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             secondaryActionProgress.setIndeterminate(false);
         }
 
-        duration.setText(Converter.getDurationStringLong(media.getDuration()));
+        TimeSpeedConverter converter = new TimeSpeedConverter(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media));
+        int mediaDuration = converter.convert(media.getDuration());
+        int mediaPosition = converter.convert(media.getPosition());
+        duration.setText(Converter.getDurationStringLong(mediaDuration));
         duration.setContentDescription(activity.getString(R.string.chapter_duration,
-                Converter.getDurationStringLocalized(activity, media.getDuration())));
+                Converter.getDurationStringLocalized(activity, mediaDuration)));
         if (PlaybackStatus.isPlaying(item.getMedia()) || item.isInProgress()) {
             int progress = (int) (100.0 * media.getPosition() / media.getDuration());
-            int remainingTime = Math.max(media.getDuration() - media.getPosition(), 0);
+            int remainingTime = Math.max(mediaDuration - mediaPosition, 0);
             progressBar.setProgress(progress);
-            position.setText(Converter.getDurationStringLong(media.getPosition()));
+            position.setText(Converter.getDurationStringLong(mediaPosition));
             position.setContentDescription(activity.getString(R.string.position,
-                    Converter.getDurationStringLocalized(activity, media.getPosition())));
+                    Converter.getDurationStringLocalized(activity, mediaPosition)));
             progressBar.setVisibility(View.VISIBLE);
             position.setVisibility(View.VISIBLE);
             if (UserPreferences.shouldShowRemainingTime()) {
                 duration.setText(((remainingTime > 0) ? "-" : "") + Converter.getDurationStringLong(remainingTime));
                 duration.setContentDescription(activity.getString(R.string.chapter_duration,
-                        Converter.getDurationStringLocalized(activity, (media.getDuration() - media.getPosition()))));
+                        Converter.getDurationStringLocalized(activity, (mediaDuration - mediaPosition))));
             }
         } else {
             progressBar.setVisibility(View.GONE);
@@ -227,8 +232,10 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             getFeedItem().getMedia().setPosition(event.getPosition());
             getFeedItem().getMedia().setDuration(event.getDuration());
         }
-        int currentPosition = event.getPosition();
-        int timeDuration = event.getDuration();
+        TimeSpeedConverter converter = new TimeSpeedConverter(
+                PlaybackSpeedUtils.getCurrentPlaybackSpeed(getFeedItem().getMedia()));
+        int currentPosition = converter.convert(event.getPosition());
+        int timeDuration = converter.convert(event.getDuration());
         int remainingTime = Math.max(timeDuration - currentPosition, 0);
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == Playable.INVALID_TIME || timeDuration == Playable.INVALID_TIME) {
@@ -252,7 +259,9 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {
         progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
-        position.setText(Converter.getDurationStringLong(event.getPosition()));
+        TimeSpeedConverter converter = new TimeSpeedConverter(
+                PlaybackSpeedUtils.getCurrentPlaybackSpeed(getFeedItem().getMedia()));
+        position.setText(Converter.getDurationStringLong(converter.convert(event.getPosition())));
         updateDuration(event);
         duration.setVisibility(View.VISIBLE); // Even if the duration was previously unknown, it is now known
     }
