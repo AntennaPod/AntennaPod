@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -290,6 +291,63 @@ public class FeedDatabaseWriterTest {
         FeedItem updatedItem = feedFromDB.getItemAtIndex(9);
         assertEquals("item 0 duplicate", updatedItem.getTitle());
         assertEquals("id 0-duplicate", updatedItem.getItemIdentifier()); // Should use the new ID for sync etc
+    }
+
+    @Test
+    public void testFirstSubscriptionAddsRecentItemsToInbox() {
+        Feed feed = FeedDatabaseWriter.updateFeed(context, createFeed(), false);
+        FeedDatabaseWriter.updateFeed(context, createFeedWithDatedItems(5), false);
+
+        List<FeedItem> dbItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+        assertEquals(5, dbItems.size());
+        for (int i = 0; i < 5; i++) {
+            assertEquals(i < 3, dbItems.get(i).isNew());
+        }
+    }
+
+    @Test
+    public void testFirstSubscriptionHourExpired() {
+        Feed feed = FeedDatabaseWriter.updateFeed(context, createFeed(), false);
+        UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2));
+        FeedDatabaseWriter.updateFeed(context, createFeedWithDatedItems(5), false);
+
+        List<FeedItem> dbItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+        assertEquals(5, dbItems.size());
+        for (FeedItem item : dbItems) {
+            assertFalse(item.isNew());
+        }
+    }
+
+    @Test
+    public void testLaterSubscriptionDoesNotAddItemsToInbox() {
+        Feed existingFeed = createFeed();
+        existingFeed.setDownloadUrl("existing url");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(existingFeed);
+        adapter.close();
+
+        Feed feed = FeedDatabaseWriter.updateFeed(context, createFeed(), false);
+        FeedDatabaseWriter.updateFeed(context, createFeedWithDatedItems(5), false);
+
+        List<FeedItem> dbItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+        assertEquals(5, dbItems.size());
+        for (FeedItem item : dbItems) {
+            assertFalse(item.isNew());
+        }
+    }
+
+    private Feed createFeedWithDatedItems(int numItems) {
+        Feed feed = createFeed();
+        for (int i = 0; i < numItems; i++) {
+            FeedItem item = createItem("item-" + i, "Item " + i, feed);
+            item.setPubDate(new Date(i * 1000L));
+            feed.getItems().add(item);
+        }
+        return feed;
     }
 
 
