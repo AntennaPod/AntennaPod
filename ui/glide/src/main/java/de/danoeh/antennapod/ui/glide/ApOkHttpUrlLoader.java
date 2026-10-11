@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.glide;
 
 import android.content.ContentResolver;
+import android.net.Uri;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -86,10 +87,11 @@ class ApOkHttpUrlLoader<T> implements ModelLoader<T, InputStream> {
         GlideUrl glideUrl = new GlideUrl(url);
         if (model instanceof AuthenticatedImageUrl) {
             AuthenticatedImageUrl imageUrl = (AuthenticatedImageUrl) model;
-            if (imageUrl.hasCredentials()) {
+            if (imageUrl.hasCredentials() && "https".equalsIgnoreCase(Uri.parse(url).getScheme())) {
                 LazyHeaders headers = new LazyHeaders.Builder()
-                        .addHeader("Authorization", HttpCredentialEncoder.encode(
-                                imageUrl.getUsername(), imageUrl.getPassword(), "ISO-8859-1"))
+                        .addHeader("Authorization",
+                                HttpCredentialEncoder.encode(imageUrl.getUsername(),
+                                        imageUrl.getPassword(), "ISO-8859-1"))
                         .build();
                 glideUrl = new GlideUrl(url, headers);
             }
