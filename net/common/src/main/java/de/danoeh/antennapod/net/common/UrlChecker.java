@@ -39,6 +39,17 @@ public final class UrlChecker {
                 && HttpUrl.parse(url) != null);
     }
 
+    public static boolean isValidHost(String host) {
+        if ("localhost".equals(host) || Patterns.DOMAIN_NAME.matcher(host).matches()) {
+            return true;
+        }
+        if (host.startsWith("[") && host.endsWith("]")) {
+            host = host.substring(1, host.length() - 1);
+        }
+        return host.contains(":") && host.matches("[0-9a-fA-F:.]+")
+                && HttpUrl.parse("http://[" + host + "]/") != null;
+    }
+
     /**
      * Checks if URL is valid and modifies it if necessary.
      *
