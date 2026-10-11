@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.glide;
 
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -9,7 +10,8 @@ public class AuthenticatedImageUrl {
 
     @Nullable
     public static Object create(@Nullable String url, @Nullable FeedPreferences prefs) {
-        if (url != null && prefs != null && prefs.getUsername() != null && !prefs.getUsername().isEmpty()) {
+        if (url != null && prefs != null
+                && (!TextUtils.isEmpty(prefs.getUsername()) || !TextUtils.isEmpty(prefs.getPassword()))) {
             return new AuthenticatedImageUrl(url, prefs.getUsername(), prefs.getPassword());
         }
         return url;
@@ -24,8 +26,8 @@ public class AuthenticatedImageUrl {
 
     public AuthenticatedImageUrl(@NonNull String url, @Nullable String username, @Nullable String password) {
         this.url = url;
-        this.username = username;
-        this.password = password;
+        this.username = username == null ? "" : username;
+        this.password = password == null ? "" : password;
     }
 
     @NonNull
@@ -44,7 +46,7 @@ public class AuthenticatedImageUrl {
     }
 
     public boolean hasCredentials() {
-        return username != null && !username.isEmpty();
+        return !TextUtils.isEmpty(username) || !TextUtils.isEmpty(password);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.ui;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -46,7 +48,8 @@ public class CoverLoader {
     }
 
     public CoverLoader withCredentials(FeedPreferences prefs) {
-        if (prefs != null && prefs.getUsername() != null && !prefs.getUsername().isEmpty()) {
+        if (prefs != null
+                && (!TextUtils.isEmpty(prefs.getUsername()) || !TextUtils.isEmpty(prefs.getPassword()))) {
             this.username = prefs.getUsername();
             this.password = prefs.getPassword();
         }
@@ -89,7 +92,8 @@ public class CoverLoader {
                 .fitCenter()
                 .dontAnimate();
 
-        Object loadModel = (username != null)
+        Object loadModel = ((!TextUtils.isEmpty(username) || !TextUtils.isEmpty(password))
+                && URLUtil.isNetworkUrl(uri))
                 ? new AuthenticatedImageUrl(uri, username, password) : uri;
         RequestBuilder<Drawable> builder = Glide.with(imgvCover)
                 .as(Drawable.class)
@@ -97,7 +101,8 @@ public class CoverLoader {
                 .apply(options);
 
         if (fallbackUri != null) {
-            Object fallbackModel = (username != null)
+            Object fallbackModel = ((!TextUtils.isEmpty(username) || !TextUtils.isEmpty(password))
+                    && URLUtil.isNetworkUrl(fallbackUri))
                     ? new AuthenticatedImageUrl(fallbackUri, username, password) : fallbackUri;
             builder = builder.error(Glide.with(imgvCover)
                     .as(Drawable.class)
