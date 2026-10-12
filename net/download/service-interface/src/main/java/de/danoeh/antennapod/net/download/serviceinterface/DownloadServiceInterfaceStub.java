@@ -11,7 +11,7 @@ public class DownloadServiceInterfaceStub extends DownloadServiceInterface {
     }
 
     @Override
-    public void download(Context context, FeedItem item) {
+    public void download(Context context, FeedItem item, boolean skipQueue) {
     }
 
     @Override
