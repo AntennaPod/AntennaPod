@@ -3,6 +3,7 @@ package de.danoeh.antennapod.playback.base;
 import android.content.Context;
 import android.net.Uri;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.MediaMetadata;
 import androidx.preference.PreferenceManager;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -15,6 +16,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaItemAdapterTest {
@@ -48,6 +50,20 @@ public class MediaItemAdapterTest {
         setUseEpisodeCover(false);
         MediaItem mediaItem = MediaItemAdapter.fromPlayable(context, media, true);
         assertEquals(Uri.parse(PODCAST_COVER), mediaItem.mediaMetadata.artworkUri);
+    }
+
+    @Test
+    public void restoresCoverWhenNoArtworkCanBeLoaded() {
+        setUseEpisodeCover(true);
+        MediaItem itemWithChapterArtwork = new MediaItem.Builder()
+                .setMediaId("1")
+                .setMediaMetadata(new MediaMetadata.Builder()
+                        .setArtworkData(new byte[] {1, 2, 3}, MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+                        .build())
+                .build();
+        MediaItem mediaItem = MediaItemAdapter.withChapterArtwork(context, itemWithChapterArtwork, media, -1);
+        assertNull(mediaItem.mediaMetadata.artworkData);
+        assertEquals(Uri.parse(EPISODE_COVER), mediaItem.mediaMetadata.artworkUri);
     }
 
     private void setUseEpisodeCover(boolean value) {

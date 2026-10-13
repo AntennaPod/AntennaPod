@@ -124,7 +124,13 @@ public class MediaItemAdapter {
             bitmap = loadArtworkBitmap(context, playable, iconSize);
         }
         if (bitmap == null) {
-            return item;
+            String artworkLocation = ImageResourceUtils.getEpisodeListImageLocation(playable);
+            MediaMetadata metadata = item.mediaMetadata.buildUpon()
+                    .setArtworkData(null, null)
+                    .setArtworkUri(artworkLocation != null && artworkLocation.startsWith("http")
+                            ? Uri.parse(artworkLocation) : null)
+                    .build();
+            return item.buildUpon().setMediaMetadata(metadata).build();
         }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);

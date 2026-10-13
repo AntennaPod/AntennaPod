@@ -610,7 +610,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             return;
         }
         int chapterIndex = Chapter.getAfterPosition(currentPlayable.getChapters(), (int) player.getCurrentPosition());
-        if (chapterIndex < 0 || chapterIndex == lastChapterArtworkIndex) {
+        if (chapterIndex == lastChapterArtworkIndex) {
             return;
         }
         lastChapterArtworkIndex = chapterIndex;
