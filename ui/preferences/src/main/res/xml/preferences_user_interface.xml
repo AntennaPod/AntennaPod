@@ -19,12 +19,6 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/episode_information">
         <SwitchPreferenceCompat
-            android:title="@string/pref_episode_cover_title"
-            android:key="prefEpisodeCover"
-            android:summary="@string/pref_episode_cover_summary"
-            android:defaultValue="true"
-            android:enabled="true"/>
-        <SwitchPreferenceCompat
             android:title="@string/pref_show_remain_time_title"
             android:key="showTimeLeft"
             android:summary="@string/pref_show_remain_time_summary"
@@ -37,6 +31,12 @@
             android:title="@string/pref_playback_time_respects_speed_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
+        <SwitchPreferenceCompat
+                android:title="@string/pref_episode_cover_title"
+                android:key="prefEpisodeCover"
+                android:summary="@string/pref_episode_cover_summary"
+                android:defaultValue="true"
+                android:enabled="true"/>
         <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
