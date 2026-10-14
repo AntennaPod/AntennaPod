@@ -189,7 +189,7 @@ public class DBWriter {
             adapter.removeFeed(feed);
             adapter.close();
 
-            if (!feed.isLocalFeed() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
+            if (!feed.isLocalFeed() && !feed.isSearchFeed() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueFeedRemoved(feed.getDownloadUrl());
             }
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
@@ -701,7 +701,7 @@ public class DBWriter {
             adapter.close();
 
             for (Feed feed : feeds) {
-                if (!feed.isLocalFeed() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
+                if (!feed.isLocalFeed() && !feed.isSearchFeed() && feed.getState() != Feed.STATE_NOT_SUBSCRIBED) {
                     SynchronizationQueue.getInstance().enqueueFeedAdded(feed.getDownloadUrl());
                 }
             }

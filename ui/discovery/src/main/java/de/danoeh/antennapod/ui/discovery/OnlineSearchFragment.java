@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -62,6 +63,9 @@ public class OnlineSearchFragment extends Fragment
     private TextView txtvError;
     private Button butRetry;
     private TextView txtvEmpty;
+    private MaterialButton btnSubscribeSearch;
+    private String currentQuery;
+    private List<EpisodeSearchResult> currentEpisodeResults = new ArrayList<>();
 
     private Disposable disposable;
     private final CompositeDisposable actionDisposables = new CompositeDisposable();
@@ -138,6 +142,8 @@ public class OnlineSearchFragment extends Fragment
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
+        btnSubscribeSearch = root.findViewById(R.id.btnSubscribeSearch);
+        btnSubscribeSearch.setOnClickListener(v -> subscribeSearchFeed());
         TextView txtvPoweredBy = root.findViewById(R.id.search_powered_by);
         txtvPoweredBy.setText(getString(R.string.search_powered_by, searchProvider.getName()));
         setupToolbar(root.findViewById(R.id.toolbar));
@@ -340,6 +346,7 @@ public class OnlineSearchFragment extends Fragment
     }
 
     private void search(String query) {
+        currentQuery = query;
         if (disposable != null) {
             disposable.dispose();
         }
@@ -353,6 +360,7 @@ public class OnlineSearchFragment extends Fragment
                 .subscribe(pair -> {
                     List<PodcastSearchResult> podcastResults = pair.first;
                     List<EpisodeSearchResult> episodeResults = pair.second;
+                    currentEpisodeResults = episodeResults != null ? episodeResults : Collections.emptyList();
                     progressBar.setVisibility(View.GONE);
                     boolean hasPodcasts = podcastResults != null && !podcastResults.isEmpty();
                     boolean hasEpisodes = episodeResults != null && !episodeResults.isEmpty();
@@ -373,6 +381,7 @@ public class OnlineSearchFragment extends Fragment
                         if (hasEpisodes) {
                             episodesSection.setVisibility(View.VISIBLE);
                             episodeAdapter.updateData(episodeResults);
+                            checkSearchFeedSubscribed();
                         } else {
                             episodesSection.setVisibility(View.GONE);
                         }
@@ -385,6 +394,105 @@ public class OnlineSearchFragment extends Fragment
                     butRetry.setOnClickListener(v -> search(query));
                     butRetry.setVisibility(View.VISIBLE);
                 });
+    }
+
+    private void checkSearchFeedSubscribed() {
+        if (currentQuery == null || btnSubscribeSearch == null) {
+            return;
+        }
+        final String query = currentQuery;
+        actionDisposables.add(Single.fromCallable(() -> {
+            String searchFeedUrl = Feed.PREFIX_SEARCH_FEED + query;
+            for (Feed f : DBReader.getFeedList()) {
+                if (searchFeedUrl.equals(f.getDownloadUrl())) {
+                    return f.getState() == Feed.STATE_SUBSCRIBED;
+                }
+            }
+            return false;
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isSubscribed -> {
+                    if (query.equals(currentQuery)) {
+                        updateSubscribeSearchButton(isSubscribed);
+                    }
+                }, Throwable::printStackTrace));
+    }
+
+    private void updateSubscribeSearchButton(boolean isSubscribed) {
+        if (btnSubscribeSearch == null) {
+            return;
+        }
+        if (isSubscribed) {
+            btnSubscribeSearch.setEnabled(false);
+            btnSubscribeSearch.setText(R.string.subscribed_label);
+            btnSubscribeSearch.setIconResource(R.drawable.ic_check);
+        } else {
+            btnSubscribeSearch.setEnabled(true);
+            btnSubscribeSearch.setText(R.string.subscribe_search_feed_label);
+            btnSubscribeSearch.setIconResource(R.drawable.ic_add);
+        }
+    }
+
+    private void subscribeSearchFeed() {
+        if (currentQuery == null || currentEpisodeResults == null) {
+            return;
+        }
+        final String query = currentQuery;
+        final List<EpisodeSearchResult> episodeResults = new ArrayList<>(currentEpisodeResults);
+        actionDisposables.add(Completable.fromAction(() -> {
+            Context context = getContext();
+            if (context == null) {
+                return;
+            }
+            String searchFeedUrl = Feed.PREFIX_SEARCH_FEED + query;
+            Feed existingFeed = null;
+            for (Feed f : DBReader.getFeedList()) {
+                if (searchFeedUrl.equals(f.getDownloadUrl())) {
+                    existingFeed = f;
+                    break;
+                }
+            }
+            if (existingFeed != null) {
+                DBWriter.setFeedState(context, existingFeed, Feed.STATE_SUBSCRIBED);
+                FeedUpdateManager.getInstance().runOnce(context, existingFeed);
+            } else {
+                Feed feed = new Feed(searchFeedUrl, null,
+                        context.getString(R.string.search_feed_title, query));
+                feed.setState(Feed.STATE_SUBSCRIBED);
+                feed.setDescription(context.getString(R.string.search_feed_description, query));
+                feed.setAuthor("AntennaPod Search");
+
+                feed.setImageUrl(Feed.PREFIX_SEARCH_COVER + query);
+
+                List<FeedItem> items = new ArrayList<>();
+                for (EpisodeSearchResult episode : episodeResults) {
+                    String identifier = episode.episodeGuid != null
+                            ? episode.episodeGuid : episode.episodeUrl;
+                    FeedItem item = new FeedItem(0, episode.title, identifier,
+                            episode.episodeUrl, episode.pubDate, FeedItem.NEW, feed);
+                    if (episode.description != null) {
+                        item.setDescriptionIfLonger(episode.description);
+                    }
+                    if (episode.imageUrl != null) {
+                        item.setImageUrl(episode.imageUrl);
+                    }
+                    FeedMedia media = new FeedMedia(item, episode.episodeUrl, 0, "audio/*");
+                    media.setDuration((int) episode.durationMs);
+                    item.setMedia(media);
+                    items.add(item);
+                }
+                feed.setItems(items);
+
+                Feed savedFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
+                FeedUpdateManager.getInstance().runOnce(context, savedFeed);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    updateSubscribeSearchButton(true);
+                }, Throwable::printStackTrace));
     }
 
     private void showOnlyProgressBar() {
