@@ -16,6 +16,8 @@
     <string name="add_feed_label_short">Add</string>
     <string name="episodes_label">Episodes</string>
     <string name="episodes_label_short">Episodes</string>
+    <string name="podcasts_label">Podcasts</string>
+    <string name="subscribed_label">Subscribed</string>
     <string name="home_label">Home</string>
     <string name="home_label_short">Home</string>
     <string name="queue_label">Queue</string>
