@@ -136,9 +136,19 @@ public class ClockSleepTimer implements SleepTimer {
 
     @Override
     public void reset() {
+        if (!isActive()) {
+            return;
+        }
+        if (shakeListener != null) {
+            shakeListener.pause();
+            shakeListener = null;
+        }
+        hasVibrated = false;
+        lastTick = System.currentTimeMillis();
         EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
         updateRemainingTime(initialWaitingTime);
         EventBus.getDefault().post(SleepTimerUpdatedEvent.justEnabled(getTimeLeft()));
+        EventBus.getDefault().postSticky(SleepTimerUpdatedEvent.updated(getTimeLeft()));
     }
 
     @Override

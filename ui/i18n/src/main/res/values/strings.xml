@@ -710,6 +710,8 @@
         <item quantity="other">There are only %1$d episodes left in your queue</item>
     </plurals>
     <string name="shake_to_reset_label">Shake to reset</string>
+    <string name="reset_timer_on_playback_interaction_label">Restart timer on episode selection</string>
+    <string name="reset_timer_on_playback_interaction_summary">Restart the active timer when you select an episode. Pausing, resuming, seeking within an episode, skipping, and changing playback speed keep the remaining time.</string>
     <string name="timer_vibration_label">Vibrate shortly before end</string>
     <string name="time_seconds">seconds</string>
     <string name="time_minutes">minutes</string>

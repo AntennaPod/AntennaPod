@@ -301,6 +301,14 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     MediaLibrarySessionCallback sessionCallback = new MediaLibrarySessionCallback(this) {
         @Override
+        protected void onPlaybackInteraction() {
+            if (SleepTimerPreferences.resetOnPlaybackInteraction() && sleepTimer != null
+                    && !(sleepTimer instanceof EpisodeSleepTimer)) {
+                sleepTimer.reset();
+            }
+        }
+
+        @Override
         @NonNull
         @UnstableApi
         public ListenableFuture<SessionResult> onCustomCommand(@NonNull MediaSession session,

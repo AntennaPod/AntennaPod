@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
+import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
 import androidx.media.utils.MediaConstants;
 import androidx.media3.common.C;
@@ -140,6 +141,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         session.setMediaButtonPreferences(buildCustomLayout());
     }
 
+    @Override
+    @UnstableApi
+    public void onPlayerInteractionFinished(@NonNull MediaSession session,
+            @NonNull MediaSession.ControllerInfo controllerInfo, @NonNull Player.Commands playerCommands) {
+        if (playerCommands.contains(Player.COMMAND_SEEK_TO_MEDIA_ITEM)) {
+            onPlaybackInteraction();
+        }
+    }
+
+    protected void onPlaybackInteraction() {
+    }
+
     @UnstableApi
     public void refreshNotification(MediaLibraryService.MediaLibrarySession session) {
         session.setMediaButtonPreferences(buildCustomLayout());
@@ -257,7 +270,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         String searchQuery = mediaItems.get(index).requestMetadata.searchQuery;
         if (searchQuery != null) {
             if ("".equals(searchQuery)) {
-                return playbackResumption(true); // "Play something" voice action
+                return resetTimerAfterSelection(playbackResumption(true)); // "Play something" voice action
             }
             SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
             Maybe.fromCallable(() -> {
@@ -284,7 +297,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     },
                         () -> future.set(new MediaSession.MediaItemsWithStartPosition(
                                 Collections.emptyList(), index, startPositionMs)));
-            return future;
+            return resetTimerAfterSelection(future);
         }
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
         Single.fromCallable(
@@ -305,7 +318,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     future.set(new MediaSession.MediaItemsWithStartPosition(
                             Collections.emptyList(), index, startPositionMs));
                 });
-        return future;
+        return resetTimerAfterSelection(future);
+    }
+
+    @UnstableApi
+    private ListenableFuture<MediaSession.MediaItemsWithStartPosition> resetTimerAfterSelection(
+            ListenableFuture<MediaSession.MediaItemsWithStartPosition> selection) {
+        return Futures.transform(selection, result -> {
+            if (!result.mediaItems.isEmpty()) {
+                onPlaybackInteraction();
+            }
+            return result;
+        }, ContextCompat.getMainExecutor(context));
     }
 
     @Override
