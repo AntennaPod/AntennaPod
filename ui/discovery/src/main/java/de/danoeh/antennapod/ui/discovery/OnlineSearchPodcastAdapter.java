@@ -65,7 +65,7 @@ public class OnlineSearchPodcastAdapter extends RecyclerView.Adapter<OnlineSearc
                 .load(podcast.imageUrl)
                 .apply(new RequestOptions()
                         .placeholder(ImagePlaceholder.getDrawable(context, radius))
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .transform(new FitCenter(), new RoundedCorners((int) radius))
                         .dontAnimate())
                 .into(holder.imgvCover);

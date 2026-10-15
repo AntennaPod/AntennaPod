@@ -106,7 +106,7 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
                 .load(episode.imageUrl)
                 .apply(new RequestOptions()
                         .placeholder(ImagePlaceholder.getDrawable(context, radius))
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                         .transform(new FitCenter(), new RoundedCorners((int) radius))
                         .dontAnimate())
                 .into(holder.imgvCover);
@@ -116,6 +116,7 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
             holder.btnSubscribe.setText(R.string.subscribed_label);
             holder.btnSubscribe.setIconResource(R.drawable.ic_check);
             holder.btnSubscribe.setEnabled(false);
+            holder.btnSubscribe.setOnClickListener(null);
         } else {
             holder.btnSubscribe.setText(R.string.subscribe_label);
             holder.btnSubscribe.setIconResource(R.drawable.ic_add);
