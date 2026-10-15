@@ -159,7 +159,9 @@ public class DBWriter {
             // Do full update of this feed to get rid of the item
             FeedUpdateManager.getInstance().runOnce(context, media.getItem().getFeed());
         } else {
-            if (media.getItem().getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
+            if (!media.getItem().getFeed().isLocalFeed()
+                    && !media.getItem().getFeed().isSearchFeed()
+                    && media.getItem().getFeed().getState() != Feed.STATE_NOT_SUBSCRIBED) {
                 SynchronizationQueue.getInstance().enqueueEpisodeAction(
                         new EpisodeAction.Builder(media.getItem(), EpisodeAction.DELETE)
                             .currentTimestamp()
@@ -870,12 +872,14 @@ public class DBWriter {
                 feed.getPreferences().setKeepUpdated(true);
                 DBWriter.setFeedPreferences(feed.getPreferences());
                 FeedUpdateManager.getInstance().runOnceOrAsk(context, feed);
-                SynchronizationQueue.getInstance().enqueueFeedAdded(feed.getDownloadUrl());
-                DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
-                        SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
-                for (FeedItem item : feed.getItems()) {
-                    if (item.isPlayed()) {
-                        SynchronizationQueue.getInstance().enqueueEpisodePlayed(item.getMedia(), -1, true);
+                if (!feed.isLocalFeed() && !feed.isSearchFeed()) {
+                    SynchronizationQueue.getInstance().enqueueFeedAdded(feed.getDownloadUrl());
+                    DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                            SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+                    for (FeedItem item : feed.getItems()) {
+                        if (item.isPlayed()) {
+                            SynchronizationQueue.getInstance().enqueueEpisodePlayed(item.getMedia(), -1, true);
+                        }
                     }
                 }
             }
