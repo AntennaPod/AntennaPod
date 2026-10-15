@@ -13,6 +13,7 @@ dependencies {
     implementation project(":model")
     implementation project(':net:discovery')
     implementation project(':storage:database')
+    implementation project(':storage:preferences')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
     implementation project(':net:download:service-interface')

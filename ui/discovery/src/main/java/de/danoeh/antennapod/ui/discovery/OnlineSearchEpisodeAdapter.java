@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.net.discovery.EpisodeSearchResult;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
@@ -28,12 +29,15 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
     private final Context context;
     private final List<EpisodeSearchResult> data = new ArrayList<>();
     private final Set<String> subscribedFeedUrls = new HashSet<>();
+    private boolean isSearchFeedSubscribed = false;
     private final OnEpisodeActionListener listener;
 
     public interface OnEpisodeActionListener {
         void onEpisodeClick(EpisodeSearchResult episode);
 
         void onPlayClick(EpisodeSearchResult episode);
+
+        void onDownloadClick(EpisodeSearchResult episode);
 
         void onSubscribeClick(EpisodeSearchResult episode);
     }
@@ -67,6 +71,12 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
             subscribedFeedUrls.add(url);
             notifyDataSetChanged();
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setSearchFeedSubscribed(boolean subscribed) {
+        this.isSearchFeedSubscribed = subscribed;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -110,11 +120,27 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
                         .dontAnimate())
                 .into(holder.imgvCover);
 
-        holder.btnPlay.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onPlayClick(episode);
-            }
-        });
+        boolean isSubscribed = isSearchFeedSubscribed
+                || (episode.feedUrl != null && subscribedFeedUrls.contains(episode.feedUrl));
+        boolean shouldDownload = isSubscribed && !UserPreferences.isStreamOverDownload();
+
+        if (shouldDownload) {
+            holder.imgvPlay.setImageResource(R.drawable.ic_download);
+            holder.btnPlay.setContentDescription(context.getString(R.string.download_label));
+            holder.btnPlay.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onDownloadClick(episode);
+                }
+            });
+        } else {
+            holder.imgvPlay.setImageResource(R.drawable.ic_stream);
+            holder.btnPlay.setContentDescription(context.getString(R.string.stream_label));
+            holder.btnPlay.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onPlayClick(episode);
+                }
+            });
+        }
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -134,6 +160,7 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
         final TextView txtvPodcastAndDate;
         final TextView txtvDescription;
         final View btnPlay;
+        final ImageView imgvPlay;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -142,6 +169,7 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
             txtvPodcastAndDate = itemView.findViewById(R.id.txtvPodcastAndDate);
             txtvDescription = itemView.findViewById(R.id.txtvDescription);
             btnPlay = itemView.findViewById(R.id.btnPlay);
+            imgvPlay = itemView.findViewById(R.id.imgvPlay);
         }
     }
 }

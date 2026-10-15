@@ -31,6 +31,7 @@ import de.danoeh.antennapod.net.discovery.PodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
 import de.danoeh.antennapod.net.discovery.SearchFeedBuilder;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -172,6 +173,11 @@ public class OnlineSearchFragment extends Fragment
     }
 
     @Override
+    public void onDownloadClick(EpisodeSearchResult episode) {
+        downloadEpisode(episode);
+    }
+
+    @Override
     public void onSubscribeClick(EpisodeSearchResult episode) {
         subscribeEpisode(episode);
     }
@@ -235,6 +241,57 @@ public class OnlineSearchFragment extends Fragment
                 AndroidSchedulers.mainThread().scheduleDirect(() -> {
                     if (getActivity() instanceof PlaybackHost) {
                         ((PlaybackHost) getActivity()).playMedia(media);
+                    }
+                });
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribe(() -> { }, Throwable::printStackTrace));
+    }
+
+    private void downloadEpisode(EpisodeSearchResult episode) {
+        actionDisposables.add(Completable.fromAction(() -> {
+            Context context = getContext();
+            if (context == null || episode.episodeUrl == null) {
+                return;
+            }
+            FeedItem item = DBReader.getFeedItemByGuidOrEpisodeUrl(episode.episodeGuid, episode.episodeUrl);
+            if (item == null) {
+                Feed existingFeed = null;
+                for (Feed f : DBReader.getFeedList()) {
+                    if (f.getDownloadUrl().equals(episode.feedUrl)) {
+                        existingFeed = f;
+                        break;
+                    }
+                }
+                Feed feed = existingFeed != null
+                        ? existingFeed : new Feed(episode.feedUrl, null, episode.podcastTitle);
+                if (feed.getItems() == null) {
+                    feed.setItems(new ArrayList<>());
+                }
+                item = new FeedItem(0, episode.title,
+                        episode.episodeGuid != null ? episode.episodeGuid : episode.episodeUrl,
+                        episode.episodeUrl, episode.pubDate, FeedItem.NEW, feed);
+                FeedMedia media = new FeedMedia(item, episode.episodeUrl, 0, "audio/*");
+                item.setMedia(media);
+                feed.getItems().add(item);
+                Feed savedFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
+                for (FeedItem i : savedFeed.getItems()) {
+                    if ((episode.episodeGuid != null && episode.episodeGuid.equals(i.getItemIdentifier()))
+                            || (i.getMedia() != null
+                            && episode.episodeUrl.equals(i.getMedia().getDownloadUrl()))) {
+                        item = i;
+                        break;
+                    }
+                }
+            }
+            if (item != null) {
+                FeedItem downloadItem = item;
+                AndroidSchedulers.mainThread().scheduleDirect(() -> {
+                    try {
+                        DownloadServiceInterface.get().download(context, downloadItem);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Download error", e);
                     }
                 });
             }
@@ -442,6 +499,9 @@ public class OnlineSearchFragment extends Fragment
                 .subscribe(isSubscribed -> {
                     if (query.equals(currentQuery)) {
                         updateSubscribeSearchButton(isSubscribed);
+                        if (episodeAdapter != null) {
+                            episodeAdapter.setSearchFeedSubscribed(isSubscribed);
+                        }
                     }
                 }, Throwable::printStackTrace));
     }
@@ -493,6 +553,9 @@ public class OnlineSearchFragment extends Fragment
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     updateSubscribeSearchButton(true);
+                    if (episodeAdapter != null) {
+                        episodeAdapter.setSearchFeedSubscribed(true);
+                    }
                 }, Throwable::printStackTrace));
     }
 

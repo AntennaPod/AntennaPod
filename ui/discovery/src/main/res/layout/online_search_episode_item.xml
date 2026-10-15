@@ -90,7 +90,7 @@
             android:layout_gravity="center"
             android:importantForAccessibility="no"
             app:tint="?attr/action_icon_color"
-            app:srcCompat="@drawable/ic_play_24dp" />
+            app:srcCompat="@drawable/ic_stream" />
 
     </FrameLayout>
 
