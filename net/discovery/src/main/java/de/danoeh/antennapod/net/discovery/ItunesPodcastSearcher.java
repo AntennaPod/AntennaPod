@@ -103,54 +103,7 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
                 if (response.isSuccessful()) {
                     String resultString = response.body().string();
                     JSONObject result = new JSONObject(resultString);
-                    JSONArray j = result.getJSONArray("results");
-
-                    for (int i = 0; i < j.length(); i++) {
-                        JSONObject episodeJson = j.getJSONObject(i);
-                        String feedUrl = episodeJson.optString("feedUrl", null);
-                        String episodeUrl = episodeJson.optString("episodeUrl", null);
-                        if (episodeUrl == null || episodeUrl.isEmpty()) {
-                            episodeUrl = episodeJson.optString("previewUrl", null);
-                        }
-                        if (feedUrl == null || feedUrl.isEmpty()
-                                || episodeUrl == null || episodeUrl.isEmpty()) {
-                            continue;
-                        }
-
-                        String imageUrl = episodeJson.optString("artworkUrl600", null);
-                        if (imageUrl == null || imageUrl.isEmpty()) {
-                            imageUrl = episodeJson.optString("artworkUrl160", null);
-                        }
-                        if (imageUrl == null || imageUrl.isEmpty()) {
-                            imageUrl = episodeJson.optString("artworkUrl60", null);
-                        }
-                        String episodeGuid = episodeJson.optString("episodeGuid", null);
-                        long durationMs = episodeJson.optLong("trackTimeMillis", 0);
-                        String description = episodeJson.optString("description", null);
-                        if (description == null || description.isEmpty()) {
-                            description = episodeJson.optString("shortDescription", null);
-                        }
-                        String author = episodeJson.optString("artistName", null);
-
-                        Date pubDate = null;
-                        String releaseDateStr = episodeJson.optString("releaseDate", null);
-                        if (releaseDateStr != null && !releaseDateStr.isEmpty()) {
-                            try {
-                                SimpleDateFormat format =
-                                        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-                                format.setTimeZone(TimeZone.getTimeZone("UTC"));
-                                pubDate = format.parse(releaseDateStr);
-                            } catch (Exception ignored) {
-                                ignored.printStackTrace();
-                            }
-                        }
-
-                        final String title = episodeJson.optString("trackName", "Unknown");
-                        final String podcastTitle = episodeJson.optString("collectionName", "Unknown");
-
-                        episodes.add(new EpisodeSearchResult(title, podcastTitle, imageUrl, feedUrl,
-                                episodeUrl, episodeGuid, pubDate, durationMs, description, author));
-                    }
+                    episodes = parseEpisodesJson(result);
                 } else {
                     subscriber.onError(new IOException(response.toString()));
                 }
@@ -161,6 +114,59 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    static List<EpisodeSearchResult> parseEpisodesJson(JSONObject result) throws JSONException {
+        List<EpisodeSearchResult> episodes = new ArrayList<>();
+        JSONArray j = result.getJSONArray("results");
+
+        for (int i = 0; i < j.length(); i++) {
+            JSONObject episodeJson = j.getJSONObject(i);
+            String feedUrl = episodeJson.optString("feedUrl", null);
+            String episodeUrl = episodeJson.optString("episodeUrl", null);
+            if (episodeUrl == null || episodeUrl.isEmpty()) {
+                episodeUrl = episodeJson.optString("previewUrl", null);
+            }
+            if (feedUrl == null || feedUrl.isEmpty()
+                    || episodeUrl == null || episodeUrl.isEmpty()) {
+                continue;
+            }
+
+            String imageUrl = episodeJson.optString("artworkUrl600", null);
+            if (imageUrl == null || imageUrl.isEmpty()) {
+                imageUrl = episodeJson.optString("artworkUrl160", null);
+            }
+            if (imageUrl == null || imageUrl.isEmpty()) {
+                imageUrl = episodeJson.optString("artworkUrl60", null);
+            }
+            String episodeGuid = episodeJson.optString("episodeGuid", null);
+            long durationMs = episodeJson.optLong("trackTimeMillis", 0);
+            String description = episodeJson.optString("description", null);
+            if (description == null || description.isEmpty()) {
+                description = episodeJson.optString("shortDescription", null);
+            }
+            String author = episodeJson.optString("artistName", null);
+
+            Date pubDate = null;
+            String releaseDateStr = episodeJson.optString("releaseDate", null);
+            if (releaseDateStr != null && !releaseDateStr.isEmpty()) {
+                try {
+                    SimpleDateFormat format =
+                            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+                    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    pubDate = format.parse(releaseDateStr);
+                } catch (Exception ignored) {
+                    ignored.printStackTrace();
+                }
+            }
+
+            final String title = episodeJson.optString("trackName", "Unknown");
+            final String podcastTitle = episodeJson.optString("collectionName", "Unknown");
+
+            episodes.add(new EpisodeSearchResult(title, podcastTitle, imageUrl, feedUrl,
+                    episodeUrl, episodeGuid, pubDate, durationMs, description, author));
+        }
+        return episodes;
     }
 
     @Override
