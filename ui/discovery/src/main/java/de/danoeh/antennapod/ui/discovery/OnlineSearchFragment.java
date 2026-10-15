@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.ui.discovery;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import androidx.viewpager2.widget.ViewPager2;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
@@ -59,16 +63,19 @@ public class OnlineSearchFragment extends Fragment
     private OnlineSearchEpisodeAdapter episodeAdapter;
     private PodcastSearcher searchProvider;
     private View resultsContainer;
-    private View podcastsSection;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
     private RecyclerView recyclerViewFeeds;
-    private View episodesSection;
     private RecyclerView recyclerViewEpisodes;
+    private TextView txtvNoPodcasts;
+    private TextView txtvNoEpisodes;
     private ProgressBar progressBar;
     private TextView txtvError;
     private Button butRetry;
     private TextView txtvEmpty;
     private MaterialButton btnSubscribeSearch;
     private String currentQuery;
+    private List<PodcastSearchResult> currentPodcastResults = new ArrayList<>();
     private List<EpisodeSearchResult> currentEpisodeResults = new ArrayList<>();
 
     private Disposable disposable;
@@ -114,40 +121,37 @@ public class OnlineSearchFragment extends Fragment
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_online_search, container, false);
         resultsContainer = root.findViewById(R.id.resultsContainer);
-        podcastsSection = root.findViewById(R.id.podcastsSection);
-        recyclerViewFeeds = root.findViewById(R.id.recyclerViewFeeds);
-        episodesSection = root.findViewById(R.id.episodesSection);
-        recyclerViewEpisodes = root.findViewById(R.id.recyclerViewEpisodes);
+        tabLayout = root.findViewById(R.id.tabLayout);
+        viewPager = root.findViewById(R.id.viewPager);
 
-        recyclerViewFeeds.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         podcastAdapter = new OnlineSearchPodcastAdapter(getContext(), podcast -> {
             startActivity(new OnlineFeedviewActivityStarter(getContext(), podcast.feedUrl).getIntent());
         });
-        recyclerViewFeeds.setAdapter(podcastAdapter);
-
-        recyclerViewEpisodes.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         episodeAdapter = new OnlineSearchEpisodeAdapter(getContext(), this);
-        recyclerViewEpisodes.setAdapter(episodeAdapter);
 
-        RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+        viewPager.setAdapter(new SearchPagerAdapter());
+        viewPager.setOffscreenPageLimit(1);
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if (position == 0) {
+                tab.setText(R.string.podcasts_label);
+            } else {
+                tab.setText(R.string.episodes_label);
+            }
+        }).attach();
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+            public void onPageScrollStateChanged(int state) {
+                if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
                     Keyboard.hide(getActivity());
                 }
             }
-        };
-        recyclerViewFeeds.addOnScrollListener(scrollListener);
-        recyclerViewEpisodes.addOnScrollListener(scrollListener);
+        });
 
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
-        btnSubscribeSearch = root.findViewById(R.id.btnSubscribeSearch);
-        btnSubscribeSearch.setOnClickListener(v -> subscribeSearchFeed());
         TextView txtvPoweredBy = root.findViewById(R.id.search_powered_by);
         txtvPoweredBy.setText(getString(R.string.search_powered_by, searchProvider.getName()));
         setupToolbar(root.findViewById(R.id.toolbar));
@@ -276,10 +280,12 @@ public class OnlineSearchFragment extends Fragment
     public void onDestroyView() {
         super.onDestroyView();
         resultsContainer = null;
-        podcastsSection = null;
+        tabLayout = null;
+        viewPager = null;
         recyclerViewFeeds = null;
-        episodesSection = null;
         recyclerViewEpisodes = null;
+        txtvNoPodcasts = null;
+        txtvNoEpisodes = null;
         progressBar = null;
         txtvError = null;
         butRetry = null;
@@ -373,10 +379,11 @@ public class OnlineSearchFragment extends Fragment
                 .subscribe(pair -> {
                     List<PodcastSearchResult> podcastResults = pair.first;
                     List<EpisodeSearchResult> episodeResults = pair.second;
+                    currentPodcastResults = podcastResults != null ? podcastResults : Collections.emptyList();
                     currentEpisodeResults = episodeResults != null ? episodeResults : Collections.emptyList();
                     progressBar.setVisibility(View.GONE);
-                    boolean hasPodcasts = podcastResults != null && !podcastResults.isEmpty();
-                    boolean hasEpisodes = episodeResults != null && !episodeResults.isEmpty();
+                    boolean hasPodcasts = !currentPodcastResults.isEmpty();
+                    boolean hasEpisodes = !currentEpisodeResults.isEmpty();
 
                     if (!hasPodcasts && !hasEpisodes) {
                         resultsContainer.setVisibility(View.GONE);
@@ -385,18 +392,30 @@ public class OnlineSearchFragment extends Fragment
                     } else {
                         txtvEmpty.setVisibility(View.GONE);
                         resultsContainer.setVisibility(View.VISIBLE);
-                        if (hasPodcasts) {
-                            podcastsSection.setVisibility(View.VISIBLE);
-                            podcastAdapter.updateData(podcastResults);
-                        } else {
-                            podcastsSection.setVisibility(View.GONE);
+                        if (podcastAdapter != null) {
+                            podcastAdapter.updateData(currentPodcastResults);
+                        }
+                        if (episodeAdapter != null) {
+                            episodeAdapter.updateData(currentEpisodeResults);
+                        }
+                        if (recyclerViewFeeds != null && txtvNoPodcasts != null) {
+                            recyclerViewFeeds.setVisibility(hasPodcasts ? View.VISIBLE : View.GONE);
+                            txtvNoPodcasts.setVisibility(hasPodcasts ? View.GONE : View.VISIBLE);
+                        }
+                        if (recyclerViewEpisodes != null && txtvNoEpisodes != null) {
+                            recyclerViewEpisodes.setVisibility(hasEpisodes ? View.VISIBLE : View.GONE);
+                            txtvNoEpisodes.setVisibility(hasEpisodes ? View.GONE : View.VISIBLE);
+                        }
+                        if (btnSubscribeSearch != null) {
+                            btnSubscribeSearch.setVisibility(hasEpisodes ? View.VISIBLE : View.GONE);
                         }
                         if (hasEpisodes) {
-                            episodesSection.setVisibility(View.VISIBLE);
-                            episodeAdapter.updateData(episodeResults);
                             checkSearchFeedSubscribed();
-                        } else {
-                            episodesSection.setVisibility(View.GONE);
+                        }
+                        if (!hasPodcasts && hasEpisodes && viewPager != null) {
+                            viewPager.setCurrentItem(1, false);
+                        } else if (hasPodcasts && viewPager != null) {
+                            viewPager.setCurrentItem(0, false);
                         }
                     }
                 }, error -> {
@@ -483,5 +502,82 @@ public class OnlineSearchFragment extends Fragment
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private class SearchPagerAdapter extends RecyclerView.Adapter<SearchPagerAdapter.PageViewHolder> {
+        @NonNull
+        @Override
+        public PageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        Keyboard.hide(getActivity());
+                    }
+                }
+            };
+            if (viewType == 0) {
+                View view = inflater.inflate(R.layout.online_search_podcasts_page, parent, false);
+                recyclerViewFeeds = view.findViewById(R.id.recyclerViewFeeds);
+                txtvNoPodcasts = view.findViewById(R.id.txtvNoPodcasts);
+                recyclerViewFeeds.setLayoutManager(new LinearLayoutManager(parent.getContext()));
+                recyclerViewFeeds.setAdapter(podcastAdapter);
+                recyclerViewFeeds.addOnScrollListener(scrollListener);
+                return new PageViewHolder(view);
+            } else {
+                View view = inflater.inflate(R.layout.online_search_episodes_page, parent, false);
+                recyclerViewEpisodes = view.findViewById(R.id.recyclerViewEpisodes);
+                txtvNoEpisodes = view.findViewById(R.id.txtvNoEpisodes);
+                btnSubscribeSearch = view.findViewById(R.id.btnSubscribeSearch);
+                recyclerViewEpisodes.setLayoutManager(new LinearLayoutManager(parent.getContext()));
+                recyclerViewEpisodes.setAdapter(episodeAdapter);
+                recyclerViewEpisodes.addOnScrollListener(scrollListener);
+                btnSubscribeSearch.setOnClickListener(v -> subscribeSearchFeed());
+                return new PageViewHolder(view);
+            }
+        }
+
+        @Override
+        @SuppressLint("RecyclerView")
+        public void onBindViewHolder(@NonNull PageViewHolder holder, int position) {
+            if (holder.getItemViewType() == 0) {
+                boolean hasPodcasts = !currentPodcastResults.isEmpty();
+                if (recyclerViewFeeds != null) {
+                    recyclerViewFeeds.setVisibility(hasPodcasts ? View.VISIBLE : View.GONE);
+                }
+                if (txtvNoPodcasts != null) {
+                    txtvNoPodcasts.setVisibility(hasPodcasts ? View.GONE : View.VISIBLE);
+                }
+            } else {
+                checkSearchFeedSubscribed();
+                boolean hasEpisodes = !currentEpisodeResults.isEmpty();
+                if (recyclerViewEpisodes != null) {
+                    recyclerViewEpisodes.setVisibility(hasEpisodes ? View.VISIBLE : View.GONE);
+                }
+                if (txtvNoEpisodes != null) {
+                    txtvNoEpisodes.setVisibility(hasEpisodes ? View.GONE : View.VISIBLE);
+                }
+                if (btnSubscribeSearch != null) {
+                    btnSubscribeSearch.setVisibility(hasEpisodes ? View.VISIBLE : View.GONE);
+                }
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
+
+        static class PageViewHolder extends RecyclerView.ViewHolder {
+            PageViewHolder(@NonNull View itemView) {
+                super(itemView);
+            }
+        }
     }
 }

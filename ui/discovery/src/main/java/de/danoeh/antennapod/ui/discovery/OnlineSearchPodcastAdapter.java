@@ -45,7 +45,7 @@ public class OnlineSearchPodcastAdapter extends RecyclerView.Adapter<OnlineSearc
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.online_search_podcast_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.online_search_listitem, parent, false);
         return new ViewHolder(view);
     }
 
@@ -60,7 +60,7 @@ public class OnlineSearchPodcastAdapter extends RecyclerView.Adapter<OnlineSearc
             holder.txtvAuthor.setVisibility(View.GONE);
         }
 
-        float radius = 12 * context.getResources().getDisplayMetrics().density;
+        float radius = 8 * context.getResources().getDisplayMetrics().density;
         Glide.with(context)
                 .load(podcast.imageUrl)
                 .apply(new RequestOptions()

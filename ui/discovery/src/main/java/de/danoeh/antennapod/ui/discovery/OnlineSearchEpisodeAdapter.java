@@ -15,7 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.button.MaterialButton;
 import de.danoeh.antennapod.net.discovery.EpisodeSearchResult;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.common.DateFormatter;
@@ -111,23 +110,6 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
                         .dontAnimate())
                 .into(holder.imgvCover);
 
-        boolean isSubscribed = episode.feedUrl != null && subscribedFeedUrls.contains(episode.feedUrl);
-        if (isSubscribed) {
-            holder.btnSubscribe.setText(R.string.subscribed_label);
-            holder.btnSubscribe.setIconResource(R.drawable.ic_check);
-            holder.btnSubscribe.setEnabled(false);
-            holder.btnSubscribe.setOnClickListener(null);
-        } else {
-            holder.btnSubscribe.setText(R.string.subscribe_label);
-            holder.btnSubscribe.setIconResource(R.drawable.ic_add);
-            holder.btnSubscribe.setEnabled(true);
-            holder.btnSubscribe.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onSubscribeClick(episode);
-                }
-            });
-        }
-
         holder.btnPlay.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onPlayClick(episode);
@@ -151,8 +133,7 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
         final TextView txtvTitle;
         final TextView txtvPodcastAndDate;
         final TextView txtvDescription;
-        final MaterialButton btnSubscribe;
-        final MaterialButton btnPlay;
+        final View btnPlay;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -160,7 +141,6 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
             txtvTitle = itemView.findViewById(R.id.txtvTitle);
             txtvPodcastAndDate = itemView.findViewById(R.id.txtvPodcastAndDate);
             txtvDescription = itemView.findViewById(R.id.txtvDescription);
-            btnSubscribe = itemView.findViewById(R.id.btnSubscribe);
             btnPlay = itemView.findViewById(R.id.btnPlay);
         }
     }
