@@ -352,9 +352,25 @@ public class OnlineSearchFragment extends Fragment
         }
         showOnlyProgressBar();
         disposable = Single.zip(
-                searchProvider.search(query).onErrorReturnItem(Collections.emptyList()),
-                searchProvider.searchEpisodes(query).onErrorReturnItem(Collections.emptyList()),
+                searchProvider.search(query)
+                        .map(list -> new Pair<List<PodcastSearchResult>, Throwable>(list, null))
+                        .onErrorReturn(error -> new Pair<>(null, error)),
+                searchProvider.searchEpisodes(query)
+                        .map(list -> new Pair<List<EpisodeSearchResult>, Throwable>(list, null))
+                        .onErrorReturn(error -> new Pair<>(null, error)),
                 Pair::create)
+                .flatMap(combined -> {
+                    Pair<List<PodcastSearchResult>, Throwable> podcasts = combined.first;
+                    Pair<List<EpisodeSearchResult>, Throwable> episodes = combined.second;
+                    if (podcasts.second != null && episodes.second != null) {
+                        return Single.error(podcasts.second);
+                    }
+                    List<PodcastSearchResult> podcastList = podcasts.first != null
+                            ? podcasts.first : Collections.emptyList();
+                    List<EpisodeSearchResult> episodeList = episodes.first != null
+                            ? episodes.first : Collections.emptyList();
+                    return Single.just(Pair.create(podcastList, episodeList));
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pair -> {
