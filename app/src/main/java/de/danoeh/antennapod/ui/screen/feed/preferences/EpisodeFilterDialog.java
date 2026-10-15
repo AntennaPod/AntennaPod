@@ -10,7 +10,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.SimpleChipAdapter;
 import de.danoeh.antennapod.databinding.EpisodeFilterDialogBinding;
 import de.danoeh.antennapod.model.feed.FeedFilter;
-import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
+import de.danoeh.antennapod.ui.common.ItemOffsetDecoration;
 
 import java.util.List;
 

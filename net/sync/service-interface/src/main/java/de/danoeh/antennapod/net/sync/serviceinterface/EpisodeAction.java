@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.TimeZone;
 
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -119,63 +118,12 @@ public class EpisodeAction {
     }
 
     /**
-     * Returns the position (in seconds) at which the client started playback.
-     *
-     * @return start position (in seconds)
-     */
-    public int getStarted() {
-        return this.started;
-    }
-
-    /**
      * Returns the position (in seconds) at which the client stopped playback.
      *
      * @return stop position (in seconds)
      */
     public int getPosition() {
         return this.position;
-    }
-
-    /**
-     * Returns the total length of the file in seconds.
-     *
-     * @return total length in seconds
-     */
-    public int getTotal() {
-        return this.total;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof EpisodeAction)) {
-            return false;
-        }
-
-        EpisodeAction that = (EpisodeAction) o;
-        return started == that.started
-                && position == that.position
-                && total == that.total
-                && action != that.action
-                && Objects.equals(podcast, that.podcast)
-                && Objects.equals(episode, that.episode)
-                && Objects.equals(timestamp, that.timestamp)
-                && Objects.equals(guid, that.guid);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = podcast != null ? podcast.hashCode() : 0;
-        result = 31 * result + (episode != null ? episode.hashCode() : 0);
-        result = 31 * result + (guid != null ? guid.hashCode() : 0);
-        result = 31 * result + (action != null ? action.hashCode() : 0);
-        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
-        result = 31 * result + started;
-        result = 31 * result + position;
-        result = 31 * result + total;
-        return result;
     }
 
     /**

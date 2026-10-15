@@ -30,6 +30,8 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import android.widget.Button;
+import androidx.appcompat.app.AlertDialog;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -74,6 +76,41 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         return dialog.create();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateNavigationButton();
+    }
+
+    private void updateNavigationButton() {
+        AlertDialog alertDialog = (AlertDialog) getDialog();
+        if (alertDialog == null) {
+            return;
+        }
+        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        if (negativeButton == null) {
+            return;
+        }
+        if (currentStep == 0) {
+            negativeButton.setText(R.string.cancel_label);
+            negativeButton.setOnClickListener(v -> dismiss());
+        } else {
+            negativeButton.setText(R.string.back_label);
+            negativeButton.setOnClickListener(v -> goBack());
+        }
+    }
+
+    private void goBack() {
+        if (currentStep > 0) {
+            currentStep--;
+            viewFlipper.showPrevious();
+            if (currentStep == 0) {
+                getDialog().setTitle(R.string.gpodnetauth_login_butLabel);
+            }
+            updateNavigationButton();
+        }
+    }
+
     private void setupHostView(View view) {
         final Button selectHost = view.findViewById(R.id.chooseHostButton);
         final EditText serverUrlText = view.findViewById(R.id.serverUrlText);
@@ -83,6 +120,10 @@ public class GpodderAuthenticationFragment extends DialogFragment {
             }
             SynchronizationCredentials.clear();
             SynchronizationQueue.getInstance().clear();
+            username = null;
+            password = null;
+            selectedDevice = null;
+            devices = null;
             SynchronizationCredentials.setHosturl(serverUrlText.getText().toString());
             service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
                     SynchronizationCredentials.getHosturl(), SynchronizationCredentials.getDeviceId(),
@@ -102,6 +143,8 @@ public class GpodderAuthenticationFragment extends DialogFragment {
 
         if (SynchronizationCredentials.getHosturl().startsWith("http://")) {
             createAccountWarning.setVisibility(View.VISIBLE);
+        } else {
+            createAccountWarning.setVisibility(View.GONE);
         }
         password.setOnEditorActionListener((v, actionID, event) ->
                 actionID == EditorInfo.IME_ACTION_GO && login.performClick());
@@ -151,6 +194,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
 
         MaterialButton createDeviceButton = view.findViewById(R.id.createDeviceButton);
         createDeviceButton.setOnClickListener(v -> createDevice(view));
+        devicesContainer.removeAllViews();
 
         for (GpodnetDevice device : devices) {
             View row = View.inflate(getContext(), R.layout.gpodnetauth_device_row, null);
@@ -264,6 +308,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                 viewFlipper.showNext();
             }
             currentStep++;
+            updateNavigationButton();
         } else {
             dismiss();
         }

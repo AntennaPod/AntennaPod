@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../../common.gradle"
 
@@ -10,14 +10,14 @@ android {
 dependencies {
     implementation project(':net:sync:service-interface')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.appcompat
 
-    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "commons-io:commons-io:$commonsioVersion"
-    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation libs.okhttp
+    implementation libs.commons.lang3
+    implementation libs.commons.io
+    implementation libs.rxandroid
+    implementation libs.rxjava
 
-    testImplementation "junit:junit:$junitVersion"
+    testImplementation libs.junit
 }

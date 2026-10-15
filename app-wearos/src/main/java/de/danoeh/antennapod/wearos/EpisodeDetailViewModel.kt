@@ -22,7 +22,8 @@ data class EpisodeDetailUiState(
     val item: FeedItem,
     val position: Int = 0,
     val duration: Int = 0,
-    val isCurrentlyPlaying: Boolean = false
+    val isCurrentlyPlaying: Boolean = false,
+    val hasStartedPlaying: Boolean = false
 )
 
 class EpisodeDetailViewModel(application: Application, private val episode: FeedItem) : AndroidViewModel(application) {
@@ -30,7 +31,9 @@ class EpisodeDetailViewModel(application: Application, private val episode: Feed
         EpisodeDetailUiState(
             item = episode,
             position = episode.media?.position ?: 0,
-            duration = episode.media?.duration ?: 0
+            duration = episode.media?.duration ?: 0,
+            hasStartedPlaying = WearDataRepository.nowPlaying.value
+                ?.takeIf { it.item.id == episode.id }?.isPlaying == true
         )
     )
     val uiState: StateFlow<EpisodeDetailUiState> = _uiState
@@ -50,7 +53,12 @@ class EpisodeDetailViewModel(application: Application, private val episode: Feed
                 val duration = liveData?.item?.media?.duration?.takeIf { it > 0 } ?: episode.media?.duration ?: 0
                 val isCurrentlyPlaying = liveData?.isPlaying == true
                 _uiState.update {
-                    it.copy(position = position, duration = duration, isCurrentlyPlaying = isCurrentlyPlaying)
+                    it.copy(
+                        position = position,
+                        duration = duration,
+                        isCurrentlyPlaying = isCurrentlyPlaying,
+                        hasStartedPlaying = it.hasStartedPlaying || isCurrentlyPlaying
+                    )
                 }
             }
         }
@@ -64,6 +72,14 @@ class EpisodeDetailViewModel(application: Application, private val episode: Feed
 
     fun pause() {
         viewModelScope.launch(Dispatchers.IO) { WearMessageSender.send(getApplication(), WearDataPaths.PAUSE) }
+    }
+
+    fun skipForward() {
+        viewModelScope.launch(Dispatchers.IO) { WearMessageSender.send(getApplication(), WearDataPaths.SKIP_FORWARD) }
+    }
+
+    fun skipBackward() {
+        viewModelScope.launch(Dispatchers.IO) { WearMessageSender.send(getApplication(), WearDataPaths.SKIP_BACKWARD) }
     }
 
     fun openOnPhone() {

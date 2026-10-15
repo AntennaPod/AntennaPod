@@ -59,7 +59,7 @@
         <item name="colorOutline">@color/text_color_secondary_light</item>
         <item name="colorOutlineVariant">@color/text_color_secondary_light</item>
         <item name="colorSurfaceContainerHigh">@color/color_surface_variant_light</item>
-        <item name="colorSurfaceContainerHighest">@color/color_surface_variant_light</item>
+        <item name="colorSurfaceContainerHighest">#C0CFD3</item>
         <item name="colorSurfaceContainerLow">@color/color_surface_variant_light</item>
         <item name="colorSurfaceContainerLowest">@color/color_surface_variant_light</item>
     </style>
@@ -118,7 +118,7 @@
         <item name="colorOutline">@color/text_color_secondary_dark</item>
         <item name="colorOutlineVariant">@color/text_color_secondary_dark</item>
         <item name="colorSurfaceContainerHigh">@color/color_surface_variant_dark</item>
-        <item name="colorSurfaceContainerHighest">@color/color_surface_variant_dark</item>
+        <item name="colorSurfaceContainerHighest">#38455C</item>
         <item name="colorSurfaceContainerLow">@color/color_surface_variant_dark</item>
         <item name="colorSurfaceContainerLowest">@color/color_surface_variant_dark</item>
     </style>

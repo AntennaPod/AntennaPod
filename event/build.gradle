@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../common.gradle"
 
@@ -9,7 +9,7 @@ android {
 
 dependencies {
     implementation project(':model')
-    implementation "androidx.core:core:$coreVersion"
+    implementation libs.androidx.core
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    annotationProcessor libs.androidx.annotation
 }

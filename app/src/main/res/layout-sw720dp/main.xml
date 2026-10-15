@@ -47,7 +47,7 @@
                 android:background="?android:attr/colorBackground"
                 android:elevation="8dp"
                 android:visibility="gone"
-                app:layout_behavior="de.danoeh.antennapod.ui.view.LockableBottomSheetBehavior" />
+                app:layout_behavior="de.danoeh.antennapod.ui.common.LockableBottomSheetBehavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -59,8 +59,9 @@
         android:layout_height="64dp"
         app:itemTextAppearanceInactive="@style/TextBottomNav"
         app:itemTextAppearanceActive="@style/TextBottomNav"
-        app:itemPaddingTop="6dp"
-        app:itemPaddingBottom="12dp"
+        app:activeIndicatorLabelPadding="0dp"
+        app:itemPaddingTop="12dp"
+        app:itemPaddingBottom="4dp"
         app:labelVisibilityMode="labeled" />
 
     <View

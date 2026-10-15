@@ -58,7 +58,7 @@ public class FeedStatisticsFragment extends Fragment {
 
         if (getArguments().getBoolean(EXTRA_DETAILED)) {
             viewBinding.secondRowContainer.setVisibility(View.VISIBLE);
-            int color = ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSurface);
+            int color = ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSurfaceContainerHighest);
             viewBinding.playbackTime.getRoot().setBackgroundColor(color);
             viewBinding.episodesStarted.getRoot().setBackgroundColor(color);
             viewBinding.spaceDownloaded.getRoot().setBackgroundColor(color);

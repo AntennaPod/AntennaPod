@@ -3,8 +3,8 @@ package de.danoeh.antennapod.ui.screen.home.settingsdialog;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.ui.screen.preferences.ReorderDialog;
-import de.danoeh.antennapod.ui.screen.preferences.ReorderDialogItem;
+import de.danoeh.antennapod.ui.preferences.screen.ReorderDialog;
+import de.danoeh.antennapod.ui.preferences.screen.ReorderDialogItem;
 
 import java.util.ArrayList;
 import java.util.Collections;

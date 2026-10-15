@@ -38,10 +38,10 @@ import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 
-import de.danoeh.antennapod.ui.view.EmptyViewHandler;
+import de.danoeh.antennapod.ui.common.EmptyViewHandler;
 import de.danoeh.antennapod.ui.view.FloatingSelectMenu;
-import de.danoeh.antennapod.ui.view.ItemOffsetDecoration;
-import de.danoeh.antennapod.ui.view.LiftOnScrollListener;
+import de.danoeh.antennapod.ui.common.ItemOffsetDecoration;
+import de.danoeh.antennapod.ui.common.LiftOnScrollListener;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -323,14 +323,21 @@ public class SubscriptionFragment extends Fragment
     private void setupEmptyView() {
         emptyView = new EmptyViewHandler(getContext());
         emptyView.setIcon(R.drawable.ic_subscriptions);
+        updateEmptyView();
+        emptyView.attachToRecyclerView(subscriptionRecycler);
+    }
+
+    private void updateEmptyView() {
         if (stateToShow == Feed.STATE_ARCHIVED) {
             emptyView.setTitle(R.string.no_archive_head_label);
             emptyView.setMessage(R.string.no_archive_label);
+        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
+            emptyView.setTitle(R.string.no_subscriptions_head_label);
+            emptyView.setMessage(R.string.no_subscriptions_filtered_label);
         } else {
             emptyView.setTitle(R.string.no_subscriptions_head_label);
             emptyView.setMessage(R.string.no_subscriptions_label);
         }
-        emptyView.attachToRecyclerView(subscriptionRecycler);
     }
 
     @Override
@@ -393,6 +400,14 @@ public class SubscriptionFragment extends Fragment
                                 }
                             }
                             if (!tagExists) {
+                                for (NavDrawerData.TagItem tag : result.second) {
+                                    if (tag.getTitle().equals(tagAdapter.getSelectedTag())) {
+                                        tagExists = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!tagExists) {
                                 tagAdapter.setSelectedTag(FeedPreferences.TAG_ROOT);
                                 openedFolderFeeds = result.first.feeds;
                             }
@@ -408,6 +423,9 @@ public class SubscriptionFragment extends Fragment
                         subscriptionAdapter.setItems(feeds, result.first.feedCounters);
                         if (firstLoaded) {
                             restoreScrollPosition(scrollPosition);
+                        }
+                        if (feeds.isEmpty()) {
+                            updateEmptyView();
                         }
                         emptyView.updateVisibility();
                         shouldShowTags = false;
@@ -448,7 +466,9 @@ public class SubscriptionFragment extends Fragment
     }
 
     private void updateFilterVisibility() {
-        if (!UserPreferences.getSubscriptionsFilter().isEnabled()) {
+        if (stateToShow != Feed.STATE_SUBSCRIBED) {
+            feedsFilteredMsg.setVisibility(View.GONE);
+        } else if (!UserPreferences.getSubscriptionsFilter().isEnabled()) {
             feedsFilteredMsg.setVisibility(View.GONE);
         } else if (subscriptionAdapter.inActionMode()) {
             feedsFilteredMsg.setVisibility(View.INVISIBLE);

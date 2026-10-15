@@ -382,7 +382,7 @@ public class FeedMedia implements Playable {
     }
 
     public boolean isDownloaded() {
-        return downloadDate > 0;
+        return downloadDate > 0 || (item != null && item.getFeed() != null && item.getFeed().isLocalFeed());
     }
 
     public long getItemId() {

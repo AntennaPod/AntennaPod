@@ -58,4 +58,14 @@ public class MetadataReaderTest {
         assertEquals("This is the comment", reader.getComment());
     }
 
+    @Test
+    public void testRealFileFfmpeg() throws IOException, ID3ReaderException {
+        CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
+                .getResource("ffmpeg.mp3").openStream());
+        Id3MetadataReader reader = new Id3MetadataReader(inputStream);
+        reader.readInputStream();
+        assertEquals("Ünïcödé tëst — “smart quotes” ½ ≠ ⅓ · Ελληνικά · 日本語 · 한국어 · العربية 📝",
+                reader.getComment());
+    }
+
 }

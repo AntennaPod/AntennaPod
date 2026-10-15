@@ -35,7 +35,7 @@ public class DeleteSwipeAction implements SwipeAction {
 
     @Override
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
-        if (!item.isDownloaded() && !item.getFeed().isLocalFeed()) {
+        if (!item.isDownloaded()) {
             return;
         }
         LocalDeleteModal.showLocalFeedDeleteWarningIfNecessary(
@@ -45,6 +45,6 @@ public class DeleteSwipeAction implements SwipeAction {
 
     @Override
     public boolean willRemove(FeedItemFilter filter, FeedItem item) {
-        return filter.showDownloaded && (item.isDownloaded() || item.getFeed().isLocalFeed());
+        return filter.showDownloaded && item.isDownloaded();
     }
 }

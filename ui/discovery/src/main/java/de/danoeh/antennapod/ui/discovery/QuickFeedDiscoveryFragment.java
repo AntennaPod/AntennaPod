@@ -78,16 +78,11 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewBinding = null;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
         }
+        viewBinding = null;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -44,6 +44,7 @@ import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.parser.feed.util.MimeTypeUtils;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
 import de.danoeh.antennapod.parser.media.id3.Id3MetadataReader;
+import de.danoeh.antennapod.parser.media.m4a.M4AMetadataReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentMetadataReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
 
@@ -248,6 +249,14 @@ public class LocalFeedUpdater {
                 } catch (IOException | VorbisCommentReaderException e2) {
                     Log.d(TAG, "Unable to parse vorbis comments of " + file.getUri() + ": " + e2.getMessage());
                 }
+            }
+
+            try (InputStream inputStream = context.getContentResolver().openInputStream(file.getUri())) {
+                M4AMetadataReader reader = new M4AMetadataReader(new BufferedInputStream(inputStream));
+                reader.readInputStream();
+                item.setDescriptionIfLonger(reader.getDescription());
+            } catch (IOException e) {
+                Log.d(TAG, "Unable to parse m4a metadata of " + file.getUri() + ": " + e.getMessage());
             }
         }
     }

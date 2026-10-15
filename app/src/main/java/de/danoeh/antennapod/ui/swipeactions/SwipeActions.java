@@ -40,7 +40,8 @@ public class SwipeActions extends ItemTouchHelper.SimpleCallback implements Life
                     new StartDownloadSwipeAction(), new MarkFavoriteSwipeAction(),
                     new RemoveFromFavoritesSwipeAction(), new TogglePlaybackStateSwipeAction(),
                     new RemoveFromQueueSwipeAction(), new DeleteSwipeAction(),
-                    new RemoveFromHistorySwipeAction()));
+                    new RemoveFromHistorySwipeAction(), new MoveToTopSwipeAction(),
+                    new MoveToBottomSwipeAction(), new ShareSwipeAction()));
 
     private final Fragment fragment;
     private final String tag;

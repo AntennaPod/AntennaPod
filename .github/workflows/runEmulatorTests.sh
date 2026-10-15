@@ -3,9 +3,16 @@
 set -o pipefail
 adb logcat -c
 
+buildType="${1:-debug}"
+
 runTests() {
-    ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest \
-        -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
+    if [ "$buildType" = "release" ]; then
+        ./gradlew connectedPlayReleaseAndroidTest -PtestBuildType=release \
+            -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
+    else
+        ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest -PtestBuildType=debug \
+            -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
+    fi
 }
 
 # Retry tests to make them less flaky

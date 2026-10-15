@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
@@ -21,17 +21,17 @@ dependencies {
     implementation project(':system')
     implementation project(':ui:app-start-intent')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.core:core:$coreVersion"
-    implementation 'androidx.documentfile:documentfile:1.0.1'
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.core
+    implementation libs.androidx.documentfile
 
-    implementation "commons-io:commons-io:$commonsioVersion"
-    implementation "org.greenrobot:eventbus:$eventbusVersion"
-    implementation "com.google.guava:guava:31.0.1-android"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
+    implementation libs.commons.io
+    implementation libs.eventbus
+    implementation libs.guava
+    implementation libs.commons.lang3
 
     testImplementation project(':parser:feed')
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "androidx.test:core:$testCoreVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation libs.junit
+    testImplementation libs.androidx.test.core
+    testImplementation libs.robolectric
 }

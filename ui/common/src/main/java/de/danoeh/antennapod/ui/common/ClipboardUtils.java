@@ -22,18 +22,15 @@ public final class ClipboardUtils {
      * @param labelId ID of string resource to used as label for the copied text within the clipboard.
      */
     public static void copyText(TextView textView, @StringRes int labelId) {
-        copyText(textView, labelId, R.string.copied_to_clipboard);
+        Context context = textView.getContext();
+        copyText(textView, context.getString(labelId), context.getString(R.string.copied_to_clipboard),
+                textView.getText().toString());
     }
 
-    /**
-     * Utility function used to copy the text from the given TextView to the clipboard.
-     * @param textView TextView to copy the text from.
-     * @param labelId ID of string resource to used as label for the copied text within the clipboard.
-     * @param messageId ID of string resource use to display confirmation to user on SDK versions prior to 32.
-     */
-    public static void copyText(TextView textView, @StringRes int labelId, @StringRes int messageId) {
+    public static void copyText(TextView textView) {
         Context context = textView.getContext();
-        copyText(textView, context.getString(labelId), context.getString(messageId), textView.getText().toString());
+        copyText(textView, "AntennaPod", context.getString(R.string.copied_to_clipboard),
+                textView.getText().toString());
     }
 
     /**

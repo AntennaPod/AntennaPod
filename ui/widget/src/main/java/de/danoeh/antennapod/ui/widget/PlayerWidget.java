@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
@@ -47,6 +48,13 @@ public class PlayerWidget extends AppWidgetProvider {
             scheduleWorkaround(context);
             prefs.edit().putBoolean(KEY_WORKAROUND_ENABLED, true).apply();
         }
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
+                                          int appWidgetId, Bundle newOptions) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        WidgetUpdaterWorker.enqueueWork(context);
     }
 
     @Override

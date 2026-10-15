@@ -205,4 +205,25 @@ public class ChapterReaderTest {
         assertEquals("Chapter 2", chapters.get(2).getTitle());
         assertEquals("Chapter 3", chapters.get(3).getTitle());
     }
+
+    @Test
+    public void testRealFileFfmpeg() throws IOException, ID3ReaderException {
+        CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
+                .getResource("ffmpeg.mp3").openStream());
+        ChapterReader reader = new ChapterReader(inputStream);
+        reader.readInputStream();
+        List<Chapter> chapters = reader.getChapters();
+
+        assertEquals(4, chapters.size());
+
+        assertEquals(0, chapters.get(0).getStart());
+        assertEquals(3000, chapters.get(1).getStart());
+        assertEquals(6000, chapters.get(2).getStart());
+        assertEquals(9000, chapters.get(3).getStart());
+
+        assertEquals("Chapter 1 – Ünïcödé ✨", chapters.get(0).getTitle());
+        assertEquals("第2章 – 日本語", chapters.get(1).getTitle());
+        assertEquals("Κεφάλαιο 3 – Ελληνικά", chapters.get(2).getTitle());
+        assertEquals("الفصل ٤ – العربية", chapters.get(3).getTitle());
+    }
 }

@@ -69,6 +69,13 @@ public class RssParserTest {
     }
 
     @Test
+    public void testLegacyItunesNamespace() throws Exception {
+        File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testLegacyItunesNamespace.xml");
+        Feed feed = FeedParserTestHelper.runFeedParser(feedFile);
+        assertEquals("https://example.com/image.png", feed.getImageUrl());
+    }
+
+    @Test
     public void testMediaContentMime() throws Exception {
         File feedFile = FeedParserTestHelper.getFeedFile("feed-rss-testMediaContentMime.xml");
         Feed feed = FeedParserTestHelper.runFeedParser(feedFile);

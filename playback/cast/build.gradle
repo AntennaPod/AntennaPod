@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../common.gradle"
 apply from: "../../playFlavor.gradle"
@@ -14,12 +14,12 @@ dependencies {
     implementation project(':playback:base')
     implementation project(':ui:episodes')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.appcompat:appcompat:$appcompatVersion"
-    implementation "org.greenrobot:eventbus:$eventbusVersion"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.appcompat
+    implementation libs.eventbus
 
-    playApi 'androidx.mediarouter:mediarouter:1.3.0'
-    playApi 'com.google.android.gms:play-services-cast-framework:21.2.0'
-    implementation "androidx.media3:media3-exoplayer:$media3Version"
-    playImplementation "androidx.media3:media3-cast:$media3Version"
+    playApi libs.androidx.mediarouter
+    playApi libs.google.play.services.cast.framework
+    implementation libs.androidx.media3.exoplayer
+    playImplementation libs.androidx.media3.cast
 }

@@ -3,7 +3,7 @@ configurations {
 }
 
 dependencies {
-    mockitoAgent("org.mockito:mockito-core:$mockitoVersion") {
+    mockitoAgent(libs.mockito.core) {
         transitive = false
     }
 }

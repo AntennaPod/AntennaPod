@@ -18,8 +18,6 @@ public abstract class ConfirmationDialog {
     private final int titleId;
     private final String message;
 
-    private int positiveText;
-
     public ConfirmationDialog(Context context, int titleId, int messageId) {
         this(context, titleId, context.getString(messageId));
     }
@@ -35,17 +33,13 @@ public abstract class ConfirmationDialog {
         dialog.dismiss();
     }
 
-    public void setPositiveText(int id) {
-        this.positiveText = id;
-    }
-
     public abstract void onConfirmButtonPressed(DialogInterface dialog);
 
     public final AlertDialog createNewDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(titleId);
         builder.setMessage(message);
-        builder.setPositiveButton(positiveText != 0 ? positiveText : R.string.confirm_label,
+        builder.setPositiveButton(R.string.confirm_label,
                 (dialog, which) -> onConfirmButtonPressed(dialog));
         builder.setNegativeButton(R.string.cancel_label, (dialog, which) -> onCancelButtonPressed(dialog));
         builder.setOnCancelListener(ConfirmationDialog.this::onCancelButtonPressed);

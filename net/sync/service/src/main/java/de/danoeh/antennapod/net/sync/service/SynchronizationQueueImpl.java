@@ -10,6 +10,7 @@ import androidx.work.WorkManager;
 import de.danoeh.antennapod.event.SyncServiceEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.common.NetworkUtils;
 import de.danoeh.antennapod.net.sync.serviceinterface.EpisodeAction;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
@@ -53,7 +54,8 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
 
     private static OneTimeWorkRequest.Builder getWorkRequest() {
         Constraints.Builder constraints = new Constraints.Builder();
-        if (UserPreferences.isAllowMobileSync()) {
+        boolean allowMobileSync = UserPreferences.isAllowMobileSync();
+        if (allowMobileSync) {
             constraints.setRequiredNetworkType(NetworkType.CONNECTED);
         } else {
             constraints.setRequiredNetworkType(NetworkType.UNMETERED);
@@ -69,7 +71,10 @@ public class SynchronizationQueueImpl extends SynchronizationQueue {
         } else {
             // Give it some time, so other possible actions can be queued.
             builder.setInitialDelay(20L, TimeUnit.SECONDS);
-            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+            int status = !allowMobileSync && NetworkUtils.isNetworkRestricted()
+                    ? R.string.sync_status_wait_for_wifi
+                    : R.string.sync_status_started;
+            EventBus.getDefault().postSticky(new SyncServiceEvent(status));
         }
         return builder;
     }

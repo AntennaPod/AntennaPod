@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import android.util.Log;
+import android.util.Patterns;
+import okhttp3.HttpUrl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -29,6 +31,24 @@ public final class UrlChecker {
 
     private static final String AP_SUBSCRIBE = "antennapod-subscribe://";
     private static final String AP_SUBSCRIBE_DEEPLINK = "antennapod.org/deeplink/subscribe";
+
+    public static boolean isValidUrl(String url) {
+        String lowerCaseUrl = url.toLowerCase(Locale.ROOT);
+        return Patterns.WEB_URL.matcher(url).matches()
+                || ((lowerCaseUrl.startsWith("http://") || lowerCaseUrl.startsWith("https://"))
+                && HttpUrl.parse(url) != null);
+    }
+
+    public static boolean isValidHost(String host) {
+        if ("localhost".equals(host) || Patterns.DOMAIN_NAME.matcher(host).matches()) {
+            return true;
+        }
+        if (host.startsWith("[") && host.endsWith("]")) {
+            host = host.substring(1, host.length() - 1);
+        }
+        return host.contains(":") && host.matches("[0-9a-fA-F:.]+")
+                && HttpUrl.parse("http://[" + host + "]/") != null;
+    }
 
     /**
      * Checks if URL is valid and modifies it if necessary.
@@ -63,7 +83,7 @@ public final class UrlChecker {
                 return prepareUrl(query);
             }
         } else if (lowerCaseUrl.contains("subscribeonandroid.com")) {
-            return prepareUrl(url.replaceFirst("((www.)?(subscribeonandroid.com/))", ""));
+            return prepareUrl(url.replaceFirst("(?i)((www.)?(subscribeonandroid.com/))", ""));
         } else if (!(lowerCaseUrl.startsWith("http://") || lowerCaseUrl.startsWith("https://"))) {
             Log.d(TAG, "Adding http:// at the beginning of the URL");
             return "http://" + url;

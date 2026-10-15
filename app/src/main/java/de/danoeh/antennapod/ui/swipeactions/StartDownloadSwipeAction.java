@@ -35,7 +35,7 @@ public class StartDownloadSwipeAction implements SwipeAction {
     public void performAction(FeedItem item, Fragment fragment, FeedItemFilter filter) {
         if (item.getMedia() == null) {
             EventBus.getDefault().post(new MessageEvent(fragment.getString(R.string.no_media_label)));
-        } else if (item.getFeed().isLocalFeed() || item.isDownloaded()) {
+        } else if (item.isDownloaded()) {
             EventBus.getDefault().post(new MessageEvent(fragment.getString(R.string.already_downloaded)));
         } else {
             new DownloadActionButton(item).onClick(fragment.requireContext());

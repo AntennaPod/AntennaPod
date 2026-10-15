@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 apply from: "../../../common.gradle"
 apply from: "../../../playFlavor.gradle"
@@ -20,16 +20,16 @@ dependencies {
     implementation project(':ui:i18n')
     implementation project(':net:download:service-interface')
 
-    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
-    implementation "androidx.core:core:$coreVersion"
-    implementation "androidx.work:work-runtime:$workManagerVersion"
+    annotationProcessor libs.androidx.annotation
+    implementation libs.androidx.core
+    implementation libs.androidx.work.runtime
 
-    implementation "org.greenrobot:eventbus:$eventbusVersion"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
-    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
-    implementation "com.google.guava:guava:31.0.1-android"
+    implementation libs.eventbus
+    implementation libs.commons.lang3
+    implementation libs.okhttp
+    implementation libs.rxandroid
+    implementation libs.rxjava
+    implementation libs.guava
 
-    testImplementation "junit:junit:$junitVersion"
+    testImplementation libs.junit
 }

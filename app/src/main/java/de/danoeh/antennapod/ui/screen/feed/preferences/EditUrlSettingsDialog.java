@@ -8,7 +8,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBWriter;
-import de.danoeh.antennapod.databinding.EditTextDialogBinding;
+import de.danoeh.antennapod.ui.common.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.model.feed.Feed;
 
 import java.lang.ref.WeakReference;

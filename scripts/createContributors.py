@@ -50,6 +50,7 @@ ANDROID_LANG_FIXES = {
     "ji": "Yiddish",
     "sw": "Swahili",
     "el": "Modern Greek",
+    "ko": "Korean",
 }
 def lang_name(code):
     code = code.lower()
