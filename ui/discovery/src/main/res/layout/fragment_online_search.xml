@@ -26,7 +26,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <LinearLayout
         android:id="@+id/resultsContainer"
         android:layout_width="match_parent"

@@ -20,13 +20,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSubscribeSearch"
-            style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_add"
-            app:iconSize="16dp"
             android:textSize="12sp"
-            android:text="@string/subscribe_search_feed_label" />
+            android:text="@string/subscribe_search_feed_label"
+            style="@style/Widget.Material3.Button.TonalButton"
+            app:icon="@drawable/ic_add"
+            app:iconSize="16dp" />
 
     </LinearLayout>
 
