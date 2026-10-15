@@ -25,6 +25,7 @@ import de.danoeh.antennapod.net.discovery.EpisodeSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
+import de.danoeh.antennapod.net.discovery.SearchFeedBuilder;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -474,33 +475,7 @@ public class OnlineSearchFragment extends Fragment
                 DBWriter.setFeedState(context, existingFeed, Feed.STATE_SUBSCRIBED);
                 FeedUpdateManager.getInstance().runOnce(context, existingFeed);
             } else {
-                Feed feed = new Feed(searchFeedUrl, null,
-                        context.getString(R.string.search_feed_title, query));
-                feed.setState(Feed.STATE_SUBSCRIBED);
-                feed.setDescription(context.getString(R.string.search_feed_description, query));
-                feed.setAuthor("AntennaPod Search");
-
-                feed.setImageUrl(Feed.PREFIX_SEARCH_COVER + query);
-
-                List<FeedItem> items = new ArrayList<>();
-                for (EpisodeSearchResult episode : episodeResults) {
-                    String identifier = episode.episodeGuid != null
-                            ? episode.episodeGuid : episode.episodeUrl;
-                    FeedItem item = new FeedItem(0, episode.title, identifier,
-                            episode.episodeUrl, episode.pubDate, FeedItem.NEW, feed);
-                    if (episode.description != null) {
-                        item.setDescriptionIfLonger(episode.description);
-                    }
-                    if (episode.imageUrl != null) {
-                        item.setImageUrl(episode.imageUrl);
-                    }
-                    FeedMedia media = new FeedMedia(item, episode.episodeUrl, 0, "audio/*");
-                    media.setDuration((int) episode.durationMs);
-                    item.setMedia(media);
-                    items.add(item);
-                }
-                feed.setItems(items);
-
+                Feed feed = SearchFeedBuilder.buildFeed(context, query, episodeResults);
                 Feed savedFeed = FeedDatabaseWriter.updateFeed(context, feed, false);
                 FeedUpdateManager.getInstance().runOnce(context, savedFeed);
             }

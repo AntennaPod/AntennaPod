@@ -12,6 +12,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.discovery.EpisodeSearchResult;
 import de.danoeh.antennapod.net.discovery.ItunesPodcastSearcher;
+import de.danoeh.antennapod.net.discovery.SearchFeedBuilder;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -60,44 +61,15 @@ public class SearchFeedUpdater {
     @VisibleForTesting
     public static Feed tryUpdateFeed(Feed feed, Context context, String query,
                                      List<EpisodeSearchResult> episodeResults) {
-        if (feed.getItems() == null) {
-            feed.setItems(new ArrayList<>());
-        }
-
-        Feed newFeed = new Feed(feed.getDownloadUrl(), null,
-                context.getString(R.string.search_feed_title, query));
+        Feed newFeed = SearchFeedBuilder.buildFeed(context, query, episodeResults);
         newFeed.setId(feed.getId());
         newFeed.setState(feed.getState());
-        newFeed.setDescription(context.getString(R.string.search_feed_description, query));
-        newFeed.setAuthor("AntennaPod Search");
-
-        newFeed.setImageUrl(Feed.PREFIX_SEARCH_COVER + query);
-
-        List<FeedItem> items = new ArrayList<>();
-        for (EpisodeSearchResult episode : episodeResults) {
-            FeedItem item = createFeedItem(newFeed, episode);
-            items.add(item);
-        }
-        newFeed.setItems(items);
-
         return FeedDatabaseWriter.updateFeed(context, newFeed, false);
     }
 
     @NonNull
     public static FeedItem createFeedItem(Feed feed, EpisodeSearchResult episode) {
-        String identifier = episode.episodeGuid != null ? episode.episodeGuid : episode.episodeUrl;
-        FeedItem item = new FeedItem(0, episode.title, identifier,
-                episode.episodeUrl, episode.pubDate, FeedItem.NEW, feed);
-        if (episode.description != null) {
-            item.setDescriptionIfLonger(episode.description);
-        }
-        if (episode.imageUrl != null) {
-            item.setImageUrl(episode.imageUrl);
-        }
-        FeedMedia media = new FeedMedia(item, episode.episodeUrl, 0, "audio/*");
-        media.setDuration((int) episode.durationMs);
-        item.setMedia(media);
-        return item;
+        return SearchFeedBuilder.createFeedItem(feed, episode);
     }
 
     private static void reportError(Feed feed, String reasonDetailed) {
