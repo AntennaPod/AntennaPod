@@ -90,7 +90,7 @@ public class OnlineSearchEpisodeAdapter extends RecyclerView.Adapter<OnlineSearc
             metaParts.add(DateFormatter.formatAbbrev(context, episode.pubDate));
         }
         if (episode.durationMs > 0) {
-            metaParts.add(Converter.getDurationStringLong((int) (episode.durationMs / 1000)));
+            metaParts.add(Converter.getDurationStringLong((int) episode.durationMs));
         }
         holder.txtvPodcastAndDate.setText(TextUtils.join(" • ", metaParts));
 
