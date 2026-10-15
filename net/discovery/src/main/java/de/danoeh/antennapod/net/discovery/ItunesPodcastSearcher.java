@@ -112,7 +112,8 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
                         if (episodeUrl == null || episodeUrl.isEmpty()) {
                             episodeUrl = episodeJson.optString("previewUrl", null);
                         }
-                        if (feedUrl == null || feedUrl.isEmpty()) {
+                        if (feedUrl == null || feedUrl.isEmpty()
+                                || episodeUrl == null || episodeUrl.isEmpty()) {
                             continue;
                         }
 
