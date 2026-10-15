@@ -26,22 +26,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/appbar"
-        android:clipToPadding="false"
-        android:columnWidth="400dp"
-        android:gravity="center"
-        android:horizontalSpacing="8dp"
-        android:numColumns="auto_fit"
-        android:paddingBottom="@dimen/list_vertical_padding"
-        android:paddingTop="@dimen/list_vertical_padding"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="8dp"
-        android:visibility="gone"
-        tools:listitem="@layout/online_search_listitem" />
 
     <LinearLayout
         android:id="@+id/resultsContainer"
