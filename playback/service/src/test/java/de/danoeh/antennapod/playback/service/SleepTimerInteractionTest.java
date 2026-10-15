@@ -10,6 +10,7 @@ import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
 import androidx.media3.common.PlaybackParameters;
 import androidx.media3.common.Player;
+import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.session.MediaLibraryService.MediaLibrarySession;
 import androidx.media3.session.MediaSession;
 import androidx.media3.session.SessionCommand;
@@ -20,6 +21,7 @@ import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
@@ -27,6 +29,7 @@ import de.danoeh.antennapod.playback.service.internal.ClockSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.EpisodeSleepTimer;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.service.internal.ShakeListener;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -60,7 +63,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -300,11 +305,41 @@ public class SleepTimerInteractionTest {
         }
         service.sessionCallback.onCustomCommand(session, controller,
                 new SessionCommand("skip_episode", Bundle.EMPTY), Bundle.EMPTY).get();
-        ReflectionHelpers.callInstanceMethod(service, "startNextInQueue",
-                ReflectionHelpers.ClassParameter.from(FeedMedia.class, null),
-                ReflectionHelpers.ClassParameter.from(boolean.class, true),
-                ReflectionHelpers.ClassParameter.from(boolean.class, false));
         assertRemaining();
+    }
+
+    @Test
+    public void finishedEpisodeAdvancesToQueuedSuccessorWithoutResettingTimer() throws Exception {
+        SleepTimerPreferences.setResetOnPlaybackInteraction(true);
+        UserPreferences.setFollowQueue(true);
+        UserPreferences.setAllowMobileStreaming(true);
+        FeedMedia successor = seedEpisode("Queued successor");
+        setCurrent(episode.getId());
+        ReflectionHelpers.setField(service, "currentPlayable", episode);
+        ReflectionHelpers.setField(service, "exoPlayer", mock(ExoPlayer.class));
+        SettableFuture<MediaItem> advanced = SettableFuture.create();
+        doAnswer(invocation -> {
+            advanced.set(invocation.getArgument(0));
+            return null;
+        }).when(player).setMediaItem(any(MediaItem.class), anyLong());
+        AutoDownloadManager previousAutoDownloadManager = AutoDownloadManager.getInstance();
+        AutoDownloadManager.setInstance(mock(AutoDownloadManager.class));
+        try {
+            DBWriter.addQueueItem(RuntimeEnvironment.getApplication(), episode.getItem(), successor.getItem())
+                    .get(5, TimeUnit.SECONDS);
+            listener.onPlaybackStateChanged(Player.STATE_ENDED);
+            assertEquals(String.valueOf(successor.getId()), await(advanced).mediaId);
+            verify(player).setPlayWhenReady(true);
+            verify(player).prepare();
+            FeedMedia current = ReflectionHelpers.getField(service, "currentPlayable");
+            assertEquals(successor.getId(), current.getId());
+            assertSame(timer, ReflectionHelpers.getField(service, "sleepTimer"));
+            assertTrue(timer.isActive());
+            assertRemaining();
+        } finally {
+            DBWriter.tearDownTests();
+            AutoDownloadManager.setInstance(previousAutoDownloadManager);
+        }
     }
 
     @Test

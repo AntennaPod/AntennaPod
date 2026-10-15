@@ -47,6 +47,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
 
+    testImplementation project(':net:download:service-interface')
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "androidx.test:core:$testCoreVersion"
