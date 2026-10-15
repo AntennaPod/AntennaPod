@@ -25,8 +25,8 @@ import de.danoeh.antennapod.net.discovery.EpisodeSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.net.discovery.PodcastSearcher;
 import de.danoeh.antennapod.net.discovery.PodcastSearcherRegistry;
+import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
-import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
@@ -46,6 +46,10 @@ import java.util.Set;
 
 public class OnlineSearchFragment extends Fragment
         implements OnlineSearchEpisodeAdapter.OnEpisodeActionListener {
+
+    public interface PlaybackHost {
+        void playMedia(Playable media);
+    }
 
     private static final String TAG = "FyydSearchFragment";
     private static final String ARG_SEARCHER = "searcher";
@@ -244,11 +248,8 @@ public class OnlineSearchFragment extends Fragment
             if (playItem != null && playItem.getMedia() != null) {
                 FeedMedia media = playItem.getMedia();
                 AndroidSchedulers.mainThread().scheduleDirect(() -> {
-                    Context c = getContext();
-                    if (c != null) {
-                        new PlaybackServiceStarter(c, media)
-                                .callEvenIfRunning(true)
-                                .start();
+                    if (getActivity() instanceof PlaybackHost) {
+                        ((PlaybackHost) getActivity()).playMedia(media);
                     }
                 });
             }

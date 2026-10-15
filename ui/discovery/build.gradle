@@ -15,7 +15,6 @@ dependencies {
     implementation project(':storage:database')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
-    implementation project(':playback:service')
     implementation project(':net:download:service-interface')
     implementation project(':ui:i18n')
 
