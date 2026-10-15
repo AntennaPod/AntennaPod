@@ -174,16 +174,8 @@ public class OnlineSearchFragment extends Fragment
     }
 
     private void loadSubscribedFeeds() {
-        actionDisposables.add(Single.fromCallable(() -> {
-            List<Feed> feeds = DBReader.getFeedList();
-            Set<String> subscribedUrls = new HashSet<>();
-            for (Feed f : feeds) {
-                if (f.getState() == Feed.STATE_SUBSCRIBED) {
-                    subscribedUrls.add(f.getDownloadUrl());
-                }
-            }
-            return subscribedUrls;
-        })
+        actionDisposables.add(Single.fromCallable(() ->
+                new HashSet<>(DBReader.getFeedListDownloadUrls(true)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(urls -> {
@@ -199,26 +191,15 @@ public class OnlineSearchFragment extends Fragment
             if (context == null || episode.episodeUrl == null) {
                 return;
             }
-            Feed existingFeed = null;
-            List<Feed> feeds = DBReader.getFeedList();
-            for (Feed f : feeds) {
-                if (f.getDownloadUrl().equals(episode.feedUrl)) {
-                    existingFeed = DBReader.getFeed(f.getId(), false, 0, Integer.MAX_VALUE);
-                    break;
-                }
-            }
-            FeedItem playItem = null;
-            if (existingFeed != null && existingFeed.getItems() != null) {
-                for (FeedItem item : existingFeed.getItems()) {
-                    if ((episode.episodeGuid != null && episode.episodeGuid.equals(item.getItemIdentifier()))
-                            || (item.getMedia() != null
-                            && episode.episodeUrl.equals(item.getMedia().getDownloadUrl()))) {
-                        playItem = item;
+            FeedItem playItem = DBReader.getFeedItemByGuidOrEpisodeUrl(episode.episodeGuid, episode.episodeUrl);
+            if (playItem == null) {
+                Feed existingFeed = null;
+                for (Feed f : DBReader.getFeedList()) {
+                    if (f.getDownloadUrl().equals(episode.feedUrl)) {
+                        existingFeed = f;
                         break;
                     }
                 }
-            }
-            if (playItem == null) {
                 Feed feed = existingFeed != null
                         ? existingFeed : new Feed(episode.feedUrl, null, episode.podcastTitle);
                 if (feed.getState() != Feed.STATE_SUBSCRIBED) {
@@ -436,12 +417,7 @@ public class OnlineSearchFragment extends Fragment
         final String query = currentQuery;
         actionDisposables.add(Single.fromCallable(() -> {
             String searchFeedUrl = Feed.PREFIX_SEARCH_FEED + query;
-            for (Feed f : DBReader.getFeedList()) {
-                if (searchFeedUrl.equals(f.getDownloadUrl())) {
-                    return f.getState() == Feed.STATE_SUBSCRIBED;
-                }
-            }
-            return false;
+            return DBReader.getFeedListDownloadUrls(true).contains(searchFeedUrl);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
