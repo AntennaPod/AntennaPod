@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
 import androidx.core.util.Pair;
+import androidx.core.content.ContextCompat;
 import androidx.media3.common.DeviceInfo;
 import androidx.media3.common.ForwardingPlayer;
 import androidx.media3.common.MediaItem;
@@ -83,6 +84,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Media3PlaybackService extends MediaLibraryService {
     private static final String TAG = "M3PlaybackService";
+    private static final String EXTRA_INTERNAL_SELECTION = "internal_selection";
     private static final long POSITION_SAVE_INTERVAL_MS = 5000;
     private ExoPlayer exoPlayer;
     private Player player;
@@ -280,7 +282,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 return;
             }
             controller.setPlayWhenReady(false);
-            controller.setMediaItem(MediaItemAdapter.fromMediaIdStub(mediaId));
+            controller.setMediaItem(internalMediaItem(String.valueOf(mediaId)));
             controller.prepare();
         });
     }
@@ -301,11 +303,31 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     MediaLibrarySessionCallback sessionCallback = new MediaLibrarySessionCallback(this) {
         @Override
-        protected void onPlaybackInteraction() {
-            if (SleepTimerPreferences.resetOnPlaybackInteraction() && sleepTimer != null
-                    && !(sleepTimer instanceof EpisodeSleepTimer)) {
-                sleepTimer.reset();
+        @NonNull
+        @UnstableApi
+        public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onSetMediaItems(
+                @NonNull MediaSession session, @NonNull MediaSession.ControllerInfo controller,
+                @NonNull List<MediaItem> mediaItems, int startIndex, long startPositionMs) {
+            ListenableFuture<MediaSession.MediaItemsWithStartPosition> selection =
+                    super.onSetMediaItems(session, controller, mediaItems, startIndex, startPositionMs);
+            MediaItem requested = mediaItems.isEmpty() ? null : mediaItems.get(Math.max(0, startIndex));
+            if (requested == null || (requested.requestMetadata.extras != null
+                    && requested.requestMetadata.extras.getBoolean(EXTRA_INTERNAL_SELECTION))) {
+                return selection;
             }
+            MediaItem previous = session.getPlayer().getCurrentMediaItem();
+            if (requested.requestMetadata.searchQuery == null) {
+                resetSleepTimerOnManualSelection(requested.mediaId, previous);
+                return selection;
+            }
+            SleepTimer timerAtRequest = sleepTimer;
+            return Futures.transform(selection, result -> {
+                if (sleepTimer == timerAtRequest && !result.mediaItems.isEmpty()) {
+                    resetSleepTimerOnManualSelection(result.mediaItems.get(Math.max(0, result.startIndex)).mediaId,
+                            previous);
+                }
+                return result;
+            }, ContextCompat.getMainExecutor(Media3PlaybackService.this));
         }
 
         @Override
@@ -768,18 +790,30 @@ public class Media3PlaybackService extends MediaLibraryService {
                 && !isCasting();
     }
 
+    private void resetSleepTimerOnManualSelection(String mediaId, @Nullable MediaItem previous) {
+        if (!mediaId.isEmpty() && (previous == null || !mediaId.equals(previous.mediaId))
+                && SleepTimerPreferences.resetOnPlaybackInteraction()
+                && sleepTimer != null && !(sleepTimer instanceof EpisodeSleepTimer)) {
+            sleepTimer.reset();
+        }
+    }
+
+    private static MediaItem internalMediaItem(String mediaId) {
+        Bundle extras = new Bundle();
+        extras.putBoolean(EXTRA_INTERNAL_SELECTION, true);
+        return new MediaItem.Builder().setMediaId(mediaId)
+                .setRequestMetadata(new MediaItem.RequestMetadata.Builder().setExtras(extras).build()).build();
+    }
+
     private boolean handleStreamingConfirmation() {
         if (pendingStreamMediaId != null && player.getCurrentMediaItem() != null
                 && MediaItemAdapter.MEDIA_ID_CONFIRM_STREAMING.equals(player.getCurrentMediaItem().mediaId)) {
             final String mediaId = pendingStreamMediaId;
             pendingStreamMediaId = null;
             allowStreamingThisTime = true;
-            MediaItem mediaItem = new MediaItem.Builder()
-                    .setMediaId(mediaId)
-                    .build();
             PlaybackController.bindToMedia3Service(
                     Media3PlaybackService.this, controller -> {
-                        controller.setMediaItem(mediaItem);
+                        controller.setMediaItem(internalMediaItem(mediaId));
                         controller.prepare();
                         controller.play();
                     });

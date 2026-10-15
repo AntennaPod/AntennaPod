@@ -139,10 +139,6 @@ public class ClockSleepTimer implements SleepTimer {
         if (!isActive()) {
             return;
         }
-        if (shakeListener != null) {
-            shakeListener.pause();
-            shakeListener = null;
-        }
         hasVibrated = false;
         lastTick = System.currentTimeMillis();
         EventBus.getDefault().post(SleepTimerUpdatedEvent.cancelled());
