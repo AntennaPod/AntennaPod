@@ -293,14 +293,29 @@ public class OnlineSearchFragment extends Fragment
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        resultsContainer = null;
+        podcastsSection = null;
+        recyclerViewFeeds = null;
+        episodesSection = null;
+        recyclerViewEpisodes = null;
+        progressBar = null;
+        txtvError = null;
+        butRetry = null;
+        txtvEmpty = null;
+        btnSubscribeSearch = null;
+        podcastAdapter = null;
+        episodeAdapter = null;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (disposable != null) {
             disposable.dispose();
         }
         actionDisposables.dispose();
-        podcastAdapter = null;
-        episodeAdapter = null;
     }
 
     private void setupToolbar(MaterialToolbar toolbar) {
