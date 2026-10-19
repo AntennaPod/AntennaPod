@@ -848,10 +848,6 @@ public abstract class UserPreferences {
         return FeedPreferences.NewEpisodesAction.fromCode(Integer.parseInt(str));
     }
 
-    public static boolean hasFirstSubscriptionTime() {
-        return prefs.contains(PREF_FIRST_SUBSCRIPTION_TIME);
-    }
-
     public static long getFirstSubscriptionTime() {
         return prefs.getLong(PREF_FIRST_SUBSCRIPTION_TIME, 0);
     }

@@ -880,8 +880,13 @@ public class DBWriter {
                 }
                 FeedDatabaseWriter.recordFirstSubscription(feed);
                 if (FeedDatabaseWriter.isWithinFirstSubscriptionHour()) {
-                    FeedDatabaseWriter.performNewEpisodesAction(context, feed,
-                            feed.getItems().subList(0, Math.min(3, feed.getItems().size())));
+                    List<FeedItem> newItems = new ArrayList<>();
+                    for (FeedItem item : feed.getItems().subList(0, Math.min(3, feed.getItems().size()))) {
+                        if (!item.isPlayed()) {
+                            newItems.add(item);
+                        }
+                    }
+                    markItemsPlayed(FeedItem.NEW, false, newItems);
                 }
             }
             adapter.close();

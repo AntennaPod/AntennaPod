@@ -69,9 +69,6 @@ public abstract class FeedDatabaseWriter {
         if (savedFeed == null) {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
-            if (newFeed.getState() == Feed.STATE_SUBSCRIBED) {
-                recordFirstSubscription(newFeed);
-            }
 
             resultFeed = newFeed;
         } else {
@@ -213,6 +210,9 @@ public abstract class FeedDatabaseWriter {
                 DBWriter.addNewFeed(context, newFeed).get();
                 // Update with default values that are set in database
                 resultFeed = searchFeedByIdentifyingValueOrID(newFeed);
+                if (resultFeed.getState() == Feed.STATE_SUBSCRIBED) {
+                    recordFirstSubscription(resultFeed);
+                }
             } else {
                 DBWriter.setCompleteFeed(savedFeed).get();
             }
@@ -243,49 +243,16 @@ public abstract class FeedDatabaseWriter {
                 + ((item.getMedia() == null) ? "" : "\nURL: " + item.getMedia().getDownloadUrl());
     }
 
+    /**
+     * Feed IDs are never reused, so the feed with ID 1 is the first one the user ever added.
+     */
     static void recordFirstSubscription(Feed feed) {
-        if (UserPreferences.hasFirstSubscriptionTime()) {
-            return;
+        if (feed.getId() == 1 && UserPreferences.getFirstSubscriptionTime() == 0) {
+            UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
         }
-        for (Feed f : DBReader.getFeedList()) {
-            if (f.getId() != feed.getId() && f.getState() == Feed.STATE_SUBSCRIBED) {
-                UserPreferences.setFirstSubscriptionTime(0);
-                return;
-            }
-        }
-        UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
     }
 
     static boolean isWithinFirstSubscriptionHour() {
         return System.currentTimeMillis() - UserPreferences.getFirstSubscriptionTime() < TimeUnit.HOURS.toMillis(1);
-    }
-
-    static void performNewEpisodesAction(Context context, Feed feed, List<FeedItem> items) {
-        FeedPreferences.NewEpisodesAction action = feed.getPreferences().getNewEpisodesAction();
-        if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
-            action = UserPreferences.getNewEpisodesAction();
-        }
-        FeedPreferences.AutoDownloadSetting autoDownload = feed.getPreferences().getAutoDownload();
-        if (!feed.isLocalFeed() && (autoDownload == FeedPreferences.AutoDownloadSetting.ENABLED
-                || (autoDownload == FeedPreferences.AutoDownloadSetting.GLOBAL
-                        && UserPreferences.isEnableAutodownloadGlobal()))) {
-            action = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
-        }
-        List<FeedItem> unplayedItems = new ArrayList<>();
-        for (FeedItem item : items) {
-            if (!item.isPlayed()) {
-                unplayedItems.add(item);
-            }
-        }
-        switch (action) {
-            case ADD_TO_INBOX:
-                DBWriter.markItemsPlayed(FeedItem.NEW, false, unplayedItems);
-                break;
-            case ADD_TO_QUEUE:
-                DBWriter.addQueueItem(context, unplayedItems.toArray(new FeedItem[0]));
-                break;
-            default:
-                break;
-        }
     }
 }
