@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Creates and updates feeds in the database.
@@ -157,8 +156,7 @@ public abstract class FeedDatabaseWriter {
                     boolean shouldPerformNewEpisodesAction = item.getPubDate() == null
                             || priorMostRecentDate == null
                             || priorMostRecentDate.before(item.getPubDate())
-                            || priorMostRecentDate.equals(item.getPubDate())
-                            || (priorMostRecent == null && idx < 3 && isWithinFirstSubscriptionHour());
+                            || priorMostRecentDate.equals(item.getPubDate());
                     if (savedFeed.getState() == Feed.STATE_SUBSCRIBED && shouldPerformNewEpisodesAction) {
                         FeedPreferences.NewEpisodesAction action = savedFeed.getPreferences().getNewEpisodesAction();
                         if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
@@ -210,9 +208,6 @@ public abstract class FeedDatabaseWriter {
                 DBWriter.addNewFeed(context, newFeed).get();
                 // Update with default values that are set in database
                 resultFeed = searchFeedByIdentifyingValueOrID(newFeed);
-                if (resultFeed.getState() == Feed.STATE_SUBSCRIBED) {
-                    recordFirstSubscription(resultFeed);
-                }
             } else {
                 DBWriter.setCompleteFeed(savedFeed).get();
             }
@@ -241,18 +236,5 @@ public abstract class FeedDatabaseWriter {
         return "Title: " + item.getTitle()
                 + "\nID: " + item.getItemIdentifier()
                 + ((item.getMedia() == null) ? "" : "\nURL: " + item.getMedia().getDownloadUrl());
-    }
-
-    /**
-     * Feed IDs are never reused, so the feed with ID 1 is the first one the user ever added.
-     */
-    static void recordFirstSubscription(Feed feed) {
-        if (feed.getId() == 1 && UserPreferences.getFirstSubscriptionTime() == 0) {
-            UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
-        }
-    }
-
-    static boolean isWithinFirstSubscriptionHour() {
-        return System.currentTimeMillis() - UserPreferences.getFirstSubscriptionTime() < TimeUnit.HOURS.toMillis(1);
     }
 }
