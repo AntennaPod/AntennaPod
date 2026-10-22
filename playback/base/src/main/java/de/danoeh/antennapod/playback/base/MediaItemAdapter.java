@@ -127,19 +127,21 @@ public class MediaItemAdapter {
         String artworkLocation = ImageResourceUtils.getEpisodeListImageLocation(playable);
         Uri artworkUri = artworkLocation != null && artworkLocation.startsWith("http")
                 ? Uri.parse(artworkLocation) : null;
+        Bundle extras = item.mediaMetadata.extras != null ? new Bundle(item.mediaMetadata.extras) : new Bundle();
+        if (artworkUri != null) {
+            extras.putString(KEY_ARTWORK_URL, artworkUri.toString());
+        } else {
+            extras.remove(KEY_ARTWORK_URL);
+        }
         MediaMetadata.Builder metadataBuilder = item.mediaMetadata.buildUpon()
                 .setArtworkData(null, null)
-                .setArtworkUri(artworkUri);
+                .setArtworkUri(artworkUri)
+                .setExtras(extras);
         if (bitmap != null) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
-            Bundle extras = item.mediaMetadata.extras != null ? new Bundle(item.mediaMetadata.extras) : new Bundle();
-            if (artworkUri != null) {
-                extras.putString(KEY_ARTWORK_URL, artworkUri.toString());
-            }
             metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER)
-                    .setArtworkUri(null)
-                    .setExtras(extras);
+                    .setArtworkUri(null);
         }
         return item.buildUpon().setMediaMetadata(metadataBuilder.build()).build();
     }

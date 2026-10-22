@@ -624,8 +624,11 @@ public class Media3PlaybackService extends MediaLibraryService {
                 .fromCallable(() -> MediaItemAdapter.withChapterArtwork(this, currentItem, playable, chapterIndex))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(updatedItem -> player.replaceMediaItem(player.getCurrentMediaItemIndex(), updatedItem),
-                        error -> Log.e(TAG, "Failed to update chapter artwork", error));
+                .subscribe(updatedItem -> {
+                    if (!isCasting()) {
+                        player.replaceMediaItem(player.getCurrentMediaItemIndex(), updatedItem);
+                    }
+                }, error -> Log.e(TAG, "Failed to update chapter artwork", error));
     }
 
     @OptIn(markerClass = UnstableApi.class)
