@@ -35,6 +35,7 @@ public class MediaItemAdapter {
     public static final String MEDIA_ID_FEED_PREFIX = "FeedId:";
     public static final String MEDIA_ID_CONFIRM_STREAMING = "confirm_streaming";
     public static final String KEY_STREAM_URL = "stream_url";
+    public static final String KEY_ARTWORK_URL = "artwork_url";
     public static final String KEY_AUTHORIZATION_HEADER = "authorization_header";
 
     /**
@@ -123,22 +124,24 @@ public class MediaItemAdapter {
         if (bitmap == null) {
             bitmap = loadArtworkBitmap(context, playable, iconSize);
         }
-        if (bitmap == null) {
-            String artworkLocation = ImageResourceUtils.getEpisodeListImageLocation(playable);
-            MediaMetadata metadata = item.mediaMetadata.buildUpon()
-                    .setArtworkData(null, null)
-                    .setArtworkUri(artworkLocation != null && artworkLocation.startsWith("http")
-                            ? Uri.parse(artworkLocation) : null)
-                    .build();
-            return item.buildUpon().setMediaMetadata(metadata).build();
+        String artworkLocation = ImageResourceUtils.getEpisodeListImageLocation(playable);
+        Uri artworkUri = artworkLocation != null && artworkLocation.startsWith("http")
+                ? Uri.parse(artworkLocation) : null;
+        MediaMetadata.Builder metadataBuilder = item.mediaMetadata.buildUpon()
+                .setArtworkData(null, null)
+                .setArtworkUri(artworkUri);
+        if (bitmap != null) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
+            Bundle extras = item.mediaMetadata.extras != null ? new Bundle(item.mediaMetadata.extras) : new Bundle();
+            if (artworkUri != null) {
+                extras.putString(KEY_ARTWORK_URL, artworkUri.toString());
+            }
+            metadataBuilder.setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER)
+                    .setArtworkUri(null)
+                    .setExtras(extras);
         }
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
-        MediaMetadata metadata = item.mediaMetadata.buildUpon()
-                .setArtworkData(bos.toByteArray(), MediaMetadata.PICTURE_TYPE_FRONT_COVER)
-                .setArtworkUri(null)
-                .build();
-        return item.buildUpon().setMediaMetadata(metadata).build();
+        return item.buildUpon().setMediaMetadata(metadataBuilder.build()).build();
     }
 
     private static Bitmap loadChapterArtworkBitmap(Context context, Playable playable,
