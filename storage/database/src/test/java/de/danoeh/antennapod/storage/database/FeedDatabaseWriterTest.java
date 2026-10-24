@@ -7,6 +7,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
@@ -59,6 +60,24 @@ public class FeedDatabaseWriterTest {
         for (int i = 0; i < 3; i++) {
             assertEquals("item-" + i, storedItems.get(i).getItemIdentifier());
         }
+    }
+
+    @Test
+    public void testReloadedFeedHasUpdatedAutoDeletePreference() throws Exception {
+        Feed feed = FeedDatabaseWriter.updateFeed(context, createFeed(), false);
+        FeedPreferences preferences = feed.getPreferences();
+        preferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.GLOBAL);
+        DBWriter.setFeedPreferences(preferences).get();
+
+        Feed loadedBeforeChange = DBReader.getFeed(feed.getId(), false, 0, 0);
+        preferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NEVER);
+        DBWriter.setFeedPreferences(preferences).get();
+
+        Feed loadedAfterChange = DBReader.getFeed(feed.getId(), false, 0, 0);
+        assertEquals(FeedPreferences.AutoDeleteAction.GLOBAL,
+                loadedBeforeChange.getPreferences().getCurrentAutoDelete());
+        assertEquals(FeedPreferences.AutoDeleteAction.NEVER,
+                loadedAfterChange.getPreferences().getCurrentAutoDelete());
     }
 
     @Test
