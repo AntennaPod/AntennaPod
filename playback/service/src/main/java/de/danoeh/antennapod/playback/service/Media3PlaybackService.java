@@ -34,6 +34,7 @@ import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionSyncedEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
@@ -949,6 +950,16 @@ public class Media3PlaybackService extends MediaLibraryService {
             volumeAdaptionFactor = event.getVolumeAdaptionSetting().getAdaptionFactor();
             applyVolumeAdaption(1.0f);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void playbackPositionSynced(PlaybackPositionSyncedEvent event) {
+        if (currentPlayable == null || currentPlayable.getId() != event.getMediaId() || player.getPlayWhenReady()) {
+            return;
+        }
+        playbackStartPosition = event.getPosition();
+        player.seekTo(event.getPosition());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

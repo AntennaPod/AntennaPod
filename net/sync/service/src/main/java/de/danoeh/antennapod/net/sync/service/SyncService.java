@@ -17,6 +17,7 @@ import androidx.work.WorkerParameters;
 import de.danoeh.antennapod.event.FeedUpdateRunningEvent;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.SyncServiceEvent;
+import de.danoeh.antennapod.event.playback.PlaybackPositionSyncedEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
@@ -39,6 +40,7 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.storage.database.LongList;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SynchronizationCredentials;
 import de.danoeh.antennapod.storage.preferences.SynchronizationSettings;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -305,6 +307,13 @@ public class SyncService extends Worker {
         DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
         DBReader.loadFeedDataOfFeedItemList(updatedItems);
         DBWriter.setItemList(updatedItems);
+        long currentlyPlayingMediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+        for (FeedItem item : updatedItems) {
+            if (item.getMedia().getId() == currentlyPlayingMediaId) {
+                EventBus.getDefault().post(new PlaybackPositionSyncedEvent(
+                        currentlyPlayingMediaId, item.getMedia().getPosition()));
+            }
+        }
     }
 
     private void clearErrorNotifications() {
