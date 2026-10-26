@@ -50,19 +50,27 @@ public class ItemSortDialog extends BottomSheetDialogFragment {
         onAddItem(R.string.smart_shuffle, SortOrder.SMART_SHUFFLE_OLD_NEW, SortOrder.SMART_SHUFFLE_NEW_OLD, false);
     }
 
+    /**
+     * Creates each sort option and its direction toggle, keeping the label separate from the fixed-size icon
+     * so long titles can be ellipsized while the whole option remains one accessible button.
+     */
     protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
         if (sortOrder == ascending || sortOrder == descending) {
             SortDialogItemActiveBinding item = SortDialogItemActiveBinding.inflate(
                     getLayoutInflater(), viewBinding.gridLayout, false);
+            item.label.setText(title);
+            item.button.setContentDescription(getString(title));
+            item.directionIcon.setVisibility(ascending == descending ? View.GONE : View.VISIBLE);
             SortOrder other;
             if (ascending == descending) {
-                item.button.setText(title);
                 other = ascending;
             } else if (sortOrder == ascending) {
-                item.button.setText(getString(title) + "\u00A0▲");
+                item.directionIcon.setImageResource(R.drawable.ic_arrow_full_up);
+                item.button.setContentDescription(getString(title) + "\u00A0▲");
                 other = descending;
             } else {
-                item.button.setText(getString(title) + "\u00A0▼");
+                item.directionIcon.setImageResource(R.drawable.ic_arrow_full_down);
+                item.button.setContentDescription(getString(title) + "\u00A0▼");
                 other = ascending;
             }
             item.button.setOnClickListener(v -> {

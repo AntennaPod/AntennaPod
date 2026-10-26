@@ -1,10 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/button"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     app:layout_gravity="fill_horizontal|center_vertical"
-    app:layout_columnWeight="1"
-    style="@style/Widget.Material3.Button.TonalButton" />
+    app:layout_columnWeight="1">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Widget.Material3.Button.TonalButton" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:elevation="4dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:importantForAccessibility="noHideDescendants">
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="?attr/colorOnSecondaryContainer" />
+
+        <ImageView
+            android:id="@+id/directionIcon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="4dp"
+            android:visibility="gone"
+            app:tint="?attr/colorOnSecondaryContainer" />
+
+    </LinearLayout>
+
+</FrameLayout>
