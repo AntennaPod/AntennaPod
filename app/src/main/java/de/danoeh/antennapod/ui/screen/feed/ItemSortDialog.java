@@ -51,26 +51,24 @@ public class ItemSortDialog extends BottomSheetDialogFragment {
     }
 
     /**
-     * Creates each sort option and its direction toggle, keeping the label separate from the fixed-size icon
-     * so long titles can be ellipsized while the whole option remains one accessible button.
+     * Creates each sort option with a compound drawable that reserves space beside an ellipsized label,
+     * and describes its direction in words so screen readers can announce the selected order.
      */
     protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
         if (sortOrder == ascending || sortOrder == descending) {
             SortDialogItemActiveBinding item = SortDialogItemActiveBinding.inflate(
                     getLayoutInflater(), viewBinding.gridLayout, false);
-            item.label.setText(title);
-            item.button.setContentDescription(getString(title));
-            item.directionIcon.setVisibility(ascending == descending ? View.GONE : View.VISIBLE);
+            item.button.setText(title);
             SortOrder other;
             if (ascending == descending) {
                 other = ascending;
             } else if (sortOrder == ascending) {
-                item.directionIcon.setImageResource(R.drawable.ic_arrow_full_up);
-                item.button.setContentDescription(getString(title) + "\u00A0▲");
+                item.button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_full_up, 0);
+                item.button.setContentDescription(getString(R.string.sort_ascending_description, getString(title)));
                 other = descending;
             } else {
-                item.directionIcon.setImageResource(R.drawable.ic_arrow_full_down);
-                item.button.setContentDescription(getString(title) + "\u00A0▼");
+                item.button.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_full_down, 0);
+                item.button.setContentDescription(getString(R.string.sort_descending_description, getString(title)));
                 other = ascending;
             }
             item.button.setOnClickListener(v -> {

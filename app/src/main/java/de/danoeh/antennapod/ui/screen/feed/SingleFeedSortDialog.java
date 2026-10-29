@@ -30,8 +30,8 @@ public class SingleFeedSortDialog extends ItemSortDialog {
     }
 
     /**
-     * Adds the feed's global-default choice after its sort options, giving the active choice a visible label
-     * and an accessible name because the button and its label are separate views.
+     * Adds the feed's global-default choice after its sort options without a direction icon,
+     * because this choice inherits the configured order rather than selecting a direction itself.
      */
     @Override
     protected void populateList() {
@@ -39,8 +39,7 @@ public class SingleFeedSortDialog extends ItemSortDialog {
         if (sortOrder == SortOrder.GLOBAL_DEFAULT) {
             SortDialogItemActiveBinding item = SortDialogItemActiveBinding.inflate(
                     getLayoutInflater(), viewBinding.gridLayout, false);
-            item.label.setText(R.string.global_default);
-            item.button.setContentDescription(getString(R.string.global_default));
+            item.button.setText(R.string.global_default);
             viewBinding.gridLayout.addView(item.getRoot());
         } else {
             SortDialogItemBinding item = SortDialogItemBinding.inflate(
