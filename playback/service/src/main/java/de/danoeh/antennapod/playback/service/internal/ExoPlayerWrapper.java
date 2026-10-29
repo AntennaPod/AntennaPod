@@ -21,9 +21,7 @@ import androidx.media3.datasource.DefaultDataSource;
 import androidx.media3.datasource.DefaultHttpDataSource;
 import androidx.media3.datasource.HttpDataSource;
 import androidx.media3.datasource.cache.CacheDataSource;
-import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor;
 import androidx.media3.datasource.cache.SimpleCache;
-import androidx.media3.exoplayer.DefaultLoadControl;
 import androidx.media3.exoplayer.DefaultRenderersFactory;
 import androidx.media3.common.Format;
 import androidx.media3.common.MediaItem;
@@ -95,15 +93,10 @@ public class ExoPlayerWrapper {
     }
 
     private void createPlayer() {
-        DefaultLoadControl.Builder loadControl = new DefaultLoadControl.Builder();
-        loadControl.setBufferDurationsMs((int) TimeUnit.HOURS.toMillis(1), (int) TimeUnit.HOURS.toMillis(3),
-                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
-        loadControl.setBackBuffer((int) TimeUnit.MINUTES.toMillis(5), true);
         trackSelector = new DefaultTrackSelector(context);
         exoPlayer = new ExoPlayer.Builder(context, new DefaultRenderersFactory(context))
                 .setTrackSelector(trackSelector)
-                .setLoadControl(loadControl.build())
+                .setLoadControl(PlaybackLoadControl.create())
                 .build();
         exoPlayer.setSeekParameters(SeekParameters.EXACT);
         exoPlayer.addListener(new Player.Listener() {
@@ -159,7 +152,7 @@ public class ExoPlayerWrapper {
             }
         });
         simpleCache = new SimpleCache(new File(context.getCacheDir(), "streaming"),
-                new LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024), new StandaloneDatabaseProvider(context));
+                new SlidingWindowCacheEvictor(), new StandaloneDatabaseProvider(context));
         initLoudnessEnhancer(exoPlayer.getAudioSessionId());
     }
 
@@ -252,7 +245,8 @@ public class ExoPlayerWrapper {
         if (s.startsWith("http")) {
             dataSourceFactory = new CacheDataSource.Factory()
                     .setCache(simpleCache)
-                    .setUpstreamDataSourceFactory(httpDataSourceFactory);
+                    .setUpstreamDataSourceFactory(httpDataSourceFactory)
+                    .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR);
         }
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
