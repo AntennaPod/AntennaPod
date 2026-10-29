@@ -29,6 +29,10 @@ public class SingleFeedSortDialog extends ItemSortDialog {
         return dialog;
     }
 
+    /**
+     * Adds the feed's global-default choice after its sort options without a direction icon,
+     * because this choice inherits the configured order rather than selecting a direction itself.
+     */
     @Override
     protected void populateList() {
         super.populateList();
