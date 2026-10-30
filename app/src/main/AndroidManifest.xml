@@ -43,6 +43,9 @@
         android:enableOnBackInvokedCallback="true"
         android:localeConfig="@xml/locale_config"
         android:networkSecurityConfig="@xml/network_security_config">
+        <meta-data
+            android:name="android.content.APP_RESTRICTIONS"
+            android:resource="@xml/app_restrictions" />
 
         <activity
             android:name=".ui.screen.playback.PlaybackSpeedDialogActivity"
