@@ -37,7 +37,18 @@ public abstract class DownloadServiceInterface {
     /**
      * Download when device seems fit.
      */
-    public abstract void download(Context context, FeedItem item);
+    public void download(Context context, FeedItem item) {
+        download(context, item, false);
+    }
+
+    /**
+     * Download when device seems fit.
+     *
+     * @param skipQueue if true, the item is not added to the playback queue even when
+     *                  {@code UserPreferences.enqueueDownloadedEpisodes()} would normally do so.
+     *                  Use this for post-import re-downloads that should not modify the user's queue.
+     */
+    public abstract void download(Context context, FeedItem item, boolean skipQueue);
 
     public abstract void cancel(Context context, FeedMedia media);
 
