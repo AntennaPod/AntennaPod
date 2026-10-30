@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
@@ -53,15 +54,18 @@ public class MediaLibrarySessionCallbackTest {
     }
 
     @Test
-    public void onSetMediaItemsStub() throws Exception {
+    public void onSetMediaItemsStubResolvesRemoteSource() throws Exception {
         long mediaId = seedEpisode().getId();
         MediaItem browseItem = MediaItemAdapter.fromMediaIdStub(mediaId);
         MediaSession.MediaItemsWithStartPosition result = callback.onSetMediaItems(
                 session, controllerInfo, Collections.singletonList(browseItem), C.INDEX_UNSET, C.TIME_UNSET)
                 .get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
-        assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
-        assertEquals(EPISODE_TITLE, result.mediaItems.get(0).mediaMetadata.title);
+        MediaItem resolvedItem = result.mediaItems.get(0);
+        assertEquals(String.valueOf(mediaId), resolvedItem.mediaId);
+        assertEquals(EPISODE_TITLE, resolvedItem.mediaMetadata.title);
+        assertNotNull(resolvedItem.localConfiguration);
+        assertEquals("http://example.com", resolvedItem.localConfiguration.uri.toString());
     }
 
     @Test
