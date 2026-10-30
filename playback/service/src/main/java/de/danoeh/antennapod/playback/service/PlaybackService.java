@@ -103,6 +103,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedOrder;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
@@ -415,6 +416,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .setMediaId("FeedId:" + feed.getId())
                 .setTitle(feed.getTitle())
                 .setDescription(feed.getDescription());
+        Bundle extras = new Bundle();
+        extras.putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE,
+                MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM);
+        extras.putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE,
+                MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM);
+        builder.setExtras(extras);
         if (feed.getImageUrl() != null) {
             builder.setIconUri(Uri.parse(feed.getImageUrl()));
         }
@@ -466,11 +473,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (parentId.equals(getResources().getString(R.string.subscriptions_label))) {
-            List<Feed> feeds = DBReader.getFeedList();
+            List<Feed> feeds = DBReader.getNavDrawerData(
+                    UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER,
+                    UserPreferences.getFeedCounterSetting(), Feed.STATE_SUBSCRIBED).feeds;
             for (Feed feed : feeds) {
-                if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-                    mediaItems.add(createBrowsableMediaItemForFeed(feed));
-                }
+                mediaItems.add(createBrowsableMediaItemForFeed(feed));
             }
             return mediaItems;
         }
