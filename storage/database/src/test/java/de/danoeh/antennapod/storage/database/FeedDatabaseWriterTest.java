@@ -5,18 +5,21 @@ import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -38,6 +41,7 @@ public class FeedDatabaseWriterTest {
     public void setUp() {
         context = RuntimeEnvironment.getApplication();
         UserPreferences.init(context);
+        PlaybackPreferences.init(context);
         PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -109,6 +113,33 @@ public class FeedDatabaseWriterTest {
             assertEquals("item-" + i, dbItems.get(i).getItemIdentifier());
         }
         assertEquals(FeedItem.PLAYED, dbItems.get(2).getPlayState());
+    }
+
+    @Test
+    public void testMarkItemsPlayedAutoDeletesMedia() throws Exception {
+        Feed feed = new Feed("url", null, "title", null, null);
+        feed.setItems(new ArrayList<>());
+        feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.ALWAYS);
+
+        FeedItem item = createItem("item", "Item", feed);
+        File mediaFile = File.createTempFile("episode", ".mp3", context.getCacheDir());
+        item.getMedia().setDownloaded(true, System.currentTimeMillis());
+        item.getMedia().setLocalFileUrl(mediaFile.getAbsolutePath());
+        feed.getItems().add(item);
+
+        try {
+            feed = FeedDatabaseWriter.updateFeed(context, feed, false);
+            item = feed.getItems().get(0);
+            FeedMedia media = item.getMedia();
+
+            assertTrue(media.isDownloaded());
+            DBWriter.markItemsPlayed(context, FeedItem.PLAYED, true, Collections.singletonList(item)).get();
+            assertEquals(FeedItem.PLAYED, item.getPlayState());
+            assertFalse(media.isDownloaded());
+            assertFalse(mediaFile.exists());
+        } finally {
+            mediaFile.delete();
+        }
     }
 
     @Test

@@ -650,6 +650,18 @@ public class DBWriter {
      */
     @NonNull
     public static Future<?> markItemsPlayed(int played, boolean resetMediaPosition, List<FeedItem> items) {
+        return markItemsPlayed(null, played, resetMediaPosition, items, false);
+    }
+
+    @NonNull
+    public static Future<?> markItemsPlayed(@NonNull Context context, int played,
+                                            boolean resetMediaPosition, List<FeedItem> items) {
+        return markItemsPlayed(context, played, resetMediaPosition, items, true);
+    }
+
+    private static Future<?> markItemsPlayed(@Nullable Context context, int played,
+                                             boolean resetMediaPosition, List<FeedItem> items,
+                                             boolean autoDelete) {
         for (FeedItem item : items) {
             if (item.hasMedia() && resetMediaPosition) {
                 item.getMedia().setPosition(0);
@@ -661,8 +673,34 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemsRead(played, resetMediaPosition, items);
             adapter.close();
+            if (autoDelete && played == FeedItem.PLAYED) {
+                for (FeedItem item : items) {
+                    if (item.hasMedia()) {
+                        deleteFeedMediaIfAutoDeleteEnabled(context, item.getMedia());
+                    }
+                }
+            }
             EventBus.getDefault().post(new FeedItemEvent(items, true));
         });
+    }
+
+    public static Future<?> deleteFeedMediaIfAutoDeleteEnabled(@NonNull Context context,
+                                                                @NonNull FeedMedia media) {
+        if (!media.isDownloaded() || media.getItem() == null) {
+            return Futures.immediateFuture(null);
+        }
+        FeedItem item = media.getItem();
+        FeedPreferences.AutoDeleteAction action =
+                item.getFeed().getPreferences().getCurrentAutoDelete();
+        boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
+                && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
+        boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
+                || (action == FeedPreferences.AutoDeleteAction.GLOBAL && autoDeleteEnabledGlobally);
+        if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
+                || !UserPreferences.shouldFavoriteKeepEpisode())) {
+            return deleteFeedMediaOfItem(context, media);
+        }
+        return Futures.immediateFuture(null);
     }
 
     /**
