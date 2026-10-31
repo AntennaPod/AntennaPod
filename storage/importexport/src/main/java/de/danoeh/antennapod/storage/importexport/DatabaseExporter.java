@@ -10,23 +10,36 @@ import android.util.Log;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.CountingOutputStream;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class DatabaseExporter {
     private static final String TAG = "DatabaseExporter";
     private static final String TEMP_DB_NAME = PodDBAdapter.DATABASE_NAME + "_tmp";
 
-    public static void exportToDocument(Uri uri, Context context) throws IOException {
+    public static void exportToDocument(Uri uri, Context context, boolean compress) throws IOException {
         ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "wt");
         int bytesCopied = -1;
         int resultingFileSize = 0;
         try (FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor())) {
-            bytesCopied = exportToStream(fileOutputStream, context);
+            if (compress) {
+                CountingOutputStream countingStream = new CountingOutputStream(fileOutputStream);
+                try (GZIPOutputStream gzipStream = new GZIPOutputStream(countingStream)) {
+                    exportToStream(gzipStream, context);
+                }
+                bytesCopied = countingStream.getCount();
+            } else {
+                bytesCopied = exportToStream(fileOutputStream, context);
+            }
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
@@ -42,7 +55,7 @@ public class DatabaseExporter {
         }
     }
 
-    public static int exportToStream(FileOutputStream outFileStream, Context context) throws IOException {
+    public static int exportToStream(OutputStream outFileStream, Context context) throws IOException {
         File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
         if (!currentDB.exists()) {
             throw new IOException("Cannot access current database");
@@ -76,8 +89,14 @@ public class DatabaseExporter {
     public static void importBackup(Uri inputUri, Context context) throws IOException {
         InputStream inputStream = null;
         try {
+            inputStream = new BufferedInputStream(context.getContentResolver().openInputStream(inputUri));
+            inputStream.mark(2);
+            int magic = inputStream.read() | (inputStream.read() << 8);
+            inputStream.reset();
+            if (magic == GZIPInputStream.GZIP_MAGIC) {
+                inputStream = new GZIPInputStream(inputStream);
+            }
             File tempDB = context.getDatabasePath(TEMP_DB_NAME);
-            inputStream = context.getContentResolver().openInputStream(inputUri);
             FileUtils.copyInputStreamToFile(inputStream, tempDB);
 
             SQLiteDatabase db = SQLiteDatabase.openDatabase(tempDB.getAbsolutePath(),
