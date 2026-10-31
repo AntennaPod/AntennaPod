@@ -9,7 +9,7 @@ public abstract class PlaybackStatus {
      * currently being played and the current player status is playing.
      */
     public static boolean isCurrentlyPlaying(FeedMedia media) {
-        return isPlaying(media) && PlaybackService.isRunning
+        return isPlaying(media) && PlaybackServiceInterface.isPlaying
                 && ((PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING));
     }
 
