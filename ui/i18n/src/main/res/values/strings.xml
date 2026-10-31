@@ -942,6 +942,7 @@
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback speed</string>
     <string name="player_switch_to_audio_only">Switch to audio only</string>
+    <string name="open_video_full_screen">Open video in full screen</string>
 
     <!-- proxy settings -->
     <string name="proxy_type_label">Type</string>

@@ -11,4 +11,5 @@
     <item name="pending_intent_playback_speed" type="id"/>
     <item name="pending_intent_player_activity" type="id"/>
     <item name="pending_intent_video_player" type="id"/>
+    <item name="pending_intent_empty_widget" type="id"/>
 </resources>

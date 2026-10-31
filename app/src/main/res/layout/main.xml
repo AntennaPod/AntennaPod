@@ -40,7 +40,7 @@
                 android:elevation="8dp"
                 android:visibility="gone"
                 android:fitsSystemWindows="false"
-                app:layout_behavior="de.danoeh.antennapod.ui.common.LockableBottomSheetBehavior" />
+                app:layout_behavior="com.google.android.material.bottomsheet.ViewPagerBottomSheetBehavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
