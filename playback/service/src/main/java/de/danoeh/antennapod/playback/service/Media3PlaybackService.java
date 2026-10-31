@@ -688,6 +688,8 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
             if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 DBWriter.removeQueueItem(this, ended, item);
+            }
+            if (skipped && !UserPreferences.shouldSkipKeepEpisode() && !ended && !almostEnded) {
                 DBWriter.deleteFeedMediaIfAutoDeleteEnabled(this, media);
             }
         }
