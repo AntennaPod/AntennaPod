@@ -26,7 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
@@ -211,7 +211,7 @@ public class AudioPlayerFragment extends Fragment implements
             return true;
         });
         butPlay.setOnClickListener(v -> {
-            if (PlaybackService.isRunning
+            if (PlaybackServiceInterface.isPlaying
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                 if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
                     PlaybackController.bindToMedia3Service(getContext(), MediaController::pause);
@@ -332,7 +332,7 @@ public class AudioPlayerFragment extends Fragment implements
         updatePlaybackSpeedButton(new SpeedChangedEvent(PlaybackSpeedUtils.getCurrentPlaybackSpeed(currentMedia)));
         setChapterDividers();
         setupOptionsMenu();
-        boolean isPlaying = PlaybackService.isRunning
+        boolean isPlaying = PlaybackServiceInterface.isPlaying
                 && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING;
         butPlay.setIsShowPlay(!isPlaying);
     }

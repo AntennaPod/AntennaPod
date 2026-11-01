@@ -151,10 +151,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int MAX_ANDROID_AUTO_EPISODES_PER_FEED = 100;
 
     /**
-     * Is true if service is running.
-     */
-    public static boolean isRunning = false;
-    /**
      * Is true if the service was running, but paused due to headphone disconnect
      */
     private static boolean transientPause = false;
@@ -209,25 +205,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static Intent getPlayerActivityIntent(Context context) {
         boolean showVideoPlayer;
 
-        if (isRunning) {
+        if (PlaybackServiceInterface.isPlaying) {
             showVideoPlayer = currentMediaType == MediaType.VIDEO && !isCasting;
         } else {
             showVideoPlayer = PlaybackPreferences.getCurrentEpisodeIsVideo();
         }
 
         if (showVideoPlayer) {
-            return new VideoPlayerActivityStarter(context).getIntent();
-        } else {
-            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
-        }
-    }
-
-    /**
-     * Same as {@link #getPlayerActivityIntent(Context)}, but here the type of activity
-     * depends on the FeedMedia that is provided as an argument.
-     */
-    public static Intent getPlayerActivityIntent(Context context, Playable media) {
-        if (media.getMediaType() == MediaType.VIDEO && !isCasting) {
             return new VideoPlayerActivityStarter(context).getIntent();
         } else {
             return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
@@ -241,7 +225,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
             throw new IllegalStateException("Media3PlaybackService should be used instead of PlaybackService");
         }
-        isRunning = true;
+        PlaybackServiceInterface.isPlaying = true;
 
         stateManager = new PlaybackServiceStateManager(this);
         notificationBuilder = new PlaybackServiceNotificationBuilder(this);
@@ -330,7 +314,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         WidgetUpdater.updateWidget(getApplicationContext(), new WidgetUpdater.WidgetState(getPlayable(), getStatus(),
                     getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed()));
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
-        isRunning = false;
+        PlaybackServiceInterface.isPlaying = false;
         currentMediaType = MediaType.UNKNOWN;
         castStateListener.destroy();
 

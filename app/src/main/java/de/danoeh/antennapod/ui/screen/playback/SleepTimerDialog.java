@@ -41,7 +41,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TimeDialogBinding;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -244,7 +244,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
             }
         });
         viewBinding.setSleeptimerButton.setOnClickListener(v -> {
-            if (!PlaybackService.isRunning
+            if (!PlaybackServiceInterface.isPlaying
                     || (!BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE
                             && controller != null && controller.getStatus() != PlayerStatus.PLAYING)) {
                 Snackbar.make(viewBinding.getRoot(), R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();

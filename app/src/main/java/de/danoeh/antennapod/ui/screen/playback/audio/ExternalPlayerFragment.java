@@ -23,7 +23,7 @@ import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.PlaybackController;
-import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -73,13 +73,13 @@ public class ExternalPlayerFragment extends Fragment {
                 if (currentMedia.getMediaType() == MediaType.AUDIO) {
                     ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
                 } else {
-                    Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), currentMedia);
+                    Intent intent = PlaybackServiceInterface.getPlayerActivityIntent(getActivity(), currentMedia);
                     startActivity(intent);
                 }
             }
         });
         butPlay.setOnClickListener(v -> {
-            if (PlaybackService.isRunning
+            if (PlaybackServiceInterface.isPlaying
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                 if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
                     PlaybackController.bindToMedia3Service(getContext(), controller -> controller.pause());
@@ -162,7 +162,7 @@ public class ExternalPlayerFragment extends Fragment {
         txtvTitle.setText(media.getEpisodeTitle());
         feedName.setText(media.getFeedTitle());
         onPositionObserverUpdate(new PlaybackPositionEvent(media.getPosition(), media.getDuration()));
-        boolean isPlaying = PlaybackService.isRunning
+        boolean isPlaying = PlaybackServiceInterface.isPlaying
                 && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING;
         butPlay.setIsShowPlay(!isPlaying);
 

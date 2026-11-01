@@ -5,7 +5,7 @@ import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -79,7 +79,7 @@ public class WearListenerService extends WearableListenerService {
                 if (media == null) {
                     return;
                 }
-                if (!PlaybackService.isRunning) {
+                if (!PlaybackServiceInterface.isPlaying) {
                     reply(sourceNodeId, WearDataPaths.NOW_PLAYING,
                             WearSerializer.nowPlayingToBytes(media.getItem(), false));
                     return;
