@@ -257,7 +257,8 @@ public class FeedInfoFragment extends Fragment implements MaterialToolbar.OnMenu
 
     private void refreshToolbarState() {
         boolean isSubscribed = feed != null && feed.getState() == Feed.STATE_SUBSCRIBED;
-        viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(isSubscribed && !feed.isLocalFeed());
+        viewBinding.toolbar.getMenu().findItem(R.id.share_item).setVisible(
+                isSubscribed && !feed.isLocalFeed() && !feed.isSearchFeed());
         viewBinding.toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(isSubscribed
                 && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));

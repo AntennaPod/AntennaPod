@@ -29,4 +29,7 @@ dependencies {
     implementation libs.rxandroid
     implementation libs.rxjava
     implementation libs.okhttp
+
+    testImplementation libs.junit
+    testImplementation libs.robolectric
 }
