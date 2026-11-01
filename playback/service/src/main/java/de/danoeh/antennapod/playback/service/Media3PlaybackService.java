@@ -684,19 +684,13 @@ public class Media3PlaybackService extends MediaLibraryService {
         SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, startPosition, ended || almostEnded);
         if (item != null) {
             if (ended || almostEnded) {
-                DBWriter.markItemsPlayed(FeedItem.PLAYED, true, Collections.singletonList(item));
+                DBWriter.markItemsPlayed(this, FeedItem.PLAYED, true, Collections.singletonList(item));
             }
             if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 DBWriter.removeQueueItem(this, ended, item);
-                FeedPreferences.AutoDeleteAction action = item.getFeed().getPreferences().getCurrentAutoDelete();
-                boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
-                        && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
-                boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
-                        || (action == FeedPreferences.AutoDeleteAction.GLOBAL && autoDeleteEnabledGlobally);
-                if (shouldAutoDelete && (!item.isTagged(FeedItem.TAG_FAVORITE)
-                        || !UserPreferences.shouldFavoriteKeepEpisode())) {
-                    DBWriter.deleteFeedMediaOfItem(this, media);
-                }
+            }
+            if (skipped && !UserPreferences.shouldSkipKeepEpisode() && !ended && !almostEnded) {
+                DBWriter.deleteFeedMediaIfAutoDeleteEnabled(this, media);
             }
         }
         if (ended || ((skipped || playingNext) && String.valueOf(media.getId()).equals(playedMediaId))) {
