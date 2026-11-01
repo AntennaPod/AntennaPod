@@ -907,9 +907,9 @@
     <!-- Local feeds -->
     <string name="add_local_folder">Add local folder</string>
     <string name="local_folder">Local folder</string>
-    <string name="reconnect_local_folder">Re-connect local folder</string>
-    <string name="reconnect_local_folder_summary">Risky: only re-connect to the exact same folder. Otherwise, you will lose all your playback state.</string>
-    <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
+    <string name="reconnect_local_folder">Reconnect local folder</string>
+    <string name="reconnect_local_folder_summary">Risky: only reconnect to the exact same folder. Otherwise, you will lose all your playback state.</string>
+    <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to reconnect to the exact same folder. Do not select another folder.</string>
     <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
     <string name="unable_to_start_system_file_manager">Unable to start system file manager</string>
 
@@ -994,11 +994,11 @@
     <string name="add_shortcut">Add shortcut</string>
 
     <!-- Parental Control -->
-    <string name="pref_parental_control_set_password">Set Password</string>
+    <string name="pref_parental_control_set_password">Set password</string>
     <string name="pref_parental_control_confirm_password">Confirm password</string>
     <string name="pref_parental_control_passwords_dont_match">Passwords don\'t match</string>
     <string name="pref_parental_control_password_empty">Password cannot be empty</string>
-    <string name="pref_parental_control_title">Parental Controls</string>
+    <string name="pref_parental_control_title">Parental controls</string>
     <string name="pref_parental_control_sum">Restrict features with a password</string>
     <string name="pref_parental_control_enabled_title">Enable</string>
     <string name="pref_parental_control_require_subscribe_title">Restrict subscribing</string>
