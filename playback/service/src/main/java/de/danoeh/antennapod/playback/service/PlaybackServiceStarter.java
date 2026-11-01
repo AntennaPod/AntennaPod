@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.Parcelable;
 import androidx.core.content.ContextCompat;
 import androidx.media3.common.DeviceInfo;
+import androidx.media3.common.MediaItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
+
+import java.util.Objects;
 
 public class PlaybackServiceStarter {
     private final Context context;
@@ -44,8 +47,8 @@ public class PlaybackServiceStarter {
     public void start() {
         if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
             PlaybackController.bindToMedia3Service(context, controller -> {
-                if (controller.getCurrentMediaItem() != null && media instanceof FeedMedia
-                        && ("" + ((FeedMedia) media).getId()).equals(controller.getCurrentMediaItem().mediaId)) {
+                FeedMedia feedMedia = (FeedMedia) media;
+                if (isCurrentMediaItem(feedMedia, controller.getCurrentMediaItem())) {
                     controller.play();
                     return;
                 }
@@ -53,7 +56,7 @@ public class PlaybackServiceStarter {
                         == DeviceInfo.PLAYBACK_TYPE_REMOTE) {
                     controller.play(); // Casting somehow does not play when not quickly starting the old episode
                 }
-                controller.setMediaItem(MediaItemAdapter.fromMediaIdStub(((FeedMedia) media).getId()));
+                controller.setMediaItem(MediaItemAdapter.fromMediaIdStub(feedMedia.getId()));
                 controller.prepare();
                 controller.play();
             });
@@ -64,5 +67,14 @@ public class PlaybackServiceStarter {
             return;
         }
         ContextCompat.startForegroundService(context, getIntent());
+    }
+
+    static boolean isCurrentMediaItem(FeedMedia media, MediaItem currentMediaItem) {
+        if (currentMediaItem == null || currentMediaItem.localConfiguration == null
+                || !("" + media.getId()).equals(currentMediaItem.mediaId)) {
+            return false;
+        }
+        String mediaUrl = media.localFileAvailable() ? media.getLocalFileUrl() : media.getStreamUrl();
+        return Objects.equals(mediaUrl, currentMediaItem.localConfiguration.uri.toString());
     }
 }
