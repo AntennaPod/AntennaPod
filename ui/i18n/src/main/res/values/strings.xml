@@ -414,6 +414,8 @@
     <string name="feed_title">Podcast title</string>
     <string name="random">Random</string>
     <string name="smart_shuffle">Smart shuffle</string>
+    <string name="sort_ascending_description">%1$s, ascending</string>
+    <string name="sort_descending_description">%1$s, descending</string>
     <string name="size">Size</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to remove ALL episodes from the queue.</string>
     <string name="queue_time_left_label">%1$s • %2$s left</string>
