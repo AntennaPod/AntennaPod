@@ -47,6 +47,7 @@ dependencies {
     implementation libs.glide
     implementation libs.commons.lang3
 
+    testImplementation project(':net:download:service-interface')
     testImplementation libs.junit
     testImplementation libs.mockito.core
     testImplementation libs.androidx.test.core
