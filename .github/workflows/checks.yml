@@ -96,6 +96,9 @@ jobs:
       - name: Test
         if: matrix.execute-tests == true
         run: ./gradlew test${{ matrix.variant }}UnitTest test${{ matrix.base-variant }}UnitTest
+      - name: Unreachable code
+        if: matrix.variant == 'PlayRelease'
+        run: ./gradlew :app:r8Usage
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: matrix.upload-artifact == true
         with:
