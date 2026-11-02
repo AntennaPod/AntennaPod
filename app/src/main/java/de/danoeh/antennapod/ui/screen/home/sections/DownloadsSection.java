@@ -16,6 +16,7 @@ import de.danoeh.antennapod.event.DownloadLogEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
@@ -117,6 +118,13 @@ public class DownloadsSection extends HomeSection {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSpeedChanged(SpeedChangedEvent event) {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

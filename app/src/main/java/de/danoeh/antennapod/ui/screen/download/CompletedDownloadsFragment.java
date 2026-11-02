@@ -33,6 +33,7 @@ import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.swipeactions.SwipeActions;
 import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
@@ -291,6 +292,13 @@ public class CompletedDownloadsFragment extends Fragment
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSpeedChanged(SpeedChangedEvent event) {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

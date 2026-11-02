@@ -286,6 +286,9 @@ public class QueueFragment extends Fragment implements MaterialToolbar.OnMenuIte
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateSpeed(SpeedChangedEvent event) {
         refreshInfoBar();
+        if (recyclerAdapter != null) {
+            recyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
