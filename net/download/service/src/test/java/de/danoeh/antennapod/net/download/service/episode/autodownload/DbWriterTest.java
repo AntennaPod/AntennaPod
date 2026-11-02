@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -13,6 +15,7 @@ import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -65,6 +68,7 @@ public class DbWriterTest {
         PlaybackPreferences.init(context);
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
         SynchronizationQueue.setInstance(new SynchronizationQueueStub());
+        FeedUpdateManager.setInstance(new FeedUpdateManagerStub());
 
         // create new database
         PodDBAdapter.init(context);
@@ -799,6 +803,85 @@ public class DbWriterTest {
             assertTrue(item.getId() != 0);
         }
         return feed;
+    }
+
+    @Test
+    public void testFirstSubscriptionAddsRecentItemsToInbox() throws Exception {
+        Feed feed = createUnsubscribedFeedWithItems("url", 5);
+        DBWriter.setFeedState(context, feed, Feed.STATE_SUBSCRIBED).get(TIMEOUT, TimeUnit.SECONDS);
+
+        List<FeedItem> dbItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+        assertEquals(5, dbItems.size());
+        for (int i = 0; i < 5; i++) {
+            assertEquals(i < 3, dbItems.get(i).isNew());
+        }
+    }
+
+    @Test
+    public void testFirstSubscriptionHourExpired() throws Exception {
+        Feed feed = createUnsubscribedFeedWithItems("url", 5);
+        UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2));
+        DBWriter.setFeedState(context, feed, Feed.STATE_SUBSCRIBED).get(TIMEOUT, TimeUnit.SECONDS);
+
+        List<FeedItem> dbItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+        assertEquals(5, dbItems.size());
+        for (FeedItem item : dbItems) {
+            assertFalse(item.isNew());
+        }
+    }
+
+    @Test
+    public void testLaterSubscriptionDoesNotAddItemsToInbox() throws Exception {
+        createUnsubscribedFeedWithItems("existing url", 0);
+        Feed feed = createUnsubscribedFeedWithItems("url", 5);
+        DBWriter.setFeedState(context, feed, Feed.STATE_SUBSCRIBED).get(TIMEOUT, TimeUnit.SECONDS);
+
+        List<FeedItem> dbItems = DBReader.getFeedItemList(feed, FeedItemFilter.unfiltered(),
+                SortOrder.DATE_NEW_OLD, 0, Integer.MAX_VALUE);
+        assertEquals(5, dbItems.size());
+        for (FeedItem item : dbItems) {
+            assertFalse(item.isNew());
+        }
+    }
+
+    private Feed createUnsubscribedFeedWithItems(String downloadUrl, int numItems) {
+        Feed feed = new Feed(downloadUrl, null, "title");
+        feed.setState(Feed.STATE_NOT_SUBSCRIBED);
+        List<FeedItem> items = new ArrayList<>();
+        feed.setItems(items);
+        for (int i = 0; i < numItems; i++) {
+            items.add(new FeedItem(0, "Item " + i, "id " + i, "link", new Date(i * 1000L), FeedItem.UNPLAYED, feed));
+        }
+        withPodDB(adapter -> adapter.setCompleteFeed(feed));
+        return DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
+    }
+
+    private static class FeedUpdateManagerStub extends FeedUpdateManager {
+        @Override
+        public void restartUpdateAlarm(Context context, boolean replace) {
+        }
+
+        @Override
+        public void runOnce(Context context) {
+        }
+
+        @Override
+        public void runOnce(Context context, Feed feed) {
+        }
+
+        @Override
+        public void runOnce(Context context, Feed feed, boolean nextPage) {
+        }
+
+        @Override
+        public void runOnceOrAsk(@NonNull Context context) {
+        }
+
+        @Override
+        public void runOnceOrAsk(@NonNull Context context, @Nullable Feed feed) {
+        }
     }
 
     private static void withPodDB(Consumer<PodDBAdapter> action) {

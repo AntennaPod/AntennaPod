@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.FeedListUpdateEvent;
@@ -878,10 +879,33 @@ public class DBWriter {
                         SynchronizationQueue.getInstance().enqueueEpisodePlayed(item.getMedia(), -1, true);
                     }
                 }
+                recordFirstSubscription(feed);
+                if (isWithinFirstSubscriptionHour()) {
+                    List<FeedItem> newItems = new ArrayList<>();
+                    for (FeedItem item : feed.getItems().subList(0, Math.min(3, feed.getItems().size()))) {
+                        if (!item.isPlayed()) {
+                            newItems.add(item);
+                        }
+                    }
+                    markItemsPlayed(FeedItem.NEW, false, newItems);
+                }
             }
             adapter.close();
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
+    }
+
+    /**
+     * Feed IDs are never reused, so the feed with ID 1 is the first one the user ever added.
+     */
+    private static void recordFirstSubscription(Feed feed) {
+        if (feed.getId() == 1 && UserPreferences.getFirstSubscriptionTime() == 0) {
+            UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
+        }
+    }
+
+    private static boolean isWithinFirstSubscriptionHour() {
+        return System.currentTimeMillis() - UserPreferences.getFirstSubscriptionTime() < TimeUnit.HOURS.toMillis(1);
     }
 
     /**
