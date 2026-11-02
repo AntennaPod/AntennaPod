@@ -55,6 +55,7 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         boolean textAndImageCombined = feed.isLocalFeed() && feed.getImageUrl() != null
                 && feed.getImageUrl().startsWith(Feed.PREFIX_GENERATIVE_COVER);
         coverLoader.withUri(feed.getImageUrl());
+        coverLoader.withCredentials(feed.getPreferences());
         errorIcon.setVisibility(feed.hasLastUpdateFailed() ? View.VISIBLE : View.GONE);
 
         if (UserPreferences.shouldShowSubscriptionTitle() || columnCount == 1) {
