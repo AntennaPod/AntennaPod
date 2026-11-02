@@ -52,10 +52,11 @@ public final class SkipUtils {
         FeedPreferences preferences = media.getItem().getFeed().getPreferences();
         int skipEnd = preferences.getFeedSkipEnding();
         long remainingTime = duration - position;
+        long skipEndMs = skipEnd * 1000L;
         if (skipEnd > 0
-                && skipEnd * 1000L < duration
-                && (remainingTime - (skipEnd * 1000L) > 0)
-                && ((remainingTime - skipEnd * 1000L) < (speed * 1000))) {
+                && skipEndMs < duration
+                && remainingTime > 0
+                && remainingTime <= skipEndMs + (long) (speed * 1000)) {
             Log.d(TAG, "skipEndingIfNecessary: Skipping remaining " + (duration - position));
             EventBus.getDefault().post(
                     new MessageEvent(
