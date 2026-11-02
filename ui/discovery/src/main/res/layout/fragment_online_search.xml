@@ -26,21 +26,30 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <GridView
-        android:id="@+id/gridView"
+    <LinearLayout
+        android:id="@+id/resultsContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/appbar"
-        android:clipToPadding="false"
-        android:columnWidth="400dp"
-        android:gravity="center"
-        android:horizontalSpacing="8dp"
-        android:numColumns="auto_fit"
-        android:paddingBottom="@dimen/list_vertical_padding"
-        android:paddingTop="@dimen/list_vertical_padding"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="8dp"
-        tools:listitem="@layout/online_search_listitem" />
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/colorBackground"
+            app:tabBackground="?attr/selectableItemBackground"
+            app:tabMode="fixed"
+            app:tabGravity="fill" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@android:id/empty"
