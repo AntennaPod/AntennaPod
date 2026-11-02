@@ -50,10 +50,6 @@ public class ItemSortDialog extends BottomSheetDialogFragment {
         onAddItem(R.string.smart_shuffle, SortOrder.SMART_SHUFFLE_OLD_NEW, SortOrder.SMART_SHUFFLE_NEW_OLD, false);
     }
 
-    /**
-     * Creates each sort option with a compound drawable that reserves space beside an ellipsized label,
-     * and describes its direction in words so screen readers can announce the selected order.
-     */
     protected void onAddItem(int title, SortOrder ascending, SortOrder descending, boolean ascendingIsDefault) {
         if (sortOrder == ascending || sortOrder == descending) {
             SortDialogItemActiveBinding item = SortDialogItemActiveBinding.inflate(
