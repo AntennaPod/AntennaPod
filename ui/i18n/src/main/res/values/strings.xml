@@ -332,6 +332,7 @@
     <string name="download_error_http_data_error">HTTP data error</string>
     <string name="download_error_error_unknown">Unknown error</string>
     <string name="download_error_parser_exception">The podcast host\'s server sent a broken podcast feed. We recommend checking with a podcast validator such as castfeedvalidator.com and contacting the podcast creator to let them know.</string>
+    <string name="download_error_parser_exception_duplicate">The podcast\'s feed contains the same episode more than once. AntennaPod still refreshed the podcast and repaired the duplicate. Please let the podcaster know so they can fix their feed.</string>
     <string name="download_error_unsupported_type">Unsupported feed type</string>
     <string name="download_error_unsupported_type_html">The podcast host\'s server sent a website, not a podcast.</string>
     <string name="download_error_unsupported_type_html_manual">The address you entered is a website address, not a podcast RSS address.</string>
