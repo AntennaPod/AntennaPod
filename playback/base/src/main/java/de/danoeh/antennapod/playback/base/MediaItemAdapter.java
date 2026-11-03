@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
+import androidx.media.utils.MediaConstants;
 import com.bumptech.glide.Glide;
 import com.google.common.collect.ImmutableList;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -169,6 +170,12 @@ public class MediaItemAdapter {
         } else if (feed.getImageUrl() != null && feed.getImageUrl().startsWith("http")) {
             metadataBuilder.setArtworkUri(Uri.parse(feed.getImageUrl()));
         }
+        Bundle extras = new Bundle();
+        extras.putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_BROWSABLE,
+                MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM);
+        extras.putInt(MediaConstants.DESCRIPTION_EXTRAS_KEY_CONTENT_STYLE_PLAYABLE,
+                MediaConstants.DESCRIPTION_EXTRAS_VALUE_CONTENT_STYLE_GRID_ITEM);
+        metadataBuilder.setExtras(extras);
         metadataBuilder.setSubtitle(feed.getAuthor());
         metadataBuilder.setIsBrowsable(true);
         metadataBuilder.setIsPlayable(false);
