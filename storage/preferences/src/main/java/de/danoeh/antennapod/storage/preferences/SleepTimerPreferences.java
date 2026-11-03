@@ -19,6 +19,7 @@ public class SleepTimerPreferences {
     private static final String PREF_TIMER_TYPE = "sleepTimerType";
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
+    private static final String PREF_RESET_ON_PLAYBACK_INTERACTION = "ResetOnPlaybackInteraction";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
     private static final String PREF_AUTO_ENABLE_FROM = "AutoEnableFrom";
     private static final String PREF_AUTO_ENABLE_TO = "AutoEnableTo";
@@ -81,6 +82,14 @@ public class SleepTimerPreferences {
 
     public static boolean shakeToReset() {
         return prefs.getBoolean(PREF_SHAKE_TO_RESET, true);
+    }
+
+    public static void setResetOnPlaybackInteraction(boolean reset) {
+        prefs.edit().putBoolean(PREF_RESET_ON_PLAYBACK_INTERACTION, reset).apply();
+    }
+
+    public static boolean resetOnPlaybackInteraction() {
+        return prefs.getBoolean(PREF_RESET_ON_PLAYBACK_INTERACTION, false);
     }
 
     public static void setAutoEnable(boolean autoEnable) {
