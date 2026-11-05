@@ -274,7 +274,6 @@
     <string name="no_all_episodes_label">팟캐스트를 추가하면, 그 팟캐스트의 에피소드가 여기 나타납니다.</string>
     <string name="no_all_episodes_filtered_label">더 많은 에피소드를 보려면 필터를 지워보십시오.</string>
     <string name="no_inbox_head_label">새로 받음 목록에 에피소드 없음</string>
-    <string name="no_inbox_label">새 에피소드가 도착하면 여기에 표시됩니다. 그 다음에 그 에피소드에 관심이 있는지 없는지 결정할 수 있습니다.</string>
     <string name="no_subscriptions_head_label">구독 없음</string>
     <string name="no_subscriptions_label">팟캐스트에 구독하려면, 아래 더하기 아이콘을 누르십시오.</string>
     <!--Preferences-->
@@ -364,8 +363,6 @@
     <string name="pref_feed_skip_sum">소개 및 마지막 크레디트 건너뛰기</string>
     <string name="pref_feed_skip_ending">마지막 건너뛰기</string>
     <string name="pref_feed_skip_intro">처음 건너뛰기</string>
-    <string name="pref_feed_skip_ending_toast">마지막 %d초 건너뜀</string>
-    <string name="pref_feed_skip_intro_toast">처음 %d초 건너뜀</string>
     <string name="pref_playback_time_respects_speed_title">미디어 정보를 재생 속도에 맞게 조정</string>
     <string name="pref_playback_time_respects_speed_sum">재생 속도에 맞춰 재생 위치와 재생 시간을 표시합니다</string>
     <string name="pref_rewind">뒤로 건너뛰기 시간</string>

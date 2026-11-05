@@ -271,7 +271,6 @@
     <string name="no_all_episodes_label">Kun lisää podcastin, sen jaksot näkyvät täällä.</string>
     <string name="no_all_episodes_filtered_label">Tyhjennä suodin nähdäksesi enemmän jaksoja.</string>
     <string name="no_inbox_head_label">Ei jaksoja saapuneissa</string>
-    <string name="no_inbox_label">Kun uusia jaksoja saapuu, ne näytetään tässä. Voit sitten valita, oletko kiinnostunut niistä.</string>
     <string name="no_subscriptions_head_label">Ei tilauksia</string>
     <string name="no_subscriptions_label">Tilataksesi podcastin, paina plus-kuvaketta alla.</string>
     <!--Preferences-->
@@ -355,8 +354,6 @@
     <string name="pref_feed_skip_sum">Ohita esittelyt ja loppukiitokset</string>
     <string name="pref_feed_skip_ending">Ohita lopusta</string>
     <string name="pref_feed_skip_intro">Ohita alusta</string>
-    <string name="pref_feed_skip_ending_toast">Ohitettiin viimeiset %d sekuntia</string>
-    <string name="pref_feed_skip_intro_toast">Ohitettiin ensimmäiset %d sekuntia</string>
     <string name="pref_playback_time_respects_speed_title">Mukauta mediatietoja toiston nopeuteen</string>
     <string name="pref_playback_time_respects_speed_sum">Näytetty aika ja kesto mukautuvat toiston nopeuteen</string>
     <string name="pref_rewind_sum">Mukauta sekunnit jonka verran hypätään takaisin kun painat taakse kelaus -painiketta</string>

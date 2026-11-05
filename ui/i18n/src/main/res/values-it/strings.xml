@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
     <string name="drawer_close">Chiudi il menù</string>
-    <string name="drawer_preferences">Preferenze del riquadro di navigazione</string>
+    <string name="drawer_preferences">Preferenze di navigazione</string>
     <string name="drawer_feed_order_unplayed_episodes">Ordina per contatore</string>
     <string name="drawer_feed_order_alphabetical">Ordina alfabeticamente</string>
     <string name="drawer_feed_order_last_update">Ordina per data di pubblicazione</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">scorri verso l\'alto per leggere le note dell\'episodio</string>
     <string name="close_label">Chiudi</string>
     <string name="retry_label">Riprova</string>
-    <string name="auto_download_label">Includi nei download automatici</string>
+    <string name="auto_download_label">Scarica automaticamente</string>
     <string name="feed_volume_adapdation">Volume adattivo</string>
     <string name="feed_volume_adaptation_summary">Alza o abbassa il volume per gli episodi di questo podcast: %1$s</string>
     <string name="feed_volume_reduction_off">Nessun adattamento</string>
@@ -269,7 +269,7 @@
   <string name="lock_queue">Blocca la coda</string>
     <string name="queue_locked">Coda bloccata</string>
     <string name="queue_unlocked">Coda sbloccata</string>
-    <string name="queue_lock_warning">Se blocchi la coda non potrai più fare swipe o riordinare gli episodi.</string>
+    <string name="queue_lock_warning">Se blocchi la coda, non potrai riordinare gli episodi.</string>
     <string name="checkbox_do_not_show_again">Non mostrare più</string>
     <string name="clear_queue_label">Svuota la coda</string>
     <string name="undo">Annulla</string>
@@ -300,9 +300,8 @@
     <string name="no_history_label">Ogni episodio ascoltato apparirà qui.</string>
     <string name="no_all_episodes_head_label">Nessun episodio</string>
     <string name="no_all_episodes_label">Quando aggiungi un podcast, gli episodi vengono mostrati qui.</string>
-    <string name="no_all_episodes_filtered_label">Prova a rimuovere i filtri per visualizzare più episodi.</string>
+    <string name="no_all_episodes_filtered_label">Prova a rimuovere il filtro per visualizzare più episodi.</string>
     <string name="no_inbox_head_label">Nessun episodio nell\'inbox</string>
-    <string name="no_inbox_label">Quando verranno pubblicati nuovi episodi, appariranno qui. Puoi decidere se ti interessano o meno.</string>
     <string name="no_subscriptions_head_label">Nessuna iscrizione</string>
     <string name="no_subscriptions_label">Per aggiungere un podcast, premi il tasto + in basso.</string>
     <!--Preferences-->
@@ -401,8 +400,6 @@
     <string name="pref_feed_skip_sum">Salta le introduzioni e i titoli di coda</string>
     <string name="pref_feed_skip_ending">Salta gli ultimi</string>
     <string name="pref_feed_skip_intro">Salta i primi</string>
-    <string name="pref_feed_skip_ending_toast">Ultimi %d secondi saltati</string>
-    <string name="pref_feed_skip_intro_toast">Primi %d secondi saltati</string>
     <string name="pref_playback_time_respects_speed_title">Adatta info alla velocità di riproduzione</string>
     <string name="pref_playback_time_respects_speed_sum">La posizione del cursore e la durata si adattano alla velocità di riproduzione scelta</string>
     <string name="pref_fast_forward">Tempo di salto in avanti</string>
@@ -998,4 +995,33 @@
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Esplora il telefono</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Apri sul telefono</string>
     <string name="bottom_navigation_deprecation_warning">Sfortunatamente, in una versione futura dovremo rimuovere la navigazione laterale. AntennaPod è sviluppato da un piccolo gruppo di volontari e, dopo aver supportato per anni entrambi i tipi di navigazione, continuare a farlo comporta troppo lavoro aggiuntivo. \n\nSe hai assolutamente bisogno della navigazione laterale, disabilita gli aggiornamenti di AntennaPod nel tuo app store.</string>
+    <string name="share_not_supported_local_feed">Non è possibile condividere cartelle locali</string>
+    <string name="no_subscriptions_filtered_label">Prova a rimuovere il filtro per visualizzare più iscrizioni.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">%d secondo finale saltato</item>
+        <item quantity="many">%d di secondi finali saltati</item>
+        <item quantity="other">%d secondi finali saltati</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">%d secondo iniziale saltato</item>
+        <item quantity="many">%d di secondi iniziali saltati</item>
+        <item quantity="other">%d secondi iniziali saltati</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">In attesa di connessione Wi-Fi per sincronizzare le iscrizioni…</string>
+    <string name="synchronization_provider_chooser_explanation">I dispositivi necessitano di un server centrale per sincronizzarsi. AntennaPod non fornisce questo tipo di server centrale di sincronizzazione, ma ti permette di connetterti con i tipi di server elencati qui sotto.</string>
+    <string name="back_label">Indietro</string>
+    <string name="synchronization_more_information">Più informazioni</string>
+    <string name="wrong_password">Password errata</string>
+    <string name="edit_url_menu_summary">Attenzione: può compromettere in modo permanente l\'elenco degli episodi, la cronologia e lo stato di riproduzione</string>
+    <string name="reconnect_local_folder_summary">Attenzione: riconnettiti solo alla stessa identica cartella o perderai lo stato di riproduzione.</string>
+    <string name="clear_filters_label">Rimuovi</string>
+    <string name="pref_parental_control_set_password">Imposta una password</string>
+    <string name="pref_parental_control_confirm_password">Conferma la password</string>
+    <string name="pref_parental_control_passwords_dont_match">Le password non corrispondono</string>
+    <string name="pref_parental_control_password_empty">La password non può essere vuota</string>
+    <string name="pref_parental_control_title">Filtro famiglia</string>
+    <string name="pref_parental_control_sum">Limita funzionalità con una password</string>
+    <string name="pref_parental_control_enabled_title">Abilita</string>
+    <string name="pref_parental_control_require_subscribe_title">Limita le iscrizioni</string>
+    <string name="pref_parental_control_require_subscribe_sum">Richiedi la password del filtro famiglia per iscriversi a nuovi podcast</string>
 </resources>

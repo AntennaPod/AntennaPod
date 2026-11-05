@@ -292,7 +292,6 @@
     <string name="no_all_episodes_label">Când adăugati un podcast, episoadele vor apărea aici.</string>
     <string name="no_all_episodes_filtered_label">Încearcă să elimini din criteriile de filtrare pentru a vizualiza mai multe episoade.</string>
     <string name="no_inbox_head_label">Nu există episoade în inbox</string>
-    <string name="no_inbox_label">Când vor apărea episoade noi, acestea vor apărea aici. Apoi vei putea decide dacă ești interesat de aceste episoade sau nu.</string>
     <string name="no_subscriptions_head_label">Fără abonamente</string>
     <string name="no_subscriptions_label">Pentru a vă abona la un podcast, apăsați pe butonul \"plus\" de mai jos.</string>
     <!--Preferences-->
@@ -391,8 +390,6 @@
     <string name="pref_feed_skip_sum">Sari peste introducere și genericul de final</string>
     <string name="pref_feed_skip_ending">Ignoră ultimele secunde</string>
     <string name="pref_feed_skip_intro">Ignoră primele secunde</string>
-    <string name="pref_feed_skip_ending_toast">Ultimele %dsecunde au fost ignorate</string>
-    <string name="pref_feed_skip_intro_toast">Primele %dsecunde au fost ignorate</string>
     <string name="pref_playback_time_respects_speed_title">Ajustarea informațiilor media la viteza de redare</string>
     <string name="pref_playback_time_respects_speed_sum">Pozitiile afișate și durata sunt adaptate la viteza de redare</string>
     <string name="pref_fast_forward">Durată de derurale pentru funcţia fast-forward</string>
@@ -976,4 +973,13 @@
         <item quantity="few">%d episoade scoase de la favorite.</item>
         <item quantity="other">%d de episoade scoase de la favorite.</item>
     </plurals>
+    <string name="pref_parental_control_require_subscribe_sum">Solicitare parolă de control parental pentru abonarea la noi podcasturi</string>
+    <string name="pref_parental_control_set_password">Configurare parolă</string>
+    <string name="pref_parental_control_confirm_password">Confirmare parolă</string>
+    <string name="pref_parental_control_passwords_dont_match">Parolele nu se potrivesc</string>
+    <string name="pref_parental_control_password_empty">Parola nu poate fi goală</string>
+    <string name="pref_parental_control_title">Control parental</string>
+    <string name="pref_parental_control_sum">Restricționare funcționalități cu parolă</string>
+    <string name="pref_parental_control_enabled_title">Activare</string>
+    <string name="pref_parental_control_require_subscribe_title">Restricționare abonări</string>
 </resources>

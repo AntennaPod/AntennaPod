@@ -283,7 +283,6 @@
     <string name="no_all_episodes_label">जब आप कोई पॉडकास्ट जोड़ेंगे, तो एपिसोड इधर दिखेंगे।</string>
     <string name="no_all_episodes_filtered_label">ज़्यादा एपिसोड देखने के लिए फिल्टर हटाकर देखें।</string>
     <string name="no_inbox_head_label">इनबॉक्स में कोई एपिसोड नहीं</string>
-    <string name="no_inbox_label">जब नए एपिसोड आएंगे, तब वो यहा दिखेंगे। फिर ये देखा जा सकता है कि आपकी उसमें दिलचस्पी है या नहीं।</string>
     <string name="no_subscriptions_head_label">कोई सब्सक्रिप्शन नहीं</string>
     <string name="no_subscriptions_label">पॉडकास्ट को सब्सक्राइब करने के लिए, नीचे वाला प्लस आइकन दबाएं।</string>
     <!--Preferences-->
@@ -373,8 +372,6 @@
     <string name="pref_feed_skip_sum">परिचय और क्रेडिट छोड़ें</string>
     <string name="pref_feed_skip_ending">आखिरी का छोड़ें</string>
     <string name="pref_feed_skip_intro">शुरूआत का छोड़ें</string>
-    <string name="pref_feed_skip_ending_toast">आखिरी %d सेकंड छोड़े गए</string>
-    <string name="pref_feed_skip_intro_toast">शुरूआत के %d सेकंड छोड़े गए</string>
     <string name="pref_playback_time_respects_speed_title">मीडिया जानकारी को प्लेबैक स्पीड के हिसाब से अडजेस्ट करें</string>
     <string name="pref_playback_time_respects_speed_sum">पोज़ीशन और लंबाई प्लेबैक स्पीड के हिसाब से दिखाए जाते है</string>
     <string name="pref_rewind">रिवाइंड से टाइम स्किप करें</string>

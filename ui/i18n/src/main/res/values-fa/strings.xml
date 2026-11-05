@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">باز کردن منو</string>
     <string name="drawer_close">بستن منو</string>
-    <string name="drawer_preferences">ترجیحات کشو</string>
+    <string name="drawer_preferences">ترجیحات پیمایش</string>
     <string name="drawer_feed_order_unplayed_episodes">مرتب‌سازی بر پایه شمارنده</string>
     <string name="drawer_feed_order_alphabetical">مرتب‌سازی بر پایه حروف الفبا</string>
     <string name="drawer_feed_order_last_update">مرتب‌سازی بر پایه تاریخ انتشار</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">برای خواندن متن نمایش به سمت بالا بکشید</string>
     <string name="close_label">بستن</string>
     <string name="retry_label">تلاش مجدد</string>
-    <string name="auto_download_label">شامل بارگیری خودکار شود</string>
+    <string name="auto_download_label">بارگیری خودکار</string>
     <string name="feed_volume_adapdation">سازگار کردن صدا</string>
     <string name="feed_volume_adaptation_summary">کم و زیاد کردن میزان صدا برای قسمت‌های این پادپخش: %1$s</string>
     <string name="feed_volume_reduction_off">بدون تطبیق</string>
@@ -248,8 +248,8 @@
   <string name="lock_queue">قفل صف</string>
     <string name="queue_locked">صف قفل شده است</string>
     <string name="queue_unlocked">قفل صف باز شده است</string>
-    <string name="queue_lock_warning">اگر صف را قفل کنید دیگر نمی‌توانید قسمت‌ها را به کنار کشیده یا ترتیبشان را جابجا کنید.</string>
-    <string name="checkbox_do_not_show_again">دوباره نمایش نده</string>
+    <string name="queue_lock_warning">اگر صف را قفل کنید دیگر نمی‌توانید ترتیب قسمت‌ها را عوض کنید.</string>
+    <string name="checkbox_do_not_show_again">دیگر نشان داده نشود</string>
     <string name="clear_queue_label">پاک سازی صف</string>
     <string name="undo">خنثی‌سازی</string>
     <string name="move_to_top_label">انتقال به بالا</string>
@@ -280,7 +280,6 @@
     <string name="no_all_episodes_label">هنگامی که پادپخشی می‌افزایید، قسمت‌ها این‌جا نمایش داده می‌شوند.</string>
     <string name="no_all_episodes_filtered_label">برای دیدن قسمت‌های بیش‌تر، پالایه را بردارید.</string>
     <string name="no_inbox_head_label">هیچ قسمتی در صندوق ورودی نیست</string>
-    <string name="no_inbox_label">هنگام رسیدن قسمت‌های جدید این‌جا نمایش داده خواهند شد. سپس می‌توانید تصمیم بگیرید که به آن‌ها علاقه‌مندید یا نه.</string>
     <string name="no_subscriptions_head_label">بدون اشتراک</string>
     <string name="no_subscriptions_label">برای اشتراک در یک پادپخش، نقشک مثبت را در زیر بزنید.</string>
     <!--Preferences-->
@@ -370,8 +369,6 @@
     <string name="pref_feed_skip_sum">پرش از معرّفی‌ها و تیتراژ پایانی</string>
     <string name="pref_feed_skip_ending">پرش به آخر</string>
     <string name="pref_feed_skip_intro">پرش به اول</string>
-    <string name="pref_feed_skip_ending_toast">پرش از %d ثانیه آخر</string>
-    <string name="pref_feed_skip_intro_toast">پرش از %d ثانیه اول</string>
     <string name="pref_playback_time_respects_speed_title">اطلاعات رسانه را برای سرعت بازپخش تنظیم کنید</string>
     <string name="pref_playback_time_respects_speed_sum">موقعیت و مدت نمایش داده شده با سرعت پخش سازگار شده</string>
     <string name="pref_rewind">زمان پرش در پس‌روی</string>
@@ -575,10 +572,10 @@
     <string name="keep_updated">به‌روز ماندن</string>
     <string name="keep_updated_summary">شامل شدن این پادپخش هنگام نوسازی (خودکار) همهٔ پادپخش‌ها</string>
     <string name="statistics_expected_next_episode_any_day">همین روزها</string>
-    <string name="statistics_expected_next_episode_unknown">نانعلوم</string>
-    <string name="edit_url_menu">URL فید را ویرایش کنید</string>
+    <string name="statistics_expected_next_episode_unknown">نامعلوم</string>
+    <string name="edit_url_menu">ویرایش نشانی خوراک</string>
     <!--Podcast release schedules-->
-  <string name="release_schedule_daily">ویانه</string>
+  <string name="release_schedule_daily">روزانه</string>
     <string name="release_schedule_weekdays">آخر هفته‌ها</string>
     <string name="release_schedule_weekly">هفتگی</string>
     <string name="release_schedule_biweekly">دو هفته یک بار</string>
@@ -606,7 +603,7 @@
     <!--Local feeds-->
   <string name="add_local_folder">پوشه محلی را بیافزایید</string>
     <string name="local_folder">پوشه محلی</string>
-    <string name="reconnect_local_folder">اتصال دوباره پوشه محلی</string>
+    <string name="reconnect_local_folder">اتّصال دوباره پوشه محلی</string>
     <string name="reconnect_local_folder_warning">در صورت نپذیرش اجازه ، می‌توانید این را برای اتصال مجدد به همان پوشه پیشین استفاده کنید. پوشه دیگری را انتخاب نکنید.</string>
     <string name="local_feed_description">این پادپخش مجازی با افزودن پوشه‌ای به آنتناپاد ساخته شده.</string>
     <string name="unable_to_start_system_file_manager">ناتوان در آغاز مدیر پروندهٔ سامانه</string>
@@ -964,4 +961,27 @@
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">مرور تلفن</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">گشودن روی تلفن</string>
     <string name="bottom_navigation_deprecation_warning">متأسفانه باید نوار کناری را در به‌روز رسانی بعدی برداریم. آنتاپاد به دست گروهی کوچک از داوطلبان توسعه داده شده و نگه‌داری هر دو سبک پیمایش برای سال‌ها دردسر زیادی شده است.\n\nاگر مطلقاُ به پیمایش کناری وابسته‌اید لطفاً به‌روز رسانی آنتاپاد را در فروشگاه کاره‌تان از کار بیندازید.</string>
+    <string name="share_not_supported_local_feed">هم‌رسانی در شاخه‌های محلی پشتیبانی نمی‌شود</string>
+    <string name="no_subscriptions_filtered_label">پاک‌سازی پالایه برای دیدن اشتراک‌های بیش‌تر.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">پریده از %d ثانیهٔ آخر</item>
+        <item quantity="other">پریده از %d ثانیهٔ آخر</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">پریده از %d ثانیهٔ نخست</item>
+        <item quantity="other">پریده از %d ثانیهٔ نخست</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">در انتظار وای‌فای برای همگام سازی اشتراک‌ها…</string>
+    <string name="back_label">بازگشت</string>
+    <string name="synchronization_more_information">اطّلاعات بیش‌تر</string>
+    <string name="wrong_password">گذرواژهٔ اشتباه</string>
+    <string name="clear_filters_label">پاک سازی</string>
+    <string name="pref_parental_control_enabled_title">به‌کار انداختن</string>
+    <string name="pref_parental_control_set_password">تنظیم گذرواژه</string>
+    <string name="pref_parental_control_confirm_password">تأیید گذرواژه</string>
+    <string name="pref_parental_control_require_subscribe_title">محدودیت مشترک شدن</string>
+    <string name="pref_parental_control_title">واپایش‌های والدین</string>
+    <string name="pref_parental_control_passwords_dont_match">گذرواژه‌ها مطابق نیستند</string>
+    <string name="pref_parental_control_password_empty">گذرواژه نمی‌تواند خالی باشد</string>
+    <string name="pref_parental_control_sum">محدود کردن ویژگی‌ها با گذرواژه</string>
 </resources>

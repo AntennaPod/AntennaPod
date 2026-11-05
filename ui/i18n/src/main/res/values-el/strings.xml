@@ -293,7 +293,6 @@
     <string name="no_all_episodes_label">Με την προσθήκη ενός podcast, τα επεισόδιά του θα εμφανίζονται εδώ.</string>
     <string name="no_all_episodes_filtered_label">Προσπαθήστε να διαγράψετε τα φίλτρα για να δείτε περισσότερα επεισόδια.</string>
     <string name="no_inbox_head_label">Δεν υπάρχουν επεισόδια στα εισερχόμενα</string>
-    <string name="no_inbox_label">Όταν βγαίνουν καινούργια επεισόδια, θα εμφανίζονται εδώ. Μπορείτε να αποφασίσετε εάν σας ενδιαφέρουν ή όχι.</string>
     <string name="no_subscriptions_head_label">Χωρίς συνδρομές</string>
     <string name="no_subscriptions_label">Για να εγγραφείτε σε ένα podcast, πατήστε το εικονίδιο + παρακάτω.</string>
     <!--Preferences-->
@@ -392,8 +391,6 @@
     <string name="pref_feed_skip_sum">Παράλειψη εισαγωγών και τίτλων τέλους</string>
     <string name="pref_feed_skip_ending">Παράλειψη τελευταίων</string>
     <string name="pref_feed_skip_intro">Παράλειψη πρώτων</string>
-    <string name="pref_feed_skip_ending_toast">Παραλείφθηκαν τα τελευταία %d δευτερόλεπτα</string>
-    <string name="pref_feed_skip_intro_toast">Παραλείφθηκαν τα πρώτα %d δευτερόλεπτα</string>
     <string name="pref_playback_time_respects_speed_title">Προσαρμογή πληροφοριών πολυμέσων στην ταχύτητα αναπαραγωγής</string>
     <string name="pref_playback_time_respects_speed_sum">Η εμφανιζόμενη θέση και διάρκεια προσαρμόζονται στην ταχύτητα αναπαραγωγής</string>
     <string name="pref_fast_forward">Χρόνος γρήγορης προώθησης</string>

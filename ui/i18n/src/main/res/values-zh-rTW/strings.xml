@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">打開選單</string>
     <string name="drawer_close">關閉選單</string>
-    <string name="drawer_preferences">側邊欄設定</string>
+    <string name="drawer_preferences">侧边栏设定</string>
     <string name="drawer_feed_order_unplayed_episodes">按計數器排序</string>
     <string name="drawer_feed_order_alphabetical">按字母排序</string>
     <string name="drawer_feed_order_last_update">按發布日期排序</string>
@@ -100,10 +100,10 @@
     <string name="shownotes_contentdescription">上滑查看資訊欄</string>
     <string name="close_label">關閉</string>
     <string name="retry_label">重試</string>
-    <string name="auto_download_label">加入自動下載</string>
+    <string name="auto_download_label">自动下载</string>
     <string name="feed_volume_adapdation">音量調節</string>
     <string name="feed_volume_adaptation_summary">調高或調低此 Podcast 集數的音量：%1$s</string>
-    <string name="feed_volume_reduction_off">無調節</string>
+    <string name="feed_volume_reduction_off">无调节</string>
     <string name="feed_volume_reduction_light">輕微降低</string>
     <string name="feed_volume_reduction_heavy">大幅降低</string>
     <string name="feed_volume_boost_light">輕微提升</string>
@@ -251,7 +251,7 @@
   <string name="lock_queue">鎖定待播清單</string>
     <string name="queue_locked">待播清單已鎖定</string>
     <string name="queue_unlocked">待播清單已解鎖</string>
-    <string name="queue_lock_warning">如果你鎖定待播清單，就無法調整各集順序或使用滑動選單。</string>
+    <string name="queue_lock_warning">如果你锁定待播清单，就无法调整各集顺序。</string>
     <string name="checkbox_do_not_show_again">不再顯示</string>
     <string name="clear_queue_label">清空待播清單</string>
     <string name="undo">返回</string>
@@ -284,7 +284,6 @@
     <string name="no_all_episodes_label">當你加入 Podcast 後，其中的各單集會顯示於此。</string>
     <string name="no_all_episodes_filtered_label">請嘗試清除過濾器，以查看更多集數。</string>
     <string name="no_inbox_head_label">最新單集中沒有任何集數</string>
-    <string name="no_inbox_label">當有新集數發佈時，就會顯示在這裡。你可以決定是否對它們感興趣。</string>
     <string name="no_subscriptions_head_label">無訂閱</string>
     <string name="no_subscriptions_label">請按下方加號來訂閱 Podcast。</string>
     <!--Preferences-->
@@ -383,8 +382,6 @@
     <string name="pref_feed_skip_sum">跳過開場和結尾鳴謝</string>
     <string name="pref_feed_skip_ending">跳過最後幾秒</string>
     <string name="pref_feed_skip_intro">跳過最初幾秒</string>
-    <string name="pref_feed_skip_ending_toast">跳過最後 %d 秒</string>
-    <string name="pref_feed_skip_intro_toast">跳過最初 %d 秒</string>
     <string name="pref_playback_time_respects_speed_title">依據播放速度調整媒體資訊</string>
     <string name="pref_playback_time_respects_speed_sum">根據播放速度調整播放進度、時長等資訊</string>
     <string name="pref_fast_forward">快轉跳過的時間</string>
@@ -930,4 +927,29 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">在手機上播放</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">瀏覽手機</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">在手機上打開</string>
+    <string name="share_not_supported_local_feed">本機資料夾不支援分享</string>
+    <string name="no_subscriptions_filtered_label">試著清除篩選條件以查看更多訂閱。</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="other">已略過最後 %d 秒</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="other">已略過前 %d 秒</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">正在等待 Wi‑Fi 同步訂閱…</string>
+    <string name="synchronization_provider_chooser_explanation">裝置需要一個中央伺服器來同步。AntennaPod 不提供這樣的中央同步伺服器，但允許你連接下方列出的不同類型伺服器。</string>
+    <string name="back_label">返回</string>
+    <string name="synchronization_more_information">更多資訊</string>
+    <string name="wrong_password">密碼錯誤</string>
+    <string name="edit_url_menu_summary">有風險：可能永久損壞單集清單、播放紀錄和播放狀態</string>
+    <string name="reconnect_local_folder_summary">有風險：只能重新連接到完全相同的資料夾，否則您將失去所有播放狀態。</string>
+    <string name="clear_filters_label">清除</string>
+    <string name="pref_parental_control_set_password">設定密碼</string>
+    <string name="pref_parental_control_confirm_password">確認密碼</string>
+    <string name="pref_parental_control_passwords_dont_match">密碼不相符</string>
+    <string name="pref_parental_control_password_empty">密碼不得為空</string>
+    <string name="pref_parental_control_title">家長監護</string>
+    <string name="pref_parental_control_sum">使用密碼限制功能</string>
+    <string name="pref_parental_control_enabled_title">啟用</string>
+    <string name="pref_parental_control_require_subscribe_title">限制訂閱</string>
+    <string name="pref_parental_control_require_subscribe_sum">訂閱新 Podcast 時要求輸入家長監護密碼</string>
 </resources>

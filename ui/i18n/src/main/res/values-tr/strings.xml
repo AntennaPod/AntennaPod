@@ -293,7 +293,6 @@
     <string name="no_all_episodes_label">Bir Podcast ekledikten sonra bölümleri burada gözükecek.</string>
     <string name="no_all_episodes_filtered_label">Daha çok bölüm görmek için filtreyi temizlemeyi deneyin.</string>
     <string name="no_inbox_head_label">Gelen kutusunda bölüm yok</string>
-    <string name="no_inbox_label">Yeni bölümler geldiğinde burada görünecek. İlgi duyup duymadığınıza o zaman karar verebilirsiniz.</string>
     <string name="no_subscriptions_head_label">Abonelik yok</string>
     <string name="no_subscriptions_label">Bir Podcaste abone olmak için, aşağıdaki Artı simgesine tıklayın.</string>
     <!--Preferences-->
@@ -392,8 +391,6 @@
     <string name="pref_feed_skip_sum">Tanıtımları ve bitiş jeneriklerini atla</string>
     <string name="pref_feed_skip_ending">Sonuncuyu atla</string>
     <string name="pref_feed_skip_intro">Birinciyi atla</string>
-    <string name="pref_feed_skip_ending_toast">Son %d seatlas atlandı</string>
-    <string name="pref_feed_skip_intro_toast">İlk %d saniyeyi atladı</string>
     <string name="pref_playback_time_respects_speed_title">Medya bilgisini oynatma hızına göre ayarlayın</string>
     <string name="pref_playback_time_respects_speed_sum">Görüntülenen konum ve süre oynatma hızına uyarlanır</string>
     <string name="pref_fast_forward">Hızlı ileri atlama zamanı</string>

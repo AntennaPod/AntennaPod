@@ -56,7 +56,7 @@
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
     <string name="drawer_close">Fechar menu</string>
-    <string name="drawer_preferences">Preferências do menu</string>
+    <string name="drawer_preferences">Preferências de navegação</string>
     <string name="drawer_feed_order_unplayed_episodes">Ordenar por contador</string>
     <string name="drawer_feed_order_alphabetical">Ordenar alfabeticamente</string>
     <string name="drawer_feed_order_last_update">Ordenar por data de publicação</string>
@@ -101,7 +101,7 @@
     <string name="shownotes_contentdescription">deslize para cima para ver as notas do episódio</string>
     <string name="close_label">Fechar</string>
     <string name="retry_label">Tentar novamente</string>
-    <string name="auto_download_label">Incluir em downloads automáticos</string>
+    <string name="auto_download_label">Baixar automaticamente</string>
     <string name="feed_volume_adapdation">Adaptação de volume</string>
     <string name="feed_volume_adaptation_summary">Aumenta ou diminui o volume dos episódios deste podcast: %1$s</string>
     <string name="feed_volume_reduction_off">Não adaptar</string>
@@ -270,7 +270,7 @@
   <string name="lock_queue">Bloquear a fila</string>
     <string name="queue_locked">Fila bloqueada</string>
     <string name="queue_unlocked">Fila desbloqueada</string>
-    <string name="queue_lock_warning">Se você bloquear a fila, não poderá mais deslizar ou reordenar os episódios.</string>
+    <string name="queue_lock_warning">Se você bloquear a fila, não poderá mais reordenar os episódios.</string>
     <string name="checkbox_do_not_show_again">Não mostrar novamente</string>
     <string name="clear_queue_label">Limpar a fila</string>
     <string name="undo">Desfazer</string>
@@ -303,7 +303,6 @@
     <string name="no_all_episodes_label">Quando você adiciona um podcast, seus episódios são exibidos aqui.</string>
     <string name="no_all_episodes_filtered_label">Experimente limpar o filtro para ver mais episódios.</string>
     <string name="no_inbox_head_label">Nenhum episódio na caixa de entrada</string>
-    <string name="no_inbox_label">Quando chegarem novos episódios, eles serão exibidos aqui. Você pode decidir se tem interesse neles ou não.</string>
     <string name="no_subscriptions_head_label">Nenhuma inscrição</string>
     <string name="no_subscriptions_label">Para inscrever-se em um podcast, pressione o ícone de adição abaixo.</string>
     <!--Preferences-->
@@ -402,8 +401,6 @@
     <string name="pref_feed_skip_sum">Pular introduções e créditos finais</string>
     <string name="pref_feed_skip_ending">Pular os últimos</string>
     <string name="pref_feed_skip_intro">Pular os primeiros</string>
-    <string name="pref_feed_skip_ending_toast">Pulou os últimos %d segundos</string>
-    <string name="pref_feed_skip_intro_toast">Pulou os primeiros %d segundos</string>
     <string name="pref_playback_time_respects_speed_title">Ajustar as informações da mídia para a velocidade de reprodução</string>
     <string name="pref_playback_time_respects_speed_sum">A posição e a duração exibidas são adaptadas à velocidade de reprodução</string>
     <string name="pref_fast_forward">Tempo do Avançar</string>
@@ -671,7 +668,7 @@
   <string name="add_local_folder">Adicionar pasta local</string>
     <string name="local_folder">Pasta local</string>
     <string name="reconnect_local_folder">Reconectar pasta local</string>
-    <string name="reconnect_local_folder_warning">Em caso de negação de permissão, você pode usar isso para se reconectar exatamente à mesma pasta. Não selecione outra pasta.</string>
+    <string name="reconnect_local_folder_warning">Caso as permissões sejam negadas, você pode usar isso para reconectar exatamente à mesma pasta. Não selecione outra pasta.</string>
     <string name="local_feed_description">Este podcast virtual foi criado adicionando uma pasta ao AntennaPod.</string>
     <string name="unable_to_start_system_file_manager">Não foi possível iniciar o gerenciador de arquivos do sistema</string>
     <string name="filter">Filtrar</string>
@@ -999,4 +996,33 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Reproduzir no celular</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Explorar o celular</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Abrir no celular</string>
+    <string name="share_not_supported_local_feed">O compartilhamento não é compatível com pastas locais</string>
+    <string name="no_subscriptions_filtered_label">Tente limpar o filtro para ver mais inscrições.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Pulou o último %d segundo</item>
+        <item quantity="many">Pulou os últimos %d segundos</item>
+        <item quantity="other">Pulou os últimos %d segundos</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Pulou o primeiro %d segundo</item>
+        <item quantity="many">Pulou os primeiros %d segundos</item>
+        <item quantity="other">Pulou os primeiros %d segundos</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Aguardando por Wi-Fi para sincronizar as inscrições…</string>
+    <string name="synchronization_provider_chooser_explanation">Os dispositivos precisam de um servidor central para sincronizar. O AntennaPod não oferece esse servidor central de sincronização, mas permite que você se conecte aos diferentes tipos de servidores listados abaixo.</string>
+    <string name="back_label">Voltar</string>
+    <string name="synchronization_more_information">Mais informações</string>
+    <string name="wrong_password">Senha incorreta</string>
+    <string name="edit_url_menu_summary">Risco: pode quebrar permanentemente a lista de episódios, histórico e o estado de reprodução</string>
+    <string name="reconnect_local_folder_summary">Risco: reconecte apenas para a mesma pasta. Caso contrário, você perderá todo o seu estado de reprodução.</string>
+    <string name="clear_filters_label">Limpar</string>
+    <string name="pref_parental_control_set_password">Definir senha</string>
+    <string name="pref_parental_control_confirm_password">Confirmar senha</string>
+    <string name="pref_parental_control_passwords_dont_match">As senhas são diferentes</string>
+    <string name="pref_parental_control_password_empty">A senha não pode estar em branco</string>
+    <string name="pref_parental_control_title">Controle parental</string>
+    <string name="pref_parental_control_sum">Restringir recursos com uma senha</string>
+    <string name="pref_parental_control_enabled_title">Habilitar</string>
+    <string name="pref_parental_control_require_subscribe_title">Restringir inscrições</string>
+    <string name="pref_parental_control_require_subscribe_sum">Solicitar a senha do controle parental ao se inscrever em novos podcasts</string>
 </resources>

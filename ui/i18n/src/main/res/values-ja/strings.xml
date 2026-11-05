@@ -273,7 +273,6 @@
     <string name="no_all_episodes_label">ポッドキャストを追加すると、エピソードがここに表示されます。</string>
     <string name="no_all_episodes_filtered_label">フィルターをクリアすると、より多くのエピソードが表示されます。</string>
     <string name="no_inbox_head_label">受信トレイにエピソードはありません</string>
-    <string name="no_inbox_label">新しいエピソードが到着すると、ここに表示されます。その後、あなたはそれらに興味があるかどうかの判断を下せます。</string>
     <string name="no_subscriptions_head_label">購読していません</string>
     <string name="no_subscriptions_label">ポッドキャストを購読するには、下のプラスアイコンを押してください。</string>
     <!--Preferences-->
@@ -363,8 +362,6 @@
     <string name="pref_feed_skip_sum">イントロダクションとエンディングクレジットをスキップします</string>
     <string name="pref_feed_skip_ending">最後をスキップ</string>
     <string name="pref_feed_skip_intro">最初をスキップ</string>
-    <string name="pref_feed_skip_ending_toast">最後の %d 秒をスキップしました</string>
-    <string name="pref_feed_skip_intro_toast">最初の %d 秒をスキップしました</string>
     <string name="pref_playback_time_respects_speed_title">メディア情報を再生速度に合わせる</string>
     <string name="pref_playback_time_respects_speed_sum">表示位置と時間が再生速度に合わせて調整されます</string>
     <string name="pref_rewind">巻き戻しのスキップ時間</string>

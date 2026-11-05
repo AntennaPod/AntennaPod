@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">Åbn menu</string>
     <string name="drawer_close">Luk menu</string>
-    <string name="drawer_preferences">Præferencer for panel</string>
+    <string name="drawer_preferences">Præferencer for navigation</string>
     <string name="drawer_feed_order_unplayed_episodes">Sorter efter tæller</string>
     <string name="drawer_feed_order_alphabetical">Sorter alfabetisk</string>
     <string name="drawer_feed_order_last_update">Sorter efter udgivelsesdato</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">Stryg op for at læse beskrivelse af afsnit</string>
     <string name="close_label">Luk</string>
     <string name="retry_label">Prøv igen</string>
-    <string name="auto_download_label">Inkludér i automatiske overførsler</string>
+    <string name="auto_download_label">Overfør automatisk</string>
     <string name="feed_volume_adapdation">Tilpasning af lydstyrke</string>
     <string name="feed_volume_adaptation_summary">Skru op eller ned for lydstyrken for afsnit af denne podcast: %1$s</string>
     <string name="feed_volume_reduction_off">Ingen tilpasning</string>
@@ -260,7 +260,7 @@
   <string name="lock_queue">Lås kø</string>
     <string name="queue_locked">Kø låst</string>
     <string name="queue_unlocked">Kø låst op</string>
-    <string name="queue_lock_warning">Hvis du låser køen, kan du ikke swipe eller flytte rundt på afsnit.</string>
+    <string name="queue_lock_warning">Hvis du låser køen, kan du ikke længere ændre rækkefølgen på afsnit.</string>
     <string name="checkbox_do_not_show_again">Vis ikke igen</string>
     <string name="clear_queue_label">Ryd kø</string>
     <string name="undo">Fortryd</string>
@@ -293,7 +293,6 @@
     <string name="no_all_episodes_label">Når du tilføjer en podcast, vil afsnittene blive vist her.</string>
     <string name="no_all_episodes_filtered_label">Prøv at rydde filteret for at se flere afsnit.</string>
     <string name="no_inbox_head_label">Ingen afsnit i indbakken</string>
-    <string name="no_inbox_label">Når der kommer nye afsnit, vil de blive vist her. Du kan så beslutte, om du er interesseret i dem eller ej.</string>
     <string name="no_subscriptions_head_label">Ingen abonnementer</string>
     <string name="no_subscriptions_label">Tryk på plus-ikonet nedenfor for at abonnere på en podcast.</string>
     <!--Preferences-->
@@ -392,8 +391,6 @@
     <string name="pref_feed_skip_sum">Spring introduktioner og slutkreditter over</string>
     <string name="pref_feed_skip_ending">Overspring sidste</string>
     <string name="pref_feed_skip_intro">Overspring første</string>
-    <string name="pref_feed_skip_ending_toast">Overspring sidste %d sekunder</string>
-    <string name="pref_feed_skip_intro_toast">Overspring første %d sekunder</string>
     <string name="pref_playback_time_respects_speed_title">Afpas medieinformation til afspilningshastighed</string>
     <string name="pref_playback_time_respects_speed_sum">Vist position og varighed er tilpasset afspilningshastighed</string>
     <string name="pref_fast_forward">Tidshop for fremadspoling</string>
@@ -964,4 +961,31 @@
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Gennemse telefon</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Åbn på telefon</string>
     <string name="statistics_label_short">Statistik</string>
+    <string name="share_not_supported_local_feed">Deling understøttes ikke for lokale mapper</string>
+    <string name="no_subscriptions_filtered_label">Prøv at rydde filteret for at se flere abonnementer.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Sprang det sidste %d sekund over</item>
+        <item quantity="other">Sprang de sidste %d sekunder over</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Sprang det første %d sekund over</item>
+        <item quantity="other">Sprang de første %d sekunder over</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Venter på Wi-Fi for at synkronisere abonnementer…</string>
+    <string name="synchronization_provider_chooser_explanation">Enhederne skal have en central server for at kunne synkronisere. AntennaPod tilbyder ikke en sådan central synkroniseringsserver, men giver dig mulighed for at oprette forbindelse til de forskellige typer servere, der er anført nedenfor.</string>
+    <string name="back_label">Tilbage</string>
+    <string name="synchronization_more_information">Mere information</string>
+    <string name="wrong_password">Forkert adgangskode</string>
+    <string name="edit_url_menu_summary">Risikabelt: Kan medføre permanent beskadigelse af afsnitslisten, historikken og afspilningsstatus</string>
+    <string name="reconnect_local_folder_summary">Risikabelt: Opret kun forbindelse til nøjagtig den samme mappe igen. Ellers mister du al din afspilningsstatus.</string>
+    <string name="clear_filters_label">Ryd</string>
+    <string name="pref_parental_control_set_password">Indstil adgangskode</string>
+    <string name="pref_parental_control_confirm_password">Bekræft adgangskode</string>
+    <string name="pref_parental_control_passwords_dont_match">Adgangskoderne stemmer ikke overens</string>
+    <string name="pref_parental_control_password_empty">Adgangskoden må ikke være tom</string>
+    <string name="pref_parental_control_title">Forældrekontrol</string>
+    <string name="pref_parental_control_sum">Begræns funktioner med en adgangskode</string>
+    <string name="pref_parental_control_enabled_title">Aktivér</string>
+    <string name="pref_parental_control_require_subscribe_title">Begræns oprettelse af abonnementer</string>
+    <string name="pref_parental_control_require_subscribe_sum">Bed om adgangskoden til forældrekontrol, når der abonneres på nye podcasts</string>
 </resources>

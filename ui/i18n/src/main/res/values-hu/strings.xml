@@ -281,7 +281,6 @@
     <string name="no_all_episodes_label">Ha hozzáad egy podcastot, az epizódok itt fognak megjelenni.</string>
     <string name="no_all_episodes_filtered_label">Próbálja meg törölni a szűrőt, hogy több epizódot lásson.</string>
     <string name="no_inbox_head_label">Nincsenek beérkezett epizódok</string>
-    <string name="no_inbox_label">Amikor új epizódok érkeznek, akkor itt fognak megjelenni. Azután eldöntheti, hogy érdeklik-e vagy sem.</string>
     <string name="no_subscriptions_head_label">Nincsenek feliratkozások</string>
     <string name="no_subscriptions_label">Podcastra való feliratkozáshoz nyomja meg az alábbi plusz ikont.</string>
     <!--Preferences-->
@@ -371,8 +370,6 @@
     <string name="pref_feed_skip_sum">Bevezetők és lezárások kihagyása</string>
     <string name="pref_feed_skip_ending">Utolsó másodpercek átugrása</string>
     <string name="pref_feed_skip_intro">Első másodpercek átugrása</string>
-    <string name="pref_feed_skip_ending_toast">Utolsó %d másodperc kihagyva</string>
-    <string name="pref_feed_skip_intro_toast">Első %d másodperc kihagyva</string>
     <string name="pref_playback_time_respects_speed_title">Médiainformáció hozzáigazítása a lejátszási sebességhez</string>
     <string name="pref_playback_time_respects_speed_sum">A megjelenített pozíció és hossz a lejátszási sebességhez lesz igazítva</string>
     <string name="pref_rewind">Visszatekerés mértéke</string>
@@ -895,4 +892,101 @@
         <item quantity="one">letöltve</item>
         <item quantity="other">letöltve</item>
     </plurals>
+    <string name="general_expand_button">Kibontás</string>
+    <string name="general_collapse_button">Összecsukás</string>
+    <string name="archiving_podcast_progress">Podcast archiválása: %1$d / %2$d…</string>
+    <string name="deleting_podcast_progress">Leiratkozás podcastről: %1$d / %2$d…</string>
+    <string name="download_log_details_human_readable_reason_title">Állapot</string>
+    <string name="download_log_details_technical_reason_title">Technikai részletek</string>
+    <string name="download_log_details_file_url_title">Fájl URL-je</string>
+    <string name="download_log_open_feed">Megnyitás</string>
+    <string name="no_following_in_queue">Ez volt az utolsó epizód a lejátszási sorban</string>
+    <string name="episode">Epizód</string>
+    <string name="feed">Podcast</string>
+    <string name="pref_global_default_episode_list_sort_order_title">Alapértelmezett rendezési sorrend</string>
+    <string name="pref_global_default_episode_list_sort_order_sum">Az epizódok alapértelmezett sorrendjének kiválasztása a podcast képernyőjén</string>
+    <string name="report_bug_title">Hiba jelentése</string>
+    <string name="report_bug_message">Sajnáljuk, hogy valami nem működik. Örülnénk, ha segítene az AntennaPod fejlesztésében. Kérjük, nézze meg a fórumunkon vagy a GitHubon, hogy a problémát jelentették-e már. Ha nem, jelezze nekünk, és kivizsgáljuk.</string>
+    <string name="report_bug_device_info_title">Eszköz</string>
+    <string name="report_bug_attrib_app_version">Alkalmazás verziója</string>
+    <string name="report_bug_attrib_android_version">Android verziója</string>
+    <string name="report_bug_attrib_device_name">Eszköz neve</string>
+    <string name="report_bug_crash_log_title">Összeomlási napló</string>
+    <string name="report_bug_crash_log_message">Létrehozva: %1$s.</string>
+    <string name="report_bug_forum_title">Fórum</string>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sleep_timer_episodes_label">epizód</string>
+    <string name="sleep_timer_without_continuous_playback">Folyamatos lejátszás letiltása</string>
+    <string name="sleep_timer_without_continuous_playback_change_hours">Órák módosítása</string>
+    <string name="sleep_timer_without_continuous_playback_message">Ahelyett, hogy az alvási időzítő mindig automatikusan egy epizódra kapcsolna be, kérjük, inkább tiltsa le a \"folyamatos lejátszást\" a beállításokban.</string>
+    <plurals name="timer_exceeds_remaining_time_while_continuous_playback_disabled">
+        <item quantity="one">A folyamatos lejátszás le van tiltva, és a jelenlegi epizódból már csak %1$d perc van hátra</item>
+        <item quantity="other">A folyamatos lejátszás le van tiltva, és a jelenlegi epizódból már csak %1$d perc van hátra</item>
+    </plurals>
+    <string name="multiple_sleep_episodes_while_continuous_playback_disabled">A folyamatos lejátszás le van tiltva a beállításokban. A lejátszás mindig az epizód végén áll le.</string>
+    <plurals name="episodes_sleep_timer_exceeds_queue">
+        <item quantity="one">Már csak %1$d epizód van a lejátszási sorban</item>
+        <item quantity="other">Már csak %1$d epizód van a lejátszási sorban</item>
+    </plurals>
+    <string name="statistics_label_short">Statisztika</string>
+    <string name="favorite_episodes_label_short">Kedvencek</string>
+    <string name="feed_new_episodes_action_snackbar">Nem módosítható, ha az automatikus letöltés engedélyezve van.</string>
+    <string name="remove_restore_feed_label">Leiratkozás / visszaállítás</string>
+    <string name="restoring_podcast_progress">Podcast visszaállítása: %1$d / %2$d…</string>
+    <plurals name="added_to_favorites_message">
+        <item quantity="one">%d epizód hozzáadva a kedvencekhez.</item>
+        <item quantity="other">%d epizód hozzáadva a kedvencekhez.</item>
+    </plurals>
+    <plurals name="removed_from_favorites_message">
+        <item quantity="one">%d epizód eltávolítva a kedvencek közül.</item>
+        <item quantity="other">%d epizód eltávolítva a kedvencek közül.</item>
+    </plurals>
+    <plurals name="reset_position_message">
+        <item quantity="one">%d epizód pozíciója visszaállítva.</item>
+        <item quantity="other">%d epizód pozíciója visszaállítva.</item>
+    </plurals>
+    <string name="queue_time_left_label">%1$s • %2$s van hátra</string>
+    <string name="no_fav_episodes_head_label">Nincsenek kedvencek</string>
+    <string name="no_fav_episodes_label">A csillag ikonra koppintva jelölheti meg kedvencként az epizódokat.</string>
+    <string name="bottom_navigation_deprecation_warning">Sajnos egy későbbi frissítésben el kell távolítanunk az oldalsó navigációt. Az AntennaPodot önkéntesek egy kis csoportja fejleszti, és miután évekig mindkét navigációs stílust karbantartottuk, ez túl nagy teherré vált. \n\nHa mindenképpen az oldalsó navigációra van szüksége, kérjük, tiltsa le az AntennaPod frissítéseit az alkalmazásboltban.</string>
+    <string name="pref_advanced">Speciális</string>
+    <string name="pref_display">Megjelenítés</string>
+    <string name="import_error_label">Importálási hiba</string>
+    <string name="show_password_accessibility">Jelszó megjelenítése</string>
+    <string name="rss_address_invalid">A megadott RSS-cím érvénytelen.</string>
+    <string name="wearos_connected_to" tools:ignore="UnusedResources">Kapcsolódva ehhez: %s</string>
+    <string name="wearos_version" tools:ignore="UnusedResources">Verzió: %s</string>
+    <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">A telefon nem kompatibilis. Győződjön meg arról, hogy a telefonján az AntennaPod legújabb, Google Playről származó verziója fut.</string>
+    <string name="wearos_no_items" tools:ignore="UnusedResources">Nincsenek elemek</string>
+    <string name="wearos_phone_not_reachable" tools:ignore="UnusedResources">Nem sikerült elérni a telefont. Győződjön meg arról, hogy a telefonja a közelben van, és az AntennaPod telepítve van rajta.</string>
+    <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Lejátszás a telefonon</string>
+    <string name="wearos_browse_phone" tools:ignore="UnusedResources">Böngészés a telefonon</string>
+    <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Megnyitás a telefonon</string>
+    <string name="share_not_supported_local_feed">A helyi mappák nem oszthatók meg</string>
+    <string name="no_subscriptions_filtered_label">Próbálja meg törölni a szűrőt, hogy több feliratkozást lásson.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Az utolsó %d másodperc kihagyva</item>
+        <item quantity="other">Az utolsó %d másodperc kihagyva</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Az első %d másodperc kihagyva</item>
+        <item quantity="other">Az első %d másodperc kihagyva</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Várakozás wifire a feliratkozások szinkronizálásához…</string>
+    <string name="synchronization_provider_chooser_explanation">Az eszközöknek a szinkronizáláshoz központi szerverre van szükségük. Az AntennaPod nem kínál ilyen központi szinkronizálási szervert, de lehetővé teszi, hogy az alább felsorolt különféle típusú szerverekhez kapcsolódjon.</string>
+    <string name="back_label">Vissza</string>
+    <string name="synchronization_more_information">További információ</string>
+    <string name="wrong_password">Hibás jelszó</string>
+    <string name="edit_url_menu_summary">Kockázatos: véglegesen elronthatja az epizódlistát, az előzményeket és a lejátszási állapotot</string>
+    <string name="reconnect_local_folder_summary">Kockázatos: csak pontosan ugyanahhoz a mappához kapcsolódjon újra. Ellenkező esetben az összes lejátszási állapota elvész.</string>
+    <string name="clear_filters_label">Törlés</string>
+    <string name="pref_parental_control_set_password">Jelszó beállítása</string>
+    <string name="pref_parental_control_confirm_password">Jelszó megerősítése</string>
+    <string name="pref_parental_control_passwords_dont_match">A jelszavak nem egyeznek</string>
+    <string name="pref_parental_control_password_empty">A jelszó nem lehet üres</string>
+    <string name="pref_parental_control_title">Szülői felügyelet</string>
+    <string name="pref_parental_control_sum">Funkciók korlátozása jelszóval</string>
+    <string name="pref_parental_control_enabled_title">Engedélyezés</string>
+    <string name="pref_parental_control_require_subscribe_title">Feliratkozás korlátozása</string>
+    <string name="pref_parental_control_require_subscribe_sum">A szülői felügyeleti jelszó kérése új podcastokra való feliratkozáskor</string>
 </resources>

@@ -329,7 +329,6 @@
     <string name="no_all_episodes_label">ستظهر الحلقة هنا بعد إضافتها.</string>
     <string name="no_all_episodes_filtered_label">امح المصفاة لرؤية المزيد من الحلقات.</string>
     <string name="no_inbox_head_label">لا يوجد حلقات في صندوق الوارد</string>
-    <string name="no_inbox_label">ستعرض الحلقات الجديدة هنا عند وصولها. يمكنك بعد ذلك تحديد ما إذا كنت مهتمًا بها.</string>
     <string name="no_subscriptions_head_label">لا توجد اشتراكات</string>
     <string name="no_subscriptions_label">للاشتراك في مسموعيَّة، اضغط على أيقونة علامة الإضافة أدناه.</string>
     <!--Preferences-->
@@ -428,8 +427,6 @@
     <string name="pref_feed_skip_sum">تخطى المقدمة والختام</string>
     <string name="pref_feed_skip_ending">تخطى الآخر</string>
     <string name="pref_feed_skip_intro">تخطى الأول</string>
-    <string name="pref_feed_skip_ending_toast">تخطى آخر %d ثانية</string>
-    <string name="pref_feed_skip_intro_toast">تخطى أول %d ثانية</string>
     <string name="pref_playback_time_respects_speed_title">عدل بيانات الوسائط مع سرعة التشغيل</string>
     <string name="pref_playback_time_respects_speed_sum">الوقت المنقضي والمتبقي يتناسب مع سرعة التشغيل</string>
     <string name="pref_fast_forward">وقت التخطي للتقدم السريع</string>

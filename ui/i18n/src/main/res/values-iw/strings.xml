@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">פתיחת תפריט</string>
     <string name="drawer_close">סגירת תפריט</string>
-    <string name="drawer_preferences">העדפות מגירה</string>
+    <string name="drawer_preferences">העדפות ניווט</string>
     <string name="drawer_feed_order_unplayed_episodes">מיון לפי מונה</string>
     <string name="drawer_feed_order_alphabetical">מיון בסדר אלפביתי</string>
     <string name="drawer_feed_order_last_update">מיון לפי תאריך פרסום</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">החלקה למעלה מציגה את הערות הפרק</string>
     <string name="close_label">סגירה</string>
     <string name="retry_label">לנסות שוב</string>
-    <string name="auto_download_label">לכלול בהורדות אוטומטיות</string>
+    <string name="auto_download_label">הורד באופן אוטומטי</string>
     <string name="feed_volume_adapdation">התאמת עוצמת שמע</string>
     <string name="feed_volume_adaptation_summary">הנמכה או הגברה של עוצמת השמע לפרקים של ההסכת הזה: %1$s</string>
     <string name="feed_volume_reduction_off">ללא התאמה</string>
@@ -269,7 +269,7 @@
   <string name="lock_queue">נעילת תור</string>
     <string name="queue_locked">התור ננעל</string>
     <string name="queue_unlocked">התור שוחרר מנעילה</string>
-    <string name="queue_lock_warning">נעילת התור אינה מונעת את ההחלקה או את סידור הפרקים מחדש.</string>
+    <string name="queue_lock_warning">נעילת התור מונעת סידור הפרקים מחדש.</string>
     <string name="checkbox_do_not_show_again">לא להציג שוב</string>
     <string name="clear_queue_label">פינוי תור</string>
     <string name="undo">ביטול</string>
@@ -302,7 +302,6 @@
     <string name="no_all_episodes_label">בעת הוספת הסכת, הפרקים יופיעו כאן.</string>
     <string name="no_all_episodes_filtered_label">יש לנסות לנקות את המסנן כדי לצפות בפרקים נוספים.</string>
     <string name="no_inbox_head_label">אין פרקים בדואר הנכנס</string>
-    <string name="no_inbox_label">כאשר פרקים חדשים מגיעים, הם מופיעים כאן. אפשר להחליט אם הם מעניינים אותך או לא.</string>
     <string name="no_subscriptions_head_label">אין מינויים</string>
     <string name="no_subscriptions_label">כדי להירשם להסכת, יש ללחוץ על סימן הפלוס שלהלן.</string>
     <!--Preferences-->
@@ -401,8 +400,6 @@
     <string name="pref_feed_skip_sum">לדלג על הקדמה ותודות בסיום</string>
     <string name="pref_feed_skip_ending">לדלג על האחרון</string>
     <string name="pref_feed_skip_intro">לדלג על הראשון</string>
-    <string name="pref_feed_skip_ending_toast">%d השניות האחרונות דולגו</string>
-    <string name="pref_feed_skip_intro_toast">%d השניות הראשונות דולגו</string>
     <string name="pref_playback_time_respects_speed_title">להתאים את פרטי המדיה למהירות הנגינה</string>
     <string name="pref_playback_time_respects_speed_sum">המיקום המוצג והמשך מותאמים למהירות הנגינה</string>
     <string name="pref_fast_forward">זמן דילוג להרצה מהירה קדימה</string>
@@ -998,4 +995,33 @@
         <item quantity="other">נקודת הנגינה של %d פרקים התאפסה.</item>
     </plurals>
     <string name="bottom_navigation_deprecation_warning">לרוע המזל עלינו להסיר את ניווט הצד בעדכונים עתידיים. הפיתוח של אנטנה־פּוֹד נעשה על ידי קבוצה קטנה של מתנדבים ולאחר תחזוקה של שני סגנונות הניווט במשך שנים זה החל להכביד יותר ויותר.\n\nאם ניווט צד הכרחי לך, נא להשבית עדכונים של אנטנה־פּוֹד בחנות היישומונים שלך.</string>
+    <string name="share_not_supported_local_feed">אין תמיכה לשיתוף תיקיות מקומיות</string>
+    <string name="no_subscriptions_filtered_label">נסה לנקות את הסינון כדי לראות עוד מנויים.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">שניה אחרונה דולגה</item>
+        <item quantity="two">%d שניות אחרונות דולגו</item>
+        <item quantity="other">%d שניות אחרונות דולגו</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">שניה ראשונה דולגה</item>
+        <item quantity="two">%d שניות ראשונות דולגו</item>
+        <item quantity="other">%d שניות ראשונות דולגו</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">ממתין לאינטרנט אלחוטי לסנכרון מנויים…</string>
+    <string name="synchronization_provider_chooser_explanation">מכשירים זקוקים לשרת מרכזי על מנת להסתנכרן. AntennaPod לא מספק שרת סנכרון מרכזי כזה, אך מאפשר לך להתחבר עם סוגי השרתים השונים הרשומים למטה.</string>
+    <string name="back_label">אחורה</string>
+    <string name="synchronization_more_information">מידע נוסף</string>
+    <string name="wrong_password">סיסמה שגויה</string>
+    <string name="edit_url_menu_summary">מסוכן: יכול לשבור באופן קבוע את רשימת הפרקים, ההיסטוריה, ומצב ההשמעה</string>
+    <string name="reconnect_local_folder_summary">מסוכן: התחבר מחדש רק לאותה תיקייה. אחרת, תאבד את כל מצב ההשמעות שלך.</string>
+    <string name="clear_filters_label">ניקוי</string>
+    <string name="pref_parental_control_set_password">קבע סיסמה</string>
+    <string name="pref_parental_control_confirm_password">ודא סיסמה</string>
+    <string name="pref_parental_control_passwords_dont_match">הסיסמאות לא תואמות</string>
+    <string name="pref_parental_control_password_empty">הסיסמה לא יכולה להיות ריקה</string>
+    <string name="pref_parental_control_title">פיקוח הורי</string>
+    <string name="pref_parental_control_sum">להגביל תכונות עם סיסמה</string>
+    <string name="pref_parental_control_enabled_title">הפעל</string>
+    <string name="pref_parental_control_require_subscribe_title">הגבל הרשמה</string>
+    <string name="pref_parental_control_require_subscribe_sum">בקש סיסמת פיקוח הורי בהרשמה להסכתים חדשים</string>
 </resources>

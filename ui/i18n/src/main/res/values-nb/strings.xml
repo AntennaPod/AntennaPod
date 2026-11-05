@@ -280,7 +280,6 @@
     <string name="no_all_episodes_label">Når du legger til en podkast, vises episodene her.</string>
     <string name="no_all_episodes_filtered_label">Prøv å nullstille filteret for å få se flere episoder.</string>
     <string name="no_inbox_head_label">Ingen episoder i innboksen</string>
-    <string name="no_inbox_label">Når nye episoder slippes, dukker de opp her. Du kan da velge om du er interessert i de eller ikke.</string>
     <string name="no_subscriptions_head_label">Ingen abonnementer</string>
     <string name="no_subscriptions_label">Trykk på pluss-ikonet nedenfor for å abonnere på en podkast.</string>
     <!--Preferences-->
@@ -370,8 +369,6 @@
     <string name="pref_feed_skip_sum">Hopp over introduksjoner og «rulletekster»</string>
     <string name="pref_feed_skip_ending">Hopp over siste</string>
     <string name="pref_feed_skip_intro">Hopp over første</string>
-    <string name="pref_feed_skip_ending_toast">Hoppet over de siste %d sekundene</string>
-    <string name="pref_feed_skip_intro_toast">Hoppet over de første %d sekundene</string>
     <string name="pref_playback_time_respects_speed_title">Juster medieinfo til avspillingshastighet</string>
     <string name="pref_playback_time_respects_speed_sum">Vist posisjon og varighet tilpasses avspillingshastighet</string>
     <string name="pref_rewind">Tidshopp for tilbakespoling</string>

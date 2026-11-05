@@ -311,7 +311,6 @@
     <string name="no_all_episodes_label">Когда вы добавите подкаст, выпуски будут показаны здесь.</string>
     <string name="no_all_episodes_filtered_label">Попробуйте сбросить фильтр, чтобы увидеть больше выпусков.</string>
     <string name="no_inbox_head_label">Во входящих нет выпусков</string>
-    <string name="no_inbox_label">Когда появятся новые выпуски, они будут показаны здесь. Вы сможете решить, интересны ли они вам.</string>
     <string name="no_subscriptions_head_label">Подписки не оформлены</string>
     <string name="no_subscriptions_label">Чтобы подписаться на подкаст, нажмите значок «плюс» внизу.</string>
     <!--Preferences-->
@@ -410,8 +409,6 @@
     <string name="pref_feed_skip_sum">Проматывать вступительную и заключительную часть</string>
     <string name="pref_feed_skip_ending">Промотать последние</string>
     <string name="pref_feed_skip_intro">Промотать первые</string>
-    <string name="pref_feed_skip_ending_toast">Промотаны последние %d с</string>
-    <string name="pref_feed_skip_intro_toast">Промотаны первые %d с</string>
     <string name="pref_playback_time_respects_speed_title">Подстройка метаданных под скорость воспроизведения</string>
     <string name="pref_playback_time_respects_speed_sum">Отображаемые позиция и продолжительность меняются в зависимости от скорости воспроизведения</string>
     <string name="pref_fast_forward">Интервал перемотки вперёд</string>
@@ -1032,4 +1029,35 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Воспроизвести на телефоне</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Данные на телефоне</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Открыть на телефоне</string>
+    <string name="share_not_supported_local_feed">Для локальных папок функция обмена файлами не поддерживается</string>
+    <string name="no_subscriptions_filtered_label">Попробуйте очистить фильтр чтобы увидеть больше подписок.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Пропустил %d секунду</item>
+        <item quantity="few">Пропустил %d секунды</item>
+        <item quantity="many">Пропустил %d секунд</item>
+        <item quantity="other">Пропустил %d секунд</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Пропустил первую %d секунду</item>
+        <item quantity="few">Пропустил первые %d секунды</item>
+        <item quantity="many">Пропустил первые %d секунд</item>
+        <item quantity="other">Пропустил первые %d секунд</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Ожидание Wi-Fi подключения для синхронизации подписок…</string>
+    <string name="synchronization_provider_chooser_explanation">Устройству нужен центральный сервер для синхронизации. AntennaPod не предлставляет центральных синхронизационных серверов, но вы можете выбрать разные сервера описанные ниже.</string>
+    <string name="back_label">Назад</string>
+    <string name="synchronization_more_information">Больше информации</string>
+    <string name="wrong_password">Неправильный пароль</string>
+    <string name="edit_url_menu_summary">Опасность: может перманентно повредить спсок выпусков, историю и состояние прослушивания</string>
+    <string name="reconnect_local_folder_summary">Опасностсть: переподключайтесь только к той же самой папке. Иначе вы потеряйте всё ваше состояние проигрования.</string>
+    <string name="clear_filters_label">Очистить</string>
+    <string name="pref_parental_control_set_password">Устанрвить пароль</string>
+    <string name="pref_parental_control_confirm_password">Подтвердите пароль</string>
+    <string name="pref_parental_control_passwords_dont_match">Пароли не сходяться</string>
+    <string name="pref_parental_control_password_empty">Пароль не может быть пустым</string>
+    <string name="pref_parental_control_title">Родительский контроль</string>
+    <string name="pref_parental_control_sum">Ограничить функции паролем</string>
+    <string name="pref_parental_control_enabled_title">Включить</string>
+    <string name="pref_parental_control_require_subscribe_title">Ограничить подписки</string>
+    <string name="pref_parental_control_require_subscribe_sum">Спрашивать родителтьский пароль при подписки на новые покасты</string>
 </resources>

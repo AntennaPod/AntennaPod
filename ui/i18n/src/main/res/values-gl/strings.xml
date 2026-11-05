@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
     <string name="drawer_close">Pechar menú</string>
-    <string name="drawer_preferences">Preferencias do caixón</string>
+    <string name="drawer_preferences">Preferencias da navegación</string>
     <string name="drawer_feed_order_unplayed_episodes">Ordenar polo contador</string>
     <string name="drawer_feed_order_alphabetical">Ordenar alfabeticamente</string>
     <string name="drawer_feed_order_last_update">Ordenar por data de publicación</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">despraza hacia arriba para ler as notas</string>
     <string name="close_label">Pechar</string>
     <string name="retry_label">Reintentar</string>
-    <string name="auto_download_label">Incluír en descargas automáticas</string>
+    <string name="auto_download_label">Descargar automaticamente</string>
     <string name="feed_volume_adapdation">Volume adaptable</string>
     <string name="feed_volume_adaptation_summary">Subir ou baixar o volume para os episodios deste podcast: %1$s</string>
     <string name="feed_volume_reduction_off">Sen modificación</string>
@@ -260,7 +260,7 @@
   <string name="lock_queue">Bloquear a cola</string>
     <string name="queue_locked">Cola bloqueada</string>
     <string name="queue_unlocked">Cola desbloqueada</string>
-    <string name="queue_lock_warning">Se bloqueas a cola, non poderás quitar ou mover os episodios.</string>
+    <string name="queue_lock_warning">Se bloqueas a cola, non poderás reordenar os episodios.</string>
     <string name="checkbox_do_not_show_again">Non mostrar de novo</string>
     <string name="clear_queue_label">Baleirar cola</string>
     <string name="undo">Desfacer</string>
@@ -293,7 +293,6 @@
     <string name="no_all_episodes_label">Cando engade un podcast, os episodios mostraranse aquí.</string>
     <string name="no_all_episodes_filtered_label">Proba a eliminar o filtro para ver máis episodios.</string>
     <string name="no_inbox_head_label">Non hai novos episodios</string>
-    <string name="no_inbox_label">Aquí verás os novos episodios que vaian publicándose. Poderás decidir se son do teu interese ou non.</string>
     <string name="no_subscriptions_head_label">Sen subscricións</string>
     <string name="no_subscriptions_label">Para subscribirte a un podcast, preme o botón máis, abaixo.</string>
     <!--Preferences-->
@@ -392,8 +391,6 @@
     <string name="pref_feed_skip_sum">Omitir presentacións e créditos finais</string>
     <string name="pref_feed_skip_ending">Omitir o final</string>
     <string name="pref_feed_skip_intro">Omitir o principio</string>
-    <string name="pref_feed_skip_ending_toast">Omitidos os últimos %d segundos</string>
-    <string name="pref_feed_skip_intro_toast">Omitidos os primeiros %d segundos</string>
     <string name="pref_playback_time_respects_speed_title">Axustar info dos medios a velocidade de reprodución</string>
     <string name="pref_playback_time_respects_speed_sum">A posición mostrada e a duración están adaptadas a velocidade de reprodución</string>
     <string name="pref_fast_forward">Intervalo do avance rápido</string>
@@ -964,4 +961,31 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Reproducir no teléfono</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Buscar o teléfono</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Abrir no teléfono</string>
+    <string name="share_not_supported_local_feed">Os cartafoles locais non se poden compartir</string>
+    <string name="no_subscriptions_filtered_label">Inténtao eliminando o filtro para ver máis subscricións.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Omitido o último segundo</item>
+        <item quantity="other">Omitidos os últimos %d segundos</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Omitido o primeiro segundo</item>
+        <item quantity="other">Omitidos os primeiros %d segundos</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Agardando pola Wi-Fi para sincronizar as subscricións…</string>
+    <string name="synchronization_provider_chooser_explanation">Os dispositivos precisan un servidor central co que sincronizarse. AntennaPod non proporciona ese tipo de servidor central, mais permite que poidas conectarte aos seguintes tipos de servidor.</string>
+    <string name="back_label">Volver</string>
+    <string name="synchronization_more_information">Máis información</string>
+    <string name="wrong_password">Contrasinal incorrecto</string>
+    <string name="edit_url_menu_summary">Arriscado: pode estragar de xeito permanente a lista de episodios, historial e estado de reprodución</string>
+    <string name="reconnect_local_folder_summary">Arriscado: só reconectar exactamente co mesmo cartafol. Doutro xeito perderás todos os estados de reprodución.</string>
+    <string name="clear_filters_label">Limpar</string>
+    <string name="pref_parental_control_set_password">Establecer contrasinal</string>
+    <string name="pref_parental_control_confirm_password">Confirmar contrasinal</string>
+    <string name="pref_parental_control_passwords_dont_match">Os contrasinais non concordan</string>
+    <string name="pref_parental_control_password_empty">Non pode quedar baleiro</string>
+    <string name="pref_parental_control_title">Control parental</string>
+    <string name="pref_parental_control_sum">Restrinxir características cun contrasinal</string>
+    <string name="pref_parental_control_enabled_title">Activar</string>
+    <string name="pref_parental_control_require_subscribe_title">Restrinxir as subscricións</string>
+    <string name="pref_parental_control_require_subscribe_sum">Pedir o contrasinal do control parental ao engadir novas canles de podcast</string>
 </resources>

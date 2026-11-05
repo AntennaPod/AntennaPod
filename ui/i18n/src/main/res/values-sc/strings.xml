@@ -293,7 +293,6 @@
     <string name="no_all_episodes_label">Cando as a agiùnghere unu podcast, is episòdios ant a èssere ammustrados inoghe.</string>
     <string name="no_all_episodes_filtered_label">Proa a bogare su filtru pro bìdere àteros episòdios.</string>
     <string name="no_inbox_head_label">Nissunu episòdiu in sa cartella de intrada</string>
-    <string name="no_inbox_label">Comente arribent episòdios noos, ant a èssere ammustrados inoghe. Podes detzìdere si t\'interessant o nono.</string>
     <string name="no_subscriptions_head_label">Nissuna sutiscritzione</string>
     <string name="no_subscriptions_label">Pro ti sutascrìere a unu podcast, toca s\'icona \"+\" in bàsciu.</string>
     <!--Preferences-->
@@ -392,8 +391,6 @@
     <string name="pref_feed_skip_sum">Omite introdutziones e crèditos finales</string>
     <string name="pref_feed_skip_ending">Brinca is ùrtimos</string>
     <string name="pref_feed_skip_intro">Brinca is primos</string>
-    <string name="pref_feed_skip_ending_toast">Ùrtimos %d segundos omìtidos</string>
-    <string name="pref_feed_skip_intro_toast">Primu %d segundos omìtidos</string>
     <string name="pref_playback_time_respects_speed_title">Acontza s\'informatzione de su cuntenutu multimediale a sa lestresa de riprodutzione</string>
     <string name="pref_playback_time_respects_speed_sum">Sa positzione e sa durada ammustradas ant a èssere acontzadas a sa lestresa de riprodutzione</string>
     <string name="pref_fast_forward">Durada de s\'omissione in s\'avantzamentu lestru</string>

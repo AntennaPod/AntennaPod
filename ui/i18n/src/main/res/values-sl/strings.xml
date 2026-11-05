@@ -287,7 +287,6 @@
     <string name="no_all_episodes_label">Ko dodate poddajo, bodo epizode prikazane tukaj.</string>
     <string name="no_all_episodes_filtered_label">Odstranite filtre, da vidite več epizod.</string>
     <string name="no_inbox_head_label">V nabiralniku ni epizod</string>
-    <string name="no_inbox_label">Ko prispejo nove epizode, bodo prikazane tukaj. Takrat se lahko odločite, če so vam zanimive.</string>
     <string name="no_subscriptions_head_label">Ni naročnin</string>
     <string name="no_subscriptions_label">Če se želite naročiti na poddajo, pritisnite spodnjo plus ikono.</string>
     <!--Preferences-->
@@ -376,8 +375,6 @@
     <string name="pref_feed_skip_sum">Preskočite uvodno in končno špico</string>
     <string name="pref_feed_skip_ending">Preskoči na zadnjo</string>
     <string name="pref_feed_skip_intro">Preskoči na prvo</string>
-    <string name="pref_feed_skip_ending_toast">Preskočenih zadnjih %d sekund</string>
-    <string name="pref_feed_skip_intro_toast">Preskočenih prvih %d sekund</string>
     <string name="pref_playback_time_respects_speed_title">Prilagodite informacije o hitrosti predvajanja medijev</string>
     <string name="pref_playback_time_respects_speed_sum">Prikazani položaj in trajanje sta prilagojena hitrosti predvajanja</string>
     <string name="pref_rewind">Čas skoka nazaj</string>
