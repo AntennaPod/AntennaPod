@@ -167,6 +167,8 @@ public class ItemPagerFragment extends Fragment implements MaterialToolbar.OnMen
         if (menuItem.getItemId() == R.id.open_podcast) {
             openPodcast();
             return true;
+        } else if (item == null) {
+            return true;
         }
         return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
     }
