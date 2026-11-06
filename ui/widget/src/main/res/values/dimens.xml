@@ -2,5 +2,6 @@
 <resources>
     <dimen name="widget_margin">0dp</dimen>
     <dimen name="widget_inner_radius">4dp</dimen>
-    <dimen name="widget_cover_large">72dp</dimen>
+    <dimen name="widget_cover_large">320dp</dimen>
+    <dimen name="widget_buttons_min_height">36dp</dimen>
 </resources>
