@@ -239,6 +239,7 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        automaticSearchDebouncer.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
     }
 
