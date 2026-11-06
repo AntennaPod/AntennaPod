@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">Menü öffnen</string>
     <string name="drawer_close">Menü schließen</string>
-    <string name="drawer_preferences">Seitenleisten-Einstellungen</string>
+    <string name="drawer_preferences">Navigationseinstellungen</string>
     <string name="drawer_feed_order_unplayed_episodes">Nach Zähler sortieren</string>
     <string name="drawer_feed_order_alphabetical">Alphabetisch sortieren</string>
     <string name="drawer_feed_order_last_update">Nach Veröffentlichungsdatum sortieren</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">Wische nach oben, um die Shownotes zu lesen</string>
     <string name="close_label">Schließen</string>
     <string name="retry_label">Erneut versuchen</string>
-    <string name="auto_download_label">In automatisches Herunterladen einbeziehen</string>
+    <string name="auto_download_label">Automatisch herunterladen</string>
     <string name="feed_volume_adapdation">Lautstärkeanpassung</string>
     <string name="feed_volume_adaptation_summary">Lautstärke für Episoden dieses Podcasts lauter oder leiser stellen: %1$s</string>
     <string name="feed_volume_reduction_off">Keine Anpassung</string>
@@ -260,7 +260,7 @@
   <string name="lock_queue">Warteschlange sperren</string>
     <string name="queue_locked">Warteschlange gesperrt</string>
     <string name="queue_unlocked">Warteschlange entsperrt</string>
-    <string name="queue_lock_warning">Wenn du die Warteschlange sperrst, kannst du Episoden nicht mehr verschieben oder wegwischen.</string>
+    <string name="queue_lock_warning">Wenn du die Warteschlange sperrst, kannst du Episoden nicht mehr verschieben.</string>
     <string name="checkbox_do_not_show_again">Nicht mehr anzeigen</string>
     <string name="clear_queue_label">Warteschlange leeren</string>
     <string name="undo">Rückgängig</string>
@@ -293,7 +293,6 @@
     <string name="no_all_episodes_label">Wenn du einen Podcast hinzufügst, werden die Episoden hier angezeigt.</string>
     <string name="no_all_episodes_filtered_label">Versuche den Filter zu deaktivieren, um mehr Episoden zu sehen.</string>
     <string name="no_inbox_head_label">Keine Episoden im Posteingang</string>
-    <string name="no_inbox_label">Wenn neue Episoden erscheinen, werden sie hier angezeigt. Du kannst dann entscheiden, ob du daran interessiert bist oder nicht.</string>
     <string name="no_subscriptions_head_label">Keine Abonnements</string>
     <string name="no_subscriptions_label">Um einen Podcast zu abonnieren, tippe auf das Plus-Symbol.</string>
     <!--Preferences-->
@@ -392,8 +391,6 @@
     <string name="pref_feed_skip_sum">Einleitung und Ende überspringen</string>
     <string name="pref_feed_skip_ending">Ende überspringen</string>
     <string name="pref_feed_skip_intro">Anfang überspringen</string>
-    <string name="pref_feed_skip_ending_toast">Letzte %d Sekunden übersprungen</string>
-    <string name="pref_feed_skip_intro_toast">Erste %d Sekunden übersprungen</string>
     <string name="pref_playback_time_respects_speed_title">Medieninfo an Abspielgeschw. anpassen</string>
     <string name="pref_playback_time_respects_speed_sum">Position und Dauer der Wiedergabe werden an die Abspielgeschwindigkeit angepasst</string>
     <string name="pref_fast_forward">Vorspulzeit</string>
@@ -464,10 +461,10 @@
     <string name="search_online">Online suchen</string>
     <!--Synchronization-->
   <string name="sync_status_started">Synchronisation gestartet</string>
-    <string name="sync_status_episodes_upload">Lade Episoden-Änderungen hoch…</string>
-    <string name="sync_status_episodes_download">Lade Episoden-Änderungen herunter…</string>
-    <string name="sync_status_upload_played">Lade Abspielstatus hoch…</string>
-    <string name="sync_status_subscriptions">Synchronisiere Abonnements…</string>
+    <string name="sync_status_episodes_upload">Episoden-Änderungen werden hochgeladen …</string>
+    <string name="sync_status_episodes_download">Episoden-Änderungen werden heruntergeladen…</string>
+    <string name="sync_status_upload_played">Abspielstatus wird hochgeladen…</string>
+    <string name="sync_status_subscriptions">Abonnements werden synchronisiert…</string>
     <string name="sync_status_success">Synchronisation erfolgreich</string>
     <string name="sync_status_error">Synchronisation fehlgeschlagen</string>
     <!--import and export-->
@@ -726,7 +723,7 @@
     <string name="shortcut_select_subscription">Abonnement auswählen</string>
     <string name="add_shortcut">Verknüpfung hinzufügen</string>
     <string name="section_shown">Angezeigt</string>
-    <string name="sync_status_wait_for_downloads">Warte auf Aktualisierung der Abonnements…</string>
+    <string name="sync_status_wait_for_downloads">Auf Aktualisieren der Abonnements wird gewartet…</string>
     <string name="pref_nav_drawer_items_title">Navigation anpassen</string>
     <string name="home_continue_empty_text">Du kannst Episoden hinzufügen, indem du sie herunterlädst oder indem du sie lange antippst und „Zur Warteschlange hinzufügen“ auswählst.</string>
     <string name="home_no_recent_unplayed_episodes_text">Du hast bereits alle aktuellen Episoden abgespielt. Hier gibt es nichts zum überrascht werden ;)</string>
@@ -964,4 +961,31 @@
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Smartphone durchsuchen</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Auf dem Smartphone öffnen</string>
     <string name="queue_time_left_label">%1$s • %2$s verbleibend</string>
+    <string name="share_not_supported_local_feed">Die Freigabe lokaler Ordner wird nicht unterstützt</string>
+    <string name="no_subscriptions_filtered_label">Lösche den Filter, um weitere Abonnements anzuzeigen.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Letzte Sekunde übersprungen</item>
+        <item quantity="other">Letzten %d Sekunden übersprungen</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Erste Sekunde übersprungen</item>
+        <item quantity="other">Ersten %d Sekunden übersprungen</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Auf WLAN wird gewartet, um die Abonnements zu synchonisieren…</string>
+    <string name="synchronization_provider_chooser_explanation">Geräte benötigen zum Synchronisieren einen zentralen Server. AntennaPod bietet keinen solchen zentralen Synchronisierungsserver an, ermöglicht jedoch die Verbindung mit den verschiedenen unten aufgeführten Servertypen.</string>
+    <string name="back_label">Zurück</string>
+    <string name="synchronization_more_information">Weitere Informationen</string>
+    <string name="wrong_password">Falsches Passwort</string>
+    <string name="edit_url_menu_summary">Vorsicht: Dies kann die Episodenliste, den Verlauf und Abspielstatus dauerhaft beschädigen</string>
+    <string name="reconnect_local_folder_summary">Vorsicht: Stelle die Verbindung nur wieder mit genau demselben Ordner her. Andernfalls gehen alle deine Abspielstatus verloren.</string>
+    <string name="clear_filters_label">Entfernen</string>
+    <string name="pref_parental_control_confirm_password">Passwort bestätigen</string>
+    <string name="pref_parental_control_passwords_dont_match">Passwörter stimmen nicht überein</string>
+    <string name="pref_parental_control_password_empty">Passwort darf nicht leer sein</string>
+    <string name="pref_parental_control_title">Kindersicherung</string>
+    <string name="pref_parental_control_sum">Funktionen mit einem Passwort einschränken</string>
+    <string name="pref_parental_control_enabled_title">Aktivieren</string>
+    <string name="pref_parental_control_require_subscribe_title">Abonnements einschränken</string>
+    <string name="pref_parental_control_require_subscribe_sum">Beim Abonnieren neuer Podcasts nach dem Passwort für die Kindersicherung fragen</string>
+    <string name="pref_parental_control_set_password">Passwort festlegen</string>
 </resources>

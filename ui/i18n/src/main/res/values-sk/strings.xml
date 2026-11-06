@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">potiahnuť hore pre čítanie poznámok</string>
     <string name="close_label">Ukončiť</string>
     <string name="retry_label">Skúsiť znova</string>
-    <string name="auto_download_label">Zahrnúť do automatického sťahovania</string>
+    <string name="auto_download_label">Stiahnuť automaticky</string>
     <string name="feed_volume_adapdation">Prispôsobenie hlasitosti</string>
     <string name="feed_volume_adaptation_summary">Zvýšiť alebo znížiť hlasitosť epizód tohto podcastu (%1$s)</string>
     <string name="feed_volume_reduction_off">Žiadne prispôsobenie</string>
@@ -303,7 +303,6 @@
     <string name="no_all_episodes_label">Keď si pridáte niektorý podcast, tak sa objaví tu.</string>
     <string name="no_all_episodes_filtered_label">Ak chcete vidieť viac epizód, skúste vypnúť filter.</string>
     <string name="no_inbox_head_label">Žiadne nové epizódy</string>
-    <string name="no_inbox_label">Keď sa objavia nové epizódy, tak sa ukážu tu. Vy sa môžete rozhodnúť, či o ne máte alebo nemáte záujem.</string>
     <string name="no_subscriptions_head_label">Žiadne odbery</string>
     <string name="no_subscriptions_label">Pre prihlásenie odberu podcastu stlačte ikonu plus nižšie.</string>
     <!--Preferences-->
@@ -402,8 +401,6 @@
     <string name="pref_feed_skip_sum">Preskočiť úvod a záver</string>
     <string name="pref_feed_skip_ending">Preskočiť posledných</string>
     <string name="pref_feed_skip_intro">Preskočiť prvých</string>
-    <string name="pref_feed_skip_ending_toast">Posledných %d sekúnd bolo preskočených</string>
-    <string name="pref_feed_skip_intro_toast">Prvých %d sekúnd bolo preskočených</string>
     <string name="pref_playback_time_respects_speed_title">Zohľadniť rýchlosti prehrávania média</string>
     <string name="pref_playback_time_respects_speed_sum">Zobrazená dĺžka a pozícia sú upravené zohľadňujúc rýchlosť prehrávania</string>
     <string name="pref_fast_forward">Dĺžka času posunu vpred</string>

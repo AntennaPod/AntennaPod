@@ -78,7 +78,7 @@
     <string name="shownotes_contentdescription">Gesek ke atas untuk membaca catatan acara</string>
     <string name="close_label">Tutup</string>
     <string name="retry_label">Coba lagi</string>
-    <string name="auto_download_label">Sertakan pada pengunduhan otomatis</string>
+    <string name="auto_download_label">Unduh secara otomatis</string>
     <string name="feed_auto_download_always">Selalu</string>
     <string name="feed_auto_download_never">Tidak pernah</string>
     <string name="episode_cleanup_never">Tidak pernah</string>
@@ -177,7 +177,7 @@
     <string name="no_media_label">Item yang dipilih tidak berisi berkas media</string>
     <string name="queue_locked">Antrean terkunci</string>
     <string name="queue_unlocked">Antrian terbuka</string>
-    <string name="queue_lock_warning">Saat antrean terkunci, Anda tidak akan dapat menggeser atau mengurutkan ulang episode.</string>
+    <string name="queue_lock_warning">Jika Anda mengunci antrean, Anda tidak dapat lagi mengubah urutan episode.</string>
     <string name="checkbox_do_not_show_again">Jangan tampilkan lagi</string>
     <string name="undo">Batalkan</string>
     <string name="move_to_top_label">Pindahkan ke atas daftar</string>
@@ -204,7 +204,6 @@
     <string name="no_all_episodes_label">Episode yang telah Anda tambahkan akan tampil di sini.</string>
     <string name="no_all_episodes_filtered_label">Coba bersihkan tapisan untuk melihat lebih banyak episode.</string>
     <string name="no_inbox_head_label">Tidak ada episode di kotak masuk</string>
-    <string name="no_inbox_label">Episode baru akan ditampilkan di sini. Setelahnya, Anda dapat menentukan apakah Anda ingin mendengarkannya atau tidak.</string>
     <string name="no_subscriptions_head_label">~Tiada Langganan~</string>
     <string name="no_subscriptions_label">Untuk berlangganan siniar, tekan ikon tanda tambah di bawah.</string>
     <!--Preferences-->
@@ -279,8 +278,6 @@
     <string name="pref_feed_skip_sum">Lewati Pembukaan dan Penutup/Persembahan siniar</string>
     <string name="pref_feed_skip_ending">Lewati bagian akhir</string>
     <string name="pref_feed_skip_intro">Lewati bagian awal</string>
-    <string name="pref_feed_skip_ending_toast">Selama %d detik terakhir dilewati</string>
-    <string name="pref_feed_skip_intro_toast">Selama %d detik pertama dilewati</string>
     <string name="pref_playback_time_respects_speed_title">Atur info media ke kecepatan pemutaran</string>
     <string name="pref_playback_time_respects_speed_sum">Posisi dan durasi yang ditampilkan disesuaikan dengan kecepatan pemutaran</string>
     <string name="pref_rewind">Undur ke belakang</string>
@@ -921,4 +918,29 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Putar di ponsel</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Jelajahi ponsel</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Buka di ponsel</string>
+    <string name="share_not_supported_local_feed">Berbagi tidak didukung untuk folder lokal</string>
+    <string name="no_subscriptions_filtered_label">Coba hapus filter untuk melihat lebih banyak langganan.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="other">%d detik terakhir dilewati</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="other">%d detik pertama dilewati</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Menunggu Wi-Fi untuk menyinkronkan langganan…</string>
+    <string name="synchronization_provider_chooser_explanation">Perangkat memerlukan server pusat untuk melakukan sinkronisasi. AntennaPod tidak menyediakan server sinkronisasi pusat tersebut, tetapi memungkinkan Anda terhubung ke berbagai jenis server yang tercantum di bawah ini.</string>
+    <string name="back_label">Kembali</string>
+    <string name="synchronization_more_information">Informasi selengkapnya</string>
+    <string name="wrong_password">Kata sandi salah</string>
+    <string name="edit_url_menu_summary">Berisiko: dapat merusak daftar episode, riwayat, dan status pemutaran secara permanen</string>
+    <string name="reconnect_local_folder_summary">Berisiko: hubungkan kembali hanya ke folder yang sama persis. Jika tidak, Anda akan kehilangan seluruh status pemutaran.</string>
+    <string name="clear_filters_label">Hapus</string>
+    <string name="pref_parental_control_set_password">Tetapkan Kata Sandi</string>
+    <string name="pref_parental_control_confirm_password">Konfirmasi kata sandi</string>
+    <string name="pref_parental_control_passwords_dont_match">Kata sandi tidak cocok</string>
+    <string name="pref_parental_control_password_empty">Kata sandi tidak boleh kosong</string>
+    <string name="pref_parental_control_title">Kontrol Orang Tua</string>
+    <string name="pref_parental_control_sum">Batasi fitur dengan kata sandi</string>
+    <string name="pref_parental_control_enabled_title">Aktifkan</string>
+    <string name="pref_parental_control_require_subscribe_title">Batasi langganan</string>
+    <string name="pref_parental_control_require_subscribe_sum">Minta kata sandi kontrol orang tua saat berlangganan podcast baru</string>
 </resources>

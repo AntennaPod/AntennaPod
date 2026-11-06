@@ -60,7 +60,7 @@
     <string name="shownotes_contentdescription">jei norite skaityti laidos užrašus, perbraukite pirštu į viršų</string>
     <string name="close_label">Užverti</string>
     <string name="retry_label">Bandyti vėl</string>
-    <string name="auto_download_label">Įtraukti į automatinius atsiuntimus</string>
+    <string name="auto_download_label">Atsisiųsti automatiškai</string>
     <string name="feed_auto_download_always">Visada</string>
     <string name="feed_auto_download_never">Niekada</string>
     <string name="episode_cleanup_never">Niekada</string>
@@ -151,7 +151,7 @@
     <string name="no_media_label">Elementas neturi medijos failo</string>
     <string name="queue_locked">Eilė užrakinta</string>
     <string name="queue_unlocked">Eilė atrakinta</string>
-    <string name="queue_lock_warning">Užrakinus eilę negalima mostelėti ar pertvarkyti epizodų.</string>
+    <string name="queue_lock_warning">Jei užrakinsite eilę, nebegalėsite pertvarkyti epizodų.</string>
     <string name="checkbox_do_not_show_again">Daugiau neberodyti</string>
     <string name="undo">Atšaukti</string>
     <string name="move_to_top_label">Perkelti į viršų</string>
@@ -225,8 +225,6 @@
     <string name="pref_feed_skip_sum">Praleisti įvadą ir pabaigos žodį</string>
     <string name="pref_feed_skip_ending">Praleisti pirmas</string>
     <string name="pref_feed_skip_intro">Praleisti paskutines</string>
-    <string name="pref_feed_skip_ending_toast">Praleistos paskutinės %d sekundžių</string>
-    <string name="pref_feed_skip_intro_toast">Praleistos pirmos %d sekundžių</string>
     <string name="pref_playback_time_respects_speed_title">Derinti medijos informaciją pagal atkūrimo spartą</string>
     <string name="pref_playback_time_respects_speed_sum">Atvaizduojama pozicija ir trukmė yra pritakyta prie atkūrimo spartos</string>
     <string name="pref_rewind_sum">Derinkite, per kiek sekundžių šoktelėti atgal kai paspaudžiamas atsukimo atgal mygtukas</string>
@@ -393,9 +391,9 @@
     <string name="has_media">Turintys medijos failų</string>
     <string name="no_media">Be medijos failų</string>
     <string name="hide_paused_episodes_label">Pristabdyti</string>
-    <string name="not_paused">Ne pristabdyti</string>
+    <string name="not_paused">Nepristabdyta</string>
     <string name="hide_played_episodes_label">Perklausyti</string>
-    <string name="not_played">Neperklausyti</string>
+    <string name="not_played">Neperklausyta</string>
     <!--Share episode dialog-->
   <string name="share_playback_position_dialog_label">Įtraukti atkūrimo poziciją</string>
     <string name="share_dialog_episode_website_label">Epizodo tinklalapiu</string>
@@ -478,7 +476,7 @@
     <string name="section_hidden">Paslėptas</string>
     <string name="remove_history_label">Pašalinti iš istorijos</string>
     <string name="feed_volume_boost_heavy">Stiprus postūmis</string>
-    <string name="open_podcast">Atviras podcast\'as</string>
+    <string name="open_podcast">Atidaryti tinklalaidę</string>
     <string name="add_to_queue_label">Įtraukti į eilę</string>
     <string name="download_error_io_error">IO klaida</string>
     <string name="button_action_fast_forward">Greitas peršokimas</string>
@@ -487,7 +485,7 @@
     <string name="synchronization_login_butLabel">Prisijungti</string>
     <string name="search_itunes_label">Paieška Apple Podcasts</string>
     <string name="search_podcastindex_label">Paieška Podcast Index</string>
-    <string name="home_welcome_text">Dar nesate užsiprenumeravę jokių podcast\'ų. Atidarykite šoninį meniu ir pridėkite podkastą.</string>
+    <string name="home_welcome_text">Dar neprenumeruojate jokių tinklalaidžių. Atidarykite meniu, kad įtrauktumėte tinklalaidę.</string>
     <string name="download_error_error_unknown">Nežinoma klaida</string>
     <string name="download_error_unsupported_type">Nepalaikomas pašaro tipas</string>
     <string name="automatic_database_export_summary">Kas 3 dienas sukurkite atsarginę „AntennaPod“ duomenų bazės kopiją. Saugokite tik 5 naujausias atsargines kopijas.</string>
@@ -495,7 +493,7 @@
     <string name="automatic_database_export_label">Automatinis duomenų bazės eksportavimas</string>
     <string name="no_all_episodes_head_label">Nėra epizodų</string>
     <string name="home_continue_empty_text">Epizodus galite įtraukti juos atsisiųsdami arba ilgai paspausdami ir pasirinkdami „Įtraukti į eilę“.</string>
-    <string name="drawer_preferences">Šoninės panelės nustatymai</string>
+    <string name="drawer_preferences">Navigacijos nustatymai</string>
     <string name="smart_shuffle">Išmanusis maišymas</string>
     <string name="add_to_favorite_label">Pridėti prie mėgstamiausių</string>
     <string name="current_playing_episode">Dabartinis</string>
@@ -532,7 +530,7 @@
     <string name="clear_history_label">Išvalyti istoriją</string>
     <string name="clear_playback_history_msg">Taip bus išvalyta visa leistuvai istorija. Ar tikrai norite tęsti?</string>
     <string name="global_default">Visuotinis numatytasis</string>
-    <string name="support_podcast">Palaikykite šią podkastą</string>
+    <string name="support_podcast">Paremkite šią tinklalaidę</string>
     <string name="feed_volume_reduction_off">Nėra pritaikymo</string>
     <string name="feed_volume_adapdation">Tūrio pritaikymas</string>
     <string name="feed_volume_adaptation_summary">Padidinkite arba sumažinkite šio podkasto epizodų garsumą: %1$s</string>
@@ -575,7 +573,6 @@
     <string name="size">Dydis</string>
     <string name="no_history_head_label">Nėra istorijos</string>
     <string name="no_inbox_head_label">Nėra epizodų gautuosiuose</string>
-    <string name="no_inbox_label">Kai naujos epizodos atvyks, jos bus rodomos čia. Tada galėsite nuspręsti, ar jos jus domina, ar ne.</string>
     <string name="no_all_episodes_filtered_label">Pabandykite išvalyti filtrą, kad pamatytumėte daugiau epizodų.</string>
     <string name="theming">Tema</string>
     <string name="pref_episode_cleanup_title">Ištrinti prieš automatinį atsisiuntimą</string>
@@ -646,7 +643,7 @@
     <string name="choose_data_directory">Pasirinkite duomenų aplanką</string>
     <string name="rating_contribute_button">Atraskite būdų, kaip prisidėti</string>
     <string name="rating_rate">Įvertinkite AntennaPod</string>
-    <string name="fast_forward_label">greitai pirmyn</string>
+    <string name="fast_forward_label">Greitai pirmyn</string>
     <string name="add_preset">Pridėti išankstinį nustatymą</string>
     <string name="multi_feed_common_tags_info">Rodomos tik bendros visų pasirinktų prenumeratų žymės. Kitos žymės lieka nepaveiktos.</string>
     <string name="episode_filters_label">Epizodo filtras</string>
@@ -999,4 +996,35 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Groti telefone</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Naršyti telefone</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Atverti telefone</string>
+    <string name="share_not_supported_local_feed">Nepalaikomas vietinių aplankų bendrinimas</string>
+    <string name="no_subscriptions_filtered_label">Pamėginkite išvalyti filtrą, kad pamatytumėte daugiau prenumeratų.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Praleista %d paskutinė sekundė</item>
+        <item quantity="few">Praleistos %d paskutinės sekundės</item>
+        <item quantity="many">Praleista %d paskutinių sekundžių</item>
+        <item quantity="other">Praleista %d paskutinių sekundžių</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Praleista %d pirma sekundė</item>
+        <item quantity="few">Praleistos %d pirmos sekundės</item>
+        <item quantity="many">Praleista %d pirmų sekundžių</item>
+        <item quantity="other">Praleista %d pirmų sekundžių</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Laukiama Wi-Fi prenumeratų sinchronizacijai…</string>
+    <string name="synchronization_provider_chooser_explanation">Įrenginiams reikalingas centrinis sinchronizavimo serveris. AntennaPod nesiūlo tokio centrinio sinchronizavimo serverio, bet leidžia jums prisijungti prie skirtingų žemiau pateiktų serverių.</string>
+    <string name="back_label">Atgal</string>
+    <string name="synchronization_more_information">Daugiau informacijos</string>
+    <string name="wrong_password">Klaidingas slaptažodis</string>
+    <string name="edit_url_menu_summary">Rizikinga: gali visam laikui sugadinti epizodų sąrašą, istoriją ir atkūrimo būseną</string>
+    <string name="reconnect_local_folder_summary">Rizikinga: prisijunkite iš naujo tik prie to pačio aplanko. Kitaip prarasite visas atkūrimo būsenas.</string>
+    <string name="clear_filters_label">Išvalyti</string>
+    <string name="pref_parental_control_set_password">Nustatyti slaptažodį</string>
+    <string name="pref_parental_control_confirm_password">Patvirtinkite slaptažodį</string>
+    <string name="pref_parental_control_passwords_dont_match">Slaptažodžiai nesutampa</string>
+    <string name="pref_parental_control_password_empty">Slaptažodis negali būti tuščias</string>
+    <string name="pref_parental_control_title">Tėvų kontrolės funkcijos</string>
+    <string name="pref_parental_control_sum">Apriboti funkcijas slaptažodžiu</string>
+    <string name="pref_parental_control_enabled_title">Įgalinti</string>
+    <string name="pref_parental_control_require_subscribe_title">Apriboti prenumeravimą</string>
+    <string name="pref_parental_control_require_subscribe_sum">Prašyti tėvų kontrolės slaptažodžio prenumeruojant naujas tinklalaides</string>
 </resources>

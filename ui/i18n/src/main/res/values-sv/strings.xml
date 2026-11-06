@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">Öppna meny</string>
     <string name="drawer_close">Stäng meny</string>
-    <string name="drawer_preferences">Menyinställningar</string>
+    <string name="drawer_preferences">Navigering inställningar</string>
     <string name="drawer_feed_order_unplayed_episodes">Sortera efter antal ospelade</string>
     <string name="drawer_feed_order_alphabetical">Sortera alfabetiskt</string>
     <string name="drawer_feed_order_last_update">Sortera efter publiceringsdatum</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">svep upp för att läsa avsnittsanteckningar</string>
     <string name="close_label">Stäng</string>
     <string name="retry_label">Försök igen</string>
-    <string name="auto_download_label">Inkludera i automatiska nedladdningar</string>
+    <string name="auto_download_label">Ladda ner automatiskt</string>
     <string name="feed_volume_adapdation">Volymanpassning</string>
     <string name="feed_volume_adaptation_summary">Justera volymen upp eller ner för avsnitt av denna podcast: %1$s</string>
     <string name="feed_volume_reduction_off">Ingen anpassning</string>
@@ -260,7 +260,7 @@
   <string name="lock_queue">Lås kö</string>
     <string name="queue_locked">Kön låst</string>
     <string name="queue_unlocked">Kön upplåst</string>
-    <string name="queue_lock_warning">Om du låser kön kan du inte längre svepa eller ordna om avsnitt.</string>
+    <string name="queue_lock_warning">Om du låser kön kan du inte längre ändra ordningen på avsnitten.</string>
     <string name="checkbox_do_not_show_again">Visa inte igen</string>
     <string name="clear_queue_label">Rensa kön</string>
     <string name="undo">Ångra</string>
@@ -293,7 +293,6 @@
     <string name="no_all_episodes_label">När du lagt till ett avsnitt visas det här.</string>
     <string name="no_all_episodes_filtered_label">Testa att nollställa filtret för att se fler avsnitt.</string>
     <string name="no_inbox_head_label">Inga avsnitt i inkorgen</string>
-    <string name="no_inbox_label">När nya avsnitt kommer visas de här. Du kan sedan avgöra om de är intressanta.</string>
     <string name="no_subscriptions_head_label">Inga prenumerationer</string>
     <string name="no_subscriptions_label">Tryck på plus-ikonen nedan för att prenumerera på en podcast.</string>
     <!--Preferences-->
@@ -392,8 +391,6 @@
     <string name="pref_feed_skip_sum">Hoppa över inledningar och eftertexter</string>
     <string name="pref_feed_skip_ending">Hoppa över slut</string>
     <string name="pref_feed_skip_intro">Hoppa över början</string>
-    <string name="pref_feed_skip_ending_toast">Hoppade över %d sista sekunderna</string>
-    <string name="pref_feed_skip_intro_toast">Hoppade över %d första sekunderna</string>
     <string name="pref_playback_time_respects_speed_title">Justera mediainfo till uppspelningshastigheten</string>
     <string name="pref_playback_time_respects_speed_sum">Visad position och totallängd anpassas till uppspelningshastigheten</string>
     <string name="pref_fast_forward">Längd att spola fram</string>
@@ -448,7 +445,7 @@
     <!--About screen-->
   <string name="about_pref">Om</string>
     <string name="antennapod_version">AntennaPod-version</string>
-    <string name="contributors">Medverkare</string>
+    <string name="contributors">Medverkande</string>
     <string name="contributors_summary">Alla kan hjälpa till att göra AntennaPod bättre - med kod, översättningar eller genom att hjälpa användare i vårt forum</string>
     <string name="developers">Utvecklare</string>
     <string name="translators">Översättare</string>
@@ -964,4 +961,31 @@
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Bläddra i telefonen</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Öppna på telefonen</string>
     <string name="pref_display">Visning</string>
+    <string name="share_not_supported_local_feed">Delning stöds inte för lokala mappar</string>
+    <string name="no_subscriptions_filtered_label">Prova att rensa filtret för att se fler prenumerationer.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Hoppade över sista %d sekunden</item>
+        <item quantity="other">Hoppade över sista %d sekunderna</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Hoppade över första %d sekunden</item>
+        <item quantity="other">Hoppade över första %d sekunderna</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Väntar på Wi-Fi för att synkronisera prenumerationer…</string>
+    <string name="synchronization_provider_chooser_explanation">Enheter behöver en central server för att synkronisera. AntennaPod erbjuder inte någon sådan central synkroniseringsserver, men låter dig ansluta till de olika typer av servrar som listas nedan.</string>
+    <string name="back_label">Bakåt</string>
+    <string name="synchronization_more_information">Mer information</string>
+    <string name="wrong_password">Fel lösenord</string>
+    <string name="edit_url_menu_summary">Riskfyllt: kan permanent förstöra avsnittslistan, historiken och uppspelningsstatus</string>
+    <string name="reconnect_local_folder_summary">Riskfyllt: återanslut endast till exakt samma mapp. Annars förlorar du all information om uppspelningsstatus.</string>
+    <string name="clear_filters_label">Rensa</string>
+    <string name="pref_parental_control_set_password">Ställ in lösenord</string>
+    <string name="pref_parental_control_confirm_password">Bekräfta lösenord</string>
+    <string name="pref_parental_control_passwords_dont_match">Lösenorden matchar inte</string>
+    <string name="pref_parental_control_password_empty">Lösenordet får inte vara tomt</string>
+    <string name="pref_parental_control_title">Föräldrakontroller</string>
+    <string name="pref_parental_control_sum">Begränsa funktioner med ett lösenord</string>
+    <string name="pref_parental_control_enabled_title">Aktivera</string>
+    <string name="pref_parental_control_require_subscribe_title">Begränsa prenumeration</string>
+    <string name="pref_parental_control_require_subscribe_sum">Be om lösenordet för föräldrakontrollen när du prenumererar på nya poddar</string>
 </resources>

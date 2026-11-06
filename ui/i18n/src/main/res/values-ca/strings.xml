@@ -292,7 +292,6 @@
     <string name="no_all_episodes_label">En afegir un pòdcast els episodis apareixeran aquí.</string>
     <string name="no_all_episodes_filtered_label">Proveu a netejar el filtre per veure més episodis.</string>
     <string name="no_inbox_head_label">Cap episodi a la safata d\'entrada</string>
-    <string name="no_inbox_label">En arribar nous episodis, es mostraran aquí. Aleshores, pots decidir si t\'interessen o no.</string>
     <string name="no_subscriptions_head_label">No hi ha subscripcions</string>
     <string name="no_subscriptions_label">Per a subscriure\'t a un pòdcast, toqueu la icona + més avall.</string>
     <!--Preferences-->
@@ -391,8 +390,6 @@
     <string name="pref_feed_skip_sum">Omet les introduccions i els crèdits finals</string>
     <string name="pref_feed_skip_ending">Omet els darrers</string>
     <string name="pref_feed_skip_intro">Omet els primers</string>
-    <string name="pref_feed_skip_ending_toast">Omesos els últims %dsegons</string>
-    <string name="pref_feed_skip_intro_toast">Omesos els primers %d segons</string>
     <string name="pref_playback_time_respects_speed_title">Ajusta la informació dels medis a la velocitat de reproducció</string>
     <string name="pref_playback_time_respects_speed_sum">La posició i la duració son adaptades a la velocitat de reproducció</string>
     <string name="pref_fast_forward">Interval d\'avanç</string>

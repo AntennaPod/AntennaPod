@@ -5,7 +5,7 @@
     <string name="statistics_label">Statystyki</string>
     <string name="add_feed_label">Dodaj podcast</string>
     <string name="episodes_label">Odcinki</string>
-    <string name="home_label">Strona główna</string>
+    <string name="home_label">Ekran główny</string>
     <string name="queue_label">Kolejka</string>
     <string name="inbox_label">Skrzynka odbiorcza</string>
     <string name="favorite_episodes_label">Ulubione</string>
@@ -297,7 +297,6 @@
     <string name="no_all_episodes_label">Tutaj pojawi się lista odcinków, gdy dodasz podcast.</string>
     <string name="no_all_episodes_filtered_label">Spróbuj wyczyścić filtr, aby zobaczyć więcej odcinków.</string>
     <string name="no_inbox_head_label">Brak odcinków w skrzynce odbiorczej</string>
-    <string name="no_inbox_label">Gdy pojawią się nowe odcinki, zobaczysz je tutaj. Możesz wtedy zdecydować, czy są dla Ciebie interesujące czy nie.</string>
     <string name="no_subscriptions_head_label">Brak subskrypcji</string>
     <string name="no_subscriptions_label">Aby subskrybować podcast naciśnij znak plus poniżej.</string>
     <!--Preferences-->
@@ -395,8 +394,6 @@
     <string name="pref_feed_skip_sum">Pomijaj wstęp i zakończenie</string>
     <string name="pref_feed_skip_ending">Pomijaj na końcu</string>
     <string name="pref_feed_skip_intro">Pomijaj na początku</string>
-    <string name="pref_feed_skip_ending_toast">Pominięto ostatnie %d sekund(y)</string>
-    <string name="pref_feed_skip_intro_toast">Pominięto pierwsze %d sekund(y)</string>
     <string name="pref_playback_time_respects_speed_title">Dostosuj informacje do prędkości odtwarzania</string>
     <string name="pref_playback_time_respects_speed_sum">Wyświetlana pozycja i czas trwania są dostosowane do prędkości odtwarzania</string>
     <string name="pref_fast_forward">Długość czasu przewijania do przodu</string>
@@ -779,7 +776,7 @@
     <string name="no_transcript_label">Bez transkrypcji</string>
     <string name="add_feed_label_short">Dodaj</string>
     <string name="episodes_label_short">Odcinki</string>
-    <string name="home_label_short">Strona główna</string>
+    <string name="home_label_short">Ekran główny</string>
     <string name="queue_label_short">Kolejka</string>
     <string name="inbox_label_short">Skrzynka odbiorcza</string>
     <string name="downloads_label_short">Pobrane</string>
@@ -1012,4 +1009,25 @@
     <string name="show_password_accessibility">Pokaż hasło</string>
     <string name="rss_address_invalid">Wprowadzony adres RSS jest nieprawidłowy.</string>
     <string name="wearos_version" tools:ignore="UnusedResources">Wersja %s</string>
+    <string name="pref_parental_control_require_subscribe_sum">Poproś o hasło kontroli rodzicielskiej podczas subskrybowania nowych podcastów</string>
+    <string name="statistics_label_short">Wyniki</string>
+    <string name="remove_restore_feed_label">Anuluj subskrypcję / przywróć</string>
+    <string name="share_not_supported_local_feed">Udostępnianie nie jest obsługiwane dla folderów lokalnych</string>
+    <string name="restoring_podcast_progress">Przywracanie podcastu %1$d z %2$d…</string>
+    <plurals name="reset_position_message">
+        <item quantity="one">Zresetowano pozycję odcinka %d.</item>
+        <item quantity="few">Zresetowano pozycję odcinków %d.</item>
+        <item quantity="many">Zresetowano pozycję odcinków %d.</item>
+        <item quantity="other">Zresetowano pozycję odcinków %d.</item>
+    </plurals>
+    <string name="no_fav_episodes_label">Oznacz odcinki jako ulubione, dotykając ikony gwiazdki.</string>
+    <string name="no_subscriptions_filtered_label">Spróbuj wyczyścić filtr, aby wyświetlić więcej subskrypcji.</string>
+    <string name="bottom_navigation_deprecation_warning">Niestety, w jednej z przyszłych aktualizacji będziemy musieli usunąć boczny pasek nawigacyjny. AntennaPod jest tworzony przez niewielką grupę wolontariuszy, a utrzymywanie obu stylów nawigacji przez lata stało się zbyt dużym obciążeniem.\n\nJeśli boczny pasek nawigacyjny jest dla Ciebie absolutnie niezbędny, wyłącz aktualizacje aplikacji AntennaPod w swoim sklepie z aplikacjami.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Pominięto ostatnią %d sekundę</item>
+        <item quantity="few">Pominięto ostatnie %d sekund</item>
+        <item quantity="many">Pominięto ostatnie %d sekund</item>
+        <item quantity="other">Pominięto ostatnie %d sekund</item>
+    </plurals>
+    <string name="reconnect_local_folder_summary">Ryzykowne: należy ponownie połączyć się wyłącznie z dokładnie tym samym folderem. W przeciwnym razie utracisz cały stan odtwarzania.</string>
 </resources>

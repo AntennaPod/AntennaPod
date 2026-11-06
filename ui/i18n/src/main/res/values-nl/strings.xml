@@ -280,7 +280,6 @@
     <string name="no_all_episodes_label">Als je een podcast toevoegt, verschijnen de afleveringen hier.</string>
     <string name="no_all_episodes_filtered_label">Wis het filter om meer afleveringen te bekijken.</string>
     <string name="no_inbox_head_label">Er staan geen afleveringen in Postvak IN</string>
-    <string name="no_inbox_label">Nieuwe afleveringen worden hier getoond. Vanaf hier kun je beslissen of je ze wilt behouden of niet.</string>
     <string name="no_subscriptions_head_label">Geen abonnementen</string>
     <string name="no_subscriptions_label">Tik op het plus-pictogram om je te abonneren op een podcast.</string>
     <!--Preferences-->
@@ -370,8 +369,6 @@
     <string name="pref_feed_skip_sum">Sla introducties en aftitelingen over</string>
     <string name="pref_feed_skip_ending">Laatste overslaan</string>
     <string name="pref_feed_skip_intro">Eerste overslaan</string>
-    <string name="pref_feed_skip_ending_toast">Laatste %d seconden overgeslagen</string>
-    <string name="pref_feed_skip_intro_toast">Eerste %d seconden overgeslagen</string>
     <string name="pref_playback_time_respects_speed_title">Pas media-info aan op afspeelsnelheid</string>
     <string name="pref_playback_time_respects_speed_sum">Weergegeven positie en duur worden aangepast aan afspeelsnelheid</string>
     <string name="pref_rewind">Terugspoelduur</string>

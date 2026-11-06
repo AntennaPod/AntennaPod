@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">Ava menüü</string>
     <string name="drawer_close">Sulge menüü</string>
-    <string name="drawer_preferences">Menüü seaded</string>
+    <string name="drawer_preferences">Menüü eelistused</string>
     <string name="drawer_feed_order_unplayed_episodes">Sorteeri arvu järgi</string>
     <string name="drawer_feed_order_alphabetical">Sorteeri tähestiku järgi</string>
     <string name="drawer_feed_order_last_update">Sorteeri avaldamise kuupäeva järgi</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">saate märkmete lugemiseks viipa</string>
     <string name="close_label">Sulge</string>
     <string name="retry_label">Proovi uuesti</string>
-    <string name="auto_download_label">Lisa automaatsetesse allalaadimistesse</string>
+    <string name="auto_download_label">Lisa automaatselt alla</string>
     <string name="feed_volume_adapdation">Helitugevuse kohandamine</string>
     <string name="feed_volume_adaptation_summary">Keera selle taskuhäälingu osade heli valjemaks või vaiksemaks: %1$s</string>
     <string name="feed_volume_reduction_off">Kohandamiseta</string>
@@ -248,7 +248,7 @@
   <string name="lock_queue">Lukusta esitusjärjekord</string>
     <string name="queue_locked">Esitusjärjekord on lukus</string>
     <string name="queue_unlocked">Järjekorra lukustus on eemaldatud</string>
-    <string name="queue_lock_warning">Kui lukustad esitusjärjekorra, ei saa osade järjekorda enam muuta ega neid ära viibata.</string>
+    <string name="queue_lock_warning">Kui lukustad esitusjärjekorra, ei saa osade järjekorda enam muuta.</string>
     <string name="checkbox_do_not_show_again">Ära enam näita</string>
     <string name="clear_queue_label">Tühjenda esitusjärjekord</string>
     <string name="undo">Tühista</string>
@@ -280,7 +280,6 @@
     <string name="no_all_episodes_label">Kui lisad taskuhäälingu, näeb siin selle saateid.</string>
     <string name="no_all_episodes_filtered_label">Rohkemate osade nägemiseks tühista filter.</string>
     <string name="no_inbox_head_label">Postkastis pole saateid</string>
-    <string name="no_inbox_label">Kui avaldatakse uusi osi, näed neid siin. Saad ise otsustada, kas oled nendest huvitatud või mitte.</string>
     <string name="no_subscriptions_head_label">Tellimusi pole</string>
     <string name="no_subscriptions_label">Taskuhäälingu tellimiseks vajuta all plussmärgil.</string>
     <!--Preferences-->
@@ -370,8 +369,6 @@
     <string name="pref_feed_skip_sum">Sissejuhatuse ja lõputänu vahele jätmine</string>
     <string name="pref_feed_skip_ending">Jäta vahele lõpust</string>
     <string name="pref_feed_skip_intro">Jäta vahele algusest</string>
-    <string name="pref_feed_skip_ending_toast">Lõpust jäeti vahele %d sekundit</string>
-    <string name="pref_feed_skip_intro_toast">Algusest jäeti vahele %d sekundit</string>
     <string name="pref_playback_time_respects_speed_title">Meedia info kohandamine esituse kiirusega</string>
     <string name="pref_playback_time_respects_speed_sum">Kuvatav asukoht ja kestus kohandatakse esituse kiiruse järgi</string>
     <string name="pref_rewind">Tagasi kerimise hüpe</string>
@@ -964,4 +961,31 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Esita telefonis</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Sirvi telefonis</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Ava telefonis</string>
+    <string name="share_not_supported_local_feed">Jagamine pole kohalike kaustade puhul toetatud</string>
+    <string name="no_subscriptions_filtered_label">Rohkemate tellimuste nägemiseks tühista filter.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Viimane %d sekund jäi vahele</item>
+        <item quantity="other">Viimased %d sekundit jäid vahele</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Esimene %d sekund jäi vahele</item>
+        <item quantity="other">Esimesed %d sekundit jäid vahele</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">Tellimuste sünkroonimiseks ootan WiFi ühenduse lisamist…</string>
+    <string name="back_label">Tagasi</string>
+    <string name="synchronization_more_information">Lisateave</string>
+    <string name="wrong_password">Vale salasõna</string>
+    <string name="edit_url_menu_summary">Riskantne: võib püsivalt sassi ajada osade loendi, ajaloo ja esituse oleku</string>
+    <string name="clear_filters_label">Eemalda</string>
+    <string name="pref_parental_control_set_password">Sisesta salasõna</string>
+    <string name="pref_parental_control_confirm_password">Korda salasõna</string>
+    <string name="pref_parental_control_passwords_dont_match">Salasõnad ei klapi omavahel</string>
+    <string name="pref_parental_control_password_empty">Salasõna ei saa jääda tühjaks</string>
+    <string name="pref_parental_control_title">Vanemlik järelevalve</string>
+    <string name="pref_parental_control_sum">Piira osa funktsionaalsusest salasõnaga</string>
+    <string name="pref_parental_control_enabled_title">Lülita sisse</string>
+    <string name="pref_parental_control_require_subscribe_title">Piira tellimise võimalust</string>
+    <string name="pref_parental_control_require_subscribe_sum">Uute taskuhäälingute tellimusel küsi vanemliku järelvalve salasõna</string>
+    <string name="synchronization_provider_chooser_explanation">Seadmed vajavad sünkroonimiseks keskset serverit. AntennaPod hetkel ei paku sellise keskse sünkroonimisserveri kasutamise võimalust, kuid lubab sul luua ühenduse erinevat tüüpi alltoodud serveritega.</string>
+    <string name="reconnect_local_folder_summary">Riskantne: ühenda uuesti täpselt sama kaustaga. Vastasel juhul kaob esitusjärje teave.</string>
 </resources>

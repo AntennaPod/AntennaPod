@@ -396,7 +396,6 @@
     <string name="no_all_episodes_label">Assim que adicionar um podcast, os episódios serão mostrados aqui.</string>
     <string name="no_all_episodes_filtered_label">Tente remover o filtro para ver mais episódios.</string>
     <string name="no_inbox_head_label">Não existem episódios na caixa de entrada</string>
-    <string name="no_inbox_label">Assim que um episódio chegar, será mostrado aqui. Depois, poderá decidir se tem ou não interesse na sua reprodução.</string>
     <string name="no_subscriptions_head_label">Não tem subscrições</string>
     <string name="no_subscriptions_label">Para subscrever um podcast, prima no ícone +.</string>
     <string name="no_archive_head_label">Nada arquivado</string>
@@ -505,8 +504,6 @@
     <string name="pref_feed_skip_sum">Ignorar introduções e créditos finais</string>
     <string name="pref_feed_skip_ending">Ignorar os últimos</string>
     <string name="pref_feed_skip_intro">Ignorar os primeiros</string>
-    <string name="pref_feed_skip_ending_toast">Últimos %d segundos ignorados</string>
-    <string name="pref_feed_skip_intro_toast">Primeiros %d segundos ignorados</string>
     <string name="pref_playback_time_respects_speed_title">Ajustar informações multimédia à velocidade de reprodução</string>
     <string name="pref_playback_time_respects_speed_sum">A posição e a duração serão ajustadas automaticamente à velocidade de reprodução</string>
     <string name="pref_fast_forward">Tempo para avanço</string>

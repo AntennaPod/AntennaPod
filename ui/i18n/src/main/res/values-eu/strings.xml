@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">Ireki menua</string>
     <string name="drawer_close">Itxi menua</string>
-    <string name="drawer_preferences">Tiraderaren hobespenak</string>
+    <string name="drawer_preferences">Nabigazioaren hobespenak</string>
     <string name="drawer_feed_order_unplayed_episodes">Antolatu kontagailuaren arabera</string>
     <string name="drawer_feed_order_alphabetical">Antolatu alfabetikoki</string>
     <string name="drawer_feed_order_last_update">Antolatu argitaratze-dataren arabera</string>
@@ -100,10 +100,10 @@
     <string name="shownotes_contentdescription">Pasa hatza gorantz saioaren oharrak irakurtzeko</string>
     <string name="close_label">Itxi</string>
     <string name="retry_label">Saiatu berriro</string>
-    <string name="auto_download_label">Sartu deskarga automatikoetan</string>
+    <string name="auto_download_label">Deskargatu automatikoki</string>
     <string name="feed_volume_adapdation">Bolumena egokitzea</string>
     <string name="feed_volume_adaptation_summary">Jaitsi edo igo podcast honetako saioen bolumena: %1$s</string>
-    <string name="feed_volume_reduction_off">Egokitzerik ez</string>
+    <string name="feed_volume_reduction_off">Egokitzapenik ez</string>
     <string name="feed_volume_reduction_light">Jaitsiera arina</string>
     <string name="feed_volume_reduction_heavy">Jaitsiera handia</string>
     <string name="feed_volume_boost_light">Igoera arina</string>
@@ -248,7 +248,7 @@
   <string name="lock_queue">Blokeatu ilara</string>
     <string name="queue_locked">Ilara blokeaturik</string>
     <string name="queue_unlocked">Ilara desblokeaturik</string>
-    <string name="queue_lock_warning">Ilara blokeatzen baduzu, ezin izango dituzu saioak hatzaz pasa edo berrordenatu.</string>
+    <string name="queue_lock_warning">Ilara blokeatzen baduzu, ezin izango dituzu saioak berrordenatu.</string>
     <string name="checkbox_do_not_show_again">Ez erakutsi berriro</string>
     <string name="clear_queue_label">Garbitu ilara</string>
     <string name="undo">Desegin</string>
@@ -280,7 +280,6 @@
     <string name="no_all_episodes_label">Podcast bat gehitzen duzunean saioak hemen azalduko dira.</string>
     <string name="no_all_episodes_filtered_label">Saiatu iragazkia ezabatzen saio gehiago ikusteko.</string>
     <string name="no_inbox_head_label">Ez dago saiorik sarrerako ontzian</string>
-    <string name="no_inbox_label">Saio berriak iristen direnean, hemen agertuko dira. Orduan erabaki ahal izango duzu ea interesatzen zaizun ala ez.</string>
     <string name="no_subscriptions_head_label">Ez dago harpidetzarik</string>
     <string name="no_subscriptions_label">Podcast batera harpidetzeko, sakatu beheko plus ikonoa.</string>
     <!--Preferences-->
@@ -370,8 +369,6 @@
     <string name="pref_feed_skip_sum">Saltatu sarrera eta amaierako kredituak</string>
     <string name="pref_feed_skip_ending">Saltatu azkena</string>
     <string name="pref_feed_skip_intro">Saltatu lehenengoa</string>
-    <string name="pref_feed_skip_ending_toast">Azken%d segundoak saltatu dira</string>
-    <string name="pref_feed_skip_intro_toast">Lehen%d segundoak saltatu dira</string>
     <string name="pref_playback_time_respects_speed_title">Doitu multimediaren informazioa erreprodukzio-abiaduraren arabera</string>
     <string name="pref_playback_time_respects_speed_sum">Posizioa eta iraupena erreprodukzio-abiadurara egokituta bistaratzen dira</string>
     <string name="pref_rewind">Atzera egiteko denbora tartea</string>
@@ -964,4 +961,31 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Mugikorrean erreproduzitu</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Mugikorra arakatu</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Mugikorrean ireki</string>
+    <string name="share_not_supported_local_feed">Karpeta lokaletan ezin da partekatu</string>
+    <string name="no_subscriptions_filtered_label">Saiatu iragazkia garbitzen harpidetza gehiago ikusteko.</string>
+    <string name="sync_status_wait_for_wifi">Wi-Fiaren zain harpidetzak sinkronizatzeko…</string>
+    <string name="synchronization_provider_chooser_explanation">Gailuek zerbitzari zentral bat behar dute sinkronizatzeko. AntennaPod-ek ez du halako sinkronizazio-zerbitzari zentralik eskaintzen, baina behean zerrendatutako zerbitzari motetara konektatzeko aukera ematen dizu.</string>
+    <string name="back_label">Atzera</string>
+    <string name="synchronization_more_information">Informazio gehiago</string>
+    <string name="wrong_password">Pasahitz okerra</string>
+    <string name="edit_url_menu_summary">Arriskutsua: saioen zerrenda, historia eta erreprodukzio-egoera betiko honda ditzake</string>
+    <string name="reconnect_local_folder_summary">Arriskutsua: konektatu berriro karpeta beretik beretara soilik. Bestela, erreprodukzio-egoera osoa galduko duzu.</string>
+    <string name="clear_filters_label">Garbitu</string>
+    <string name="pref_parental_control_set_password">Ezarri pasahitza</string>
+    <string name="pref_parental_control_confirm_password">Berretsi pasahitza</string>
+    <string name="pref_parental_control_passwords_dont_match">Pasahitzak ez datoz bat</string>
+    <string name="pref_parental_control_password_empty">Pasahitza ezin da hutsik egon</string>
+    <string name="pref_parental_control_title">Guraso-kontrola</string>
+    <string name="pref_parental_control_sum">Mugatu eginbideak pasahitz batekin</string>
+    <string name="pref_parental_control_enabled_title">Gaitu</string>
+    <string name="pref_parental_control_require_subscribe_title">Mugatu harpidetzak</string>
+    <string name="pref_parental_control_require_subscribe_sum">Eskatu guraso-kontroleko pasahitza podcast berrietara harpidetzean</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Azken segundoa saltatu da</item>
+        <item quantity="other">Azken %d segundoak saltatu dira</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Lehen segundoa saltatu da</item>
+        <item quantity="other">Lehen %d segundoak saltatu dira</item>
+    </plurals>
 </resources>

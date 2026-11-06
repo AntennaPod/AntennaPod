@@ -56,7 +56,7 @@
   <!--Main activity-->
   <string name="drawer_open">Ouvrir le menu</string>
     <string name="drawer_close">Fermer le menu</string>
-    <string name="drawer_preferences">Préférences du volet</string>
+    <string name="drawer_preferences">Préférences de navigation</string>
     <string name="drawer_feed_order_unplayed_episodes">Trier par compteur</string>
     <string name="drawer_feed_order_alphabetical">Trier par ordre alphabétique</string>
     <string name="drawer_feed_order_last_update">Trier par date de publication</string>
@@ -270,7 +270,7 @@
   <string name="lock_queue">Verrouiller la liste</string>
     <string name="queue_locked">Liste verrouillée</string>
     <string name="queue_unlocked">Liste déverrouillée</string>
-    <string name="queue_lock_warning">Quand la liste est verrouillée il n\'est plus possible d\'utiliser le swipe ou de changer l\'ordre des épisodes.</string>
+    <string name="queue_lock_warning">Quand la liste de lecture est verrouillée les épisodes ne peuvent pas être réordonnés.</string>
     <string name="checkbox_do_not_show_again">Ne pas réafficher</string>
     <string name="clear_queue_label">Effacer la liste</string>
     <string name="undo">Annuler</string>
@@ -303,7 +303,6 @@
     <string name="no_all_episodes_label">Quand vous ajouterez un podcast ses épisodes seront montrés ici.</string>
     <string name="no_all_episodes_filtered_label">Pour voir plus d\'épisodes supprimer le filtre.</string>
     <string name="no_inbox_head_label">Aucun épisode dans la boîte de réception</string>
-    <string name="no_inbox_label">Les nouveaux épisodes seront affichés ici. Vous pourrez décider s\'ils vous intéressent ou pas.</string>
     <string name="no_subscriptions_head_label">Aucun abonnement</string>
     <string name="no_subscriptions_label">Pour vous abonner à un podcast appuyer sur le bouton +.</string>
     <!--Preferences-->
@@ -402,8 +401,6 @@
     <string name="pref_feed_skip_sum">Sauter le début et la fin des épisodes</string>
     <string name="pref_feed_skip_ending">Sauter à la fin</string>
     <string name="pref_feed_skip_intro">Sauter au début</string>
-    <string name="pref_feed_skip_ending_toast">%d dernières secondes sautées</string>
-    <string name="pref_feed_skip_intro_toast">%d premières secondes sautées</string>
     <string name="pref_playback_time_respects_speed_title">Tenir compte de la vitesse de lecture</string>
     <string name="pref_playback_time_respects_speed_sum">La position et la durée affichée tiendront compte de la vitesse de lecture</string>
     <string name="pref_fast_forward">Durée du saut avant</string>
@@ -777,12 +774,12 @@
         <item quantity="other">lancés</item>
     </plurals>
     <plurals name="statistics_episodes_total">
-        <item quantity="one">total</item>
-        <item quantity="many">total</item>
-        <item quantity="other">total</item>
+        <item quantity="one">disponible</item>
+        <item quantity="many">disponibles</item>
+        <item quantity="other">disponibles</item>
     </plurals>
     <string name="statistics_episodes_space">d\'espace occupé</string>
-    <string name="statistics_release_next">prochain épisode (estimation)</string>
+    <string name="statistics_release_next">prochain épisode (estimé)</string>
     <string name="discover_more">En découvrir plus »</string>
     <string name="episode_download_failed">Échec de téléchargement de l\'épisode</string>
     <string name="echo_home_header">Votre année en chiffre</string>
@@ -832,8 +829,8 @@
     <string name="episode_lists">Listes d\'épisodes</string>
     <string name="pref_downloads_button_action_title">Lecture dans l\'écran des téléchargements</string>
     <string name="pref_downloads_button_action_sum">Afficher le bouton de lecture au lieu du bouton supprimer dans l\'écran des téléchargements</string>
-    <string name="statistics_time_total">total</string>
-    <string name="statistics_time_played">d\'écoute</string>
+    <string name="statistics_time_total">écoutables</string>
+    <string name="statistics_time_played">écoutées</string>
     <string name="notification_channel_refreshing">Mise à jour des podcasts</string>
     <string name="notification_channel_refreshing_description">S\'affiche lors de la récupération des listes d\'épisodes.</string>
     <string name="queue_label_short">Lecture</string>
@@ -999,4 +996,33 @@
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Parcourir le téléphone</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Ouvrir sur le téléphone</string>
     <string name="feed_new_episodes_action_snackbar">Impossible à changer quand le téléchargement automatique est activé.</string>
+    <string name="share_not_supported_local_feed">Le partage n\'est pas possible pour les dossier locaux</string>
+    <string name="no_subscriptions_filtered_label">Réinitialiser le filtre pour voir plus d\'abonnements.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">%d dernière seconde sautée</item>
+        <item quantity="many">%d dernières secondes sautées</item>
+        <item quantity="other">%d dernières secondes sautées</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">%d première seconde sautée</item>
+        <item quantity="many">%d premières secondes sautées</item>
+        <item quantity="other">%d premières secondes sautées</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">En attente d\'une connexion Wi-Fi pour synchroniser les abonnements…</string>
+    <string name="synchronization_provider_chooser_explanation">Pour se synchroniser les appareils ont besoin d\'un serveur central. AntennaPod ne fournit pas de serveur de synchronisation, mais peut de se connecter en tant que client aux types de serveurs ci-dessous.</string>
+    <string name="synchronization_more_information">Plus d\'information</string>
+    <string name="wrong_password">Mot de passe erroné</string>
+    <string name="edit_url_menu_summary">Danger : peut casser de manière permanente la liste des épisodes, l\'historique, et les statuts de lecture</string>
+    <string name="reconnect_local_folder_summary">Danger : reconnecter vous seulement au même dossier pour ne pas perdre les statuts de lecture.</string>
+    <string name="clear_filters_label">Réinitialiser</string>
+    <string name="pref_parental_control_set_password">Définir un mot de passe</string>
+    <string name="pref_parental_control_confirm_password">Confirmer le mot de passe</string>
+    <string name="pref_parental_control_passwords_dont_match">Mots de passe différents</string>
+    <string name="pref_parental_control_password_empty">Le mot de passe ne peut pas être vide</string>
+    <string name="pref_parental_control_title">Contrôle parental</string>
+    <string name="pref_parental_control_sum">Limiter les fonctionnalités par un mot de passe</string>
+    <string name="pref_parental_control_enabled_title">Activer</string>
+    <string name="pref_parental_control_require_subscribe_title">Limiter l\'ajout d\'abonnements</string>
+    <string name="pref_parental_control_require_subscribe_sum">Demander le mot de passe du contrôle parental pour s\'abonner à de nouveaux podcasts</string>
+    <string name="back_label">Fin</string>
 </resources>

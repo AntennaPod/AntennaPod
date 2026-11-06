@@ -55,7 +55,7 @@
     <!--Main activity-->
   <string name="drawer_open">打开菜单</string>
     <string name="drawer_close">关闭菜单</string>
-    <string name="drawer_preferences">抽屉偏好设置</string>
+    <string name="drawer_preferences">导航偏好设置</string>
     <string name="drawer_feed_order_unplayed_episodes">按计数排序</string>
     <string name="drawer_feed_order_alphabetical">按字母顺序排序</string>
     <string name="drawer_feed_order_last_update">按发布日期排序</string>
@@ -100,7 +100,7 @@
     <string name="shownotes_contentdescription">向上滑动以查看单集说明</string>
     <string name="close_label">关闭</string>
     <string name="retry_label">重试</string>
-    <string name="auto_download_label">包含在自动下载中</string>
+    <string name="auto_download_label">自动下载</string>
     <string name="feed_volume_adapdation">音量调节</string>
     <string name="feed_volume_adaptation_summary">调高或调低此播客单集的音量：%1$s</string>
     <string name="feed_volume_reduction_off">无调节</string>
@@ -251,7 +251,7 @@
   <string name="lock_queue">锁定队列</string>
     <string name="queue_locked">队列已锁定</string>
     <string name="queue_unlocked">队列已解锁</string>
-    <string name="queue_lock_warning">如果锁定队列，您将无法再滑动或重新排序单集。</string>
+    <string name="queue_lock_warning">锁定队列将无法再调整单集顺序。</string>
     <string name="checkbox_do_not_show_again">不再显示</string>
     <string name="clear_queue_label">清除队列</string>
     <string name="undo">撤销</string>
@@ -284,7 +284,6 @@
     <string name="no_all_episodes_label">添加播客时，其单集将在此处显示。</string>
     <string name="no_all_episodes_filtered_label">尝试清除筛选条件以查看更多单集。</string>
     <string name="no_inbox_head_label">收件箱中没有单集</string>
-    <string name="no_inbox_label">新单集上线后，将在此处显示。随后您可以决定是否对其感兴趣。</string>
     <string name="no_subscriptions_head_label">没有订阅</string>
     <string name="no_subscriptions_label">点按下方的+号按钮来订阅播客。</string>
     <!--Preferences-->
@@ -383,8 +382,6 @@
     <string name="pref_feed_skip_sum">跳过开头介绍和结尾致谢</string>
     <string name="pref_feed_skip_ending">跳过结尾</string>
     <string name="pref_feed_skip_intro">跳过开头</string>
-    <string name="pref_feed_skip_ending_toast">已跳过结尾 %d 秒</string>
-    <string name="pref_feed_skip_intro_toast">已跳过开头 %d 秒</string>
     <string name="pref_playback_time_respects_speed_title">根据播放速度调整媒体信息</string>
     <string name="pref_playback_time_respects_speed_sum">显示的位置和时长会根据播放速度调整</string>
     <string name="pref_fast_forward">快进跳转时间</string>
@@ -922,4 +919,29 @@
     <string name="pref_display">显示</string>
     <string name="wearos_phone_not_supported" tools:ignore="UnusedResources">手机不兼容。请确保您在手机上运行的是来自 Google Play 的 AntennaPod 最新版本。</string>
     <string name="bottom_navigation_deprecation_warning">我们在将来更新中不得不删除侧边栏导航。 AntennaPod 由一小群志愿者开发，多年维护两种样式使我们不堪重负。\n\n如果您完全依赖侧栏导航，请在应用商店中禁用 AntennaPod 更新。</string>
+    <string name="share_not_supported_local_feed">不支持分享本地文件夹</string>
+    <string name="no_subscriptions_filtered_label">试着清除筛选器来看到更多订阅.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="other">跳过了最后 %d 秒</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="other">跳过了开头 %d 秒</item>
+    </plurals>
+    <string name="sync_status_wait_for_wifi">正等待 Wi-Fi 来同步订阅…</string>
+    <string name="synchronization_provider_chooser_explanation">设备要同步需要中央服务器。AntennaPod 不提供这样的中央同步服务器，但允许通过下方列出的不同类型的服务器来连接。</string>
+    <string name="back_label">返回</string>
+    <string name="synchronization_more_information">更多信息</string>
+    <string name="wrong_password">密码错误</string>
+    <string name="edit_url_menu_summary">有风险：可能永久性破坏单集列表、历史记录和播放状态</string>
+    <string name="reconnect_local_folder_summary">有风险：仅重新连接到完全相同的文件夹。否则会丢失所有的播放状态。</string>
+    <string name="clear_filters_label">清除</string>
+    <string name="pref_parental_control_set_password">设置密码</string>
+    <string name="pref_parental_control_confirm_password">确认密码</string>
+    <string name="pref_parental_control_passwords_dont_match">密码不匹配</string>
+    <string name="pref_parental_control_password_empty">密码不能为空</string>
+    <string name="pref_parental_control_title">家长控制</string>
+    <string name="pref_parental_control_sum">用密码限制功能</string>
+    <string name="pref_parental_control_enabled_title">启用</string>
+    <string name="pref_parental_control_require_subscribe_title">限制订阅</string>
+    <string name="pref_parental_control_require_subscribe_sum">订阅新播客时要求输入家长控制密码</string>
 </resources>

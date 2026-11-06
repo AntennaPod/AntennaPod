@@ -287,7 +287,6 @@
     <string name="no_all_episodes_label">Až si přidáte nějaký podcast, tak se objeví zde.</string>
     <string name="no_all_episodes_filtered_label">Zkuste zrušit filtr, aby se zobrazilo více epizod.</string>
     <string name="no_inbox_head_label">Žádné nové epizody</string>
-    <string name="no_inbox_label">Jakmile se objeví nové epizody, budou zde uvedeny. Pak se můžete rozhodnout, zda o ně máte zájem, nebo ne.</string>
     <string name="no_subscriptions_head_label">Žádné odběry</string>
     <string name="no_subscriptions_label">Pro přihlášení odběru podcastu stiskněte ikonu plus níže.</string>
     <!--Preferences-->
@@ -377,8 +376,6 @@
     <string name="pref_feed_skip_sum">Přeskočit úvod a závěr</string>
     <string name="pref_feed_skip_ending">Přeskočit posledních</string>
     <string name="pref_feed_skip_intro">Přeskočit prvních</string>
-    <string name="pref_feed_skip_ending_toast">Přeskočeno posledních %d sekund</string>
-    <string name="pref_feed_skip_intro_toast">Přeskočeno prvních %d sekund</string>
     <string name="pref_playback_time_respects_speed_title">Upravit informace o médiu vzhledem k rychlosti přehrávání</string>
     <string name="pref_playback_time_respects_speed_sum">Zobrazené délka a pozice jsou upravené vzhledem k rychlosti přehrávání</string>
     <string name="pref_rewind">Délka času posunu zpět</string>

@@ -283,7 +283,6 @@
     <string name="pref_feed_playback_speed_sum">Брзина која се користи при покретању звучне репродукције за епизоде у овом подкасту</string>
     <string name="pref_feed_skip">Аутоматско прескакање</string>
     <string name="pref_feed_skip_sum">Прескочите уводе и завршне заслуге</string>
-    <string name="pref_feed_skip_intro_toast">Прескочено првих %d секунди</string>
     <string name="pref_feed_skip_intro">Прескочити првих</string>
     <string name="pref_playback_time_respects_speed_title">Подеси информације о медијима на брзину репродукције</string>
     <string name="pref_playback_time_respects_speed_sum">Приказана позиција и трајање су прилагођени брзини репродукције</string>
@@ -522,7 +521,6 @@
     <string name="home_no_recent_unplayed_episodes_text">Већ сте слушали све недавне епизоде. Ништа изненађујуће ;)</string>
     <string name="download_error_unsupported_type_html">Сервер подкаста је послао веб-сајт, а не подкаст.</string>
     <string name="download_error_not_found">Сервер подкаста не зна где да пронађе фајл. Можда је избрисан.</string>
-    <string name="no_inbox_label">Када стигну нове епизоде, биће приказане овде. Тада можете одлучити да ли сте заинтересовани за њих или не.</string>
     <string name="download_error_wrong_size">Веза са сервером је изгубљена пре завршетка преузимања</string>
     <string name="download_error_certificate">Није могуће успоставити безбедну везу. То може значити да је друга апликација на вашем уређају (као што је VPN или блокатор огласа) блокирала преузимање или да нешто није у реду са сертификатима сервера.</string>
     <string name="swipeactions_summary">Изаберите шта се дешава када превучете епизоду на листи</string>
@@ -636,7 +634,6 @@
     <string name="pref_episode_cache_summary">Аутоматско преузимање се зауставља ако се достигне овај број</string>
     <string name="remember_last_page">Запамти последњу страницу</string>
     <string name="pref_episode_cover_summary">Користите насловницу специфичну за епизоду на листама кадгод је доступна. Ако није означено, апликација ће увек користити насловну фотографију подкаста.</string>
-    <string name="pref_feed_skip_ending_toast">Прескочено последњих %d секунди</string>
     <string name="pref_persistNotify_sum">Задржите контроле за обавештења и закључани екран када је репродукција паузирана</string>
     <string name="enqueue_location_back">Крај</string>
     <string name="pref_fast_forward_sum">Прилагодите број секунди за скок унапред када се додирне дугме за премотавање унапред</string>
