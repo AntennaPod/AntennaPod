@@ -811,7 +811,9 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (sleepTimer != null && sleepTimer.isActive()) {
             sleepTimer.episodeFinishedPlayback();
             if (!sleepTimer.shouldContinueToNextEpisode()) {
-                updateDatabaseAfterPlayback(media, playbackStartPosition, true, false, false);
+                int startPosition = playbackStartPosition;
+                Schedulers.io().scheduleDirect(() ->
+                        updateDatabaseAfterPlayback(media, startPosition, true, false, false));
                 player.stop();
                 player.clearMediaItems();
                 PlaybackPreferences.writeNoMediaPlaying();

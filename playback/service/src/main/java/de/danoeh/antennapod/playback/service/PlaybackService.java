@@ -1214,10 +1214,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 // don't know if it actually matters to not autodownload when smart mark as played is triggered
                 DBWriter.removeQueueItem(PlaybackService.this, ended, item);
                 // Delete episode if enabled
-                Feed refreshedFeed = DBReader.getFeed(item.getFeed().getId(), false, 0, 0);
-                FeedPreferences.AutoDeleteAction action = refreshedFeed == null
-                        ? item.getFeed().getPreferences().getCurrentAutoDelete()
-                        : refreshedFeed.getPreferences().getCurrentAutoDelete();
+                FeedPreferences.AutoDeleteAction action =
+                        item.getFeed().getPreferences().getCurrentAutoDelete();
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
                 boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
