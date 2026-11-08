@@ -1024,5 +1024,5 @@
     <string name="pref_parental_control_enabled_title">Activer</string>
     <string name="pref_parental_control_require_subscribe_title">Limiter l\'ajout d\'abonnements</string>
     <string name="pref_parental_control_require_subscribe_sum">Demander le mot de passe du contrôle parental pour s\'abonner à de nouveaux podcasts</string>
-    <string name="back_label">Fin</string>
+    <string name="back_label">Retour</string>
 </resources>
