@@ -121,6 +121,8 @@ public class WidgetConfigActivity extends ToolbarActivity {
         widgetPreview.findViewById(R.id.extendedButtonsContainer)
                 .setVisibility(showExtendedPreview ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butPlay).setVisibility(showExtendedPreview ? View.GONE : View.VISIBLE);
+        widgetPreview.findViewById(R.id.textAndButtons).setPadding(0, 0, 0, showExtendedPreview
+                ? getResources().getDimensionPixelSize(R.dimen.widget_buttons_min_height) : 0);
         widgetPreview.findViewById(R.id.butPlaybackSpeed)
                 .setVisibility(ckPlaybackSpeed.isChecked() ? View.VISIBLE : View.GONE);
         widgetPreview.findViewById(R.id.butFastForward)
