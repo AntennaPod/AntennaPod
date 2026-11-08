@@ -225,7 +225,7 @@ public class ChapterUtils {
     }
 
     private static CountingInputStream openStream(Playable playable, Context context) throws IOException {
-        if (playable.localFileAvailable()) {
+        if (playable.localFileAvailable() && !playable.getStreamUrl().startsWith(ContentResolver.SCHEME_CONTENT)) {
             if (playable.getLocalFileUrl() == null) {
                 throw new IOException("No local url");
             }
