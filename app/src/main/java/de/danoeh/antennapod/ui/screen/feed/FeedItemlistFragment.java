@@ -32,6 +32,7 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.download.DownloadResult;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -468,6 +469,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSpeedChanged(SpeedChangedEvent event) {
+        adapter.notifyDataSetChanged();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
