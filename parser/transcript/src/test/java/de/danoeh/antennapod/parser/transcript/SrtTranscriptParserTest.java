@@ -32,6 +32,30 @@ public class SrtTranscriptParserTest {
     }
 
     @Test
+    public void testParseSrtWithColonsInText() {
+        String[] texts = {
+                "We meet at 10:30 tomorrow.",
+                "Visit https://example.org/path.",
+                "She said: keep the whole sentence."
+        };
+        for (String text : texts) {
+            Transcript result = TranscriptParser.parse("1\n"
+                    + "00:00:00,000 --> 00:00:06,000\n"
+                    + "Alice: " + text, "application/x-subrip");
+
+            assertEquals(text, result.getSegmentAtTime(0L).getWords());
+            assertEquals("Alice", result.getSegmentAtTime(0L).getSpeaker());
+        }
+    }
+
+    @Test
+    public void testParseSrtSpeakerOnlyCue() {
+        assertNull(TranscriptParser.parse("1\n"
+                + "00:00:00,000 --> 00:00:06,000\n"
+                + "Alice:", "application/x-subrip"));
+    }
+
+    @Test
     public void testParse() {
         String type = "application/srr";
         Transcript result;
