@@ -355,6 +355,14 @@ class DBUpgrader {
             db.execSQL("DELETE FROM " + PodDBAdapter.TABLE_NAME_FAVORITES + " WHERE " + PodDBAdapter.KEY_FEEDITEM
                     + " NOT IN (SELECT " + PodDBAdapter.KEY_ID + " FROM " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + ")");
         }
+        if (oldVersion < 3130000) {
+            db.execSQL("DROP INDEX IF EXISTS " + PodDBAdapter.INDEX_NAME_FEEDITEMS_READ);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_READ);
+            db.execSQL("DROP INDEX IF EXISTS " + PodDBAdapter.INDEX_NAME_FEEDITEMS_FEED);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_FEED);
+            db.execSQL("DROP INDEX IF EXISTS " + PodDBAdapter.INDEX_NAME_FEEDMEDIA_FEEDITEM);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDMEDIA_FEEDITEM);
+        }
     }
 
 }
