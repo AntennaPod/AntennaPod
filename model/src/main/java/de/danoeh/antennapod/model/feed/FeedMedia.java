@@ -186,6 +186,10 @@ public class FeedMedia implements Playable {
         this.playedDuration += milliseconds;
     }
 
+    public void setPlayedDuration(int milliseconds) {
+        this.playedDuration = milliseconds;
+    }
+
     public int getPosition() {
         return position;
     }
