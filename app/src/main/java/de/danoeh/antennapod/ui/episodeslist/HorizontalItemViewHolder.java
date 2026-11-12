@@ -59,6 +59,7 @@ public class HorizontalItemViewHolder extends RecyclerView.ViewHolder {
         new CoverLoader()
                 .withUri(ImageResourceUtils.getEpisodeListImageLocation(item))
                 .withFallbackUri(item.getFeed().getImageUrl())
+                .withCredentials(item.getFeed().getPreferences())
                 .withCoverView(cover)
                 .load();
         title.setText(item.getTitle());

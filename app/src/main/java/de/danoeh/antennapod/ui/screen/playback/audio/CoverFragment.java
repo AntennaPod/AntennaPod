@@ -51,8 +51,10 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -321,10 +323,14 @@ public class CoverFragment extends Fragment {
                 .transform(new FitCenter(),
                         new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
 
+        FeedPreferences prefs = (media instanceof FeedMedia && ((FeedMedia) media).getItem() != null
+                && ((FeedMedia) media).getItem().getFeed() != null)
+                ? ((FeedMedia) media).getItem().getFeed().getPreferences() : null;
         RequestBuilder<Drawable> cover = Glide.with(this)
-                .load(media.getImageLocation())
+                .load(AuthenticatedImageUrl.create(media.getImageLocation(), prefs))
                 .error(Glide.with(this)
-                        .load(ImageResourceUtils.getFallbackImageLocation(media))
+                        .load(AuthenticatedImageUrl.create(
+                                ImageResourceUtils.getFallbackImageLocation(media), prefs))
                         .apply(options))
                 .apply(options);
 
