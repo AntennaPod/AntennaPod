@@ -76,6 +76,7 @@ public class ProxyDialog {
             viewBinding.usernameText.getText().clear();
             viewBinding.passwordText.getText().clear();
             setProxyConfig();
+            AntennapodHttpClient.reinit();
         });
 
         ProxyConfig proxyConfig = UserPreferences.getProxyConfig();
