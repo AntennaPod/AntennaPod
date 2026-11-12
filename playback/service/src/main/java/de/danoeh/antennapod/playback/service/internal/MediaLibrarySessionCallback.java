@@ -273,7 +273,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     .subscribe(media -> {
                         long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
                         startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                                (int) startPosition, media.getLastPlayedTimeStatistics());
+                                (int) startPosition, media.getLastPlayedTimeStatistics(), media);
                         future.set(new MediaSession.MediaItemsWithStartPosition(
                                 Collections.singletonList(MediaItemAdapter.fromPlayable(context, media, false)),
                                 0, startPosition));
@@ -298,7 +298,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 .subscribe(result -> {
                     long startPosition = SkipUtils.skipIntroIfNecessary(context, result.second);
                     startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                            (int) startPosition, result.second.getLastPlayedTimeStatistics());
+                            (int) startPosition, result.second.getLastPlayedTimeStatistics(), result.second);
                     future.set(new MediaSession.MediaItemsWithStartPosition(result.first, index, startPosition));
                 }, error -> {
                     Log.e(TAG, "Failed to load media", error);
@@ -366,7 +366,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         media -> {
                             long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
                             startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                                    (int) startPosition, media.getLastPlayedTimeStatistics());
+                                    (int) startPosition, media.getLastPlayedTimeStatistics(), media);
                             Log.d(TAG, "onPlaybackResumption: resuming id=" + media.getId()
                                     + ", title=" + (media.getItem() != null ? media.getItem().getTitle() : "null")
                                     + ", startPosition=" + startPosition);
