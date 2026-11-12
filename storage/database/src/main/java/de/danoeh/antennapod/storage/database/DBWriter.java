@@ -115,6 +115,24 @@ public class DBWriter {
         });
     }
 
+    /**
+     * Marks every FeedMedia with one of the given IDs as not downloaded, clearing its local file
+     * URL. Used for bulk reconciliation of stale download markers, for example after importing a
+     * database whose media files are not present on this device.
+     */
+    public static Future<?> clearDownloadStateForMediaIds(final List<Long> mediaIds) {
+        return runOnDbThread(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            try {
+                adapter.clearDownloadStateForMediaIds(mediaIds);
+            } finally {
+                adapter.close();
+            }
+            EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
+        });
+    }
+
     private static void deleteFeedMediaSynchronous(@NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format(Locale.US, "Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
