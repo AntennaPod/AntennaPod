@@ -879,7 +879,10 @@ public class DBWriter {
                         SynchronizationQueue.getInstance().enqueueEpisodePlayed(item.getMedia(), true);
                     }
                 }
-                recordFirstSubscription(feed);
+                // IDs are not reused, so 1 is the first feed ever added
+                if (feed.getId() == 1 && UserPreferences.getFirstSubscriptionTime() == 0) {
+                    UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
+                }
                 if (isWithinFirstSubscriptionHour()) {
                     List<FeedItem> newItems = new ArrayList<>();
                     for (FeedItem item : feed.getItems().subList(0, Math.min(3, feed.getItems().size()))) {
@@ -893,15 +896,6 @@ public class DBWriter {
             adapter.close();
             EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
-    }
-
-    /**
-     * Feed IDs are never reused, so the feed with ID 1 is the first one the user ever added.
-     */
-    private static void recordFirstSubscription(Feed feed) {
-        if (feed.getId() == 1 && UserPreferences.getFirstSubscriptionTime() == 0) {
-            UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
-        }
     }
 
     private static boolean isWithinFirstSubscriptionHour() {

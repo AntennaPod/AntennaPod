@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -16,6 +14,7 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
+import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManagerStub;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -856,32 +855,6 @@ public class DbWriterTest {
         }
         withPodDB(adapter -> adapter.setCompleteFeed(feed));
         return DBReader.getFeed(feed.getId(), false, 0, Integer.MAX_VALUE);
-    }
-
-    private static class FeedUpdateManagerStub extends FeedUpdateManager {
-        @Override
-        public void restartUpdateAlarm(Context context, boolean replace) {
-        }
-
-        @Override
-        public void runOnce(Context context) {
-        }
-
-        @Override
-        public void runOnce(Context context, Feed feed) {
-        }
-
-        @Override
-        public void runOnce(Context context, Feed feed, boolean nextPage) {
-        }
-
-        @Override
-        public void runOnceOrAsk(@NonNull Context context) {
-        }
-
-        @Override
-        public void runOnceOrAsk(@NonNull Context context, @Nullable Feed feed) {
-        }
     }
 
     private static void withPodDB(Consumer<PodDBAdapter> action) {
