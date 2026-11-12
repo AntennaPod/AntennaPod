@@ -1472,21 +1472,37 @@ public class PodDBAdapter {
         }
         queryStart += " AND (";
         StringBuilder sb = new StringBuilder(queryStart);
+        StringBuilder orderedWords = new StringBuilder("%");
+        StringBuilder allWordsInTitle = new StringBuilder();
+        StringBuilder anyWordInTitle = new StringBuilder();
+        StringBuilder anyWordInDescription = new StringBuilder();
 
         for (int i = 0; i < queryWords.length; i++) {
-            sb
-                    .append("(")
-                    .append(KEY_DESCRIPTION + " LIKE '%").append(queryWords[i])
-                    .append("%' OR ")
-                    .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
-                    .append("%') ");
-
+            if (i > 0) {
+                allWordsInTitle.append(" AND ");
+                anyWordInTitle.append(" OR ");
+                anyWordInDescription.append(" OR ");
+            }
+            String titleMatch = KEY_TITLE + " LIKE '%" + queryWords[i] + "%'";
+            String descriptionMatch = KEY_DESCRIPTION + " LIKE '%" + queryWords[i] + "%'";
+            sb.append("(").append(descriptionMatch).append(" OR ").append(titleMatch).append(") ");
+            orderedWords.append(queryWords[i]).append("%");
             if (i != queryWords.length - 1) {
                 sb.append("AND ");
             }
+            allWordsInTitle.append(titleMatch);
+            anyWordInTitle.append(titleMatch);
+            anyWordInDescription.append(descriptionMatch);
         }
 
-        sb.append(") ORDER BY " + KEY_PUBDATE + " DESC LIMIT 300");
+        String orderedMatch = " LIKE '" + orderedWords + "'";
+        sb.append(") ORDER BY CASE")
+                .append(" WHEN ").append(KEY_TITLE).append(orderedMatch).append(" THEN 0")
+                .append(" WHEN (").append(allWordsInTitle).append(") THEN 1")
+                .append(" WHEN ").append(KEY_DESCRIPTION).append(orderedMatch).append(" THEN 2")
+                .append(" WHEN (").append(anyWordInTitle).append(") AND (")
+                .append(anyWordInDescription).append(") THEN 3")
+                .append(" ELSE 4 END, ").append(KEY_PUBDATE).append(" DESC LIMIT 300");
 
         return db.rawQuery(sb.toString(), null);
     }
