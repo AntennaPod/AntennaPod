@@ -1015,7 +1015,7 @@
         <item quantity="many">Сброшена позиция для %d выпусков.</item>
         <item quantity="other">Сброшена позиция для %d выпусков.</item>
     </plurals>
-    <string name="queue_time_left_label">%1$s • %2$s влево</string>
+    <string name="queue_time_left_label">%1$s • осталось %2$s</string>
     <string name="no_fav_episodes_head_label">Нет избранных</string>
     <string name="no_fav_episodes_label">Добавьте выпуски в избранное нажатием на иконку с звездой.</string>
     <string name="bottom_navigation_deprecation_warning">К сожалению, мы удалим навигацию по сторонам в следующем обновлении. AntennaPod разрабатывается небольшой группой волонтёров и поддержка обеих способов навигации на протяжении стала затруднительной.\n\nЕсли вам абсолютно необходима навигация по сторонам, отключите обновления AntennaPod в вашем магазине приложений.</string>

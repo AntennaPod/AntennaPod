@@ -2,7 +2,7 @@ name: PR Conventions
 
 on:
   pull_request_target:
-    types: [ opened, synchronize, reopened, edited, labeled, unlabeled ]
+    types: [ opened, synchronize, reopened, edited, labeled, unlabeled, ready_for_review ]
 
 jobs:
   check:
@@ -10,6 +10,41 @@ jobs:
     if: github.repository == 'AntennaPod/AntennaPod'
     runs-on: ubuntu-latest
     steps:
+      - name: Weblate translators
+        if: github.event.pull_request.user.login == 'weblate'
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
+          script: |
+            const commits = await github.paginate(github.rest.pulls.listCommits, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
+
+            const translators = new Set();
+            for (const line of commits.flatMap(c => c.commit.message.split("\n")).filter(l => l.startsWith("Translator:"))) {
+              const match = line.match(/^(Translator: \S+ by .+?)\s*(?:<[^<>]*>)?\s*$/);
+              if (!match) {
+                core.setFailed("Unable to parse line: " + line);
+                return;
+              }
+              translators.add(match[1]);
+            }
+
+            const marker = "<!-- weblate-translators -->";
+            const oldBody = context.payload.pull_request.body || "";
+            const body = oldBody.split(marker)[0].trimEnd() + "\n\n" + marker + "\n" + [...translators].sort().join("\n");
+            if (body !== oldBody) {
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                body: body,
+              });
+            }
+
       - name: PR title
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
@@ -20,17 +55,43 @@ jobs:
             }
 
       - name: PR template
+        if: github.event.pull_request.user.login != 'weblate'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             const body = context.payload.pull_request.body || "";
             const descriptionMatch = body.match(/###\s*Description\s*\n([\s\S]*?)###\s*Checklist/i);
             if (!descriptionMatch || descriptionMatch[1].replace(/\s/g, "").length < 10) {
-              core.setFailed("It looks like you did not follow the PR template. Please add a description in the Description section, above the checklist.");
+              const reason = "It looks like you did not follow the PR template. Please add a description in the Description section, above the checklist.";
+              const marker = "<!-- pr-conventions-template -->";
+              if (!context.payload.pull_request.draft) {
+                const comments = await github.paginate(github.rest.issues.listComments, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  per_page: 100,
+                });
+                if (!comments.some(comment => (comment.body || "").includes(marker))) {
+                  await github.graphql(`
+                    mutation($id: ID!) {
+                      convertPullRequestToDraft(input: { pullRequestId: $id }) {
+                        pullRequest { isDraft }
+                      }
+                    }`, { id: context.payload.pull_request.node_id });
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    body: reason + " The PR has been converted to draft.\n\n" + marker,
+                  });
+                }
+              }
+              core.setFailed(reason);
             }
 
       - name: Close keyword
-        if: github.event.pull_request.author_association != 'MEMBER' && github.event.pull_request.author_association != 'OWNER'
+        if: github.event.pull_request.author_association != 'MEMBER' && github.event.pull_request.author_association != 'OWNER' && github.event.pull_request.user.login != 'weblate'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}

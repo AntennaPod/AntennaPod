@@ -1,0 +1,98 @@
+name: Issue closed
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  issue-closed:
+    if: github.repository == 'AntennaPod/AntennaPod'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Remove labels from closed issue
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
+          script: |
+            const labelsToRemove = ['Needs: Triage', 'Needs: Decision', 'Needs: Reply still'];
+            const issue = context.payload.issue;
+
+            // Get current labels on the issue
+            const currentLabels = issue.labels.map(label => label.name);
+
+            // Create updated label list by filtering out the labels to remove
+            const updatedLabels = currentLabels.filter(label => 
+              !labelsToRemove.includes(label)
+            );
+
+            // Check if any labels were actually removed
+            const removedLabels = currentLabels.filter(label => 
+              labelsToRemove.includes(label)
+            );
+
+            if (removedLabels.length > 0) {
+              console.log(`Removing labels: ${removedLabels.join(', ')}`);
+              console.log(`Updated label list: ${updatedLabels.join(', ') || 'No labels remaining'}`);
+
+              try {
+                // Update the issue with the new label list in a single operation
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  labels: updatedLabels
+                });
+                console.log(`Successfully updated labels. Removed: ${removedLabels.join(', ')}`);
+              } catch (error) {
+                console.log(`Failed to update labels: ${error.message}`);
+              }
+            } else {
+              console.log('No target labels found on this issue to remove.');
+            }
+
+      - name: Close open pull requests linked to the closed issue
+        if: github.event.issue.state_reason == 'not_planned'
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
+          script: |
+            const query = `query ($owner: String!, $repo: String!, $number: Int!) {
+              repository(owner: $owner, name: $repo) {
+                issue(number: $number) {
+                  closedByPullRequestsReferences(first: 100, includeClosedPrs: false) {
+                    nodes { number repository { nameWithOwner } }
+                  }
+                }
+              }
+            }`;
+            const result = await github.graphql(query, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              number: context.payload.issue.number,
+            });
+            for (const node of result.repository.issue.closedByPullRequestsReferences.nodes) {
+              if (node.repository.nameWithOwner !== `${context.repo.owner}/${context.repo.repo}`) {
+                continue;
+              }
+              const pr = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: node.number,
+              });
+              if (pr.data.state !== 'open') {
+                continue;
+              }
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: node.number,
+                body: `Closing this pull request because the linked issue #${context.payload.issue.number} was closed.`,
+              });
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: node.number,
+                state: 'closed',
+              });
+            }

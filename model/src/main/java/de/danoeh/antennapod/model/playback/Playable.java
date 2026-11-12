@@ -102,13 +102,6 @@ public interface Playable extends Parcelable, Serializable {
     void setLastPlayedTimeStatistics(long lastPlayedTimestamp);
 
     /**
-     * This method should be called every time playback starts on this object.
-     * <p/>
-     * Position held by this Playable should be set accurately before a call to this method is made.
-     */
-    void onPlaybackStart();
-
-    /**
      * Returns an integer that must be unique among all Playable classes. The
      * return value is later used by PlaybackPreferences to determine the type of the
      * Playable object that is restored.

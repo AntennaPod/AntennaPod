@@ -91,10 +91,6 @@ public class FeedItemFilter implements Serializable {
         return properties.clone();
     }
 
-    public List<String> getValuesList() {
-        return Arrays.asList(properties);
-    }
-
     public FeedItemFilter without(String property) {
         List<String> newValues = new ArrayList<>(Arrays.asList(properties));
         newValues.remove(property);

@@ -308,7 +308,7 @@
     <string name="external_elements">Externa element</string>
     <string name="interruptions">Avbrott</string>
     <string name="playback_control">Uppspelningskontroll</string>
-    <string name="reassign_hardware_buttons">Omfördela hårdvaruknappar</string>
+    <string name="reassign_hardware_buttons">Ändra tilldelning av hårdvaruknappar</string>
     <string name="preference_search_hint">Sök…</string>
     <string name="preference_search_no_results">Inga resultat</string>
     <string name="preference_search_clear_history">Rensa historiken</string>
@@ -319,7 +319,7 @@
     <string name="pref_unpauseOnBluetoothReconnect_sum">Fortsätt uppspelningen när Bluetooth återansluts</string>
     <string name="pref_hardware_forward_button_title">Framåtknapp</string>
     <string name="pref_hardware_forward_button_summary">Ändra beteendet för knappen nästa</string>
-    <string name="pref_hardware_previous_button_title">Föregående knapp</string>
+    <string name="pref_hardware_previous_button_title">Bakåtknapp</string>
     <string name="pref_hardware_previous_button_summary">Ändra beteendet för knappen föregående</string>
     <string name="button_action_fast_forward">Spola framåt</string>
     <string name="button_action_rewind">Backa</string>

@@ -414,6 +414,8 @@
     <string name="feed_title">Podcast title</string>
     <string name="random">Random</string>
     <string name="smart_shuffle">Smart shuffle</string>
+    <string name="sort_ascending_description">%1$s, ascending</string>
+    <string name="sort_descending_description">%1$s, descending</string>
     <string name="size">Size</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to remove ALL episodes from the queue.</string>
     <string name="queue_time_left_label">%1$s • %2$s left</string>
@@ -907,12 +909,13 @@
     <!-- Local feeds -->
     <string name="add_local_folder">Add local folder</string>
     <string name="local_folder">Local folder</string>
-    <string name="reconnect_local_folder">Re-connect local folder</string>
-    <string name="reconnect_local_folder_summary">Risky: only re-connect to the exact same folder. Otherwise, you will lose all your playback state.</string>
-    <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
+    <string name="reconnect_local_folder">Reconnect local folder</string>
+    <string name="reconnect_local_folder_summary">Risky: only reconnect to the exact same folder. Otherwise, you will lose all your playback state.</string>
+    <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to reconnect to the exact same folder. Do not select another folder.</string>
     <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
     <string name="unable_to_start_system_file_manager">Unable to start system file manager</string>
 
+    <!-- Filter dialog -->
     <string name="filter">Filter</string>
     <string name="hide_is_favorite_label">Is favorite</string>
     <string name="not_favorite">Not favorite</string>
@@ -927,6 +930,7 @@
     <string name="hide_played_episodes_label">Played</string>
     <string name="not_played">Not played</string>
     <string name="filename">File name</string>
+    <string name="clear_filters_label">Clear</string>
 
     <!-- Share episode dialog -->
     <string name="share_playback_position_dialog_label">Include playback position</string>
@@ -992,11 +996,11 @@
     <string name="add_shortcut">Add shortcut</string>
 
     <!-- Parental Control -->
-    <string name="pref_parental_control_set_password">Set Password</string>
+    <string name="pref_parental_control_set_password">Set password</string>
     <string name="pref_parental_control_confirm_password">Confirm password</string>
     <string name="pref_parental_control_passwords_dont_match">Passwords don\'t match</string>
     <string name="pref_parental_control_password_empty">Password cannot be empty</string>
-    <string name="pref_parental_control_title">Parental Controls</string>
+    <string name="pref_parental_control_title">Parental controls</string>
     <string name="pref_parental_control_sum">Restrict features with a password</string>
     <string name="pref_parental_control_enabled_title">Enable</string>
     <string name="pref_parental_control_require_subscribe_title">Restrict subscribing</string>

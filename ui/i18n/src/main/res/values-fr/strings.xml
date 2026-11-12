@@ -495,7 +495,7 @@
     <string name="opml_reader_error">Une erreur s\'est produite lors de la lecture du fichier. Assurez-vous d\'avoir bien sélectionné un fichier OPML valide.</string>
     <string name="opml_import_error_no_file">Aucun fichier sélectionné !</string>
     <string name="select_all_label">Tout sélectionner</string>
-    <string name="deselect_all_label">Tout déselectionné</string>
+    <string name="deselect_all_label">Tout déselectionner</string>
     <string name="opml_export_label">Exporter un fichier OPML</string>
     <string name="html_export_label">Exporter un fichier HTML</string>
     <string name="database_export_label">Exporter la base de données</string>

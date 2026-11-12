@@ -28,7 +28,7 @@ jobs:
           BASE=$(echo "$VERSION" | sed 's/-beta[0-9]*//')
           MAJOR=$(echo "$BASE" | cut -d. -f1)
           MINOR=$(echo "$BASE" | cut -d. -f2)
-          MILESTONE="$MAJOR.$((MINOR + 1)).0"
+          MILESTONE="$MAJOR.$((MINOR + 1))"
           echo "Master version: $VERSION → milestone: $MILESTONE"
           echo "name=$MILESTONE" >> "$GITHUB_OUTPUT"
 

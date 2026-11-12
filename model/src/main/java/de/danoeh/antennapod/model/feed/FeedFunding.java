@@ -25,27 +25,6 @@ public class FeedFunding implements Serializable {
         this.url = url;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || !obj.getClass().equals(this.getClass())) {
-            return false;
-        }
-
-        FeedFunding funding = (FeedFunding) obj;
-        if (url == null && funding.url == null && content == null && funding.content == null) {
-            return true;
-        }
-        if (url != null && url.equals(funding.url) && content != null && content.equals(funding.content)) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return (url + FUNDING_TITLE_SEPARATOR + content).hashCode();
-    }
-
     public static ArrayList<FeedFunding> extractPaymentLinks(String payLinks) {
         if (StringUtils.isBlank(payLinks)) {
             return null;

@@ -11,7 +11,7 @@
     <string name="favorite_episodes_label">Favoriten</string>
     <string name="settings_label">Einstellungen</string>
     <string name="downloads_label">Downloads</string>
-    <string name="downloads_log_label">Download-Protokoll</string>
+    <string name="downloads_log_label">Downloadprotokoll</string>
     <string name="subscriptions_label">Abonnements</string>
     <string name="subscriptions_list_label">Abonnement-Übersicht</string>
     <string name="cancel_download_label">Download abbrechen</string>

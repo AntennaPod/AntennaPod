@@ -82,7 +82,11 @@ public class ClockSleepTimer implements SleepTimer {
         }
         // start listening for shakes if shake to reset is enabled
         if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
-            shakeListener = new ShakeListener(getContext(), this);
+            try {
+                shakeListener = new ShakeListener(getContext(), this);
+            } catch (UnsupportedOperationException e) {
+                Log.w(TAG, "Unable to listen for shakes: " + e.getMessage());
+            }
         }
     }
 

@@ -16,6 +16,7 @@ import androidx.test.espresso.util.HumanReadables;
 import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
 
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.playback.service.PlaybackService;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import junit.framework.AssertionFailedError;
@@ -236,7 +237,7 @@ public class EspressoTestUtils {
             // Calling stopSelf marks allows the system to destroy the service but the actual call
             // to onDestroy takes until the next GC of the system, which we can not influence.
             // Try to wait for the service at least a bit.
-            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> !PlaybackService.isRunning);
+            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> !PlaybackServiceInterface.isPlaying);
         } catch (ConditionTimeoutException e) {
             e.printStackTrace();
         }

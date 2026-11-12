@@ -61,6 +61,35 @@ public class UrlCheckerTest {
     }
 
     @Test
+    public void testValidHost() {
+        assertTrue(UrlChecker.isValidHost("localhost"));
+        assertTrue(UrlChecker.isValidHost("proxy.example.com"));
+        assertTrue(UrlChecker.isValidHost("127.0.0.1"));
+    }
+
+    @Test
+    public void testValidIpv6Host() {
+        assertTrue(UrlChecker.isValidHost("::"));
+        assertTrue(UrlChecker.isValidHost("[::]"));
+        assertTrue(UrlChecker.isValidHost("::1"));
+        assertTrue(UrlChecker.isValidHost("[::1]"));
+        assertTrue(UrlChecker.isValidHost("2001:db8::8a2e:370:7334"));
+        assertTrue(UrlChecker.isValidHost("::ffff:192.168.0.1"));
+    }
+
+    @Test
+    public void testInvalidHost() {
+        assertFalse(UrlChecker.isValidHost(""));
+        assertFalse(UrlChecker.isValidHost("proxy host"));
+        assertFalse(UrlChecker.isValidHost("127.0.0.1:9050"));
+        assertFalse(UrlChecker.isValidHost(":::"));
+        assertFalse(UrlChecker.isValidHost("1:2:3:4:5:6:7:8:9"));
+        assertFalse(UrlChecker.isValidHost("[::1"));
+        assertFalse(UrlChecker.isValidHost("[::1]:9050"));
+        assertFalse(UrlChecker.isValidHost("::1]/x[::1"));
+    }
+
+    @Test
     public void testCorrectURLHttp() {
         final String in = "http://example.com";
         final String out = UrlChecker.prepareUrl(in);

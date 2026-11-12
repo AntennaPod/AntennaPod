@@ -127,7 +127,11 @@ jobs:
             build-type: release
     steps:
       - name: Remove unused packages to save space
-        run: sudo apt-get remove firefox google-chrome-stable microsoft-edge-stable snapd powershell azure-cli llvm-16 llvm-17 llvm-18 llvm-16-dev llvm-17-dev llvm-18-dev
+        run: |
+          df -h
+          sudo apt-get remove firefox google-chrome-stable microsoft-edge-stable snapd azure-cli
+          for v in 16 17 18 19 20 21 22; do sudo apt-get remove llvm-$v llvm-$v-dev || true; done
+          df -h
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - name: Set up JDK 21
         uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5

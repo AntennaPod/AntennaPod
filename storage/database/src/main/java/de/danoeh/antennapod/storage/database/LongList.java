@@ -42,36 +42,6 @@ public final class LongList {
     }
 
     @Override
-    public int hashCode() {
-        int hashCode = 1;
-        for (int i = 0; i < size; i++) {
-            long value = values[i];
-            hashCode = 31 * hashCode + (int)(value ^ (value >>> 32));
-        }
-        return hashCode;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (! (other instanceof LongList)) {
-            return false;
-        }
-        LongList otherList = (LongList) other;
-        if (size != otherList.size) {
-            return false;
-        }
-        for (int i = 0; i < size; i++) {
-            if (values[i] != otherList.values[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(size * 5 + 10);
         sb.append("LongList{");
@@ -249,7 +219,6 @@ public final class LongList {
         values = new long[4];
         size = 0;
     }
-
 
     /**
      * Returns true if the given value is contained in the list

@@ -73,8 +73,8 @@ public class SrtTranscriptParser {
             }
 
             if (body.indexOf(": ") != -1) {
-                String[] parts = body.toString().trim().split(":");
-                if (parts.length < 2) {
+                String[] parts = body.toString().trim().split(":", 2);
+                if (parts.length < 2 || parts[1].isEmpty()) {
                     continue;
                 }
                 prevSpeaker = speaker;

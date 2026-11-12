@@ -11,6 +11,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.SortOrder;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManager;
+import de.danoeh.antennapod.net.download.serviceinterface.AutoDownloadManagerStub;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import de.danoeh.antennapod.net.download.serviceinterface.FeedUpdateManager;
@@ -68,6 +70,7 @@ public class DbWriterTest {
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
         SynchronizationQueue.setInstance(new SynchronizationQueueStub());
         FeedUpdateManager.setInstance(new FeedUpdateManagerStub());
+        AutoDownloadManager.setInstance(new AutoDownloadManagerStub());
 
         // create new database
         PodDBAdapter.init(context);
@@ -115,7 +118,7 @@ public class DbWriterTest {
 
         media.setPosition(position);
         media.setLastPlayedTimeStatistics(lastPlayedTimeStatistics);
-        media.setPlayedDuration(playedDuration);
+        media.incrementPlayedDuration(playedDuration);
         media.setLastPlayedTimeHistory(lastPlayedTimeHistory);
 
         DBWriter.setFeedMediaPlaybackInformation(item.getMedia()).get(TIMEOUT, TimeUnit.SECONDS);
