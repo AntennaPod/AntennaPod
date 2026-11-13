@@ -14,6 +14,7 @@ dependencies {
     implementation project(':net:common')
     implementation project(':ui:episodes')
 
+    implementation libs.androidx.media
     implementation libs.androidx.media3.exoplayer
     implementation libs.androidx.media3.session
     annotationProcessor libs.androidx.annotation
