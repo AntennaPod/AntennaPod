@@ -115,4 +115,15 @@ public class CombinedSearcher implements PodcastSearcher {
         }
         return TextUtils.join(", ", names);
     }
+
+    @Override
+    public Single<List<EpisodeSearchResult>> searchEpisodes(String query) {
+        for (PodcastSearcherRegistry.SearcherInfo searchProviderInfo : PodcastSearcherRegistry.getSearchProviders()) {
+            PodcastSearcher searcher = searchProviderInfo.searcher;
+            if (searchProviderInfo.weight > 0.00001f && searcher instanceof ItunesPodcastSearcher) {
+                return searcher.searchEpisodes(query);
+            }
+        }
+        return Single.just(Collections.emptyList());
+    }
 }

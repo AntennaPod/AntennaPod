@@ -24,7 +24,9 @@ public class Feed implements Serializable {
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_ATOM1 = "atom";
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
+    public static final String PREFIX_SEARCH_FEED = "antennapod_search:";
     public static final String PREFIX_GENERATIVE_COVER = "antennapod_generative_cover:";
+    public static final String PREFIX_SEARCH_COVER = PREFIX_GENERATIVE_COVER + "search:";
 
     private long id;
     private String localFileUrl;
@@ -476,6 +478,10 @@ public class Feed implements Serializable {
 
     public boolean isLocalFeed() {
         return downloadUrl.startsWith(PREFIX_LOCAL_FOLDER);
+    }
+
+    public boolean isSearchFeed() {
+        return downloadUrl != null && downloadUrl.startsWith(PREFIX_SEARCH_FEED);
     }
 
     public int getState() {

@@ -16,6 +16,11 @@
     <string name="add_feed_label_short">Add</string>
     <string name="episodes_label">Episodes</string>
     <string name="episodes_label_short">Episodes</string>
+    <string name="podcasts_label">Podcasts</string>
+    <string name="subscribed_label">Subscribed</string>
+    <string name="subscribe_search_feed_label">Subscribe to search</string>
+    <string name="search_feed_title">Search: %1$s</string>
+    <string name="search_feed_description">Episodes matching search query “%1$s”</string>
     <string name="home_label">Home</string>
     <string name="home_label_short">Home</string>
     <string name="queue_label">Queue</string>
