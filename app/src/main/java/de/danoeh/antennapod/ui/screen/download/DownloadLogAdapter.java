@@ -77,7 +77,8 @@ public class DownloadLogAdapter extends BaseAdapter {
             holder.reason.setVisibility(View.GONE);
             holder.tapForDetails.setVisibility(View.GONE);
         } else {
-            if (status.getReason() == DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE) {
+            if (status.getReason() == DownloadError.ERROR_PARSER_EXCEPTION_DUPLICATE
+                    || status.getReason() == DownloadError.ERROR_EPISODE_LIMIT_REACHED) {
                 holder.icon.setImageResource(R.drawable.ic_info);
             } else {
                 holder.icon.setImageResource(R.drawable.ic_error);
