@@ -73,18 +73,18 @@ public class AutomaticDatabaseExportWorker extends Worker {
         if (documentFolder == null || !documentFolder.exists() || !documentFolder.canWrite()) {
             throw new IOException("Unable to open export folder");
         }
-        String filename = String.format("AntennaPodBackup-%s.db",
+        String filename = String.format("AntennaPodBackup-%s.db.gz",
                 new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date()));
-        DocumentFile exportFile = documentFolder.createFile("application/x-sqlite3", filename);
+        DocumentFile exportFile = documentFolder.createFile("application/gzip", filename);
         if (exportFile == null || !exportFile.canWrite()) {
             throw new IOException("Unable to create export file");
         }
-        DatabaseExporter.exportToDocument(exportFile.getUri(), getApplicationContext());
+        DatabaseExporter.exportToDocument(exportFile.getUri(), getApplicationContext(), true);
         List<DocumentFile> files = new ArrayList<>(Arrays.asList(documentFolder.listFiles()));
         Iterator<DocumentFile> itr = files.iterator();
         while (itr.hasNext()) {
             DocumentFile file = itr.next();
-            if (!file.getName().matches("AntennaPodBackup-\\d\\d\\d\\d-\\d\\d-\\d\\d\\.db")) {
+            if (!file.getName().matches("AntennaPodBackup-\\d\\d\\d\\d-\\d\\d-\\d\\d\\.db(\\.gz)?")) {
                 itr.remove();
             }
         }
