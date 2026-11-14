@@ -89,4 +89,27 @@ public class Chapter {
         return chapters.size() - 1;
     }
 
+    private static final int PREVIOUS_CHAPTER_RESTART_THRESHOLD_MS = 3000;
+
+    /**
+     * Returns the index of the chapter that a "previous chapter" action should seek to.
+     * Seeks to the start of the current chapter, or to the previous chapter when the
+     * playback position is within the first seconds of the current chapter.
+     * Returns 0 when the position is before the first chapter and -1 when there are no chapters.
+     */
+    public static int getPreviousChapterIndex(List<Chapter> chapters, int playbackPosition) {
+        if (chapters == null || chapters.isEmpty()) {
+            return -1;
+        }
+        int currentChapter = getAfterPosition(chapters, playbackPosition);
+        if (currentChapter <= 0) {
+            return 0;
+        }
+        if (playbackPosition - chapters.get(currentChapter).getStart()
+                < PREVIOUS_CHAPTER_RESTART_THRESHOLD_MS) {
+            return currentChapter - 1;
+        }
+        return currentChapter;
+    }
+
 }
