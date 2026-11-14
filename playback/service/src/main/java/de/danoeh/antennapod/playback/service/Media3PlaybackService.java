@@ -244,6 +244,20 @@ public class Media3PlaybackService extends MediaLibraryService {
                     case KeyEvent.KEYCODE_MEDIA_REWIND:
                         seekBack();
                         break;
+                    case UserPreferences.HARDWARE_BUTTON_ACTION_SKIP_CHAPTER:
+                        if (hasChapters()) {
+                            seekToNextChapter();
+                        } else {
+                            seekForward();
+                        }
+                        break;
+                    case UserPreferences.HARDWARE_BUTTON_ACTION_PREVIOUS_CHAPTER:
+                        if (hasChapters()) {
+                            seekToPreviousChapter();
+                        } else {
+                            seekBack();
+                        }
+                        break;
                     case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                     default:
                         seekForward();
@@ -813,6 +827,22 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
 
         player.seekTo(chapters.get(nextChapter).getStart());
+    }
+
+    private boolean hasChapters() {
+        return currentPlayable != null && currentPlayable.getChapters() != null
+                && !currentPlayable.getChapters().isEmpty();
+    }
+
+    private void seekToPreviousChapter() {
+        if (!hasChapters() || player == null) {
+            return;
+        }
+        List<Chapter> chapters = currentPlayable.getChapters();
+        int targetChapter = Chapter.getPreviousChapterIndex(chapters, (int) player.getCurrentPosition());
+        if (targetChapter >= 0) {
+            player.seekTo(chapters.get(targetChapter).getStart());
+        }
     }
 
     private boolean shouldBlockForStreamingConfirmation() {

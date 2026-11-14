@@ -81,6 +81,11 @@ public abstract class UserPreferences {
     public static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
     public static final String PREF_HARDWARE_FORWARD_BUTTON = "prefHardwareForwardButton";
     public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
+
+    // Pseudo keycodes for hardware button actions that have no real Android keycode.
+    // Chosen outside the KeyEvent keycode range.
+    public static final int HARDWARE_BUTTON_ACTION_SKIP_CHAPTER = 10001;
+    public static final int HARDWARE_BUTTON_ACTION_PREVIOUS_CHAPTER = 10002;
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     public static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
