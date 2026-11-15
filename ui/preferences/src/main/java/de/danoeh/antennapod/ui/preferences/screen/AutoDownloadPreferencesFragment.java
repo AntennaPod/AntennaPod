@@ -26,7 +26,7 @@ public class AutoDownloadPreferencesFragment extends AnimatedPreferenceFragment 
         Preference prefOrder = findPreference(UserPreferences.PREF_AUTODOWNLOAD_ORDER);
         if (prefOrder != null) {
             prefOrder.setOnPreferenceClickListener(preference -> {
-                String[] entries = getResources().getStringArray(R.array.autodownload_order_entries);
+                final String[] entries = getResources().getStringArray(R.array.autodownload_order_entries);
                 String[] values = getResources().getStringArray(R.array.autodownload_order_values);
                 int currentVal = UserPreferences.getAutoDownloadOrder();
                 int selectedIndex = 0;
@@ -53,7 +53,7 @@ public class AutoDownloadPreferencesFragment extends AnimatedPreferenceFragment 
         Preference prefCache = findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE);
         if (prefCache != null) {
             prefCache.setOnPreferenceClickListener(preference -> {
-                String[] entries = getResources().getStringArray(R.array.episode_cache_size_entries);
+                final String[] entries = getResources().getStringArray(R.array.episode_cache_size_entries);
                 String[] values = getResources().getStringArray(R.array.episode_cache_size_values);
                 int currentVal = UserPreferences.getEpisodeCacheSize();
                 int selectedIndex = 0;

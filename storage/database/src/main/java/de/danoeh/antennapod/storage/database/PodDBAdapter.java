@@ -1128,11 +1128,15 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled, boolean includeQueue) {
-        return getAutoDownloadCandidatesCursor(globalAutoDownloadEnabled, includeQueue, UserPreferences.AUTODOWNLOAD_ORDER_NEWEST_FIRST);
+    public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled,
+                                                        boolean includeQueue) {
+        return getAutoDownloadCandidatesCursor(globalAutoDownloadEnabled, includeQueue,
+                UserPreferences.AUTODOWNLOAD_ORDER_NEWEST_FIRST);
     }
 
-    public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled, boolean includeQueue, int autoDownloadOrder) {
+    public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled,
+                                                        boolean includeQueue,
+                                                        int autoDownloadOrder) {
         String feedAutoDownloadCondition = globalAutoDownloadEnabled
                 ? "!=" + FeedPreferences.AutoDownloadSetting.DISABLED.code
                 : "=" + FeedPreferences.AutoDownloadSetting.ENABLED.code;
@@ -1145,7 +1149,8 @@ public class PodDBAdapter {
                 + " WHERE " + KEY_DOWNLOAD_URL + " IS NULL OR " + KEY_DOWNLOAD_URL
                 + " NOT LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')";
         String queueCondition = includeQueue ? " OR " + SELECT_KEY_IS_IN_QUEUE : "";
-        String orderDirection = (autoDownloadOrder == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST) ? " ASC" : " DESC";
+        String orderDirection = (autoDownloadOrder == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST)
+                ? " ASC" : " DESC";
         String readCondition = (autoDownloadOrder == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST)
                 ? TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "!=" + FeedItem.PLAYED
                 : TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW;

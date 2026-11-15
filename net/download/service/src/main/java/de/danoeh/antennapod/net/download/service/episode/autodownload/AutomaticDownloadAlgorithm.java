@@ -110,12 +110,13 @@ public class AutomaticDownloadAlgorithm {
                         itemsToDownload.addAll(feedCandidates);
                     } else {
                         List<FeedItem> downloadedItems = DBReader.getFeedItemList(feed,
-                                new FeedItemFilter(FeedItemFilter.DOWNLOADED), SortOrder.DATE_OLD_NEW, 0, Integer.MAX_VALUE);
+                                new FeedItemFilter(FeedItemFilter.DOWNLOADED),
+                                SortOrder.DATE_OLD_NEW, 0, Integer.MAX_VALUE);
                         int downloadedCount = downloadedItems.size();
 
                         for (FeedItem candidate : feedCandidates) {
-                            if (candidate.hasMedia()
-                                    && DownloadServiceInterface.get().isDownloadingEpisode(candidate.getMedia().getDownloadUrl())) {
+                            if (candidate.hasMedia() && DownloadServiceInterface.get()
+                                    .isDownloadingEpisode(candidate.getMedia().getDownloadUrl())) {
                                 downloadedCount++;
                             }
                         }

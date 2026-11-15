@@ -260,7 +260,8 @@ public class HttpDownloader extends Downloader {
                         .protocols(Collections.singletonList(Protocol.HTTP_1_1))
                         .build();
                 return httpClient.newCall(request).execute();
-            } else if (request.isHttps() && (e instanceof SSLException || (msg != null && (msg.contains("SSL") || msg.contains("TLS") || msg.contains("Certificate"))))) {
+            } else if (request.isHttps() && (e instanceof SSLException
+                    || (msg != null && (msg.contains("SSL") || msg.contains("TLS") || msg.contains("Certificate"))))) {
                 Log.w(TAG, "HTTPS failed with SSL error. Retrying with HTTP fallback: " + request.url());
                 HttpUrl httpUrl = request.url().newBuilder().scheme("http").build();
                 Request fallbackRequest = request.newBuilder().url(httpUrl).build();

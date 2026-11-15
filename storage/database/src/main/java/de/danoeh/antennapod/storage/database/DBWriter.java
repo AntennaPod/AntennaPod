@@ -692,8 +692,12 @@ public class DBWriter {
             if (reloadedFeed != null && reloadedFeed.getItems() != null) {
                 List<FeedItem> oldestFirst = new ArrayList<>(reloadedFeed.getItems());
                 Collections.sort(oldestFirst, (lhs, rhs) -> {
-                    if (lhs.getPubDate() == null) return -1;
-                    if (rhs.getPubDate() == null) return 1;
+                    if (lhs.getPubDate() == null) {
+                        return -1;
+                    }
+                    if (rhs.getPubDate() == null) {
+                        return 1;
+                    }
                     return lhs.getPubDate().compareTo(rhs.getPubDate());
                 });
 
@@ -937,14 +941,19 @@ public class DBWriter {
                 if (feed.getId() == 1 && UserPreferences.getFirstSubscriptionTime() == 0) {
                     UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
                 }
-                if (isWithinFirstSubscriptionHour() && UserPreferences.getNewEpisodesAction() != FeedPreferences.NewEpisodesAction.NOTHING) {
+                if (isWithinFirstSubscriptionHour()
+                        && UserPreferences.getNewEpisodesAction() != FeedPreferences.NewEpisodesAction.NOTHING) {
                     List<FeedItem> newItems = new ArrayList<>();
                     List<FeedItem> allItems = feed.getItems();
                     if (UserPreferences.getAutoDownloadOrder() == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST) {
                         List<FeedItem> oldestFirst = new ArrayList<>(allItems);
                         Collections.sort(oldestFirst, (lhs, rhs) -> {
-                            if (lhs.getPubDate() == null) return -1;
-                            if (rhs.getPubDate() == null) return 1;
+                            if (lhs.getPubDate() == null) {
+                                return -1;
+                            }
+                            if (rhs.getPubDate() == null) {
+                                return 1;
+                            }
                             return lhs.getPubDate().compareTo(rhs.getPubDate());
                         });
                         int count = 0;
@@ -953,7 +962,9 @@ public class DBWriter {
                                 item.setNew();
                                 newItems.add(item);
                                 count++;
-                                if (count == 3) break;
+                                if (count == 3) {
+                                    break;
+                                }
                             }
                         }
                     } else {
