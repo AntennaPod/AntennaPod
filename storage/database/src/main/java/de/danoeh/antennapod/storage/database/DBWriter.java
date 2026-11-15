@@ -688,8 +688,8 @@ public class DBWriter {
             adapter.close();
 
             Feed reloadedFeed = DBReader.getFeed(feedId, false, 0, Integer.MAX_VALUE);
+            List<FeedItem> unplayedAfterDate = new ArrayList<>();
             if (reloadedFeed != null && reloadedFeed.getItems() != null) {
-                List<FeedItem> unplayedAfterDate = new ArrayList<>();
                 List<FeedItem> oldestFirst = new ArrayList<>(reloadedFeed.getItems());
                 Collections.sort(oldestFirst, (lhs, rhs) -> {
                     if (lhs.getPubDate() == null) return -1;
@@ -699,6 +699,7 @@ public class DBWriter {
 
                 for (FeedItem item : oldestFirst) {
                     if (!item.isPlayed() && item.getPubDate() != null && item.getPubDate().getTime() > dateTimestamp) {
+                        item.setNew();
                         unplayedAfterDate.add(item);
                         if (unplayedAfterDate.size() == 3) {
                             break;
@@ -712,7 +713,7 @@ public class DBWriter {
                 }
             }
 
-            EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
+            EventBus.getDefault().post(new FeedItemEvent(unplayedAfterDate, true));
             if (context != null) {
                 AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
             }
@@ -949,6 +950,7 @@ public class DBWriter {
                         int count = 0;
                         for (FeedItem item : oldestFirst) {
                             if (!item.isPlayed()) {
+                                item.setNew();
                                 newItems.add(item);
                                 count++;
                                 if (count == 3) break;
@@ -957,6 +959,7 @@ public class DBWriter {
                     } else {
                         for (FeedItem item : allItems.subList(0, Math.min(3, allItems.size()))) {
                             if (!item.isPlayed()) {
+                                item.setNew();
                                 newItems.add(item);
                             }
                         }
