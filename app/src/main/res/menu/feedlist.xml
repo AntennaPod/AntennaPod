@@ -43,6 +43,12 @@
         android:title="@string/share_label" />
 
     <item
+        android:id="@+id/mark_until_date_item"
+        android:menuCategory="container"
+        custom:showAsAction="never"
+        android:title="@string/mark_until_date_label" />
+
+    <item
         android:id="@+id/remove_all_inbox_item"
         android:title="@string/remove_all_inbox_label"
         android:menuCategory="container"

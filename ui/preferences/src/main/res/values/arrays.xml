@@ -27,6 +27,16 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="autodownload_order_entries">
+        <item>@string/autodownload_order_newest_first</item>
+        <item>@string/autodownload_order_oldest_first</item>
+    </string-array>
+
+    <string-array name="autodownload_order_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <string-array name="spnVolumeAdaptationItems">
         <item>@string/feed_volume_reduction_heavy</item>
         <item>@string/feed_volume_reduction_light</item>

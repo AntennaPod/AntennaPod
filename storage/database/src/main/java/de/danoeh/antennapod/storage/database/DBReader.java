@@ -25,6 +25,7 @@ import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.model.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.model.download.DownloadResult;
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.database.mapper.ChapterCursor;
 import de.danoeh.antennapod.storage.database.mapper.DownloadResultCursor;
 import de.danoeh.antennapod.storage.database.mapper.FeedCursor;
@@ -249,7 +250,8 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (FeedItemCursor cursor = new FeedItemCursor(
-                adapter.getAutoDownloadCandidatesCursor(globalAutoDownloadEnabled, includeQueue))) {
+                adapter.getAutoDownloadCandidatesCursor(globalAutoDownloadEnabled, includeQueue,
+                        UserPreferences.getAutoDownloadOrder()))) {
             List<FeedItem> items = extractItemlistFromCursor(cursor);
             if (!items.isEmpty()) {
                 loadFeedDataOfFeedItemList(items);

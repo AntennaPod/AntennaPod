@@ -38,6 +38,7 @@ public abstract class FeedMenuHandler {
         setItemVisibility(menu, R.id.remove_restore_feed, allArchived);
         boolean singleNonLocalFeedSelected = selectedItems.size() == 1 && !selectedItems.get(0).isLocalFeed();
         setItemVisibility(menu, R.id.share_feed, singleNonLocalFeedSelected);
+        setItemVisibility(menu, R.id.mark_until_date_item, selectedItems.size() == 1 && allSubscribed);
         return true;
     }
 

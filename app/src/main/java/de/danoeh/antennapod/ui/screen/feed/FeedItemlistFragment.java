@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
@@ -326,9 +327,26 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         } else if (item.getItemId() == R.id.action_search) {
             ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(feed.getId(), feed.getTitle()));
             return true;
+        } else if (item.getItemId() == R.id.mark_until_date_item) {
+            showMarkUntilDatePicker();
+            return true;
         }
 
         return FeedMenuHandler.onMenuItemClicked(this, item.getItemId(), feed);
+    }
+
+    private void showMarkUntilDatePicker() {
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(R.string.mark_until_date_label)
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            if (selection != null && feed != null) {
+                long endOfDayTimestamp = selection + 86399999L;
+                DBWriter.markItemsPlayedUntilDate(requireContext(), feed.getId(), endOfDayTimestamp);
+            }
+        });
+        datePicker.show(getChildFragmentManager(), "MARK_UNTIL_DATE_PICKER");
     }
 
     public static class RemoveFeedDialogClose extends RemoveFeedDialog {

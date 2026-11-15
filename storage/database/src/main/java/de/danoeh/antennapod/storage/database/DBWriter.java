@@ -666,6 +666,19 @@ public class DBWriter {
         });
     }
 
+    public static Future<?> markItemsPlayedUntilDate(final Context context, final long feedId, final long dateTimestamp) {
+        return runOnDbThread(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.markItemsPlayedUntilDate(feedId, dateTimestamp);
+            adapter.close();
+            EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
+            if (context != null) {
+                AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
+            }
+        });
+    }
+
     /**
      * Sets the 'read'-attribute of all NEW FeedItems of a specific Feed to UNPLAYED.
      *

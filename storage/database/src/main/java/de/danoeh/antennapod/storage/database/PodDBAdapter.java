@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import de.danoeh.antennapod.storage.preferences.UserPreferences;
+
 import de.danoeh.antennapod.model.feed.FeedCounter;
 import de.danoeh.antennapod.model.feed.FeedFunding;
 
@@ -1127,6 +1129,10 @@ public class PodDBAdapter {
     }
 
     public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled, boolean includeQueue) {
+        return getAutoDownloadCandidatesCursor(globalAutoDownloadEnabled, includeQueue, UserPreferences.AUTODOWNLOAD_ORDER_NEWEST_FIRST);
+    }
+
+    public final Cursor getAutoDownloadCandidatesCursor(boolean globalAutoDownloadEnabled, boolean includeQueue, int autoDownloadOrder) {
         String feedAutoDownloadCondition = globalAutoDownloadEnabled
                 ? "!=" + FeedPreferences.AutoDownloadSetting.DISABLED.code
                 : "=" + FeedPreferences.AutoDownloadSetting.ENABLED.code;
@@ -1139,6 +1145,7 @@ public class PodDBAdapter {
                 + " WHERE " + KEY_DOWNLOAD_URL + " IS NULL OR " + KEY_DOWNLOAD_URL
                 + " NOT LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')";
         String queueCondition = includeQueue ? " OR " + SELECT_KEY_IS_IN_QUEUE : "";
+        String orderDirection = (autoDownloadOrder == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST) ? " ASC" : " DESC";
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ENABLED + "!=0"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " IS NOT NULL"
@@ -1146,8 +1153,14 @@ public class PodDBAdapter {
                 + " AND " + feedIsNotLocal
                 + " AND ((" + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
                 + " AND " + feedHasAutoDownload + ")" + queueCondition + ")"
-                + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC";
+                + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + orderDirection;
         return db.rawQuery(query, null);
+    }
+
+    public void markItemsPlayedUntilDate(long feedId, long dateTimestamp) {
+        String sql = "UPDATE " + TABLE_NAME_FEED_ITEMS + " SET " + KEY_READ + "=" + FeedItem.PLAYED
+                + " WHERE " + KEY_FEED + "=" + feedId + " AND " + KEY_PUBDATE + "<=" + dateTimestamp;
+        db.execSQL(sql);
     }
 
     public final Cursor getEpisodeCountCursor(FeedItemFilter filter) {

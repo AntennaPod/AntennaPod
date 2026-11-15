@@ -8,11 +8,15 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -78,22 +82,52 @@ public class AutomaticDownloadAlgorithm {
                 }
 
                 int autoDownloadableEpisodes = candidates.size();
-                int downloadedEpisodes = DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
-                downloadedEpisodes += DownloadServiceInterface.get().getNumberOfActiveDownloads(context);
-                int deletedEpisodes = EpisodeCleanupAlgorithmFactory.build()
-                        .makeRoomForEpisodes(context, autoDownloadableEpisodes);
+                EpisodeCleanupAlgorithmFactory.build().makeRoomForEpisodes(context, autoDownloadableEpisodes);
+
                 boolean cacheIsUnlimited =
                         UserPreferences.getEpisodeCacheSize() == UserPreferences.EPISODE_CACHE_SIZE_UNLIMITED;
                 int episodeCacheSize = UserPreferences.getEpisodeCacheSize();
 
-                int episodeSpaceLeft;
-                if (cacheIsUnlimited || episodeCacheSize >= downloadedEpisodes + autoDownloadableEpisodes) {
-                    episodeSpaceLeft = autoDownloadableEpisodes;
-                } else {
-                    episodeSpaceLeft = episodeCacheSize - (downloadedEpisodes - deletedEpisodes);
+                Map<Long, List<FeedItem>> candidatesByFeed = new LinkedHashMap<>();
+                for (FeedItem item : candidates) {
+                    long feedId = item.getFeed().getId();
+                    if (!candidatesByFeed.containsKey(feedId)) {
+                        candidatesByFeed.put(feedId, new ArrayList<>());
+                    }
+                    candidatesByFeed.get(feedId).add(item);
                 }
 
-                List<FeedItem> itemsToDownload = candidates.subList(0, episodeSpaceLeft);
+                List<FeedItem> itemsToDownload = new ArrayList<>();
+
+                for (Map.Entry<Long, List<FeedItem>> entry : candidatesByFeed.entrySet()) {
+                    List<FeedItem> feedCandidates = entry.getValue();
+                    if (feedCandidates.isEmpty()) {
+                        continue;
+                    }
+                    Feed feed = feedCandidates.get(0).getFeed();
+
+                    if (cacheIsUnlimited) {
+                        itemsToDownload.addAll(feedCandidates);
+                    } else {
+                        List<FeedItem> downloadedItems = DBReader.getFeedItemList(feed,
+                                new FeedItemFilter(FeedItemFilter.DOWNLOADED), SortOrder.DATE_OLD_NEW, 0, Integer.MAX_VALUE);
+                        int downloadedCount = downloadedItems.size();
+
+                        for (FeedItem candidate : feedCandidates) {
+                            if (candidate.hasMedia()
+                                    && DownloadServiceInterface.get().isDownloadingEpisode(candidate.getMedia().getDownloadUrl())) {
+                                downloadedCount++;
+                            }
+                        }
+
+                        int spaceLeft = episodeCacheSize - downloadedCount;
+                        if (spaceLeft > 0) {
+                            int toTake = Math.min(spaceLeft, feedCandidates.size());
+                            itemsToDownload.addAll(feedCandidates.subList(0, toTake));
+                        }
+                    }
+                }
+
                 if (!itemsToDownload.isEmpty()) {
                     Log.d(TAG, "Enqueueing " + itemsToDownload.size() + " items for download");
 

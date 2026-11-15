@@ -19,6 +19,13 @@ This is the official repository of AntennaPod, the easy-to-use, flexible and ope
 <img src="https://raw.githubusercontent.com/AntennaPod/StoreMetadata/main/listings/en-US/graphics/phone-screenshots/00.png" alt="Screenshot 0" height="200"> <img src="https://raw.githubusercontent.com/AntennaPod/StoreMetadata/main/listings/en-US/graphics/phone-screenshots/01.png" alt="Screenshot 1" height="200"> <img src="https://raw.githubusercontent.com/AntennaPod/StoreMetadata/main/listings/en-US/graphics/phone-screenshots/02.png" alt="Screenshot 2" height="200"> <img src="https://raw.githubusercontent.com/AntennaPod/StoreMetadata/main/listings/en-US/graphics/phone-screenshots/03.png" alt="Screenshot 3" height="200"> <img src="https://raw.githubusercontent.com/AntennaPod/StoreMetadata/main/listings/en-US/graphics/phone-screenshots/04.png" alt="Screenshot 4" height="200"> <img src="https://raw.githubusercontent.com/AntennaPod/StoreMetadata/main/listings/en-US/graphics/phone-screenshots/05.png" alt="Screenshot 5" height="200">
 
 
+## Fork Features
+
+This fork includes custom enhancements:
+- **Per-podcast episode cache limit**: The automatic download cache limit applies to each subscribed podcast individually rather than globally.
+- **Configurable episode download order**: Choose between "Newest first" and "Oldest first" (chronological / past-to-present) in *Settings -> Downloads -> Automatic download -> Episode download order*.
+- **Mark episodes until date as played**: Mark all episodes of a podcast up to a selected date as played via the podcast options menu.
+
 ## Feedback
 You can use the [AntennaPod Forum](https://forum.antennapod.org/) for discussions about the app or just podcasting in general.
 

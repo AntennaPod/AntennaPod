@@ -104,6 +104,9 @@ public abstract class UserPreferences {
     public static final String PREF_AUTODL_GLOBAL = "prefEnableAutoDl";
     public static final String PREF_AUTODL_QUEUE = "prefEnableAutoDlQueue";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
+    public static final String PREF_AUTODOWNLOAD_ORDER = "prefAutoDownloadOrder";
+    public static final int AUTODOWNLOAD_ORDER_NEWEST_FIRST = 0;
+    public static final int AUTODOWNLOAD_ORDER_OLDEST_FIRST = 1;
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
     private static final String PREF_PROXY_PORT = "prefProxyPort";
@@ -578,6 +581,10 @@ public abstract class UserPreferences {
 
     public static boolean isEnableAutodownloadOnBattery() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_BATTERY, true);
+    }
+
+    public static int getAutoDownloadOrder() {
+        return Integer.parseInt(prefs.getString(PREF_AUTODOWNLOAD_ORDER, "0"));
     }
 
     public static int getFastForwardSecs() {
