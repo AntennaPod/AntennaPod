@@ -685,22 +685,33 @@ public class DBWriter {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.markItemsPlayedUntilDate(feedId, dateTimestamp);
+            adapter.close();
 
-            if (feed != null && feed.getItems() != null) {
+            Feed reloadedFeed = DBReader.getFeed(feedId, false, 0, Integer.MAX_VALUE);
+            if (reloadedFeed != null && reloadedFeed.getItems() != null) {
                 List<FeedItem> unplayedAfterDate = new ArrayList<>();
-                List<FeedItem> allItems = feed.getItems();
-                for (int i = allItems.size() - 1; i >= 0 && unplayedAfterDate.size() < 3; i--) {
-                    FeedItem item = allItems.get(i);
+                List<FeedItem> oldestFirst = new ArrayList<>(reloadedFeed.getItems());
+                Collections.sort(oldestFirst, (lhs, rhs) -> {
+                    if (lhs.getPubDate() == null) return -1;
+                    if (rhs.getPubDate() == null) return 1;
+                    return lhs.getPubDate().compareTo(rhs.getPubDate());
+                });
+
+                for (FeedItem item : oldestFirst) {
                     if (!item.isPlayed() && item.getPubDate() != null && item.getPubDate().getTime() > dateTimestamp) {
                         unplayedAfterDate.add(item);
+                        if (unplayedAfterDate.size() == 3) {
+                            break;
+                        }
                     }
                 }
                 if (!unplayedAfterDate.isEmpty()) {
+                    adapter.open();
                     adapter.setFeedItemsRead(FeedItem.NEW, false, unplayedAfterDate);
+                    adapter.close();
                 }
             }
 
-            adapter.close();
             EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
             if (context != null) {
                 AutoDownloadManager.getInstance().autodownloadUndownloadedItems(context);
@@ -929,12 +940,18 @@ public class DBWriter {
                     List<FeedItem> newItems = new ArrayList<>();
                     List<FeedItem> allItems = feed.getItems();
                     if (UserPreferences.getAutoDownloadOrder() == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST) {
+                        List<FeedItem> oldestFirst = new ArrayList<>(allItems);
+                        Collections.sort(oldestFirst, (lhs, rhs) -> {
+                            if (lhs.getPubDate() == null) return -1;
+                            if (rhs.getPubDate() == null) return 1;
+                            return lhs.getPubDate().compareTo(rhs.getPubDate());
+                        });
                         int count = 0;
-                        for (int i = allItems.size() - 1; i >= 0 && count < 3; i--) {
-                            FeedItem item = allItems.get(i);
+                        for (FeedItem item : oldestFirst) {
                             if (!item.isPlayed()) {
                                 newItems.add(item);
                                 count++;
+                                if (count == 3) break;
                             }
                         }
                     } else {
