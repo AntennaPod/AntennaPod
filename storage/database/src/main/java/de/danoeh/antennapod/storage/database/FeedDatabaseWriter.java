@@ -162,12 +162,14 @@ public abstract class FeedDatabaseWriter {
                         if (action == FeedPreferences.NewEpisodesAction.GLOBAL) {
                             action = UserPreferences.getNewEpisodesAction();
                         }
-                        FeedPreferences.AutoDownloadSetting autoDownload = savedFeed.getPreferences().getAutoDownload();
-                        if (!savedFeed.isLocalFeed() && (autoDownload == FeedPreferences.AutoDownloadSetting.ENABLED
-                                || (autoDownload == FeedPreferences.AutoDownloadSetting.GLOBAL
-                                        && UserPreferences.isEnableAutodownloadGlobal()))) {
-                            // Auto download currently only considers episodes in the inbox
-                            action = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
+                        if (action != FeedPreferences.NewEpisodesAction.NOTHING) {
+                            FeedPreferences.AutoDownloadSetting autoDownload = savedFeed.getPreferences().getAutoDownload();
+                            if (!savedFeed.isLocalFeed() && (autoDownload == FeedPreferences.AutoDownloadSetting.ENABLED
+                                    || (autoDownload == FeedPreferences.AutoDownloadSetting.GLOBAL
+                                            && UserPreferences.isEnableAutodownloadGlobal()))) {
+                                // Auto download currently only considers episodes in the inbox
+                                action = FeedPreferences.NewEpisodesAction.ADD_TO_INBOX;
+                            }
                         }
                         switch (action) {
                             case ADD_TO_INBOX:

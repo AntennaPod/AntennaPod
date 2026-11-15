@@ -668,6 +668,20 @@ public class DBWriter {
 
     public static Future<?> markItemsPlayedUntilDate(final Context context, final long feedId, final long dateTimestamp) {
         return runOnDbThread(() -> {
+            Feed feed = DBReader.getFeed(feedId, false, 0, Integer.MAX_VALUE);
+            if (feed != null && feed.getItems() != null) {
+                for (FeedItem item : feed.getItems()) {
+                    if (item.getPubDate() != null && item.getPubDate().getTime() <= dateTimestamp) {
+                        if (item.hasMedia() && item.getMedia().isDownloaded()) {
+                            deleteFeedMediaSynchronous(context, item.getMedia());
+                        }
+                        if (item.isTagged(FeedItem.TAG_QUEUE)) {
+                            removeQueueItemSynchronous(context, false, item.getId());
+                        }
+                    }
+                }
+            }
+
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.markItemsPlayedUntilDate(feedId, dateTimestamp);
