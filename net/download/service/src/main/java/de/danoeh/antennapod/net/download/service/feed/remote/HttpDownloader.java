@@ -34,6 +34,8 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.parser.feed.util.DateUtils;
 import de.danoeh.antennapod.model.download.DownloadError;
 import de.danoeh.antennapod.net.common.UriUtil;
+import javax.net.ssl.SSLException;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -246,16 +248,23 @@ public class HttpDownloader extends Downloader {
 
     private Response newCall(Request.Builder httpReq) throws IOException {
         OkHttpClient httpClient = AntennapodHttpClient.getHttpClient();
+        Request request = httpReq.build();
         try {
-            return httpClient.newCall(httpReq.build()).execute();
+            return httpClient.newCall(request).execute();
         } catch (IOException e) {
             Log.e(TAG, e.toString());
-            if (e.getMessage() != null && e.getMessage().contains("PROTOCOL_ERROR")) {
+            String msg = e.getMessage();
+            if (msg != null && msg.contains("PROTOCOL_ERROR")) {
                 // Apparently some servers announce they support SPDY but then actually don't.
                 httpClient = httpClient.newBuilder()
                         .protocols(Collections.singletonList(Protocol.HTTP_1_1))
                         .build();
-                return httpClient.newCall(httpReq.build()).execute();
+                return httpClient.newCall(request).execute();
+            } else if (request.isHttps() && (e instanceof SSLException || (msg != null && (msg.contains("SSL") || msg.contains("TLS") || msg.contains("Certificate"))))) {
+                Log.w(TAG, "HTTPS failed with SSL error. Retrying with HTTP fallback: " + request.url());
+                HttpUrl httpUrl = request.url().newBuilder().scheme("http").build();
+                Request fallbackRequest = request.newBuilder().url(httpUrl).build();
+                return httpClient.newCall(fallbackRequest).execute();
             } else {
                 throw e;
             }
