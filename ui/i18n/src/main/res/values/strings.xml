@@ -261,6 +261,7 @@
     <string name="removed_from_inbox_message">Removed from inbox</string>
     <string name="mark_as_played_label">Mark as played</string>
     <string name="mark_until_date_label">Mark episodes until date as played</string>
+    <string name="mark_until_date_confirmation">Are you sure you want to mark all episodes published on or before %s as played?</string>
     <string name="pref_autodownload_order_title">Episode download order</string>
     <string name="autodownload_order_newest_first">Newest first</string>
     <string name="autodownload_order_oldest_first">Oldest first</string>

@@ -17,6 +17,10 @@ public class PreferenceListDialog {
         this.title = title;
     }
 
+    public void setSelectedPos(int selectedPos) {
+        this.selectedPos = selectedPos;
+    }
+
     public interface OnPreferenceChangedListener {
         /**
          * Notified when user confirms preference

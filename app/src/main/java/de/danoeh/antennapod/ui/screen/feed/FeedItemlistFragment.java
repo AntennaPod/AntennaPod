@@ -21,6 +21,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.text.DateFormat;
+import java.util.Date;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.databinding.FeedItemListFragmentBinding;
@@ -343,7 +347,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         datePicker.addOnPositiveButtonClickListener(selection -> {
             if (selection != null && feed != null) {
                 long endOfDayTimestamp = selection + 86399999L;
-                DBWriter.markItemsPlayedUntilDate(requireContext(), feed.getId(), endOfDayTimestamp);
+                Date selectedDate = new Date(selection);
+                DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+                String formattedDate = dateFormat.format(selectedDate);
+
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.mark_until_date_label)
+                        .setMessage(getString(R.string.mark_until_date_confirmation, formattedDate))
+                        .setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+                            DBWriter.markItemsPlayedUntilDate(requireContext(), feed.getId(), endOfDayTimestamp);
+                        })
+                        .setNegativeButton(R.string.cancel_label, null)
+                        .show();
             }
         });
         datePicker.show(getChildFragmentManager(), "MARK_UNTIL_DATE_PICKER");

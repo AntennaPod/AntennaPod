@@ -841,6 +841,11 @@
     </plurals>
     <string name="removed_from_inbox_message">Aus dem Posteingang entfernt</string>
     <string name="mark_as_played_label">Als abgespielt markieren</string>
+    <string name="mark_until_date_label">Folgen bis Datum als gehört markieren</string>
+    <string name="mark_until_date_confirmation">Möchtest du wirklich alle Folgen, die bis zum %s erschienen sind, als gehört markieren?</string>
+    <string name="pref_autodownload_order_title">Episoden Download-Reihenfolge</string>
+    <string name="autodownload_order_newest_first">Neueste zuerst</string>
+    <string name="autodownload_order_oldest_first">Älteste zuerst</string>
     <plurals name="marked_as_played_message">
         <item quantity="one">%d Episode als abgespielt markiert.</item>
         <item quantity="other">%d Episoden als abgespielt markiert.</item>

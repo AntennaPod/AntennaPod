@@ -587,6 +587,14 @@ public abstract class UserPreferences {
         return Integer.parseInt(prefs.getString(PREF_AUTODOWNLOAD_ORDER, "0"));
     }
 
+    public static void setEpisodeCacheSize(int episodeCacheSize) {
+        prefs.edit().putString(PREF_EPISODE_CACHE_SIZE, String.valueOf(episodeCacheSize)).apply();
+    }
+
+    public static void setPrefAutoDownloadOrder(int order) {
+        prefs.edit().putString(PREF_AUTODOWNLOAD_ORDER, String.valueOf(order)).apply();
+    }
+
     public static int getFastForwardSecs() {
         return prefs.getInt(PREF_FAST_FORWARD_SECS, 30);
     }

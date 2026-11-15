@@ -126,6 +126,10 @@
     </integer-array>
 
     <string-array name="episode_cache_size_entries">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
         <item>5</item>
         <item>10</item>
         <item>25</item>
@@ -136,6 +140,10 @@
     </string-array>
 
     <string-array name="episode_cache_size_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
         <item>5</item>
         <item>10</item>
         <item>25</item>
