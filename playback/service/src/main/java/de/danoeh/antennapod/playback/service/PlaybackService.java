@@ -739,6 +739,38 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return true;
                 }
                 return false;
+            case UserPreferences.HARDWARE_BUTTON_ACTION_SKIP_CHAPTER:
+                if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
+                    List<Chapter> chapters = mediaPlayer.getPlayable() != null
+                            ? mediaPlayer.getPlayable().getChapters() : null;
+                    if (chapters != null && !chapters.isEmpty()) {
+                        int nextChapter = Chapter.getAfterPosition(chapters, mediaPlayer.getPosition()) + 1;
+                        if (nextChapter < chapters.size()) {
+                            mediaPlayer.seekTo((int) chapters.get(nextChapter).getStart());
+                        } else {
+                            mediaPlayer.skip();
+                        }
+                    } else {
+                        mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
+                    }
+                    return true;
+                }
+                return false;
+            case UserPreferences.HARDWARE_BUTTON_ACTION_PREVIOUS_CHAPTER:
+                if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
+                    List<Chapter> chapters = mediaPlayer.getPlayable() != null
+                            ? mediaPlayer.getPlayable().getChapters() : null;
+                    if (chapters != null && !chapters.isEmpty()) {
+                        int targetChapter = Chapter.getPreviousChapterIndex(chapters, mediaPlayer.getPosition());
+                        if (targetChapter >= 0) {
+                            mediaPlayer.seekTo((int) chapters.get(targetChapter).getStart());
+                        }
+                    } else {
+                        mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    }
+                    return true;
+                }
+                return false;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(true, true);
