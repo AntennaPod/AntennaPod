@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.BuildConfig;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 
@@ -31,6 +32,9 @@ public abstract class PlaybackServiceInterface {
     public static boolean isPlaying = false;
 
     public static Intent getPlayerActivityIntent(Context context, Playable media) {
+        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
+        }
         if (media.getMediaType() == MediaType.VIDEO) {
             return new VideoPlayerActivityStarter(context).getIntent();
         } else {

@@ -33,6 +33,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:src="@android:drawable/sym_def_app_icon" />
 
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/videoPlayerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/open_video_full_screen"
+            android:visibility="gone"
+            app:shutter_background_color="?android:attr/colorBackground"
+            app:surface_type="texture_view"
+            app:use_controller="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

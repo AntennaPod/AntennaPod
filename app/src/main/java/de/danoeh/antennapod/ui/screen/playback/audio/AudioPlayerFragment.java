@@ -559,6 +559,13 @@ public class AudioPlayerFragment extends Fragment implements
         }
     }
 
+    public void updateVideoPlayer() {
+        Fragment cover = getChildFragmentManager().findFragmentByTag("f" + POS_COVER);
+        if (cover instanceof CoverFragment) {
+            ((CoverFragment) cover).updateVideoPlayer();
+        }
+    }
+
     public void fadePlayerToToolbar(float slideOffset) {
         float playerFadeProgress = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
         View player = getView().findViewById(R.id.playerFragment);

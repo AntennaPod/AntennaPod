@@ -23,12 +23,10 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.PlaybackSpeedActivityStarter;
-import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
@@ -68,8 +66,10 @@ public abstract class WidgetUpdater {
         }
 
         PendingIntent startMediaPlayer;
-        if (widgetState.media != null && widgetState.media.getMediaType() == MediaType.VIDEO) {
-            startMediaPlayer = new VideoPlayerActivityStarter(context).getPendingIntent();
+        if (widgetState.media == null) {
+            startMediaPlayer = PendingIntent.getActivity(context, R.id.pending_intent_empty_widget,
+                    new MainActivityStarter(context).withClearBackStack().getIntent(),
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
             startMediaPlayer = new MainActivityStarter(context)
                     .withOpenPlayer().withClearBackStack().getPendingIntent();
