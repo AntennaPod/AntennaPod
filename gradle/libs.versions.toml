@@ -68,7 +68,7 @@ eventbus = { module = "org.greenrobot:eventbus", version = "3.3.1" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version = "3.0.2" }
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version = "3.1.5" }
 guava = { module = "com.google.guava:guava", version = "31.0.1-android" }
-conscrypt-android = { module = "org.conscrypt:conscrypt-android", version = "2.5.3" }
+conscrypt-android = { module = "org.conscrypt:conscrypt-android", version = "2.9.0" }
 preferencesearch = { module = "com.bytehamster:lib.preferencesearch", version = "2.7.3" }
 balloon = { module = "com.github.skydoves:balloon", version = "1.5.3" }
 recyclerview-swipedecorator = { module = "it.xabaras.android:recyclerview-swipedecorator", version = "1.4" }
