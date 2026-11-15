@@ -29,7 +29,6 @@ import androidx.media3.common.DeviceInfo;
 import androidx.media3.common.Player;
 import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
-import androidx.media3.ui.PlayerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -90,7 +89,6 @@ public class CoverFragment extends Fragment {
     private Disposable disposable;
     private int displayedChapterIndex = -1;
     private Playable media;
-    private PlayerView videoPlayerView;
     private MediaController mediaController;
     private ListenableFuture<MediaController> controllerFuture;
 
@@ -117,6 +115,8 @@ public class CoverFragment extends Fragment {
                         .start();
             }
         });
+        viewBinding.videoPlayerView.setOnClickListener(v ->
+                new VideoPlayerActivityStarter(requireContext()).start());
         viewBinding.openDescription.setOnClickListener(view -> ((AudioPlayerFragment) requireParentFragment())
                 .scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true));
         ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
@@ -310,8 +310,8 @@ public class CoverFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (videoPlayerView != null) {
-            videoPlayerView.setPlayer(null);
+        if (viewBinding != null) {
+            viewBinding.videoPlayerView.setPlayer(null);
         }
     }
 
@@ -323,7 +323,7 @@ public class CoverFragment extends Fragment {
                 && media != null && media.getMediaType() == MediaType.VIDEO;
         if (!isVideo) {
             releaseVideoPlayer();
-            if (videoPlayerView == null || videoPlayerView.getVisibility() == View.GONE) {
+            if (viewBinding.videoPlayerView.getVisibility() == View.GONE) {
                 return;
             }
         } else if (isResumed() && controllerFuture == null) {
@@ -353,9 +353,9 @@ public class CoverFragment extends Fragment {
 
                         @Override
                         public void onRenderedFirstFrame() {
-                            if (mediaController != null && videoPlayerView != null
-                                    && videoPlayerView.getPlayer() == mediaController) {
-                                videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(1);
+                            if (mediaController != null && viewBinding != null
+                                    && viewBinding.videoPlayerView.getPlayer() == mediaController) {
+                                viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(1);
                                 viewBinding.imgvCover.setVisibility(View.GONE);
                             }
                         }
@@ -369,34 +369,22 @@ public class CoverFragment extends Fragment {
         boolean showVideo = isVideo
                 && (mediaController == null
                 || mediaController.getDeviceInfo().playbackType != DeviceInfo.PLAYBACK_TYPE_REMOTE);
-        int padding = viewBinding.coverFragment.getPaddingTop();
-        viewBinding.coverFragment.setPadding(showVideo ? 0 : padding, padding, showVideo ? 0 : padding, padding);
-        viewBinding.coverFragmentTextContainer.setPadding(showVideo ? padding : 0, 0, showVideo ? padding : 0, 0);
-        viewBinding.episodeDetails.setPadding(showVideo ? 2 * padding : padding, 0,
-                showVideo ? 2 * padding : padding, 0);
-        if (showVideo && videoPlayerView == null) {
-            videoPlayerView = (PlayerView) viewBinding.videoPlayerStub.inflate();
-            videoPlayerView.setOnClickListener(v -> new VideoPlayerActivityStarter(requireContext()).start());
-        }
         if (!showVideo) {
             viewBinding.imgvCover.setVisibility(View.VISIBLE);
         }
-        if (videoPlayerView != null) {
-            videoPlayerView.setVisibility(showVideo ? View.VISIBLE : View.GONE);
-            boolean expanded = ((MainActivity) requireActivity()).getBottomSheet().getState()
-                    == BottomSheetBehavior.STATE_EXPANDED;
-            Player player = showVideo && isResumed() && expanded ? mediaController : null;
-            if (player == null || videoPlayerView.getPlayer() != player
-                    || player.getPlaybackState() == Player.STATE_IDLE) {
-                videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(0);
-                viewBinding.imgvCover.setVisibility(View.VISIBLE);
-            }
-            if (player != null && videoPlayerView.getPlayer() != player) {
-                EventBus.getDefault().post(new VideoPlayerViewAttachedEvent());
-            }
-            videoPlayerView.setPlayer(player);
-            videoPlayerView.setContentDescription(getString(R.string.open_video_full_screen));
+        viewBinding.videoPlayerView.setVisibility(showVideo ? View.VISIBLE : View.GONE);
+        boolean expanded = ((MainActivity) requireActivity()).getBottomSheet().getState()
+                == BottomSheetBehavior.STATE_EXPANDED;
+        Player player = showVideo && isResumed() && expanded ? mediaController : null;
+        if (player == null || viewBinding.videoPlayerView.getPlayer() != player
+                || player.getPlaybackState() == Player.STATE_IDLE) {
+            viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(0);
+            viewBinding.imgvCover.setVisibility(View.VISIBLE);
         }
+        if (player != null && viewBinding.videoPlayerView.getPlayer() != player) {
+            EventBus.getDefault().post(new VideoPlayerViewAttachedEvent());
+        }
+        viewBinding.videoPlayerView.setPlayer(player);
     }
 
     @Override
@@ -409,8 +397,8 @@ public class CoverFragment extends Fragment {
 
     private void releaseVideoPlayer() {
         if (controllerFuture != null) {
-            if (videoPlayerView != null) {
-                videoPlayerView.setPlayer(null);
+            if (viewBinding != null) {
+                viewBinding.videoPlayerView.setPlayer(null);
             }
             mediaController = null;
             MediaController.releaseFuture(controllerFuture);
@@ -425,7 +413,6 @@ public class CoverFragment extends Fragment {
             disposable.dispose();
         }
         viewBinding = null;
-        videoPlayerView = null;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

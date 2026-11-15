@@ -114,6 +114,7 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
     private OnBackPressedCallback openDefaultPageBackPressedCallback;
     private int lastTheme = 0;
     private Insets systemBarInsets = Insets.NONE;
+    private boolean openPlayerWhenVisible = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -299,6 +300,11 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
     private class AntennaPodBottomSheetCallback extends BottomSheetBehavior.BottomSheetCallback {
         @Override
         public void onStateChanged(@NonNull View view, int state) {
+            AudioPlayerFragment audioPlayer = (AudioPlayerFragment) getSupportFragmentManager()
+                    .findFragmentByTag(AudioPlayerFragment.TAG);
+            if (audioPlayer != null) {
+                audioPlayer.updateVideoPlayer();
+            }
             if (state == BottomSheetBehavior.STATE_COLLAPSED) {
                 onSlide(view, 0.0f);
                 bottomSheetBackPressedCallback.setEnabled(false);
@@ -389,8 +395,9 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
     public void setPlayerVisible(boolean visible) {
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
         if (visible) {
-            if (getIntent().getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
-                handleNavIntent();
+            if (openPlayerWhenVisible) {
+                openPlayerWhenVisible = false;
+                openPlayer();
             }
             bottomSheetCallback.onStateChanged(null, getBottomSheet().getState()); // Update toolbar visibility
         } else {
@@ -704,8 +711,13 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                     PlaybackController.bindToMedia3Service(this, MediaController::play);
                 })
                 .setNeutralButton(R.string.cancel_label, (dialog, which) -> dialog.cancel())
-                .setOnCancelListener(dialog -> getIntent().removeExtra(MainActivityStarter.EXTRA_OPEN_PLAYER))
+                .setOnCancelListener(dialog -> openPlayerWhenVisible = false)
                 .show();
+    }
+
+    private void openPlayer() {
+        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetCallback.onSlide(null, 1.0f);
     }
 
     private void handleNavIntent() {
@@ -741,11 +753,12 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
-            if (findViewById(R.id.audioplayerFragment).getVisibility() != View.VISIBLE) {
-                return;
+            if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
+                openPlayer();
+            } else {
+                // Playback has not started yet, so the player is still hidden
+                openPlayerWhenVisible = true;
             }
-            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            bottomSheetCallback.onSlide(null, 1.0f);
         } else {
             handleDeeplink(intent.getData());
         }

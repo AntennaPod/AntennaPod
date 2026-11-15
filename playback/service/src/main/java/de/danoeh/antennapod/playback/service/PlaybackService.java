@@ -203,9 +203,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * running, the type of the last played media will be looked up.
      */
     public static Intent getPlayerActivityIntent(Context context) {
-        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
-        }
         boolean showVideoPlayer;
 
         if (PlaybackServiceInterface.isPlaying) {
