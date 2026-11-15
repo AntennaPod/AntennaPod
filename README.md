@@ -22,9 +22,10 @@ This is the official repository of AntennaPod, the easy-to-use, flexible and ope
 ## Fork Features
 
 This fork includes custom enhancements:
-- **Per-podcast episode cache limit**: The automatic download cache limit applies to each subscribed podcast individually rather than globally.
-- **Configurable episode download order**: Choose between "Newest first" and "Oldest first" (chronological / past-to-present) in *Settings -> Downloads -> Automatic download -> Episode download order*.
-- **Mark episodes until date as played**: Mark all episodes of a podcast up to a selected date as played via the podcast options menu.
+- **Per-podcast episode cache limit**: The automatic download cache limit (e.g. 1, 2, 3, 4, 5...) applies to each subscribed podcast individually rather than globally.
+- **Configurable episode download order**: Choose between "Newest first" (*Neueste zuerst*) and "Oldest first" (*Älteste zuerst* - chronological / past-to-present) in *Settings -> Downloads -> Automatic download -> Episode download order* (*Episoden Download-Reihenfolge*).
+- **Mark episodes until date as played**: Mark all episodes of a podcast up to a selected date as played via the podcast options menu (*Folgen bis Datum als gehört markieren*).
+- **Explicit confirmation dialogs**: Preference selections for cache limit and download order include explicit "Confirm" (*Bestätigen*) buttons for clear user feedback.
 
 ## Feedback
 You can use the [AntennaPod Forum](https://forum.antennapod.org/) for discussions about the app or just podcasting in general.
