@@ -685,6 +685,21 @@ public class DBWriter {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.markItemsPlayedUntilDate(feedId, dateTimestamp);
+
+            if (feed != null && feed.getItems() != null) {
+                List<FeedItem> unplayedAfterDate = new ArrayList<>();
+                List<FeedItem> allItems = feed.getItems();
+                for (int i = allItems.size() - 1; i >= 0 && unplayedAfterDate.size() < 3; i--) {
+                    FeedItem item = allItems.get(i);
+                    if (!item.isPlayed() && item.getPubDate() != null && item.getPubDate().getTime() > dateTimestamp) {
+                        unplayedAfterDate.add(item);
+                    }
+                }
+                if (!unplayedAfterDate.isEmpty()) {
+                    adapter.setFeedItemsRead(FeedItem.NEW, false, unplayedAfterDate);
+                }
+            }
+
             adapter.close();
             EventBus.getDefault().post(new FeedItemEvent(Collections.emptyList(), true));
             if (context != null) {
