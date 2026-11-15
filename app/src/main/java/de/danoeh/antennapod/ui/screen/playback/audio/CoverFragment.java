@@ -47,7 +47,7 @@ import de.danoeh.antennapod.event.playback.VideoPlayerViewAttachedEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.playback.service.Media3PlaybackService;
-import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -99,7 +99,7 @@ public class CoverFragment extends Fragment {
         viewBinding = CoverFragmentBinding.inflate(inflater);
         viewBinding.imgvCover.setOnClickListener(v -> {
             if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                if (PlaybackService.isRunning) {
+                if (PlaybackServiceInterface.isPlaying) {
                     PlaybackController.bindToMedia3Service(getActivity(), MediaController::pause);
                 } else if (media != null) {
                     new PlaybackServiceStarter(getContext(), media)
@@ -108,7 +108,7 @@ public class CoverFragment extends Fragment {
                 }
                 return;
             }
-            if (PlaybackService.isRunning
+            if (PlaybackServiceInterface.isPlaying
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                 getContext().sendBroadcast(MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_PAUSE));
             } else if (media != null) {

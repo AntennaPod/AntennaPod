@@ -73,7 +73,7 @@ public abstract class PlaybackController {
             EventBus.getDefault().register(this);
             eventsRegistered = true;
         }
-        if (PlaybackService.isRunning) {
+        if (PlaybackServiceInterface.isPlaying) {
             initServiceRunning();
         } else {
             updatePlayButtonShowsPlay(true);
@@ -160,7 +160,7 @@ public abstract class PlaybackController {
             return;
         }
         Log.d(TAG, "Trying to connect to service");
-        if (!PlaybackService.isRunning) {
+        if (!PlaybackServiceInterface.isPlaying) {
             throw new IllegalStateException("Trying to bind but service is not running");
         }
         boolean bound = activity.bindService(new Intent(activity, PlaybackService.class), mConnection, 0);
@@ -200,7 +200,7 @@ public abstract class PlaybackController {
                 handleStatus();
             } else {
                 Log.w(TAG, "Couldn't receive status update: playbackService was null");
-                if (PlaybackService.isRunning) {
+                if (PlaybackServiceInterface.isPlaying) {
                     bindToService();
                 } else {
                     status = PlayerStatus.STOPPED;
@@ -221,7 +221,7 @@ public abstract class PlaybackController {
                 return;
             }
             if (type == PlaybackServiceInterface.NOTIFICATION_TYPE_RELOAD) {
-                if (playbackService == null && PlaybackService.isRunning) {
+                if (playbackService == null && PlaybackServiceInterface.isPlaying) {
                     bindToService();
                     return;
                 }
@@ -493,7 +493,7 @@ public abstract class PlaybackController {
     }
 
     public static void bindToService(Activity activity, Consumer<PlaybackService> consumer) {
-        if (!PlaybackService.isRunning) {
+        if (!PlaybackServiceInterface.isPlaying) {
             return;
         }
         activity.bindService(new Intent(activity, PlaybackService.class), new ServiceConnection() {

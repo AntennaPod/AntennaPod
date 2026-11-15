@@ -10,12 +10,9 @@ android {
     defaultConfig {
         def commit = ""
         try {
-            def hashStdOut = new ByteArrayOutputStream()
-            exec {
+            commit = providers.exec {
                 commandLine "git", "rev-parse", "--short", "HEAD"
-                standardOutput = hashStdOut
-            }
-            commit = hashStdOut.toString().trim()
+            }.standardOutput.asText.get().trim()
         } catch (Exception ignore) {
         }
         buildConfigField "String", "COMMIT_HASH", ('"' + (commit.isEmpty() ? "Unknown commit" : commit) + '"')

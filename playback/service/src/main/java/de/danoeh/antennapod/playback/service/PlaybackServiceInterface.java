@@ -1,5 +1,13 @@
 package de.danoeh.antennapod.playback.service;
 
+import android.content.Context;
+import android.content.Intent;
+import de.danoeh.antennapod.model.playback.MediaType;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.BuildConfig;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
+
 public abstract class PlaybackServiceInterface {
     public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";
     public static final String EXTRA_ALLOW_STREAM_THIS_TIME = "extra.de.danoeh.antennapod.core.service.allowStream";
@@ -17,4 +25,20 @@ public abstract class PlaybackServiceInterface {
 
     public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE
             = "action.de.danoeh.antennapod.core.service.actionShutdownPlaybackService";
+
+    /**
+     * Is true if playback is active or about to start.
+     */
+    public static boolean isPlaying = false;
+
+    public static Intent getPlayerActivityIntent(Context context, Playable media) {
+        if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
+            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
+        }
+        if (media.getMediaType() == MediaType.VIDEO) {
+            return new VideoPlayerActivityStarter(context).getIntent();
+        } else {
+            return new MainActivityStarter(context).withClearBackStack().withOpenPlayer().getIntent();
+        }
+    }
 }

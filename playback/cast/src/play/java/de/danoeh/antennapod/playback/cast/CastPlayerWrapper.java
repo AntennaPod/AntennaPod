@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.playback.cast;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
@@ -83,8 +84,12 @@ public class CastPlayerWrapper {
             if (mediaItem.mediaMetadata.subtitle != null) {
                 metadata.putString(CastMediaMetadata.KEY_SUBTITLE, mediaItem.mediaMetadata.subtitle.toString());
             }
+            String artworkUrl = mediaItem.mediaMetadata.extras != null
+                    ? mediaItem.mediaMetadata.extras.getString(MediaItemAdapter.KEY_ARTWORK_URL) : null;
             if (mediaItem.mediaMetadata.artworkUri != null) {
                 metadata.addImage(new WebImage(mediaItem.mediaMetadata.artworkUri));
+            } else if (artworkUrl != null) {
+                metadata.addImage(new WebImage(Uri.parse(artworkUrl)));
             }
             if (!mediaItem.mediaId.isEmpty()) {
                 metadata.putString(KEY_MEDIA_ID, mediaItem.mediaId);

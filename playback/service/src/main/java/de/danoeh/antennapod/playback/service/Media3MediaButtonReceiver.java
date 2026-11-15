@@ -27,9 +27,9 @@ public class Media3MediaButtonReceiver extends MediaButtonReceiver {
             return;
         }
         Log.d(TAG, "onReceive: " + KeyEvent.keyCodeToString(keyEvent.getKeyCode())
-                + ", isRunning=" + PlaybackService.isRunning);
+                + ", isPlaying=" + PlaybackServiceInterface.isPlaying);
 
-        if (PlaybackService.isRunning) {
+        if (PlaybackServiceInterface.isPlaying) {
             Intent serviceIntent = new Intent(intent);
             serviceIntent.setComponent(new ComponentName(context, Media3PlaybackService.class));
             try {

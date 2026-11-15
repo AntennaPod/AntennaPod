@@ -30,7 +30,7 @@
     </Match>
     <Match>
         <Bug pattern="MS_CANNOT_BE_FINAL"/>
-        <Class name="de.danoeh.antennapod.playback.service.PlaybackService"/>
+        <Class name="de.danoeh.antennapod.playback.service.PlaybackServiceInterface"/>
     </Match>
     <Match>
         <Bug pattern="MS_MUTABLE_ARRAY"/>

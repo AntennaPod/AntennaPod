@@ -94,6 +94,8 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
+    private Disposable chapterArtworkDisposable;
+    private int lastChapterArtworkIndex = -1;
     private long lastPositionSaveTime = 0;
     private String playedMediaId = null;
     private int playbackStartPosition = -1;
@@ -260,6 +262,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 super.seekTo(positionMs);
                 EventBus.getDefault().post(
                         new PlaybackPositionEvent((int) positionMs, (int) player.getDuration()));
+                updateChapterArtwork();
             }
         };
         player.addListener(playerListener);
@@ -368,7 +371,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         public void onPlaybackStateChanged(int playbackState) {
             if (playbackState == Player.STATE_BUFFERING) {
                 EventBus.getDefault().post(BufferUpdateEvent.started());
-                PlaybackService.isRunning = player.getPlayWhenReady(); // Immediately show as playing
+                PlaybackServiceInterface.isPlaying = player.getPlayWhenReady(); // Immediately show as playing
                 updatePlaybackPreferences();
             } else {
                 EventBus.getDefault().post(BufferUpdateEvent.ended());
@@ -397,18 +400,18 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         @Override
         public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
-            PlaybackService.isRunning = !Util.shouldShowPlayButton(player);
+            PlaybackServiceInterface.isPlaying = !Util.shouldShowPlayButton(player);
             updatePlaybackPreferences();
         }
 
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
-            PlaybackService.isRunning = !Util.shouldShowPlayButton(player);
+            PlaybackServiceInterface.isPlaying = !Util.shouldShowPlayButton(player);
             if (isPlaying && player.getCurrentMediaItem() != null) {
                 playedMediaId = player.getCurrentMediaItem().mediaId;
                 saveCurrentPosition();
             }
-            if (PlaybackService.isRunning) {
+            if (PlaybackServiceInterface.isPlaying) {
                 lastPositionSaveTime = System.currentTimeMillis();
                 setupPositionObserver();
             } else {
@@ -420,7 +423,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 }
             }
             WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
-                    PlaybackService.isRunning ? PlayerStatus.PLAYING : PlayerStatus.PAUSED,
+                    PlaybackServiceInterface.isPlaying ? PlayerStatus.PLAYING : PlayerStatus.PAUSED,
                     (int) player.getContentPosition(), (int) player.getDuration(),
                     player.getPlaybackParameters().speed);
             Schedulers.io().scheduleDirect(() ->
@@ -428,7 +431,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             updatePlaybackPreferences();
 
             // Auto-enable sleep timer when playback starts
-            if (PlaybackService.isRunning && sleepTimer == null && SleepTimerPreferences.autoEnable()) {
+            if (PlaybackServiceInterface.isPlaying && sleepTimer == null && SleepTimerPreferences.autoEnable()) {
                 int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
                 if (SleepTimerPreferences.isInTimeRange(
                         SleepTimerPreferences.autoEnableFrom(),
@@ -449,6 +452,10 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         @Override
         public void onMediaItemTransition(@Nullable MediaItem mediaItem, int reason) {
+            if (chapterArtworkDisposable != null) {
+                chapterArtworkDisposable.dispose();
+            }
+            lastChapterArtworkIndex = -1;
             if (mediaItem == null) {
                 if (currentPlayable != null
                         && CastPlayerWrapper.hasPlaybackJustFinished(Media3PlaybackService.this)) {
@@ -463,7 +470,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         @Override
         public void onPlayerError(@NonNull PlaybackException error) {
-            PlaybackService.isRunning = false;
+            PlaybackServiceInterface.isPlaying = false;
             EventBus.getDefault().post(new PlayerErrorEvent(
                     ExoPlayerUtils.translateErrorReason(error, Media3PlaybackService.this)));
             EventBus.getDefault().post(new PlayerStatusEvent());
@@ -479,7 +486,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     @UnstableApi
     @Override
     public void onDestroy() {
-        PlaybackService.isRunning = false;
+        PlaybackServiceInterface.isPlaying = false;
         cancelPositionObserver();
         if (sleepTimer != null) {
             sleepTimer.stop();
@@ -493,6 +500,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (queueLoaderDisposable != null) {
             queueLoaderDisposable.dispose();
             queueLoaderDisposable = null;
+        }
+        if (chapterArtworkDisposable != null) {
+            chapterArtworkDisposable.dispose();
+            chapterArtworkDisposable = null;
         }
         saveCurrentPosition();
         if (loudnessEnhancer != null) {
@@ -542,6 +553,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                     player.seekTo(player.getDuration());
                                 }
                             }
+                            updateChapterArtwork();
                         }, error -> Log.e(TAG, "Position observer error", error));
     }
 
@@ -598,6 +610,36 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
     }
 
+    private void updateChapterArtwork() {
+        if (currentPlayable == null
+                || player == null
+                || player.getCurrentMediaItem() == null
+                || !String.valueOf(currentPlayable.getId()).equals(player.getCurrentMediaItem().mediaId)
+                || isCasting()) {
+            return;
+        }
+        int chapterIndex = UserPreferences.getUseEpisodeCoverSetting()
+                ? Chapter.getAfterPosition(currentPlayable.getChapters(), (int) player.getCurrentPosition()) : -1;
+        if (chapterIndex == lastChapterArtworkIndex) {
+            return;
+        }
+        lastChapterArtworkIndex = chapterIndex;
+        MediaItem currentItem = player.getCurrentMediaItem();
+        FeedMedia playable = currentPlayable;
+        if (chapterArtworkDisposable != null) {
+            chapterArtworkDisposable.dispose();
+        }
+        chapterArtworkDisposable = Single
+                .fromCallable(() -> MediaItemAdapter.withChapterArtwork(this, currentItem, playable, chapterIndex))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(updatedItem -> {
+                    if (!isCasting()) {
+                        player.replaceMediaItem(player.getCurrentMediaItemIndex(), updatedItem);
+                    }
+                }, error -> Log.e(TAG, "Failed to update chapter artwork", error));
+    }
+
     @OptIn(markerClass = UnstableApi.class)
     private boolean confirmStreamingIfNeeded(FeedMedia media) {
         if (needsStreaming(media) && !NetworkUtils.isStreamingAllowed()
@@ -628,7 +670,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         updatePlaybackPreferences();
         WidgetUpdater.WidgetState widgetState = new WidgetUpdater.WidgetState(currentPlayable,
-                PlaybackService.isRunning ? PlayerStatus.PLAYING : PlayerStatus.PAUSED,
+                PlaybackServiceInterface.isPlaying ? PlayerStatus.PLAYING : PlayerStatus.PAUSED,
                 currentPlayable.getPosition(), currentPlayable.getDuration(), speed);
         Schedulers.io().scheduleDirect(() -> WidgetUpdater.updateWidget(this, widgetState));
     }
@@ -639,7 +681,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (currentPlayable != null) {
             PlaybackPreferences.writeMediaPlaying(currentPlayable);
         }
-        int status = PlaybackService.isRunning ? PlaybackPreferences.PLAYER_STATUS_PLAYING
+        int status = PlaybackServiceInterface.isPlaying ? PlaybackPreferences.PLAYER_STATUS_PLAYING
                 : PlaybackPreferences.PLAYER_STATUS_PAUSED;
         PlaybackPreferences.setCurrentPlayerStatus(status);
         if (status != statusBefore || (currentPlayable != null && currentPlayable.getId() != mediaBefore)) {
@@ -800,7 +842,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         player.setMediaItem(confirmItem);
         player.setPlayWhenReady(false);
         player.prepare();
-        PlaybackService.isRunning = false;
+        PlaybackServiceInterface.isPlaying = false;
         EventBus.getDefault().post(new StreamingConfirmationEvent());
         EventBus.getDefault().post(new PlayerStatusEvent());
     }
@@ -872,6 +914,22 @@ public class Media3PlaybackService extends MediaLibraryService {
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem, SkipUtils.skipIntroIfNecessary(this, nextMedia));
                             player.prepare();
+                            if (mediaLoaderDisposable != null) {
+                                mediaLoaderDisposable.dispose();
+                            }
+                            mediaLoaderDisposable = Single.fromCallable(() -> {
+                                FeedMedia mediaWithChapters = DBReader.getFeedMedia(nextMedia.getId());
+                                ChapterUtils.loadChapters(mediaWithChapters, this, false);
+                                return mediaWithChapters;
+                            })
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(mediaWithChapters -> {
+                                        if (currentPlayable != null
+                                                && currentPlayable.getId() == mediaWithChapters.getId()) {
+                                            currentPlayable.setChapters(mediaWithChapters.getChapters());
+                                        }
+                                    }, error -> Log.e(TAG, "Failed to load chapters", error));
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
                         () -> {

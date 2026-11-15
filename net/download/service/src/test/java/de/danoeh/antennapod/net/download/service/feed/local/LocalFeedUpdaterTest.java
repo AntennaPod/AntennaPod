@@ -13,6 +13,8 @@ import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
+import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
@@ -73,6 +75,7 @@ public class LocalFeedUpdaterTest {
         PlaybackPreferences.init(context);
         SynchronizationSettings.init(context);
         DownloadServiceInterface.setImpl(new DownloadServiceInterfaceStub());
+        SynchronizationQueue.setInstance(new SynchronizationQueueStub());
 
         // Initialize database
         PodDBAdapter.init(context);

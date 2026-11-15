@@ -22,7 +22,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -172,6 +174,10 @@ public class BugReportFragment extends AnimatedFragment {
     private void exportLogcat() {
         try {
             File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
+            try (FileOutputStream outputStream = new FileOutputStream(filename)) {
+                outputStream.write((viewModel.requireCurrentState().getEnvironmentInfoWithMarkup() + "\n\n")
+                        .getBytes(StandardCharsets.UTF_8));
+            }
             String cmd = "logcat -d -f " + filename.getAbsolutePath();
             Runtime.getRuntime().exec(cmd);
 

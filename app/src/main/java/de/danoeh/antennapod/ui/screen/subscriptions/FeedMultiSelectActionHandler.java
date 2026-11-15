@@ -102,15 +102,30 @@ public class FeedMultiSelectActionHandler {
             viewBinding.seekBar.setEnabled(!isChecked);
             viewBinding.seekBar.setAlpha(isChecked ? 0.4f : 1f);
             viewBinding.currentSpeedLabel.setAlpha(isChecked ? 0.4f : 1f);
+
+            viewBinding.skipSilenceFeed.setEnabled(!isChecked);
+            viewBinding.skipSilenceFeed.setAlpha(isChecked ? 0.4f : 1f);
         });
         viewBinding.seekBar.updateSpeed(1.0f);
         new MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.playback_speed)
                 .setView(viewBinding.getRoot())
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-                    float newSpeed = viewBinding.useGlobalCheckbox.isChecked()
+                    boolean useGlobal = viewBinding.useGlobalCheckbox.isChecked();
+                    float newSpeed = useGlobal
                             ? FeedPreferences.SPEED_USE_GLOBAL : viewBinding.seekBar.getCurrentSpeed();
-                    saveFeedPreferences(feedPreferences -> feedPreferences.setFeedPlaybackSpeed(newSpeed));
+                    FeedPreferences.SkipSilence newSkipSilence;
+                    if (useGlobal) {
+                        newSkipSilence = FeedPreferences.SkipSilence.GLOBAL;
+                    } else if (viewBinding.skipSilenceFeed.isChecked()) {
+                        newSkipSilence = FeedPreferences.SkipSilence.AGGRESSIVE;
+                    } else {
+                        newSkipSilence = FeedPreferences.SkipSilence.OFF;
+                    }
+                    saveFeedPreferences(feedPreferences -> {
+                        feedPreferences.setFeedPlaybackSpeed(newSpeed);
+                        feedPreferences.setFeedSkipSilence(newSkipSilence);
+                    });
                 })
                 .setNegativeButton(R.string.cancel_label, null)
                 .show();
