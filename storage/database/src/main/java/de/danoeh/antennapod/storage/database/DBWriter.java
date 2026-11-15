@@ -910,14 +910,28 @@ public class DBWriter {
                 if (feed.getId() == 1 && UserPreferences.getFirstSubscriptionTime() == 0) {
                     UserPreferences.setFirstSubscriptionTime(System.currentTimeMillis());
                 }
-                if (isWithinFirstSubscriptionHour()) {
+                if (isWithinFirstSubscriptionHour() && UserPreferences.getNewEpisodesAction() != FeedPreferences.NewEpisodesAction.NOTHING) {
                     List<FeedItem> newItems = new ArrayList<>();
-                    for (FeedItem item : feed.getItems().subList(0, Math.min(3, feed.getItems().size()))) {
-                        if (!item.isPlayed()) {
-                            newItems.add(item);
+                    List<FeedItem> allItems = feed.getItems();
+                    if (UserPreferences.getAutoDownloadOrder() == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST) {
+                        int count = 0;
+                        for (int i = allItems.size() - 1; i >= 0 && count < 3; i--) {
+                            FeedItem item = allItems.get(i);
+                            if (!item.isPlayed()) {
+                                newItems.add(item);
+                                count++;
+                            }
+                        }
+                    } else {
+                        for (FeedItem item : allItems.subList(0, Math.min(3, allItems.size()))) {
+                            if (!item.isPlayed()) {
+                                newItems.add(item);
+                            }
                         }
                     }
-                    markItemsPlayed(FeedItem.NEW, false, newItems);
+                    if (!newItems.isEmpty()) {
+                        markItemsPlayed(FeedItem.NEW, false, newItems);
+                    }
                 }
             }
             adapter.close();
