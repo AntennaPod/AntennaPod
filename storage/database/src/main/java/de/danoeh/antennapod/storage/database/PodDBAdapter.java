@@ -1146,12 +1146,15 @@ public class PodDBAdapter {
                 + " NOT LIKE '" + Feed.PREFIX_LOCAL_FOLDER + "%')";
         String queueCondition = includeQueue ? " OR " + SELECT_KEY_IS_IN_QUEUE : "";
         String orderDirection = (autoDownloadOrder == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST) ? " ASC" : " DESC";
+        String readCondition = (autoDownloadOrder == UserPreferences.AUTODOWNLOAD_ORDER_OLDEST_FIRST)
+                ? TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "!=" + FeedItem.PLAYED
+                : TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
                 + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD_ENABLED + "!=0"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " IS NOT NULL"
                 + " AND " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOAD_DATE + "=0"
                 + " AND " + feedIsNotLocal
-                + " AND ((" + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
+                + " AND ((" + readCondition
                 + " AND " + feedHasAutoDownload + ")" + queueCondition + ")"
                 + " ORDER BY " + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + orderDirection;
         return db.rawQuery(query, null);
