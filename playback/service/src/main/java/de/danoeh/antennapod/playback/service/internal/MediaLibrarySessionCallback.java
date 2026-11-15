@@ -30,6 +30,7 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedItemFilter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedOrder;
 import de.danoeh.antennapod.model.feed.SortOrder;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
@@ -444,15 +445,15 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                 future::setException);
                 return future;
             case MEDIA_ID_SUBSCRIPTIONS:
-                Single.fromCallable(DBReader::getFeedList)
+                Single.fromCallable(() -> DBReader.getNavDrawerData(
+                                UserPreferences.getSubscriptionsFilter(), FeedOrder.COUNTER,
+                                UserPreferences.getFeedCounterSetting(), Feed.STATE_SUBSCRIBED).feeds)
                         .subscribeOn(Schedulers.io())
                         .subscribe(
                                 items -> {
                                     ImmutableList.Builder<MediaItem> builder = new ImmutableList.Builder<>();
                                     for (Feed feed : items) {
-                                        if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-                                            builder.add(MediaItemAdapter.fromFeed(context, feed));
-                                        }
+                                        builder.add(MediaItemAdapter.fromFeed(context, feed));
                                     }
                                     future.set(LibraryResult.ofItemList(builder.build(), params));
                                 },
