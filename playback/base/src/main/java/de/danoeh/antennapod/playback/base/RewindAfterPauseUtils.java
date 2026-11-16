@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.playback.base;
 
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.Playable;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,9 +24,11 @@ public abstract class RewindAfterPauseUtils {
     /**
      * @param currentPosition  current position in a media file in ms
      * @param lastPlayedTimeStatistics  timestamp when was media paused
+     * @param playable  media being rewound; used to avoid rewinding past a configured skip-intro position
      * @return  new rewinded position for playback in milliseconds
      */
-    public static int calculatePositionWithRewind(int currentPosition, long lastPlayedTimeStatistics) {
+    public static int calculatePositionWithRewind(int currentPosition, long lastPlayedTimeStatistics,
+                                                    Playable playable) {
         if (currentPosition > 0 && lastPlayedTimeStatistics > 0) {
             long elapsedTime = System.currentTimeMillis() - lastPlayedTimeStatistics;
             long rewindTime = 0;
@@ -40,9 +45,21 @@ public abstract class RewindAfterPauseUtils {
 
             int newPosition = currentPosition - (int) rewindTime;
 
-            return Math.max(newPosition, 0);
+            return Math.max(newPosition, getSkipIntroPosition(playable));
         } else {
             return currentPosition;
         }
+    }
+
+    private static int getSkipIntroPosition(Playable playable) {
+        if (!(playable instanceof FeedMedia)) {
+            return 0;
+        }
+        FeedMedia feedMedia = (FeedMedia) playable;
+        if (feedMedia.getItem() == null || feedMedia.getItem().getFeed() == null
+                || feedMedia.getItem().getFeed().getPreferences() == null) {
+            return 0;
+        }
+        return feedMedia.getItem().getFeed().getPreferences().getFeedSkipIntro() * 1000;
     }
 }

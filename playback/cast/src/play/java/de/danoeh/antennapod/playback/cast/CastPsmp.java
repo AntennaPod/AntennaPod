@@ -333,7 +333,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
     public void resume() {
         int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                         media.getPosition(),
-                        media.getLastPlayedTimeStatistics());
+                        media.getLastPlayedTimeStatistics(),
+                        media);
         seekTo(newPosition);
         remoteMediaClient.play();
     }
@@ -352,7 +353,8 @@ public class CastPsmp extends PlaybackServiceMediaPlayer {
             if (position > 0) {
                 position = RewindAfterPauseUtils.calculatePositionWithRewind(
                         position,
-                        media.getLastPlayedTimeStatistics());
+                        media.getLastPlayedTimeStatistics(),
+                        media);
             }
             remoteMediaClient.load(new MediaLoadRequestData.Builder()
                     .setMediaInfo(remoteMedia)

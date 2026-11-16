@@ -160,7 +160,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 if (currentPlayable != null && !getPlayWhenReady()) {
                     long savedPosition = getCurrentPosition();
                     long startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                            (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics());
+                            (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics(), currentPlayable);
                     if (startPosition != savedPosition) {
                         seekTo(startPosition);
                     }
@@ -349,7 +349,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                 wasTemporarilySuspended = false;
                 long savedPosition = player.getCurrentPosition();
                 long startPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
-                        (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics());
+                        (int) savedPosition, currentPlayable.getLastPlayedTimeStatistics(), currentPlayable);
                 if (startPosition != savedPosition) {
                     player.seekTo(startPosition);
                 }
