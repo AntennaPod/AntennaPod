@@ -2,7 +2,6 @@ package de.danoeh.antennapod.ui.screen.playback.audio;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +31,6 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
@@ -51,7 +49,6 @@ import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.ui.common.Converter;
@@ -189,21 +186,15 @@ public class AudioPlayerFragment extends Fragment implements
 
     private void setupControlButtons() {
         butRev.setOnClickListener(v -> {
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                final FeedMedia media = currentMedia;
-                PlaybackController.bindToMedia3Service(getContext(), controller -> {
-                    if (controller.getCurrentMediaItem() != null) {
-                        controller.seekBack();
-                    } else if (media != null) {
-                        seekWithoutPlaybackService(media,
-                                Math.max(0, media.getPosition() - UserPreferences.getRewindSecs() * 1000));
-                    }
-                });
-            } else {
-                PlaybackController.bindToService(getActivity(), playbackService ->
-                        playbackService.seekTo(playbackService.getCurrentPosition()
-                                - UserPreferences.getRewindSecs() * 1000));
-            }
+            final FeedMedia media = currentMedia;
+            PlaybackController.bindToMedia3Service(getContext(), controller -> {
+                if (controller.getCurrentMediaItem() != null) {
+                    controller.seekBack();
+                } else if (media != null) {
+                    seekWithoutPlaybackService(media,
+                            Math.max(0, media.getPosition() - UserPreferences.getRewindSecs() * 1000));
+                }
+            });
         });
         butRev.setOnLongClickListener(v -> {
             SkipPreferenceDialog.showSkipPreference(getContext(),
@@ -213,12 +204,7 @@ public class AudioPlayerFragment extends Fragment implements
         butPlay.setOnClickListener(v -> {
             if (PlaybackServiceInterface.isPlaying
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                    PlaybackController.bindToMedia3Service(getContext(), MediaController::pause);
-                } else {
-                    getActivity().sendBroadcast(
-                            MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_PAUSE));
-                }
+                PlaybackController.bindToMedia3Service(getContext(), MediaController::pause);
             } else {
                 new PlaybackServiceStarter(getContext(), currentMedia)
                         .callEvenIfRunning(true)
@@ -226,21 +212,15 @@ public class AudioPlayerFragment extends Fragment implements
             }
         });
         butFF.setOnClickListener(v -> {
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                final FeedMedia media = currentMedia;
-                PlaybackController.bindToMedia3Service(getContext(), controller -> {
-                    if (controller.getCurrentMediaItem() != null) {
-                        controller.seekForward();
-                    } else if (media != null) {
-                        seekWithoutPlaybackService(media, Math.min(media.getDuration(),
-                                media.getPosition() + UserPreferences.getFastForwardSecs() * 1000));
-                    }
-                });
-            } else {
-                PlaybackController.bindToService(getActivity(), playbackService ->
-                        playbackService.seekTo(playbackService.getCurrentPosition()
-                                + UserPreferences.getFastForwardSecs() * 1000));
-            }
+            final FeedMedia media = currentMedia;
+            PlaybackController.bindToMedia3Service(getContext(), controller -> {
+                if (controller.getCurrentMediaItem() != null) {
+                    controller.seekForward();
+                } else if (media != null) {
+                    seekWithoutPlaybackService(media, Math.min(media.getDuration(),
+                            media.getPosition() + UserPreferences.getFastForwardSecs() * 1000));
+                }
+            });
         });
         butFF.setOnLongClickListener(v -> {
             SkipPreferenceDialog.showSkipPreference(getContext(),
@@ -248,12 +228,7 @@ public class AudioPlayerFragment extends Fragment implements
             return false;
         });
         butSkip.setOnClickListener(v -> {
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getContext(), MediaController::seekToNextMediaItem);
-            } else {
-                getActivity().sendBroadcast(
-                        MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_NEXT));
-            }
+            PlaybackController.bindToMedia3Service(getContext(), MediaController::seekToNextMediaItem);
         });
     }
 
@@ -449,13 +424,8 @@ public class AudioPlayerFragment extends Fragment implements
                     position = (int) currentMedia.getChapters().get(currentChapterIndex).getStart();
                     seekedToChapterStart = true;
                     final int positionFinal = position;
-                    if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                        PlaybackController.bindToMedia3Service(getContext(), controller ->
-                                controller.seekTo(positionFinal));
-                    } else {
-                        PlaybackController.bindToService(getActivity(), playbackService ->
-                                playbackService.seekTo(positionFinal));
-                    }
+                    PlaybackController.bindToMedia3Service(getContext(), controller ->
+                            controller.seekTo(positionFinal));
                     sbPosition.highlightCurrentChapter();
                 }
                 txtvSeek.setText(currentMedia.getChapters().get(newChapterIndex).getTitle()
@@ -484,19 +454,14 @@ public class AudioPlayerFragment extends Fragment implements
             seekedToChapterStart = false;
         } else if (currentMedia != null) {
             final float prog = seekBar.getProgress() / ((float) seekBar.getMax());
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                final FeedMedia media = currentMedia;
-                PlaybackController.bindToMedia3Service(getContext(), controller -> {
-                    if (controller.getCurrentMediaItem() != null) {
-                        controller.seekTo((long) (controller.getDuration() * prog));
-                    } else {
-                        seekWithoutPlaybackService(media, (int) (media.getDuration() * prog));
-                    }
-                });
-            } else {
-                PlaybackController.bindToService(getActivity(), playbackService ->
-                        playbackService.seekTo((int) (playbackService.getDuration() * prog)));
-            }
+            final FeedMedia media = currentMedia;
+            PlaybackController.bindToMedia3Service(getContext(), controller -> {
+                if (controller.getCurrentMediaItem() != null) {
+                    controller.seekTo((long) (controller.getDuration() * prog));
+                } else {
+                    seekWithoutPlaybackService(media, (int) (media.getDuration() * prog));
+                }
+            });
         }
         cardViewSeek.setScaleX(1f);
         cardViewSeek.setScaleY(1f);

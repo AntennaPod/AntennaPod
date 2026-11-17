@@ -8,7 +8,6 @@
         android:supportsRtl="true">
 
         <receiver
-            android:enabled="${newServiceEnabled}"
             android:name="androidx.mediarouter.media.MediaTransferReceiver" />
 
     </application>

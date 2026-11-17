@@ -58,10 +58,6 @@
     </Match>
     <Match>
         <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
-        <Class name="de.danoeh.antennapod.playback.service.PlaybackService"/>
-    </Match>
-    <Match>
-        <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
         <Class name="de.danoeh.antennapod.ui.home.sections.EpisodesSurpriseSection"/>
     </Match>
     <Match>
@@ -90,22 +86,4 @@
     <Match><Bug pattern="MS_PKGPROTECT"/></Match>
     <Match><Bug pattern="PA_PUBLIC_PRIMITIVE_ATTRIBUTE"/></Match>
     <Match><Bug pattern="EI_EXPOSE_STATIC_REP2"/></Match>
-
-    <!-- Suppress false positives for USE_MEDIA3_PLAYBACK_SERVICE -->
-    <Match>
-        <Class name="de.danoeh.antennapod.playback.service.MediaButtonReceiver"/>
-        <Bug pattern="UCF_USELESS_CONTROL_FLOW_NEXT_LINE"/>
-    </Match>
-    <Match>
-        <Class name="de.danoeh.antennapod.playback.service.PlaybackController"/>
-        <Bug pattern="UCF_USELESS_CONTROL_FLOW_NEXT_LINE"/>
-    </Match>
-    <Match>
-        <Class name="de.danoeh.antennapod.playback.service.PlaybackServiceStarter"/>
-        <Bug pattern="URF_UNREAD_FIELD"/>
-    </Match>
-    <Match>
-        <Class name="de.danoeh.antennapod.playback.service.PlaybackServiceStarter"/>
-        <Bug pattern="UCF_USELESS_CONTROL_FLOW_NEXT_LINE"/>
-    </Match>
 </FindBugsFilter>

@@ -21,7 +21,6 @@ import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.ArrowOrientationRules;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.actionbutton.CancelDownloadActionButton;
 import de.danoeh.antennapod.actionbutton.DeleteActionButton;
@@ -69,7 +68,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Displays information about a FeedItem and actions.
@@ -124,23 +122,10 @@ public class ItemFragment extends Fragment {
                         new MessageEvent(getString(R.string.play_this_to_seek_position_message)));
                 return;
             }
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getActivity(), controller -> {
-                    if (item.getMedia() != null && controller.getCurrentMediaItem() != null
-                            && ("" + item.getMedia().getId()).equals(controller.getCurrentMediaItem().mediaId)) {
-                        controller.seekTo(time);
-                    } else {
-                        EventBus.getDefault().post(
-                                new MessageEvent(getString(R.string.play_this_to_seek_position_message)));
-                    }
-                });
-                return;
-            }
-            PlaybackController.bindToService(getActivity(), playbackService -> {
-                if (item.getMedia() != null && playbackService.getPlayable() != null
-                        && Objects.equals(item.getMedia().getIdentifier(),
-                        playbackService.getPlayable().getIdentifier())) {
-                    playbackService.seekTo(time);
+            PlaybackController.bindToMedia3Service(getActivity(), controller -> {
+                if (item.getMedia() != null && controller.getCurrentMediaItem() != null
+                        && ("" + item.getMedia().getId()).equals(controller.getCurrentMediaItem().mediaId)) {
+                    controller.seekTo(time);
                 } else {
                     EventBus.getDefault().post(
                             new MessageEvent(getString(R.string.play_this_to_seek_position_message)));
