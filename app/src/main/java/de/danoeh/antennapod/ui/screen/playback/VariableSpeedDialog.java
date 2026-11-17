@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,14 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
-import de.danoeh.antennapod.playback.base.BuildConfig;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
+import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import de.danoeh.antennapod.ui.common.ItemOffsetDecoration;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -42,7 +47,6 @@ import java.util.Locale;
 public class VariableSpeedDialog extends BottomSheetDialogFragment {
     private static final String TAG = "VariableSpeedDialog";
     private SpeedSelectionAdapter adapter;
-    private PlaybackController controller;
     private final List<Float> selectedSpeeds;
     private float pendingDeleteSpeed = -1;
     private PlaybackSpeedSeekBar speedSeekBar;
@@ -59,13 +63,6 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        controller = new PlaybackController(getActivity()) {
-            @Override
-            public void loadMediaInfo() {
-                VariableSpeedDialog.this.loadMediaInfo();
-            }
-        };
-        controller.init();
         EventBus.getDefault().register(this);
         loadMediaInfo();
     }
@@ -73,8 +70,6 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
     @Override
     public void onStop() {
         super.onStop();
-        controller.release();
-        controller = null;
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
@@ -86,20 +81,16 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> {
-            if (controller == null) {
-                return null;
-            }
-            // Make sure the media is loaded in case getCurrentPlaybackSpeedMultiplier has to access it
-            return controller.getMedia();
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            return new Pair<>(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
+                    PlaybackSpeedUtils.getCurrentSkipSilencePreference(media)
+                            == FeedPreferences.SkipSilence.AGGRESSIVE);
         })
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pair -> {
-                    if (controller == null) {
-                        return;
-                    }
-                    updateSpeed(new SpeedChangedEvent(controller.getCurrentPlaybackSpeedMultiplier()));
-                    updateSkipSilence(controller.getCurrentPlaybackSkipSilence());
+                    updateSpeed(new SpeedChangedEvent(pair.first));
+                    updateSkipSilence(pair.second);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
     }
@@ -122,12 +113,8 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         speedSeekBar = root.findViewById(R.id.speed_seek_bar);
         speedSeekBar.setProgressChangedListener(multiplier -> {
             UserPreferences.setPlaybackSpeed(multiplier);
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getContext(),
-                        controller -> controller.setPlaybackSpeed(multiplier));
-            } else if (controller != null) {
-                controller.setPlaybackSpeed(multiplier);
-            }
+            PlaybackController.bindToMedia3Service(getContext(),
+                    controller -> controller.setPlaybackSpeed(multiplier));
         });
         RecyclerView selectedSpeedsGrid = root.findViewById(R.id.selected_speeds_grid);
         selectedSpeedsGrid.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -147,13 +134,9 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
         skipSilenceCheckbox.setChecked(UserPreferences.isSkipSilence());
         skipSilenceCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setSkipSilence(isChecked);
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getContext(), mediaController ->
-                        mediaController.sendCustomCommand(MediaLibrarySessionCallback.SESSION_COMMAND_SKIP_SILENCE,
-                                MediaLibrarySessionCallback.createBundle(isChecked)));
-            } else if (controller != null) {
-                controller.setSkipSilence(isChecked);
-            }
+            PlaybackController.bindToMedia3Service(getContext(), mediaController ->
+                    mediaController.sendCustomCommand(MediaLibrarySessionCallback.SESSION_COMMAND_SKIP_SILENCE,
+                            MediaLibrarySessionCallback.createBundle(isChecked)));
         });
         return root;
     }
@@ -216,12 +199,8 @@ public class VariableSpeedDialog extends BottomSheetDialogFragment {
                     return;
                 }
                 UserPreferences.setPlaybackSpeed(speed);
-                if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                    PlaybackController.bindToMedia3Service(getContext(),
-                            controller -> controller.setPlaybackSpeed(speed));
-                } else if (controller != null) {
-                    controller.setPlaybackSpeed(speed);
-                }
+                PlaybackController.bindToMedia3Service(getContext(),
+                        controller -> controller.setPlaybackSpeed(speed));
                 new Handler(Looper.getMainLooper()).postDelayed(() -> dismiss(), 200);
             });
         }
