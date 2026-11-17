@@ -775,9 +775,6 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         List<Chapter> chapters = currentPlayable.getChapters();
         if (chapters == null) {
-            if (currentPlayable.getItem() != null) {
-                startNextInQueue(currentPlayable, true, false);
-            }
             return;
         }
 
