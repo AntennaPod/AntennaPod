@@ -118,7 +118,7 @@ public class EpisodeMultiSelectActionHandler {
                 }
             }
         }
-        DBWriter.markItemsPlayed(FeedItem.PLAYED, true, items);
+        DBWriter.markItemsPlayed(activity, FeedItem.PLAYED, true, items);
         showMessage(R.plurals.marked_as_played_message, items.size());
     }
 
