@@ -1937,6 +1937,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onNextChapter() {
             List<Chapter> chapters = mediaPlayer.getPlayable().getChapters();
             if (chapters == null) {
+                return;
+            }
+            if (chapters.isEmpty()) {
                 // No chapters, just fallback to next episode
                 mediaPlayer.skip();
                 return;
