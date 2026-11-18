@@ -146,6 +146,20 @@
                 android:text="@string/shake_to_reset_label" />
 
             <CheckBox
+                android:id="@+id/resetOnPlaybackInteractionCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reset_timer_on_playback_interaction_label" />
+
+            <TextView
+                android:id="@+id/resetOnPlaybackInteractionSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/reset_timer_on_playback_interaction_summary" />
+
+            <CheckBox
                 android:id="@+id/vibrateCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
