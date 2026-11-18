@@ -956,4 +956,5 @@
     <string name="wearos_play_on_phone" tools:ignore="UnusedResources">Reproduzir no telemóvel</string>
     <string name="wearos_browse_phone" tools:ignore="UnusedResources">Explorar o telemóvel</string>
     <string name="wearos_open_on_phone" tools:ignore="UnusedResources">Abrir no telemóvel</string>
+    <string name="clear_filters_label">Limpar</string>
 </resources>

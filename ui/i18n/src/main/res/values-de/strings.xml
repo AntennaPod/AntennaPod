@@ -73,7 +73,7 @@
   <string name="open_in_browser_label">Im Browser öffnen</string>
     <string name="copy_url_label">URL kopieren</string>
     <string name="share_url_label">URL teilen</string>
-    <string name="go_to_position_label">Gehe zu dieser Position</string>
+    <string name="go_to_position_label">Zu dieser Position springen</string>
     <!--Playback history-->
   <string name="clear_history_label">Verlauf leeren</string>
     <string name="clear_playback_history_msg">Dadurch wird der gesamte Wiedergabeverlauf gelöscht. Möchtest du wirklich fortfahren?</string>
