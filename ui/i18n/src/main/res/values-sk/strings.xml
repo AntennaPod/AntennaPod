@@ -161,7 +161,7 @@
     <string name="show_feed_settings_label">Zobraziť nastavenia podcastu</string>
     <string name="feed_settings_label">Nastavenia podcastu</string>
     <string name="rename_feed_label">Premenovať</string>
-    <string name="remove_feed_label">Odstrániť</string>
+    <string name="remove_feed_label">Odhlásiť</string>
     <string name="share_label">Zdieľať</string>
     <string name="share_file_label">Zdielať súbor</string>
     <string name="load_complete_feed">Aktualizovať celý podcast</string>
@@ -888,8 +888,8 @@
     <string name="no_archive_label">Podcasty môžete archivovať na hlavnej obrazovke odberov.</string>
     <string name="archive_feed_label_noun">Archív</string>
     <string name="restore_archive_label">Obnoviť</string>
-    <string name="remove_archive_feed_label">Odstrániť/archivovať</string>
-    <string name="feed_delete_explanation_delete">Odstránenie zmaže odber vrátane všetkých jeho epizód, stiahnutých súborov, histórie prehrávania a štatistík.</string>
+    <string name="remove_archive_feed_label">Odhlásiť/archivovať</string>
+    <string name="feed_delete_explanation_delete">Odhlásením zmažete odber vrátane všetkých jeho epizód, stiahnutých súborov, histórie prehrávania a štatistík.</string>
     <string name="feed_delete_explanation_archive">Archivácia skryje odber zo zoznamu a zastaví vyhľadávanie nových epizód. Stiahnuté súbory, štatistiky a stav prehrávania zostanú.</string>
     <plurals name="marked_as_played_message">
         <item quantity="one">%d epizóda označená ako prehraná.</item>
@@ -987,4 +987,35 @@
     <string name="report_bug_crash_log_title">Záznam chýb</string>
     <string name="report_bug_crash_log_message">Vytvorené: %1$s.</string>
     <string name="report_bug_forum_title">Fórum</string>
+    <string name="share_not_supported_local_feed">Zdieľanie nie je podporované pre lokálne priečinky</string>
+    <string name="no_subscriptions_filtered_label">Ak chcete vidieť viac, skúste vypnúť filter.</string>
+    <plurals name="pref_feed_skip_ending_snackbar">
+        <item quantity="one">Preskočená posledná %d sekunda</item>
+        <item quantity="few">Preskočené posledné %d sekundy</item>
+        <item quantity="many">Preskočené posledných %d sekúnd</item>
+        <item quantity="other">Preskočené posledných %d sekúnd</item>
+    </plurals>
+    <plurals name="pref_feed_skip_intro_snackbar">
+        <item quantity="one">Preskočená %d sekunda na začiatku</item>
+        <item quantity="few">Preskočené %d sekundy na začiatku</item>
+        <item quantity="many">Preskočených %d sekúnd na začiatku</item>
+        <item quantity="other">Preskočených %d sekúnd na začiatku</item>
+    </plurals>
+    <string name="report_bug_github_title">GitHub</string>
+    <string name="sync_status_wait_for_wifi">Synchronizácia odberov čaká na Wi-Fi pripojenie…</string>
+    <string name="back_label">Späť</string>
+    <string name="synchronization_more_information">Viac informácií</string>
+    <string name="wrong_password">Zlé heslo</string>
+    <string name="edit_url_menu_summary">Rizikové: môžete trvale poškodiť zoznam s epizódami, históriu a stav prehrávania</string>
+    <string name="reconnect_local_folder_summary">Rizikové: znova pripájajte iba k tomu istému priečinku. V opačnom prípade prídete o celý stav prehrávania.</string>
+    <string name="clear_filters_label">Vyčistiť</string>
+    <string name="pref_parental_control_set_password">Nastaviť heslo</string>
+    <string name="pref_parental_control_confirm_password">Potvrďte heslo</string>
+    <string name="pref_parental_control_passwords_dont_match">Heslá sa nezhodujú</string>
+    <string name="pref_parental_control_password_empty">Heslo nemôže ostať prázdne</string>
+    <string name="pref_parental_control_title">Rodičovská kontrola</string>
+    <string name="pref_parental_control_sum">Obmedziť funkcie heslom</string>
+    <string name="pref_parental_control_enabled_title">Povoliť</string>
+    <string name="pref_parental_control_require_subscribe_title">Obmedziť odbery</string>
+    <string name="pref_parental_control_require_subscribe_sum">Pýtať sa na rodičovskú kontrolu pri pridávaní nového podcastu</string>
 </resources>
