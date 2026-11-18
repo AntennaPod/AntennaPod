@@ -10,7 +10,6 @@ import android.support.v4.media.MediaDescriptionCompat;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.model.playback.Playable;
-import de.danoeh.antennapod.model.playback.RemoteMedia;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -486,10 +485,6 @@ public class FeedMedia implements Playable {
         if (o == null) {
             return false;
         }
-        if (o instanceof RemoteMedia) {
-            return o.equals(this);
-        }
-
         if (getClass() != o.getClass()) {
             return false;
         }

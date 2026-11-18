@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.storage.database;
 
 import de.danoeh.antennapod.model.feed.Feed;
-import de.danoeh.antennapod.model.playback.RemoteMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterfaceStub;
 import org.junit.Test;
@@ -104,9 +103,6 @@ public class ItemEnqueuePositionCalculatorTest {
                     {"case option after currently playing, no currentlyPlaying is null",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
                             AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
-                    {"case option after currently playing, currentlyPlaying is not a feedMedia",
-                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA},
                     {"case empty queue, option after currently playing",
                             list(TFI_ID),
                             AFTER_CURRENTLY_PLAYING, QUEUE_EMPTY, ID_CURRENTLY_PLAYING_NULL},
@@ -122,7 +118,6 @@ public class ItemEnqueuePositionCalculatorTest {
         }
 
         private static final long ID_CURRENTLY_PLAYING_NULL = -1L;
-        private static final long ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA = -9999L;
 
     }
 
@@ -150,21 +145,13 @@ public class ItemEnqueuePositionCalculatorTest {
 
 
     static Playable getCurrentlyPlaying(long idCurrentlyPlaying) {
-        if (ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA == idCurrentlyPlaying) {
-            return externalMedia();
-        }
         if (ID_CURRENTLY_PLAYING_NULL == idCurrentlyPlaying) {
             return null;
         }
         return createFeedItem(idCurrentlyPlaying).getMedia();
     }
 
-    static Playable externalMedia() {
-        return new RemoteMedia(createFeedItem(0));
-    }
-
     static final long ID_CURRENTLY_PLAYING_NULL = -1L;
-    static final long ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA = -9999L;
 
 
     static FeedItem createFeedItem(long id) {
