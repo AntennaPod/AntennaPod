@@ -9,14 +9,13 @@ import android.content.Intent;
  * Does not require a dependency on the actual implementation of the activity.
  */
 public class VideoPlayerActivityStarter {
-    public static final String INTENT = "de.danoeh.antennapod.intents.VIDEO_PLAYER";
     public static final String INTENT_MEDIA3 = "de.danoeh.antennapod.intents.VIDEO_PLAYER_MEDIA3";
     private final Intent intent;
     private final Context context;
 
     public VideoPlayerActivityStarter(Context context) {
         this.context = context;
-        intent = new Intent(BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE ? INTENT_MEDIA3 : INTENT);
+        intent = new Intent(INTENT_MEDIA3);
         intent.setPackage(context.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
     }
