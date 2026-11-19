@@ -219,6 +219,9 @@ public class CoverFragment extends Fragment {
                 displayedChapterIndex = chapterIndex;
                 viewBinding.butNextChapter.setVisibility(View.VISIBLE);
             }
+        } else {
+            displayedChapterIndex = -1;
+            viewBinding.butNextChapter.setVisibility(View.VISIBLE);
         }
 
         displayCoverImage();
@@ -253,7 +256,7 @@ public class CoverFragment extends Fragment {
 
     private void seekToNextChapter() {
         if (media == null || media.getChapters() == null
-                || displayedChapterIndex == -1 || displayedChapterIndex + 1 >= media.getChapters().size()) {
+                || displayedChapterIndex + 1 >= media.getChapters().size()) {
             return;
         }
 
@@ -296,7 +299,7 @@ public class CoverFragment extends Fragment {
             return;
         }
         int newChapterIndex = Chapter.getAfterPosition(media.getChapters(), event.getPosition());
-        if (newChapterIndex > -1 && newChapterIndex != displayedChapterIndex) {
+        if (newChapterIndex != displayedChapterIndex) {
             refreshChapterData(newChapterIndex);
         }
     }
