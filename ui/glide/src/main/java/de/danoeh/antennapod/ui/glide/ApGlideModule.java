@@ -46,9 +46,11 @@ public class ApGlideModule extends AppGlideModule {
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
         registry.replace(String.class, InputStream.class, new MetadataRetrieverLoader.Factory(context));
         registry.append(String.class, InputStream.class, new GenerativePlaceholderImageModelLoader.Factory());
-        registry.append(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
+        registry.append(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory<String>());
         registry.append(String.class, InputStream.class, new NoHttpStringLoader.StreamFactory());
 
+        registry.append(AuthenticatedImageUrl.class, InputStream.class,
+                new ApOkHttpUrlLoader.Factory<AuthenticatedImageUrl>());
         registry.append(EmbeddedChapterImage.class, ByteBuffer.class, new ChapterImageModelLoader.Factory(context));
     }
 }

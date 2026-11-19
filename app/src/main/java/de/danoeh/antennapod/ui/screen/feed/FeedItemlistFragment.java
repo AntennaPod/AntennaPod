@@ -53,6 +53,7 @@ import de.danoeh.antennapod.ui.episodeslist.EpisodeItemViewHolder;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.ui.episodeslist.FeedItemMenuHandler;
 import de.danoeh.antennapod.ui.episodeslist.MoreContentListFooterUtil;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
 import de.danoeh.antennapod.ui.glide.FastBlurTransformation;
 import de.danoeh.antennapod.ui.screen.SearchFragment;
 import de.danoeh.antennapod.ui.screen.download.DownloadLogDetailsDialog;
@@ -619,8 +620,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void loadFeedImage() {
+        Object imageModel = AuthenticatedImageUrl.create(feed.getImageUrl(), feed.getPreferences());
         Glide.with(this)
-                .load(feed.getImageUrl())
+                .load(imageModel)
                 .apply(new RequestOptions()
                     .placeholder(R.color.image_readability_tint)
                     .error(R.color.image_readability_tint)
@@ -629,7 +631,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .into(viewBinding.imgvBackground);
 
         Glide.with(this)
-                .load(feed.getImageUrl())
+                .load(imageModel)
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
@@ -737,6 +739,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             new CoverLoader()
                     .withUri(holder.getFeedItem().getImageLocation()) // Ignore "Show episode cover" setting
                     .withFallbackUri(holder.getFeedItem().getFeed().getImageUrl())
+                    .withCredentials(holder.getFeedItem().getFeed().getPreferences())
                     .withPlaceholderView(holder.placeholder)
                     .withCoverView(holder.cover)
                     .load();

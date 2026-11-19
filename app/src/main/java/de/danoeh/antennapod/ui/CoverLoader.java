@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.ui;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -12,12 +14,17 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import de.danoeh.antennapod.model.feed.FeedPreferences;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
+
 import java.lang.ref.WeakReference;
 
 public class CoverLoader {
     private int resource = 0;
     private String uri;
     private String fallbackUri;
+    private String username;
+    private String password;
     private ImageView imgvCover;
     private boolean textAndImageCombined;
     private TextView fallbackTitle;
@@ -37,6 +44,15 @@ public class CoverLoader {
 
     public CoverLoader withFallbackUri(String uri) {
         fallbackUri = uri;
+        return this;
+    }
+
+    public CoverLoader withCredentials(FeedPreferences prefs) {
+        if (prefs != null
+                && (!TextUtils.isEmpty(prefs.getUsername()) || !TextUtils.isEmpty(prefs.getPassword()))) {
+            this.username = prefs.getUsername();
+            this.password = prefs.getPassword();
+        }
         return this;
     }
 
@@ -76,15 +92,21 @@ public class CoverLoader {
                 .fitCenter()
                 .dontAnimate();
 
+        Object loadModel = ((!TextUtils.isEmpty(username) || !TextUtils.isEmpty(password))
+                && URLUtil.isNetworkUrl(uri))
+                ? new AuthenticatedImageUrl(uri, username, password) : uri;
         RequestBuilder<Drawable> builder = Glide.with(imgvCover)
                 .as(Drawable.class)
-                .load(uri)
+                .load(loadModel)
                 .apply(options);
 
         if (fallbackUri != null) {
+            Object fallbackModel = ((!TextUtils.isEmpty(username) || !TextUtils.isEmpty(password))
+                    && URLUtil.isNetworkUrl(fallbackUri))
+                    ? new AuthenticatedImageUrl(fallbackUri, username, password) : fallbackUri;
             builder = builder.error(Glide.with(imgvCover)
                     .as(Drawable.class)
-                    .load(fallbackUri)
+                    .load(fallbackModel)
                     .apply(options));
         }
 

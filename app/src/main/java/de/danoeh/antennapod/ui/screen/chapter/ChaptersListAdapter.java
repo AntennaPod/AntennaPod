@@ -19,8 +19,11 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
+import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.feed.FeedPreferences;
 import de.danoeh.antennapod.ui.common.ImagePlaceholder;
 import de.danoeh.antennapod.ui.common.IntentUtils;
+import de.danoeh.antennapod.ui.glide.AuthenticatedImageUrl;
 import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.CircularProgressBar;
 
@@ -116,8 +119,12 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
                     Glide.with(context).clear(holder.image);
                     holder.image.setVisibility(View.GONE);
                 } else {
+                    FeedPreferences prefs = (media instanceof FeedMedia
+                            && ((FeedMedia) media).getItem() != null
+                            && ((FeedMedia) media).getItem().getFeed() != null)
+                            ? ((FeedMedia) media).getItem().getFeed().getPreferences() : null;
                     Glide.with(context)
-                            .load(media.getImageLocation())
+                            .load(AuthenticatedImageUrl.create(media.getImageLocation(), prefs))
                             .apply(options)
                             .into(holder.image);
                 }
