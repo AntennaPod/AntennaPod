@@ -24,6 +24,7 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -78,7 +79,15 @@ public class ChaptersFragment extends AppCompatDialogFragment {
 
         adapter = new ChaptersListAdapter(getActivity(), pos -> {
             Chapter chapter = adapter.getItem(pos);
+            final Playable chapterMedia = media;
             PlaybackController.bindToMedia3Service(getActivity(), controller -> {
+                if (controller.getCurrentMediaItem() == null && chapterMedia instanceof FeedMedia) {
+                    controller.setMediaItem(MediaItemAdapter.fromMediaIdStub(((FeedMedia) chapterMedia).getId()),
+                            chapter.getStart());
+                    controller.prepare();
+                    controller.play();
+                    return;
+                }
                 if (!controller.isPlaying()) {
                     controller.play();
                 }
