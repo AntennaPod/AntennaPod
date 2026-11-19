@@ -150,3 +150,5 @@ if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
         serviceAccountCredentials.set(file(antennaPodPlayPublisherCredentials))
     }
 }
+
+apply from: "r8-usage.gradle"
