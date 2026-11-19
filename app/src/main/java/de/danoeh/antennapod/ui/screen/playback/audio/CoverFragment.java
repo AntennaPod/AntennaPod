@@ -48,7 +48,6 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -72,7 +71,7 @@ public class CoverFragment extends Fragment {
     private CoverFragmentBinding viewBinding;
     private Disposable disposable;
     private int displayedChapterIndex = -1;
-    private Playable media;
+    private FeedMedia media;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,8 +108,8 @@ public class CoverFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Maybe.<Playable>create(emitter -> {
-            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+        disposable = Maybe.<FeedMedia>create(emitter -> {
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media != null) {
                 if (includingChapters) {
                     ChapterUtils.loadChapters(media, getContext(), false);
@@ -130,18 +129,14 @@ public class CoverFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void displayMediaInfo(@NonNull Playable media) {
+    private void displayMediaInfo(@NonNull FeedMedia media) {
         String pubDateStr = DateFormatter.formatAbbrev(getActivity(), media.getPubDate());
         viewBinding.txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
                 + "\u00A0"
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
-        if (media instanceof FeedMedia) {
-            viewBinding.txtvPodcastTitle.setOnClickListener(v -> openFeed(((FeedMedia) media).getItem().getFeed()));
-        } else {
-            viewBinding.txtvPodcastTitle.setOnClickListener(null);
-        }
+        viewBinding.txtvPodcastTitle.setOnClickListener(v -> openFeed(media.getItem().getFeed()));
         viewBinding.txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         viewBinding.txtvEpisodeTitle.setText(media.getEpisodeTitle());
         viewBinding.txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
@@ -193,10 +188,9 @@ public class CoverFragment extends Fragment {
         boolean chapterControlVisible = false;
         if (media.getChapters() != null) {
             chapterControlVisible = media.getChapters().size() > 0;
-        } else if (media instanceof FeedMedia) {
-            FeedMedia fm = ((FeedMedia) media);
+        } else {
             // If an item has chapters but they are not loaded yet, still display the button.
-            chapterControlVisible = fm.getItem() != null && fm.getItem().hasChapters();
+            chapterControlVisible = media.getItem() != null && media.getItem().hasChapters();
         }
         int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
         if (viewBinding.chapterButton.getVisibility() != newVisibility) {

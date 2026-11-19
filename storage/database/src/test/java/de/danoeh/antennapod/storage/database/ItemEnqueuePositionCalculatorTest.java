@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.model.playback.Playable;
 
 import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
 import static de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation.BACK;
@@ -81,7 +80,7 @@ public class ItemEnqueuePositionCalculatorTest {
                     idsExpected);
         }
 
-        Playable getCurrentlyPlaying() {
+        FeedMedia getCurrentlyPlaying() {
             return null;
         }
     }
@@ -113,7 +112,7 @@ public class ItemEnqueuePositionCalculatorTest {
         public long idCurrentlyPlaying;
 
         @Override
-        Playable getCurrentlyPlaying() {
+        FeedMedia getCurrentlyPlaying() {
             return ItemEnqueuePositionCalculatorTest.getCurrentlyPlaying(idCurrentlyPlaying);
         }
 
@@ -125,7 +124,7 @@ public class ItemEnqueuePositionCalculatorTest {
                                             ItemEnqueuePositionCalculator calculator,
                                             FeedItem itemToAdd,
                                             List<FeedItem> queue,
-                                            Playable currentlyPlaying,
+                                            FeedMedia currentlyPlaying,
                                             List<Long> idsExpected) {
         int posActual = calculator.calcPosition(queue, currentlyPlaying);
         queue.add(posActual, itemToAdd);
@@ -144,7 +143,7 @@ public class ItemEnqueuePositionCalculatorTest {
             QUEUE_DEFAULT.stream().map(FeedItem::getId).collect(Collectors.toList());
 
 
-    static Playable getCurrentlyPlaying(long idCurrentlyPlaying) {
+    static FeedMedia getCurrentlyPlaying(long idCurrentlyPlaying) {
         if (ID_CURRENTLY_PLAYING_NULL == idCurrentlyPlaying) {
             return null;
         }

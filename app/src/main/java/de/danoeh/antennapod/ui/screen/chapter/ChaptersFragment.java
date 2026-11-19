@@ -23,7 +23,6 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -41,7 +40,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
     private ChaptersListAdapter adapter;
     private Disposable disposable;
     private int focusedChapter = -1;
-    private Playable media;
+    private FeedMedia media;
     private LinearLayoutManager layoutManager;
     private ProgressBar progressBar;
 
@@ -125,7 +124,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         adapter.notifyTimeChanged(event.getPosition());
     }
 
-    private int getCurrentChapter(Playable media, int position) {
+    private int getCurrentChapter(FeedMedia media, int position) {
         if (media == null) {
             return -1;
         }
@@ -137,7 +136,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
             disposable.dispose();
         }
         disposable = Maybe.create(emitter -> {
-            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media != null) {
                 ChapterUtils.loadChapters(media, getContext(), forceRefresh);
                 emitter.onSuccess(media);
@@ -147,11 +146,11 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         })
         .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(media -> onMediaChanged((Playable) media),
+        .subscribe(media -> onMediaChanged((FeedMedia) media),
                 error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void onMediaChanged(Playable media) {
+    private void onMediaChanged(FeedMedia media) {
         this.media = media;
         focusedChapter = -1;
         if (adapter == null) {
@@ -165,8 +164,8 @@ public class ChaptersFragment extends AppCompatDialogFragment {
         }
         adapter.setMedia(media);
         ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
-        if (media instanceof FeedMedia && ((FeedMedia) media).getItem() != null
-                && !TextUtils.isEmpty(((FeedMedia) media).getItem().getPodcastIndexChapterUrl())) {
+        if (media.getItem() != null
+                && !TextUtils.isEmpty(media.getItem().getPodcastIndexChapterUrl())) {
             ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
         }
         int positionOfCurrentChapter = getCurrentChapter(media, media.getPosition());

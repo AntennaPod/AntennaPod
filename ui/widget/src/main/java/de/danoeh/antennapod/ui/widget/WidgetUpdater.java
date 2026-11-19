@@ -23,8 +23,8 @@ import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.PlaybackSpeedActivityStarter;
@@ -40,13 +40,13 @@ public abstract class WidgetUpdater {
     private static final String TAG = "WidgetUpdater";
 
     public static class WidgetState {
-        final Playable media;
+        final FeedMedia media;
         final PlayerStatus status;
         final int position;
         final int duration;
         final float playbackSpeed;
 
-        public WidgetState(Playable media, PlayerStatus status, int position, int duration, float playbackSpeed) {
+        public WidgetState(FeedMedia media, PlayerStatus status, int position, int duration, float playbackSpeed) {
             this.media = media;
             this.status = status;
             this.position = position;
@@ -55,7 +55,7 @@ public abstract class WidgetUpdater {
         }
 
         public WidgetState(PlayerStatus status) {
-            this(null, status, Playable.INVALID_TIME, Playable.INVALID_TIME, 1.0f);
+            this(null, status, FeedMedia.INVALID_TIME, FeedMedia.INVALID_TIME, 1.0f);
         }
     }
 
@@ -204,7 +204,7 @@ public abstract class WidgetUpdater {
         }
     }
 
-    private static Bitmap loadCover(Context context, int iconSize, Playable media, Transformation<Bitmap> transform) {
+    private static Bitmap loadCover(Context context, int iconSize, FeedMedia media, Transformation<Bitmap> transform) {
         try {
             return Glide.with(context)
                     .asBitmap()
