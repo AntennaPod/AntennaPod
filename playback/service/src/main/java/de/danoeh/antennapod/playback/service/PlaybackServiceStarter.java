@@ -3,14 +3,13 @@ package de.danoeh.antennapod.playback.service;
 import android.content.Context;
 import androidx.media3.common.DeviceInfo;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
 
 public class PlaybackServiceStarter {
     private final Context context;
-    private final Playable media;
+    private final FeedMedia media;
 
-    public PlaybackServiceStarter(Context context, Playable media) {
+    public PlaybackServiceStarter(Context context, FeedMedia media) {
         this.context = context;
         this.media = media;
     }
@@ -21,8 +20,8 @@ public class PlaybackServiceStarter {
 
     public void start() {
         PlaybackController.bindToMedia3Service(context, controller -> {
-            if (controller.getCurrentMediaItem() != null && media instanceof FeedMedia
-                    && ("" + ((FeedMedia) media).getId()).equals(controller.getCurrentMediaItem().mediaId)) {
+            if (controller.getCurrentMediaItem() != null
+                    && ("" + media.getId()).equals(controller.getCurrentMediaItem().mediaId)) {
                 controller.play();
                 return;
             }
@@ -30,7 +29,7 @@ public class PlaybackServiceStarter {
                     == DeviceInfo.PLAYBACK_TYPE_REMOTE) {
                 controller.play(); // Casting somehow does not play when not quickly starting the old episode
             }
-            controller.setMediaItem(MediaItemAdapter.fromMediaIdStub(((FeedMedia) media).getId()));
+            controller.setMediaItem(MediaItemAdapter.fromMediaIdStub(media.getId()));
             controller.prepare();
             controller.play();
         });

@@ -29,7 +29,6 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
@@ -47,7 +46,7 @@ public class TranscriptDialogFragment extends DialogFragment
     public static final String TAG = "TranscriptFragment";
     private TranscriptDialogBinding viewBinding;
     private Disposable disposable;
-    private Playable media;
+    private FeedMedia media;
     private Transcript transcript;
     private TranscriptAdapter adapter = null;
     private boolean doInitialScroll = true;
@@ -174,13 +173,13 @@ public class TranscriptDialogFragment extends DialogFragment
             disposable.dispose();
         }
         disposable = Maybe.create(emitter -> {
-            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
-            if (media instanceof FeedMedia) {
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            if (media != null) {
                 this.media = media;
 
-                transcript = TranscriptUtils.loadTranscript((FeedMedia) this.media, forceRefresh);
+                transcript = TranscriptUtils.loadTranscript(this.media, forceRefresh);
                 doInitialScroll = true;
-                ((FeedMedia) this.media).setTranscript(transcript);
+                this.media.setTranscript(transcript);
                 emitter.onSuccess(this.media);
             } else {
                 emitter.onComplete();
@@ -188,17 +187,17 @@ public class TranscriptDialogFragment extends DialogFragment
         })
         .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(media -> onMediaChanged((Playable) media),
+        .subscribe(media -> onMediaChanged((FeedMedia) media),
                 error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void onMediaChanged(Playable media) {
-        if (!(media instanceof FeedMedia)) {
+    private void onMediaChanged(FeedMedia media) {
+        if (media == null) {
             return;
         }
         this.media = media;
 
-        if (!((FeedMedia) media).hasTranscript()) {
+        if (!media.hasTranscript()) {
             dismiss();
             Toast.makeText(getContext(), R.string.no_transcript_label, Toast.LENGTH_LONG).show();
             return;

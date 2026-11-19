@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.model.feed;
 
 import android.text.TextUtils;
-import de.danoeh.antennapod.model.playback.Playable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,9 +10,9 @@ public class EmbeddedChapterImage {
     private final int position;
     private final int length;
     private final String imageUrl;
-    private final Playable media;
+    private final FeedMedia media;
 
-    public EmbeddedChapterImage(Playable media, String imageUrl) {
+    public EmbeddedChapterImage(FeedMedia media, String imageUrl) {
         this.media = media;
         this.imageUrl = imageUrl;
         Matcher m = EMBEDDED_IMAGE_MATCHER.matcher(imageUrl);
@@ -37,7 +36,7 @@ public class EmbeddedChapterImage {
         return length;
     }
 
-    public Playable getMedia() {
+    public FeedMedia getMedia() {
         return media;
     }
 
@@ -62,7 +61,7 @@ public class EmbeddedChapterImage {
         return EMBEDDED_IMAGE_MATCHER.matcher(imageUrl).matches();
     }
 
-    public static Object getModelFor(Playable media, int chapter) {
+    public static Object getModelFor(FeedMedia media, int chapter) {
         String imageUrl = media.getChapters().get(chapter).getImageUrl();
         if (isEmbeddedChapterImage(imageUrl)) {
             return new EmbeddedChapterImage(media, imageUrl);

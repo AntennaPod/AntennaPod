@@ -17,7 +17,7 @@
     <suppress checks="WhitespaceAfter" files="(LongList.java|IntentUtils.java|TimeSpeedConverter.java|PlaybackController.java|PodcastSearchResult.java)"/>
     <suppress checks="AbbreviationAsWordInName" files="(FeedItemPermutorsTest.java|DBUpgrader.java|PodDBAdapter.java|DBWriter.java|DBReader.java|RewindAfterPauseUtilTest.java|GpodnetUploadChangesResponse.java|GpodnetEpisodeActionPostResponse.java|UrlCheckerTest.java|UriUtilTest.java|UriUtil.java|FeedDiscovererTest.java|UITestUtils.java|APCleanupAlgorithmTest.java|APNullCleanupAlgorithm.java|APCleanupAlgorithm.java|HTTPBin.java|UITestUtilsTest.java|FeedDiscoverer.java|APQueueCleanupAlgorithm.java)"/>
     <suppress checks="NeedBraces" files="(FeedPreferences.java|DownloadRequest.java|HTTPBin.java|UITestUtils.java)"/>
-    <suppress checks="NonEmptyAtclauseDescription" files="(FeedFilter.java|AspectRatioVideoView.java|Playable.java|PodcastSearchResult.java|OpmlBackupAgent.java)"/>
+    <suppress checks="NonEmptyAtclauseDescription" files="(FeedFilter.java|AspectRatioVideoView.java|PodcastSearchResult.java|OpmlBackupAgent.java)"/>
     <suppress checks="OperatorWrapCheck" files="(Atom.java|DBUpgrader.java|PodDBAdapter.java|PlaybackController.java|GpodnetUploadChangesResponse.java|HtmlToPlainText.java|PodcastSearchResult.java|PowerConnectionReceiver.java|FeedDiscoverer.java)"/>
     <suppress checks="JavadocParagraph" files="(FeedItemPermutors.java|HtmlToPlainText.java|FeedItemMenuHandler.java|RewindAfterPauseUtils.java|UITestUtils.java|NestedScrollableHost.java)"/>
     <suppress checks="JavadocTagContinuationIndentation" files="(LongList.java|DBReader.java|GpodnetService.java|FeedDiscoverer.java)"/>

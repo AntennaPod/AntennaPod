@@ -21,7 +21,6 @@ import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.system.utils.ThreadUtils;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 
@@ -56,20 +55,15 @@ public class MediaItemAdapter {
      * Create a media item and load all its metadata, including cover art using Glide.
      * Do NOT use this method on the main thread.
      */
-    public static MediaItem fromPlayable(Context context, Playable playable, boolean forBrowse) {
+    public static MediaItem fromPlayable(Context context, FeedMedia playable, boolean forBrowse) {
         ThreadUtils.assertNotMainThread();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
         metadataBuilder.setTitle(playable.getEpisodeTitle());
         metadataBuilder.setIsPlayable(true);
         metadataBuilder.setIsBrowsable(false);
         metadataBuilder.setMediaType(MediaMetadata.MEDIA_TYPE_PODCAST_EPISODE);
-        String mediaId = "0";
-        if (playable instanceof FeedMedia) {
-            FeedMedia feedMedia = (FeedMedia) playable;
-            mediaId = String.valueOf(feedMedia.getId());
-            metadataBuilder.setSubtitle(feedMedia.getFeedTitle());
-            metadataBuilder.setArtist(feedMedia.getFeedTitle());
-        }
+        metadataBuilder.setSubtitle(playable.getFeedTitle());
+        metadataBuilder.setArtist(playable.getFeedTitle());
         if (!forBrowse) {
             int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
             Bitmap bitmap = loadArtworkBitmap(context, playable, iconSize);
@@ -95,10 +89,9 @@ public class MediaItemAdapter {
             localPlaybackUri = playable.getStreamUrl();
         }
         Bundle requestExtras = new Bundle();
-        if (!playable.localFileAvailable() && playable instanceof FeedMedia) {
-            FeedMedia feedMedia = (FeedMedia) playable;
-            if (feedMedia.getItem() != null && feedMedia.getItem().getFeed() != null) {
-                FeedPreferences prefs = feedMedia.getItem().getFeed().getPreferences();
+        if (!playable.localFileAvailable()) {
+            if (playable.getItem() != null && playable.getItem().getFeed() != null) {
+                FeedPreferences prefs = playable.getItem().getFeed().getPreferences();
                 if (prefs != null && !TextUtils.isEmpty(prefs.getUsername())
                         && !TextUtils.isEmpty(prefs.getPassword())) {
                     requestExtras.putString(KEY_AUTHORIZATION_HEADER,
@@ -108,7 +101,7 @@ public class MediaItemAdapter {
         }
         return new MediaItem.Builder()
                 .setUri(localPlaybackUri != null ? Uri.parse(localPlaybackUri) : null)
-                .setMediaId(mediaId)
+                .setMediaId(String.valueOf(playable.getId()))
                 .setMediaMetadata(metadataBuilder.build())
                 .setRequestMetadata(new MediaItem.RequestMetadata.Builder()
                         .setExtras(requestExtras)
@@ -117,7 +110,7 @@ public class MediaItemAdapter {
     }
 
     public static MediaItem withChapterArtwork(Context context, MediaItem item,
-                                               Playable playable, int chapterIndex) {
+                                               FeedMedia playable, int chapterIndex) {
         ThreadUtils.assertNotMainThread();
         int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
         Bitmap bitmap = loadChapterArtworkBitmap(context, playable, chapterIndex, iconSize);
@@ -146,7 +139,7 @@ public class MediaItemAdapter {
         return item.buildUpon().setMediaMetadata(metadataBuilder.build()).build();
     }
 
-    private static Bitmap loadChapterArtworkBitmap(Context context, Playable playable,
+    private static Bitmap loadChapterArtworkBitmap(Context context, FeedMedia playable,
                                                    int chapterIndex, int iconSize) {
         List<Chapter> chapters = playable.getChapters();
         if (chapters == null || chapterIndex < 0 || chapterIndex >= chapters.size()
@@ -165,7 +158,7 @@ public class MediaItemAdapter {
         }
     }
 
-    private static Bitmap loadArtworkBitmap(Context context, Playable playable, int iconSize) {
+    private static Bitmap loadArtworkBitmap(Context context, FeedMedia playable, int iconSize) {
         try {
             String imageLocation = ImageResourceUtils.getEpisodeListImageLocation(playable);
             return Glide.with(context)
@@ -177,14 +170,10 @@ public class MediaItemAdapter {
         } catch (Exception tr1) {
             // fall through to try feed image
         }
-        if (!(playable instanceof FeedMedia)) {
+        if (playable.getItem() == null || playable.getItem().getFeed() == null) {
             return null;
         }
-        FeedMedia feedMedia = (FeedMedia) playable;
-        if (feedMedia.getItem() == null || feedMedia.getItem().getFeed() == null) {
-            return null;
-        }
-        String fallback = feedMedia.getItem().getFeed().getImageUrl();
+        String fallback = playable.getItem().getFeed().getImageUrl();
         if (fallback == null) {
             return null;
         }
