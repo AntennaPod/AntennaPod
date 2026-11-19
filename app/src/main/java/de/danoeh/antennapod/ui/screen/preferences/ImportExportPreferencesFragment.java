@@ -37,6 +37,7 @@ import de.danoeh.antennapod.storage.importexport.FavoritesWriter;
 import de.danoeh.antennapod.storage.importexport.HtmlWriter;
 import de.danoeh.antennapod.storage.importexport.OpmlWriter;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.ui.preferences.screen.AnimatedPreferenceFragment;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
@@ -390,7 +391,10 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
     private void forceRestart() {
         PackageManager pm = getContext().getPackageManager();
         Intent intent = pm.getLaunchIntentForPackage(getContext().getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(MainActivityStarter.EXTRA_CHECK_MISSING_FILES_AFTER_IMPORT, true);
+        // CLEAR_TASK is required: without it, AMS routes this launcher intent to the existing
+        // task and discards our extras, so the missing-files dialog never appears after restart.
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         getContext().getApplicationContext().startActivity(intent);
         Runtime.getRuntime().exit(0);
     }

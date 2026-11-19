@@ -52,6 +52,7 @@ import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.databasemaintenanceservice.DatabaseMaintenanceWorker;
 import de.danoeh.antennapod.storage.importexport.AutomaticDatabaseExportWorker;
+import de.danoeh.antennapod.storage.importexport.StaleDownloadMarkers;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
@@ -88,6 +89,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -705,6 +707,22 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
                 .show();
     }
 
+    private void showMissingFilesDialog(List<Long> missingMediaIds) {
+        if (missingMediaIds.isEmpty()) {
+            return;
+        }
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(getResources().getQuantityString(R.plurals.import_missing_files_title,
+                missingMediaIds.size(), missingMediaIds.size()));
+        builder.setMessage(getString(R.string.import_missing_files_message));
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.import_redownload_label, (dialog, which) ->
+                StaleDownloadMarkers.redownloadItems(this, missingMediaIds));
+        builder.setNegativeButton(R.string.import_ignore_label, (dialog, which) ->
+                StaleDownloadMarkers.clearDownloadStateForItemsAsync(missingMediaIds));
+        builder.show();
+    }
+
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
@@ -749,6 +767,9 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
         }
         if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_DOWNLOAD_LOGS, false)) {
             new DownloadLogFragment().show(getSupportFragmentManager(), DownloadLogFragment.TAG);
+        }
+        if (intent.getBooleanExtra(MainActivityStarter.EXTRA_CHECK_MISSING_FILES_AFTER_IMPORT, false)) {
+            StaleDownloadMarkers.checkMissingFilesAfterImport(this::showMissingFilesDialog);
         }
         if (intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false)) {
             FeedUpdateManager.getInstance().runOnceOrAsk(this);
