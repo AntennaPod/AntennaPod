@@ -3,7 +3,7 @@ name: Assign Milestone
 on:
   pull_request_target:
     types: [closed]
-    branches: [develop]
+    branches: [develop, master]
 
 jobs:
   assign-milestone:
@@ -23,12 +23,18 @@ jobs:
 
       - name: Determine milestone name
         id: milestone
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
           VERSION=$(grep 'versionName' app/build.gradle | grep -oP '"[^"]+"' | tr -d '"')
           BASE=$(echo "$VERSION" | sed 's/-beta[0-9]*//')
           MAJOR=$(echo "$BASE" | cut -d. -f1)
           MINOR=$(echo "$BASE" | cut -d. -f2)
-          MILESTONE="$MAJOR.$((MINOR + 1))"
+          if [ "$BASE_REF" = "master" ]; then
+            MILESTONE="$MAJOR.$MINOR"
+          else
+            MILESTONE="$MAJOR.$((MINOR + 1))"
+          fi
           echo "Master version: $VERSION → milestone: $MILESTONE"
           echo "name=$MILESTONE" >> "$GITHUB_OUTPUT"
 
@@ -39,13 +45,13 @@ jobs:
           github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
             const title = '${{ steps.milestone.outputs.name }}';
-            const milestones = await github.rest.issues.listMilestones({
+            const milestones = await github.paginate(github.rest.issues.listMilestones, {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              state: 'open',
+              state: 'all',
               per_page: 100,
             });
-            let milestone = milestones.data.find(m => m.title === title);
+            let milestone = milestones.find(m => m.title === title);
             if (!milestone) {
               const result = await github.rest.issues.createMilestone({
                 owner: context.repo.owner,
@@ -73,26 +79,65 @@ jobs:
         with:
           github-token: ${{ secrets.ANTENNAPOD_BOT_PAT }}
           script: |
-            const query = `query ($owner: String!, $repo: String!, $number: Int!) {
-              repository(owner: $owner, name: $repo) {
-                pullRequest(number: $number) {
-                  closingIssuesReferences(first: 100) {
-                    nodes { number }
+            const isMaster = context.payload.pull_request.base.ref === 'master';
+            let issues;
+            if (isMaster) {
+              // GitHub doesn't auto-close issues when PRs get merged to non-default branches
+              const body = context.payload.pull_request.body || "";
+              const issueUrl = `https?:\\/\\/github\\.com\\/${context.repo.owner}\\/${context.repo.repo}\\/issues\\/`;
+              const closingRegex = new RegExp(`\\b(close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved):?\\s+(?:#|${issueUrl})(\\d+)`, "ig");
+              const numbers = new Set();
+              let match;
+              while ((match = closingRegex.exec(body)) !== null) {
+                numbers.add(parseInt(match[2]));
+              }
+              issues = [...numbers].map(number => ({ number }));
+            } else {
+              const query = `query ($owner: String!, $repo: String!, $number: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $number) {
+                    closingIssuesReferences(first: 100) {
+                      nodes { number }
+                    }
                   }
                 }
-              }
-            }`;
-            const result = await github.graphql(query, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              number: context.payload.pull_request.number,
-            });
-            const issues = result.repository.pullRequest.closingIssuesReferences.nodes;
-            for (const issue of issues) {
-              await github.rest.issues.update({
+              }`;
+              const result = await github.graphql(query, {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
-                milestone: ${{ steps.get-milestone.outputs.result }},
+                number: context.payload.pull_request.number,
               });
+              issues = result.repository.pullRequest.closingIssuesReferences.nodes;
+            }
+            const failed = [];
+            for (const issue of issues) {
+              try {
+                const update = {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  milestone: ${{ steps.get-milestone.outputs.result }},
+                };
+                if (isMaster) {
+                  const { data } = await github.rest.issues.get({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                  });
+                  if (data.pull_request) {
+                    continue;
+                  }
+                  if (data.state === 'open') {
+                    update.state = 'closed';
+                    update.state_reason = 'completed';
+                  }
+                }
+                await github.rest.issues.update(update);
+              } catch (error) {
+                core.warning(`Failed to update #${issue.number}: ${error.message}`);
+                failed.push(issue.number);
+              }
+            }
+            if (failed.length > 0) {
+              core.setFailed(`Failed to update: ${failed.map(n => '#' + n).join(', ')}`);
             }
