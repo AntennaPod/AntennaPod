@@ -32,6 +32,7 @@ import de.danoeh.antennapod.ui.MenuItemUtils;
 import de.danoeh.antennapod.event.EpisodeDownloadEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
+import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.ui.episodeslist.EpisodeMultiSelectActionHandler;
 import de.danoeh.antennapod.model.feed.Feed;
@@ -368,6 +369,13 @@ public class SearchFragment extends Fragment implements EpisodeItemListAdapter.O
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         search();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSpeedChanged(SpeedChangedEvent event) {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void searchWithProgressBar() {
