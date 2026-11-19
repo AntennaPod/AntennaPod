@@ -59,7 +59,10 @@ import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.common.NavigationToolbarActivity;
 import de.danoeh.antennapod.ui.common.ThemeSwitcher;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.ui.discovery.DiscoveryFragment;
+import de.danoeh.antennapod.ui.discovery.OnlineSearchFragment;
 import de.danoeh.antennapod.ui.screen.FavoritesFragment;
 import de.danoeh.antennapod.ui.screen.AddFeedFragment;
 import de.danoeh.antennapod.ui.screen.AllEpisodesFragment;
@@ -94,7 +97,8 @@ import java.util.Objects;
 /**
  * The activity that is shown when the user launches the app.
  */
-public class MainActivity extends CastEnabledActivity implements NavigationToolbarActivity {
+public class MainActivity extends CastEnabledActivity
+        implements NavigationToolbarActivity, OnlineSearchFragment.PlaybackHost {
 
     private static final String TAG = "MainActivity";
     public static final String MAIN_FRAGMENT_TAG = "main";
@@ -869,5 +873,12 @@ public class MainActivity extends CastEnabledActivity implements NavigationToolb
             return true;
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void playMedia(Playable media) {
+        new PlaybackServiceStarter(this, media)
+                .callEvenIfRunning(true)
+                .start();
     }
 }

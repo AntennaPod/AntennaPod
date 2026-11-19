@@ -8,7 +8,10 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="8dp"
-    tools:background="@android:color/darker_gray">
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    tools:ignore="Overdraw">
 
     <ImageView
         android:id="@+id/imgvCover"
@@ -20,7 +23,7 @@
         android:adjustViewBounds="true"
         android:importantForAccessibility="no"
         android:cropToPadding="true"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         tools:background="@android:color/holo_green_dark"
         tools:src="@tools:sample/avatars" />
 

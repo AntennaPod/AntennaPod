@@ -106,7 +106,7 @@ public class DiscoveryFragment extends Fragment implements Toolbar.OnMenuItemCli
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_online_search, container, false);
+        View root = inflater.inflate(R.layout.fragment_discovery, container, false);
         gridView = root.findViewById(R.id.gridView);
         adapter = new OnlineSearchAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
