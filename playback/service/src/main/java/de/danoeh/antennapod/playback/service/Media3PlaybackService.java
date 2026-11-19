@@ -27,6 +27,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import de.danoeh.antennapod.event.MessageEvent;
+import de.danoeh.antennapod.event.StatisticsEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
@@ -1006,6 +1007,17 @@ public class Media3PlaybackService extends MediaLibraryService {
                     .setVolumeAdaptionSetting(event.getVolumeAdaptionSetting());
             volumeAdaptionFactor = event.getVolumeAdaptionSetting().getAdaptionFactor();
             applyVolumeAdaption(1.0f);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void onStatisticsReset(StatisticsEvent event) {
+        // The service keeps its own copy of the loaded episode. Without this, the next
+        // position save would add newly played time to the pre-reset played duration
+        // and write the whole value back, undoing the reset (issue #8859).
+        if (currentPlayable != null && currentPlayable instanceof FeedMedia) {
+            ((FeedMedia) currentPlayable).setPlayedDuration(0);
         }
     }
 
