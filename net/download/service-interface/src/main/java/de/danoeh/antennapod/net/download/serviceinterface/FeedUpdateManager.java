@@ -24,6 +24,8 @@ public abstract class FeedUpdateManager {
 
     public abstract void runOnce(Context context, Feed feed, boolean nextPage);
 
+    public abstract void runOnce(Context context, Feed feed, boolean nextPage, boolean removeUnlistedItems);
+
     public abstract void runOnceOrAsk(@NonNull Context context);
 
     public abstract void runOnceOrAsk(@NonNull Context context, @Nullable Feed feed);

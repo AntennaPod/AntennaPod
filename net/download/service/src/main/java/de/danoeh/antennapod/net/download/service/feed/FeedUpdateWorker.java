@@ -238,7 +238,12 @@ public class FeedUpdateWorker extends Worker {
             return null;
         }
         feedHandlerResult.feed.setLastRefreshAttempt(System.currentTimeMillis());
-        Feed savedFeed = FeedDatabaseWriter.updateFeed(getApplicationContext(), feedHandlerResult.feed, false);
+        boolean forceRemoveUnlisted = getInputData()
+                .getBoolean(FeedUpdateManagerImpl.EXTRA_REMOVE_UNLISTED_ITEMS, false);
+        boolean removeUnlistedItems = (forceRemoveUnlisted || feed.getPreferences().getRemoveUnlistedEpisodes())
+                && !nextPage && !feed.isPaged();
+        Feed savedFeed = FeedDatabaseWriter.updateFeed(
+                getApplicationContext(), feedHandlerResult.feed, removeUnlistedItems);
 
         if (request.getFeedfileId() == 0) {
             return savedFeed; // No download logs for new subscriptions
