@@ -137,6 +137,8 @@
                     android:layout_marginEnd="4dp"
                     android:text="·"
                     android:importantForAccessibility="no"
+                    android:textColor="@color/episode_item_secondary_text"
+
                     style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle" />
 
                 <TextView
@@ -144,6 +146,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
+                    android:textColor="@color/episode_item_secondary_text"
+
                     style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle"
                     tools:text="@sample/episodes.json/data/published_at" />
 
@@ -153,6 +157,8 @@
                     android:layout_marginEnd="4dp"
                     android:text="·"
                     android:importantForAccessibility="no"
+                    android:textColor="@color/episode_item_secondary_text"
+
                     style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle" />
 
                 <TextView
@@ -160,6 +166,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
+                    android:textColor="@color/episode_item_secondary_text"
+
                     style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle"
                     tools:text="10 MB" />
 
@@ -177,6 +185,8 @@
                 android:importantForAccessibility="no"
                 android:ellipsize="end"
                 android:textAlignment="viewStart"
+                android:textColor="@color/episode_item_primary_text"
+
                 style="@style/AntennaPod.TextView.FeedListItemPrimaryTitle"
                 tools:text="@sample/episodes.json/data/title" />
 
@@ -192,6 +202,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
+                    android:textColor="@color/episode_item_secondary_text"
+
                     style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle"
                     tools:text="00:42:23" />
 
@@ -209,6 +221,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
+                    android:textColor="@color/episode_item_secondary_text"
+
                     style="@style/AntennaPod.TextView.FeedListItemSecondaryTitle"
                     tools:text="@sample/episodes.json/data/duration" />
 
