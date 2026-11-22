@@ -1,12 +1,9 @@
 package de.danoeh.antennapod.model.feed;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 
-import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.MediaDescriptionCompat;
 import de.danoeh.antennapod.model.MediaMetadataRetrieverCompat;
 import de.danoeh.antennapod.model.playback.MediaType;
 import org.apache.commons.lang3.StringUtils;
@@ -95,27 +92,6 @@ public class FeedMedia implements Parcelable, Serializable {
         } else {
             return downloadUrl;
         }
-    }
-
-    /**
-     * Returns a MediaItem representing the FeedMedia object.
-     * This is used by the MediaBrowserService
-     */
-    public MediaBrowserCompat.MediaItem getMediaItem() {
-        MediaDescriptionCompat.Builder builder = new MediaDescriptionCompat.Builder()
-                .setMediaId(String.valueOf(id))
-                .setTitle(getEpisodeTitle())
-                .setDescription(getFeedTitle())
-                .setSubtitle(getFeedTitle());
-        if (item != null) {
-            // getImageLocation() also loads embedded images, which we can not send to external devices
-            if (item.getImageUrl() != null) {
-                builder.setIconUri(Uri.parse(item.getImageUrl()));
-            } else if (item.getFeed() != null && item.getFeed().getImageUrl() != null) {
-                builder.setIconUri(Uri.parse(item.getFeed().getImageUrl()));
-            }
-        }
-        return new MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
     }
 
     /**
@@ -318,10 +294,6 @@ public class FeedMedia implements Parcelable, Serializable {
             return null;
         }
         return item.getFeed().getTitle();
-    }
-
-    public Object getIdentifier() {
-        return id;
     }
 
     public String getLocalFileUrl() {

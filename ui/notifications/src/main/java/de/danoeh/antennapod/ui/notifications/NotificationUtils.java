@@ -12,7 +12,6 @@ import java.util.List;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 
 public class NotificationUtils {
-    public static final String CHANNEL_ID_USER_ACTION = "user_action";
     public static final String CHANNEL_ID_DOWNLOADING = "downloading";
     public static final String CHANNEL_ID_REFRESHING = "refreshing";
     public static final String CHANNEL_ID_PLAYING = "playing";
@@ -31,8 +30,9 @@ public class NotificationUtils {
                 createGroupNews(context));
         mNotificationManager.createNotificationChannelGroupsCompat(channelGroups);
 
+        mNotificationManager.deleteNotificationChannel("user_action");
+
         final List<NotificationChannelCompat> channels = Arrays.asList(
-                createChannelUserAction(context),
                 createChannelDownloading(context),
                 createChannelRefreshing(context),
                 createChannelPlaying(context),
@@ -40,15 +40,6 @@ public class NotificationUtils {
                 createChannelSyncError(context),
                 createChannelEpisodeNotification(context));
         mNotificationManager.createNotificationChannelsCompat(channels);
-    }
-
-    private static NotificationChannelCompat createChannelUserAction(final Context c) {
-        return new NotificationChannelCompat.Builder(
-                        CHANNEL_ID_USER_ACTION, NotificationManagerCompat.IMPORTANCE_HIGH)
-                .setName(c.getString(R.string.notification_channel_user_action))
-                .setDescription(c.getString(R.string.notification_channel_user_action_description))
-                .setGroup(GROUP_ID_ERRORS)
-                .build();
     }
 
     private static NotificationChannelCompat createChannelDownloading(final Context c) {

@@ -93,10 +93,6 @@ public class UserInterfacePreferencesFragment extends AnimatedPreferenceFragment
                     return true;
                 });
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             findPreference(UserPreferences.PREF_PERSISTENT_NOTIFICATION).setVisible(false);
         }

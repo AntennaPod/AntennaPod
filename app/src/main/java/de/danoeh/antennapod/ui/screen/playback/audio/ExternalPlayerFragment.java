@@ -80,9 +80,7 @@ public class ExternalPlayerFragment extends Fragment {
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                 PlaybackController.bindToMedia3Service(getContext(), controller -> controller.pause());
             } else {
-                new PlaybackServiceStarter(getContext(), currentMedia)
-                        .callEvenIfRunning(true)
-                        .start();
+                new PlaybackServiceStarter(getContext(), currentMedia).start();
             }
         });
         return root;

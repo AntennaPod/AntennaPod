@@ -35,9 +35,7 @@ public class PlayLocalActionButton extends ItemActionButton {
             return;
         }
 
-        new PlaybackServiceStarter(context, media)
-                .callEvenIfRunning(true)
-                .start();
+        new PlaybackServiceStarter(context, media).start();
 
         if (media.getMediaType() == MediaType.VIDEO) {
             context.startActivity(PlaybackServiceInterface.getPlayerActivityIntent(context, media));

@@ -80,9 +80,7 @@ public class CoverFragment extends Fragment {
             if (PlaybackServiceInterface.isPlaying) {
                 PlaybackController.bindToMedia3Service(getActivity(), MediaController::pause);
             } else if (media != null) {
-                new PlaybackServiceStarter(getContext(), media)
-                        .callEvenIfRunning(true)
-                        .start();
+                new PlaybackServiceStarter(getContext(), media).start();
             }
         });
         viewBinding.openDescription.setOnClickListener(view -> ((AudioPlayerFragment) requireParentFragment())

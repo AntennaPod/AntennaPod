@@ -14,10 +14,6 @@ public class PlaybackServiceStarter {
         this.media = media;
     }
 
-    public PlaybackServiceStarter callEvenIfRunning(boolean callEvenIfRunning) {
-        return this;
-    }
-
     public void start() {
         PlaybackController.bindToMedia3Service(context, controller -> {
             if (controller.getCurrentMediaItem() != null

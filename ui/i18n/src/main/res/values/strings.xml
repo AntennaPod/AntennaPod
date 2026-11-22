@@ -567,8 +567,6 @@
     <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast-forward button is clicked</string>
     <string name="pref_rewind">Rewind skip time</string>
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
-    <string name="pref_expandNotify_title">High notification priority</string>
-    <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent playback controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused</string>
     <string name="pref_compact_notification_buttons_dialog_error_exact">You must select exactly two items</string>
@@ -962,8 +960,6 @@
     <!-- Notification channels -->
     <string name="notification_group_errors">Errors</string>
     <string name="notification_group_news">News</string>
-    <string name="notification_channel_user_action">Action required</string>
-    <string name="notification_channel_user_action_description">Shown if your action is required, for example if you need to enter a password.</string>
     <string name="notification_channel_downloading">Downloading episodes</string>
     <string name="notification_channel_downloading_description">Shown while currently downloading episodes.</string>
     <string name="notification_channel_refreshing">Refreshing podcasts</string>

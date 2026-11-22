@@ -205,9 +205,7 @@ public class AudioPlayerFragment extends Fragment implements
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                 PlaybackController.bindToMedia3Service(getContext(), MediaController::pause);
             } else {
-                new PlaybackServiceStarter(getContext(), currentMedia)
-                        .callEvenIfRunning(true)
-                        .start();
+                new PlaybackServiceStarter(getContext(), currentMedia).start();
             }
         });
         butFF.setOnClickListener(v -> {
@@ -353,10 +351,6 @@ public class AudioPlayerFragment extends Fragment implements
             progressIndicator.setVisibility(View.VISIBLE);
         } else if (event.hasEnded()) {
             progressIndicator.setVisibility(View.GONE);
-        } else if (currentMedia != null && !currentMedia.localFileAvailable()) {
-            sbPosition.setSecondaryProgress((int) (event.getProgress() * sbPosition.getMax()));
-        } else {
-            sbPosition.setSecondaryProgress(0);
         }
     }
 
