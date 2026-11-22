@@ -10,7 +10,6 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.download.serviceinterface.DownloadServiceInterface;
 import de.danoeh.antennapod.storage.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.model.playback.Playable;
 
 /**
  * Determine the positions of the new {@link FeedItem} in the queue.
@@ -30,7 +29,7 @@ public class ItemEnqueuePositionCalculator {
      * @param curQueue           the queue to which the item is to be inserted
      * @param currentPlaying     the currently playing media
      */
-    public int calcPosition(@NonNull List<FeedItem> curQueue, @Nullable Playable currentPlaying) {
+    public int calcPosition(@NonNull List<FeedItem> curQueue, @Nullable FeedMedia currentPlaying) {
         switch (enqueueLocation) {
             case BACK:
                 return curQueue.size();
@@ -75,11 +74,11 @@ public class ItemEnqueuePositionCalculator {
     }
 
     private static int getCurrentlyPlayingPosition(@NonNull List<FeedItem> curQueue,
-                                                   @Nullable Playable currentPlaying) {
-        if (!(currentPlaying instanceof FeedMedia)) {
+                                                   @Nullable FeedMedia currentPlaying) {
+        if (currentPlaying == null) {
             return -1;
         }
-        final long curPlayingItemId = ((FeedMedia) currentPlaying).getItem().getId();
+        final long curPlayingItemId = currentPlaying.getItem().getId();
         for (int i = 0; i < curQueue.size(); i++) {
             if (curPlayingItemId == curQueue.get(i).getId()) {
                 return i;

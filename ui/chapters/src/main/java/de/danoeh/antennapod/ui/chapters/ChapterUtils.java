@@ -16,7 +16,6 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.parser.feed.PodcastIndexChapterParser;
 import de.danoeh.antennapod.parser.media.id3.ChapterReader;
 import de.danoeh.antennapod.parser.media.id3.ID3ReaderException;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentChapterReader;
 import de.danoeh.antennapod.parser.media.vorbis.VorbisCommentReaderException;
 import de.danoeh.antennapod.parser.media.m4a.M4AChapterReader;
@@ -48,7 +47,7 @@ public class ChapterUtils {
     private ChapterUtils() {
     }
 
-    public static void loadChapters(Playable playable, Context context, boolean forceRefresh) {
+    public static void loadChapters(FeedMedia playable, Context context, boolean forceRefresh) {
         if (playable.getChapters() != null && !forceRefresh) {
             // Already loaded
             return;
@@ -57,19 +56,16 @@ public class ChapterUtils {
         try {
             List<Chapter> chaptersFromDatabase = null;
             List<Chapter> chaptersFromPodcastIndex = null;
-            if (playable instanceof FeedMedia) {
-                FeedMedia feedMedia = (FeedMedia) playable;
-                if (feedMedia.getItem() == null) {
-                    feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
-                }
-                if (feedMedia.getItem().hasChapters()) {
-                    chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
-                }
+            if (playable.getItem() == null) {
+                playable.setItem(DBReader.getFeedItem(playable.getItemId()));
+            }
+            if (playable.getItem().hasChapters()) {
+                chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(playable.getItem());
+            }
 
-                if (!TextUtils.isEmpty(feedMedia.getItem().getPodcastIndexChapterUrl())) {
-                    chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
-                            feedMedia.getItem().getPodcastIndexChapterUrl(), forceRefresh);
-                }
+            if (!TextUtils.isEmpty(playable.getItem().getPodcastIndexChapterUrl())) {
+                chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
+                        playable.getItem().getPodcastIndexChapterUrl(), forceRefresh);
             }
 
             List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
@@ -87,7 +83,7 @@ public class ChapterUtils {
         }
     }
 
-    public static List<Chapter> loadChaptersFromMediaFile(Playable playable, Context context)
+    public static List<Chapter> loadChaptersFromMediaFile(FeedMedia playable, Context context)
             throws InterruptedIOException {
         // Load the first few bytes to detect the format.
         // Then stitch the format back onto the stream and pass it to the chapter reader.
@@ -101,7 +97,7 @@ public class ChapterUtils {
             format = detection.format;
             if (format == MediaFormatDetector.Format.UNKNOWN) {
                 hint = detectHintFromMetadata(
-                        ((FeedMedia) playable).getMimeType(), playable.getStreamUrl());
+                        playable.getMimeType(), playable.getStreamUrl());
             }
             InputStream reconstructed = new SequenceInputStream(
                     new ByteArrayInputStream(detection.bytes), sniffStream);
@@ -212,7 +208,7 @@ public class ChapterUtils {
         return false;
     }
 
-    private static List<Chapter> tryFreshStreamParser(Playable playable, Context context,
+    private static List<Chapter> tryFreshStreamParser(FeedMedia playable, Context context,
                                                       MediaFormatDetector.Format format) throws InterruptedIOException {
         try (CountingInputStream in = openStream(playable, context)) {
             return readChaptersFromInputStream(in, format);
@@ -224,7 +220,7 @@ public class ChapterUtils {
         }
     }
 
-    private static CountingInputStream openStream(Playable playable, Context context) throws IOException {
+    private static CountingInputStream openStream(FeedMedia playable, Context context) throws IOException {
         if (playable.localFileAvailable()) {
             if (playable.getLocalFileUrl() == null) {
                 throw new IOException("No local url");
