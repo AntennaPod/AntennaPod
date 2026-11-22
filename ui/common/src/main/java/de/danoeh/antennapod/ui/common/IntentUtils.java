@@ -20,10 +20,6 @@ public abstract class IntentUtils {
         return info != null && info.activityInfo.exported;
     }
 
-    public static void sendLocalBroadcast(Context context, String action) {
-        context.sendBroadcast(new Intent(action).setPackage(context.getPackageName()));
-    }
-
     public static void openInBrowser(Context context, String url) {
         try {
             Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));

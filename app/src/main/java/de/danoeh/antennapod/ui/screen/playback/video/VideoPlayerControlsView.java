@@ -236,10 +236,6 @@ public class VideoPlayerControlsView extends FrameLayout {
         binding.playButton.setIsShowPlay(showPlay);
     }
 
-    public void setBufferingProgress(float progress) {
-        binding.sbPosition.setSecondaryProgress((int) (progress * binding.sbPosition.getMax()));
-    }
-
     public void showControls() {
         if (controlsShowing) {
             return;

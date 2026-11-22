@@ -7,7 +7,6 @@ import androidx.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.playback.MediaType;
 
 /**
  * Provides access to preferences set by the playback service. A private
@@ -30,11 +29,6 @@ public abstract class PlaybackPreferences {
      */
     private static final String PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID
             = "de.danoeh.antennapod.preferences.lastPlayedFeedMediaId";
-
-    /**
-     * True if last played media was a video.
-     */
-    private static final String PREF_CURRENT_EPISODE_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
 
     /**
      * The current player status as int.
@@ -85,10 +79,6 @@ public abstract class PlaybackPreferences {
         return prefs.getLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
     }
 
-    public static boolean getCurrentEpisodeIsVideo() {
-        return prefs.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
-    }
-
     public static int getCurrentPlayerStatus() {
         return prefs.getInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
     }
@@ -121,7 +111,6 @@ public abstract class PlaybackPreferences {
         if (playable == null) {
             writeNoMediaPlaying();
         } else {
-            editor.putBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, playable.getMediaType() == MediaType.VIDEO);
             editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, playable.getItem().getFeed().getId());
             editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, playable.getId());
         }
@@ -138,13 +127,6 @@ public abstract class PlaybackPreferences {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, skipSilence
                 ? FeedPreferences.SkipSilence.AGGRESSIVE.code : FeedPreferences.SkipSilence.OFF.code);
-        editor.apply();
-    }
-
-    public static void clearCurrentlyPlayingTemporaryPlaybackSettings() {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED);
-        editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE);
         editor.apply();
     }
 }

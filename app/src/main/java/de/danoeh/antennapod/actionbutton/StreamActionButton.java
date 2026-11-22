@@ -39,9 +39,7 @@ public class StreamActionButton extends ItemActionButton {
         }
         UsageStatistics.logAction(UsageStatistics.ACTION_STREAM);
 
-        new PlaybackServiceStarter(context, media)
-                .callEvenIfRunning(true)
-                .start();
+        new PlaybackServiceStarter(context, media).start();
 
         if (media.getMediaType() == MediaType.VIDEO) {
             context.startActivity(PlaybackServiceInterface.getPlayerActivityIntent(context, media));

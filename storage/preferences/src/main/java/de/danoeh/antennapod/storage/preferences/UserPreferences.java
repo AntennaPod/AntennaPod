@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
 import de.danoeh.antennapod.model.feed.FeedOrder;
@@ -51,7 +50,6 @@ public abstract class UserPreferences {
     public static final String PREF_DRAWER_ITEM_ORDER = "prefDrawerItemOrder";
     public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
-    public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
     public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
@@ -338,19 +336,6 @@ public abstract class UserPreferences {
 
     public static void setAutomaticExportFolder(@Nullable String folder) {
         prefs.edit().putString(PREF_AUTOMATIC_EXPORT_FOLDER, folder).apply();
-    }
-
-    /**
-     * Returns notification priority.
-     *
-     * @return NotificationCompat.PRIORITY_MAX or NotificationCompat.PRIORITY_DEFAULT
-     */
-    public static int getNotifyPriority() {
-        if (prefs.getBoolean(PREF_EXPANDED_NOTIFICATION, false)) {
-            return NotificationCompat.PRIORITY_MAX;
-        } else {
-            return NotificationCompat.PRIORITY_DEFAULT;
-        }
     }
 
     /**

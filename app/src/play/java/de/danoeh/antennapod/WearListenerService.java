@@ -156,9 +156,7 @@ public class WearListenerService extends WearableListenerService {
             return;
         }
         Log.d(TAG, "Starting playback for: " + item.getTitle());
-        new PlaybackServiceStarter(this, item.getMedia())
-                .callEvenIfRunning(true)
-                .start();
+        new PlaybackServiceStarter(this, item.getMedia()).start();
     }
 
     private void reply(String nodeId, String path, byte[] payload) {

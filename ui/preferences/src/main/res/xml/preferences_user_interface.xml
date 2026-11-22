@@ -38,13 +38,6 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreferenceCompat
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefExpandNotify"
-                android:summary="@string/pref_expandNotify_sum"
-                android:title="@string/pref_expandNotify_title"
-                search:ignore="true"/>
-        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPersistNotify"

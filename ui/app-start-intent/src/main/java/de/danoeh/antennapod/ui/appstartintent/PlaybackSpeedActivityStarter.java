@@ -28,8 +28,4 @@ public class PlaybackSpeedActivityStarter {
         return PendingIntent.getActivity(context, R.id.pending_intent_playback_speed, getIntent(),
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
-
-    public void start() {
-        context.startActivity(getIntent());
-    }
 }
