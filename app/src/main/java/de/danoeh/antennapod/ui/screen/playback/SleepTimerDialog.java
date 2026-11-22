@@ -198,11 +198,14 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         refreshUiState();
         viewBinding.autoEnableCheckbox.setChecked(SleepTimerPreferences.autoEnable());
         viewBinding.shakeToResetCheckbox.setChecked(SleepTimerPreferences.shakeToReset());
+        viewBinding.resetOnPlaybackInteractionCheckbox.setChecked(SleepTimerPreferences.resetOnPlaybackInteraction());
         viewBinding.vibrateCheckbox.setChecked(SleepTimerPreferences.vibrate());
         refreshAutoEnableControls(SleepTimerPreferences.autoEnable());
 
         viewBinding.shakeToResetCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setShakeToReset(isChecked));
+        viewBinding.resetOnPlaybackInteractionCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
+                -> SleepTimerPreferences.setResetOnPlaybackInteraction(isChecked));
         viewBinding.vibrateCheckbox.setOnCheckedChangeListener((buttonView, isChecked)
                 -> SleepTimerPreferences.setVibrate(isChecked));
         viewBinding.autoEnableCheckbox.setOnCheckedChangeListener((compoundButton, isChecked)
@@ -294,6 +297,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
         // let the user use anything other than 1 episode
         boolean isEpisodeType = SleepTimerPreferences.getSleepTimerType() == SleepTimerType.EPISODES;
         boolean noEpisodeSelection = isEpisodeType && !UserPreferences.isFollowQueue();
+        viewBinding.resetOnPlaybackInteractionCheckbox.setVisibility(isEpisodeType ? View.GONE : View.VISIBLE);
 
         if (noEpisodeSelection) {
             viewBinding.timeEditText.setEnabled(false);

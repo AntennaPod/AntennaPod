@@ -717,6 +717,7 @@
         <item quantity="other">There are only %1$d episodes left in your queue</item>
     </plurals>
     <string name="shake_to_reset_label">Shake to reset</string>
+    <string name="reset_timer_on_playback_interaction_label">Restart timer when choosing another episode</string>
     <string name="timer_vibration_label">Vibrate shortly before end</string>
     <string name="time_seconds">seconds</string>
     <string name="time_minutes">minutes</string>
