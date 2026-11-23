@@ -10,9 +10,12 @@ import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.annotation.RawRes;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.session.MediaConstants;
 import com.bumptech.glide.Glide;
 import com.google.common.collect.ImmutableList;
 import de.danoeh.antennapod.model.feed.Chapter;
@@ -36,6 +39,7 @@ public class MediaItemAdapter {
     public static final String KEY_STREAM_URL = "stream_url";
     public static final String KEY_ARTWORK_URL = "artwork_url";
     public static final String KEY_AUTHORIZATION_HEADER = "authorization_header";
+    private static final String KEY_DURATION = "android.media.metadata.DURATION";
 
     /**
      * Create a basic media item without attached metadata.
@@ -55,6 +59,7 @@ public class MediaItemAdapter {
      * Create a media item and load all its metadata, including cover art using Glide.
      * Do NOT use this method on the main thread.
      */
+    @OptIn(markerClass = UnstableApi.class)
     public static MediaItem fromPlayable(Context context, FeedMedia playable, boolean forBrowse) {
         ThreadUtils.assertNotMainThread();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
@@ -81,6 +86,21 @@ public class MediaItemAdapter {
         }
         Bundle extras = new Bundle();
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
+        if (forBrowse && playable.getDuration() > 0) {
+            extras.putLong(KEY_DURATION, playable.getDuration());
+            if (playable.getItem() != null && playable.getItem().isPlayed()) {
+                extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
+                        MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_FULLY_PLAYED);
+            } else if (playable.getPosition() > 0) {
+                extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
+                        MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_PARTIALLY_PLAYED);
+                extras.putDouble(MediaConstants.EXTRAS_KEY_COMPLETION_PERCENTAGE,
+                        Math.min(1.0, (double) playable.getPosition() / playable.getDuration()));
+            } else {
+                extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
+                        MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_NOT_PLAYED);
+            }
+        }
         metadataBuilder.setExtras(extras);
         String localPlaybackUri;
         if (playable.localFileAvailable()) {

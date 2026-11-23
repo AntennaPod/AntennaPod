@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
+import androidx.media3.session.MediaConstants;
 import androidx.preference.PreferenceManager;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -64,6 +65,18 @@ public class MediaItemAdapterTest {
         MediaItem mediaItem = MediaItemAdapter.withChapterArtwork(context, itemWithChapterArtwork, media, -1);
         assertNull(mediaItem.mediaMetadata.artworkData);
         assertEquals(Uri.parse(EPISODE_COVER), mediaItem.mediaMetadata.artworkUri);
+    }
+
+    @Test
+    public void browseItemsCarryDurationAndProgress() {
+        media.setDuration(60000);
+        media.setPosition(15000);
+        MediaItem mediaItem = MediaItemAdapter.fromPlayable(context, media, true);
+        assertEquals(60000, mediaItem.mediaMetadata.extras.getLong("android.media.metadata.DURATION"));
+        assertEquals(MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_PARTIALLY_PLAYED,
+                mediaItem.mediaMetadata.extras.getInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS));
+        assertEquals(0.25, mediaItem.mediaMetadata.extras.getDouble(MediaConstants.EXTRAS_KEY_COMPLETION_PERCENTAGE),
+                0.001);
     }
 
     private void setUseEpisodeCover(boolean value) {
