@@ -145,6 +145,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         session.setMediaButtonPreferences(buildCustomLayout());
     }
 
+    public void notifyQueueChanged(MediaLibraryService.MediaLibrarySession session, int queueSize) {
+        session.notifyChildrenChanged(MEDIA_ID_QUEUE, queueSize, null);
+        session.notifyChildrenChanged(MEDIA_ID_CONTINUE_LISTENING, CONTINUE_LISTENING_NUM_EPISODES, null);
+        session.notifyChildrenChanged(MEDIA_ID_ROOT, BROWSABLE_MEDIA_IDS.size() - 1, null);
+    }
+
     @UnstableApi
     private ImmutableList<CommandButton> buildCustomLayout() {
         ImmutableList.Builder<CommandButton> buttons = ImmutableList.builder();

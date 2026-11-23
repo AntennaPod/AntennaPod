@@ -3,6 +3,7 @@ package de.danoeh.antennapod.playback.service.internal;
 import android.content.Context;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
+import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaLibrarySessionCallbackTest {
@@ -102,6 +104,13 @@ public class MediaLibrarySessionCallbackTest {
                 Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
         assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
+    }
+
+    @Test
+    public void notifyQueueChangedRefreshesQueue() {
+        MediaLibraryService.MediaLibrarySession librarySession = mock(MediaLibraryService.MediaLibrarySession.class);
+        callback.notifyQueueChanged(librarySession, 3);
+        verify(librarySession).notifyChildrenChanged("queue", 3, null);
     }
 
     private FeedMedia seedEpisode() {

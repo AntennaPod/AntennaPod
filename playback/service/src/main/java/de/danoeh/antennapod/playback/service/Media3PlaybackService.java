@@ -29,6 +29,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -994,6 +995,19 @@ public class Media3PlaybackService extends MediaLibraryService {
             long currentLeft = sleepTimer.getTimeLeft().getDisplayValue();
             sleepTimer.updateRemainingTime(currentLeft + additionalTime);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void queueChanged(QueueEvent event) {
+        Single.fromCallable(() -> DBReader.getQueueIDList().size())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(size -> {
+                    if (mediaSession != null) {
+                        sessionCallback.notifyQueueChanged(mediaSession, size);
+                    }
+                }, error -> Log.e(TAG, "Failed to notify queue change", error));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
