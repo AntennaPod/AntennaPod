@@ -94,6 +94,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
+    private Disposable queueChangeDisposable;
     private Disposable chapterArtworkDisposable;
     private int lastChapterArtworkIndex = -1;
     private long lastPositionSaveTime = 0;
@@ -496,6 +497,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (chapterArtworkDisposable != null) {
             chapterArtworkDisposable.dispose();
             chapterArtworkDisposable = null;
+        }
+        if (queueChangeDisposable != null) {
+            queueChangeDisposable.dispose();
+            queueChangeDisposable = null;
         }
         saveCurrentPosition();
         if (loudnessEnhancer != null) {
@@ -1000,7 +1005,10 @@ public class Media3PlaybackService extends MediaLibraryService {
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void queueChanged(QueueEvent event) {
-        Single.fromCallable(() -> DBReader.getQueueIDList().size())
+        if (queueChangeDisposable != null) {
+            queueChangeDisposable.dispose();
+        }
+        queueChangeDisposable = Single.fromCallable(() -> DBReader.getQueueIDList().size())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(size -> {
