@@ -19,6 +19,7 @@ import androidx.media3.session.MediaConstants;
 import com.bumptech.glide.Glide;
 import com.google.common.collect.ImmutableList;
 import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -39,7 +40,6 @@ public class MediaItemAdapter {
     public static final String KEY_STREAM_URL = "stream_url";
     public static final String KEY_ARTWORK_URL = "artwork_url";
     public static final String KEY_AUTHORIZATION_HEADER = "authorization_header";
-    private static final String KEY_DURATION = "android.media.metadata.DURATION";
 
     /**
      * Create a basic media item without attached metadata.
@@ -87,7 +87,8 @@ public class MediaItemAdapter {
         Bundle extras = new Bundle();
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
         if (forBrowse && playable.getDuration() > 0) {
-            extras.putLong(KEY_DURATION, playable.getDuration());
+            String duration = Converter.getDurationStringLocalized(context, playable.getDuration());
+            metadataBuilder.setSubtitle(playable.getFeedTitle() + " • " + duration);
             if (playable.getItem() != null && playable.getItem().isPlayed()) {
                 extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
                         MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_FULLY_PLAYED);
@@ -96,6 +97,10 @@ public class MediaItemAdapter {
                         MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_PARTIALLY_PLAYED);
                 extras.putDouble(MediaConstants.EXTRAS_KEY_COMPLETION_PERCENTAGE,
                         Math.min(1.0, (double) playable.getPosition() / playable.getDuration()));
+                String timeLeft = Converter.getDurationStringLocalized(context,
+                        Math.max(0, playable.getDuration() - playable.getPosition()));
+                metadataBuilder.setSubtitle(context.getString(R.string.queue_time_left_label,
+                        playable.getFeedTitle(), timeLeft));
             } else {
                 extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
                         MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_NOT_PLAYED);
