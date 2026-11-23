@@ -681,14 +681,14 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
 
     private static int compareEpisodes(FeedItem a, FeedItem b, Map<Long, Double> scores, LongList queue) {
         int result = Double.compare(scores.get(a.getId()), scores.get(b.getId()));
+        if (result == 0 && a.getPubDate() != null && b.getPubDate() != null) {
+            result = b.getPubDate().compareTo(a.getPubDate());
+        }
         if (result == 0) {
             result = Boolean.compare(queue.contains(a.getId()), queue.contains(b.getId()));
         }
         if (result == 0) {
             result = Boolean.compare(a.getMedia().isDownloaded(), b.getMedia().isDownloaded());
-        }
-        if (result == 0 && a.getPubDate() != null && b.getPubDate() != null) {
-            result = b.getPubDate().compareTo(a.getPubDate());
         }
         return result;
     }

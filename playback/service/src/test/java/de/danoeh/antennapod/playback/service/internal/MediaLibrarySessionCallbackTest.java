@@ -151,6 +151,19 @@ public class MediaLibrarySessionCallbackTest {
     }
 
     @Test
+    public void onVoiceSearchPrefersFirstPartOfSeries() throws Exception {
+        Feed feed = seedPodcast("Intro", "Kissinger Part 1", "Kissinger Part 2");
+        long laterPart = episodeOf(feed, "Kissinger Part 2").getItemId();
+        DBWriter.addQueueItemAt(context, laterPart, 0);
+        long deadline = System.currentTimeMillis() + 5000;
+        while (!DBReader.getQueueIDList().contains(laterPart) && System.currentTimeMillis() < deadline) {
+            Thread.sleep(50);
+        }
+        assertEquals(String.valueOf(episodeOf(feed, "Kissinger Part 1").getId()),
+                voiceSearch("the episode of Podcast Name about Kissinger", null));
+    }
+
+    @Test
     public void onVoiceSearchAddsEpisodeToQueue() throws Exception {
         Feed feed = seedPodcast();
         long newest = episodeOf(feed, "Third").getItemId();
@@ -213,9 +226,12 @@ public class MediaLibrarySessionCallbackTest {
     }
 
     private Feed seedPodcast() {
+        return seedPodcast("First", "Second: Henry Kissinger", "Third");
+    }
+
+    private Feed seedPodcast(String... titles) {
         Feed feed = new Feed("podcastUrl", null, PODCAST_TITLE);
         feed.setItems(new ArrayList<>());
-        String[] titles = {"First", "Second: Henry Kissinger", "Third"};
         for (int i = 0; i < titles.length; i++) {
             FeedItem item = new FeedItem();
             item.setItemIdentifier("podcast" + i);
