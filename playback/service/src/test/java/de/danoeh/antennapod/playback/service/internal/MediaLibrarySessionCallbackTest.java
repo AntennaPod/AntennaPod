@@ -168,6 +168,19 @@ public class MediaLibrarySessionCallbackTest {
     }
 
     @Test
+    public void onVoiceSearchOldestAndNextEpisode() throws Exception {
+        Feed feed = seedPodcast("One", "Two", "Three", "Four");
+        assertEquals(String.valueOf(episodeOf(feed, "Two").getId()),
+                voiceSearch("the oldest unplayed episode of Podcast Name", null));
+        FeedMedia listened = episodeOf(feed, "Three");
+        listened.setPosition(1000);
+        listened.setLastPlayedTimeHistory(new Date());
+        DBWriter.setFeedMediaPlaybackInformation(listened).get(5, TimeUnit.SECONDS);
+        assertEquals(String.valueOf(episodeOf(feed, "Four").getId()),
+                voiceSearch("the next episode of Podcast Name", null));
+    }
+
+    @Test
     public void onVoiceSearchAddsEpisodeToQueue() throws Exception {
         Feed feed = seedPodcast();
         long newest = episodeOf(feed, "Third").getItemId();

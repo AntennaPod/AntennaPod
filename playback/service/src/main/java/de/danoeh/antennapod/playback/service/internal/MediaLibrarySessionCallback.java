@@ -69,6 +69,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final int CONTINUE_LISTENING_NUM_EPISODES = 8;
     private static final long VOICE_SEARCH_MISS_GRACE_MS = 5000;
     private static final List<String> LATEST_WORDS = Arrays.asList("latest", "newest", "recent", "last");
+    private static final List<String> OLDEST_WORDS = Arrays.asList("oldest", "earliest", "first");
     private static final List<String> NUMBER_WORDS = Arrays.asList(
             "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten");
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
@@ -603,17 +604,24 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             leftover = normalize(query + " " + leftover);
         }
         boolean latest = false;
+        boolean oldest = false;
+        boolean next = false;
         List<String> words = new ArrayList<>();
         for (String word : leftover.split(" ")) {
             if (LATEST_WORDS.contains(word)) {
                 latest = true;
+            } else if (OLDEST_WORDS.contains(word)) {
+                oldest = true;
+            } else if ("next".equals(word)) {
+                next = true;
             } else if (word.length() > 1 || (!word.isEmpty() && Character.isDigit(word.charAt(0)))) {
                 words.add(word);
             }
         }
         LongList queue = DBReader.getQueueIDList();
         long feedId = feed != null ? feed.getId() : 0;
-        FeedItem match = latest && feed != null ? null : findBestEpisode(feedId, words, queue);
+        boolean ordered = latest || oldest || next;
+        FeedItem match = ordered && feed != null ? null : findBestEpisode(feedId, words, queue);
         if (match != null) {
             return match.getMedia();
         }
@@ -623,6 +631,19 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         if (latest) {
             return firstWithMedia(DBReader.getFeedItemList(feed,
                     new FeedItemFilter(FeedItemFilter.HAS_MEDIA), SortOrder.DATE_NEW_OLD, 0, 1));
+        }
+        if (next) {
+            FeedMedia media = findEpisodeAfterLastPlayed(feed);
+            if (media != null) {
+                return media;
+            }
+        }
+        if (oldest || next) {
+            FeedMedia media = firstWithMedia(DBReader.getFeedItemList(feed, new FeedItemFilter(
+                    FeedItemFilter.UNPLAYED, FeedItemFilter.HAS_MEDIA), SortOrder.DATE_OLD_NEW, 0, 1));
+            if (media != null) {
+                return media;
+            }
         }
         String[][] preferences = {
             {FeedItemFilter.PAUSED, FeedItemFilter.HAS_MEDIA},
@@ -638,6 +659,27 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             }
         }
         return null;
+    }
+
+    @WorkerThread
+    @Nullable
+    private FeedMedia findEpisodeAfterLastPlayed(Feed feed) {
+        List<FeedItem> items = DBReader.getFeedItemList(feed,
+                new FeedItemFilter(FeedItemFilter.HAS_MEDIA), SortOrder.DATE_OLD_NEW, 0, Integer.MAX_VALUE);
+        int lastPlayed = -1;
+        long lastPlayedTime = 0;
+        for (int i = 0; i < items.size(); i++) {
+            FeedMedia media = items.get(i).getMedia();
+            if (media != null && media.getLastPlayedTimeHistory() != null
+                    && media.getLastPlayedTimeHistory().getTime() > lastPlayedTime) {
+                lastPlayedTime = media.getLastPlayedTimeHistory().getTime();
+                lastPlayed = i;
+            }
+        }
+        if (lastPlayed < 0 || lastPlayed + 1 >= items.size()) {
+            return null;
+        }
+        return items.get(lastPlayed + 1).getMedia();
     }
 
     @WorkerThread
