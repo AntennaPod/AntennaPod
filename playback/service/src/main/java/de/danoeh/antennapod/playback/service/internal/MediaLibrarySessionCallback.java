@@ -67,6 +67,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final String MEDIA_ID_SUBSCRIPTIONS = "subscriptions";
     private static final String MEDIA_ID_CONTINUE_LISTENING = "continue_listening";
     private static final int CONTINUE_LISTENING_NUM_EPISODES = 8;
+    private static final long VOICE_SEARCH_MISS_GRACE_MS = 5000;
     private static final List<String> LATEST_WORDS = Arrays.asList("latest", "newest", "recent", "last");
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
             MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
@@ -114,6 +115,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private final Context context;
+    private volatile long lastVoiceSearchMiss = 0;
 
     public MediaLibrarySessionCallback(Context context) {
         this.context = context;
@@ -294,6 +296,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                                 Collections.emptyList(), index, startPositionMs));
                     },
                         () -> {
+                            lastVoiceSearchMiss = System.currentTimeMillis();
                             future.set(new MediaSession.MediaItemsWithStartPosition(
                                     Collections.emptyList(), index, startPositionMs));
                             new Handler(Looper.getMainLooper()).post(() ->
@@ -352,6 +355,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
         Log.d(TAG, "onPlaybackResumption() called");
+        if (System.currentTimeMillis() - lastVoiceSearchMiss < VOICE_SEARCH_MISS_GRACE_MS) {
+            return Futures.immediateFuture(new MediaSession.MediaItemsWithStartPosition(
+                    Collections.emptyList(), C.INDEX_UNSET, C.TIME_UNSET));
+        }
         return playbackResumption(false);
     }
 
@@ -667,7 +674,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             result = Boolean.compare(a.getMedia().isDownloaded(), b.getMedia().isDownloaded());
         }
         if (result == 0 && a.getPubDate() != null && b.getPubDate() != null) {
-            result = a.getPubDate().compareTo(b.getPubDate());
+            result = b.getPubDate().compareTo(a.getPubDate());
         }
         return result;
     }

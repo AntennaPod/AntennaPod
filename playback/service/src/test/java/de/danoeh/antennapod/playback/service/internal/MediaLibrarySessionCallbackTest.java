@@ -160,6 +160,18 @@ public class MediaLibrarySessionCallbackTest {
         assertEquals(newest, DBReader.getQueueIDList().get(0));
     }
 
+    @Test
+    public void noResumeRightAfterVoiceSearchMiss() throws Exception {
+        PlaybackPreferences.writeMediaPlaying(seedEpisode());
+        MediaItem searchItem = MediaItem.EMPTY.buildUpon()
+                .setRequestMetadata(new MediaItem.RequestMetadata.Builder().setSearchQuery("Unrelated").build())
+                .build();
+        callback.onSetMediaItems(session, controllerInfo, Collections.singletonList(searchItem),
+                C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
+        assertEquals(0, callback.onPlaybackResumption(session, controllerInfo)
+                .get(5, TimeUnit.SECONDS).mediaItems.size());
+    }
+
     private String voiceSearch(String query, Bundle extras) throws Exception {
         MediaItem.RequestMetadata.Builder metadata = new MediaItem.RequestMetadata.Builder().setSearchQuery(query);
         if (extras != null) {
