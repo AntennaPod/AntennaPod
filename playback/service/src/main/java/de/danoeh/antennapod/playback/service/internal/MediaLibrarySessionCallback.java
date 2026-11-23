@@ -3,6 +3,8 @@ package de.danoeh.antennapod.playback.service.internal;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import androidx.annotation.NonNull;
@@ -260,15 +262,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 return playbackResumption(true); // "Play something" voice action
             }
             SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
-            Maybe.fromCallable(() -> {
-                List<FeedItem> results = DBReader.searchFeedItems(0, searchQuery, FeedItemFilter.unfiltered());
-                for (FeedItem result : results) {
-                    if (result.getMedia() != null) {
-                        return result.getMedia();
-                    }
-                }
-                return null;
-            })
+            Bundle searchExtras = mediaItems.get(index).requestMetadata.extras;
+            Maybe.fromCallable(() -> findVoiceSearchMedia(searchQuery, searchExtras))
                     .subscribeOn(Schedulers.io())
                     .subscribe(media -> {
                         long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
@@ -502,11 +497,17 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull MediaLibraryService.MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
             @NonNull String query, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
         SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
-        Single.fromCallable(() ->
-                        DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
+        Single.fromCallable(() -> {
+            ImmutableList.Builder<MediaItem> builder = ImmutableList.builder();
+            for (Feed feed : DBReader.searchFeeds(query, FeedItemFilter.unfiltered())) {
+                builder.add(MediaItemAdapter.fromFeed(context, feed));
+            }
+            builder.addAll(MediaItemAdapter.fromItemList(context,
+                    DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered())));
+            return builder.build();
+        })
                 .subscribeOn(Schedulers.io())
-                .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                MediaItemAdapter.fromItemList(context, items), params)),
+                .subscribe(items -> future.set(LibraryResult.ofItemList(items, params)),
                         future::setException);
         return future;
     }
@@ -520,15 +521,82 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             session.notifySearchResultChanged(browser, query, 0, params);
             return Futures.immediateFuture(LibraryResult.ofVoid());
         }
-        Single.fromCallable(() -> DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
+        Single.fromCallable(() -> DBReader.searchFeeds(query, FeedItemFilter.unfiltered()).size()
+                        + DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()).size())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        items -> session.notifySearchResultChanged(browser, query, items.size(), params),
+                        count -> session.notifySearchResultChanged(browser, query, count, params),
                         error -> {
                             Log.e(TAG, "Search failed", error);
                             session.notifySearchResultChanged(browser, query, 0, params);
                         });
         return Futures.immediateFuture(LibraryResult.ofVoid());
+    }
+
+    @WorkerThread
+    @Nullable
+    private FeedMedia findVoiceSearchMedia(String query, @Nullable Bundle extras) {
+        String episodeTitle = extras != null ? extras.getString(MediaStore.EXTRA_MEDIA_TITLE) : null;
+        Feed feed = null;
+        if (extras != null) {
+            feed = findFeed(extras.getString(MediaStore.EXTRA_MEDIA_ALBUM));
+            if (feed == null) {
+                feed = findFeed(extras.getString(MediaStore.EXTRA_MEDIA_ARTIST));
+            }
+        }
+        if (feed == null) {
+            feed = findFeed(query);
+        }
+        if (feed != null) {
+            if (!TextUtils.isEmpty(episodeTitle)) {
+                FeedMedia media = firstWithMedia(
+                        DBReader.searchFeedItems(feed.getId(), episodeTitle, FeedItemFilter.unfiltered()));
+                if (media != null) {
+                    return media;
+                }
+            }
+            FeedMedia media = firstWithMedia(DBReader.getFeedItemList(feed,
+                    new FeedItemFilter(FeedItemFilter.PAUSED, FeedItemFilter.HAS_MEDIA),
+                    SortOrder.DATE_NEW_OLD, 0, 1));
+            if (media == null) {
+                media = firstWithMedia(DBReader.getFeedItemList(feed,
+                        new FeedItemFilter(FeedItemFilter.UNPLAYED, FeedItemFilter.HAS_MEDIA),
+                        SortOrder.DATE_NEW_OLD, 0, 1));
+            }
+            if (media == null) {
+                media = firstWithMedia(DBReader.getFeedItemList(feed,
+                        new FeedItemFilter(FeedItemFilter.HAS_MEDIA), SortOrder.DATE_NEW_OLD, 0, 1));
+            }
+            if (media != null) {
+                return media;
+            }
+        }
+        return firstWithMedia(DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()));
+    }
+
+    @WorkerThread
+    @Nullable
+    private Feed findFeed(@Nullable String name) {
+        if (TextUtils.isEmpty(name)) {
+            return null;
+        }
+        List<Feed> feeds = DBReader.searchFeeds(name, FeedItemFilter.unfiltered());
+        for (Feed feed : feeds) {
+            if (name.equalsIgnoreCase(feed.getTitle())) {
+                return feed;
+            }
+        }
+        return feeds.isEmpty() ? null : feeds.get(0);
+    }
+
+    @Nullable
+    private static FeedMedia firstWithMedia(List<FeedItem> items) {
+        for (FeedItem item : items) {
+            if (item.getMedia() != null) {
+                return item.getMedia();
+            }
+        }
+        return null;
     }
 
     @WorkerThread
