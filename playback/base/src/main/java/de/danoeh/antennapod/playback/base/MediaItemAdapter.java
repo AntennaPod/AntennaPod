@@ -86,6 +86,9 @@ public class MediaItemAdapter {
         }
         Bundle extras = new Bundle();
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
+        if (forBrowse && playable.isDownloaded()) {
+            extras.putLong(MediaConstants.EXTRAS_KEY_DOWNLOAD_STATUS, MediaConstants.EXTRAS_VALUE_STATUS_DOWNLOADED);
+        }
         if (forBrowse && playable.getDuration() > 0) {
             String duration = Converter.getDurationStringLocalized(context, playable.getDuration());
             metadataBuilder.setDisplayTitle(playable.getEpisodeTitle());

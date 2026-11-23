@@ -79,6 +79,15 @@ public class MediaItemAdapterTest {
                 0.001);
     }
 
+    @Test
+    public void browseItemsMarkDownloadedEpisodes() {
+        assertEquals(0, MediaItemAdapter.fromPlayable(context, media, true)
+                .mediaMetadata.extras.getLong(MediaConstants.EXTRAS_KEY_DOWNLOAD_STATUS));
+        media.setDownloaded(true, System.currentTimeMillis());
+        assertEquals(MediaConstants.EXTRAS_VALUE_STATUS_DOWNLOADED, MediaItemAdapter.fromPlayable(context, media, true)
+                .mediaMetadata.extras.getLong(MediaConstants.EXTRAS_KEY_DOWNLOAD_STATUS));
+    }
+
     private void setUseEpisodeCover(boolean value) {
         PreferenceManager.getDefaultSharedPreferences(context).edit()
                 .putBoolean(UserPreferences.PREF_USE_EPISODE_COVER, value).commit();
