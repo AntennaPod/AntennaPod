@@ -288,6 +288,7 @@
     </style>
 
     <style name="AntennaPod.TextView.FeedListItemPrimaryTitle" parent="@style/TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">@color/episode_item_primary_text</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
         <item name="lineHeight">20sp</item>
@@ -301,6 +302,7 @@
     </style>
 
     <style name="AntennaPod.TextView.FeedListItemSecondaryTitle" parent="@style/TextAppearance.Material3.LabelSmall">
+        <item name="android:textColor">@color/episode_item_secondary_text</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
