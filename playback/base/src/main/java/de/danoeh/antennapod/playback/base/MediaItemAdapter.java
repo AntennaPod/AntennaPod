@@ -88,6 +88,7 @@ public class MediaItemAdapter {
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
         if (forBrowse && playable.getDuration() > 0) {
             String duration = Converter.getDurationStringLocalized(context, playable.getDuration());
+            metadataBuilder.setDisplayTitle(playable.getEpisodeTitle());
             metadataBuilder.setSubtitle(playable.getFeedTitle() + " • " + duration);
             if (playable.getItem() != null && playable.getItem().isPlayed()) {
                 extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
