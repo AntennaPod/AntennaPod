@@ -275,6 +275,9 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             }
             SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
             Bundle searchExtras = mediaItems.get(index).requestMetadata.extras;
+            Player player = mediaSession.getPlayer();
+            MediaItem currentItem = player != null ? player.getCurrentMediaItem() : null;
+            long currentPosition = player != null ? player.getCurrentPosition() : 0;
             Maybe.fromCallable(() -> {
                 FeedMedia found = findVoiceSearchMedia(searchQuery, searchExtras);
                 if (found != null && !DBReader.getQueueIDList().contains(found.getItemId())) {
@@ -297,8 +300,11 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                     },
                         () -> {
                             lastVoiceSearchMiss = System.currentTimeMillis();
-                            future.set(new MediaSession.MediaItemsWithStartPosition(
-                                    Collections.emptyList(), index, startPositionMs));
+                            future.set(currentItem != null
+                                    ? new MediaSession.MediaItemsWithStartPosition(
+                                            Collections.singletonList(currentItem), 0, currentPosition)
+                                    : new MediaSession.MediaItemsWithStartPosition(
+                                            Collections.emptyList(), index, startPositionMs));
                             new Handler(Looper.getMainLooper()).post(() ->
                                     mediaSession.sendError(controller, new SessionError(SessionError.ERROR_BAD_VALUE,
                                             context.getString(R.string.app_action_not_found, searchQuery))));
@@ -643,9 +649,17 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 : DBReader.getTotalEpisodeCount(FeedItemFilter.unfiltered()));
         Map<Long, FeedItem> items = new HashMap<>();
         Map<Long, Double> scores = new HashMap<>();
+        List<List<FeedItem>> hitLists = new ArrayList<>();
+        int rarest = Integer.MAX_VALUE;
         for (String word : words) {
             List<FeedItem> hits = DBReader.searchFeedItems(feedId, word, FeedItemFilter.unfiltered());
-            if (hits.isEmpty() || hits.size() > Math.max(3, total / 10)) {
+            hitLists.add(hits);
+            if (!hits.isEmpty()) {
+                rarest = Math.min(rarest, hits.size());
+            }
+        }
+        for (List<FeedItem> hits : hitLists) {
+            if (hits.isEmpty() || hits.size() > Math.max(3, total / 10) || hits.size() > rarest * 5) {
                 continue;
             }
             for (FeedItem hit : hits) {

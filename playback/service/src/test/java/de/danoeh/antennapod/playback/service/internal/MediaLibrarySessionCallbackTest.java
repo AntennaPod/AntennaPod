@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.Player;
 import androidx.media3.session.MediaSession;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaLibrarySessionCallbackTest {
@@ -170,6 +172,23 @@ public class MediaLibrarySessionCallbackTest {
                 C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
         assertEquals(0, callback.onPlaybackResumption(session, controllerInfo)
                 .get(5, TimeUnit.SECONDS).mediaItems.size());
+    }
+
+    @Test
+    public void voiceSearchMissKeepsCurrentEpisode() throws Exception {
+        MediaItem current = MediaItemAdapter.fromMediaIdStub(seedEpisode().getId());
+        Player player = mock(Player.class);
+        when(player.getCurrentMediaItem()).thenReturn(current);
+        when(player.getCurrentPosition()).thenReturn(1234L);
+        MediaSession playingSession = mock(MediaSession.class);
+        when(playingSession.getPlayer()).thenReturn(player);
+        MediaItem searchItem = MediaItem.EMPTY.buildUpon()
+                .setRequestMetadata(new MediaItem.RequestMetadata.Builder().setSearchQuery("Unrelated").build())
+                .build();
+        MediaSession.MediaItemsWithStartPosition result = callback.onSetMediaItems(playingSession, controllerInfo,
+                Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
+        assertEquals(current, result.mediaItems.get(0));
+        assertEquals(1234L, result.startPositionMs);
     }
 
     private String voiceSearch(String query, Bundle extras) throws Exception {
