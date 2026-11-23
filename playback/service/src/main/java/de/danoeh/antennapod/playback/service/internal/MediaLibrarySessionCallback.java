@@ -38,6 +38,7 @@ import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
@@ -46,8 +47,13 @@ import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLibrarySession.Callback {
     private static final String TAG = "M3SessionCallback";
@@ -58,6 +64,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final String MEDIA_ID_SUBSCRIPTIONS = "subscriptions";
     private static final String MEDIA_ID_CONTINUE_LISTENING = "continue_listening";
     private static final int CONTINUE_LISTENING_NUM_EPISODES = 8;
+    private static final List<String> LATEST_WORDS = Arrays.asList("latest", "newest", "recent", "last");
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
             MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
             MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CONTINUE_LISTENING);
@@ -536,42 +543,126 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     @WorkerThread
     @Nullable
     private FeedMedia findVoiceSearchMedia(String query, @Nullable Bundle extras) {
-        String episodeTitle = extras != null ? extras.getString(MediaStore.EXTRA_MEDIA_TITLE) : null;
-        Feed feed = null;
-        if (extras != null) {
-            feed = findFeed(extras.getString(MediaStore.EXTRA_MEDIA_ALBUM));
-            if (feed == null) {
-                feed = findFeed(extras.getString(MediaStore.EXTRA_MEDIA_ARTIST));
-            }
+        String album = extras != null ? extras.getString(MediaStore.EXTRA_MEDIA_ALBUM) : null;
+        String artist = extras != null ? extras.getString(MediaStore.EXTRA_MEDIA_ARTIST) : null;
+        String title = extras != null ? extras.getString(MediaStore.EXTRA_MEDIA_TITLE) : null;
+        Log.d(TAG, "Voice search: query=" + query + ", album=" + album + ", artist=" + artist + ", title=" + title);
+        String leftover = normalize(TextUtils.isEmpty(title) ? "" : title);
+        Feed feed = findFeed(album);
+        if (feed == null) {
+            feed = findFeed(artist);
         }
         if (feed == null) {
             feed = findFeed(query);
         }
-        if (feed != null) {
-            if (!TextUtils.isEmpty(episodeTitle)) {
-                FeedMedia media = firstWithMedia(
-                        DBReader.searchFeedItems(feed.getId(), episodeTitle, FeedItemFilter.unfiltered()));
-                if (media != null) {
-                    return media;
+        if (feed == null) {
+            String normalizedQuery = normalize(query);
+            for (Feed candidate : DBReader.getFeedList()) {
+                String feedTitle = normalize(candidate.getTitle());
+                if (candidate.getState() == Feed.STATE_SUBSCRIBED && !feedTitle.isEmpty()
+                        && (" " + normalizedQuery + " ").contains(" " + feedTitle + " ")
+                        && (feed == null || feedTitle.length() > normalize(feed.getTitle()).length())) {
+                    feed = candidate;
                 }
             }
+            if (feed != null) {
+                leftover = normalize((" " + normalizedQuery + " ")
+                        .replace(" " + normalize(feed.getTitle()) + " ", " ") + " " + leftover);
+            }
+        }
+        if (feed == null) {
+            leftover = normalize(query + " " + leftover);
+        }
+        boolean latest = false;
+        List<String> words = new ArrayList<>();
+        for (String word : leftover.split(" ")) {
+            if (LATEST_WORDS.contains(word)) {
+                latest = true;
+            } else if (word.length() > 1) {
+                words.add(word);
+            }
+        }
+        LongList queue = DBReader.getQueueIDList();
+        long feedId = feed != null ? feed.getId() : 0;
+        FeedItem match = latest && feed != null ? null : findBestEpisode(feedId, words, queue);
+        if (match != null) {
+            return match.getMedia();
+        }
+        if (feed == null) {
+            return null;
+        }
+        if (latest) {
+            return firstWithMedia(DBReader.getFeedItemList(feed,
+                    new FeedItemFilter(FeedItemFilter.HAS_MEDIA), SortOrder.DATE_NEW_OLD, 0, 1));
+        }
+        String[][] preferences = {
+            {FeedItemFilter.PAUSED, FeedItemFilter.HAS_MEDIA},
+            {FeedItemFilter.UNPLAYED, FeedItemFilter.QUEUED, FeedItemFilter.HAS_MEDIA},
+            {FeedItemFilter.UNPLAYED, FeedItemFilter.DOWNLOADED, FeedItemFilter.HAS_MEDIA},
+            {FeedItemFilter.UNPLAYED, FeedItemFilter.HAS_MEDIA},
+            {FeedItemFilter.HAS_MEDIA}};
+        for (String[] preference : preferences) {
             FeedMedia media = firstWithMedia(DBReader.getFeedItemList(feed,
-                    new FeedItemFilter(FeedItemFilter.PAUSED, FeedItemFilter.HAS_MEDIA),
-                    SortOrder.DATE_NEW_OLD, 0, 1));
-            if (media == null) {
-                media = firstWithMedia(DBReader.getFeedItemList(feed,
-                        new FeedItemFilter(FeedItemFilter.UNPLAYED, FeedItemFilter.HAS_MEDIA),
-                        SortOrder.DATE_NEW_OLD, 0, 1));
-            }
-            if (media == null) {
-                media = firstWithMedia(DBReader.getFeedItemList(feed,
-                        new FeedItemFilter(FeedItemFilter.HAS_MEDIA), SortOrder.DATE_NEW_OLD, 0, 1));
-            }
+                    new FeedItemFilter(preference), SortOrder.DATE_NEW_OLD, 0, 1));
             if (media != null) {
                 return media;
             }
         }
-        return firstWithMedia(DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()));
+        return null;
+    }
+
+    @WorkerThread
+    @Nullable
+    private FeedItem findBestEpisode(long feedId, List<String> words, LongList queue) {
+        if (words.isEmpty()) {
+            return null;
+        }
+        int total = Math.max(1, feedId != 0
+                ? DBReader.getFeedEpisodeCount(feedId, FeedItemFilter.unfiltered())
+                : DBReader.getTotalEpisodeCount(FeedItemFilter.unfiltered()));
+        Map<Long, FeedItem> items = new HashMap<>();
+        Map<Long, Double> scores = new HashMap<>();
+        for (String word : words) {
+            List<FeedItem> hits = DBReader.searchFeedItems(feedId, word, FeedItemFilter.unfiltered());
+            if (hits.isEmpty() || hits.size() > Math.max(3, total / 10)) {
+                continue;
+            }
+            for (FeedItem hit : hits) {
+                if (hit.getMedia() != null) {
+                    items.put(hit.getId(), hit);
+                    Double score = scores.get(hit.getId());
+                    scores.put(hit.getId(), (score != null ? score : 0) + 1.0 / hits.size());
+                }
+            }
+        }
+        FeedItem best = null;
+        for (FeedItem item : items.values()) {
+            if (best == null || compareEpisodes(item, best, scores, queue) > 0) {
+                best = item;
+            }
+        }
+        return best;
+    }
+
+    private static int compareEpisodes(FeedItem a, FeedItem b, Map<Long, Double> scores, LongList queue) {
+        int result = Double.compare(scores.get(a.getId()), scores.get(b.getId()));
+        if (result == 0) {
+            result = Boolean.compare(queue.contains(a.getId()), queue.contains(b.getId()));
+        }
+        if (result == 0) {
+            result = Boolean.compare(a.getMedia().isDownloaded(), b.getMedia().isDownloaded());
+        }
+        if (result == 0 && a.getPubDate() != null && b.getPubDate() != null) {
+            result = a.getPubDate().compareTo(b.getPubDate());
+        }
+        return result;
+    }
+
+    private static String normalize(@Nullable String text) {
+        if (text == null) {
+            return "";
+        }
+        return text.toLowerCase(Locale.ROOT).replaceAll("[^\\p{L}\\p{N}]+", " ").trim();
     }
 
     @WorkerThread

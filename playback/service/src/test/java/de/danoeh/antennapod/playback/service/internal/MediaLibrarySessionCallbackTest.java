@@ -112,7 +112,7 @@ public class MediaLibrarySessionCallbackTest {
     @Test
     public void onVoiceSearchPodcastName() throws Exception {
         Feed feed = seedPodcast();
-        long oldUnplayed = episodeOf(feed, "Second").getId();
+        long oldUnplayed = episodeOf(feed, "Second: Henry Kissinger").getId();
         long newUnplayed = episodeOf(feed, "Third").getId();
         assertEquals(String.valueOf(newUnplayed), voiceSearch(PODCAST_TITLE, null));
 
@@ -125,11 +125,26 @@ public class MediaLibrarySessionCallbackTest {
     @Test
     public void onVoiceSearchPodcastNameResumesInProgress() throws Exception {
         Feed feed = seedPodcast();
-        FeedMedia inProgress = episodeOf(feed, "Second");
+        FeedMedia inProgress = episodeOf(feed, "Second: Henry Kissinger");
         inProgress.setPosition(1000);
         inProgress.setLastPlayedTimeHistory(new Date());
         DBWriter.setFeedMediaPlaybackInformation(inProgress).get(5, TimeUnit.SECONDS);
         assertEquals(String.valueOf(inProgress.getId()), voiceSearch(PODCAST_TITLE, null));
+    }
+
+    @Test
+    public void onVoiceSearchSentence() throws Exception {
+        Feed feed = seedPodcast();
+        FeedMedia inProgress = episodeOf(feed, "Second: Henry Kissinger");
+        inProgress.setPosition(1000);
+        inProgress.setLastPlayedTimeHistory(new Date());
+        DBWriter.setFeedMediaPlaybackInformation(inProgress).get(5, TimeUnit.SECONDS);
+        long newest = episodeOf(feed, "Third").getId();
+        assertEquals(String.valueOf(newest), voiceSearch("the most recent episode of podcast name", null));
+        assertEquals(String.valueOf(inProgress.getId()), voiceSearch("an episode of Podcast Name", null));
+        assertEquals(String.valueOf(inProgress.getId()),
+                voiceSearch("the episode of Podcast Name about Henry Kissinger", null));
+        assertEquals(String.valueOf(inProgress.getId()), voiceSearch("the episode about Kissinger", null));
     }
 
     private String voiceSearch(String query, Bundle extras) throws Exception {
@@ -156,7 +171,7 @@ public class MediaLibrarySessionCallbackTest {
     private Feed seedPodcast() {
         Feed feed = new Feed("podcastUrl", null, PODCAST_TITLE);
         feed.setItems(new ArrayList<>());
-        String[] titles = {"First", "Second", "Third"};
+        String[] titles = {"First", "Second: Henry Kissinger", "Third"};
         for (int i = 0; i < titles.length; i++) {
             FeedItem item = new FeedItem();
             item.setItemIdentifier("podcast" + i);
