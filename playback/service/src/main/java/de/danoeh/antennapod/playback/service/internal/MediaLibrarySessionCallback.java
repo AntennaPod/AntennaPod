@@ -69,6 +69,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final int CONTINUE_LISTENING_NUM_EPISODES = 8;
     private static final long VOICE_SEARCH_MISS_GRACE_MS = 5000;
     private static final List<String> LATEST_WORDS = Arrays.asList("latest", "newest", "recent", "last");
+    private static final List<String> NUMBER_WORDS = Arrays.asList(
+            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten");
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
             MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
             MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CONTINUE_LISTENING);
@@ -605,7 +607,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         for (String word : leftover.split(" ")) {
             if (LATEST_WORDS.contains(word)) {
                 latest = true;
-            } else if (word.length() > 1) {
+            } else if (word.length() > 1 || (!word.isEmpty() && Character.isDigit(word.charAt(0)))) {
                 words.add(word);
             }
         }
@@ -672,15 +674,19 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         }
         FeedItem best = null;
         for (FeedItem item : items.values()) {
-            if (best == null || compareEpisodes(item, best, scores, queue) > 0) {
+            if (best == null || compareEpisodes(item, best, scores, words, queue) > 0) {
                 best = item;
             }
         }
         return best;
     }
 
-    private static int compareEpisodes(FeedItem a, FeedItem b, Map<Long, Double> scores, LongList queue) {
+    private static int compareEpisodes(FeedItem a, FeedItem b, Map<Long, Double> scores,
+                                       List<String> words, LongList queue) {
         int result = Double.compare(scores.get(a.getId()), scores.get(b.getId()));
+        if (result == 0) {
+            result = Integer.compare(titleMatches(a, words), titleMatches(b, words));
+        }
         if (result == 0 && a.getPubDate() != null && b.getPubDate() != null) {
             result = b.getPubDate().compareTo(a.getPubDate());
         }
@@ -691,6 +697,25 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             result = Boolean.compare(a.getMedia().isDownloaded(), b.getMedia().isDownloaded());
         }
         return result;
+    }
+
+    private static int titleMatches(FeedItem item, List<String> words) {
+        List<String> titleWords = new ArrayList<>();
+        for (String word : normalize(item.getTitle()).split(" ")) {
+            titleWords.add(numberWord(word));
+        }
+        int matches = 0;
+        for (String word : words) {
+            if (titleWords.contains(numberWord(word))) {
+                matches++;
+            }
+        }
+        return matches;
+    }
+
+    private static String numberWord(String word) {
+        int index = NUMBER_WORDS.indexOf(word);
+        return index >= 0 ? String.valueOf(index) : word;
     }
 
     private static String normalize(@Nullable String text) {

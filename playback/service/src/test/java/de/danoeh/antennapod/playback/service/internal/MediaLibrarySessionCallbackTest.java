@@ -161,6 +161,10 @@ public class MediaLibrarySessionCallbackTest {
         }
         assertEquals(String.valueOf(episodeOf(feed, "Kissinger Part 1").getId()),
                 voiceSearch("the episode of Podcast Name about Kissinger", null));
+        assertEquals(String.valueOf(episodeOf(feed, "Kissinger Part 2").getId()),
+                voiceSearch("Podcast Name part two Kissinger", null));
+        assertEquals(String.valueOf(episodeOf(feed, "Kissinger Part 2").getId()),
+                voiceSearch("Podcast Name Kissinger part 2", null));
     }
 
     @Test
