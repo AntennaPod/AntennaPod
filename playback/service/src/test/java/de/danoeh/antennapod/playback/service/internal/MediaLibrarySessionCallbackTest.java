@@ -12,6 +12,7 @@ import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueue;
 import de.danoeh.antennapod.net.sync.serviceinterface.SynchronizationQueueStub;
 import de.danoeh.antennapod.playback.base.MediaItemAdapter;
+import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.FeedDatabaseWriter;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
@@ -145,6 +146,18 @@ public class MediaLibrarySessionCallbackTest {
         assertEquals(String.valueOf(inProgress.getId()),
                 voiceSearch("the episode of Podcast Name about Henry Kissinger", null));
         assertEquals(String.valueOf(inProgress.getId()), voiceSearch("the episode about Kissinger", null));
+    }
+
+    @Test
+    public void onVoiceSearchAddsEpisodeToQueue() throws Exception {
+        Feed feed = seedPodcast();
+        long newest = episodeOf(feed, "Third").getItemId();
+        voiceSearch(PODCAST_TITLE, null);
+        long deadline = System.currentTimeMillis() + 5000;
+        while (!DBReader.getQueueIDList().contains(newest) && System.currentTimeMillis() < deadline) {
+            Thread.sleep(50);
+        }
+        assertEquals(newest, DBReader.getQueueIDList().get(0));
     }
 
     private String voiceSearch(String query, Bundle extras) throws Exception {

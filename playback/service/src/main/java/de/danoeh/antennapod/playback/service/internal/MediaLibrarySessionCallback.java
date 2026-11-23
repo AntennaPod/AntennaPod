@@ -3,6 +3,8 @@ package de.danoeh.antennapod.playback.service.internal;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,6 +40,7 @@ import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
 import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
@@ -270,7 +273,13 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             }
             SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
             Bundle searchExtras = mediaItems.get(index).requestMetadata.extras;
-            Maybe.fromCallable(() -> findVoiceSearchMedia(searchQuery, searchExtras))
+            Maybe.fromCallable(() -> {
+                FeedMedia found = findVoiceSearchMedia(searchQuery, searchExtras);
+                if (found != null && !DBReader.getQueueIDList().contains(found.getItemId())) {
+                    DBWriter.addQueueItemAt(context, found.getItemId(), 0);
+                }
+                return found;
+            })
                     .subscribeOn(Schedulers.io())
                     .subscribe(media -> {
                         long startPosition = SkipUtils.skipIntroIfNecessary(context, media);
@@ -284,8 +293,13 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         future.set(new MediaSession.MediaItemsWithStartPosition(
                                 Collections.emptyList(), index, startPositionMs));
                     },
-                        () -> future.set(new MediaSession.MediaItemsWithStartPosition(
-                                Collections.emptyList(), index, startPositionMs)));
+                        () -> {
+                            future.set(new MediaSession.MediaItemsWithStartPosition(
+                                    Collections.emptyList(), index, startPositionMs));
+                            new Handler(Looper.getMainLooper()).post(() ->
+                                    mediaSession.sendError(controller, new SessionError(SessionError.ERROR_BAD_VALUE,
+                                            context.getString(R.string.app_action_not_found, searchQuery))));
+                        });
             return future;
         }
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
