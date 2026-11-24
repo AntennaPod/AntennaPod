@@ -44,7 +44,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
-import de.danoeh.antennapod.event.playback.VideoPlayerViewAttachedEvent;
+import de.danoeh.antennapod.event.playback.CoverVideoAttachedEvent;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.playback.service.Media3PlaybackService;
@@ -374,7 +374,7 @@ public class CoverFragment extends Fragment {
             viewBinding.imgvCover.setVisibility(View.GONE);
         }
         if (player != null && viewBinding.videoPlayerView.getPlayer() != player) {
-            EventBus.getDefault().post(new VideoPlayerViewAttachedEvent());
+            EventBus.getDefault().post(new CoverVideoAttachedEvent());
         }
         viewBinding.videoPlayerView.setPlayer(player);
         if (player != null && player.getVideoSize().width == 0) {

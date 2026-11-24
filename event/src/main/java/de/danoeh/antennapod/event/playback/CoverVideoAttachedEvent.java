@@ -1,4 +1,4 @@
 package de.danoeh.antennapod.event.playback;
 
-public class VideoPlayerViewAttachedEvent {
+public class CoverVideoAttachedEvent {
 }

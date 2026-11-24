@@ -24,7 +24,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.Media3VideoPlayerActivityBinding;
 import de.danoeh.antennapod.event.FeedItemEvent;
-import de.danoeh.antennapod.event.playback.VideoPlayerViewAttachedEvent;
+import de.danoeh.antennapod.event.playback.CoverVideoAttachedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.playback.service.Media3PlaybackService;
@@ -333,7 +333,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onVideoPlayerViewAttached(VideoPlayerViewAttachedEvent event) {
+    public void onCoverVideoAttached(CoverVideoAttachedEvent event) {
         if (PictureInPictureUtil.isInPictureInPictureMode(this)) {
             viewBinding.playerView.setPlayer(null);
             finish();
