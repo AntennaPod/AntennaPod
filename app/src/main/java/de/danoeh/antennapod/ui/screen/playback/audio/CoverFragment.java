@@ -297,6 +297,50 @@ public class CoverFragment extends Fragment {
         }
     }
 
+    private void connectVideoController() {
+        SessionToken token = new SessionToken(requireContext(),
+                new ComponentName(requireContext(), Media3PlaybackService.class));
+        ListenableFuture<MediaController> future = new MediaController.Builder(requireContext(), token).buildAsync();
+        controllerFuture = future;
+        future.addListener(() -> {
+            if (controllerFuture != future) {
+                return;
+            }
+            try {
+                mediaController = future.get();
+                mediaController.addListener(createVideoPlayerListener());
+                updateVideoPlayer();
+            } catch (ExecutionException | InterruptedException e) {
+                Log.e(TAG, "Error getting media controller", e);
+            }
+        }, MoreExecutors.directExecutor());
+    }
+
+    private Player.Listener createVideoPlayerListener() {
+        return new Player.Listener() {
+            @Override
+            public void onDeviceInfoChanged(@NonNull DeviceInfo deviceInfo) {
+                updateVideoPlayer();
+            }
+
+            @Override
+            public void onPlaybackStateChanged(int playbackState) {
+                if (playbackState == Player.STATE_IDLE) {
+                    updateVideoPlayer();
+                }
+            }
+
+            @Override
+            public void onRenderedFirstFrame() {
+                if (mediaController != null && viewBinding != null
+                        && viewBinding.videoPlayerView.getPlayer() == mediaController) {
+                    viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(1);
+                    viewBinding.imgvCover.setVisibility(View.GONE);
+                }
+            }
+        };
+    }
+
     @OptIn(markerClass = UnstableApi.class)
     void updateVideoPlayer() {
         if (viewBinding == null) {
@@ -309,44 +353,7 @@ public class CoverFragment extends Fragment {
                 return;
             }
         } else if (isResumed() && controllerFuture == null) {
-            SessionToken token = new SessionToken(requireContext(),
-                    new ComponentName(requireContext(), Media3PlaybackService.class));
-            ListenableFuture<MediaController> future = new MediaController.Builder(requireContext(), token)
-                    .buildAsync();
-            controllerFuture = future;
-            future.addListener(() -> {
-                if (controllerFuture != future) {
-                    return;
-                }
-                try {
-                    mediaController = future.get();
-                    mediaController.addListener(new Player.Listener() {
-                        @Override
-                        public void onDeviceInfoChanged(@NonNull DeviceInfo deviceInfo) {
-                            updateVideoPlayer();
-                        }
-
-                        @Override
-                        public void onPlaybackStateChanged(int playbackState) {
-                            if (playbackState == Player.STATE_IDLE) {
-                                updateVideoPlayer();
-                            }
-                        }
-
-                        @Override
-                        public void onRenderedFirstFrame() {
-                            if (mediaController != null && viewBinding != null
-                                    && viewBinding.videoPlayerView.getPlayer() == mediaController) {
-                                viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(1);
-                                viewBinding.imgvCover.setVisibility(View.GONE);
-                            }
-                        }
-                    });
-                    updateVideoPlayer();
-                } catch (ExecutionException | InterruptedException e) {
-                    Log.e(TAG, "Error getting media controller", e);
-                }
-            }, MoreExecutors.directExecutor());
+            connectVideoController();
         }
         boolean showVideo = isVideo
                 && (mediaController == null

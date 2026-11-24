@@ -60,10 +60,6 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     private FeedMedia currentMedia;
     private Disposable mediaLoadDisposable;
 
-    private boolean isCurrentMediaVideo() {
-        return currentMedia != null && currentMedia.getMediaType() == MediaType.VIDEO;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -210,8 +206,8 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     @Override
     protected void onStop() {
         super.onStop();
-        if (mediaController != null && !getSystemService(PowerManager.class).isInteractive() && !isFinishing()
-                && isCurrentMediaVideo()) {
+        if (mediaController != null && currentMedia != null && currentMedia.getMediaType() == MediaType.VIDEO
+                && !getSystemService(PowerManager.class).isInteractive() && !isFinishing()) {
             mediaController.pause();
         }
         EventBus.getDefault().unregister(this);
