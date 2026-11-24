@@ -351,9 +351,6 @@ public class CoverFragment extends Fragment {
         boolean showVideo = isVideo
                 && (mediaController == null
                 || mediaController.getDeviceInfo().playbackType != DeviceInfo.PLAYBACK_TYPE_REMOTE);
-        if (!showVideo) {
-            viewBinding.imgvCover.setVisibility(View.VISIBLE);
-        }
         viewBinding.videoPlayerView.setVisibility(showVideo ? View.VISIBLE : View.GONE);
         int sheetState = ((MainActivity) requireActivity()).getBottomSheet().getState();
         boolean sheetVisible = sheetState != BottomSheetBehavior.STATE_COLLAPSED

@@ -1,11 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback.video;
 
 import android.app.PictureInPictureParams;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -18,7 +14,6 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.media3.common.Player;
 import androidx.media3.common.VideoSize;
 import androidx.media3.common.util.Util;
@@ -64,23 +59,6 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     private ListenableFuture<MediaController> controllerFuture;
     private FeedMedia currentMedia;
     private Disposable mediaLoadDisposable;
-    private final BroadcastReceiver screenOffReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction()) && !isFinishing()
-                    && isCurrentMediaVideo()) {
-                if (mediaController != null) {
-                    mediaController.pause();
-                } else {
-                    PlaybackController.bindToMedia3Service(context, controller -> {
-                        if (isCurrentMediaVideo()) {
-                            controller.pause();
-                        }
-                    });
-                }
-            }
-        }
-    };
 
     private boolean isCurrentMediaVideo() {
         return currentMedia != null && currentMedia.getMediaType() == MediaType.VIDEO;
@@ -210,8 +188,6 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        ContextCompat.registerReceiver(this, screenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF),
-                ContextCompat.RECEIVER_NOT_EXPORTED);
         SessionToken sessionToken = new SessionToken(this,
                 new ComponentName(this, Media3PlaybackService.class));
         ListenableFuture<MediaController> future = new MediaController.Builder(this, sessionToken).buildAsync();
@@ -234,19 +210,10 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     @Override
     protected void onStop() {
         super.onStop();
-        if (!getSystemService(PowerManager.class).isInteractive() && !isFinishing()
+        if (mediaController != null && !getSystemService(PowerManager.class).isInteractive() && !isFinishing()
                 && isCurrentMediaVideo()) {
-            if (mediaController != null) {
-                mediaController.pause();
-            } else {
-                PlaybackController.bindToMedia3Service(this, controller -> {
-                    if (isCurrentMediaVideo()) {
-                        controller.pause();
-                    }
-                });
-            }
+            mediaController.pause();
         }
-        unregisterReceiver(screenOffReceiver);
         EventBus.getDefault().unregister(this);
         if (mediaLoadDisposable != null) {
             mediaLoadDisposable.dispose();

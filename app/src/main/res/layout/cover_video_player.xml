@@ -9,17 +9,8 @@
         android:id="@id/exo_content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center">
-
-        <View
-            android:id="@id/exo_shutter"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <androidx.media3.ui.SubtitleView
-            android:id="@id/exo_subtitles"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        android:layout_gravity="center"
+        android:background="#22555555">
 
         <ImageView
             android:layout_width="48dp"
