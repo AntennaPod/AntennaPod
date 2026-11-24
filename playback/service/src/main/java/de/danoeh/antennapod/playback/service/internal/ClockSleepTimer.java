@@ -136,6 +136,7 @@ public class ClockSleepTimer implements SleepTimer {
     @Override
     public void updateRemainingTime(long waitingTimeOrEpisodes) {
         this.timeLeft = waitingTimeOrEpisodes;
+        hasVibrated = false;
     }
 
     @Override
