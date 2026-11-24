@@ -13,7 +13,6 @@ import androidx.media3.session.MediaSessionService;
 import androidx.media3.session.PlaybackPendingIntentBuilder;
 
 public abstract class MediaButtonStarter {
-    private static final String INTENT = "de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER";
     private static final String MEDIA3_PLAYBACK_SERVICE =
             "de.danoeh.antennapod.playback.service.Media3PlaybackService";
     public static final String EXTRA_MEDIA_BUTTON_SOURCE = "media_button_source";
@@ -21,8 +20,7 @@ public abstract class MediaButtonStarter {
 
     public static Intent createIntent(Context context, int eventCode) {
         KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
-        Intent startingIntent = new Intent(BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE
-                ? Intent.ACTION_MEDIA_BUTTON : INTENT);
+        Intent startingIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         startingIntent.setPackage(context.getPackageName());
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
         return startingIntent;

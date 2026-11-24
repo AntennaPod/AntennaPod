@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.MessageEvent;
@@ -51,7 +49,6 @@ import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
-import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.appstartintent.OnlineFeedviewActivityStarter;
 import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
@@ -63,7 +60,6 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -88,7 +84,7 @@ public class CoverFragment extends Fragment {
     private CoverFragmentBinding viewBinding;
     private Disposable disposable;
     private int displayedChapterIndex = -1;
-    private Playable media;
+    private FeedMedia media;
     private MediaController mediaController;
     private ListenableFuture<MediaController> controllerFuture;
 
@@ -96,27 +92,14 @@ public class CoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewBinding = CoverFragmentBinding.inflate(inflater);
         viewBinding.imgvCover.setOnClickListener(v -> {
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                if (PlaybackServiceInterface.isPlaying) {
-                    PlaybackController.bindToMedia3Service(getActivity(), MediaController::pause);
-                } else if (media != null) {
-                    new PlaybackServiceStarter(getContext(), media)
-                            .callEvenIfRunning(true)
-                            .start();
-                }
-                return;
-            }
-            if (PlaybackServiceInterface.isPlaying
-                    && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                getContext().sendBroadcast(MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_PAUSE));
+            if (PlaybackServiceInterface.isPlaying) {
+                PlaybackController.bindToMedia3Service(getActivity(), MediaController::pause);
             } else if (media != null) {
-                new PlaybackServiceStarter(getContext(), media)
-                        .callEvenIfRunning(true)
-                        .start();
+                new PlaybackServiceStarter(getContext(), media).start();
             }
         });
         viewBinding.videoPlayerView.setOnClickListener(v ->
-                new VideoPlayerActivityStarter(requireContext()).start());
+                startActivity(new VideoPlayerActivityStarter(requireContext()).getIntent()));
         viewBinding.openDescription.setOnClickListener(view -> ((AudioPlayerFragment) requireParentFragment())
                 .scrollToPage(AudioPlayerFragment.POS_DESCRIPTION, true));
         ColorFilter colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
@@ -140,8 +123,8 @@ public class CoverFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Maybe.<Playable>create(emitter -> {
-            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+        disposable = Maybe.<FeedMedia>create(emitter -> {
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media != null) {
                 if (includingChapters) {
                     ChapterUtils.loadChapters(media, getContext(), false);
@@ -161,7 +144,7 @@ public class CoverFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void displayMediaInfo(@NonNull Playable media) {
+    private void displayMediaInfo(@NonNull FeedMedia media) {
         updateVideoPlayer();
         String pubDateStr = DateFormatter.formatAbbrev(getActivity(), media.getPubDate());
         viewBinding.txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
@@ -169,11 +152,7 @@ public class CoverFragment extends Fragment {
                 + "・"
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
-        if (media instanceof FeedMedia) {
-            viewBinding.txtvPodcastTitle.setOnClickListener(v -> openFeed(((FeedMedia) media).getItem().getFeed()));
-        } else {
-            viewBinding.txtvPodcastTitle.setOnClickListener(null);
-        }
+        viewBinding.txtvPodcastTitle.setOnClickListener(v -> openFeed(media.getItem().getFeed()));
         viewBinding.txtvPodcastTitle.setOnLongClickListener(v -> copyText(media.getFeedTitle()));
         viewBinding.txtvEpisodeTitle.setText(media.getEpisodeTitle());
         viewBinding.txtvEpisodeTitle.setOnLongClickListener(v -> copyText(media.getEpisodeTitle()));
@@ -225,10 +204,9 @@ public class CoverFragment extends Fragment {
         boolean chapterControlVisible = false;
         if (media.getChapters() != null) {
             chapterControlVisible = media.getChapters().size() > 0;
-        } else if (media instanceof FeedMedia) {
-            FeedMedia fm = ((FeedMedia) media);
+        } else {
             // If an item has chapters but they are not loaded yet, still display the button.
-            chapterControlVisible = fm.getItem() != null && fm.getItem().hasChapters();
+            chapterControlVisible = media.getItem() != null && media.getItem().hasChapters();
         }
         int newVisibility = chapterControlVisible ? View.VISIBLE : View.GONE;
         if (viewBinding.chapterButton.getVisibility() != newVisibility) {
@@ -319,8 +297,7 @@ public class CoverFragment extends Fragment {
         if (viewBinding == null) {
             return;
         }
-        boolean isVideo = BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE
-                && media != null && media.getMediaType() == MediaType.VIDEO;
+        boolean isVideo = media != null && media.getMediaType() == MediaType.VIDEO;
         if (!isVideo) {
             releaseVideoPlayer();
             if (viewBinding.videoPlayerView.getVisibility() == View.GONE) {

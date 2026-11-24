@@ -75,7 +75,7 @@ public class ProxyDialog {
             viewBinding.portText.getText().clear();
             viewBinding.usernameText.getText().clear();
             viewBinding.passwordText.getText().clear();
-            setProxyConfig();
+            viewBinding.proxyTypeSpinner.setText(Proxy.Type.DIRECT.name(), false);
         });
 
         ProxyConfig proxyConfig = UserPreferences.getProxyConfig();

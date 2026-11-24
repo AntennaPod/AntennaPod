@@ -1,3 +1,3 @@
 # :playback:base
 
-This module provides the basic interfaces for a PlaybackServiceMediaPlayer.
+This module provides basic playback classes shared by the playback service and UI, such as `MediaItemAdapter` and `PlayerStatus`.

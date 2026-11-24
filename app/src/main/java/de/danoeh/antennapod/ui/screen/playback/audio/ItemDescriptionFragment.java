@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.playback.service.PlaybackController;
@@ -21,7 +20,6 @@ import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.cleaner.ShownotesCleaner;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.view.ShownotesWebView;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -32,7 +30,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 /**
- * Displays the description of a Playable object in a Webview.
+ * Displays the description of a FeedMedia object in a Webview.
  */
 public class ItemDescriptionFragment extends Fragment {
     private static final String TAG = "ItemDescriptionFragment";
@@ -51,13 +49,8 @@ public class ItemDescriptionFragment extends Fragment {
         View root = inflater.inflate(R.layout.item_description_fragment, container, false);
         webvDescription = root.findViewById(R.id.webview);
         webvDescription.setTimecodeSelectedListener(time -> {
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getActivity(), controller ->
-                        controller.seekTo(time));
-            } else {
-                PlaybackController.bindToService(getActivity(), playbackService ->
-                        playbackService.seekTo(time));
-            }
+            PlaybackController.bindToMedia3Service(getActivity(), controller ->
+                    controller.seekTo(time));
         });
         webvDescription.setPageFinishedListener(() -> {
             // Restoring the scroll position might not always work
@@ -103,18 +96,15 @@ public class ItemDescriptionFragment extends Fragment {
             return;
         }
         webViewLoader = Maybe.<String>create(emitter -> {
-            Playable media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
+            FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media == null) {
                 emitter.onComplete();
                 return;
             }
-            if (media instanceof FeedMedia) {
-                FeedMedia feedMedia = ((FeedMedia) media);
-                if (feedMedia.getItem() == null) {
-                    feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
-                }
-                DBReader.loadDescriptionOfFeedItem(feedMedia.getItem());
+            if (media.getItem() == null) {
+                media.setItem(DBReader.getFeedItem(media.getItemId()));
             }
+            DBReader.loadDescriptionOfFeedItem(media.getItem());
             ShownotesCleaner shownotesCleaner = new ShownotesCleaner(
                     context, media.getDescription(), media.getDuration());
             emitter.onSuccess(shownotesCleaner.processShownotes());

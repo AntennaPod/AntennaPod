@@ -71,10 +71,10 @@ public class ResizingOkHttpStreamFetcher extends OkHttpStreamFetcher {
 
                     if (options.outWidth == -1 || options.outHeight == -1) {
                         throw new IOException("Not a valid image");
-                    } else if (Math.max(options.outHeight, options.outWidth) >= MAX_DIMENSIONS) {
-                        double sampleSize = (double) Math.max(options.outHeight, options.outWidth) / MAX_DIMENSIONS;
-                        options.inSampleSize = (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d)));
                     }
+                    double sampleSize = (double) Math.max(options.outHeight, options.outWidth) / MAX_DIMENSIONS;
+                    options.inSampleSize = Math.max(1,
+                            (int) Math.pow(2d, Math.floor(Math.log(sampleSize) / Math.log(2d))));
 
                     options.inJustDecodeBounds = false;
                     in = new FileInputStream(tempIn);

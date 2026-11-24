@@ -17,7 +17,7 @@ import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
 
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
-import de.danoeh.antennapod.playback.service.PlaybackService;
+import de.danoeh.antennapod.playback.service.Media3PlaybackService;
 import de.danoeh.antennapod.storage.database.PodDBAdapter;
 import junit.framework.AssertionFailedError;
 
@@ -231,7 +231,7 @@ public class EspressoTestUtils {
 
     public static void tryKillPlaybackService() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        context.stopService(new Intent(context, PlaybackService.class));
+        context.stopService(new Intent(context, Media3PlaybackService.class));
         try {
             // Android has no reliable way to stop a service instantly.
             // Calling stopSelf marks allows the system to destroy the service but the actual call

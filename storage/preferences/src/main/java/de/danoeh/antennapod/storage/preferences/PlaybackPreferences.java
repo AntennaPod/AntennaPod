@@ -7,8 +7,6 @@ import androidx.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
-import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.model.playback.Playable;
 
 /**
  * Provides access to preferences set by the playback service. A private
@@ -31,19 +29,6 @@ public abstract class PlaybackPreferences {
      */
     private static final String PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID
             = "de.danoeh.antennapod.preferences.lastPlayedFeedMediaId";
-
-    /**
-     * Type of the media object that is currently being played. This preference
-     * is set to NO_MEDIA_PLAYING after playback has been completed and is set
-     * as soon as the 'play' button is pressed.
-     */
-    private static final String PREF_CURRENTLY_PLAYING_MEDIA_TYPE
-            = "de.danoeh.antennapod.preferences.currentlyPlayingMedia";
-
-    /**
-     * True if last played media was a video.
-     */
-    private static final String PREF_CURRENT_EPISODE_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
 
     /**
      * The current player status as int.
@@ -90,19 +75,8 @@ public abstract class PlaybackPreferences {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static long getCurrentlyPlayingMediaType() {
-        return prefs.getLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, NO_MEDIA_PLAYING);
-    }
-
     public static long getCurrentlyPlayingFeedMediaId() {
-        if (PlaybackPreferences.getCurrentlyPlayingMediaType() == NO_MEDIA_PLAYING) {
-            return NO_MEDIA_PLAYING;
-        }
         return prefs.getLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
-    }
-
-    public static boolean getCurrentEpisodeIsVideo() {
-        return prefs.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
     }
 
     public static int getCurrentPlayerStatus() {
@@ -124,30 +98,21 @@ public abstract class PlaybackPreferences {
 
     public static void writeNoMediaPlaying() {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, NO_MEDIA_PLAYING);
         editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, NO_MEDIA_PLAYING);
         editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
         editor.putInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
         editor.apply();
     }
 
-    public static void writeMediaPlaying(Playable playable) {
+    public static void writeMediaPlaying(FeedMedia playable) {
         Log.d(TAG, "Writing playback preferences");
         SharedPreferences.Editor editor = prefs.edit();
 
         if (playable == null) {
             writeNoMediaPlaying();
         } else {
-            editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, playable.getPlayableType());
-            editor.putBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, playable.getMediaType() == MediaType.VIDEO);
-            if (playable instanceof FeedMedia) {
-                FeedMedia feedMedia = (FeedMedia) playable;
-                editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, feedMedia.getItem().getFeed().getId());
-                editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, feedMedia.getId());
-            } else {
-                editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, NO_MEDIA_PLAYING);
-                editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
-            }
+            editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, playable.getItem().getFeed().getId());
+            editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, playable.getId());
         }
         editor.apply();
     }
@@ -162,13 +127,6 @@ public abstract class PlaybackPreferences {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE, skipSilence
                 ? FeedPreferences.SkipSilence.AGGRESSIVE.code : FeedPreferences.SkipSilence.OFF.code);
-        editor.apply();
-    }
-
-    public static void clearCurrentlyPlayingTemporaryPlaybackSettings() {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED);
-        editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_SKIP_SILENCE);
         editor.apply();
     }
 }

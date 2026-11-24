@@ -14,8 +14,7 @@ public abstract class PlaybackStatus {
     }
 
     public static boolean isPlaying(FeedMedia media) {
-        return PlaybackPreferences.getCurrentlyPlayingMediaType() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
-                && media != null
+        return media != null
                 && PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId();
     }
 }

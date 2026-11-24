@@ -17,14 +17,6 @@ public class BufferUpdateEvent {
         return new BufferUpdateEvent(PROGRESS_ENDED);
     }
 
-    public static BufferUpdateEvent progressUpdate(float progress) {
-        return new BufferUpdateEvent(progress);
-    }
-
-    public float getProgress() {
-        return progress;
-    }
-
     public boolean hasStarted() {
         return progress == PROGRESS_STARTED;
     }

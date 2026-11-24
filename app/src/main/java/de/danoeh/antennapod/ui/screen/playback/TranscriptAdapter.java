@@ -14,7 +14,6 @@ import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.Transcript;
 import de.danoeh.antennapod.model.feed.TranscriptSegment;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.transcript.TranscriptViewholder;
 import java.util.HashSet;
@@ -45,11 +44,11 @@ public class TranscriptAdapter extends RecyclerView.Adapter<TranscriptViewholder
         return new TranscriptViewholder(TranscriptItemBinding.inflate(LayoutInflater.from(context), viewGroup, false));
     }
 
-    public void setMedia(Playable media) {
-        if (!(media instanceof FeedMedia)) {
+    public void setMedia(FeedMedia media) {
+        if (media == null) {
             return;
         }
-        this.media = (FeedMedia) media;
+        this.media = media;
         notifyDataSetChanged();
     }
 

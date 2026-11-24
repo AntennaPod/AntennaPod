@@ -31,6 +31,7 @@ import de.danoeh.antennapod.databinding.Media3VideoPlayerActivityBinding;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.playback.VideoPlayerViewAttachedEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.playback.service.Media3PlaybackService;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.storage.database.DBReader;
@@ -67,12 +68,12 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
         @Override
         public void onReceive(Context context, Intent intent) {
             if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction()) && !isFinishing()
-                    && PlaybackPreferences.getCurrentEpisodeIsVideo()) {
+                    && isCurrentMediaVideo()) {
                 if (mediaController != null) {
                     mediaController.pause();
                 } else {
                     PlaybackController.bindToMedia3Service(context, controller -> {
-                        if (PlaybackPreferences.getCurrentEpisodeIsVideo()) {
+                        if (isCurrentMediaVideo()) {
                             controller.pause();
                         }
                     });
@@ -80,6 +81,10 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
             }
         }
     };
+
+    private boolean isCurrentMediaVideo() {
+        return currentMedia != null && currentMedia.getMediaType() == MediaType.VIDEO;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,12 +235,12 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
     protected void onStop() {
         super.onStop();
         if (!getSystemService(PowerManager.class).isInteractive() && !isFinishing()
-                && PlaybackPreferences.getCurrentEpisodeIsVideo()) {
+                && isCurrentMediaVideo()) {
             if (mediaController != null) {
                 mediaController.pause();
             } else {
                 PlaybackController.bindToMedia3Service(this, controller -> {
-                    if (PlaybackPreferences.getCurrentEpisodeIsVideo()) {
+                    if (isCurrentMediaVideo()) {
                         controller.pause();
                     }
                 });
