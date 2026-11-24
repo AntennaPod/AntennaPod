@@ -51,7 +51,6 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -68,10 +67,6 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final String MEDIA_ID_CONTINUE_LISTENING = "continue_listening";
     private static final int CONTINUE_LISTENING_NUM_EPISODES = 8;
     private static final long VOICE_SEARCH_MISS_GRACE_MS = 5000;
-    private static final List<String> LATEST_WORDS = Arrays.asList("latest", "newest", "recent", "last");
-    private static final List<String> OLDEST_WORDS = Arrays.asList("oldest", "earliest", "first");
-    private static final List<String> NUMBER_WORDS = Arrays.asList(
-            "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten");
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
             MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
             MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CONTINUE_LISTENING);
@@ -118,10 +113,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private final Context context;
+    private final List<String> latestWords;
+    private final List<String> oldestWords;
+    private final List<String> nextWords;
+    private final List<String> numberWords;
     private volatile long lastVoiceSearchMiss = 0;
 
     public MediaLibrarySessionCallback(Context context) {
         this.context = context;
+        latestWords = wordList(R.string.voice_search_latest_words);
+        oldestWords = wordList(R.string.voice_search_oldest_words);
+        nextWords = wordList(R.string.voice_search_next_words);
+        numberWords = wordList(R.string.voice_search_number_words);
     }
 
     @Override
@@ -608,11 +611,11 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         boolean next = false;
         List<String> words = new ArrayList<>();
         for (String word : leftover.split(" ")) {
-            if (LATEST_WORDS.contains(word)) {
+            if (latestWords.contains(word)) {
                 latest = true;
-            } else if (OLDEST_WORDS.contains(word)) {
+            } else if (oldestWords.contains(word)) {
                 oldest = true;
-            } else if ("next".equals(word)) {
+            } else if (nextWords.contains(word)) {
                 next = true;
             } else if (word.length() > 1 || (!word.isEmpty() && Character.isDigit(word.charAt(0)))) {
                 words.add(word);
@@ -723,7 +726,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         return best;
     }
 
-    private static int compareEpisodes(FeedItem a, FeedItem b, Map<Long, Double> scores,
+    private int compareEpisodes(FeedItem a, FeedItem b, Map<Long, Double> scores,
                                        List<String> words, LongList queue) {
         int result = Double.compare(scores.get(a.getId()), scores.get(b.getId()));
         if (result == 0) {
@@ -741,7 +744,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         return result;
     }
 
-    private static int titleMatches(FeedItem item, List<String> words) {
+    private int titleMatches(FeedItem item, List<String> words) {
         List<String> titleWords = new ArrayList<>();
         for (String word : normalize(item.getTitle()).split(" ")) {
             titleWords.add(numberWord(word));
@@ -755,9 +758,19 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         return matches;
     }
 
-    private static String numberWord(String word) {
-        int index = NUMBER_WORDS.indexOf(word);
+    private String numberWord(String word) {
+        int index = numberWords.indexOf(word);
         return index >= 0 ? String.valueOf(index) : word;
+    }
+
+    private List<String> wordList(int resId) {
+        List<String> words = new ArrayList<>();
+        for (String word : normalize(context.getString(resId)).split(" ")) {
+            if (!word.isEmpty()) {
+                words.add(word);
+            }
+        }
+        return words;
     }
 
     private static String normalize(@Nullable String text) {
