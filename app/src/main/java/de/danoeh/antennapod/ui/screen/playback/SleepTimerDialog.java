@@ -424,9 +424,9 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
             text = getString(R.string.auto_enable_label_with_times, formattedFrom, formattedTo);
         } else {
             String formattedFrom = String.format(Locale.getDefault(), "%02d:00 %s",
-                    from % 12, from >= 12 ? "PM" : "AM");
+                    (from + 11) % 12 + 1, from >= 12 ? "PM" : "AM");
             String formattedTo = String.format(Locale.getDefault(), "%02d:00 %s",
-                    to % 12, to >= 12 ? "PM" : "AM");
+                    (to + 11) % 12 + 1, to >= 12 ? "PM" : "AM");
             text = getString(R.string.auto_enable_label_with_times, formattedFrom, formattedTo);
 
         }

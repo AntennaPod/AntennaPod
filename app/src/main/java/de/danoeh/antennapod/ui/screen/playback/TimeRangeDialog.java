@@ -138,8 +138,10 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
                 String timeRange = String.format(Locale.getDefault(), "%02d:00 - %02d:00", from, to);
                 canvas.drawText(timeRange, size / 2, textBaseY, paintText);
             } else {
-                String timeFrom = String.format(Locale.getDefault(), "%02d:00 %s", from % 12, from >= 12 ? "PM" : "AM");
-                String timeTo = String.format(Locale.getDefault(), "%02d:00 %s", to % 12, to >= 12 ? "PM" : "AM");
+                String timeFrom = String.format(Locale.getDefault(), "%02d:00 %s",
+                        (from + 11) % 12 + 1, from >= 12 ? "PM" : "AM");
+                String timeTo = String.format(Locale.getDefault(), "%02d:00 %s",
+                        (to + 11) % 12 + 1, to >= 12 ? "PM" : "AM");
                 canvas.drawText(timeFrom, size / 2, textBaseY - paintText.getTextSize(), paintText);
                 canvas.drawText("-", size / 2, textBaseY, paintText);
                 canvas.drawText(timeTo, size / 2, textBaseY + paintText.getTextSize(), paintText);
