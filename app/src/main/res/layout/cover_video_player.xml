@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:viewBindingIgnore="true">
+
+    <androidx.media3.ui.AspectRatioFrameLayout
+        android:id="@id/exo_content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <View
+            android:id="@id/exo_shutter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <androidx.media3.ui.SubtitleView
+            android:id="@id/exo_subtitles"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|end"
+            android:padding="8dp"
+            android:background="#66000000"
+            android:contentDescription="@string/open_video_full_screen"
+            app:srcCompat="@drawable/ic_fullscreen"
+            app:tint="@android:color/white" />
+
+    </androidx.media3.ui.AspectRatioFrameLayout>
+
+</merge>

@@ -20,14 +20,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import androidx.fragment.app.Fragment;
+import androidx.media3.common.C;
 import androidx.media3.common.DeviceInfo;
 import androidx.media3.common.Player;
+import androidx.media3.common.util.UnstableApi;
 import androidx.media3.session.MediaController;
 import androidx.media3.session.SessionToken;
+import androidx.media3.ui.AspectRatioFrameLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -293,6 +297,7 @@ public class CoverFragment extends Fragment {
         }
     }
 
+    @OptIn(markerClass = UnstableApi.class)
     void updateVideoPlayer() {
         if (viewBinding == null) {
             return;
@@ -350,18 +355,28 @@ public class CoverFragment extends Fragment {
             viewBinding.imgvCover.setVisibility(View.VISIBLE);
         }
         viewBinding.videoPlayerView.setVisibility(showVideo ? View.VISIBLE : View.GONE);
-        boolean expanded = ((MainActivity) requireActivity()).getBottomSheet().getState()
-                == BottomSheetBehavior.STATE_EXPANDED;
-        Player player = showVideo && isResumed() && expanded ? mediaController : null;
+        int sheetState = ((MainActivity) requireActivity()).getBottomSheet().getState();
+        boolean sheetVisible = sheetState != BottomSheetBehavior.STATE_COLLAPSED
+                && sheetState != BottomSheetBehavior.STATE_HIDDEN;
+        Player player = showVideo && isResumed() && sheetVisible ? mediaController : null;
         if (player == null || viewBinding.videoPlayerView.getPlayer() != player
                 || player.getPlaybackState() == Player.STATE_IDLE) {
             viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(0);
             viewBinding.imgvCover.setVisibility(View.VISIBLE);
         }
+        if (player != null && player.getPlaybackState() != Player.STATE_IDLE
+                && player.getCurrentTracks().isTypeSupported(C.TRACK_TYPE_VIDEO)) {
+            viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(1);
+            viewBinding.imgvCover.setVisibility(View.GONE);
+        }
         if (player != null && viewBinding.videoPlayerView.getPlayer() != player) {
             EventBus.getDefault().post(new VideoPlayerViewAttachedEvent());
         }
         viewBinding.videoPlayerView.setPlayer(player);
+        if (player != null && player.getVideoSize().width == 0) {
+            AspectRatioFrameLayout contentFrame = viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame);
+            contentFrame.setAspectRatio(16f / 9);
+        }
     }
 
     @Override

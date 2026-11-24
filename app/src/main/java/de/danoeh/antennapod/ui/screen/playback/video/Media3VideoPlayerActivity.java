@@ -329,10 +329,7 @@ public class Media3VideoPlayerActivity extends AppCompatActivity implements Tool
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if (item.getItemId() == R.id.player_switch_to_audio_only) {
-            finish();
-            return true;
-        } else if (item.getItemId() == R.id.player_show_chapters) {
+        if (item.getItemId() == R.id.player_show_chapters) {
             new ChaptersFragment().show(getSupportFragmentManager(), ChaptersFragment.TAG);
             return true;
         } else if (item.getItemId() == R.id.transcript_item) {

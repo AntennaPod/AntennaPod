@@ -18,6 +18,7 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.model.feed.FeedMedia;
+import de.danoeh.antennapod.model.playback.MediaType;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
@@ -74,6 +75,9 @@ public class ExternalPlayerFragment extends Fragment {
                 PlaybackController.bindToMedia3Service(getContext(), controller -> controller.pause());
             } else {
                 new PlaybackServiceStarter(getContext(), currentMedia).start();
+                if (currentMedia != null && currentMedia.getMediaType() == MediaType.VIDEO) {
+                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
             }
         });
         return root;
@@ -162,7 +166,5 @@ public class ExternalPlayerFragment extends Fragment {
                         .apply(options))
                 .apply(options)
                 .into(imgvCover);
-
-        butPlay.setVisibility(View.VISIBLE);
     }
 }
