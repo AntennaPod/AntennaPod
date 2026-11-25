@@ -84,9 +84,9 @@ public class FavoritesWriter {
 
     private static void writeFeed(Writer writer, Feed feed, String feedTemplate) throws IOException {
         String feedInfo = feedTemplate
-                .replace("{FEED_IMG}", feed.getImageUrl())
+                .replace("{FEED_IMG}", feed.getImageUrl() != null ? feed.getImageUrl() : "")
                 .replace("{FEED_TITLE}", feed.getTitle())
-                .replace("{FEED_LINK}", feed.getLink())
+                .replace("{FEED_LINK}", feed.getLink() != null ? feed.getLink() : "")
                 .replace("{FEED_WEBSITE}", feed.getDownloadUrl());
 
         writer.append(feedInfo);
