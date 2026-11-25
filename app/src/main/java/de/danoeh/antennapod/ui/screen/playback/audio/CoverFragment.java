@@ -312,6 +312,7 @@ public class CoverFragment extends Fragment {
                 updateVideoPlayer();
             } catch (ExecutionException | InterruptedException e) {
                 Log.e(TAG, "Error getting media controller", e);
+                controllerFuture = null;
             }
         }, MoreExecutors.directExecutor());
     }
@@ -334,8 +335,7 @@ public class CoverFragment extends Fragment {
             public void onRenderedFirstFrame() {
                 if (mediaController != null && viewBinding != null
                         && viewBinding.videoPlayerView.getPlayer() == mediaController) {
-                    viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(1);
-                    viewBinding.imgvCover.setVisibility(View.GONE);
+                    setVideoFrameVisible(true);
                 }
             }
         };
@@ -346,33 +346,29 @@ public class CoverFragment extends Fragment {
         if (viewBinding == null) {
             return;
         }
-        boolean isVideo = media != null && media.getMediaType() == MediaType.VIDEO;
-        if (!isVideo) {
+        if (media == null || media.getMediaType() != MediaType.VIDEO) {
             releaseVideoPlayer();
-            if (viewBinding.videoPlayerView.getVisibility() == View.GONE) {
-                return;
-            }
-        } else if (isResumed() && controllerFuture == null) {
+            viewBinding.videoPlayerView.setVisibility(View.GONE);
+            viewBinding.imgvCover.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (isResumed() && controllerFuture == null) {
             connectVideoController();
         }
-        boolean showVideo = isVideo
-                && (mediaController == null
-                || mediaController.getDeviceInfo().playbackType != DeviceInfo.PLAYBACK_TYPE_REMOTE);
+        if (mediaController == null) {
+            viewBinding.videoPlayerView.setVisibility(View.VISIBLE);
+            setVideoFrameVisible(false);
+            return;
+        }
+        boolean showVideo = mediaController.getDeviceInfo().playbackType != DeviceInfo.PLAYBACK_TYPE_REMOTE;
         viewBinding.videoPlayerView.setVisibility(showVideo ? View.VISIBLE : View.GONE);
         int sheetState = ((MainActivity) requireActivity()).getBottomSheet().getState();
         boolean sheetVisible = sheetState != BottomSheetBehavior.STATE_COLLAPSED
                 && sheetState != BottomSheetBehavior.STATE_HIDDEN;
         Player player = showVideo && isResumed() && sheetVisible ? mediaController : null;
-        if (player == null || viewBinding.videoPlayerView.getPlayer() != player
-                || player.getPlaybackState() == Player.STATE_IDLE) {
-            viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(0);
-            viewBinding.imgvCover.setVisibility(View.VISIBLE);
-        }
-        if (player != null && player.getPlaybackState() != Player.STATE_IDLE
-                && player.getCurrentTracks().isTypeSupported(C.TRACK_TYPE_VIDEO)) {
-            viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(1);
-            viewBinding.imgvCover.setVisibility(View.GONE);
-        }
+        boolean hasVideoFrames = player != null && player.getPlaybackState() != Player.STATE_IDLE
+                && player.getCurrentTracks().isTypeSupported(C.TRACK_TYPE_VIDEO);
+        setVideoFrameVisible(hasVideoFrames);
         if (player != null && viewBinding.videoPlayerView.getPlayer() != player) {
             EventBus.getDefault().post(new CoverVideoAttachedEvent());
         }
@@ -381,6 +377,11 @@ public class CoverFragment extends Fragment {
             AspectRatioFrameLayout contentFrame = viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame);
             contentFrame.setAspectRatio(16f / 9);
         }
+    }
+
+    private void setVideoFrameVisible(boolean visible) {
+        viewBinding.videoPlayerView.findViewById(R.id.exo_content_frame).setAlpha(visible ? 1 : 0);
+        viewBinding.imgvCover.setVisibility(visible ? View.GONE : View.VISIBLE);
     }
 
     @Override
