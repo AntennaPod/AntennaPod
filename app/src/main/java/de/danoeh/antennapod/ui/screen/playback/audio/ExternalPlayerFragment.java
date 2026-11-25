@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.ui.screen.playback.audio;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,12 +66,7 @@ public class ExternalPlayerFragment extends Fragment {
             Log.d(TAG, "layoutInfo was clicked");
 
             if (currentMedia != null) {
-                if (currentMedia.getMediaType() == MediaType.AUDIO) {
-                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else {
-                    Intent intent = PlaybackServiceInterface.getPlayerActivityIntent(getActivity(), currentMedia);
-                    startActivity(intent);
-                }
+                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
         butPlay.setOnClickListener(v -> {
@@ -81,6 +75,9 @@ public class ExternalPlayerFragment extends Fragment {
                 PlaybackController.bindToMedia3Service(getContext(), controller -> controller.pause());
             } else {
                 new PlaybackServiceStarter(getContext(), currentMedia).start();
+                if (currentMedia != null && currentMedia.getMediaType() == MediaType.VIDEO) {
+                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
             }
         });
         return root;
@@ -169,14 +166,5 @@ public class ExternalPlayerFragment extends Fragment {
                         .apply(options))
                 .apply(options)
                 .into(imgvCover);
-
-        if (currentMedia.getMediaType() == MediaType.VIDEO) {
-            butPlay.setVisibility(View.GONE);
-            ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
-            ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else {
-            butPlay.setVisibility(View.VISIBLE);
-            ((MainActivity) getActivity()).getBottomSheet().setLocked(false);
-        }
     }
 }
