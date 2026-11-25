@@ -104,7 +104,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         isInbox.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         isFavorite.setVisibility(item.isTagged(FeedItem.TAG_FAVORITE) ? View.VISIBLE : View.GONE);
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
-        container.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
 
         ItemActionButton actionButton = ItemActionButton.forItem(item);
         actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
@@ -121,6 +120,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             position.setVisibility(View.GONE);
             itemView.setActivated(false);
         }
+        container.setAlpha(item.isPlayed() && !itemView.isActivated() ? 0.5f : 1.0f);
 
         if (coverHolder.getVisibility() == View.VISIBLE) {
             new CoverLoader()

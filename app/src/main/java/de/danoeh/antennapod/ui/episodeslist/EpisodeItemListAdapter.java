@@ -126,6 +126,7 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
             if (isSelected(pos)) {
                 holder.itemView.setSelected(true);
             }
+            holder.container.setAlpha(item.isPlayed() && !isSelected(pos) ? 0.5f : 1.0f);
         }
 
         afterBindViewHolder(holder, pos);
