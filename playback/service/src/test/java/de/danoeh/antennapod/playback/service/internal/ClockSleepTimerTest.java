@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 @RunWith(RobolectricTestRunner.class)
@@ -46,5 +47,44 @@ public class ClockSleepTimerTest {
 
         assertFalse(timer.isActive());
         assertFalse(EventBus.getDefault().isRegistered(timer));
+    }
+
+    @Test
+    public void vibratesAgainAfterReset() {
+        SleepTimerPreferences.setVibrate(true);
+        timer = new CountingClockSleepTimer(timer.getContext());
+        timer.start(5000);
+        timer.playbackPositionUpdate(new PlaybackPositionEvent(0, 60000));
+        assertEquals(1, ((CountingClockSleepTimer) timer).vibrations);
+
+        timer.reset();
+        timer.playbackPositionUpdate(new PlaybackPositionEvent(0, 60000));
+        assertEquals(2, ((CountingClockSleepTimer) timer).vibrations);
+    }
+
+    @Test
+    public void vibratesAgainAfterExtending() {
+        SleepTimerPreferences.setVibrate(true);
+        timer = new CountingClockSleepTimer(timer.getContext());
+        timer.start(5000);
+        timer.playbackPositionUpdate(new PlaybackPositionEvent(0, 60000));
+        assertEquals(1, ((CountingClockSleepTimer) timer).vibrations);
+
+        timer.updateRemainingTime(5000);
+        timer.playbackPositionUpdate(new PlaybackPositionEvent(0, 60000));
+        assertEquals(2, ((CountingClockSleepTimer) timer).vibrations);
+    }
+
+    private static class CountingClockSleepTimer extends ClockSleepTimer {
+        int vibrations = 0;
+
+        CountingClockSleepTimer(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void vibrate() {
+            vibrations++;
+        }
     }
 }
