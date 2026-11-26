@@ -36,14 +36,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.TimeDialogBinding;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.playback.service.internal.MediaLibrarySessionCallback;
-import de.danoeh.antennapod.playback.base.PlayerStatus;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
@@ -69,7 +67,6 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
     private static final int EXTEND_LOTS_EPISODES = 3;
     private static final int SLEEP_DURATION_DAILY_HOURS_CUTOFF = 12;
 
-    private PlaybackController controller;
     private TimeDialogBinding viewBinding;
     private Disposable disposable;
     private volatile Integer currentQueueSize = null;
@@ -81,12 +78,6 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        controller = new PlaybackController(getActivity()) {
-            @Override
-            public void loadMediaInfo() {
-            }
-        };
-        controller.init();
         EventBus.getDefault().register(this);
 
         disposable = Single.fromCallable(() -> {
@@ -111,9 +102,6 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (controller != null) {
-            controller.release();
-        }
         if (disposable != null) {
             disposable.dispose();
             disposable = null;
@@ -233,35 +221,24 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
             showTimeRangeDialog(getContext(), from, to);
         });
         viewBinding.disableSleeptimerButton.setOnClickListener(v -> {
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getActivity(), mediaController -> {
-                    mediaController.sendCustomCommand(
-                            MediaLibrarySessionCallback.SESSION_COMMAND_DISABLE_SLEEP_TIMER,
-                            Bundle.EMPTY);
-                });
-            } else if (controller != null) {
-                controller.disableSleepTimer();
-            }
+            PlaybackController.bindToMedia3Service(getActivity(), mediaController -> {
+                mediaController.sendCustomCommand(
+                        MediaLibrarySessionCallback.SESSION_COMMAND_DISABLE_SLEEP_TIMER,
+                        Bundle.EMPTY);
+            });
         });
         viewBinding.setSleeptimerButton.setOnClickListener(v -> {
-            if (!PlaybackServiceInterface.isPlaying
-                    || (!BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE
-                            && controller != null && controller.getStatus() != PlayerStatus.PLAYING)) {
+            if (!PlaybackServiceInterface.isPlaying) {
                 Snackbar.make(viewBinding.getRoot(), R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
                 return;
             }
             try {
                 SleepTimerPreferences.setLastTimer("" + getSelectedSleepTime());
-                long time = SleepTimerPreferences.timerMillisOrEpisodes();
-                if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                    PlaybackController.bindToMedia3Service(getActivity(), mediaController -> {
-                        mediaController.sendCustomCommand(
-                                MediaLibrarySessionCallback.SESSION_COMMAND_SET_SLEEP_TIMER,
-                                Bundle.EMPTY);
-                    });
-                } else if (controller != null) {
-                    controller.setSleepTimer(time);
-                }
+                PlaybackController.bindToMedia3Service(getActivity(), mediaController -> {
+                    mediaController.sendCustomCommand(
+                            MediaLibrarySessionCallback.SESSION_COMMAND_SET_SLEEP_TIMER,
+                            Bundle.EMPTY);
+                });
                 Keyboard.hide(getActivity());
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -356,7 +333,7 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
                 }
             } else {
                 // for time sleep timers check if the selected value exceeds the remaining play time in the episode
-                final int remaining = (controller != null && currentMedia != null)
+                final int remaining = currentMedia != null
                         ? currentMedia.getDuration() - currentMedia.getPosition()
                         : Integer.MAX_VALUE;
                 final long timer = TimeUnit.MINUTES.toMillis(selectedSleepTime);
@@ -407,15 +384,11 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
     void setupExtendButton(TextView button, String text, int extendValue) {
         button.setText(text);
         button.setOnClickListener(v -> {
-            if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                PlaybackController.bindToMedia3Service(getActivity(), mediaController -> {
-                    mediaController.sendCustomCommand(
-                            MediaLibrarySessionCallback.SESSION_COMMAND_EXTEND_SLEEP_TIMER,
-                            MediaLibrarySessionCallback.createBundle(extendValue));
-                });
-            } else if (controller != null) {
-                controller.extendSleepTimer(extendValue);
-            }
+            PlaybackController.bindToMedia3Service(getActivity(), mediaController -> {
+                mediaController.sendCustomCommand(
+                        MediaLibrarySessionCallback.SESSION_COMMAND_EXTEND_SLEEP_TIMER,
+                        MediaLibrarySessionCallback.createBundle(extendValue));
+            });
         });
     }
 

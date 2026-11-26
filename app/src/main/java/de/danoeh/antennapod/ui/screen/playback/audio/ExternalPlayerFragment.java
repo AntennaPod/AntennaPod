@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.ui.screen.playback.audio;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +12,18 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.playback.MediaType;
-import de.danoeh.antennapod.model.playback.Playable;
 import de.danoeh.antennapod.playback.service.PlaybackController;
 import de.danoeh.antennapod.playback.service.PlaybackServiceInterface;
 import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
 import de.danoeh.antennapod.ui.screen.playback.PlayButton;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -50,7 +46,7 @@ public class ExternalPlayerFragment extends Fragment {
     private TextView feedName;
     private ProgressBar progressBar;
     private Disposable disposable;
-    private Playable currentMedia;
+    private FeedMedia currentMedia;
 
     public ExternalPlayerFragment() {
         super();
@@ -70,27 +66,18 @@ public class ExternalPlayerFragment extends Fragment {
             Log.d(TAG, "layoutInfo was clicked");
 
             if (currentMedia != null) {
-                if (currentMedia.getMediaType() == MediaType.AUDIO) {
-                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else {
-                    Intent intent = PlaybackServiceInterface.getPlayerActivityIntent(getActivity(), currentMedia);
-                    startActivity(intent);
-                }
+                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
         butPlay.setOnClickListener(v -> {
             if (PlaybackServiceInterface.isPlaying
                     && PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                if (BuildConfig.USE_MEDIA3_PLAYBACK_SERVICE) {
-                    PlaybackController.bindToMedia3Service(getContext(), controller -> controller.pause());
-                } else {
-                    getContext().sendBroadcast(
-                            MediaButtonStarter.createIntent(getContext(), KeyEvent.KEYCODE_MEDIA_PAUSE));
-                }
+                PlaybackController.bindToMedia3Service(getContext(), controller -> controller.pause());
             } else {
-                new PlaybackServiceStarter(getContext(), currentMedia)
-                        .callEvenIfRunning(true)
-                        .start();
+                new PlaybackServiceStarter(getContext(), currentMedia).start();
+                if (currentMedia != null && currentMedia.getMediaType() == MediaType.VIDEO) {
+                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
             }
         });
         return root;
@@ -116,7 +103,7 @@ public class ExternalPlayerFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPositionObserverUpdate(PlaybackPositionEvent event) {
-        if (event.getPosition() == Playable.INVALID_TIME || event.getDuration() == Playable.INVALID_TIME) {
+        if (event.getPosition() == FeedMedia.INVALID_TIME || event.getDuration() == FeedMedia.INVALID_TIME) {
             return;
         }
         progressBar.setProgress((int) ((double) event.getPosition() / event.getDuration() * 100));
@@ -153,7 +140,7 @@ public class ExternalPlayerFragment extends Fragment {
                         () -> ((MainActivity) getActivity()).setPlayerVisible(false));
     }
 
-    private void updateUi(Playable media) {
+    private void updateUi(FeedMedia media) {
         if (media == null) {
             return;
         }
@@ -179,14 +166,5 @@ public class ExternalPlayerFragment extends Fragment {
                         .apply(options))
                 .apply(options)
                 .into(imgvCover);
-
-        if (currentMedia.getMediaType() == MediaType.VIDEO) {
-            butPlay.setVisibility(View.GONE);
-            ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
-            ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else {
-            butPlay.setVisibility(View.VISIBLE);
-            ((MainActivity) getActivity()).getBottomSheet().setLocked(false);
-        }
     }
 }

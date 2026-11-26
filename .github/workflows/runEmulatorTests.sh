@@ -7,11 +7,9 @@ buildType="${1:-debug}"
 
 runTests() {
     if [ "$buildType" = "release" ]; then
-        ./gradlew connectedPlayReleaseAndroidTest -PtestBuildType=release \
-            -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
+        ./gradlew connectedPlayReleaseAndroidTest -PtestBuildType=release
     else
-        ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest -PtestBuildType=debug \
-            -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
+        ./gradlew connectedPlayDebugAndroidTest connectedDebugAndroidTest -PtestBuildType=debug
     fi
 }
 

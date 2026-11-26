@@ -25,7 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.databinding.VideoPlayerControlsBinding;
-import de.danoeh.antennapod.model.playback.Playable;
+import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.ui.episodes.TimeSpeedConverter;
@@ -209,7 +209,7 @@ public class VideoPlayerControlsView extends FrameLayout {
         int currentPosition = converter.convert(positionMs);
         int duration = converter.convert(durationMs);
 
-        if (currentPosition == Playable.INVALID_TIME || duration == Playable.INVALID_TIME) {
+        if (currentPosition == FeedMedia.INVALID_TIME || duration == FeedMedia.INVALID_TIME) {
             return;
         }
 
@@ -234,10 +234,6 @@ public class VideoPlayerControlsView extends FrameLayout {
 
     public void setPlayButtonShowsPlay(boolean showPlay) {
         binding.playButton.setIsShowPlay(showPlay);
-    }
-
-    public void setBufferingProgress(float progress) {
-        binding.sbPosition.setSecondaryProgress((int) (progress * binding.sbPosition.getMax()));
     }
 
     public void showControls() {

@@ -51,9 +51,7 @@ public class PlayActionButton extends ItemActionButton {
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
             return;
         }
-        new PlaybackServiceStarter(context, media)
-                .callEvenIfRunning(true)
-                .start();
+        new PlaybackServiceStarter(context, media).start();
 
         if (media.getMediaType() == MediaType.VIDEO) {
             context.startActivity(PlaybackServiceInterface.getPlayerActivityIntent(context, media));

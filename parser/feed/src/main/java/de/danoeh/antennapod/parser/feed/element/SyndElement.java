@@ -12,10 +12,6 @@ public class SyndElement {
         this.namespace = namespace;
     }
     
-    public Namespace getNamespace() {
-        return namespace;
-    }
-
     public String getName() {
         return name;
     }

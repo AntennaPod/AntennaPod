@@ -1,4 +1,6 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:keep="@drawable/ic_notification_fast_forward"
         android:height="30dp" android:viewportHeight="24.0"
         android:viewportWidth="24.0" android:width="30dp">
     <path android:fillColor="#FFFFFFFF" android:pathData="M4,18l8.5,-6L4,6v12zM13,6v12l8.5,-6L13,6z"/>
