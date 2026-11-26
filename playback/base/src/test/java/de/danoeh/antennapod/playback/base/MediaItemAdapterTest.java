@@ -80,6 +80,13 @@ public class MediaItemAdapterTest {
     }
 
     @Test
+    public void browseItemsShowLength() {
+        media.setDuration(4080000);
+        MediaItem mediaItem = MediaItemAdapter.fromPlayable(context, media, true);
+        assertEquals("Podcast • 1 hour 8 minutes", mediaItem.mediaMetadata.subtitle.toString().replace("\u00a0", " "));
+    }
+
+    @Test
     public void browseItemsMarkDownloadedEpisodes() {
         assertEquals(0, MediaItemAdapter.fromPlayable(context, media, true)
                 .mediaMetadata.extras.getLong(MediaConstants.EXTRAS_KEY_DOWNLOAD_STATUS));

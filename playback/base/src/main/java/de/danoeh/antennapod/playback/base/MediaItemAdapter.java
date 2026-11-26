@@ -92,7 +92,8 @@ public class MediaItemAdapter {
         if (forBrowse && playable.getDuration() > 0) {
             String duration = Converter.getDurationStringLocalized(context, playable.getDuration());
             metadataBuilder.setDisplayTitle(playable.getEpisodeTitle());
-            metadataBuilder.setSubtitle(playable.getFeedTitle() + " • " + duration);
+            metadataBuilder.setSubtitle(context.getString(R.string.android_auto_episode_duration,
+                    playable.getFeedTitle(), duration));
             if (playable.getItem() != null && playable.getItem().isPlayed()) {
                 extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
                         MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_FULLY_PLAYED);
@@ -103,7 +104,7 @@ public class MediaItemAdapter {
                         Math.min(1.0, (double) playable.getPosition() / playable.getDuration()));
                 String timeLeft = Converter.getDurationStringLocalized(context,
                         Math.max(0, playable.getDuration() - playable.getPosition()));
-                metadataBuilder.setSubtitle(context.getString(R.string.queue_time_left_label,
+                metadataBuilder.setSubtitle(context.getString(R.string.android_auto_episode_time_left,
                         playable.getFeedTitle(), timeLeft));
             } else {
                 extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
