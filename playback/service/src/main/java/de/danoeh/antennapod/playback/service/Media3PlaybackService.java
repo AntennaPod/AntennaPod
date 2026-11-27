@@ -39,6 +39,7 @@ import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -68,6 +69,7 @@ import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -739,7 +741,7 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
             if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 DBWriter.removeQueueItem(this, ended, item);
-                FeedPreferences.AutoDeleteAction action = item.getFeed().getPreferences().getCurrentAutoDelete();
+                FeedPreferences.AutoDeleteAction action = getCurrentAutoDeleteAction(item);
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
                 boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
@@ -753,6 +755,19 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (ended || ((skipped || playingNext) && String.valueOf(media.getId()).equals(playedMediaId))) {
             DBWriter.addItemToPlaybackHistory(media);
         }
+    }
+
+    /**
+     * The item's feed is a copy loaded together with the media when playback started. If the user changed the
+     * podcast's auto delete setting since, that copy is outdated, so read the current setting from the database.
+     * Must not be called on the main thread.
+     */
+    static FeedPreferences.AutoDeleteAction getCurrentAutoDeleteAction(FeedItem item) {
+        Feed feed = DBReader.getFeed(item.getFeedId(), false, 0, 0);
+        if (feed == null || feed.getPreferences() == null) {
+            feed = item.getFeed();
+        }
+        return feed.getPreferences().getCurrentAutoDelete();
     }
 
     private void setNextPlaybackSpeed() {
@@ -858,7 +873,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (sleepTimer != null && sleepTimer.isActive()) {
             sleepTimer.episodeFinishedPlayback();
             if (!sleepTimer.shouldContinueToNextEpisode()) {
-                updateDatabaseAfterPlayback(media, playbackStartPosition, true, false, false);
+                int startPosition = playbackStartPosition;
+                Completable.fromAction(() -> updateDatabaseAfterPlayback(media, startPosition, true, false, false))
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(() -> { }, error -> Log.e(TAG, Log.getStackTraceString(error)));
                 player.stop();
                 player.clearMediaItems();
                 PlaybackPreferences.writeNoMediaPlaying();
