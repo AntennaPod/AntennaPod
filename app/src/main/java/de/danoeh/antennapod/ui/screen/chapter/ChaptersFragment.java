@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.ui.screen.chapter;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +16,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -43,6 +43,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
     private FeedMedia media;
     private LinearLayoutManager layoutManager;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @NonNull
     @Override
@@ -52,14 +53,8 @@ public class ChaptersFragment extends AppCompatDialogFragment {
                 .setTitle(getString(R.string.chapters_label))
                 .setView(onCreateView(getLayoutInflater()))
                 .setPositiveButton(getString(R.string.close_label), null) //dismisses
-                .setNeutralButton(getString(R.string.refresh_label), null)
                 .create();
         dialog.show();
-        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
-        dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(v -> {
-            progressBar.setVisibility(View.VISIBLE);
-            loadMediaInfo(true);
-        });
 
         return dialog;
     }
@@ -68,6 +63,9 @@ public class ChaptersFragment extends AppCompatDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater) {
         View root = inflater.inflate(R.layout.simple_list_fragment, null, false);
         root.findViewById(R.id.toolbar).setVisibility(View.GONE);
+        swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setOnRefreshListener(() -> loadMediaInfo(true));
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
         progressBar = root.findViewById(R.id.progLoading);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -163,11 +161,9 @@ public class ChaptersFragment extends AppCompatDialogFragment {
             progressBar.setVisibility(View.GONE);
         }
         adapter.setMedia(media);
-        ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
-        if (media.getItem() != null
-                && !TextUtils.isEmpty(media.getItem().getPodcastIndexChapterUrl())) {
-            ((AlertDialog) getDialog()).getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
-        }
+        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setEnabled(media.getItem() != null
+                && !TextUtils.isEmpty(media.getItem().getPodcastIndexChapterUrl()));
         int positionOfCurrentChapter = getCurrentChapter(media, media.getPosition());
         updateChapterSelection(positionOfCurrentChapter, true);
     }
