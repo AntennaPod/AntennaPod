@@ -29,7 +29,8 @@ public class DownloadRequestBuilder {
 
     public DownloadRequestBuilder(@NonNull String destination, @NonNull Feed feed) {
         this.destination = destination;
-        this.source = feed.isLocalFeed() ? feed.getDownloadUrl() : UrlChecker.prepareUrl(feed.getDownloadUrl());
+        this.source = (feed.isLocalFeed() || feed.isSearchFeed())
+                ? feed.getDownloadUrl() : UrlChecker.prepareUrl(feed.getDownloadUrl());
         this.title = feed.getHumanReadableIdentifier();
         this.feedfileId = feed.getId();
         this.feedfileType = Feed.FEEDFILETYPE_FEED;

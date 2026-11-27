@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:fitsSystemWindows="true"
+        android:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.Material3.ActionBar"
+            app:title="@string/discover"
+            app:navigationContentDescription="@string/toolbar_back_button_content_description"
+            app:navigationIcon="?homeAsUpIndicator" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appbar"
+        android:clipToPadding="false"
+        android:columnWidth="400dp"
+        android:gravity="center"
+        android:horizontalSpacing="8dp"
+        android:numColumns="auto_fit"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="8dp"
+        tools:listitem="@layout/online_search_listitem" />
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/search_status_no_results" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateOnly="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Error message"
+        tools:background="@android:color/holo_red_light" />
+
+    <Button
+        android:id="@+id/butRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvError"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:text="@string/retry_label"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:background="@android:color/holo_red_light" />
+
+    <TextView
+        android:id="@+id/search_powered_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorTertiary"
+        android:text="@string/discover_powered_by_itunes"
+        android:textSize="12sp"
+        android:padding="4dp"
+        android:background="?android:attr/colorBackground"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textAlignment="textEnd" />
+
+</RelativeLayout>

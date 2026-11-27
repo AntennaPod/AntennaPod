@@ -19,6 +19,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import de.danoeh.antennapod.net.download.service.R;
 import de.danoeh.antennapod.net.download.service.feed.local.LocalFeedUpdater;
+import de.danoeh.antennapod.net.download.service.feed.search.SearchFeedUpdater;
 import de.danoeh.antennapod.net.download.service.feed.remote.DefaultDownloaderFactory;
 import de.danoeh.antennapod.net.download.service.feed.remote.Downloader;
 import de.danoeh.antennapod.net.download.service.feed.remote.FeedParserTask;
@@ -171,6 +172,8 @@ public class FeedUpdateWorker extends Worker {
                     Feed savedFeed;
                     if (feed.isLocalFeed()) {
                         savedFeed = LocalFeedUpdater.updateFeed(feed, getApplicationContext(), null);
+                    } else if (feed.isSearchFeed()) {
+                        savedFeed = SearchFeedUpdater.updateFeed(feed, getApplicationContext());
                     } else {
                         savedFeed = refreshFeed(feed, force);
                     }
