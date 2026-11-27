@@ -13,6 +13,7 @@ import de.danoeh.antennapod.ui.chapters.ChapterUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.util.concurrent.ExecutionException;
 
@@ -59,7 +60,13 @@ public class MediaDownloadedHandler implements Runnable {
         try {
             // Cache chapters if file has them
             if (media.getItem() != null && !media.getItem().hasChapters()) {
-                media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
+                try {
+                    media.setChapters(ChapterUtils.loadChaptersFromMediaFile(media, context));
+                } catch (InterruptedIOException e) {
+                    throw e;
+                } catch (IOException e) {
+                    Log.e(TAG, "Unable to open media file: " + e.getMessage());
+                }
             }
             if (media.getItem() != null && media.getItem().getPodcastIndexChapterUrl() != null) {
                 ChapterUtils.loadChaptersFromUrl(media.getItem().getPodcastIndexChapterUrl(), false);

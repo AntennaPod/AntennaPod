@@ -67,6 +67,7 @@ import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.playback.cast.CastEnabledActivity;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -235,7 +236,7 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         if (FeedItemEvent.indexOfItemWithId(event.items, currentMedia.getItemId()) != -1) {
-            AudioPlayerFragment.this.loadMediaInfo(false);
+            AudioPlayerFragment.this.loadMediaInfo();
         }
         if (event.items.isEmpty()) {
             // The unread update event is sometimes abused to trigger UI updates
@@ -270,16 +271,14 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPlaybackSpeed.setText(speedStr);
     }
 
-    private void loadMediaInfo(boolean includingChapters) {
+    private void loadMediaInfo() {
         if (disposable != null) {
             disposable.dispose();
         }
         disposable = Maybe.<FeedMedia>create(emitter -> {
             FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media != null) {
-                if (includingChapters) {
-                    ChapterUtils.loadChapters(media, getContext(), false);
-                }
+                media.setChapters(ChapterUtils.getCachedChapters(media));
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -290,10 +289,17 @@ public class AudioPlayerFragment extends Fragment implements
         .subscribe(media -> {
             currentMedia = media;
             updateUi();
-            if (media.getChapters() == null && !includingChapters) {
-                loadMediaInfo(true);
+            if (media.getChapters() == null) {
+                loadChapters(media);
             }
         }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private void loadChapters(FeedMedia media) {
+        disposable = Completable.fromAction(() -> ChapterUtils.loadChapters(media, getContext(), false))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUi, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void updateUi() {
@@ -311,7 +317,7 @@ public class AudioPlayerFragment extends Fragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusEvent(PlayerStatusEvent event) {
-        loadMediaInfo(false);
+        loadMediaInfo();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -321,14 +327,14 @@ public class AudioPlayerFragment extends Fragment implements
         toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(!timerActive);
         toolbar.getMenu().findItem(R.id.disable_sleeptimer_item).setVisible(timerActive);
         if (event.isCancelled() || event.wasJustEnabled() || event.isOver()) {
-            AudioPlayerFragment.this.loadMediaInfo(false);
+            AudioPlayerFragment.this.loadMediaInfo();
         }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        loadMediaInfo(false);
+        loadMediaInfo();
         EventBus.getDefault().register(this);
         txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));

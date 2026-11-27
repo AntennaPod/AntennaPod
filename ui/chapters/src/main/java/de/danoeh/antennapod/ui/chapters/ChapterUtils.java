@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.webkit.URLUtil;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Utility class for getting chapter data from media files.
@@ -43,11 +45,29 @@ import java.util.Locale;
 public class ChapterUtils {
 
     private static final String TAG = "ChapterUtils";
+    private static volatile Pair<Integer, List<Chapter>> cachedChapters = null;
 
     private ChapterUtils() {
     }
 
-    public static void loadChapters(FeedMedia playable, Context context, boolean forceRefresh) {
+    /**
+     * Returns the chapters of the media if they were loaded before and are still up to date, without any I/O.
+     * Returns null if the chapters still need to be loaded using loadChapters.
+     */
+    public static List<Chapter> getCachedChapters(FeedMedia playable) {
+        Pair<Integer, List<Chapter>> cached = cachedChapters;
+        if (cached == null || playable.getItem() == null || cached.first != getChaptersCacheKey(playable)) {
+            return null;
+        }
+        return cached.second;
+    }
+
+    /**
+     * Might need network, so call on a background thread. Synchronized and cached, so concurrent callers
+     * for the same media only load once: the first caller loads, the others wait and use its result.
+     * This avoids bursts of network requests from all over the app once a new episode gets loaded.
+     */
+    public static synchronized void loadChapters(FeedMedia playable, Context context, boolean forceRefresh) {
         if (playable.getChapters() != null && !forceRefresh) {
             // Already loaded
             return;
@@ -59,6 +79,12 @@ public class ChapterUtils {
             if (playable.getItem() == null) {
                 playable.setItem(DBReader.getFeedItem(playable.getItemId()));
             }
+            List<Chapter> cached = getCachedChapters(playable);
+            if (!forceRefresh && cached != null) {
+                playable.setChapters(cached);
+                return;
+            }
+            boolean loadingFailed = false;
             if (playable.getItem().hasChapters()) {
                 chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(playable.getItem());
             }
@@ -66,16 +92,29 @@ public class ChapterUtils {
             if (!TextUtils.isEmpty(playable.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
                         playable.getItem().getPodcastIndexChapterUrl(), forceRefresh);
+                // Some publishers use one dummy chapter before actual chapters are available
+                loadingFailed = chaptersFromPodcastIndex == null || chaptersFromPodcastIndex.size() <= 1;
             }
 
-            List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
+            List<Chapter> chaptersFromMediaFile = null;
+            try {
+                chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
+            } catch (InterruptedIOException e) {
+                throw e;
+            } catch (IOException e) {
+                Log.e(TAG, "Unable to open media file: " + e.getMessage());
+                loadingFailed = true;
+            }
             List<Chapter> chaptersMergePhase1 = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
             List<Chapter> chapters = ChapterMerger.merge(chaptersMergePhase1, chaptersFromPodcastIndex);
             if (chapters == null) {
-                // Do not try loading again. There are no chapters or parsing failed.
+                // Do not try loading again for this object. There are no chapters or parsing failed.
                 playable.setChapters(Collections.emptyList());
             } else {
                 playable.setChapters(chapters);
+            }
+            if (!loadingFailed) {
+                cachedChapters = new Pair<>(getChaptersCacheKey(playable), playable.getChapters());
             }
         } catch (InterruptedIOException e) {
             Log.d(TAG, "Chapter loading interrupted");
@@ -83,8 +122,14 @@ public class ChapterUtils {
         }
     }
 
+    // Includes everything the chapters are loaded from, so downloading the episode or a feed update invalidates it
+    private static int getChaptersCacheKey(FeedMedia playable) {
+        return Objects.hash(playable.getId(), playable.localFileAvailable(),
+                playable.getItem().hasChapters(), playable.getItem().getPodcastIndexChapterUrl());
+    }
+
     public static List<Chapter> loadChaptersFromMediaFile(FeedMedia playable, Context context)
-            throws InterruptedIOException {
+            throws IOException {
         // Load the first few bytes to detect the format.
         // Then stitch the format back onto the stream and pass it to the chapter reader.
         // If we were unable to detect the format, we stitch and send it to the first reader,
@@ -92,7 +137,8 @@ public class ChapterUtils {
         // This reduces the number of times we have to open a new stream as much as possible.
         MediaFormatDetector.Format format = MediaFormatDetector.Format.UNKNOWN;
         MediaFormatDetector.Format hint = MediaFormatDetector.Format.UNKNOWN;
-        try (CountingInputStream sniffStream = openStream(playable, context)) {
+        CountingInputStream sniffStream = openStream(playable, context);
+        try (sniffStream) {
             MediaFormatDetector.Result detection = MediaFormatDetector.detect(sniffStream);
             format = detection.format;
             if (format == MediaFormatDetector.Format.UNKNOWN) {
@@ -238,6 +284,9 @@ public class ChapterUtils {
             Response response = AntennapodHttpClient.getHttpClient().newCall(request).execute();
             if (response.body() == null) {
                 throw new IOException("Body is null");
+            } else if (!response.isSuccessful()) {
+                response.close();
+                throw new IOException("Unexpected HTTP status " + response.code());
             }
             return new CountingInputStream(new BufferedInputStream(response.body().byteStream()));
         }

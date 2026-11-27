@@ -68,6 +68,7 @@ import de.danoeh.antennapod.ui.episodes.PlaybackSpeedUtils;
 import de.danoeh.antennapod.ui.notifications.NotificationUtils;
 import de.danoeh.antennapod.ui.widget.WidgetUpdater;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -584,9 +585,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                     if (previousMediaId != PlaybackPreferences.NO_MEDIA_PLAYING && previousMediaId != mediaId) {
                         updateDatabaseAfterPlayback(DBReader.getFeedMedia(previousMediaId), -1, false, false, true);
                     }
-                    FeedMedia media = DBReader.getFeedMedia(mediaId);
-                    ChapterUtils.loadChapters(media, this, false);
-                    return media;
+                    return DBReader.getFeedMedia(mediaId);
                 })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -599,6 +598,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                                 DBWriter.addQueueItem(this, media.getItem());
                             }
                             switchToPlayable(media);
+                            loadChaptersOfCurrentPlayable();
                         },
                                 error -> Log.e(TAG, "Failed to load current media", error));
 
@@ -673,6 +673,21 @@ public class Media3PlaybackService extends MediaLibraryService {
                 PlaybackServiceInterface.isPlaying ? PlayerStatus.PLAYING : PlayerStatus.PAUSED,
                 currentPlayable.getPosition(), currentPlayable.getDuration(), speed);
         Schedulers.io().scheduleDirect(() -> WidgetUpdater.updateWidget(this, widgetState));
+    }
+
+    private void loadChaptersOfCurrentPlayable() {
+        if (mediaLoaderDisposable != null) {
+            mediaLoaderDisposable.dispose();
+        }
+        List<Chapter> cachedChapters = ChapterUtils.getCachedChapters(currentPlayable);
+        if (cachedChapters != null) {
+            currentPlayable.setChapters(cachedChapters);
+            return;
+        }
+        FeedMedia media = currentPlayable;
+        mediaLoaderDisposable = Completable.fromAction(() -> ChapterUtils.loadChapters(media, this, false))
+                .subscribeOn(Schedulers.io())
+                .subscribe(() -> { }, error -> Log.e(TAG, "Failed to load chapters", error));
     }
 
     private void updatePlaybackPreferences() {
@@ -914,22 +929,7 @@ public class Media3PlaybackService extends MediaLibraryService {
                             player.setPlayWhenReady(UserPreferences.isFollowQueue());
                             player.setMediaItem(nextMediaItem, SkipUtils.skipIntroIfNecessary(this, nextMedia));
                             player.prepare();
-                            if (mediaLoaderDisposable != null) {
-                                mediaLoaderDisposable.dispose();
-                            }
-                            mediaLoaderDisposable = Single.fromCallable(() -> {
-                                FeedMedia mediaWithChapters = DBReader.getFeedMedia(nextMedia.getId());
-                                ChapterUtils.loadChapters(mediaWithChapters, this, false);
-                                return mediaWithChapters;
-                            })
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(mediaWithChapters -> {
-                                        if (currentPlayable != null
-                                                && currentPlayable.getId() == mediaWithChapters.getId()) {
-                                            currentPlayable.setChapters(mediaWithChapters.getChapters());
-                                        }
-                                    }, error -> Log.e(TAG, "Failed to load chapters", error));
+                            loadChaptersOfCurrentPlayable();
                         },
                         error -> Log.e(TAG, "Failed to load next queue item", error),
                         () -> {
