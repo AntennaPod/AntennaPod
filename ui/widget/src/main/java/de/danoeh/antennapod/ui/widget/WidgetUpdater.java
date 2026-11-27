@@ -140,18 +140,17 @@ public abstract class WidgetUpdater {
             SharedPreferences prefs = context.getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
             int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
             int columns = getCellsForSize(minWidth);
-            if (columns < 3) {
-                views.setViewVisibility(R.id.layout_center, View.INVISIBLE);
-            } else {
-                views.setViewVisibility(R.id.layout_center, View.VISIBLE);
-            }
+            // The extended buttons and the large cover live inside layout_center,
+            // which is hidden on narrow widgets, so don't use them there.
+            boolean showCenter = columns >= 3;
+            views.setViewVisibility(R.id.layout_center, showCenter ? View.VISIBLE : View.INVISIBLE);
             boolean showPlaybackSpeed = prefs.getBoolean(PlayerWidget.KEY_WIDGET_PLAYBACK_SPEED + id, false);
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
             boolean showCoverAsBcg = prefs.getBoolean(PlayerWidget.KEY_WIDGET_COVER_BACKGROUND + id, false);
 
-            if (showPlaybackSpeed || showRewind || showSkip || showFastForward) {
+            if (showCenter && (showPlaybackSpeed || showRewind || showSkip || showFastForward)) {
                 views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
                 views.setInt(R.id.butPlay, "setVisibility", View.GONE);
                 views.setInt(R.id.butPlaybackSpeed, "setVisibility", showPlaybackSpeed ? View.VISIBLE : View.GONE);
@@ -179,7 +178,7 @@ public abstract class WidgetUpdater {
                 }
             } else {
                 int minHeight = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-                boolean largeCover = minHeight >= 100 && columns >= 2;
+                boolean largeCover = minHeight >= 100 && showCenter;
                 views.setViewVisibility(R.id.imgvCover, largeCover ? View.GONE : View.VISIBLE);
                 views.setViewVisibility(R.id.imgvCoverLarge, largeCover ? View.VISIBLE : View.GONE);
                 views.setViewVisibility(R.id.imgvBackground, View.GONE);
