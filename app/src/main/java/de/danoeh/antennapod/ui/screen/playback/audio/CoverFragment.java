@@ -140,12 +140,25 @@ public class CoverFragment extends Fragment {
         }).subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> {
+                    keepLoadedChapters(this.media, media);
                     this.media = media;
                     displayMediaInfo(media);
                     if (media.getChapters() == null && !includingChapters) {
                         loadMediaInfo(true);
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    /**
+     * Reloading the same episode (for example after play/pause) reads it from the database without chapters.
+     * Keep the chapters that were already loaded, so the chapter button does not briefly fall back to
+     * {@link de.danoeh.antennapod.model.feed.FeedItem#hasChapters()} and jump around.
+     */
+    static void keepLoadedChapters(@Nullable FeedMedia previous, @NonNull FeedMedia reloaded) {
+        if (previous != null && previous.getId() == reloaded.getId()
+                && previous.getChapters() != null && reloaded.getChapters() == null) {
+            reloaded.setChapters(previous.getChapters());
+        }
     }
 
     private void displayMediaInfo(@NonNull FeedMedia media) {
