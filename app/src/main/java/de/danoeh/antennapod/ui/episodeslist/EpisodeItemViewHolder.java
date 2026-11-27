@@ -120,7 +120,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             position.setVisibility(View.GONE);
             itemView.setActivated(false);
         }
-        container.setAlpha(item.isPlayed() && !itemView.isActivated() ? 0.5f : 1.0f);
 
         if (coverHolder.getVisibility() == View.VISIBLE) {
             new CoverLoader()
