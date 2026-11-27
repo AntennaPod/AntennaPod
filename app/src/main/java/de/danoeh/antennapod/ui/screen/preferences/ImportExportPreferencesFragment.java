@@ -273,7 +273,7 @@ public class ImportExportPreferencesFragment extends AnimatedPreferenceFragment 
             return;
         }
         progressDialog.show();
-        disposable = Completable.fromAction(() -> DatabaseExporter.exportToDocument(uri, getContext()))
+        disposable = Completable.fromAction(() -> DatabaseExporter.exportToDocument(uri, getContext(), false))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
