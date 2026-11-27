@@ -120,6 +120,7 @@ public class UITestUtils {
      */
     public void addHostedFeedData() throws IOException {
         if (feedDataHosted) throw new IllegalStateException("addHostedFeedData was called twice on the same instance");
+        long now = System.currentTimeMillis();
         for (int i = 0; i < NUM_FEEDS; i++) {
             Feed feed = new Feed(0, null, "Title " + i, "http://example.com/" + i, "Description of feed " + i,
                     "http://example.com/pay/feed" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, null, null,
@@ -129,7 +130,8 @@ public class UITestUtils {
             List<FeedItem> items = new ArrayList<>();
             for (int j = 0; j < NUM_ITEMS_PER_FEED; j++) {
                 FeedItem item = new FeedItem(0, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
-                        "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);
+                        "http://example.com/feed" + i + "/item/" + j,
+                        new Date(now - (i * NUM_ITEMS_PER_FEED + j) * 60000L), FeedItem.UNPLAYED, feed);
                 items.add(item);
 
                 if (!hostTextOnlyFeeds) {
