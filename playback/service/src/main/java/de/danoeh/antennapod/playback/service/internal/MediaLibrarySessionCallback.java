@@ -3,6 +3,10 @@ package de.danoeh.antennapod.playback.service.internal;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import androidx.annotation.NonNull;
@@ -36,6 +40,8 @@ import de.danoeh.antennapod.playback.base.RewindAfterPauseUtils;
 import de.danoeh.antennapod.ui.appstartintent.MediaButtonStarter;
 import de.danoeh.antennapod.playback.service.R;
 import de.danoeh.antennapod.storage.database.DBReader;
+import de.danoeh.antennapod.storage.database.DBWriter;
+import de.danoeh.antennapod.storage.database.LongList;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
@@ -44,8 +50,12 @@ import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLibrarySession.Callback {
     private static final String TAG = "M3SessionCallback";
@@ -56,6 +66,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     private static final String MEDIA_ID_SUBSCRIPTIONS = "subscriptions";
     private static final String MEDIA_ID_CONTINUE_LISTENING = "continue_listening";
     private static final int CONTINUE_LISTENING_NUM_EPISODES = 8;
+    private static final long VOICE_SEARCH_MISS_GRACE_MS = 5000;
     private static final ImmutableList<String> BROWSABLE_MEDIA_IDS = ImmutableList.of(
             MEDIA_ID_ROOT, MEDIA_ID_QUEUE, MEDIA_ID_DOWNLOADS, MEDIA_ID_EPISODES,
             MEDIA_ID_SUBSCRIPTIONS, MEDIA_ID_CONTINUE_LISTENING);
@@ -102,9 +113,18 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private final Context context;
+    private final List<String> latestWords;
+    private final List<String> oldestWords;
+    private final List<String> nextWords;
+    private final List<String> numberWords;
+    private volatile long lastVoiceSearchMiss = 0;
 
     public MediaLibrarySessionCallback(Context context) {
         this.context = context;
+        latestWords = wordList(R.string.voice_search_latest_words);
+        oldestWords = wordList(R.string.voice_search_oldest_words);
+        nextWords = wordList(R.string.voice_search_next_words);
+        numberWords = wordList(R.string.voice_search_number_words);
     }
 
     @Override
@@ -260,14 +280,16 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                 return playbackResumption(true); // "Play something" voice action
             }
             SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
+            Bundle searchExtras = mediaItems.get(index).requestMetadata.extras;
+            Player player = mediaSession.getPlayer();
+            MediaItem currentItem = player != null ? player.getCurrentMediaItem() : null;
+            long currentPosition = player != null ? player.getCurrentPosition() : 0;
             Maybe.fromCallable(() -> {
-                List<FeedItem> results = DBReader.searchFeedItems(0, searchQuery, FeedItemFilter.unfiltered());
-                for (FeedItem result : results) {
-                    if (result.getMedia() != null) {
-                        return result.getMedia();
-                    }
+                FeedMedia found = findVoiceSearchMedia(searchQuery, searchExtras);
+                if (found != null && !DBReader.getQueueIDList().contains(found.getItemId())) {
+                    DBWriter.addQueueItemAt(context, found.getItemId(), 0);
                 }
-                return null;
+                return found;
             })
                     .subscribeOn(Schedulers.io())
                     .subscribe(media -> {
@@ -282,8 +304,17 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
                         future.set(new MediaSession.MediaItemsWithStartPosition(
                                 Collections.emptyList(), index, startPositionMs));
                     },
-                        () -> future.set(new MediaSession.MediaItemsWithStartPosition(
-                                Collections.emptyList(), index, startPositionMs)));
+                        () -> {
+                            lastVoiceSearchMiss = System.currentTimeMillis();
+                            future.set(currentItem != null
+                                    ? new MediaSession.MediaItemsWithStartPosition(
+                                            Collections.singletonList(currentItem), 0, currentPosition)
+                                    : new MediaSession.MediaItemsWithStartPosition(
+                                            Collections.emptyList(), index, startPositionMs));
+                            new Handler(Looper.getMainLooper()).post(() ->
+                                    mediaSession.sendError(controller, new SessionError(SessionError.ERROR_BAD_VALUE,
+                                            context.getString(R.string.app_action_not_found, searchQuery))));
+                        });
             return future;
         }
         SettableFuture<MediaSession.MediaItemsWithStartPosition> future = SettableFuture.create();
@@ -336,6 +367,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<MediaSession.MediaItemsWithStartPosition> onPlaybackResumption(
             @NonNull MediaSession mediaSession, @NonNull MediaSession.ControllerInfo controller) {
         Log.d(TAG, "onPlaybackResumption() called");
+        if (System.currentTimeMillis() - lastVoiceSearchMiss < VOICE_SEARCH_MISS_GRACE_MS) {
+            return Futures.immediateFuture(new MediaSession.MediaItemsWithStartPosition(
+                    Collections.emptyList(), C.INDEX_UNSET, C.TIME_UNSET));
+        }
         return playbackResumption(false);
     }
 
@@ -502,11 +537,17 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             @NonNull MediaLibraryService.MediaLibrarySession session, @NonNull MediaSession.ControllerInfo browser,
             @NonNull String query, int page, int pageSize, @Nullable MediaLibraryService.LibraryParams params) {
         SettableFuture<LibraryResult<ImmutableList<MediaItem>>> future = SettableFuture.create();
-        Single.fromCallable(() ->
-                        DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
+        Single.fromCallable(() -> {
+            ImmutableList.Builder<MediaItem> builder = ImmutableList.builder();
+            for (Feed feed : DBReader.searchFeeds(query, FeedItemFilter.unfiltered())) {
+                builder.add(MediaItemAdapter.fromFeed(context, feed));
+            }
+            builder.addAll(MediaItemAdapter.fromItemList(context,
+                    DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered())));
+            return builder.build();
+        })
                 .subscribeOn(Schedulers.io())
-                .subscribe(items -> future.set(LibraryResult.ofItemList(
-                                MediaItemAdapter.fromItemList(context, items), params)),
+                .subscribe(items -> future.set(LibraryResult.ofItemList(items, params)),
                         future::setException);
         return future;
     }
@@ -520,15 +561,248 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             session.notifySearchResultChanged(browser, query, 0, params);
             return Futures.immediateFuture(LibraryResult.ofVoid());
         }
-        Single.fromCallable(() -> DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()))
+        Single.fromCallable(() -> DBReader.searchFeeds(query, FeedItemFilter.unfiltered()).size()
+                        + DBReader.searchFeedItems(0, query, FeedItemFilter.unfiltered()).size())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        items -> session.notifySearchResultChanged(browser, query, items.size(), params),
+                        count -> session.notifySearchResultChanged(browser, query, count, params),
                         error -> {
                             Log.e(TAG, "Search failed", error);
                             session.notifySearchResultChanged(browser, query, 0, params);
                         });
         return Futures.immediateFuture(LibraryResult.ofVoid());
+    }
+
+    @WorkerThread
+    @Nullable
+    private FeedMedia findVoiceSearchMedia(String query, @Nullable Bundle extras) {
+        String album = extras != null ? extras.getString(MediaStore.EXTRA_MEDIA_ALBUM) : null;
+        String artist = extras != null ? extras.getString(MediaStore.EXTRA_MEDIA_ARTIST) : null;
+        String title = extras != null ? extras.getString(MediaStore.EXTRA_MEDIA_TITLE) : null;
+        Log.d(TAG, "Voice search: query=" + query + ", album=" + album + ", artist=" + artist + ", title=" + title);
+        String leftover = normalize(TextUtils.isEmpty(title) ? "" : title);
+        Feed feed = findFeed(album);
+        if (feed == null) {
+            feed = findFeed(artist);
+        }
+        if (feed == null) {
+            feed = findFeed(query);
+        }
+        if (feed == null) {
+            String normalizedQuery = normalize(query);
+            for (Feed candidate : DBReader.getFeedList()) {
+                String feedTitle = normalize(candidate.getTitle());
+                if (candidate.getState() == Feed.STATE_SUBSCRIBED && !feedTitle.isEmpty()
+                        && (" " + normalizedQuery + " ").contains(" " + feedTitle + " ")
+                        && (feed == null || feedTitle.length() > normalize(feed.getTitle()).length())) {
+                    feed = candidate;
+                }
+            }
+            if (feed != null) {
+                leftover = normalize((" " + normalizedQuery + " ")
+                        .replace(" " + normalize(feed.getTitle()) + " ", " ") + " " + leftover);
+            }
+        }
+        if (feed == null) {
+            leftover = normalize(query + " " + leftover);
+        }
+        boolean latest = false;
+        boolean oldest = false;
+        boolean next = false;
+        List<String> words = new ArrayList<>();
+        for (String word : leftover.split(" ")) {
+            if (latestWords.contains(word)) {
+                latest = true;
+            } else if (oldestWords.contains(word)) {
+                oldest = true;
+            } else if (nextWords.contains(word)) {
+                next = true;
+            } else if (word.length() > 1 || (!word.isEmpty() && Character.isDigit(word.charAt(0)))) {
+                words.add(word);
+            }
+        }
+        LongList queue = DBReader.getQueueIDList();
+        long feedId = feed != null ? feed.getId() : 0;
+        boolean ordered = latest || oldest || next;
+        FeedItem match = ordered && feed != null ? null : findBestEpisode(feedId, words, queue);
+        if (match != null) {
+            return match.getMedia();
+        }
+        if (feed == null) {
+            return null;
+        }
+        if (latest) {
+            return firstWithMedia(DBReader.getFeedItemList(feed,
+                    new FeedItemFilter(FeedItemFilter.HAS_MEDIA), SortOrder.DATE_NEW_OLD, 0, 1));
+        }
+        if (next) {
+            FeedMedia media = findEpisodeAfterLastPlayed(feed);
+            if (media != null) {
+                return media;
+            }
+        }
+        if (oldest || next) {
+            FeedMedia media = firstWithMedia(DBReader.getFeedItemList(feed, new FeedItemFilter(
+                    FeedItemFilter.UNPLAYED, FeedItemFilter.HAS_MEDIA), SortOrder.DATE_OLD_NEW, 0, 1));
+            if (media != null) {
+                return media;
+            }
+        }
+        String[][] preferences = {
+            {FeedItemFilter.PAUSED, FeedItemFilter.HAS_MEDIA},
+            {FeedItemFilter.UNPLAYED, FeedItemFilter.QUEUED, FeedItemFilter.HAS_MEDIA},
+            {FeedItemFilter.UNPLAYED, FeedItemFilter.DOWNLOADED, FeedItemFilter.HAS_MEDIA},
+            {FeedItemFilter.UNPLAYED, FeedItemFilter.HAS_MEDIA},
+            {FeedItemFilter.HAS_MEDIA}};
+        for (String[] preference : preferences) {
+            FeedMedia media = firstWithMedia(DBReader.getFeedItemList(feed,
+                    new FeedItemFilter(preference), SortOrder.DATE_NEW_OLD, 0, 1));
+            if (media != null) {
+                return media;
+            }
+        }
+        return null;
+    }
+
+    @WorkerThread
+    @Nullable
+    private FeedMedia findEpisodeAfterLastPlayed(Feed feed) {
+        List<FeedItem> items = DBReader.getFeedItemList(feed,
+                new FeedItemFilter(FeedItemFilter.HAS_MEDIA), SortOrder.DATE_OLD_NEW, 0, Integer.MAX_VALUE);
+        int lastPlayed = -1;
+        long lastPlayedTime = 0;
+        for (int i = 0; i < items.size(); i++) {
+            FeedMedia media = items.get(i).getMedia();
+            if (media != null && media.getLastPlayedTimeHistory() != null
+                    && media.getLastPlayedTimeHistory().getTime() > lastPlayedTime) {
+                lastPlayedTime = media.getLastPlayedTimeHistory().getTime();
+                lastPlayed = i;
+            }
+        }
+        if (lastPlayed < 0 || lastPlayed + 1 >= items.size()) {
+            return null;
+        }
+        return items.get(lastPlayed + 1).getMedia();
+    }
+
+    @WorkerThread
+    @Nullable
+    private FeedItem findBestEpisode(long feedId, List<String> words, LongList queue) {
+        if (words.isEmpty()) {
+            return null;
+        }
+        int total = Math.max(1, feedId != 0
+                ? DBReader.getFeedEpisodeCount(feedId, FeedItemFilter.unfiltered())
+                : DBReader.getTotalEpisodeCount(FeedItemFilter.unfiltered()));
+        Map<Long, FeedItem> items = new HashMap<>();
+        Map<Long, Double> scores = new HashMap<>();
+        List<List<FeedItem>> hitLists = new ArrayList<>();
+        int rarest = Integer.MAX_VALUE;
+        for (String word : words) {
+            List<FeedItem> hits = DBReader.searchFeedItems(feedId, word, FeedItemFilter.unfiltered());
+            hitLists.add(hits);
+            if (!hits.isEmpty()) {
+                rarest = Math.min(rarest, hits.size());
+            }
+        }
+        for (List<FeedItem> hits : hitLists) {
+            if (hits.isEmpty() || hits.size() > Math.max(3, total / 10) || hits.size() > rarest * 5) {
+                continue;
+            }
+            for (FeedItem hit : hits) {
+                if (hit.getMedia() != null) {
+                    items.put(hit.getId(), hit);
+                    Double score = scores.get(hit.getId());
+                    scores.put(hit.getId(), (score != null ? score : 0) + 1.0 / hits.size());
+                }
+            }
+        }
+        FeedItem best = null;
+        for (FeedItem item : items.values()) {
+            if (best == null || compareEpisodes(item, best, scores, words, queue) > 0) {
+                best = item;
+            }
+        }
+        return best;
+    }
+
+    private int compareEpisodes(FeedItem a, FeedItem b, Map<Long, Double> scores,
+                                       List<String> words, LongList queue) {
+        int result = Double.compare(scores.get(a.getId()), scores.get(b.getId()));
+        if (result == 0) {
+            result = Integer.compare(titleMatches(a, words), titleMatches(b, words));
+        }
+        if (result == 0 && a.getPubDate() != null && b.getPubDate() != null) {
+            result = b.getPubDate().compareTo(a.getPubDate());
+        }
+        if (result == 0) {
+            result = Boolean.compare(queue.contains(a.getId()), queue.contains(b.getId()));
+        }
+        if (result == 0) {
+            result = Boolean.compare(a.getMedia().isDownloaded(), b.getMedia().isDownloaded());
+        }
+        return result;
+    }
+
+    private int titleMatches(FeedItem item, List<String> words) {
+        List<String> titleWords = new ArrayList<>();
+        for (String word : normalize(item.getTitle()).split(" ")) {
+            titleWords.add(numberWord(word));
+        }
+        int matches = 0;
+        for (String word : words) {
+            if (titleWords.contains(numberWord(word))) {
+                matches++;
+            }
+        }
+        return matches;
+    }
+
+    private String numberWord(String word) {
+        int index = numberWords.indexOf(word);
+        return index >= 0 ? String.valueOf(index) : word;
+    }
+
+    private List<String> wordList(int resId) {
+        List<String> words = new ArrayList<>();
+        for (String word : normalize(context.getString(resId)).split(" ")) {
+            if (!word.isEmpty()) {
+                words.add(word);
+            }
+        }
+        return words;
+    }
+
+    private static String normalize(@Nullable String text) {
+        if (text == null) {
+            return "";
+        }
+        return text.toLowerCase(Locale.ROOT).replaceAll("[^\\p{L}\\p{N}]+", " ").trim();
+    }
+
+    @WorkerThread
+    @Nullable
+    private Feed findFeed(@Nullable String name) {
+        if (TextUtils.isEmpty(name)) {
+            return null;
+        }
+        List<Feed> feeds = DBReader.searchFeeds(name, FeedItemFilter.unfiltered());
+        for (Feed feed : feeds) {
+            if (name.equalsIgnoreCase(feed.getTitle())) {
+                return feed;
+            }
+        }
+        return feeds.isEmpty() ? null : feeds.get(0);
+    }
+
+    @Nullable
+    private static FeedMedia firstWithMedia(List<FeedItem> items) {
+        for (FeedItem item : items) {
+            if (item.getMedia() != null) {
+                return item.getMedia();
+            }
+        }
+        return null;
     }
 
     @WorkerThread

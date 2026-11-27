@@ -40,6 +40,14 @@
 
     <!-- Google Assistant -->
     <string name="app_action_not_found">\"%1$s\" not found</string>
+    <!-- Words a user may say to ask for the newest episode, e.g. "play the latest episode of ...". Separate words with commas. -->
+    <string name="voice_search_latest_words">latest,newest,recent,last</string>
+    <!-- Words a user may say to ask for the oldest unplayed episode, e.g. "play the oldest episode of ...". Separate words with commas. -->
+    <string name="voice_search_oldest_words">oldest,earliest,first</string>
+    <!-- Words a user may say to ask for the episode after the one they last listened to, e.g. "play the next episode of ...". Separate words with commas. -->
+    <string name="voice_search_next_words">next</string>
+    <!-- The spoken words for the numbers 0 to 10, in this exact order, one word per number, separated by commas. Used to match "part two" with "Part 2". -->
+    <string name="voice_search_number_words">zero,one,two,three,four,five,six,seven,eight,nine,ten</string>
 
     <!-- SwipeActions -->
     <string name="swipeactions_label">Swipe actions</string>
