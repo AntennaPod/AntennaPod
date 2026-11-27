@@ -30,6 +30,17 @@ public class DateFormatter {
         return android.text.format.DateUtils.formatDateTime(context, date.getTime(), format);
     }
 
+    /**
+     * Formats a full hour of the day (0-23) as a time, following the locale
+     * and the system's 12/24-hour setting.
+     */
+    public static String formatHourOfDay(final Context context, int hour) {
+        // Hours after the epoch, in UTC, so daylight saving time cannot shift them
+        long millis = hour * android.text.format.DateUtils.HOUR_IN_MILLIS;
+        return android.text.format.DateUtils.formatDateTime(context, millis,
+                android.text.format.DateUtils.FORMAT_SHOW_TIME | android.text.format.DateUtils.FORMAT_UTC);
+    }
+
     public static String formatForAccessibility(final Date date) {
         if (date == null) {
             return "";

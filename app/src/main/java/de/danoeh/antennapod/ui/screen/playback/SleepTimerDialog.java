@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
@@ -48,6 +46,7 @@ import de.danoeh.antennapod.storage.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.storage.preferences.SleepTimerType;
 import de.danoeh.antennapod.storage.preferences.UserPreferences;
 import de.danoeh.antennapod.ui.common.Converter;
+import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.ui.screen.preferences.PreferenceActivity;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -418,17 +417,10 @@ public class SleepTimerDialog extends BottomSheetDialogFragment {
 
         if (from == to) {
             text = getString(R.string.auto_enable_label);
-        } else if (DateFormat.is24HourFormat(getContext())) {
-            String formattedFrom = String.format(Locale.getDefault(), "%02d:00", from);
-            String formattedTo = String.format(Locale.getDefault(), "%02d:00", to);
-            text = getString(R.string.auto_enable_label_with_times, formattedFrom, formattedTo);
         } else {
-            String formattedFrom = String.format(Locale.getDefault(), "%02d:00 %s",
-                    from % 12, from >= 12 ? "PM" : "AM");
-            String formattedTo = String.format(Locale.getDefault(), "%02d:00 %s",
-                    to % 12, to >= 12 ? "PM" : "AM");
-            text = getString(R.string.auto_enable_label_with_times, formattedFrom, formattedTo);
-
+            text = getString(R.string.auto_enable_label_with_times,
+                    DateFormatter.formatHourOfDay(getContext(), from),
+                    DateFormatter.formatHourOfDay(getContext(), to));
         }
         viewBinding.autoEnableCheckbox.setText(text);
     }

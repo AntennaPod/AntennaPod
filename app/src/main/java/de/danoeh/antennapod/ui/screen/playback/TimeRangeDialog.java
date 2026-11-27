@@ -11,9 +11,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.ui.common.DateFormatter;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
-
-import java.util.Locale;
 
 public class TimeRangeDialog extends MaterialAlertDialogBuilder {
     private final TimeRangeView view;
@@ -134,15 +133,16 @@ public class TimeRangeDialog extends MaterialAlertDialogBuilder {
             if (from == to) {
                 String timeRange = getContext().getString(R.string.sleep_timer_always);
                 canvas.drawText(timeRange, size / 2, textBaseY, paintText);
-            } else if (DateFormat.is24HourFormat(getContext())) {
-                String timeRange = String.format(Locale.getDefault(), "%02d:00 - %02d:00", from, to);
-                canvas.drawText(timeRange, size / 2, textBaseY, paintText);
             } else {
-                String timeFrom = String.format(Locale.getDefault(), "%02d:00 %s", from % 12, from >= 12 ? "PM" : "AM");
-                String timeTo = String.format(Locale.getDefault(), "%02d:00 %s", to % 12, to >= 12 ? "PM" : "AM");
-                canvas.drawText(timeFrom, size / 2, textBaseY - paintText.getTextSize(), paintText);
-                canvas.drawText("-", size / 2, textBaseY, paintText);
-                canvas.drawText(timeTo, size / 2, textBaseY + paintText.getTextSize(), paintText);
+                String timeFrom = DateFormatter.formatHourOfDay(getContext(), from);
+                String timeTo = DateFormatter.formatHourOfDay(getContext(), to);
+                if (DateFormat.is24HourFormat(getContext())) {
+                    canvas.drawText(timeFrom + " - " + timeTo, size / 2, textBaseY, paintText);
+                } else {
+                    canvas.drawText(timeFrom, size / 2, textBaseY - paintText.getTextSize(), paintText);
+                    canvas.drawText("-", size / 2, textBaseY, paintText);
+                    canvas.drawText(timeTo, size / 2, textBaseY + paintText.getTextSize(), paintText);
+                }
             }
         }
 
