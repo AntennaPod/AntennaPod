@@ -31,6 +31,8 @@ import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
+import de.danoeh.antennapod.event.settings.SkipIntroEndingChangedEvent;
+import de.danoeh.antennapod.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.BufferUpdateEvent;
@@ -1023,6 +1025,33 @@ public class Media3PlaybackService extends MediaLibraryService {
             volumeAdaptionFactor = event.getVolumeAdaptionSetting().getAdaptionFactor();
             applyVolumeAdaption(1.0f);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void skipIntroEndingChanged(SkipIntroEndingChangedEvent event) {
+        if (currentPlayable == null || currentPlayable.getItem() == null || currentPlayable.getItem().getFeed() == null
+                || currentPlayable.getItem().getFeedId() != event.getFeedId()) {
+            return;
+        }
+        currentPlayable.getItem().getFeed().getPreferences().setFeedSkipIntro(event.getSkipIntro());
+        currentPlayable.getItem().getFeed().getPreferences().setFeedSkipEnding(event.getSkipEnding());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    @OptIn(markerClass = UnstableApi.class)
+    public void speedPresetChanged(SpeedPresetChangedEvent event) {
+        if (currentPlayable == null || currentPlayable.getItem() == null
+                || currentPlayable.getItem().getFeedId() != event.getFeedId()) {
+            return;
+        }
+        player.setPlaybackSpeed(event.getSpeed() == FeedPreferences.SPEED_USE_GLOBAL
+                ? UserPreferences.getPlaybackSpeed() : event.getSpeed());
+        boolean skipSilence = event.getSkipSilence() == FeedPreferences.SkipSilence.GLOBAL
+                ? UserPreferences.isSkipSilence() : event.getSkipSilence() == FeedPreferences.SkipSilence.AGGRESSIVE;
+        PlaybackPreferences.setCurrentlyPlayingTemporarySkipSilence(skipSilence);
+        exoPlayer.setSkipSilenceEnabled(skipSilence);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
