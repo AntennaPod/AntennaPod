@@ -117,12 +117,18 @@ public class MediaLibrarySessionCallbackTest {
         String feedList = "FeedId:" + media.getItem().getFeedId();
         callback.onSubscribe(librarySession, controllerInfo, "queue", null);
         callback.onSubscribe(librarySession, controllerInfo, feedList, null);
+        MediaSession.ControllerInfo otherBrowser = mock(MediaSession.ControllerInfo.class);
+        callback.onSubscribe(librarySession, otherBrowser, "queue", null);
+        callback.onUnsubscribe(librarySession, otherBrowser, "queue");
         callback.onSubscribe(librarySession, controllerInfo, "downloads", null);
         callback.onUnsubscribe(librarySession, controllerInfo, "downloads");
+        callback.onSubscribe(librarySession, otherBrowser, "episodes", null);
+        callback.onDisconnected(librarySession, otherBrowser);
         callback.notifyLibraryChanged(librarySession, callback.loadOpenListCounts());
         verify(librarySession).notifyChildrenChanged("queue", 0, null);
         verify(librarySession).notifyChildrenChanged(feedList, 1, null);
         verify(librarySession, never()).notifyChildrenChanged(eq("downloads"), anyInt(), any());
+        verify(librarySession, never()).notifyChildrenChanged(eq("episodes"), anyInt(), any());
     }
 
     private FeedMedia seedEpisode() {

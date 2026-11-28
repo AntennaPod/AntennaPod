@@ -106,7 +106,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private final Context context;
-    private final Set<String> openLists = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Map<String, Set<MediaSession.ControllerInfo>> openLists = new ConcurrentHashMap<>();
 
     public MediaLibrarySessionCallback(Context context) {
         this.context = context;
@@ -155,7 +155,12 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<Void>> onSubscribe(@NonNull MediaLibraryService.MediaLibrarySession session,
             @NonNull MediaSession.ControllerInfo browser, @NonNull String parentId,
             @Nullable MediaLibraryService.LibraryParams params) {
-        openLists.add(parentId);
+        Set<MediaSession.ControllerInfo> browsers = openLists.get(parentId);
+        if (browsers == null) {
+            browsers = Collections.newSetFromMap(new ConcurrentHashMap<>());
+            openLists.put(parentId, browsers);
+        }
+        browsers.add(browser);
         return MediaLibraryService.MediaLibrarySession.Callback.super.onSubscribe(session, browser, parentId, params);
     }
 
@@ -164,15 +169,27 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     public ListenableFuture<LibraryResult<Void>> onUnsubscribe(
             @NonNull MediaLibraryService.MediaLibrarySession session,
             @NonNull MediaSession.ControllerInfo browser, @NonNull String parentId) {
-        openLists.remove(parentId);
+        Set<MediaSession.ControllerInfo> browsers = openLists.get(parentId);
+        if (browsers != null) {
+            browsers.remove(browser);
+        }
         return MediaLibraryService.MediaLibrarySession.Callback.super.onUnsubscribe(session, browser, parentId);
+    }
+
+    @Override
+    public void onDisconnected(@NonNull MediaSession session, @NonNull MediaSession.ControllerInfo controller) {
+        for (Set<MediaSession.ControllerInfo> browsers : openLists.values()) {
+            browsers.remove(controller);
+        }
     }
 
     @WorkerThread
     public Map<String, Integer> loadOpenListCounts() {
         Map<String, Integer> counts = new HashMap<>();
-        for (String parentId : openLists) {
-            counts.put(parentId, Math.max(0, countChildren(parentId)));
+        for (Map.Entry<String, Set<MediaSession.ControllerInfo>> entry : openLists.entrySet()) {
+            if (!entry.getValue().isEmpty()) {
+                counts.put(entry.getKey(), Math.max(0, countChildren(entry.getKey())));
+            }
         }
         return counts;
     }
