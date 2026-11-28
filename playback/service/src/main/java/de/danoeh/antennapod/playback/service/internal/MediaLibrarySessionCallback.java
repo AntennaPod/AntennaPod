@@ -45,7 +45,9 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLibrarySession.Callback {
     private static final String TAG = "M3SessionCallback";
@@ -145,10 +147,32 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         session.setMediaButtonPreferences(buildCustomLayout());
     }
 
-    public void notifyQueueChanged(MediaLibraryService.MediaLibrarySession session, int queueSize) {
-        session.notifyChildrenChanged(MEDIA_ID_QUEUE, queueSize, null);
-        session.notifyChildrenChanged(MEDIA_ID_CONTINUE_LISTENING, CONTINUE_LISTENING_NUM_EPISODES, null);
-        session.notifyChildrenChanged(MEDIA_ID_ROOT, BROWSABLE_MEDIA_IDS.size() - 1, null);
+    @WorkerThread
+    public Map<String, Integer> loadBrowsableCounts() {
+        Map<String, Integer> counts = new LinkedHashMap<>();
+        counts.put(MEDIA_ID_ROOT, BROWSABLE_MEDIA_IDS.size() - 1);
+        counts.put(MEDIA_ID_CONTINUE_LISTENING, CONTINUE_LISTENING_NUM_EPISODES);
+        counts.put(MEDIA_ID_QUEUE, DBReader.getQueueIDList().size());
+        counts.put(MEDIA_ID_DOWNLOADS, Math.max(0,
+                DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED))));
+        counts.put(MEDIA_ID_EPISODES, Math.max(0, DBReader.getTotalEpisodeCount(
+                new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes()))));
+        int subscribed = 0;
+        for (Feed feed : DBReader.getFeedList()) {
+            if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+                subscribed++;
+                counts.put(MediaItemAdapter.MEDIA_ID_FEED_PREFIX + feed.getId(), Math.max(0,
+                        DBReader.getFeedEpisodeCount(feed.getId(), FeedItemFilter.unfiltered())));
+            }
+        }
+        counts.put(MEDIA_ID_SUBSCRIPTIONS, subscribed);
+        return counts;
+    }
+
+    public void notifyLibraryChanged(MediaLibraryService.MediaLibrarySession session, Map<String, Integer> counts) {
+        for (Map.Entry<String, Integer> entry : counts.entrySet()) {
+            session.notifyChildrenChanged(entry.getKey(), entry.getValue(), null);
+        }
     }
 
     @UnstableApi

@@ -24,6 +24,7 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
@@ -107,10 +108,16 @@ public class MediaLibrarySessionCallbackTest {
     }
 
     @Test
-    public void notifyQueueChangedRefreshesQueue() {
+    public void notifyLibraryChangedRefreshesAllLists() {
+        FeedMedia media = seedEpisode();
+        Map<String, Integer> counts = callback.loadBrowsableCounts();
         MediaLibraryService.MediaLibrarySession librarySession = mock(MediaLibraryService.MediaLibrarySession.class);
-        callback.notifyQueueChanged(librarySession, 3);
-        verify(librarySession).notifyChildrenChanged("queue", 3, null);
+        callback.notifyLibraryChanged(librarySession, counts);
+        verify(librarySession).notifyChildrenChanged("queue", 0, null);
+        verify(librarySession).notifyChildrenChanged("downloads", 0, null);
+        verify(librarySession).notifyChildrenChanged("subscriptions", 1, null);
+        verify(librarySession).notifyChildrenChanged(
+                "FeedId:" + media.getItem().getFeedId(), 1, null);
     }
 
     private FeedMedia seedEpisode() {
