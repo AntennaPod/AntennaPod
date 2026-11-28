@@ -33,11 +33,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.SequenceInputStream;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Utility class for getting chapter data from media files.
@@ -45,7 +45,7 @@ import java.util.Objects;
 public class ChapterUtils {
 
     private static final String TAG = "ChapterUtils";
-    private static volatile Pair<Integer, List<Chapter>> cachedChapters = null;
+    private static volatile Pair<Object, List<Chapter>> cachedChapters = null;
 
     private ChapterUtils() {
     }
@@ -55,8 +55,8 @@ public class ChapterUtils {
      * Returns null if the chapters still need to be loaded using loadChapters.
      */
     public static List<Chapter> getCachedChapters(FeedMedia playable) {
-        Pair<Integer, List<Chapter>> cached = cachedChapters;
-        if (cached == null || playable.getItem() == null || cached.first != getChaptersCacheKey(playable)) {
+        Pair<Object, List<Chapter>> cached = cachedChapters;
+        if (cached == null || playable.getItem() == null || !cached.first.equals(getChaptersCacheKey(playable))) {
             return null;
         }
         return cached.second;
@@ -92,8 +92,6 @@ public class ChapterUtils {
             if (!TextUtils.isEmpty(playable.getItem().getPodcastIndexChapterUrl())) {
                 chaptersFromPodcastIndex = ChapterUtils.loadChaptersFromUrl(
                         playable.getItem().getPodcastIndexChapterUrl(), forceRefresh);
-                // Some publishers use one dummy chapter before actual chapters are available
-                loadingFailed = chaptersFromPodcastIndex == null || chaptersFromPodcastIndex.size() <= 1;
             }
 
             List<Chapter> chaptersFromMediaFile = null;
@@ -123,9 +121,10 @@ public class ChapterUtils {
     }
 
     // Includes everything the chapters are loaded from, so downloading the episode or a feed update invalidates it
-    private static int getChaptersCacheKey(FeedMedia playable) {
-        return Objects.hash(playable.getId(), playable.localFileAvailable(),
-                playable.getItem().hasChapters(), playable.getItem().getPodcastIndexChapterUrl());
+    private static Object getChaptersCacheKey(FeedMedia playable) {
+        return Arrays.asList(playable.getId(), playable.localFileAvailable(),
+                playable.getItem().hasChapters(), playable.getItem().getPodcastIndexChapterUrl(),
+                playable.getItem().getFeed() != null ? playable.getItem().getFeed().getLastRefreshAttempt() : 0);
     }
 
     public static List<Chapter> loadChaptersFromMediaFile(FeedMedia playable, Context context)
