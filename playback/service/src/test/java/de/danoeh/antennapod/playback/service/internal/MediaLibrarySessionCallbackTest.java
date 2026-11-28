@@ -24,11 +24,14 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
@@ -108,16 +111,18 @@ public class MediaLibrarySessionCallbackTest {
     }
 
     @Test
-    public void notifyLibraryChangedRefreshesAllLists() {
+    public void notifyLibraryChangedRefreshesOpenLists() {
         FeedMedia media = seedEpisode();
-        Map<String, Integer> counts = callback.loadBrowsableCounts();
         MediaLibraryService.MediaLibrarySession librarySession = mock(MediaLibraryService.MediaLibrarySession.class);
-        callback.notifyLibraryChanged(librarySession, counts);
+        String feedList = "FeedId:" + media.getItem().getFeedId();
+        callback.onSubscribe(librarySession, controllerInfo, "queue", null);
+        callback.onSubscribe(librarySession, controllerInfo, feedList, null);
+        callback.onSubscribe(librarySession, controllerInfo, "downloads", null);
+        callback.onUnsubscribe(librarySession, controllerInfo, "downloads");
+        callback.notifyLibraryChanged(librarySession, callback.loadOpenListCounts());
         verify(librarySession).notifyChildrenChanged("queue", 0, null);
-        verify(librarySession).notifyChildrenChanged("downloads", 0, null);
-        verify(librarySession).notifyChildrenChanged("subscriptions", 1, null);
-        verify(librarySession).notifyChildrenChanged(
-                "FeedId:" + media.getItem().getFeedId(), 1, null);
+        verify(librarySession).notifyChildrenChanged(feedList, 1, null);
+        verify(librarySession, never()).notifyChildrenChanged(eq("downloads"), anyInt(), any());
     }
 
     private FeedMedia seedEpisode() {

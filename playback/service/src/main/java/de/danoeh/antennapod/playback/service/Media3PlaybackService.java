@@ -1021,7 +1021,7 @@ public class Media3PlaybackService extends MediaLibraryService {
         }
         libraryChangeDisposable = Single.timer(500, TimeUnit.MILLISECONDS)
                 .observeOn(Schedulers.io())
-                .map(ignored -> sessionCallback.loadBrowsableCounts())
+                .map(ignored -> sessionCallback.loadOpenListCounts())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(counts -> {
                     if (mediaSession != null) {

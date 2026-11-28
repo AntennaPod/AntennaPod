@@ -45,9 +45,11 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLibrarySession.Callback {
     private static final String TAG = "M3SessionCallback";
@@ -104,6 +106,7 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private final Context context;
+    private final Set<String> openLists = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public MediaLibrarySessionCallback(Context context) {
         this.context = context;
@@ -147,26 +150,61 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
         session.setMediaButtonPreferences(buildCustomLayout());
     }
 
+    @Override
+    @NonNull
+    public ListenableFuture<LibraryResult<Void>> onSubscribe(@NonNull MediaLibraryService.MediaLibrarySession session,
+            @NonNull MediaSession.ControllerInfo browser, @NonNull String parentId,
+            @Nullable MediaLibraryService.LibraryParams params) {
+        openLists.add(parentId);
+        return MediaLibraryService.MediaLibrarySession.Callback.super.onSubscribe(session, browser, parentId, params);
+    }
+
+    @Override
+    @NonNull
+    public ListenableFuture<LibraryResult<Void>> onUnsubscribe(
+            @NonNull MediaLibraryService.MediaLibrarySession session,
+            @NonNull MediaSession.ControllerInfo browser, @NonNull String parentId) {
+        openLists.remove(parentId);
+        return MediaLibraryService.MediaLibrarySession.Callback.super.onUnsubscribe(session, browser, parentId);
+    }
+
     @WorkerThread
-    public Map<String, Integer> loadBrowsableCounts() {
-        Map<String, Integer> counts = new LinkedHashMap<>();
-        counts.put(MEDIA_ID_ROOT, BROWSABLE_MEDIA_IDS.size() - 1);
-        counts.put(MEDIA_ID_CONTINUE_LISTENING, CONTINUE_LISTENING_NUM_EPISODES);
-        counts.put(MEDIA_ID_QUEUE, DBReader.getQueueIDList().size());
-        counts.put(MEDIA_ID_DOWNLOADS, Math.max(0,
-                DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED))));
-        counts.put(MEDIA_ID_EPISODES, Math.max(0, DBReader.getTotalEpisodeCount(
-                new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes()))));
-        int subscribed = 0;
-        for (Feed feed : DBReader.getFeedList()) {
-            if (feed.getState() == Feed.STATE_SUBSCRIBED) {
-                subscribed++;
-                counts.put(MediaItemAdapter.MEDIA_ID_FEED_PREFIX + feed.getId(), Math.max(0,
-                        DBReader.getFeedEpisodeCount(feed.getId(), FeedItemFilter.unfiltered())));
-            }
+    public Map<String, Integer> loadOpenListCounts() {
+        Map<String, Integer> counts = new HashMap<>();
+        for (String parentId : openLists) {
+            counts.put(parentId, Math.max(0, countChildren(parentId)));
         }
-        counts.put(MEDIA_ID_SUBSCRIPTIONS, subscribed);
         return counts;
+    }
+
+    @WorkerThread
+    private int countChildren(String parentId) {
+        if (parentId.startsWith(MediaItemAdapter.MEDIA_ID_FEED_PREFIX)) {
+            long feedId = Long.parseLong(parentId.split(":")[1]);
+            return DBReader.getFeedEpisodeCount(feedId, FeedItemFilter.unfiltered());
+        }
+        switch (parentId) {
+            case MEDIA_ID_ROOT:
+                return BROWSABLE_MEDIA_IDS.size() - 1;
+            case MEDIA_ID_CONTINUE_LISTENING:
+                return CONTINUE_LISTENING_NUM_EPISODES;
+            case MEDIA_ID_QUEUE:
+                return DBReader.getQueueIDList().size();
+            case MEDIA_ID_DOWNLOADS:
+                return DBReader.getTotalEpisodeCount(new FeedItemFilter(FeedItemFilter.DOWNLOADED));
+            case MEDIA_ID_EPISODES:
+                return DBReader.getTotalEpisodeCount(new FeedItemFilter(UserPreferences.getPrefFilterAllEpisodes()));
+            case MEDIA_ID_SUBSCRIPTIONS:
+                int subscribed = 0;
+                for (Feed feed : DBReader.getFeedList()) {
+                    if (feed.getState() == Feed.STATE_SUBSCRIBED) {
+                        subscribed++;
+                    }
+                }
+                return subscribed;
+            default:
+                return 0;
+        }
     }
 
     public void notifyLibraryChanged(MediaLibraryService.MediaLibrarySession session, Map<String, Integer> counts) {
