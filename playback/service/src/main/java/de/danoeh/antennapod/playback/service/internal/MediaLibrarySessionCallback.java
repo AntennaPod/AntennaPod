@@ -2,11 +2,16 @@ package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.ViewConfiguration;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.annotation.WorkerThread;
 import androidx.core.util.Pair;
 import androidx.media.utils.MediaConstants;
@@ -14,6 +19,7 @@ import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
+import androidx.media3.common.util.Util;
 import androidx.media3.session.CommandButton;
 import androidx.media3.session.LibraryResult;
 import androidx.media3.session.MediaLibraryService;
@@ -102,6 +108,8 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
     }
 
     private final Context context;
+    private final Handler headsetClickHandler = new Handler(Looper.getMainLooper());
+    private int headsetClickCount = 0;
 
     public MediaLibrarySessionCallback(Context context) {
         this.context = context;
@@ -209,7 +217,10 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             boolean fromWidget = MediaButtonStarter.MEDIA_BUTTON_SOURCE_WIDGET.equals(
                     intent.getStringExtra(MediaButtonStarter.EXTRA_MEDIA_BUTTON_SOURCE));
             int keyCode = keyEvent.getKeyCode();
-            if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
+            if (!fromWidget && isHeadsetClick(keyCode, controllerInfo)) {
+                countHeadsetClick(session.getPlayer());
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD) {
                 session.getPlayer().seekForward();
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND) {
@@ -221,6 +232,37 @@ public class MediaLibrarySessionCallback implements MediaLibraryService.MediaLib
             }
         }
         return false;
+    }
+
+    /**
+     * Same events that Media3 runs its double tap detection on: play/pause clicks from headsets
+     * and other external buttons, except on TV.
+     */
+    @OptIn(markerClass = UnstableApi.class)
+    private boolean isHeadsetClick(int keyCode, MediaSession.ControllerInfo controllerInfo) {
+        return (keyCode == KeyEvent.KEYCODE_HEADSETHOOK || keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE)
+                && controllerInfo.getControllerVersion() == MediaSession.ControllerInfo.LEGACY_CONTROLLER_VERSION
+                && !context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LEANBACK);
+    }
+
+    /**
+     * Media3 only tells a single click from a double click, so count the clicks here to keep the
+     * triple click: one click plays or pauses, two skip forward and three skip back.
+     */
+    @OptIn(markerClass = UnstableApi.class)
+    private void countHeadsetClick(Player player) {
+        headsetClickCount++;
+        headsetClickHandler.removeCallbacksAndMessages(null);
+        headsetClickHandler.postDelayed(() -> {
+            if (headsetClickCount == 1) {
+                Util.handlePlayPauseButtonAction(player);
+            } else if (headsetClickCount == 2) {
+                player.seekToNext();
+            } else if (headsetClickCount == 3) {
+                player.seekToPrevious();
+            }
+            headsetClickCount = 0;
+        }, ViewConfiguration.getDoubleTapTimeout());
     }
 
     @Override
