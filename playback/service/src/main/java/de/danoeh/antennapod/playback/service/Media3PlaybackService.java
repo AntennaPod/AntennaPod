@@ -1031,6 +1031,7 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
+    @OptIn(markerClass = UnstableApi.class)
     public void speedPresetChanged(SpeedPresetChangedEvent event) {
         if (currentPlayable == null || currentPlayable.getItem() == null
                 || currentPlayable.getItem().getFeedId() != event.getFeedId()) {
