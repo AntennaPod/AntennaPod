@@ -741,7 +741,12 @@ public class Media3PlaybackService extends MediaLibraryService {
             }
             if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 DBWriter.removeQueueItem(this, ended, item);
-                FeedPreferences.AutoDeleteAction action = getCurrentAutoDeleteAction(item);
+                // Reload, the feed preferences might have changed since the media was loaded
+                Feed feed = DBReader.getFeed(item.getFeedId(), false, 0, 0);
+                if (feed == null || feed.getPreferences() == null) {
+                    feed = item.getFeed();
+                }
+                FeedPreferences.AutoDeleteAction action = feed.getPreferences().getCurrentAutoDelete();
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
                 boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
@@ -755,19 +760,6 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (ended || ((skipped || playingNext) && String.valueOf(media.getId()).equals(playedMediaId))) {
             DBWriter.addItemToPlaybackHistory(media);
         }
-    }
-
-    /**
-     * The item's feed is a copy loaded together with the media when playback started. If the user changed the
-     * podcast's auto delete setting since, that copy is outdated, so read the current setting from the database.
-     * Must not be called on the main thread.
-     */
-    static FeedPreferences.AutoDeleteAction getCurrentAutoDeleteAction(FeedItem item) {
-        Feed feed = DBReader.getFeed(item.getFeedId(), false, 0, 0);
-        if (feed == null || feed.getPreferences() == null) {
-            feed = item.getFeed();
-        }
-        return feed.getPreferences().getCurrentAutoDelete();
     }
 
     private void setNextPlaybackSpeed() {
