@@ -65,6 +65,17 @@ public class MediaLibrarySessionCallbackTest {
     }
 
     @Test
+    public void onSetMediaItemsStubWithStartPosition() throws Exception {
+        long mediaId = seedEpisode().getId();
+        MediaItem browseItem = MediaItemAdapter.fromMediaIdStub(mediaId);
+        MediaSession.MediaItemsWithStartPosition result = callback.onSetMediaItems(
+                session, controllerInfo, Collections.singletonList(browseItem), 0, 30000)
+                .get(5, TimeUnit.SECONDS);
+        assertEquals(1, result.mediaItems.size());
+        assertEquals(30000, result.startPositionMs);
+    }
+
+    @Test
     public void onPlaybackResumption() throws Exception {
         FeedMedia media = seedEpisode();
         PlaybackPreferences.writeMediaPlaying(media);

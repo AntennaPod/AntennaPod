@@ -23,7 +23,7 @@ import de.danoeh.antennapod.event.PlayerStatusEvent;
 import de.danoeh.antennapod.event.playback.PlaybackPositionEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.FeedMedia;
-import de.danoeh.antennapod.playback.service.PlaybackController;
+import de.danoeh.antennapod.playback.service.PlaybackServiceStarter;
 import de.danoeh.antennapod.storage.database.DBReader;
 import de.danoeh.antennapod.storage.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.ui.chapters.ChapterUtils;
@@ -75,12 +75,7 @@ public class ChaptersFragment extends AppCompatDialogFragment {
 
         adapter = new ChaptersListAdapter(getActivity(), pos -> {
             Chapter chapter = adapter.getItem(pos);
-            PlaybackController.bindToMedia3Service(getActivity(), controller -> {
-                if (!controller.isPlaying()) {
-                    controller.play();
-                }
-                controller.seekTo(chapter.getStart());
-            });
+            new PlaybackServiceStarter(getActivity(), media).withStartPosition(chapter.getStart()).start();
             updateChapterSelection(pos, true);
         });
         recyclerView.setAdapter(adapter);
