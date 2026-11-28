@@ -749,10 +749,8 @@ public class Media3PlaybackService extends MediaLibraryService {
 
         SynchronizationQueue.getInstance().enqueueEpisodePlayed(media, startPosition, ended || almostEnded);
         if (item != null) {
-            if (ended || almostEnded) {
-                DBWriter.markItemsPlayed(FeedItem.PLAYED, true, Collections.singletonList(item));
-            }
             if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
+                DBWriter.markItemsPlayed(FeedItem.PLAYED, ended || almostEnded, Collections.singletonList(item));
                 DBWriter.removeQueueItem(this, ended, item);
                 FeedPreferences.AutoDeleteAction action = item.getFeed().getPreferences().getCurrentAutoDelete();
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
