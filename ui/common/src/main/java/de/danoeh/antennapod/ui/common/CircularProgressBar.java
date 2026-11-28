@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ public class CircularProgressBar extends View {
     private boolean isIndeterminate = false;
     private Object tag = null;
     private final RectF bounds = new RectF();
+    private ColorStateList color;
 
     public CircularProgressBar(Context context) {
         super(context);
@@ -49,10 +51,28 @@ public class CircularProgressBar extends View {
         paintProgress.setStrokeCap(Paint.Cap.ROUND);
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CircularProgressBar);
-        int color = typedArray.getColor(R.styleable.CircularProgressBar_foregroundColor, Color.GREEN);
+        color = typedArray.getColorStateList(R.styleable.CircularProgressBar_foregroundColor);
         typedArray.recycle();
-        paintProgress.setColor(color);
-        paintBackground.setColor(color);
+        if (color == null) {
+            color = ColorStateList.valueOf(Color.GREEN);
+        }
+        updateColor();
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        updateColor();
+    }
+
+    private void updateColor() {
+        if (color == null) {
+            return;
+        }
+        int currentColor = color.getColorForState(getDrawableState(), color.getDefaultColor());
+        paintProgress.setColor(currentColor);
+        paintBackground.setColor(currentColor);
+        invalidate();
     }
 
     /**

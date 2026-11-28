@@ -127,6 +127,8 @@ public class EpisodeItemListAdapter extends SelectableAdapter<EpisodeItemViewHol
                 holder.itemView.setSelected(true);
             }
         }
+        boolean isHighlighted = holder.itemView.isActivated() || holder.itemView.isSelected();
+        holder.container.setAlpha(item.isPlayed() && !isHighlighted ? 0.5f : 1.0f);
 
         afterBindViewHolder(holder, pos);
         holder.hideSeparatorIfNecessary();
