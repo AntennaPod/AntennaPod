@@ -65,6 +65,7 @@ import de.danoeh.antennapod.model.feed.Chapter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.ui.episodes.ImageResourceUtils;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -123,16 +124,14 @@ public class CoverFragment extends Fragment {
         configureForOrientation(getResources().getConfiguration());
     }
 
-    private void loadMediaInfo(boolean includingChapters) {
+    private void loadMediaInfo() {
         if (disposable != null) {
             disposable.dispose();
         }
         disposable = Maybe.<FeedMedia>create(emitter -> {
             FeedMedia media = DBReader.getFeedMedia(PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
             if (media != null) {
-                if (includingChapters) {
-                    ChapterUtils.loadChapters(media, getContext(), false);
-                }
+                media.setChapters(ChapterUtils.getCachedChapters(media));
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -142,10 +141,17 @@ public class CoverFragment extends Fragment {
                 .subscribe(media -> {
                     this.media = media;
                     displayMediaInfo(media);
-                    if (media.getChapters() == null && !includingChapters) {
-                        loadMediaInfo(true);
+                    if (media.getChapters() == null) {
+                        loadChapters(media);
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private void loadChapters(FeedMedia media) {
+        disposable = Completable.fromAction(() -> ChapterUtils.loadChapters(media, getContext(), false))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> displayMediaInfo(media), error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void displayMediaInfo(@NonNull FeedMedia media) {
@@ -282,7 +288,7 @@ public class CoverFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        loadMediaInfo(false);
+        loadMediaInfo();
         EventBus.getDefault().register(this);
     }
 
@@ -417,7 +423,7 @@ public class CoverFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusEvent(PlayerStatusEvent event) {
-        loadMediaInfo(false);
+        loadMediaInfo();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
