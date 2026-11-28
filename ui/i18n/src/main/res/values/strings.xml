@@ -343,6 +343,7 @@
     <string name="download_error_file_type_type">File type error</string>
     <string name="download_error_forbidden">The podcast host\'s server refuses to respond.</string>
     <string name="download_canceled_msg">Download canceled</string>
+    <string name="download_error_episode_limit_reached">Not downloaded automatically because the episode limit is reached</string>
     <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_error_blocked">The download was blocked by another app on your device (like a VPN or ad blocker).</string>
     <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device (like a VPN or an ad blocker) blocked the download, or that something is wrong with the server certificates.</string>
@@ -355,6 +356,13 @@
         <item quantity="other">%d downloads left</item>
     </plurals>
     <string name="download_notification_title_feeds">Refreshing podcasts</string>
+    <string name="episode_limit_reached_notification_title">Episode limit reached</string>
+    <plurals name="episode_limit_reached_notification_text">
+        <item quantity="one">%d new episode was not downloaded automatically.</item>
+        <item quantity="other">%d new episodes were not downloaded automatically.</item>
+    </plurals>
+    <string name="episode_limit_reached_no_cleanup">You have reached your limit of %1$d downloaded episodes and \"Delete before auto download\" is set to \"Never\". Delete some episodes, raise the episode limit or enable automatic deletion in the download settings.</string>
+    <string name="episode_limit_reached_nothing_to_clean">You have reached your limit of %1$d downloaded episodes and no episodes could be deleted automatically. Delete some episodes or raise the episode limit in the download settings.</string>
     <string name="download_notification_title_episodes">Downloading episodes</string>
     <string name="download_log_title_unknown">Unknown title</string>
     <string name="download_type_feed">Feed</string>
