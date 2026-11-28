@@ -159,6 +159,10 @@ public class FeedMedia implements Parcelable, Serializable {
         this.playedDuration += milliseconds;
     }
 
+    public void setPlayedDuration(int milliseconds) {
+        this.playedDuration = milliseconds;
+    }
+
     public int getPosition() {
         return position;
     }
