@@ -1,8 +1,13 @@
 package de.danoeh.antennapod.playback.service.internal;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Looper;
+import android.view.KeyEvent;
+import android.view.ViewConfiguration;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
+import androidx.media3.common.Player;
 import androidx.media3.session.MediaSession;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -21,12 +26,20 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaLibrarySessionCallbackTest {
@@ -102,6 +115,59 @@ public class MediaLibrarySessionCallbackTest {
                 Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
         assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
+    }
+
+    @Test
+    public void headsetSingleClickTogglesPlayback() {
+        Player player = mockPlayer();
+        clickHeadsetButton(1);
+        verify(player).play();
+        verify(player, never()).seekToNext();
+        verify(player, never()).seekToPrevious();
+    }
+
+    @Test
+    public void headsetDoubleClickSkipsForward() {
+        Player player = mockPlayer();
+        clickHeadsetButton(2);
+        verify(player).seekToNext();
+        verify(player, never()).seekToPrevious();
+        verify(player, never()).play();
+    }
+
+    @Test
+    public void headsetTripleClickSkipsBack() {
+        Player player = mockPlayer();
+        clickHeadsetButton(3);
+        verify(player).seekToPrevious();
+        verify(player, never()).seekToNext();
+        verify(player, never()).play();
+    }
+
+    @Test
+    public void playPauseFromMedia3ControllerIsLeftToMedia3() {
+        mockPlayer();
+        when(controllerInfo.getControllerVersion()).thenReturn(1);
+        assertFalse(callback.onMediaButtonEvent(session, controllerInfo, headsetClickIntent()));
+    }
+
+    private Player mockPlayer() {
+        Player player = mock(Player.class);
+        when(player.isCommandAvailable(anyInt())).thenReturn(true);
+        when(session.getPlayer()).thenReturn(player);
+        return player;
+    }
+
+    private void clickHeadsetButton(int clicks) {
+        for (int i = 0; i < clicks; i++) {
+            assertTrue(callback.onMediaButtonEvent(session, controllerInfo, headsetClickIntent()));
+        }
+        shadowOf(Looper.getMainLooper()).idleFor(Duration.ofMillis(ViewConfiguration.getDoubleTapTimeout()));
+    }
+
+    private static Intent headsetClickIntent() {
+        return new Intent(Intent.ACTION_MEDIA_BUTTON).putExtra(Intent.EXTRA_KEY_EVENT,
+                new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_HEADSETHOOK));
     }
 
     private FeedMedia seedEpisode() {
