@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
+import androidx.media3.session.MediaConstants;
 import androidx.preference.PreferenceManager;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -64,6 +65,34 @@ public class MediaItemAdapterTest {
         MediaItem mediaItem = MediaItemAdapter.withChapterArtwork(context, itemWithChapterArtwork, media, -1);
         assertNull(mediaItem.mediaMetadata.artworkData);
         assertEquals(Uri.parse(EPISODE_COVER), mediaItem.mediaMetadata.artworkUri);
+    }
+
+    @Test
+    public void browseItemsShowTimeLeftAndProgress() {
+        media.setDuration(3600000);
+        media.setPosition(900000);
+        MediaItem mediaItem = MediaItemAdapter.fromPlayable(context, media, true);
+        assertEquals("Podcast • 45 minutes left", mediaItem.mediaMetadata.subtitle.toString().replace("\u00a0", " "));
+        assertEquals(MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_PARTIALLY_PLAYED,
+                mediaItem.mediaMetadata.extras.getInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS));
+        assertEquals(0.25, mediaItem.mediaMetadata.extras.getDouble(MediaConstants.EXTRAS_KEY_COMPLETION_PERCENTAGE),
+                0.001);
+    }
+
+    @Test
+    public void browseItemsShowLength() {
+        media.setDuration(4080000);
+        MediaItem mediaItem = MediaItemAdapter.fromPlayable(context, media, true);
+        assertEquals("Podcast • 1 hour 8 minutes", mediaItem.mediaMetadata.subtitle.toString().replace("\u00a0", " "));
+    }
+
+    @Test
+    public void browseItemsMarkDownloadedEpisodes() {
+        assertEquals(0, MediaItemAdapter.fromPlayable(context, media, true)
+                .mediaMetadata.extras.getLong(MediaConstants.EXTRAS_KEY_DOWNLOAD_STATUS));
+        media.setDownloaded(true, System.currentTimeMillis());
+        assertEquals(MediaConstants.EXTRAS_VALUE_STATUS_DOWNLOADED, MediaItemAdapter.fromPlayable(context, media, true)
+                .mediaMetadata.extras.getLong(MediaConstants.EXTRAS_KEY_DOWNLOAD_STATUS));
     }
 
     private void setUseEpisodeCover(boolean value) {

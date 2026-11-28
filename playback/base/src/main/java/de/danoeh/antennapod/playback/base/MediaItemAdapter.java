@@ -10,12 +10,16 @@ import de.danoeh.antennapod.net.common.HttpCredentialEncoder;
 import android.util.Log;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.annotation.RawRes;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.session.MediaConstants;
 import com.bumptech.glide.Glide;
 import com.google.common.collect.ImmutableList;
 import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.ui.common.Converter;
 import de.danoeh.antennapod.model.feed.EmbeddedChapterImage;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -55,6 +59,7 @@ public class MediaItemAdapter {
      * Create a media item and load all its metadata, including cover art using Glide.
      * Do NOT use this method on the main thread.
      */
+    @OptIn(markerClass = UnstableApi.class)
     public static MediaItem fromPlayable(Context context, FeedMedia playable, boolean forBrowse) {
         ThreadUtils.assertNotMainThread();
         MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
@@ -81,6 +86,31 @@ public class MediaItemAdapter {
         }
         Bundle extras = new Bundle();
         extras.putString(KEY_STREAM_URL, playable.getStreamUrl());
+        if (forBrowse && playable.isDownloaded()) {
+            extras.putLong(MediaConstants.EXTRAS_KEY_DOWNLOAD_STATUS, MediaConstants.EXTRAS_VALUE_STATUS_DOWNLOADED);
+        }
+        if (forBrowse && playable.getDuration() > 0) {
+            String duration = Converter.getDurationStringLocalized(context, playable.getDuration());
+            metadataBuilder.setDisplayTitle(playable.getEpisodeTitle());
+            metadataBuilder.setSubtitle(context.getString(R.string.android_auto_episode_duration,
+                    playable.getFeedTitle(), duration));
+            if (playable.getItem() != null && playable.getItem().isPlayed()) {
+                extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
+                        MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_FULLY_PLAYED);
+            } else if (playable.getPosition() > 0) {
+                extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
+                        MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_PARTIALLY_PLAYED);
+                extras.putDouble(MediaConstants.EXTRAS_KEY_COMPLETION_PERCENTAGE,
+                        Math.min(1.0, (double) playable.getPosition() / playable.getDuration()));
+                String timeLeft = Converter.getDurationStringLocalized(context,
+                        Math.max(0, playable.getDuration() - playable.getPosition()));
+                metadataBuilder.setSubtitle(context.getString(R.string.android_auto_episode_time_left,
+                        playable.getFeedTitle(), timeLeft));
+            } else {
+                extras.putInt(MediaConstants.EXTRAS_KEY_COMPLETION_STATUS,
+                        MediaConstants.EXTRAS_VALUE_COMPLETION_STATUS_NOT_PLAYED);
+            }
+        }
         metadataBuilder.setExtras(extras);
         String localPlaybackUri;
         if (playable.localFileAvailable()) {

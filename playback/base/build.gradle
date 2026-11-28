@@ -13,6 +13,7 @@ dependencies {
     implementation project(':system')
     implementation project(':net:common')
     implementation project(':ui:episodes')
+    implementation project(':ui:common')
 
     implementation libs.androidx.media3.exoplayer
     implementation libs.androidx.media3.session
