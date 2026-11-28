@@ -29,7 +29,9 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import de.danoeh.antennapod.event.MessageEvent;
 import de.danoeh.antennapod.event.FeedItemEvent;
+import de.danoeh.antennapod.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.event.PlayerErrorEvent;
+import de.danoeh.antennapod.event.QueueEvent;
 import de.danoeh.antennapod.event.StreamingConfirmationEvent;
 import de.danoeh.antennapod.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.event.PlayerStatusEvent;
@@ -95,6 +97,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     private Disposable mediaLoaderDisposable;
     private Disposable positionObserverDisposable;
     private Disposable queueLoaderDisposable;
+    private Disposable libraryChangeDisposable;
     private Disposable chapterArtworkDisposable;
     private int lastChapterArtworkIndex = -1;
     private long lastPositionSaveTime = 0;
@@ -505,6 +508,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (chapterArtworkDisposable != null) {
             chapterArtworkDisposable.dispose();
             chapterArtworkDisposable = null;
+        }
+        if (libraryChangeDisposable != null) {
+            libraryChangeDisposable.dispose();
+            libraryChangeDisposable = null;
         }
         saveCurrentPosition();
         if (loudnessEnhancer != null) {
@@ -1005,6 +1012,33 @@ public class Media3PlaybackService extends MediaLibraryService {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
+    public void queueChanged(QueueEvent event) {
+        notifyLibraryChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void feedListChanged(FeedListUpdateEvent event) {
+        notifyLibraryChanged();
+    }
+
+    private void notifyLibraryChanged() {
+        if (libraryChangeDisposable != null) {
+            libraryChangeDisposable.dispose();
+        }
+        libraryChangeDisposable = Single.timer(500, TimeUnit.MILLISECONDS)
+                .observeOn(Schedulers.io())
+                .map(ignored -> sessionCallback.loadOpenListCounts())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(counts -> {
+                    if (mediaSession != null) {
+                        sessionCallback.notifyLibraryChanged(mediaSession, counts);
+                    }
+                }, error -> Log.e(TAG, "Failed to notify library change", error));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void volumeAdaptionChanged(VolumeAdaptionChangedEvent event) {
         if (currentPlayable != null && currentPlayable.getItem() != null
                 && currentPlayable.getItem().getFeed() != null
@@ -1019,6 +1053,7 @@ public class Media3PlaybackService extends MediaLibraryService {
     @Subscribe(threadMode = ThreadMode.MAIN)
     @SuppressWarnings("unused")
     public void feedItemsUpdated(FeedItemEvent event) {
+        notifyLibraryChanged();
         if (currentPlayable == null || !currentPlayable.localFileAvailable()) {
             return;
         }

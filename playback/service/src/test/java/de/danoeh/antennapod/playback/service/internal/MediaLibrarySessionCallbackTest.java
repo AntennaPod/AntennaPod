@@ -3,6 +3,7 @@ package de.danoeh.antennapod.playback.service.internal;
 import android.content.Context;
 import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
+import androidx.media3.session.MediaLibraryService;
 import androidx.media3.session.MediaSession;
 import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
@@ -27,6 +28,11 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaLibrarySessionCallbackTest {
@@ -102,6 +108,27 @@ public class MediaLibrarySessionCallbackTest {
                 Collections.singletonList(searchItem), C.INDEX_UNSET, C.TIME_UNSET).get(5, TimeUnit.SECONDS);
         assertEquals(1, result.mediaItems.size());
         assertEquals(String.valueOf(mediaId), result.mediaItems.get(0).mediaId);
+    }
+
+    @Test
+    public void notifyLibraryChangedRefreshesOpenLists() {
+        FeedMedia media = seedEpisode();
+        MediaLibraryService.MediaLibrarySession librarySession = mock(MediaLibraryService.MediaLibrarySession.class);
+        String feedList = "FeedId:" + media.getItem().getFeedId();
+        callback.onSubscribe(librarySession, controllerInfo, "queue", null);
+        callback.onSubscribe(librarySession, controllerInfo, feedList, null);
+        MediaSession.ControllerInfo otherBrowser = mock(MediaSession.ControllerInfo.class);
+        callback.onSubscribe(librarySession, otherBrowser, "queue", null);
+        callback.onUnsubscribe(librarySession, otherBrowser, "queue");
+        callback.onSubscribe(librarySession, controllerInfo, "downloads", null);
+        callback.onUnsubscribe(librarySession, controllerInfo, "downloads");
+        callback.onSubscribe(librarySession, otherBrowser, "episodes", null);
+        callback.onDisconnected(librarySession, otherBrowser);
+        callback.notifyLibraryChanged(librarySession, callback.loadOpenListCounts());
+        verify(librarySession).notifyChildrenChanged("queue", 0, null);
+        verify(librarySession).notifyChildrenChanged(feedList, 1, null);
+        verify(librarySession, never()).notifyChildrenChanged(eq("downloads"), anyInt(), any());
+        verify(librarySession, never()).notifyChildrenChanged(eq("episodes"), anyInt(), any());
     }
 
     private FeedMedia seedEpisode() {
