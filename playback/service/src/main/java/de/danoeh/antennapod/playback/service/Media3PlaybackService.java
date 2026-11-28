@@ -39,6 +39,7 @@ import de.danoeh.antennapod.event.playback.PlaybackServiceEvent;
 import de.danoeh.antennapod.event.playback.SleepTimerUpdatedEvent;
 import de.danoeh.antennapod.event.playback.SpeedChangedEvent;
 import de.danoeh.antennapod.model.feed.Chapter;
+import de.danoeh.antennapod.model.feed.Feed;
 import de.danoeh.antennapod.model.feed.FeedItem;
 import de.danoeh.antennapod.model.feed.FeedMedia;
 import de.danoeh.antennapod.model.feed.FeedPreferences;
@@ -752,7 +753,12 @@ public class Media3PlaybackService extends MediaLibraryService {
             if (ended || almostEnded || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 DBWriter.markItemsPlayed(FeedItem.PLAYED, ended || almostEnded, Collections.singletonList(item));
                 DBWriter.removeQueueItem(this, ended, item);
-                FeedPreferences.AutoDeleteAction action = item.getFeed().getPreferences().getCurrentAutoDelete();
+                // Reload, the feed preferences might have changed since the media was loaded
+                Feed feed = DBReader.getFeed(item.getFeedId(), false, 0, 0);
+                if (feed == null || feed.getPreferences() == null) {
+                    feed = item.getFeed();
+                }
+                FeedPreferences.AutoDeleteAction action = feed.getPreferences().getCurrentAutoDelete();
                 boolean autoDeleteEnabledGlobally = UserPreferences.isAutoDelete()
                         && (!item.getFeed().isLocalFeed() || UserPreferences.isAutoDeleteLocal());
                 boolean shouldAutoDelete = action == FeedPreferences.AutoDeleteAction.ALWAYS
@@ -871,7 +877,10 @@ public class Media3PlaybackService extends MediaLibraryService {
         if (sleepTimer != null && sleepTimer.isActive()) {
             sleepTimer.episodeFinishedPlayback();
             if (!sleepTimer.shouldContinueToNextEpisode()) {
-                updateDatabaseAfterPlayback(media, playbackStartPosition, true, false, false);
+                int startPosition = playbackStartPosition;
+                Completable.fromAction(() -> updateDatabaseAfterPlayback(media, startPosition, true, false, false))
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(() -> { }, error -> Log.e(TAG, Log.getStackTraceString(error)));
                 player.stop();
                 player.clearMediaItems();
                 PlaybackPreferences.writeNoMediaPlaying();
